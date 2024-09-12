@@ -5,3 +5,13 @@ edition = "2021"
 
 [dependencies]
 bytes = "1.7.1"
+eyre = "0.6.12"
+pest = "2.7.12"
+pest_derive = "2.7.12"
+
+[dev-dependencies]
+lopdf = "0.34.0"
+reqwest = "0.12.7"
+serde = { version = "1.0.209", features = ["derive"] }
+tokio = { version = "1.40.0", features = ["full"] }
+toml = "0.8.19"
