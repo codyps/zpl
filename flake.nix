@@ -31,6 +31,7 @@
             cargo-audit
           ] ++ lib.optional stdenv.isDarwin [
             iconv
+            pkgs.darwin.apple_sdk.frameworks.SystemConfiguration
           ];
 
           RUSTC_WRAPPER = "sccache";
