@@ -1,0 +1,14 @@
+[package]
+name = "zebra-http-api"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+eyre = "0.6.12"
+htmlize = { version = "1.0.5", features = ["unescape"] }
+memchr = "2.7.4"
+reqwest = "0.12.7"
+
+[dev-dependencies]
+clap = { version = "4.5.18", features = ["derive"] }
+tokio = { version = "1.40.0", features = ["full"] }
