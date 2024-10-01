@@ -639,7 +639,7 @@ pub enum Command {
     JB { device: u8 },
 
     /// `~JB`, reset optional memory
-    JB,
+    JBx,
 
     /// `~JC`, set media sensor calibration
     JC,
