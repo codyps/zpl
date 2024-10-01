@@ -7,9 +7,13 @@
 /// Information we must track to parse the ZPL.
 pub struct ParseContext<'a> {
     // `CC` changes this
+    /// "format prefix"
     prefix_caret: u8,
     // `CT` changes this
+    /// "control prefix"
     prefix_tilde: u8,
+    /// "delimiter", default `,` (comma)
+    delimiter: u8,
 
     input: &'a [u8],
     position: usize,
@@ -20,6 +24,7 @@ impl<'a> ParseContext<'a> {
         Self {
             input,
             position: 0,
+            delimiter: b',',
             prefix_caret: b'^',
             prefix_tilde: b'~',
         }
