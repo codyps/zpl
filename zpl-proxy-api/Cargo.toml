@@ -7,6 +7,7 @@ edition = "2021"
 axum = { version = "0.7.7", features = ["multipart"]}
 axum_typed_multipart = "0.13.0"
 clap = { version = "4.5.19", features = ["derive"] }
+diesel = { version = "2.2.4", features = ["sqlite"] }
 reqwest.workspace = true
 serde = { version = "1.0.210", features = ["derive"] }
 tokio = { version = "1.40.0", features = ["full"] }

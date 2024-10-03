@@ -29,6 +29,7 @@
             cargo-outdated
             cargo-udeps
             cargo-audit
+            diesel-cli
           ] ++ lib.optional stdenv.isDarwin [
             iconv
             pkgs.darwin.apple_sdk.frameworks.SystemConfiguration
@@ -36,6 +37,11 @@
 
           RUSTC_WRAPPER = "sccache";
           RUST_SRC_PATH = "${pkgs.rust.packages.stable.rustPlatform.rustLibSrc}";
+
+          shellHook = ''
+            export ROOT_PATH="$(git rev-parse --show-toplevel)"
+            export DATABASE_URL="$ROOT_PATH/_db/db.sqlite"
+            '';
         };
       }
     );
