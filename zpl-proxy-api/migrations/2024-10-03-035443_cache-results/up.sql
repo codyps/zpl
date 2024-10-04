@@ -3,7 +3,7 @@ CREATE TABLE pngs (
     public_id TEXT NOT NULL,
     hash BLOB NOT NULL,
     data BLOB NOT NULL,
-    created_at INTEGER NOT NULL
+    created_at BIGINT NOT NULL
 );
 
 CREATE UNIQUE INDEX idx_pngs_public_id ON pngs(public_id);
@@ -17,8 +17,8 @@ CREATE TABLE inputs (
     -- we allow these to be NULL because we might not have different zpl for
     -- rendering (ie: direct render) and we might have failed to render (ie: no
     -- png).
-    png_id INTEGER,
-    rendered_zpl_id INTEGER,
+    png_id BIGINT,
+    rendered_zpl_id BIGINT,
     -- a given input has only one output (today)
     -- TODO: cache errors?
     FOREIGN KEY(png_id) REFERENCES pngs(id),
@@ -29,9 +29,9 @@ CREATE TABLE inputs (
 CREATE UNIQUE INDEX idx_inputs_hash ON inputs(hash);
 
 CREATE TABLE png_requests (
-    peer_id INTEGER NOT NULL,
+    peer_id BIGINT NOT NULL,
     timestamp TEXT NOT NULL,
-    input_id INTEGER NOT NULL,
+    input_id BIGINT NOT NULL,
     FOREIGN KEY(peer_id) REFERENCES peers(id),
     FOREIGN KEY(input_id) REFERENCES inputs(id)
 );

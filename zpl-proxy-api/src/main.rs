@@ -27,6 +27,7 @@ struct Args {
 struct AppState {
     zd621_client: reqwest::Client,
     zd621_url: reqwest::Url,
+    db: r2d2::Pool<diesel::r2d2::ConnectionManager<diesel::SqliteConnection>>,
 }
 
 #[tokio::main]
@@ -52,9 +53,17 @@ async fn main() {
         .build()
         .unwrap();
 
+    let db_path = std::env::var("DATABASE_URL").expect("DATABASE_URL must be set");
+    let manager = diesel::r2d2::ConnectionManager::<diesel::SqliteConnection>::new(db_path);
+    // FIXME: blocking?
+    let db = r2d2::Pool::builder()
+        .build(manager)
+        .expect("Failed to create pool.");
+
     let app_state = Arc::new(AppState {
         zd621_client,
         zd621_url: args.zd621_url,
+        db,
     });
 
     let app = Router::new()
@@ -96,6 +105,9 @@ async fn zd621_zpl_to_png(
                 .unwrap();
         }
     };
+
+    // FIXME: save zpl and png to db
+    diesel::inse
 
     tracing::info!("zpl to png conversion successful");
     Response::builder()
