@@ -20,8 +20,9 @@ pub struct Client {
 }
 
 #[derive(Insertable)]
-pub struct NewClient {
-    pub ip: String,
+#[diesel(table_name = crate::schema::clients)]
+pub struct NewClient<'a> {
+    pub ip: &'a str,
 }
 
 #[derive(Queryable, Selectable)]

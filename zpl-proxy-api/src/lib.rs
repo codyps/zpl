@@ -2,6 +2,7 @@ use diesel::prelude::*;
 use std::env;
 
 pub mod models;
+pub mod realip;
 pub mod schema;
 
 pub fn establish_connection() -> SqliteConnection {
