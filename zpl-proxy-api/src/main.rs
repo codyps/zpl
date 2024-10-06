@@ -1,10 +1,11 @@
+use std::net::SocketAddr;
 use std::sync::Arc;
 
 use axum::{
     async_trait,
     body::Body,
     extract::FromRequest,
-    extract::{Form, Json, State},
+    extract::{Form, FromRef, Json, State},
     http::{self, header, HeaderName, HeaderValue, Request, Response, StatusCode},
     response::IntoResponse,
     routing::post,
@@ -13,6 +14,7 @@ use axum::{
 use axum_typed_multipart::TypedMultipart;
 use clap::Parser;
 use serde::Deserialize;
+use zpl_proxy_api::realip::{RealIp, RealIpState};
 
 #[derive(Debug, Parser)]
 struct Args {
@@ -24,10 +26,38 @@ struct Args {
     bind_addr: std::net::SocketAddr,
 }
 
+#[derive(Clone)]
 struct AppState {
+    zd621: Zd621,
+    db: Db,
+    real_ip_state: RealIpState,
+}
+
+#[derive(Clone)]
+struct Db(r2d2::Pool<diesel::r2d2::ConnectionManager<diesel::SqliteConnection>>);
+
+#[derive(Clone)]
+struct Zd621 {
     zd621_client: reqwest::Client,
-    zd621_url: reqwest::Url,
-    db: r2d2::Pool<diesel::r2d2::ConnectionManager<diesel::SqliteConnection>>,
+    zd621_url: Arc<reqwest::Url>,
+}
+
+impl FromRef<AppState> for Zd621 {
+    fn from_ref(state: &AppState) -> Self {
+        state.zd621.clone()
+    }
+}
+
+impl FromRef<AppState> for Db {
+    fn from_ref(state: &AppState) -> Self {
+        state.db.clone()
+    }
+}
+
+impl FromRef<AppState> for RealIpState {
+    fn from_ref(state: &AppState) -> Self {
+        state.real_ip_state.clone()
+    }
 }
 
 #[tokio::main]
@@ -60,11 +90,14 @@ async fn main() {
         .build(manager)
         .expect("Failed to create pool.");
 
-    let app_state = Arc::new(AppState {
-        zd621_client,
-        zd621_url: args.zd621_url,
-        db,
-    });
+    let app_state = AppState {
+        zd621: Zd621 {
+            zd621_client,
+            zd621_url: Arc::new(args.zd621_url),
+        },
+        db: Db(db),
+        real_ip_state: RealIpState::new().await.unwrap(),
+    };
 
     let app = Router::new()
         .route("/zpl-zd621", post(zd621_zpl_to_png))
@@ -72,7 +105,12 @@ async fn main() {
 
     // run our app with hyper, listening globally on port 3000
     let listener = tokio::net::TcpListener::bind(args.bind_addr).await.unwrap();
-    axum::serve(listener, app).await.unwrap();
+    axum::serve(
+        listener,
+        app.into_make_service_with_connect_info::<SocketAddr>(),
+    )
+    .await
+    .unwrap();
 }
 
 #[derive(Deserialize, axum_typed_multipart::TryFromMultipart)]
@@ -81,8 +119,10 @@ struct PrintSpec {
 }
 
 async fn zd621_zpl_to_png(
-    State(state): State<Arc<AppState>>,
+    State(db): State<Db>,
+    State(zd621): State<Zd621>,
     JsonOrForm(print_spec): JsonOrForm<PrintSpec>,
+    RealIp(ip_addr): RealIp,
 ) -> impl IntoResponse {
     // TODO: parse zpl, check that it contains only commands we allow.
     // TODO: modify zpl to set fixed initial state
@@ -90,8 +130,8 @@ async fn zd621_zpl_to_png(
     // TODO: return png
 
     let png = match zebra_http_api::zpl_to_png(
-        state.zd621_client.clone(),
-        state.zd621_url.clone(),
+        zd621.zd621_client.clone(),
+        (*zd621.zd621_url).clone(),
         &print_spec.zpl,
     )
     .await
@@ -107,7 +147,9 @@ async fn zd621_zpl_to_png(
     };
 
     // FIXME: save zpl and png to db
-    diesel::inse
+    diesel::insert_into(zpl_proxy_api::schema::clients).values(&zpl_proxy_api::models::NewClient {
+        ip: &ip_addr.to_string(),
+    });
 
     tracing::info!("zpl to png conversion successful");
     Response::builder()
