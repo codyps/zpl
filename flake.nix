@@ -30,6 +30,8 @@
             cargo-udeps
             cargo-audit
             diesel-cli
+
+            sqlite
           ] ++ lib.optional stdenv.isDarwin [
             iconv
             pkgs.darwin.apple_sdk.frameworks.SystemConfiguration
