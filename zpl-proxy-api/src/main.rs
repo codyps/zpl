@@ -121,8 +121,8 @@ struct PrintSpec {
 async fn zd621_zpl_to_png(
     State(db): State<Db>,
     State(zd621): State<Zd621>,
-    JsonOrForm(print_spec): JsonOrForm<PrintSpec>,
     RealIp(ip_addr): RealIp,
+    JsonOrForm(print_spec): JsonOrForm<PrintSpec>,
 ) -> impl IntoResponse {
     // TODO: parse zpl, check that it contains only commands we allow.
     // TODO: modify zpl to set fixed initial state
@@ -146,10 +146,12 @@ async fn zd621_zpl_to_png(
         }
     };
 
+    /*
     // FIXME: save zpl and png to db
     diesel::insert_into(zpl_proxy_api::schema::clients).values(&zpl_proxy_api::models::NewClient {
         ip: &ip_addr.to_string(),
     });
+    */
 
     tracing::info!("zpl to png conversion successful");
     Response::builder()

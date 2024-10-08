@@ -49,6 +49,7 @@ struct CfIpsResponse {
     #[allow(dead_code)]
     messages: Vec<CfCode>,
     result: CfIps,
+    success: bool,
 }
 
 #[derive(Deserialize, Debug)]
@@ -57,7 +58,6 @@ struct CfIps {
     etag: String,
     ipv4_cidrs: Vec<String>,
     ipv6_cidrs: Vec<String>,
-    success: bool,
 }
 
 #[derive(Deserialize, Debug)]
@@ -82,17 +82,18 @@ struct Inner {
 impl RealIpState {
     pub async fn new() -> eyre::Result<Self> {
         // TODO: do this periodically
-        let cf_ips = reqwest::get(
+        let resp = reqwest::get(
             "https://api.cloudflare.com/client/v4
 /ips",
         )
         .await
-        .unwrap()
-        .json::<CfIpsResponse>()
-        .await
         .unwrap();
 
-        if !cf_ips.result.success {
+        let resp_text = resp.text().await.unwrap();
+        println!("resp: {:?}", resp_text);
+        let cf_ips: CfIpsResponse = serde_json::from_str(&resp_text).unwrap();
+
+        if !cf_ips.success {
             return Err(eyre::eyre!("failed to fetch cloudflare ips: {:?}", cf_ips));
         }
 
