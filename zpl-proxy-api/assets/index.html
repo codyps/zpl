@@ -1,0 +1,47 @@
+<html>
+<head>
+	<title>ZPL Print Preview</title>
+</head>
+
+<body>
+	<h1>ZPL Print Preview</h1>
+	<textarea id="zpl" rows="10" cols="50">
+		^XA
+		^FO50,50
+		^A0N50,50
+		^FDHello, World!^FS
+		^XZ
+	</textarea>
+
+	<button id="print">Print</button>
+
+	<img id="image" />
+
+	<script>
+		const zpl = document.getElementById('zpl');
+		const print = document.getElementById('print');
+		const image = document.getElementById('image');
+		print.addEventListener('click', function() {
+			// do a post to our local api for zpl printing
+			// display the result next to the textarea
+			var zpl = zpl.value;
+			fetch("/api/zd621-zpl", {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'Accept': 'application/json',
+				},
+				body: JSON.stringify({ zpl: zpl }),
+			})
+				.then(response => response.json())
+				.then(data => {
+					image.src = 'data:image/png;base64,' + data.image;
+				})
+				.catch(error => {
+					console.error('Error:', error);
+				});
+
+		});
+	</script>
+</body>
+</html>
