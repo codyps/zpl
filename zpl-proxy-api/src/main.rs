@@ -1,11 +1,11 @@
 use std::net::SocketAddr;
+use std::path::Path;
 use std::sync::Arc;
 
 use axum::{
     async_trait,
     body::Body,
-    extract::FromRequest,
-    extract::{Form, FromRef, Json, State},
+    extract::{Form, FromRef, FromRequest, Json, State},
     http::{self, header, HeaderName, HeaderValue, Request, Response, StatusCode},
     response::IntoResponse,
     routing::post,
@@ -14,6 +14,7 @@ use axum::{
 use axum_typed_multipart::TypedMultipart;
 use clap::Parser;
 use serde::Deserialize;
+use tower::Layer;
 use zpl_proxy_api::realip::{RealIp, RealIpState};
 
 #[derive(Debug, Parser)]
@@ -99,8 +100,15 @@ async fn main() {
         real_ip_state: RealIpState::new().await.unwrap(),
     };
 
+    let livereload = tower_livereload::LiveReloadLayer::new();
+    let reloader = livereload.reloader();
+
     let app = Router::new()
-        .route("/zpl-zd621", post(zd621_zpl_to_png))
+        .route("/api/zpl-zd621", post(zd621_zpl_to_png))
+        .nest_service(
+            "/",
+            livereload.layer(tower_http::services::ServeDir::new(Path::new("assets"))),
+        )
         .with_state(app_state);
 
     // run our app with hyper, listening globally on port 3000

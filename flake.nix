@@ -24,6 +24,7 @@
             sccache
             clippy
             rust-analyzer
+            bacon
 
 
             cargo-outdated

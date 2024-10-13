@@ -11,11 +11,16 @@ diesel = { version = "2.2.4", features = ["sqlite", "r2d2"] }
 eyre = "0.6.12"
 ipnet = "2.10.1"
 iptrie = "0.8.6"
+notify = "6.1.1"
 r2d2 = "0.8.10"
 reqwest = { workspace = true, features = ["json"] }
 serde = { version = "1.0.210", features = ["derive"] }
 serde_json = "1.0.128"
+tera = "1.20.0"
 tokio = { version = "1.40.0", features = ["full"] }
+tower = "0.5.1"
+tower-http = { version = "0.6.1", features = ["fs"] }
+tower-livereload = "0.9.4"
 tracing = "0.1.40"
 tracing-subscriber = { version = "0.3.18", features = ["env-filter"] }
 zebra-http-api = { version = "0.1.0", path = "../zebra-http-api" }
