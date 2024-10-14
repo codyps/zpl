@@ -103,13 +103,14 @@ async fn main() {
     let livereload = tower_livereload::LiveReloadLayer::new();
     let reloader = livereload.reloader();
 
-    let app = Router::new()
-        .route("/api/zpl-zd621", post(zd621_zpl_to_png))
-        .nest_service(
-            "/",
-            livereload.layer(tower_http::services::ServeDir::new(Path::new("assets"))),
-        )
+    let api_router = Router::new()
+        .route("/zpl-zd621", post(zd621_zpl_to_png))
         .with_state(app_state);
+
+    let app = Router::new().nest("/api", api_router).nest_service(
+        "/",
+        livereload.layer(tower_http::services::ServeDir::new(Path::new("assets"))),
+    );
 
     // run our app with hyper, listening globally on port 3000
     let listener = tokio::net::TcpListener::bind(args.bind_addr).await.unwrap();
