@@ -1,0 +1,15 @@
+
+ - [ ] simplify parsing
+ - [ ] provide different types for each render command
+ - [ ] provide some high level api for rendering that uses the underlying types
+   to build a document without needing to write out the text based format.
+   Start with supporting the ZPL lines/boxes/etc commands and translating them
+   to it.
+ - [ ] add text rendering, embed some fonts if needed
+ - [ ] impl renderers for all the barcode specs
+ - [ ] provide a rendering api that is vector based (curves? look at how svg
+   does it. Didn't I find another impl that was doing something generic here to
+   avoid hard coding svg output).
+ - [ ] rasterizer built on top of vector one
+ - [ ] confirm correctness by comparing with some other impl. Ideally, the
+   zebra previewer, but maybe the online labarly service as well.
