@@ -21,6 +21,7 @@
 		const zpl = document.getElementById('zpl');
 		const print = document.getElementById('print');
 		const image = document.getElementById('image');
+
 		print.addEventListener('click', function() {
 			// do a post to our local api for zpl printing
 			// display the result next to the textarea
@@ -40,8 +41,9 @@
 				.catch(error => {
 					console.error('Error:', error);
 				});
-
 		});
+
+		
 	</script>
 </body>
 </html>
