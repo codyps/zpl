@@ -1,28 +1,49 @@
-use serde::Deserialize;
-
-#[derive(Deserialize, Debug)]
-struct TestConfig {
-    prefix: String,
-}
-
-fn run_test(name: &str) {
-    let dir = std::path::Path::new("../test-data");
-
-    let test_zpl_path = dir.join(name);
-
-    let mut test_toml_path = test_zpl_path.clone();
-    test_toml_path.set_extension(".toml");
-
-    let test_zpl = std::fs::read(test_zpl_path).unwrap();
-    let test_toml_maybe = match std::fs::read(test_toml_path) {
-        Err(e) if e.kind() == std::io::ErrorKind::NotFound => Ok(None),
-        Err(e) => Err(e),
-        Ok(v) => Ok(Some(v)),
-    }
-    .unwrap();
-}
+use std::path::Path;
+use zpl::parse::{Element, ParseContext};
 
 #[test]
-fn cc2() {
-    run_test("cc2.zpl");
+fn repository_fixtures_have_expected_commands_and_round_trip() {
+    let dir = Path::new(env!("CARGO_MANIFEST_DIR")).join("../test-data");
+    let expected = [
+        ("bz.zpl", 7, b'^'),
+        ("cc.zpl", 3, b'/'),
+        ("cc2.zpl", 4, b'/'),
+        // This historical fixture includes a shell wrapper and lowercase text.
+        ("hello-world.zpl", 6, b'^'),
+    ];
+    for (name, command_count, final_prefix) in expected {
+        let input = std::fs::read(dir.join(name)).unwrap();
+        let mut parser = ParseContext::from_bytes(&input);
+        let parts = parser.by_ref().collect::<Result<Vec<_>, _>>().unwrap();
+        assert_eq!(
+            parts
+                .iter()
+                .filter(|p| !matches!(p, Element::BeforeFirstCommand(_)))
+                .count(),
+            command_count,
+            "{name}"
+        );
+        assert_eq!(parser.syntax().format_prefix, final_prefix, "{name}");
+        let restored: Vec<_> = parts
+            .iter()
+            .flat_map(|p| p.as_bytes().iter().copied())
+            .collect();
+        assert_eq!(restored, input, "{name}");
+    }
+    let discovered = std::fs::read_dir(&dir)
+        .unwrap()
+        .filter(|entry| {
+            entry
+                .as_ref()
+                .unwrap()
+                .path()
+                .extension()
+                .is_some_and(|ext| ext == "zpl")
+        })
+        .count();
+    assert_eq!(
+        discovered,
+        expected.len(),
+        "add expectations for new ZPL fixtures"
+    );
 }

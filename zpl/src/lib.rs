@@ -5,6 +5,6 @@ use eyre::eyre;
 
 mod command;
 mod format;
-mod parse;
+pub mod parse;
 
 pub struct Zpl {}
