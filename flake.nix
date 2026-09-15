@@ -1,14 +1,18 @@
 {
   inputs = {
     nixpkgs.url = "nixpkgs/nixpkgs-unstable";
+    nixpkgs-intel-darwin.url = "github:NixOS/nixpkgs/nixpkgs-26.05-darwin";
     flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { self, flake-utils, nixpkgs }:
+  outputs = { self, flake-utils, nixpkgs, nixpkgs-intel-darwin }:
     flake-utils.lib.eachDefaultSystem (system:
       let
-        pkgs = ((import nixpkgs) {
+        # Unstable no longer supports Intel macOS.
+        nixpkgsForSystem = if system == "x86_64-darwin" then nixpkgs-intel-darwin else nixpkgs;
+        pkgs = ((import nixpkgsForSystem) {
           inherit system;
+          config.allowDeprecatedx86_64Darwin = true;
         });
         lib = pkgs.lib;
         stdenv = pkgs.stdenv;
@@ -21,7 +25,6 @@
             rustc
             cargo
             rustfmt
-            sccache
             clippy
             rust-analyzer
             bacon
@@ -35,10 +38,21 @@
             sqlite
           ];
 
-          RUSTC_WRAPPER = "sccache";
           RUST_SRC_PATH = "${pkgs.rust.packages.stable.rustPlatform.rustLibSrc}";
 
           shellHook = ''
+            # Nix prepends Cargo to PATH; keep the installed mbx shim in front.
+            # mbx removes its own directory when resolving the underlying Cargo.
+            ${if pkgs.stdenv.isDarwin then ''
+              mbx_shim_dir="$HOME/Library/Application Support/mbx/bin"
+            '' else ''
+              mbx_shim_dir="''${XDG_DATA_HOME:-$HOME/.local/share}/mbx/bin"
+            ''}
+            if [ -x "$mbx_shim_dir/cargo" ] && [ -f "$mbx_shim_dir/mbx-target" ]; then
+              export PATH="$mbx_shim_dir:$PATH"
+            fi
+            unset mbx_shim_dir
+
             export ROOT_PATH="$(git rev-parse --show-toplevel)"
             export DATABASE_URL="$ROOT_PATH/_db/db.sqlite"
             '';
