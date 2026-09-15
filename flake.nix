@@ -34,6 +34,7 @@
             cargo-udeps
             cargo-audit
             diesel-cli
+            xcbuild.xcrun
 
             sqlite
           ];
@@ -55,7 +56,7 @@
 
             export ROOT_PATH="$(git rev-parse --show-toplevel)"
             export DATABASE_URL="$ROOT_PATH/_db/db.sqlite"
-            '';
+          '';
         };
       }
     );
