@@ -37,11 +37,7 @@ diesel::table! {
 }
 
 diesel::joinable!(inputs -> pngs (png_id));
+diesel::joinable!(png_requests -> clients (peer_id));
 diesel::joinable!(png_requests -> inputs (input_id));
 
-diesel::allow_tables_to_appear_in_same_query!(
-    clients,
-    inputs,
-    png_requests,
-    pngs,
-);
+diesel::allow_tables_to_appear_in_same_query!(clients, inputs, png_requests, pngs,);

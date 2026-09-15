@@ -5,6 +5,7 @@ use std::sync::Arc;
 use axum::{
     async_trait,
     body::Body,
+    error_handling::HandleError,
     extract::{Form, FromRef, FromRequest, Json, State},
     http::{self, header, HeaderName, HeaderValue, Request, Response, StatusCode},
     response::IntoResponse,
@@ -68,6 +69,8 @@ async fn main() {
     let args = Args::parse();
 
     let zd621_client = reqwest::Client::builder()
+        // The printer rejects lowercase HTTP/1 header names.
+        .http1_title_case_headers()
         .default_headers(
             args.zd621_header
                 .iter()
@@ -101,7 +104,6 @@ async fn main() {
     };
 
     let livereload = tower_livereload::LiveReloadLayer::new();
-    let reloader = livereload.reloader();
 
     let api_router = Router::new()
         .route("/zpl-zd621", post(zd621_zpl_to_png))
@@ -109,7 +111,13 @@ async fn main() {
 
     let app = Router::new().nest("/api", api_router).nest_service(
         "/",
-        livereload.layer(tower_http::services::ServeDir::new(Path::new("assets"))),
+        HandleError::new(
+            livereload.layer(tower_http::services::ServeDir::new(Path::new("assets"))),
+            |error| async move {
+                tracing::error!("static asset service error: {}", error);
+                StatusCode::INTERNAL_SERVER_ERROR
+            },
+        ),
     );
 
     // run our app with hyper, listening globally on port 3000
