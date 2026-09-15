@@ -25,6 +25,7 @@ async fn main() {
 
     let zpl = std::fs::read_to_string(&args.zpl_input_file).unwrap();
     let client = reqwest::Client::builder()
+        .http1_title_case_headers()
         .default_headers({
             let mut headers = reqwest::header::HeaderMap::new();
             for kv in args.header.chunks(2) {
