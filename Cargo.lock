@@ -1287,6 +1287,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "image-diff"
+version = "0.1.0"
+
+[[package]]
 name = "indenter"
 version = "0.3.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3712,9 +3716,12 @@ dependencies = [
  "clap",
  "eyre",
  "htmlize",
+ "image-diff",
  "memchr",
  "reqwest",
+ "serde_json",
  "tokio",
+ "zpl",
 ]
 
 [[package]]
@@ -3809,6 +3816,7 @@ version = "0.1.0"
 dependencies = [
  "bytes",
  "eyre",
+ "image-diff",
  "lopdf",
  "pest",
  "pest_derive",

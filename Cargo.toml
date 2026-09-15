@@ -1,5 +1,6 @@
 [workspace]
 members = [
+    "image-diff",
 	"zpl",
 	"zebra-http-api", "zpl-proxy-api",
 ]

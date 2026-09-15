@@ -1,0 +1,9 @@
+[package]
+name = "image-diff"
+version = "0.1.0"
+edition = "2021"
+description = "Dependency-free binary raster comparison and PNG diagnostics"
+
+[[bin]]
+name = "png-diff"
+path = "src/bin/png-diff.rs"

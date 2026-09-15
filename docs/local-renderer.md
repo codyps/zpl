@@ -1,0 +1,106 @@
+# Local renderer
+
+The renderer is entirely local and adds no dependencies. It is a practical
+preview implementation, not a complete Zebra printer emulator. Unsupported
+commands and unsupported parameter modes return `RenderError` with a byte offset;
+no partial document is returned on failure. Nothing is sent to a printer.
+
+## Architecture and use
+
+```text
+ZPL bytes → parse::ParseContext → render::render → output::Scene
+                                                ├─ output::Svg
+                                                ├─ output::Png
+                                                └─ your output::Adapter
+```
+
+A scene contains dimensions, DPI, and ordered filled paths in printer dots.
+Paths contain moves, lines, cubic Béziers, and closes, with even-odd filling.
+Each drawing paints black, white, or inverts the pixels beneath it. Text glyphs,
+barcode bars, and downloaded bitmaps become paths; adapters never interpret ZPL.
+SVG uses paths and isolated difference blending for inversion. PNG uses a
+pixel-center scan converter, then grayscale PNG with stored DEFLATE blocks.
+PNG files prioritize simplicity over compression. Curves are flattened for PNG;
+SVG viewers may antialias edges differently.
+
+```rust
+use zpl::{render::{render, Options}, output::{Adapter, Png, Svg}};
+let document = render(b"^XA^FO20,20^FDHELLO^FS^XZ", Options::default())?;
+for scene in &document.labels {
+    let png = Png.encode(scene)?;
+    let svg = Svg.encode(scene)?;
+    // Save or serve these byte buffers using your application's transport.
+}
+```
+
+The library returns all labels and preview warnings. Options default to
+812 × 1218 dots at 203 DPI; `^PW` and `^LL` override dimensions. The CLI takes
+one label and selects the adapter by output extension:
+
+```sh
+direnv exec . cargo run -p zpl --example zpl-to-svg -- docs/examples/local-label.zpl /tmp/label.svg
+direnv exec . cargo run -p zpl --example zpl-to-svg -- docs/examples/local-label.zpl /tmp/label.png
+```
+
+## Supported subset
+
+| Area | Commands and restrictions |
+| --- | --- |
+| Framing | `XA`, `XZ`, `FS`, single-byte equivalents, `CC`, `CT`, `CD`, comments `FX`; ASCII parameter delimiter |
+| Layout | `PW`, `LL`, `LH`, `LS`, `LT`, `FO`, explicit-coordinate `FT`, `FW`, `PO`, `FR`, `LR`; left field justification |
+| Text | `CF0`, `A0`, `FD`, `FV`, `FH`; ASCII glyphs only; `CI0/27/28` without remapping |
+| Blocks | `FB`: left/center/right alignment, word wrapping, explicit `\&` breaks; overflow, hyphenation, hanging indent and justified text return errors |
+| Shapes | `GB` including rounded corners, `GC`, `GE`; black outlines/fills |
+| Graphics | `~DG`, `XG`, `GFA`, `GFB`: raw hex, Zebra ASCII run lengths/row shortcuts, B64, Z64; CRC16 and zlib checksums checked |
+| Barcodes | `B3` Code 39 without optional checksum; `BC` Code 128 subset B with mandatory checksum; `BY`; below-bar interpretation line |
+
+Text uses [embedded resident font 0](../zpl/assets/README.md), captured from the
+ZD621 preview at 32 dots and 203 DPI. All 95 printable ASCII glyphs, including
+lowercase, retain their measured advances, bearings and baseline offsets. The
+renderer defaults to font 0 at 20 dots. `^CF0,32` or `^A0N,32,0` selects the
+captured size; omitted/zero width is proportional to height. Other resident font
+IDs and unsupported glyphs return errors.
+
+The 4,365-byte strike is compiled into the binary. Its pixels become horizontal
+filled path runs, shared by PNG and SVG. Overlapping glyph strokes are merged.
+Field blocks wrap and align using proportional advances, including spaces.
+`^FT` uses the captured baseline; `^FO` uses the font matrix. Other sizes use
+scaled bitmap paths and emit a warning. Rotation can also differ slightly from
+the printer's outline rasterizer, so it emits the same approximation warning.
+
+Normal-orientation text at 32 × 32 dots matches all captured atlas pages and a
+held-out printer label pixel-for-pixel. Native-size layout tests cover baselines,
+blocks, and rotation origins. A broader rotated-curve sample retains three edge
+pixel differences, recorded as a regression bound. This is a bitmap strike, not
+an extracted scalable outline font.
+
+Leave adequate clear space around barcode fields; quiet zones are not inserted
+automatically. Barcode interpretation text also uses embedded font 0.
+
+Examples of explicit errors include QR/Data Matrix/EAN/UPC, Code 128 invocation
+sequences and UCC/automatic modes, downloaded fonts, stored formats, serialization,
+white ZPL shapes, compressed binary `GFC`, and printer configuration commands.
+The parser still frames these commands; rendering coverage is separate from
+command-stream parsing coverage. Configuration persists only within one `render`
+call. Each field must end with `FS` before another drawing command.
+
+## Limits and validation
+
+Limits: 1 MiB input, 64 labels, one million total scene segments, one million
+stored-graphic segments, 4,096 bytes per text field, 25,000 decoded bytes per
+graphic, and 32 Mi pixels per image. PNG also limits scan work and curve
+flattening. Limit violations return errors. These are resource bounds, not a
+claim that rendering arbitrary hostile inputs is constant-time.
+
+Run `direnv exec . cargo test -p zpl`. Tests cover geometry, clipping, inversion,
+rotation, framing changes, multiple labels, barcode modules, malformed commands,
+and independent Python-zlib fixtures for stored/fixed/dynamic DEFLATE blocks.
+`zpl/tests/fixtures/*.zlib` encode `bytes(range(256)) * 200`, generated using
+Python's `zlib.compressobj` at level 0 or 9, with default or fixed strategy.
+
+Semantics are based on the [bundled Zebra guide](README.md), especially field,
+shape, and graphic commands. Output formats follow the
+[PNG specification](https://www.w3.org/TR/png-3/),
+[RFC 1950](https://www.rfc-editor.org/rfc/rfc1950),
+[RFC 1951](https://www.rfc-editor.org/rfc/rfc1951), and
+[SVG compositing](https://www.w3.org/TR/compositing-1/).
