@@ -1,0 +1,67 @@
+{
+  "printer_model": "Zebra ZD621",
+  "capture_date": "2026-09-14",
+  "font": "0",
+  "requested_height": 32,
+  "requested_width": 0,
+  "dpi": 203,
+  "glyph_count": 95,
+  "asset": "font0-32.zbf",
+  "asset_bytes": 4365,
+  "asset_sha256": "4491a8017609aff715a18ab46dfd1c5e5a27d0221e9aa3994ebd53d6630ac40e",
+  "captures": [
+    {
+      "page": 0,
+      "sha256": "3d6910a8d63e906b176bb5bef1eee5466eda1b29bcc84c0b13dda7acf618111b"
+    },
+    {
+      "page": 1,
+      "sha256": "c2cf9ee267d75c203a42f8af4d985c9116080faaa87bea11527369769ed145b4"
+    },
+    {
+      "page": 2,
+      "sha256": "122dbcaef4f9cc03cee46622e5106010056bd0b70b20569ac3c1c2498e1cf430"
+    },
+    {
+      "page": 3,
+      "sha256": "728820bda836da1165f0bd57497ed991be532d8dcc1706a2923bd3fbd079d3e9"
+    },
+    {
+      "page": 4,
+      "sha256": "e9b109605b93ab9cac3a6cb319a640944d411021271d42fdab3b03a8af452b78"
+    },
+    {
+      "page": 5,
+      "sha256": "5bb3f90550da6db52f989706a4acba0f908fb2910368839ef5075079e077595f"
+    },
+    {
+      "page": 6,
+      "sha256": "7f938ec86809dfd57843f1265caf99f49ce59429e31a1b5e2fb54982f20b4953"
+    },
+    {
+      "page": 7,
+      "sha256": "93c33e6bb556beab9b52419832ac7f7e9796dee66aa7c3de512bef8d1f2fd8cc"
+    },
+    {
+      "page": 8,
+      "sha256": "7ab4470a87ad718f558495c5672e02020591a89fbb6f3f83047bf156b46046c7"
+    },
+    {
+      "page": 9,
+      "sha256": "3fa83258c41ed5daba38d1fd8a30c1b8448a796e9a5745160ee631738e71719e"
+    },
+    {
+      "page": 10,
+      "sha256": "db73e2a6b00c2db42148e0f96be985b08c9f2201b089e7edef0fa03bd368d29b"
+    },
+    {
+      "page": 11,
+      "sha256": "3c87a2d54da1845abfa20c1ee0d966d2e49970da21b374768d1cf4c0213adc8b"
+    }
+  ],
+  "verification": {
+    "different_pixels": 0,
+    "sha256": "976032fc448dbd6d8be4c82dffa38444fb2d530401a64a3157eda8331e85a055",
+    "text": "AVATAR Agj Wavy 123 _^~|!"
+  }
+}

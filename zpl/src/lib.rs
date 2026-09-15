@@ -1,10 +1,11 @@
-use std::ops::{Deref, DerefMut};
-
-use bytes::Bytes;
-use eyre::eyre;
-
 mod command;
+use image_diff::compression;
 mod format;
 pub mod parse;
 
 pub struct Zpl {}
+
+pub mod output;
+pub mod render;
+
+pub mod font_extract;

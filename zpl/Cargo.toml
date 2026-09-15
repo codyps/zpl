@@ -4,6 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+image-diff = { path = "../image-diff" }
 bytes = "1.7.1"
 eyre = "0.6.12"
 pest = "2.7.12"
