@@ -1,2 +1,5 @@
 target
 _*
+site/node_modules/
+site/test-results/
+site/playwright-report/

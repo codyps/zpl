@@ -1,5 +1,8 @@
 # ZPL reference and parser design
 
+[Browser preview](web-preview.md) documents the local WebAssembly editor and
+GitHub Pages deployment.
+
 [Release PR automation](releases.md) documents release-plz setup and the separate
 crates.io publishing prerequisites.
 
