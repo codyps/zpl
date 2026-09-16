@@ -7,7 +7,7 @@ use std::{
     path::{Path, PathBuf},
     time::Duration,
 };
-use zpl::{bitmap_font::Settings, output::Raster};
+use zpl::{bitmap_font::Settings, output::raster::Raster};
 use zpl_font_extract as font_extract;
 mod font_support;
 

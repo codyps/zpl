@@ -1,6 +1,7 @@
 use zpl::{
-    output::{Adapter, Draw, Paint, Path, Png, Point, Raster, Scene, Segment, Svg},
-    render::{render, Options},
+    output::raster::Raster,
+    output::{Adapter, Draw, Paint, Path, Png, Point, Scene, Segment, Svg},
+    render, Options,
 };
 fn scene(z: &[u8]) -> Scene {
     render(
@@ -18,7 +19,7 @@ fn scene(z: &[u8]) -> Scene {
 #[test]
 fn shape_pixels_and_reverse() {
     let s = scene(b"^XA^FO2,3^GB10,8,2^FS^FO4,5^GB2,2,2^FR^FS^XZ");
-    let r = zpl::output::rasterize(&s).unwrap();
+    let r = zpl::output::raster::rasterize(&s).unwrap();
     assert_eq!(r.pixels.iter().filter(|&&p| p == 0).count(), 60);
     assert_eq!(r.pixels[3 * 100 + 2], 0);
     assert_eq!(r.pixels[5 * 100 + 6], 255);
@@ -36,7 +37,7 @@ fn geometry_shared_by_adapters() {
     assert!(svg.contains("fill-rule=\"evenodd\""));
     assert!(!svg.contains("<text"));
     assert!(Png.encode(&s).unwrap().starts_with(b"\x89PNG\r\n\x1a\n"));
-    let r = zpl::output::rasterize(&s).unwrap();
+    let r = zpl::output::raster::rasterize(&s).unwrap();
     assert_eq!(r.pixels[20 * 100 + 25], 255);
     assert_eq!(r.pixels[10 * 100 + 25], 0);
 }
@@ -53,7 +54,7 @@ fn inversion_and_clipping() {
         path: p,
         paint: Paint::Invert,
     });
-    assert!(zpl::output::rasterize(&s)
+    assert!(zpl::output::raster::rasterize(&s)
         .unwrap()
         .pixels
         .iter()
@@ -89,7 +90,7 @@ fn syntax_and_multiple_labels() {
     assert_eq!(doc.labels.len(), 2);
     assert_eq!((doc.labels[1].width, doc.labels[1].height), (20, 30));
     assert_eq!(
-        zpl::output::rasterize(&doc.labels[0])
+        zpl::output::raster::rasterize(&doc.labels[0])
             .unwrap()
             .pixels
             .iter()
@@ -106,7 +107,7 @@ fn graphics_binary_ascii_and_rle() {
     assert_eq!(a, b);
     assert_eq!(a, c);
     assert_eq!(
-        zpl::output::rasterize(&a)
+        zpl::output::raster::rasterize(&a)
             .unwrap()
             .pixels
             .iter()
@@ -129,8 +130,8 @@ fn field_blocks_hex_and_font_warning() {
     )
     .unwrap();
     assert_eq!(
-        zpl::output::rasterize(&d.labels[0]).unwrap(),
-        zpl::output::rasterize(&expected.labels[0]).unwrap()
+        zpl::output::raster::rasterize(&d.labels[0]).unwrap(),
+        zpl::output::raster::rasterize(&expected.labels[0]).unwrap()
     );
     let scaled = render(b"^XA^CF0,16^FDA^FS^XZ", Options::default()).unwrap();
     assert_eq!(scaled.warnings.len(), 1);
@@ -140,7 +141,7 @@ fn field_blocks_hex_and_font_warning() {
 fn rotations_keep_fo_positive() {
     for orientation in ["N", "R", "I", "B"] {
         let z = format!("^XA^FW{orientation}^FO20,20^GB10,5,5^FS^XZ");
-        let r = zpl::output::rasterize(&scene(z.as_bytes())).unwrap();
+        let r = zpl::output::raster::rasterize(&scene(z.as_bytes())).unwrap();
         assert_eq!(r.pixels.iter().filter(|&&v| v == 0).count(), 50);
         assert_eq!(r.pixels[20 * 100 + 20], 0);
         assert_eq!(r.pixels[19 * 100 + 20], 255)
@@ -149,7 +150,7 @@ fn rotations_keep_fo_positive() {
 #[test]
 fn code128_known_symbol_widths() {
     let s = scene(b"^XA^BY1^BCN,10,N^FDA^FS^XZ");
-    let r = zpl::output::rasterize(&s).unwrap();
+    let r = zpl::output::raster::rasterize(&s).unwrap();
     let row = &r.pixels[..100];
     let expected = "1101001000010100011000100010110001100011101011";
     assert_eq!(expected.len(), 46);
@@ -235,7 +236,7 @@ fn captured_font_matches_every_printer_atlas_and_held_out_text() {
         .unwrap();
         let doc = render(&zpl, Options::default()).unwrap();
         assert!(doc.warnings.is_empty(), "{name}");
-        let actual = zpl::output::rasterize(&doc.labels[0]).unwrap();
+        let actual = zpl::output::raster::rasterize(&doc.labels[0]).unwrap();
         let diff = raster_diff::compare(&reference, &actual, false).unwrap();
         assert!(
             diff.matches(),
@@ -250,14 +251,14 @@ fn proportional_blocks_align_and_wrap_by_advance() {
     let a = scene(b"^XA^CF0,32,32^FO10,10^FB55,2,0,R^FDWW ii^FS^XZ");
     let b = scene(b"^XA^CF0,32,32^FO13,10^FDWW^FS^FO49,42^FDii^FS^XZ");
     assert_eq!(
-        zpl::output::rasterize(&a).unwrap(),
-        zpl::output::rasterize(&b).unwrap()
+        zpl::output::raster::rasterize(&a).unwrap(),
+        zpl::output::raster::rasterize(&b).unwrap()
     );
     let c = scene(b"^XA^CF0,32,32^FO10,10^FB56,1,0,C^FDii^FS^XZ");
     let d = scene(b"^XA^CF0,32,32^FO30,10^FDii^FS^XZ");
     assert_eq!(
-        zpl::output::rasterize(&c).unwrap(),
-        zpl::output::rasterize(&d).unwrap()
+        zpl::output::raster::rasterize(&c).unwrap(),
+        zpl::output::raster::rasterize(&d).unwrap()
     );
     assert!(render(b"^XA^AAN,32,32^FDA^FS^XZ", Options::default()).is_err());
 }
@@ -267,7 +268,7 @@ fn captured_font_layout_baselines_blocks_and_rotations() {
     let input = include_bytes!("fixtures/font0-32/layout.zpl");
     let reference = Raster::decode_png(include_bytes!("fixtures/font0-32/layout.png")).unwrap();
     let doc = render(input, Options::default()).unwrap();
-    let actual = zpl::output::rasterize(&doc.labels[0]).unwrap();
+    let actual = zpl::output::raster::rasterize(&doc.labels[0]).unwrap();
     assert!(raster_diff::compare(&reference, &actual, false)
         .unwrap()
         .matches());
@@ -275,7 +276,7 @@ fn captured_font_layout_baselines_blocks_and_rotations() {
     let reference = Raster::decode_png(include_bytes!("fixtures/font0-32/rotations.png")).unwrap();
     let doc = render(input, Options::default()).unwrap();
     assert_eq!(doc.warnings.len(), 1);
-    let actual = zpl::output::rasterize(&doc.labels[0]).unwrap();
+    let actual = zpl::output::raster::rasterize(&doc.labels[0]).unwrap();
     // Zebra rasterizes rotated outlines slightly differently: three edge pixels
     // in this sample cannot be reproduced by rotating the captured normal strike.
     let d = raster_diff::compare(&reference, &actual, false).unwrap();
@@ -285,8 +286,8 @@ fn captured_font_layout_baselines_blocks_and_rotations() {
 fn captured_font_scaling() {
     let normal = scene(b"^XA^CF0,32,32^FT10,40^FDaWj|^FS^XZ");
     let enlarged = scene(b"^XA^PW200^LL200^CF0,64,64^FT20,80^FDaWj|^FS^XZ");
-    let a = zpl::output::rasterize(&normal).unwrap();
-    let b = zpl::output::rasterize(&enlarged).unwrap();
+    let a = zpl::output::raster::rasterize(&normal).unwrap();
+    let b = zpl::output::raster::rasterize(&enlarged).unwrap();
     for y in 0..200 {
         for x in 0..200 {
             assert_eq!(b.pixels[y * 200 + x], a.pixels[y / 2 * 100 + x / 2]);
@@ -299,7 +300,7 @@ fn field_block_overshoots_union_with_descenders() {
     let block = scene(b"^XA^CF0,32^FO20,20^FB60,2,0,L^FD_\\&O^FS^XZ");
     let separate = scene(b"^XA^CF0,32^FO20,20^FD_^FS^FO20,52^FDO^FS^XZ");
     assert_eq!(
-        zpl::output::rasterize(&block).unwrap(),
-        zpl::output::rasterize(&separate).unwrap()
+        zpl::output::raster::rasterize(&block).unwrap(),
+        zpl::output::raster::rasterize(&separate).unwrap()
     );
 }

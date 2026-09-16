@@ -1,7 +1,7 @@
 use std::{env, fs};
 use zpl::{
     output::{Adapter, Png, Svg},
-    render::{render, Options},
+    render, Options,
 };
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args: Vec<_> = env::args().collect();

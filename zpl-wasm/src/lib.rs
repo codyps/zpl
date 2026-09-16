@@ -2,7 +2,7 @@
 use wasm_bindgen::prelude::*;
 use zpl::{
     output::{Adapter, Png, Svg},
-    render::{render, Options},
+    render, Options,
 };
 
 #[wasm_bindgen]

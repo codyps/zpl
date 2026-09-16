@@ -1,4 +1,7 @@
-use super::*;
+//! Rasterize scenes into monochrome pixels.
+
+use crate::output::{OutputError, Paint, Path, Point, Scene, Segment, MAX_SEGMENTS};
+pub use raster_diff::Raster;
 
 /// Rasterize filled paths into shared monochrome pixels.
 pub fn rasterize(scene: &Scene) -> Result<Raster, OutputError> {

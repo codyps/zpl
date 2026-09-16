@@ -11,8 +11,8 @@ fn original_pdf417_captures_match_after_known_preview_padding() {
         let source = std::fs::read(root.join(format!("{name}.zpl"))).unwrap();
         let printer =
             Raster::decode_png(&std::fs::read(root.join(format!("{name}.png"))).unwrap()).unwrap();
-        let doc = zpl::render::render(&source, zpl::render::Options::default()).unwrap();
-        let local = zpl::output::rasterize(&doc.labels[0]).unwrap();
+        let doc = zpl::render(&source, zpl::Options::default()).unwrap();
+        let local = zpl::output::raster::rasterize(&doc.labels[0]).unwrap();
         assert_eq!((printer.width, printer.height), (832, 1218));
         assert_eq!((local.width, local.height), (812, 1218));
         // Fixed experimentally established HTTP preview padding, not fitted
@@ -58,7 +58,7 @@ fn pdf417_matches_printer_probes() {
                 "{name}: printer capture changed"
             );
             let printer = Raster::decode_png(&png).unwrap();
-            let doc = zpl::render::render(&source, zpl::render::Options::default());
+            let doc = zpl::render(&source, zpl::Options::default());
             if fields[3] == "error" {
                 assert!(
                     printer.pixels.iter().all(|&p| p == 255),
@@ -71,7 +71,7 @@ fn pdf417_matches_printer_probes() {
             } else {
                 assert_eq!(fields[3], "exact");
                 assert!(printer.pixels.contains(&0), "{name}: blank isn't parity");
-                let actual = zpl::output::rasterize(&doc.unwrap().labels[0]).unwrap();
+                let actual = zpl::output::raster::rasterize(&doc.unwrap().labels[0]).unwrap();
                 let diff = compare(&printer, &actual, false).unwrap();
                 assert!(
                     diff.matches(),

@@ -2,11 +2,10 @@
 use std::{error::Error, fmt};
 
 mod png;
-mod raster;
+pub mod raster;
 mod svg;
 pub use png::Png;
-pub use raster::rasterize;
-pub use raster_diff::{Raster, MAX_PIXELS};
+pub use raster_diff::MAX_PIXELS;
 pub use svg::Svg;
 
 pub const MAX_SEGMENTS: usize = 1_000_000;

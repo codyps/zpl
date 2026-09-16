@@ -89,6 +89,6 @@ with the resulting RGB PNG independently decoded and visually inspected.
 `raster-diff` (in the `raster-diff/` directory, imported as `raster_diff`) has no
 dependencies and builds without ZPL. It owns binary rasters,
 PNG decoding/encoding, bounded zlib decoding, and comparison. `zpl` depends on it
-and keeps scene/path rasterization in `zpl::output::rasterize(&scene)`.
-`zpl::output::Raster` re-exports the shared raster type; no pixel copies are needed.
+and keeps scene/path rasterization in `zpl::output::raster::rasterize(&scene)`.
+`zpl::output::raster::Raster` re-exports the shared raster type; no pixel copies are needed.
 The printer font extractor also calls `raster_diff::compare` directly.
