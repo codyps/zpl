@@ -19,7 +19,7 @@ async fn middleware_correlates_logs_and_async_and_blocking_tasks_without_payload
     fastrace::set_reporter(reporter, Config::default());
     let app = Router::new()
         .route(
-            "/labels/:id",
+            "/labels/{id}",
             post(|Json(_): Json<serde_json::Value>| async {
                 spawn("test.render", async {
                     tokio::task::yield_now().await;
@@ -96,7 +96,7 @@ async fn middleware_correlates_logs_and_async_and_blocking_tasks_without_payload
     assert!(root
         .properties
         .iter()
-        .any(|(k, v)| k == "http.route" && v == "/labels/:id"));
+        .any(|(k, v)| k == "http.route" && v == "/labels/{id}"));
     assert!(root
         .properties
         .iter()

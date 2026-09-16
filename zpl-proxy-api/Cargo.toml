@@ -5,30 +5,30 @@ edition = "2021"
 license.workspace = true
 
 [dependencies]
-axum = { version = "0.7.7", features = ["macros", "multipart"] }
-clap = { version = "4.5.19", features = ["derive"] }
-diesel = { version = "2.2.4", features = ["sqlite"] }
-eyre = "0.6.12"
-ipnet = "2.10.1"
-iptrie = "0.8.6"
-notify = "6.1.1"
+axum = { version = "0.8.9", features = ["macros", "multipart"] }
+clap = { version = "4.6.7", features = ["derive"] }
+diesel = { version = "2.3.13", features = ["sqlite"] }
+eyre = "0.6.14"
+ipnet = "2.12.2"
+iptrie = "0.11.2"
+notify = "8.2.0"
 reqwest = { workspace = true, features = ["json"] }
-serde = { version = "1.0.210", features = ["derive"] }
-serde_json = "1.0.128"
-sha2 = "0.10.9"
-tera = "1.20.0"
-tokio = { version = "1.40.0", features = ["full"] }
-tower-http = { version = "0.6.1", features = ["fs"] }
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.151"
+sha2 = "0.11.0"
+tera = "2.4.0"
+tokio = { version = "1.53.1", features = ["full"] }
+tower-http = { version = "0.7.1", features = ["fs"] }
 tower-layer = "0.3.3"
-tower-livereload = "0.9.4"
+tower-livereload = "0.10.3"
 fastrace = { version = "0.7.19", features = ["enable"] }
 fastrace-opentelemetry = "0.18.1"
-log = "0.4"
+log = "0.4.34"
 logforth = { version = "0.30.1", features = ["append-fastrace", "diagnostic-fastrace", "starter-log"] }
-opentelemetry = { version = "0.32", default-features = false, features = ["trace"] }
+opentelemetry = { version = "0.32.0", default-features = false, features = ["trace"] }
 opentelemetry_sdk = { version = "0.32.1", default-features = false, features = ["trace"] }
-opentelemetry-otlp = { version = "0.32", default-features = false, features = ["http-proto", "reqwest-blocking-client", "reqwest-rustls", "trace"] }
+opentelemetry-otlp = { version = "0.32.0", default-features = false, features = ["http-proto", "reqwest-blocking-client", "reqwest-rustls", "trace"] }
 zebra-http-api = { version = "0.1.0", path = "../zebra-http-api" }
 
 [dev-dependencies]
-tempfile = "3"
+tempfile = "3.27.0"

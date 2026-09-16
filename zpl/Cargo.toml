@@ -6,16 +6,12 @@ license.workspace = true
 
 [dependencies]
 raster-diff = { version = "0.1.0", path = "../raster-diff" }
-bytes = "1.7.1"
-eyre = "0.6.12"
-pest = "2.7.12"
-pest_derive = "2.7.12"
 
 [dev-dependencies]
-rxing = { version = "0.9.2", default-features = false, features = ["decoders", "full_barcode_format_support", "multi_barcode_readers", "encoding_rs"] }
+rxing = { version = "0.9.3", default-features = false, features = ["decoders", "full_barcode_format_support", "multi_barcode_readers", "encoding_rs"] }
 anyd = { version = "0.1.4", default-features = false, features = ["std", "decode", "pdf417", "code11", "code49", "codablockf", "msi", "twoof5", "postal", "maxicode", "databar"] }
-lopdf = "0.34.0"
-reqwest = "0.12.7"
-serde = { version = "1.0.209", features = ["derive"] }
-tokio = { version = "1.40.0", features = ["full"] }
-toml = "0.8.19"
+lopdf = "0.45.0"
+reqwest = "0.13.5"
+serde = { version = "1.0.229", features = ["derive"] }
+tokio = { version = "1.53.1", features = ["full"] }
+toml = "1.1.6"
