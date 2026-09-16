@@ -10,8 +10,8 @@ memchr = "2.7.4"
 reqwest.workspace = true
 
 [dev-dependencies]
-image-diff = { path = "../image-diff" }
+raster-diff = { version = "0.1.0", path = "../raster-diff" }
 clap = { version = "4.5.18", features = ["derive"] }
 tokio = { version = "1.40.0", features = ["full"] }
-zpl = { path = "../zpl" }
+zpl = { version = "0.1.0", path = "../zpl" }
 serde_json = "1.0.128"

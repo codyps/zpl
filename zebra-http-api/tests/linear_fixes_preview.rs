@@ -1,7 +1,7 @@
 //! Fixed, original printer captures; no network calls during tests.
 #[path = "../examples/font_support/mod.rs"]
 mod digest;
-use image_diff::{compare, Raster};
+use raster_diff::{compare, Raster};
 
 #[test]
 fn four_barcode_printer_probes() {

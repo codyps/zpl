@@ -1,7 +1,7 @@
 //! Exact comparisons against pre-fix ZD621 captures at PW832 (no padding).
 #[path = "../examples/font_support/mod.rs"]
 mod digest;
-use image_diff::{compare, Raster};
+use raster_diff::{compare, Raster};
 
 #[test]
 fn original_pdf417_captures_match_after_known_preview_padding() {

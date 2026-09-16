@@ -1,6 +1,6 @@
 use super::sfnt;
 use eyre::{ensure, Result};
-use image_diff::Raster;
+use raster_diff::Raster;
 use serde_json::{json, Value};
 use std::fmt::Write as _;
 #[derive(Clone, Debug)]

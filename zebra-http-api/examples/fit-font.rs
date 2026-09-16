@@ -1,7 +1,7 @@
 //! Offline parameter-fit experiment. Does not change the embedded renderer font.
 use clap::Parser;
 use eyre::{ensure, eyre, Result};
-use image_diff::{compare, Raster};
+use raster_diff::{compare, Raster};
 use serde_json::json;
 use std::{
     fmt::Write as _,

@@ -132,16 +132,16 @@ async fn main() -> Result<()> {
             case.name, record["printer"]["ink"], pixels, status
         ));
         if let Some(dir) = &args.artifacts {
-            let reference = image_diff::Raster::decode_png(&fs::read(
+            let reference = raster_diff::Raster::decode_png(&fs::read(
                 args.output.join(format!("{}.png", case.name)),
             )?)
             .map_err(|e| eyre!(e))?;
             if let Ok(local) = support::local(&support::request(case)) {
                 create(
                     dir.join(format!("{}-local.png", case.name)),
-                    &image_diff::Png::encode_gray(&local, 203)?,
+                    &raster_diff::Png::encode_gray(&local, 203)?,
                 )?;
-                let diff = image_diff::compare(&reference, &local, true).map_err(|e| eyre!(e))?;
+                let diff = raster_diff::compare(&reference, &local, true).map_err(|e| eyre!(e))?;
                 create(
                     dir.join(format!("{}-diff.png", case.name)),
                     &diff.png(1).map_err(|e| eyre!(e))?,

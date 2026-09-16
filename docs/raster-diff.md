@@ -1,11 +1,11 @@
 # Binary PNG image diff
 
-The Rust `png-diff` binary in the `image-diff` crate compares printer and local
+The Rust `png-diff` binary in the `raster-diff` crate compares printer and local
 renderer output in printer dots and produces a colored PNG. It uses the in-tree PNG codec; no imaging library
 or external executable is needed.
 
 ```sh
-direnv exec . cargo run -p image-diff --bin png-diff -- \
+direnv exec . cargo run -p raster-diff --bin png-diff -- \
   printer.png local.png diff.png
 ```
 
@@ -29,15 +29,15 @@ Counts and bounds always refer to the original resolution, before magnification.
 
 ```sh
 # Magnify each diff pixel to a 4-by-4 block for inspection.
-direnv exec . cargo run -p image-diff --bin png-diff -- \
+direnv exec . cargo run -p raster-diff --bin png-diff -- \
   --scale 4 printer.png local.png diff-large.png
 
 # Fail a CI check when the pixels or image dimensions differ.
-direnv exec . cargo run -p image-diff --bin png-diff -- \
+direnv exec . cargo run -p raster-diff --bin png-diff -- \
   --check printer.png local.png diff-check.png
 
 # Explicitly compare different canvas sizes with white padding on right/bottom.
-direnv exec . cargo run -p image-diff --bin png-diff -- \
+direnv exec . cargo run -p raster-diff --bin png-diff -- \
   --pad printer.png local.png diff-padded.png
 ```
 
@@ -58,8 +58,8 @@ output, or another operational error. The diff is written before exit code 1.
 
 ## Library and limits
 
-`image_diff::compare(&reference, &candidate, pad)` operates on binary
-`image_diff::Raster` values. `Diff` exposes counts, bounds, RGB pixels, `matches()`,
+`raster_diff::compare(&reference, &candidate, pad)` operates on binary
+`raster_diff::Raster` values. `Diff` exposes counts, bounds, RGB pixels, `matches()`,
 `ink_iou()`, and `png(scale)`. `Raster::decode_png_with_threshold(bytes, None)`
 provides strict binary decoding. Pass `Some(threshold)` to opt into binarization.
 
@@ -75,7 +75,7 @@ for its optional text verification and saves `verification-diff.png`.
 ## Validation
 
 ```sh
-direnv exec . cargo test -p image-diff
+direnv exec . cargo test -p raster-diff
 ```
 
 Tests cover directional colors, swapped inputs, blank/equal images, unequal
@@ -86,8 +86,9 @@ with the resulting RGB PNG independently decoded and visually inspected.
 
 ## Crate boundary
 
-`image-diff` has no dependencies and builds without ZPL. It owns binary rasters,
+`raster-diff` (in the `raster-diff/` directory, imported as `raster_diff`) has no
+dependencies and builds without ZPL. It owns binary rasters,
 PNG decoding/encoding, bounded zlib decoding, and comparison. `zpl` depends on it
 and keeps scene/path rasterization in `zpl::output::rasterize(&scene)`.
 `zpl::output::Raster` re-exports the shared raster type; no pixel copies are needed.
-The printer font extractor also calls `image_diff::compare` directly.
+The printer font extractor also calls `raster_diff::compare` directly.

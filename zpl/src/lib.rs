@@ -1,5 +1,5 @@
 mod command;
-use image_diff::compression;
+use raster_diff::compression;
 mod format;
 pub mod parse;
 

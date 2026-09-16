@@ -1,7 +1,7 @@
 //! Offline measurements; never reads the sealed directory.
 use super::campaign::{self, Page, Probe};
 use eyre::{ensure, eyre, Result};
-use image_diff::{compare, Raster};
+use raster_diff::{compare, Raster};
 use serde_json::{json, Value};
 use std::{fs, path::Path};
 fn tile(root: &Path, page: &Page, p: &Probe) -> Result<Raster> {

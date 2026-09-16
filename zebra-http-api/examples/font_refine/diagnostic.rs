@@ -1,7 +1,7 @@
 //! Adaptive, predeclared probes to distinguish the surviving spacing hypotheses.
 use super::campaign;
 use eyre::{ensure, eyre, Result};
-use image_diff::{compare, Raster};
+use raster_diff::{compare, Raster};
 use serde_json::json;
 use std::{fs, path::Path, time::Duration};
 pub fn pages() -> Vec<campaign::Page> {
