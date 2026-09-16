@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Preview ZPL labels locally in your browser. No uploads or printer required.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self'; img-src 'self' blob:; connect-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>ZPL / Label preview</title>
+  <link rel="stylesheet" href="./style.css">
+  <script type="module" src="./app.mjs"></script>
+</head>
+<body>
+  <header><a class="wordmark" href="./">ZPL<span> / label preview</span></a><a href="https://github.com/codyps/zpl">View source ↗</a></header>
+  <main>
+    <div class="intro"><p class="eyebrow">FROM COMMANDS TO LABELS</p><h1>See what you’re printing.</h1><p>Paste ZPL, preview your label, and export it. Everything renders in your browser.</p></div>
+    <div class="workspace">
+      <section class="panel" aria-labelledby="editor-title">
+        <h2 id="editor-title">01 <span>ZPL source</span></h2>
+        <form id="editor">
+          <label for="source">Label commands</label>
+          <textarea id="source" spellcheck="false" autocapitalize="off" autocomplete="off" aria-describedby="source-help">^XA
+^FO40,40^A0N,32,32^FDHello, ZPL.^FS
+^FO40,100^GB520,3,3^FS
+^FO40,145^BY2^BCN,100,Y,N,N^FD1234567890^FS
+^FO40,315^BQN,2,4^FDLA,https://github.com/codyps/zpl^FS
+^XZ</textarea>
+          <p id="source-help" class="hint">Up to 1 MiB. Multiple ^XA…^XZ labels are supported.</p>
+          <div class="settings">
+            <label>Width · dots<input id="width" type="number" min="1" max="4096" step="1" value="812" required></label>
+            <label>Height · dots<input id="height" type="number" min="1" max="4096" step="1" value="1218" required></label>
+            <label>Resolution<select id="dpi"><option value="203">203 DPI</option><option value="300">300 DPI</option><option value="600">600 DPI</option></select></label>
+          </div>
+          <p class="hint">Default canvas size. ^PW and ^LL can override it.</p>
+          <div class="actions"><button type="submit" id="render">Render preview</button><button type="button" id="cancel" class="secondary" disabled>Cancel</button></div>
+        </form>
+      </section>
+      <section class="panel" aria-labelledby="preview-title">
+        <h2 id="preview-title">02 <span>Label preview</span></h2>
+        <div class="preview-toolbar"><label>Label <input id="label" type="number" min="1" max="1" value="1" disabled></label><span id="dimensions"></span></div>
+        <div class="canvas" id="canvas" aria-busy="false"><p id="placeholder">Your label will appear here.</p><img id="preview" alt="Rendered ZPL label" hidden></div>
+        <div class="downloads"><a id="png" hidden download="label.png">Download PNG</a><a id="svg" hidden download="label.svg">Download SVG</a></div>
+      </section>
+    </div>
+    <p id="status" role="status" aria-live="polite">Ready to render.</p>
+    <pre id="warnings" hidden></pre>
+    <p class="notice">A local preview, not a printer emulator. Unsupported commands report errors; fonts and barcode details may differ from your printer. Verify important labels on your device.</p>
+    <noscript>This preview needs JavaScript and WebAssembly enabled.</noscript>
+  </main>
+  <footer><span>No uploads. No analytics. No printer connection.</span><a href="./LICENSE">OSL-3.0</a></footer>
+</body>
+</html>

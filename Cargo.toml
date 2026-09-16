@@ -1,6 +1,7 @@
 [workspace]
 members = [
     "raster-diff",
+    "zpl-wasm",
 	"zpl",
 	"zebra-http-api", "zpl-proxy-api",
 ]

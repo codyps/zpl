@@ -1,0 +1,30 @@
+import { readFile } from 'node:fs/promises';
+import assert from 'node:assert/strict';
+import test from 'node:test';
+import init, { render_preview } from '../../_site/pkg/zpl_wasm.js';
+
+await init({ module_or_path: await readFile(new URL('../../_site/pkg/zpl_wasm_bg.wasm', import.meta.url)) });
+
+test('compiled Wasm renders PNG and SVG with actual label dimensions', () => {
+  const result = render_preview('^XA^PW120^LL80^FO10,10^GB40,20,3^FS^XZ', 812, 1218, 203, 0);
+  try {
+    assert.equal(result.width, 120);
+    assert.equal(result.height, 80);
+    assert.deepEqual([...result.png().slice(0, 8)], [137, 80, 78, 71, 13, 10, 26, 10]);
+    assert.match(new TextDecoder().decode(result.svg()), /<svg/);
+  } finally { result.free(); }
+});
+test('bundled page example renders', async () => {
+  const html = await readFile(new URL('../index.html', import.meta.url), 'utf8');
+  const source = html.match(/<textarea[^>]*>([\s\S]*?)<\/textarea>/)[1];
+  const result = render_preview(source, 812, 1218, 203, 0);
+  try { assert.equal(result.labels, 1); assert.ok(result.png().length > 100); }
+  finally { result.free(); }
+});
+test('errors cross the JS boundary, and later renders still work', () => {
+  assert.throws(() => render_preview('', 100, 80, 203, 0), /label/);
+  assert.throws(() => render_preview('^XA^XZ', 0, 80, 203, 0), /dimensions/);
+  assert.throws(() => render_preview('x'.repeat(1_048_577), 100, 80, 203, 0), /1 MiB/);
+  const result = render_preview('^XA^XZ^XA^XZ', 100, 80, 203, 1);
+  try { assert.equal(result.labels, 2); } finally { result.free(); }
+});
