@@ -29,12 +29,17 @@ Do not put tokens in repository files.
 ## Publishing later
 
 Publishing is intentionally a separate step. Before enabling it, confirm crate
-name ownership, choose and add the project license, complete package metadata,
+name ownership, complete package metadata,
 and configure crates.io authentication. The repository is currently private;
 publishing a crate makes its packaged source public. Review `cargo package
 --list` for each package before publication, particularly bundled assets and
 vendor documentation. Do not assume this PR workflow certifies publication
 readiness or redistribution rights.
+
+All workspace crates are licensed under [OSL-3.0](../LICENSE), the
+[Open Software License version 3.0](https://opensource.org/license/OSL-3.0).
+Third-party documentation and assets retain their own licensing terms; this
+declaration does not relicense those materials.
 
 `release_always = false` is configured so that a future release job can be gated
 on merging a release PR. No publishing job or credentials are added here.
