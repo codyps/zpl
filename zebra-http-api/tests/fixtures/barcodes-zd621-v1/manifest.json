@@ -1,0 +1,1437 @@
+{
+  "captured_unix_seconds": 1789504435,
+  "cases": {
+    "aztec": {
+      "comparison": {
+        "both_black": 880,
+        "diff_rgb_sha256": "f25f26d678e59865d88d53071a23dcbe0e54292b4b5a6c8d05b58f97445ca64a",
+        "dimensions_match": false,
+        "exact": false,
+        "local_only": 928,
+        "printer_only": 1040
+      },
+      "local": {
+        "height": 1218,
+        "ink": 1808,
+        "pixels_sha256": "4c0eb84596665b3e5821493151a3993c3e04a21afbd1f5d94703ba27bd55fa10",
+        "width": 812
+      },
+      "printer": {
+        "height": 1218,
+        "ink": 1920,
+        "pixels_sha256": "9edf8e4dad8920dc4ad710e294c925fd4fc5f698a9cb52c439d53fb54632c4db",
+        "width": 832
+      },
+      "printer_png_sha256": "1f6e173cb51139478f863f5422875b484827ca1499c177c1e3bdb2fdc41c376b",
+      "zpl_sha256": "002d0f0234b86da83a5c4d4b42053cf5f93c7ae0ac9e21cc1402e17e5584e24a"
+    },
+    "aztec_alias": {
+      "comparison": {
+        "both_black": 880,
+        "diff_rgb_sha256": "f25f26d678e59865d88d53071a23dcbe0e54292b4b5a6c8d05b58f97445ca64a",
+        "dimensions_match": false,
+        "exact": false,
+        "local_only": 928,
+        "printer_only": 1040
+      },
+      "local": {
+        "height": 1218,
+        "ink": 1808,
+        "pixels_sha256": "4c0eb84596665b3e5821493151a3993c3e04a21afbd1f5d94703ba27bd55fa10",
+        "width": 812
+      },
+      "printer": {
+        "height": 1218,
+        "ink": 1920,
+        "pixels_sha256": "9edf8e4dad8920dc4ad710e294c925fd4fc5f698a9cb52c439d53fb54632c4db",
+        "width": 832
+      },
+      "printer_png_sha256": "1f6e173cb51139478f863f5422875b484827ca1499c177c1e3bdb2fdc41c376b",
+      "zpl_sha256": "2a067638a85c7111a0f573094d0e303cbbec67aff55c8a57d9d16a11ea2d16cf"
+    },
+    "aztec_rune": {
+      "comparison": {
+        "both_black": 528,
+        "diff_rgb_sha256": "3bd77048b46d9a125e260c5f37c9147976e292ef5929c487f42acc1fa5cdb017",
+        "dimensions_match": false,
+        "exact": false,
+        "local_only": 544,
+        "printer_only": 544
+      },
+      "local": {
+        "height": 1218,
+        "ink": 1072,
+        "pixels_sha256": "5e9dd3923aa12f022dbb6a8600fd3741fea3f386cb2d2fa69ecda87b3dd21e1d",
+        "width": 812
+      },
+      "printer": {
+        "height": 1218,
+        "ink": 1072,
+        "pixels_sha256": "6a660bc3c4103b929d7faa75c5179308ef1dda6b3fed4f7e78dde7727ac55a37",
+        "width": 832
+      },
+      "printer_png_sha256": "7e79c75285fa2ac909aa7b9b4787384288ee94005c3cdca64fbc599c6c62260e",
+      "zpl_sha256": "5180257c21dc8015a5a8071d3d675292ad2c0dea694741d18ee4b1b853ac5c63"
+    },
+    "codabar": {
+      "comparison": {
+        "both_black": 3360,
+        "diff_rgb_sha256": "4eded2a0751b35e57889964bf2ab1aadf12545ec7c81d6a2c42feb320d1a0b08",
+        "dimensions_match": false,
+        "exact": false,
+        "local_only": 3040,
+        "printer_only": 3040
+      },
+      "local": {
+        "height": 1218,
+        "ink": 6400,
+        "pixels_sha256": "efe9560fd88f4963b23e78caaf27dc637f9565f3ab0b4f8c1296f0ab46dabd45",
+        "width": 812
+      },
+      "printer": {
+        "height": 1218,
+        "ink": 6400,
+        "pixels_sha256": "176657991715408dd638d24fe9f88416bcc304d3a89750e9b408d325861ccd9f",
+        "width": 832
+      },
+      "printer_png_sha256": "84c9525b6bc1d23be75f3532bad648af6099fa0b7f3ad0bfba98eaa05ea14a8d",
+      "zpl_sha256": "786805c1807c27ff6139c5cb6ea601fefc55753568900bd691e826c2923f3532"
+    },
+    "codablock_a": {
+      "local_error": "ZPL byte 89: BB: parameter 6 mode unsupported",
+      "printer": {
+        "height": 1218,
+        "ink": 5260,
+        "pixels_sha256": "58a480eb4fd86711ded9eba634cadffd0c523638fa8a8ba7509ad54c92dd94c0",
+        "width": 832
+      },
+      "printer_png_sha256": "31e3762add440e62440f30a9a2a89eda3d39700dee17194d45f3c94c8c3f60ff",
+      "zpl_sha256": "3223b67a783db9c975597d584261b3e752343af30bafd3ec6c7a70c4849db7e6"
+    },
+    "codablock_e": {
+      "comparison": {
+        "both_black": 1928,
+        "diff_rgb_sha256": "1e4b524985f2c2fc4c6d55be7567a89758b99e51380b6a71fee8d8f4c1d503fc",
+        "dimensions_match": false,
+        "exact": false,
+        "local_only": 5232,
+        "printer_only": 2164
+      },
+      "local": {
+        "height": 1218,
+        "ink": 7160,
+        "pixels_sha256": "50f7f285a3d21051417c4f4a0268c3a2cf3a568af00fd09807b9375e17a48dcf",
+        "width": 812
+      },
+      "printer": {
+        "height": 1218,
+        "ink": 4092,
+        "pixels_sha256": "918c2a37550fb22358c7c8ec9579ff48cebc0ebaa8577dbe88c64c11abe593aa",
+        "width": 832
+      },
+      "printer_png_sha256": "4fdc28d3a8de70f7b53bfe6d278f734ca3a27db921a1dae757e9196c9f401246",
+      "zpl_sha256": "7b261cf0ef1255c1e06c3409cd19e34a88c7f569b235ac17c3638ef089183937"
+    },
+    "codablock_f": {
+      "comparison": {
+        "both_black": 1896,
+        "diff_rgb_sha256": "67033129c8887fa58c00c11431ecc52fb91eebd4720bfc088cfb1cd06cd76c4d",
+        "dimensions_match": false,
+        "exact": false,
+        "local_only": 5344,
+        "printer_only": 2228
+      },
+      "local": {
+        "height": 1218,
+        "ink": 7240,
+        "pixels_sha256": "7cacfe0b6eb721f6c0965ed0d399bd82976f5b0eb552089b16adba0e1592b904",
+        "width": 812
+      },
+      "printer": {
+        "height": 1218,
+        "ink": 4124,
+        "pixels_sha256": "85495aaa4d31239d5e7b057213cb71306626bcc450e35e21aa3304ca49604496",
+        "width": 832
+      },
+      "printer_png_sha256": "72e5afe3f3ebe2a088dc5792dd6da88463b66194b751ccd2fc0b931a2f1ec143",
+      "zpl_sha256": "e28d396ee7ce296d74fbc531b7707cfe37c6446cc17ad543de880285d2b4f177"
+    },
+    "code11": {
+      "comparison": {
+        "both_black": 4160,
+        "diff_rgb_sha256": "c7167c1e3e76ad841b81970c5b5a12ed97f4aadf7a01c830de964f5d873594fa",
+        "dimensions_match": false,
+        "exact": false,
+        "local_only": 4320,
+        "printer_only": 4320
+      },
+      "local": {
+        "height": 1218,
+        "ink": 8480,
+        "pixels_sha256": "55336a0e5a5e1956b31546792ddd321ada8c848b5b06ee743daf246e3d5c7b41",
+        "width": 812
+      },
+      "printer": {
+        "height": 1218,
+        "ink": 8480,
+        "pixels_sha256": "161459651f5d88db1372ee691f362421f2fd442ce5821225627d635ef3da61da",
+        "width": 832
+      },
+      "printer_png_sha256": "7fa4ede7444240e60a0fffe938940b574eb951c3b035748ad207dcf36c27c394",
+      "zpl_sha256": "0dd08bb36912a1c886851f16f1a139dbba7ca47afa77f360b834e59e3ae3c019"
+    },
+    "code128": {
+      "comparison": {
+        "both_black": 3680,
+        "diff_rgb_sha256": "27eb7a4f42114fdefd5f4601b38bd9f7875dabfad1e8d103bbfd1dd31495d9e3",
+        "dimensions_match": false,
+        "exact": false,
+        "local_only": 4640,
+        "printer_only": 4640
+      },
+      "local": {
+        "height": 1218,
+        "ink": 8320,
+        "pixels_sha256": "5141049897dd0f21f1122365c03e1b8281ce112fc1249feb8de91c350c9a1d2f",
+        "width": 812
+      },
+      "printer": {
+        "height": 1218,
+        "ink": 8320,
+        "pixels_sha256": "7e3020160f3179c3c0a3848d61e8270d7560d31453b25ac6d2f872b88512a580",
+        "width": 832
+      },
+      "printer_png_sha256": "6d36c86cfbbf4f804c3a92ce32051e0276980f4d6e69d431e6880a2a41358dee",
+      "zpl_sha256": "38da62df4522986faf3dbf81eb54d0224d37287cbf17dc818ded04c8bc311ef0"
+    },
+    "code39": {
+      "comparison": {
+        "both_black": 5440,
+        "diff_rgb_sha256": "d534abf93b56e4c673bfbb3e989852cf3b569b71ad3ae38da919ec98ffc3197e",
+        "dimensions_match": false,
+        "exact": false,
+        "local_only": 3520,
+        "printer_only": 3520
+      },
+      "local": {
+        "height": 1218,
+        "ink": 8960,
+        "pixels_sha256": "7b4e4bea554c2f56815ac4bf4c22c76ea750a4fcc5f4c9ceb788cca8e0052ae2",
+        "width": 812
+      },
+      "printer": {
+        "height": 1218,
+        "ink": 8960,
+        "pixels_sha256": "6e90ed1b2bd51dd82dd151401ea4c7cf18b9a5682629f471bd8a058745a3da96",
+        "width": 832
+      },
+      "printer_png_sha256": "76b65d6cf811d604cedb9cb6435d203d5706feb396dcbd2d69b6763ee54aaf96",
+      "zpl_sha256": "64332dab437a97c8f99d1c98feee2a0637c3aa9bab552c22eb852c4e5e3c2576"
+    },
+    "code49": {
+      "comparison": {
+        "both_black": 3168,
+        "diff_rgb_sha256": "f4d6c1bd6f93ae62e779d5b0c6d0d5f691761f109200794933ae81aec31c2e13",
+        "dimensions_match": false,
+        "exact": false,
+        "local_only": 2560,
+        "printer_only": 2560
+      },
+      "local": {
+        "height": 1218,
+        "ink": 5728,
+        "pixels_sha256": "f4709df7af0a168d5aacf21d264fcc7e46a62c607ea8e6ebc8aaf7b754d2cdec",
+        "width": 812
+      },
+      "printer": {
+        "height": 1218,
+        "ink": 5728,
+        "pixels_sha256": "a79ed138415ba528db77416a6d30dbd4eedbdb0287e1118f3985140b3829cb9a",
+        "width": 832
+      },
+      "printer_png_sha256": "bbc777fc93c1918a07902cdeed0bb85b01c4edf212119d3704bba1edff595c8b",
+      "zpl_sha256": "97ec6904b79b28f79f7ad8ae261de9508a489ac6f00c06ba87fb01d1f01a40f4"
+    },
+    "code93": {
+      "comparison": {
+        "both_black": 3520,
+        "diff_rgb_sha256": "3e5ec25493190b622a1c4c3ae424481733b9e1a539b7e585ba66f4ea84b9a16e",
+        "dimensions_match": false,
+        "exact": false,
+        "local_only": 4320,
+        "printer_only": 4320
+      },
+      "local": {
+        "height": 1218,
+        "ink": 7840,
+        "pixels_sha256": "ffadbd502ea6433a8406c737e7ebd8cd5c4d0c0de3eeabc16f062928a3b4714a",
+        "width": 812
+      },
+      "printer": {
+        "height": 1218,
+        "ink": 7840,
+        "pixels_sha256": "79dd2897351d52ed7027fda69f7f6a18299be95d1c5a5478f51925e6dae467ce",
+        "width": 832
+      },
+      "printer_png_sha256": "96d851757792b241cc970155a7133bae93bd3f9a1dfd25b734a12f03983243b0",
+      "zpl_sha256": "9a5ebfe728654977fd7fa97cf37aee784a3ae5612132270246eb04c4be0efab2"
+    },
+    "composite_a": {
+      "comparison": {
+        "both_black": 7864,
+        "diff_rgb_sha256": "5ea07cc96d4a168098bb44aacd317c0b3bacd45715504e8968f680cd73ffc8ae",
+        "dimensions_match": false,
+        "exact": false,
+        "local_only": 7084,
+        "printer_only": 20524
+      },
+      "local": {
+        "height": 1218,
+        "ink": 14948,
+        "pixels_sha256": "4dcd5216be88feac8fd80af96fbae7f1211d8ed9fda196323d952ea719c7bf16",
+        "width": 812
+      },
+      "printer": {
+        "height": 1218,
+        "ink": 28388,
+        "pixels_sha256": "cbe5503d88e843b68e51235f7955389b6698f54d8560f4864e8f822dfb6a0cf8",
+        "width": 832
+      },
+      "printer_png_sha256": "120e6a5c64d96fcb625ac7e7fba24d121db7447c7737d4f5a09d49b9422d5b9a",
+      "zpl_sha256": "27d45bb2940c9156b0ea331343fe7533770c71c03157b98834ce63ac41ffcd9b"
+    },
+    "composite_b": {
+      "comparison": {
+        "both_black": 9704,
+        "diff_rgb_sha256": "0c89bb7204db9e8ae20139679bf1b8c5d52a668bd4367d27aeb4f3d7aa21921f",
+        "dimensions_match": false,
+        "exact": false,
+        "local_only": 9972,
+        "printer_only": 23412
+      },
+      "local": {
+        "height": 1218,
+        "ink": 19676,
+        "pixels_sha256": "2287522e10554925a9e6d0ffaf78d72f920a29943f07aa364fe648cc26e248e2",
+        "width": 812
+      },
+      "printer": {
+        "height": 1218,
+        "ink": 33116,
+        "pixels_sha256": "667e562b9e97449414f95c8878928a473ada7c3941af2252df8d685e1b1d7ce4",
+        "width": 832
+      },
+      "printer_png_sha256": "9f593aba1345754725fb63286823e828429e6dc9b7e593e735eb4bca36e29afd",
+      "zpl_sha256": "e42eef6bde0775c5b0b5e24a7e29c99a889db00c6a46c33e231d30e22c98cb3e"
+    },
+    "composite_c": {
+      "comparison": {
+        "both_black": 7904,
+        "diff_rgb_sha256": "48dbc5866b21eecef644ebd6426bb89f704e5d8cc2320400d37b8a2dd50bc945",
+        "dimensions_match": false,
+        "exact": false,
+        "local_only": 8048,
+        "printer_only": 20848
+      },
+      "local": {
+        "height": 1218,
+        "ink": 15952,
+        "pixels_sha256": "4bce736159e1d25577153a306138af760ef38b727afddc07a4e78decf98aa6c5",
+        "width": 812
+      },
+      "printer": {
+        "height": 1218,
+        "ink": 28752,
+        "pixels_sha256": "add6e0d0cb6716eb0022914e5bbfea801693e7b7dc30cc66611b9cba99471cf3",
+        "width": 832
+      },
+      "printer_png_sha256": "16f6fc70183e0965ba61e42768a8b525bf8b1577882af3ee1f85e12e458d588f",
+      "zpl_sha256": "026dcba9765ad78f0a9001863988620b18328b23dc57d02a2d16fc7137a31ff7"
+    },
+    "data_matrix": {
+      "comparison": {
+        "both_black": 1192,
+        "diff_rgb_sha256": "55b5b7c2d2cb0510aec247c2422f01f4d42c55b19daca455b1d1f620b740c7d5",
+        "dimensions_match": false,
+        "exact": false,
+        "local_only": 1528,
+        "printer_only": 1640
+      },
+      "local": {
+        "height": 1218,
+        "ink": 2720,
+        "pixels_sha256": "18d635e934344f06557004996e92d5cf4232348652e426ede180e07d82a6b9a0",
+        "width": 812
+      },
+      "printer": {
+        "height": 1218,
+        "ink": 2832,
+        "pixels_sha256": "76b8238254ccfcd6fbfa733fc742ad84e5d7bcc8c19451a7d6c1c3e0f7dd9104",
+        "width": 832
+      },
+      "printer_png_sha256": "5490299c5df34ed66f328a8749dd0cbe0004755788b1ef8e48d82a4eafcf813c",
+      "zpl_sha256": "dd5082bb0471718d721652d329bc613c3d100b4bb4b00879d2804b633a0544eb"
+    },
+    "data_matrix_rectangular": {
+      "comparison": {
+        "both_black": 1264,
+        "diff_rgb_sha256": "1684dfd13b5931d0342723db74abbc89232180282370498c2024aecf5295cf77",
+        "dimensions_match": false,
+        "exact": false,
+        "local_only": 1040,
+        "printer_only": 1040
+      },
+      "local": {
+        "height": 1218,
+        "ink": 2304,
+        "pixels_sha256": "dd25077773173ffab13fb18082bfae266e532cd6d33bc44c008179bafd23fd80",
+        "width": 812
+      },
+      "printer": {
+        "height": 1218,
+        "ink": 2304,
+        "pixels_sha256": "757921e0cc915d430b469bdcf814a130ad4ffda6a8d4ec32c8c4a8fb079d5e7e",
+        "width": 832
+      },
+      "printer_png_sha256": "fe8051a267592e39c1bb70b950a543a2fcf76c86ddf72334383a24a340f2e95a",
+      "zpl_sha256": "1d54025e550cc3d282e7cb0d57685a858817c1ecc3d791b348b176f5eaba4c8a"
+    },
+    "databar_ean13": {
+      "comparison": {
+        "both_black": 3200,
+        "diff_rgb_sha256": "1d63287fc02e728c6a59394d4e9d7892c904daf5592c70577925c206610f8153",
+        "dimensions_match": false,
+        "exact": false,
+        "local_only": 4640,
+        "printer_only": 11304
+      },
+      "local": {
+        "height": 1218,
+        "ink": 7840,
+        "pixels_sha256": "9f9d2c1e16de10ef50de7c8c426d6e66ca32ee7a60ab38cc0ac9dbb67d2b08b9",
+        "width": 812
+      },
+      "printer": {
+        "height": 1218,
+        "ink": 14504,
+        "pixels_sha256": "0dafe6afcf7025b0fdd908e42447a8b0b34caeac6ac86266606db93854fa116c",
+        "width": 832
+      },
+      "printer_png_sha256": "0f97c12cea121f7e79ecdac744339126e57d19c9b9ec0788ca77c7e381e85b6d",
+      "zpl_sha256": "3d26d94468f02294ce6cadc92738ee8ef6ffa10eaf0b9df4c0ca3ecdc9b08d27"
+    },
+    "databar_ean8": {
+      "comparison": {
+        "both_black": 1440,
+        "diff_rgb_sha256": "bcc07ef780aeabf5d3d1648d2bd0daf9844f63be5bf86ca41d6f4096439c10a7",
+        "dimensions_match": false,
+        "exact": false,
+        "local_only": 3680,
+        "printer_only": 6240
+      },
+      "local": {
+        "height": 1218,
+        "ink": 5120,
+        "pixels_sha256": "012b272131f97328093f4c24e78f8de54dfb7642780fd32f22739acd6fcd0ee7",
+        "width": 812
+      },
+      "printer": {
+        "height": 1218,
+        "ink": 7680,
+        "pixels_sha256": "9eef9fb3c259be697faaaa2af4fb5c1279140d0b95a14def841f9d13d9575dfc",
+        "width": 832
+      },
+      "printer_png_sha256": "98c546da736c124f4d67bcf2225ab6ec75600a5300279141d3d41beb3eb1d523",
+      "zpl_sha256": "b5098ec9a59dd030ba3d6107f8e479bea95fb4cb43a3c8680904d07d8eac710f"
+    },
+    "databar_expanded": {
+      "comparison": {
+        "both_black": 5440,
+        "diff_rgb_sha256": "6c2e071ae4e97abc9ce6e84e4dbba34cb715a95d090c28c644cdca362531c506",
+        "dimensions_match": false,
+        "exact": false,
+        "local_only": 8160,
+        "printer_only": 4216
+      },
+      "local": {
+        "height": 1218,
+        "ink": 13600,
+        "pixels_sha256": "7225df4868dda42ff6548824b321cf425e568c56b1ef48c34aa84438bc21f605",
+        "width": 812
+      },
+      "printer": {
+        "height": 1218,
+        "ink": 9656,
+        "pixels_sha256": "d57cd4fb60e9b8cc71a5ef5a9520da93c1e5563a6ec4c76623505fff01cf6d72",
+        "width": 832
+      },
+      "printer_png_sha256": "70b53c509a680d8fae58284603211991961d39575b676ac2a6a68b87b5f0568a",
+      "zpl_sha256": "cb225002485fc72e3e16b4bbe66d1f157881208c84f72df89d9304b092348db9"
+    },
+    "databar_expanded_stacked": {
+      "comparison": {
+        "both_black": 5160,
+        "diff_rgb_sha256": "7319761525cbf9203f184dd4caecd7b2a1e3571e10c8b42116a8309380b47d67",
+        "dimensions_match": false,
+        "exact": false,
+        "local_only": 12260,
+        "printer_only": 5620
+      },
+      "local": {
+        "height": 1218,
+        "ink": 17420,
+        "pixels_sha256": "41f10e5d241ad8da6da0d77a0dd53e768a00c05f197bf9718f450f0af155a2e9",
+        "width": 812
+      },
+      "printer": {
+        "height": 1218,
+        "ink": 10780,
+        "pixels_sha256": "466502239f88f52f528f63f8b29526da437579882d75dc189d7fe256b4c208f3",
+        "width": 832
+      },
+      "printer_png_sha256": "a3b3dec2d43845b748b2e6f6e1e50a81de95d3017741d990dd9409f84608fb84",
+      "zpl_sha256": "3d456287e6dafa5c5d7d2b6bcec8eb437f174afe3b6e53e4464ec830dbd82f63"
+    },
+    "databar_limited": {
+      "comparison": {
+        "both_black": 600,
+        "diff_rgb_sha256": "a492f5ed27b3d4f49a895499770065a8008bcb738b2b52b610ffa859a19f089e",
+        "dimensions_match": false,
+        "exact": false,
+        "local_only": 880,
+        "printer_only": 880
+      },
+      "local": {
+        "height": 1218,
+        "ink": 1480,
+        "pixels_sha256": "745ed6ada4f0b3ace49a009a27e490e2e12f17eb54249f8df88434c8799f6128",
+        "width": 812
+      },
+      "printer": {
+        "height": 1218,
+        "ink": 1480,
+        "pixels_sha256": "fb3b60d8a061c401325c6ecb92aa24f88396a613f2d9c174739d9322d1088b60",
+        "width": 832
+      },
+      "printer_png_sha256": "c64b36cd99fbabd848e2cb179c6797310fd427c4437d8d06c555d2d9f826faa3",
+      "zpl_sha256": "4894407f8ad9fc98b3eae35ba39de00bcedda4d42355c9bb5171848e480bf4c5"
+    },
+    "databar_omni": {
+      "comparison": {
+        "both_black": 2508,
+        "diff_rgb_sha256": "eba9519646314e3cfe2e6d5fc0e17b24024fe64140fc51e43c45cb62569b251f",
+        "dimensions_match": false,
+        "exact": false,
+        "local_only": 3432,
+        "printer_only": 3432
+      },
+      "local": {
+        "height": 1218,
+        "ink": 5940,
+        "pixels_sha256": "81603e69cf3ab33d59117fe95e8fc4741615d139d5558e3ea29aa73f9a23731c",
+        "width": 812
+      },
+      "printer": {
+        "height": 1218,
+        "ink": 5940,
+        "pixels_sha256": "4392aba964f5a61562e3c0d86823abd3352dbcc82c5f945afd33ccf7cb629c71",
+        "width": 832
+      },
+      "printer_png_sha256": "41cc797a129e1cca13b778bcaedf0e17d0603f9e5ef4b305a473f8d39684b2e1",
+      "zpl_sha256": "882b40f5258e02f107fc4b9575d322de4c9327b0f283ad757e3ffc52e3a52dfd"
+    },
+    "databar_stacked": {
+      "comparison": {
+        "both_black": 468,
+        "diff_rgb_sha256": "53f2055a80648efe16a5989491f7dd393811ccca5a6c42c2e83793cdc57845ce",
+        "dimensions_match": false,
+        "exact": false,
+        "local_only": 728,
+        "printer_only": 728
+      },
+      "local": {
+        "height": 1218,
+        "ink": 1196,
+        "pixels_sha256": "800597e233330c9427f782890c6be2ad1f23621bd45657ccae56e57d966b54b0",
+        "width": 812
+      },
+      "printer": {
+        "height": 1218,
+        "ink": 1196,
+        "pixels_sha256": "78779544f786a77594324f4adfabbaed5dd652b5c0cbea67e46cd4fc2d845cbd",
+        "width": 832
+      },
+      "printer_png_sha256": "b33d5df1f33b4dfe42928a1bb4d4e21d30d5cff5156343a255bff76aa4730fb1",
+      "zpl_sha256": "8c622d7ad1fddbf5f2bc4a6d4d78b86783a959aa516f3226c7ea3f7935d87cfa"
+    },
+    "databar_stacked_omni": {
+      "comparison": {
+        "both_black": 2440,
+        "diff_rgb_sha256": "884f8f37e9cd988cf1b46ef2034ef0ac890ab0647d64b5fa61700625b92fffc1",
+        "dimensions_match": false,
+        "exact": false,
+        "local_only": 4008,
+        "printer_only": 4008
+      },
+      "local": {
+        "height": 1218,
+        "ink": 6448,
+        "pixels_sha256": "1ea679eaf967898c317edf551dd58b7eb04d48e808d31140440e817a584d7aef",
+        "width": 812
+      },
+      "printer": {
+        "height": 1218,
+        "ink": 6448,
+        "pixels_sha256": "ba51cbf34e2c099138cd8b311f6b372d01aaf28a27d13ab0aa0e67c3b689dd64",
+        "width": 832
+      },
+      "printer_png_sha256": "4ce9ee3c6685a1f9a20aec4a075c2f0bfd253bd9ee2d8bd56056b3b613a6a89f",
+      "zpl_sha256": "f47374771d8b2439c02e952c4239cdd4758f6a82aca0d211ad391580ee4d734b"
+    },
+    "databar_truncated": {
+      "comparison": {
+        "both_black": 988,
+        "diff_rgb_sha256": "51180590e64d875cfefd7c4241048d3429040073b9e403ec0ef4e61cdba8e324",
+        "dimensions_match": false,
+        "exact": false,
+        "local_only": 1352,
+        "printer_only": 1352
+      },
+      "local": {
+        "height": 1218,
+        "ink": 2340,
+        "pixels_sha256": "a014ebf0f46640ddbdce7e2668d5f3f8490cb5f862043ff56a88a0bcfa1be181",
+        "width": 812
+      },
+      "printer": {
+        "height": 1218,
+        "ink": 2340,
+        "pixels_sha256": "5494ceb0ebb45234d7411a0dc891990842d77a8780b6ffa25bf1f7eae1da56eb",
+        "width": 832
+      },
+      "printer_png_sha256": "4f21bca3973bb40b2b8d68f5afb86f1977aadb1af8ae7369d4f23c49a9ad872e",
+      "zpl_sha256": "69defdcc9375e56678f8305705f07c6957d671b6eea32c0bb92853d53290317b"
+    },
+    "databar_upca": {
+      "comparison": {
+        "both_black": 3680,
+        "diff_rgb_sha256": "cb837dcd2e2da952b0a35dd5ba510702df0c9fd8cb2125721695ae23cb181bae",
+        "dimensions_match": false,
+        "exact": false,
+        "local_only": 4640,
+        "printer_only": 11712
+      },
+      "local": {
+        "height": 1218,
+        "ink": 8320,
+        "pixels_sha256": "b7186344ae80c53b09182ca8d719af656d9d0633069b367fd0b5dec8f5982732",
+        "width": 812
+      },
+      "printer": {
+        "height": 1218,
+        "ink": 15392,
+        "pixels_sha256": "fb2c8d1f767883599b78747664d0be01414e12b091bf1e5ac98ba541b1050ee3",
+        "width": 832
+      },
+      "printer_png_sha256": "060a97d1c878eb3b3c370e2ece34396b20fd54573078de2058fdea6330a52acb",
+      "zpl_sha256": "de7cb6ae4ab1a2e354d2fc572958119abac4b03616b79f01cccd5597a32ca8e9"
+    },
+    "databar_upce": {
+      "comparison": {
+        "both_black": 0,
+        "diff_rgb_sha256": "4163962f3d6c87aaabdc1a5967893d71b9afc275286108ff8481481e76b30d9b",
+        "dimensions_match": false,
+        "exact": false,
+        "local_only": 4480,
+        "printer_only": 0
+      },
+      "local": {
+        "height": 1218,
+        "ink": 4480,
+        "pixels_sha256": "af4d16d76fee3692742daa499dd3dd9ae6a7155af78f387ed240904bc3ec7bc8",
+        "width": 812
+      },
+      "printer": {
+        "height": 1218,
+        "ink": 0,
+        "pixels_sha256": "f6e1b1c67a27d7697ff80406a1659d946e9428a39662e24679bf13d946bbcf3e",
+        "width": 832
+      },
+      "printer_png_sha256": "f886a1807b034d9f0ff8efb3ddca53b9b4c250128650ef97cbe45102a3cd23f3",
+      "zpl_sha256": "caa29dc86bae86a084b9096b7f2bc4d4d06512b11c33efea41cecd43e4c9a58e"
+    },
+    "ean13": {
+      "comparison": {
+        "both_black": 3040,
+        "diff_rgb_sha256": "35bb127eb9049206a0615a538fee0871afaf5d64af9aa2f5630713596a13a217",
+        "dimensions_match": false,
+        "exact": false,
+        "local_only": 4800,
+        "printer_only": 4956
+      },
+      "local": {
+        "height": 1218,
+        "ink": 7840,
+        "pixels_sha256": "9f9d2c1e16de10ef50de7c8c426d6e66ca32ee7a60ab38cc0ac9dbb67d2b08b9",
+        "width": 812
+      },
+      "printer": {
+        "height": 1218,
+        "ink": 7996,
+        "pixels_sha256": "8a1f7e718c6f943b57a7036e092798638c6b4894e7b5fac2e9e7021d6c62e7b4",
+        "width": 832
+      },
+      "printer_png_sha256": "0b09e46dd063fe7c4c73a4f6b4f5315908b6c5522a8c5e017a1b0b16703b53e5",
+      "zpl_sha256": "021c463ee8c89a2aa299daf2698fb15c94c3efb6c1116451b526d8ce2852ff7b"
+    },
+    "ean8": {
+      "comparison": {
+        "both_black": 2240,
+        "diff_rgb_sha256": "4cb2b82fdfc6079dc7cc455df6c3ad885a23d6c66fae038b36a780d2bba3b7e8",
+        "dimensions_match": false,
+        "exact": false,
+        "local_only": 2880,
+        "printer_only": 3036
+      },
+      "local": {
+        "height": 1218,
+        "ink": 5120,
+        "pixels_sha256": "012b272131f97328093f4c24e78f8de54dfb7642780fd32f22739acd6fcd0ee7",
+        "width": 812
+      },
+      "printer": {
+        "height": 1218,
+        "ink": 5276,
+        "pixels_sha256": "4c63b5087e6513216754d40de0df89c5f1a28b49c2a99aeea4712113c0dae8ff",
+        "width": 832
+      },
+      "printer_png_sha256": "0127489f50fcf2db51df355315674ee5f27bf0d5afefeb2698f035fede6f8c06",
+      "zpl_sha256": "631641a60eda5d6d45c1b56a77041f2d1ac3a882ee9f4873749d0773dbcbf28a"
+    },
+    "extension2": {
+      "comparison": {
+        "both_black": 480,
+        "diff_rgb_sha256": "13dc62f730d51d4a23f677f7e93b7dd173bf86845bb72d4286234e33bcacb1a8",
+        "dimensions_match": false,
+        "exact": false,
+        "local_only": 1120,
+        "printer_only": 1120
+      },
+      "local": {
+        "height": 1218,
+        "ink": 1600,
+        "pixels_sha256": "4322d272f8f99f6c26c4d184e56d4e99285a670ed24f582591cc36027140fcfc",
+        "width": 812
+      },
+      "printer": {
+        "height": 1218,
+        "ink": 1600,
+        "pixels_sha256": "a21f5932ae935bb462d537618c4e8d76f625ba366222de35dcfe34566b4eed83",
+        "width": 832
+      },
+      "printer_png_sha256": "560cd32e8c847861f536727076c9862d961d800d52b217b301753f4b2bc24e7a",
+      "zpl_sha256": "2a7b4a7ebe9038405589e430e2385ace1d32a3e1f06c4b991faf446685b9c321"
+    },
+    "extension5": {
+      "comparison": {
+        "both_black": 2080,
+        "diff_rgb_sha256": "cb54ee8db5985c0de9a6afb7fa3f3f3efb4ae106bf8b162ce67ebfd045be3303",
+        "dimensions_match": false,
+        "exact": false,
+        "local_only": 2080,
+        "printer_only": 2080
+      },
+      "local": {
+        "height": 1218,
+        "ink": 4160,
+        "pixels_sha256": "2e4827a2245c08048c7aeec507f953f0e0a6aedc9ec37c966ad1df9bf256635a",
+        "width": 812
+      },
+      "printer": {
+        "height": 1218,
+        "ink": 4160,
+        "pixels_sha256": "62277b4f4fab046ce43105a6e8a7e3e9ba8b3c6ac1d0734b487b15fbf094e441",
+        "width": 832
+      },
+      "printer_png_sha256": "802a21a57e7cdd15ab23689ae9c294f40f7cb3092efb453355a29e33151d777c",
+      "zpl_sha256": "7cb1b5aacb7a1c925f89a88833ffecc97c6ed805bf2ae8746c5a7ba4143676c5"
+    },
+    "industrial2of5": {
+      "comparison": {
+        "both_black": 6720,
+        "diff_rgb_sha256": "257f6c768d08dfeacc843c6a2bea691fe930486c7b053e175b0799a0dcfe1d76",
+        "dimensions_match": false,
+        "exact": false,
+        "local_only": 3840,
+        "printer_only": 3840
+      },
+      "local": {
+        "height": 1218,
+        "ink": 10560,
+        "pixels_sha256": "1ff4c063d5c965215df3326862e6f091e6bb525db24c60b5149776ad0347a197",
+        "width": 812
+      },
+      "printer": {
+        "height": 1218,
+        "ink": 10560,
+        "pixels_sha256": "9df606b5c0ce7e2358415f53f3b58dc3791515aa7b8d31d412e3337dc0d7cd95",
+        "width": 832
+      },
+      "printer_png_sha256": "1867bea34497190410de2ac1a8beda8fc15e1ecc8735733008046cfdcb41c6a6",
+      "zpl_sha256": "8f97d1c8895d29651c9dd215a919ff11070fe918e42530ae9c1923ac247cc94c"
+    },
+    "intelligent_mail": {
+      "comparison": {
+        "both_black": 2052,
+        "diff_rgb_sha256": "73c6deed2d136338b0f34ad5fb1b25b9f87c1fbc7578aadfd49a9fcb6f22f0bd",
+        "dimensions_match": false,
+        "exact": false,
+        "local_only": 5000,
+        "printer_only": 5124
+      },
+      "local": {
+        "height": 1218,
+        "ink": 7052,
+        "pixels_sha256": "34f59f28ae51a669df5d586ddc8a9efb606712f1fd834c9264f0bf747b0f5bc1",
+        "width": 812
+      },
+      "printer": {
+        "height": 1218,
+        "ink": 7176,
+        "pixels_sha256": "df431c2d03730e0460a3839f31210a2ba4203493bfbcd2f05208284e4fc61f3c",
+        "width": 832
+      },
+      "printer_png_sha256": "26d1ec3e7596ace883f6a72319d5122fb2081c17e6f85dc26500d98d5fb8b919",
+      "zpl_sha256": "480052861b0b3585f6b6e5e2214223e99b845974b40c52fc625c151ebf945355"
+    },
+    "interleaved2of5": {
+      "comparison": {
+        "both_black": 2720,
+        "diff_rgb_sha256": "3074acd1634a54be143226366af4a7b00690e295115bc88f678e9c7bf66de20b",
+        "dimensions_match": false,
+        "exact": false,
+        "local_only": 2560,
+        "printer_only": 2560
+      },
+      "local": {
+        "height": 1218,
+        "ink": 5280,
+        "pixels_sha256": "f9a75eab866d4418c2fffd3345aa5a9abff3be10f8f7140b2ca39d322e2be688",
+        "width": 812
+      },
+      "printer": {
+        "height": 1218,
+        "ink": 5280,
+        "pixels_sha256": "fc47bc3677fa41e1be85d77a8fd21f3a358cc7856c004f93f200913ff5b5d06a",
+        "width": 832
+      },
+      "printer_png_sha256": "f37400eba4b9ce692819767c28ec5f6ce2e9065ae81b08188ca67477f5ca250e",
+      "zpl_sha256": "1e6c7e1b29b1d3e2cf63755d3d83ae5fa05b610c23cbcabeea75bba89b9e99f5"
+    },
+    "logmars": {
+      "comparison": {
+        "both_black": 6720,
+        "diff_rgb_sha256": "62372b8d6ca14f4dee5358320163d4c37fa6a6a6c3b357e7141b127779962c9b",
+        "dimensions_match": false,
+        "exact": false,
+        "local_only": 5168,
+        "printer_only": 4960
+      },
+      "local": {
+        "height": 1218,
+        "ink": 11888,
+        "pixels_sha256": "6a70fd2254fc0684f4214275d5caf9383cfd0590b0854f96ec95ad1485100b28",
+        "width": 812
+      },
+      "printer": {
+        "height": 1218,
+        "ink": 11680,
+        "pixels_sha256": "6344968b1cc40dd4d70d5b1af1969e47d1445aa9aa699eef2abceacb5efa9c08",
+        "width": 832
+      },
+      "printer_png_sha256": "f602dc5be1f1837525e8c05e09d7818e1d475a9fbb16639c07c88e49247fdcef",
+      "zpl_sha256": "bc23070e58a751732f66bb430609a695fa5677965a127fea1b86e1b0b245db32"
+    },
+    "maxicode2": {
+      "comparison": {
+        "both_black": 4158,
+        "diff_rgb_sha256": "8cb6e9afdfdea851143314d627b3e9c97c2029d29a5bb45b95b87663b118bfc0",
+        "dimensions_match": false,
+        "exact": false,
+        "local_only": 9780,
+        "printer_only": 8382
+      },
+      "local": {
+        "height": 1218,
+        "ink": 13938,
+        "pixels_sha256": "905119cb74ee2126fcf42de9a52fb0b499878b0b94dc0cf782c08dc04ded4732",
+        "width": 812
+      },
+      "printer": {
+        "height": 1218,
+        "ink": 12540,
+        "pixels_sha256": "6456ad41cc25e3e3e154271100b7c1eb33fb00925f17edbddedbf9405452048a",
+        "width": 832
+      },
+      "printer_png_sha256": "e982c49790883ab800bd9a2c8cb1ba49248174753b5fcb6cbd62f44b146748be",
+      "zpl_sha256": "6783ce8523fb25f7c7fb80dfc6d82588544114c19c4ac9f6209933ba8cdea963"
+    },
+    "maxicode3": {
+      "comparison": {
+        "both_black": 4284,
+        "diff_rgb_sha256": "871df7045194db5ce9d14e17ddec4ff9c05764f47c94917e36344a0ce63e918a",
+        "dimensions_match": false,
+        "exact": false,
+        "local_only": 9982,
+        "printer_only": 8556
+      },
+      "local": {
+        "height": 1218,
+        "ink": 14266,
+        "pixels_sha256": "b705084803e7ede5c284b415c0ecc85b3866915b39b6c06e3b66a5b3aa2551ff",
+        "width": 812
+      },
+      "printer": {
+        "height": 1218,
+        "ink": 12840,
+        "pixels_sha256": "5a18fa5d5894853e40f20ac40d3f933737ea94fc1234c0b0812e4cbac982f1db",
+        "width": 832
+      },
+      "printer_png_sha256": "fc7f3379dd74119f2ae874c077895fc83482f116ee928b21725c23f28e5ec112",
+      "zpl_sha256": "8e15d78d4a2906a5c829671462b5c2c060200fd18e070719dbeb882ea7788e77"
+    },
+    "maxicode4": {
+      "comparison": {
+        "both_black": 4286,
+        "diff_rgb_sha256": "4e5b89ff2e48042603286f68fabdb7b4ca3313ebdba9c09dfb26549857435c32",
+        "dimensions_match": false,
+        "exact": false,
+        "local_only": 9952,
+        "printer_only": 8854
+      },
+      "local": {
+        "height": 1218,
+        "ink": 14238,
+        "pixels_sha256": "47e62ea9b4e77fb697035fa4b5a608b6004d2488415a650e39684ff12340a698",
+        "width": 812
+      },
+      "printer": {
+        "height": 1218,
+        "ink": 13140,
+        "pixels_sha256": "53d3f8ba04d3dec6b632990a59a192142fa26c965556a50c63fe27d717fba872",
+        "width": 832
+      },
+      "printer_png_sha256": "79c88176f4b178efab3f4da451f712e8abb55aa12edc17bdd619d44cad9d1451",
+      "zpl_sha256": "b84807e53ba2b99619c4c2a9c8cea77815ea2d554f64c259d29908c931c4b74a"
+    },
+    "maxicode5": {
+      "comparison": {
+        "both_black": 901,
+        "diff_rgb_sha256": "c0459f3d0b26e75b2b1d7ba818cfebf96d180384e6fb718ed0a263e0a7fbaedd",
+        "dimensions_match": false,
+        "exact": false,
+        "local_only": 14355,
+        "printer_only": 1109
+      },
+      "local": {
+        "height": 1218,
+        "ink": 15256,
+        "pixels_sha256": "d3a2b2f860e2c230c87211a4981a95048e29e809d499e74ffe82b2cedade32a2",
+        "width": 812
+      },
+      "printer": {
+        "height": 1218,
+        "ink": 2010,
+        "pixels_sha256": "ce009149aa7fa3576a297ab5150c17cbf362ec49dd63a55937b17c1ec1d39867",
+        "width": 832
+      },
+      "printer_png_sha256": "efa4c1b3eadc62b2ec9ebce6eb06c477b2288b957bf2ac77b468356b94a7b4f4",
+      "zpl_sha256": "e7b3546a9646271c68117030a0c5a1904ff7a108c954028a54a2127b1966b351"
+    },
+    "maxicode6": {
+      "comparison": {
+        "both_black": 4232,
+        "diff_rgb_sha256": "a2f313dc1d17d5767cbdaf08922972f006f1a9e6931fbdf8363b7794f7ccde7a",
+        "dimensions_match": false,
+        "exact": false,
+        "local_only": 10013,
+        "printer_only": 8968
+      },
+      "local": {
+        "height": 1218,
+        "ink": 14245,
+        "pixels_sha256": "7b9030d9b91acb5504a00b5bb0b70667ddf42f5483bbfe8e5c4484964a177822",
+        "width": 812
+      },
+      "printer": {
+        "height": 1218,
+        "ink": 13200,
+        "pixels_sha256": "ebc212102b66f7029ae27da9428dc27806df2a4608f0f249ada8436798911355",
+        "width": 832
+      },
+      "printer_png_sha256": "47f2d68dbe3176becf9429ed409ddbd686e2bad8a16b8d126ee35e41d613ee50",
+      "zpl_sha256": "c6f1a37ebbb47d6df4190912d58c0ea0c32b2496bf805670a0fbffc7e4c683e8"
+    },
+    "micropdf417_1": {
+      "comparison": {
+        "both_black": 912,
+        "diff_rgb_sha256": "19f2ed234736144455f68a3ae4ed50861eb2efd7699a6da987349990d60e6a60",
+        "dimensions_match": false,
+        "exact": false,
+        "local_only": 936,
+        "printer_only": 936
+      },
+      "local": {
+        "height": 1218,
+        "ink": 1848,
+        "pixels_sha256": "debbe9acd99476bdd350dc6686a5a4d4ee7e63502b9d7f9d1f20975525d414e3",
+        "width": 812
+      },
+      "printer": {
+        "height": 1218,
+        "ink": 1848,
+        "pixels_sha256": "57e027d324238f28615b5ff41c5f48d5aebf24bbee1c951ab7bba1e9634bdf28",
+        "width": 832
+      },
+      "printer_png_sha256": "3cb30b5938063521022359f310abf961b8abf4ae7106567166675ba5b4ca67ea",
+      "zpl_sha256": "b2cff4b34dd273d937b819d04e1fba0c9cfe4cbd403c91cba8f5075000579b2c"
+    },
+    "micropdf417_3": {
+      "comparison": {
+        "both_black": 1040,
+        "diff_rgb_sha256": "a4b45182fbadd8159e6f3e7cc35026a2a1fafd4270cf5ca8f109f4b791f58e7e",
+        "dimensions_match": false,
+        "exact": false,
+        "local_only": 1072,
+        "printer_only": 1072
+      },
+      "local": {
+        "height": 1218,
+        "ink": 2112,
+        "pixels_sha256": "15a56d887211542503e0151bb87ad1f3ba0b9ca16b7f5dacb1c6e2458fbb6118",
+        "width": 812
+      },
+      "printer": {
+        "height": 1218,
+        "ink": 2112,
+        "pixels_sha256": "4b66dd12270170ccfddc874d80861cecb9ec4fe0faca4303157baa234e57259c",
+        "width": 832
+      },
+      "printer_png_sha256": "11cb7ed04ade39132d25a43d04c389f2bde2f2b2be1a797fe42b0fb0bbce0a94",
+      "zpl_sha256": "af3f6627e2d8c6f77766264fb2a66711933fd30f93f96271f47c96c8ca8ce26e"
+    },
+    "micropdf417_4": {
+      "comparison": {
+        "both_black": 1224,
+        "diff_rgb_sha256": "cfa29701efd34128e32a4b32cd2cd8c7418c965c55f7b90b73db16ef3e1eaf0c",
+        "dimensions_match": false,
+        "exact": false,
+        "local_only": 1328,
+        "printer_only": 1328
+      },
+      "local": {
+        "height": 1218,
+        "ink": 2552,
+        "pixels_sha256": "19c987364c0cc8353b7f8cbc183af813e7e919d94fec7b5a7e579a90a3dcc947",
+        "width": 812
+      },
+      "printer": {
+        "height": 1218,
+        "ink": 2552,
+        "pixels_sha256": "ecffb5fc07ea3e1801e618e4572cb23fcf1afe3009537b957a619598b25a8112",
+        "width": 832
+      },
+      "printer_png_sha256": "e09fbee4a707e040c329f6cdc8626c7bb742811c9d27dc298420f983c112a160",
+      "zpl_sha256": "6d2129b98a1febd8bc8b4b1a319fc61d288b84f107bfc3d5f607adefde16958b"
+    },
+    "msi_a": {
+      "comparison": {
+        "both_black": 2080,
+        "diff_rgb_sha256": "aafee192684d1e8b4004d74f135e12b731118d3ab9ff125a2096d9778a7d57ed",
+        "dimensions_match": false,
+        "exact": false,
+        "local_only": 4960,
+        "printer_only": 4960
+      },
+      "local": {
+        "height": 1218,
+        "ink": 7040,
+        "pixels_sha256": "a6f0435e7b9804efa6afd77fe66f432b90d245e7fda6fbc8ec0dbc68dc60c1b1",
+        "width": 812
+      },
+      "printer": {
+        "height": 1218,
+        "ink": 7040,
+        "pixels_sha256": "ece3feb63b3570ea4fc384541d04a1b60f00a4fa802a144d0d7f8bd9f6413fef",
+        "width": 832
+      },
+      "printer_png_sha256": "a1168f30093933e0d27550288d31ec465efc07e1723594848216d17822449afa",
+      "zpl_sha256": "8da8f10e8a00469cd0b50dc51c8789309180ee7d35c83ee7f8124a2ba7b8384f"
+    },
+    "msi_b": {
+      "comparison": {
+        "both_black": 2240,
+        "diff_rgb_sha256": "9cc395668e8747eee37834d80147de216533c4776746cbb3869ca86a3b648644",
+        "dimensions_match": false,
+        "exact": false,
+        "local_only": 5600,
+        "printer_only": 5600
+      },
+      "local": {
+        "height": 1218,
+        "ink": 7840,
+        "pixels_sha256": "6bbe1ba6e27502aa1f4a723f1800d6dcf655f31f6dc4f5e5a7ae0d6656664f17",
+        "width": 812
+      },
+      "printer": {
+        "height": 1218,
+        "ink": 7840,
+        "pixels_sha256": "7e98a2b04a73404f2fc00a5710fb91f5c6b7753db5304e2044726bcaa707dde0",
+        "width": 832
+      },
+      "printer_png_sha256": "b93b83439c2ecde7e56f877d0655f43d984a0ddcb3777c335eab8cb71d513b31",
+      "zpl_sha256": "07360a9db4688e27e2a48c65669064a973b474349dc0e90f7b7c48fd61e15b8f"
+    },
+    "msi_c": {
+      "comparison": {
+        "both_black": 2400,
+        "diff_rgb_sha256": "ee19deacb921f6ec9e4c5da944a1df73007333ef864d94358633e66c0712357b",
+        "dimensions_match": false,
+        "exact": false,
+        "local_only": 6240,
+        "printer_only": 6240
+      },
+      "local": {
+        "height": 1218,
+        "ink": 8640,
+        "pixels_sha256": "477b34537563796726bfa5d538fe418777f9c1db8553879f1b571ecff82cca21",
+        "width": 812
+      },
+      "printer": {
+        "height": 1218,
+        "ink": 8640,
+        "pixels_sha256": "b39d0562298cc0092c792de941500dc1097394740f549d69726429b8fa69aace",
+        "width": 832
+      },
+      "printer_png_sha256": "64eefc9f26f9c2d26fc2edf94a380528ff40b17111d2f5b60b2ed9bfb8cf6d13",
+      "zpl_sha256": "510c3486b4dad0b7aae759662bf6300b7ce41cd5d45eabbf7d655d2cd7fa9a84"
+    },
+    "msi_d": {
+      "comparison": {
+        "both_black": 2400,
+        "diff_rgb_sha256": "ee19deacb921f6ec9e4c5da944a1df73007333ef864d94358633e66c0712357b",
+        "dimensions_match": false,
+        "exact": false,
+        "local_only": 6240,
+        "printer_only": 6240
+      },
+      "local": {
+        "height": 1218,
+        "ink": 8640,
+        "pixels_sha256": "477b34537563796726bfa5d538fe418777f9c1db8553879f1b571ecff82cca21",
+        "width": 812
+      },
+      "printer": {
+        "height": 1218,
+        "ink": 8640,
+        "pixels_sha256": "b39d0562298cc0092c792de941500dc1097394740f549d69726429b8fa69aace",
+        "width": 832
+      },
+      "printer_png_sha256": "64eefc9f26f9c2d26fc2edf94a380528ff40b17111d2f5b60b2ed9bfb8cf6d13",
+      "zpl_sha256": "7dfcf38d774a604cd623b5e67c1d1d171336f98bab70a9b168a8ddeaf599cece"
+    },
+    "pdf417": {
+      "comparison": {
+        "both_black": 2148,
+        "diff_rgb_sha256": "7a381d7d904749d76177b016bf0be0e9a1e1b3b44297de57d7a891fae6c22914",
+        "dimensions_match": false,
+        "exact": false,
+        "local_only": 2340,
+        "printer_only": 2340
+      },
+      "local": {
+        "height": 1218,
+        "ink": 4488,
+        "pixels_sha256": "62e9ec5a8d4962779d481b6b1c5442f0c5c4fbd0eaffb6faaa3c8830cc2628f3",
+        "width": 812
+      },
+      "printer": {
+        "height": 1218,
+        "ink": 4488,
+        "pixels_sha256": "288a41f1d16cb0ac3f4e2df877d5c99b99ac0e44abc449c0769d261adbc2f37b",
+        "width": 832
+      },
+      "printer_png_sha256": "137b95bcd9bbb8a53c0e6d40d347de3ddfc66c47a9ee2e60dfb8a466d08a71c2",
+      "zpl_sha256": "790fccd37d4b720d585991792120a89ccee250cf359ed6c92989fd8c92c03a8c"
+    },
+    "pdf417_truncated": {
+      "comparison": {
+        "both_black": 1488,
+        "diff_rgb_sha256": "efdf94d50c322f5fe4ccc753fdbacff129bdbcb2ab488c16ef63f70755a55210",
+        "dimensions_match": false,
+        "exact": false,
+        "local_only": 1788,
+        "printer_only": 1788
+      },
+      "local": {
+        "height": 1218,
+        "ink": 3276,
+        "pixels_sha256": "a1f94fa637c64970fa76577991bd4c8a6b2f65523308ec926fabbd00af5e9626",
+        "width": 812
+      },
+      "printer": {
+        "height": 1218,
+        "ink": 3276,
+        "pixels_sha256": "c976c060de0326896ff66cb688121669a920fe3458f3bb02cc59570ddf21200c",
+        "width": 832
+      },
+      "printer_png_sha256": "8588034d8a699ecdc1395547ae94a7444382b50615aeec70a395fd95676c8e15",
+      "zpl_sha256": "eb13cf203ee87ae37022998c1f9041e3f78dc992e008b195a16f428918ceff91"
+    },
+    "planet": {
+      "comparison": {
+        "both_black": 2048,
+        "diff_rgb_sha256": "d5251985dc6b0bb0e60e5906e184fce0d6da1f061830c6e90e9cc1479669aad9",
+        "dimensions_match": false,
+        "exact": false,
+        "local_only": 5568,
+        "printer_only": 5568
+      },
+      "local": {
+        "height": 1218,
+        "ink": 7616,
+        "pixels_sha256": "bf7e10c88d794e374ba871341c4f9816e27c304fa153b2c27ea9b5ebd01bb0da",
+        "width": 812
+      },
+      "printer": {
+        "height": 1218,
+        "ink": 7616,
+        "pixels_sha256": "ce855b1cde6d696e60fce99ad30a3760ba76266d9373e75cdaf8082024468861",
+        "width": 832
+      },
+      "printer_png_sha256": "c8fe629511e1303d5b06227d7d15f40171b848da38d17864099753452b1fad7e",
+      "zpl_sha256": "f21fb04af2fbab663e8dafd58a091bae63c7ec8b1adf2d822a55d200a73a04d9"
+    },
+    "plessey": {
+      "comparison": {
+        "both_black": 3200,
+        "diff_rgb_sha256": "a077dbd0f4cd39b93ce81c82d30dc265f472188ff6b8b8339099e4733bffe952",
+        "dimensions_match": false,
+        "exact": false,
+        "local_only": 6720,
+        "printer_only": 6720
+      },
+      "local": {
+        "height": 1218,
+        "ink": 9920,
+        "pixels_sha256": "8caf9ccef124188c9de6b3aa98002b611139d9ed5ceb6794275c44239799081f",
+        "width": 812
+      },
+      "printer": {
+        "height": 1218,
+        "ink": 9920,
+        "pixels_sha256": "e446ca8dc2aa547ebb4ba180e463b1d1bd4affddf3bc637437d0aafe93496e7e",
+        "width": 832
+      },
+      "printer_png_sha256": "430e346759da3591084aa0f5e3d9681c929267b01721db644090ab88f1c713bc",
+      "zpl_sha256": "7a4c2189361e71ca44d04550de83cb38b97cd7bdb7639f527a2912ec192aebe0"
+    },
+    "postal_planet": {
+      "comparison": {
+        "both_black": 2048,
+        "diff_rgb_sha256": "d5251985dc6b0bb0e60e5906e184fce0d6da1f061830c6e90e9cc1479669aad9",
+        "dimensions_match": false,
+        "exact": false,
+        "local_only": 5568,
+        "printer_only": 5568
+      },
+      "local": {
+        "height": 1218,
+        "ink": 7616,
+        "pixels_sha256": "bf7e10c88d794e374ba871341c4f9816e27c304fa153b2c27ea9b5ebd01bb0da",
+        "width": 812
+      },
+      "printer": {
+        "height": 1218,
+        "ink": 7616,
+        "pixels_sha256": "ce855b1cde6d696e60fce99ad30a3760ba76266d9373e75cdaf8082024468861",
+        "width": 832
+      },
+      "printer_png_sha256": "c8fe629511e1303d5b06227d7d15f40171b848da38d17864099753452b1fad7e",
+      "zpl_sha256": "3d951d854b2431d7c1f7c468c82193249803a9143cc52c36d818b27233855f3f"
+    },
+    "postnet": {
+      "comparison": {
+        "both_black": 1536,
+        "diff_rgb_sha256": "e35fcaee5fed40128599ce9c1316ee4b7901a1a40f504c0b57bbc9fa2c522e90",
+        "dimensions_match": false,
+        "exact": false,
+        "local_only": 3904,
+        "printer_only": 3904
+      },
+      "local": {
+        "height": 1218,
+        "ink": 5440,
+        "pixels_sha256": "8bfc3b1e5e34099a15674cf45891a1071c17c20b5d9bd88e820c0415bd389346",
+        "width": 812
+      },
+      "printer": {
+        "height": 1218,
+        "ink": 5440,
+        "pixels_sha256": "962d077d129a4938b9e329381a3656003802e756f2881fd623a20f5356b11d44",
+        "width": 832
+      },
+      "printer_png_sha256": "0f3e760c2225a34b5aea9c90158a83144c8638a768b0b97415351c67e3ebc44b",
+      "zpl_sha256": "7eacdb309cfe7ff809563474f16940daacd7aff9c892b5762cea9b75cf994569"
+    },
+    "qr": {
+      "comparison": {
+        "both_black": 146,
+        "diff_rgb_sha256": "f7b1fb633dd67a41a7f7156c369ca63b18de5be16c07799815ecf04492ee37c3",
+        "dimensions_match": false,
+        "exact": false,
+        "local_only": 3502,
+        "printer_only": 3534
+      },
+      "local": {
+        "height": 1218,
+        "ink": 3648,
+        "pixels_sha256": "8c86a6b6330a128e4702aa3d05286d4765ecde37ea4dfb427433ec955c95e64f",
+        "width": 812
+      },
+      "printer": {
+        "height": 1218,
+        "ink": 3680,
+        "pixels_sha256": "26d74c7b9c465b30559008b84d03e3d53aa7f0ff01bc2f558217e4f669661b2e",
+        "width": 832
+      },
+      "printer_png_sha256": "64628871a6cc0b2cc7818881e5cfe8fe9496044520dd5f64eba2dc91657d7ac4",
+      "zpl_sha256": "3e17f2fcc30e5ad25aa6a67e04403c8d5e0936470aea1e3cc04e2ca15ed3b1de"
+    },
+    "standard2of5": {
+      "comparison": {
+        "both_black": 6080,
+        "diff_rgb_sha256": "aec72ed16d1abdcfcfae3fd46e080694945a5f73b95405217b9ba9e69405b783",
+        "dimensions_match": false,
+        "exact": false,
+        "local_only": 3680,
+        "printer_only": 3680
+      },
+      "local": {
+        "height": 1218,
+        "ink": 9760,
+        "pixels_sha256": "3a657f1c7b5e0d3100e4d541b2124cb85709a62740f2e058a0cc389859b579c4",
+        "width": 812
+      },
+      "printer": {
+        "height": 1218,
+        "ink": 9760,
+        "pixels_sha256": "27ad9b405a63b63f6dd51d267bbe1b19c11f2eacb93d0912ddf7b82395856958",
+        "width": 832
+      },
+      "printer_png_sha256": "ea44ad8d010c5315a39e546aabc7cb3cc1d059fcd2c74b94d4c76aff118a9ab3",
+      "zpl_sha256": "800c50b280cdf2786b44278644bb680ff005fcd817ca3674f35c5abb39d202c7"
+    },
+    "tlc39_linear": {
+      "comparison": {
+        "both_black": 4960,
+        "diff_rgb_sha256": "148cf5b5f886f40b22e5aa1b790090ab851acc91e58d166425d9fbe32eaa5612",
+        "dimensions_match": false,
+        "exact": false,
+        "local_only": 4000,
+        "printer_only": 4000
+      },
+      "local": {
+        "height": 1218,
+        "ink": 8960,
+        "pixels_sha256": "46623ee418ca0e0fa9638ec718f4c4f650c85cd40cd61a56eea094b4a6478aa7",
+        "width": 812
+      },
+      "printer": {
+        "height": 1218,
+        "ink": 8960,
+        "pixels_sha256": "cde066df4f5fbf567b60a126b54a26332df7e3485fc70f3840a0e6b3d9c51410",
+        "width": 832
+      },
+      "printer_png_sha256": "efc83dbad47789fb9b9b95c35200c216f1e0dc0fbd96750d8bb36b1ed0e82ab8",
+      "zpl_sha256": "bda619476158498a5fc0b8c753a631d286c281f1200e81c98757605ef95a37ef"
+    },
+    "tlc39_linked": {
+      "comparison": {
+        "both_black": 5984,
+        "diff_rgb_sha256": "03f31bb77409f838a66e7531e311c00c2b5498aa4378d73cd37868721dc0801d",
+        "dimensions_match": false,
+        "exact": false,
+        "local_only": 7272,
+        "printer_only": 7068
+      },
+      "local": {
+        "height": 1218,
+        "ink": 13256,
+        "pixels_sha256": "087bdd2ec2eb26af92ff736aa15cbe4157ab5b3bdb666e77215bfe69385c9f82",
+        "width": 812
+      },
+      "printer": {
+        "height": 1218,
+        "ink": 13052,
+        "pixels_sha256": "15fd84aaa3d6d0582cffdf985590082111454777344a2bed9c2a74998c91f34e",
+        "width": 832
+      },
+      "printer_png_sha256": "0324fe10f6802a3ef851da4391271d01ff102caf48623056e52bef27ab6ca389",
+      "zpl_sha256": "902e2dba6325f8e64b9d97ecf5f4821a553b9a4e0b054ad0e84d259c74a7b415"
+    },
+    "upca": {
+      "comparison": {
+        "both_black": 4160,
+        "diff_rgb_sha256": "4c998f62a7350d64c308343f7be782e660072480d4b3042616bdef336fb687a2",
+        "dimensions_match": false,
+        "exact": false,
+        "local_only": 4160,
+        "printer_only": 4498
+      },
+      "local": {
+        "height": 1218,
+        "ink": 8320,
+        "pixels_sha256": "b7186344ae80c53b09182ca8d719af656d9d0633069b367fd0b5dec8f5982732",
+        "width": 812
+      },
+      "printer": {
+        "height": 1218,
+        "ink": 8658,
+        "pixels_sha256": "e878c3fde6a420234a46c54c4ec32b7cf0de6938cd844e0f2d6eddefab0bb821",
+        "width": 832
+      },
+      "printer_png_sha256": "2037fe22d9857f03ac80183ffbed2323fc646872bafebcbf43736d848d264943",
+      "zpl_sha256": "586f9a8819508df08667b29bd2eba026c5367e12d93c28e0029e01f7ce3db275"
+    },
+    "upce": {
+      "comparison": {
+        "both_black": 2080,
+        "diff_rgb_sha256": "c538666f9694b0dc9aec787eb5b1159249b1068a2d9c94c3a1d2fb5b608bbc13",
+        "dimensions_match": false,
+        "exact": false,
+        "local_only": 2400,
+        "printer_only": 2530
+      },
+      "local": {
+        "height": 1218,
+        "ink": 4480,
+        "pixels_sha256": "af4d16d76fee3692742daa499dd3dd9ae6a7155af78f387ed240904bc3ec7bc8",
+        "width": 812
+      },
+      "printer": {
+        "height": 1218,
+        "ink": 4610,
+        "pixels_sha256": "f3de2197225716b13df6bfc0eed968593a1861bb5f2ef23c0493dd36ad3e3ad1",
+        "width": 832
+      },
+      "printer_png_sha256": "79e590726948aaa1e6bd7375438151b7f98c583c207ff29972e9e7ffdb6d6053",
+      "zpl_sha256": "316cb2fa2be950852a9b331cb2674e55ad9e0abad889b207044361b1e3d7e611"
+    }
+  },
+  "device": "ZTC ZD621-203dpi ZPL; firmware V93.21.33Z",
+  "dpi": 203,
+  "host": "http://printer.local/",
+  "preview_requests": 60,
+  "schema": "zpl-printer-barcode-comparison-v1"
+}
