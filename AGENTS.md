@@ -46,4 +46,4 @@ Tests use Rust's built-in `#[test]` harness. Follow existing names such as `test
 
 ## Commit & Pull Request Guidelines
 
-Prefer concise, descriptive subjects identifying the affected component. PRs should explain behavior changes, list validation performed, link relevant issues, and include screenshots for asset/UI changes. Keep generated files, local databases, and credentials out of commits.
+Prefer concise, descriptive subjects identifying the affected component. Commits should explain the reason that a change is being made. Identify the previous behavior, the issue with it, and what changed. Explain why the changes made fix the issue. PRs should explain behavior changes, list validation performed, link relevant issues, and include screenshots for asset/UI changes. Keep generated files, local databases, and credentials out of commits.
