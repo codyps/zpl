@@ -45,7 +45,7 @@ pub fn rasterize(scene: &Scene) -> Result<Raster, OutputError> {
                 }
             }
             intersections.sort_by(f64::total_cmp);
-            for pair in intersections.chunks_exact(2) {
+            for pair in intersections.as_chunks::<2>().0 {
                 let start = (pair[0] - 0.5).ceil().max(0.0).min(scene.width as f64) as usize;
                 let end = (pair[1] - 0.5).ceil().max(0.0).min(scene.width as f64) as usize;
                 for x in start..end {

@@ -67,7 +67,7 @@ impl Diff {
         let mut pixels = Vec::with_capacity(w as usize * h as usize * 3);
         for row in self.pixels.chunks_exact(self.width as usize * 3) {
             for _ in 0..scale {
-                for pixel in row.chunks_exact(3) {
+                for pixel in row.as_chunks::<3>().0 {
                     for _ in 0..scale {
                         pixels.extend_from_slice(pixel)
                     }

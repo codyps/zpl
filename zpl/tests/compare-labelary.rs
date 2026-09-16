@@ -1,10 +1,9 @@
 use reqwest::Client;
-use std::io::Cursor;
 use std::fs::File;
+use std::io::Cursor;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-
     let zpl = "^xa^cfa,50^fo100,100^fdHello World^fs^xz";
 
     // adjust print density (8dpmm), label width (4 inches), label height (6 inches), and label index (0) as necessary
@@ -13,7 +12,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .post(url)
         .body(zpl)
         .header("Accept", "application/pdf") // omit this line to get PNG images back
-        .send().await?;
+        .send()
+        .await?;
 
     if response.status().is_success() {
         let mut file = File::create("label.pdf")?; // change file name for PNG images

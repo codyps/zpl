@@ -15,7 +15,7 @@ fn base64(data: &[u8]) -> Result<Vec<u8>, String> {
     if chars.len() % 4 != 0 {
         return Err("invalid base64 length".into());
     }
-    for (i, q) in chars.chunks_exact(4).enumerate() {
+    for (i, q) in chars.as_chunks::<4>().0.iter().enumerate() {
         let mut acc = 0u32;
         let mut padding = 0;
         for (j, &c) in q.iter().enumerate() {
@@ -142,7 +142,12 @@ pub(super) fn decode(data: &[u8], bytes: usize, row: usize, binary: bool) -> Res
         if repeat != 0 || nibbles.len() % 2 != 0 {
             return Err("incomplete graphic data".into());
         }
-        nibbles.chunks_exact(2).map(|q| q[0] * 16 + q[1]).collect()
+        nibbles
+            .as_chunks::<2>()
+            .0
+            .iter()
+            .map(|q| q[0] * 16 + q[1])
+            .collect()
     };
     if decoded.len() != bytes {
         return Err("graphic byte count mismatch".into());

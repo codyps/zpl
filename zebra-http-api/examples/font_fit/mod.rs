@@ -185,7 +185,7 @@ pub fn render(model: &Model, h: u32, w: u32) -> Raster {
             }
         }
         intersections.sort_by(f64::total_cmp);
-        for pair in intersections.chunks_exact(2) {
+        for pair in intersections.as_chunks::<2>().0 {
             let start = (pair[0] - 0.5).ceil().clamp(0., CELL as f64) as usize;
             let end = (pair[1] - 0.5).ceil().clamp(0., CELL as f64) as usize;
             r.pixels[y * CELL + start..y * CELL + end].fill(0);

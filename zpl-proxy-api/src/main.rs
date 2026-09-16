@@ -54,9 +54,7 @@ async fn main() {
             args.zd621_header
                 .iter()
                 .map(|header| {
-                    let mut parts = header.splitn(2, ": ");
-                    let key = parts.next().unwrap();
-                    let value = parts.next().unwrap();
+                    let (key, value) = header.split_once(": ").unwrap();
                     let key: HeaderName = key.parse().unwrap();
                     let value: HeaderValue = value.parse().unwrap();
                     (key, value)

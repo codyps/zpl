@@ -89,7 +89,7 @@ pub(super) fn union_lines(path: Path) -> Path {
     use crate::output::Segment;
     let mut rectangles = Vec::new();
     let mut events = Vec::new();
-    for segments in path.segments.chunks_exact(5) {
+    for segments in path.segments.as_chunks::<5>().0 {
         let [Segment::Move(a), Segment::Line(b), Segment::Line(c), Segment::Line(_), Segment::Close] =
             segments
         else {
