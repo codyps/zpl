@@ -1,5 +1,8 @@
 # ZPL reference and parser design
 
+[Release PR automation](releases.md) documents release-plz setup and the separate
+crates.io publishing prerequisites.
+
 ## Vendor specification
 
 [Zebra ZPL II, ZBI 2, Set-Get-Do, Mirror, WML Programming Guide](zpl-zbi2-pg-en.pdf)
