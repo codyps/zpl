@@ -1,6 +1,6 @@
 //! Embedded, captured resident font 0. Bitmap pixels become output-neutral paths.
 use crate::{
-    font_extract::{self, Glyph, Settings},
+    bitmap_font::{self, Glyph, Settings},
     output::Path,
 };
 use std::{collections::BTreeMap, sync::OnceLock};
@@ -8,7 +8,7 @@ const DATA: &[u8] = include_bytes!("../../assets/font0-32.zbf");
 fn strike() -> &'static (Settings, Vec<Glyph>) {
     static FONT: OnceLock<(Settings, Vec<Glyph>)> = OnceLock::new();
     FONT.get_or_init(|| {
-        font_extract::unpack(DATA).expect("embedded font strike is validated by tests")
+        bitmap_font::unpack(DATA).expect("embedded font strike is validated by tests")
     })
 }
 fn glyph(c: char) -> Result<&'static Glyph, String> {

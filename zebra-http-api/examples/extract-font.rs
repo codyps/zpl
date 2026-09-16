@@ -7,10 +7,8 @@ use std::{
     path::{Path, PathBuf},
     time::Duration,
 };
-use zpl::{
-    font_extract::{self, Settings},
-    output::Raster,
-};
+use zpl::{bitmap_font::Settings, output::Raster};
+use zpl_font_extract as font_extract;
 mod font_support;
 
 #[derive(Parser)]
@@ -377,7 +375,7 @@ mod tests {
         let report: Value = serde_json::from_slice(&original).unwrap();
         assert_eq!(report["glyphs"][0]["advance"], 4);
         let (settings, packed_glyphs) =
-            font_extract::unpack(&fs::read(temp.0.join("font.zbf")).unwrap()).unwrap();
+            zpl::bitmap_font::unpack(&fs::read(temp.0.join("font.zbf")).unwrap()).unwrap();
         assert_eq!((settings.font, settings.height), ('0', 8));
         assert_eq!(
             packed_glyphs.iter().map(|g| g.advance).collect::<Vec<_>>(),

@@ -55,7 +55,7 @@ Bits are MSB-first, row-major, continuous across row boundaries. One is black.
 Unused trailing bits are zero. Space has no bitmap but retains its advance.
 This avoids JSON text and row-padding overhead while retaining exact metrics.
 
-`zpl::font_extract::pack` and `unpack` implement the format, with dimension,
+`zpl_font_extract::pack` and `zpl::bitmap_font::unpack` implement the format, with dimension,
 ordering, length and padding validation. Runtime `font 0` scaling uses 32 as the
 native width/height and the documented baseline of three quarters of height;
 this embedded asset's metadata and completeness are checked in unit tests.

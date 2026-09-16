@@ -91,7 +91,7 @@ unless font inspection or observations establish their relevance.
 
 ### A. Repair the measurement harness first
 
-Extend `zpl/src/font_extract.rs` and `zebra-http-api/examples/font-study.rs`:
+Extend `zpl-font-extract/src/lib.rs` and `zebra-http-api/examples/font-study.rs`:
 
 - Replace the 128-dot limit and fixed two-column/tile geometry with planned
   per-glyph canvases bounded by the printer's measured preview limits.

@@ -322,10 +322,10 @@ mod tests {
         for (h, text) in [(20, "AVATAR Agj Wavy 123 _^~|!"), (64, "AVATAR Agj 123")] {
             let dir = root.join(format!("strike-{h}"));
             let (settings, glyphs) =
-                zpl::font_extract::unpack(&std::fs::read(dir.join("font.zbf")).unwrap()).unwrap();
+                zpl::bitmap_font::unpack(&std::fs::read(dir.join("font.zbf")).unwrap()).unwrap();
             assert_eq!(glyphs.len(), 95);
             let (request, expected) =
-                zpl::font_extract::verification_plan(&glyphs, settings, text).unwrap();
+                zpl_font_extract::verification_plan(&glyphs, settings, text).unwrap();
             assert_eq!(
                 request.as_bytes(),
                 std::fs::read(dir.join("verification.zpl")).unwrap()

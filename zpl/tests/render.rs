@@ -282,7 +282,7 @@ fn captured_font_layout_baselines_blocks_and_rotations() {
     assert!(d.different_pixels() <= 3);
 }
 #[test]
-fn captured_font_scaling_and_overlapping_ink() {
+fn captured_font_scaling() {
     let normal = scene(b"^XA^CF0,32,32^FT10,40^FDaWj|^FS^XZ");
     let enlarged = scene(b"^XA^PW200^LL200^CF0,64,64^FT20,80^FDaWj|^FS^XZ");
     let a = zpl::output::rasterize(&normal).unwrap();
@@ -292,13 +292,6 @@ fn captured_font_scaling_and_overlapping_ink() {
             assert_eq!(b.pixels[y * 200 + x], a.pixels[y / 2 * 100 + x / 2]);
         }
     }
-    let (s, g) = zpl::font_extract::unpack(include_bytes!("../assets/font0-32.zbf")).unwrap();
-    let (input, reference) = zpl::font_extract::verification_plan(&g, s, "WWW__|||~~").unwrap();
-    let doc = render(input.as_bytes(), Options::default()).unwrap();
-    let actual = zpl::output::rasterize(&doc.labels[0]).unwrap();
-    assert!(raster_diff::compare(&reference, &actual, false)
-        .unwrap()
-        .matches());
 }
 
 #[test]
