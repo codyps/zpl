@@ -28,10 +28,10 @@ pub fn sha256(data: &[u8]) -> String {
         padded.push(0)
     }
     padded.extend((data.len() as u64 * 8).to_be_bytes());
-    for chunk in padded.chunks_exact(64) {
+    for chunk in padded.as_chunks::<64>().0 {
         let mut w = [0u32; 64];
-        for (i, b) in chunk.chunks_exact(4).enumerate() {
-            w[i] = u32::from_be_bytes(b.try_into().unwrap())
+        for (i, b) in chunk.as_chunks::<4>().0.iter().enumerate() {
+            w[i] = u32::from_be_bytes(*b)
         }
         for i in 16..64 {
             let s0 = w[i - 15].rotate_right(7) ^ w[i - 15].rotate_right(18) ^ (w[i - 15] >> 3);
