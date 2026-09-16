@@ -1,13 +1,6 @@
 // @generated automatically by Diesel CLI.
 
 diesel::table! {
-    clients (id) {
-        id -> BigInt,
-        ip -> Text,
-    }
-}
-
-diesel::table! {
     inputs (id) {
         id -> BigInt,
         hash -> Binary,
@@ -20,9 +13,13 @@ diesel::table! {
 diesel::table! {
     png_requests (rowid) {
         rowid -> BigInt,
-        peer_id -> BigInt,
         timestamp -> Text,
         input_id -> BigInt,
+        renderer_key -> Nullable<Binary>,
+        png_id -> Nullable<BigInt>,
+        error -> Nullable<Text>,
+        completed_at -> Nullable<Text>,
+        cache_hit -> Bool,
     }
 }
 
@@ -36,8 +33,18 @@ diesel::table! {
     }
 }
 
-diesel::joinable!(inputs -> pngs (png_id));
-diesel::joinable!(png_requests -> clients (peer_id));
-diesel::joinable!(png_requests -> inputs (input_id));
+diesel::table! {
+    render_cache (input_id, renderer_key) {
+        input_id -> BigInt,
+        renderer_key -> Binary,
+        png_id -> BigInt,
+    }
+}
 
-diesel::allow_tables_to_appear_in_same_query!(clients, inputs, png_requests, pngs,);
+diesel::joinable!(inputs -> pngs (png_id));
+diesel::joinable!(png_requests -> inputs (input_id));
+diesel::joinable!(png_requests -> pngs (png_id));
+diesel::joinable!(render_cache -> inputs (input_id));
+diesel::joinable!(render_cache -> pngs (png_id));
+
+diesel::allow_tables_to_appear_in_same_query!(inputs, png_requests, pngs, render_cache,);

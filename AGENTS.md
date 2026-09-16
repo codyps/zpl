@@ -6,7 +6,7 @@ This Rust 2021 Cargo workspace contains three crates:
 
 - `zpl/`: ZPL parsing and command/format types. Parser unit tests live in `src/parse/test.rs`; integration tests live in `tests/`.
 - `zebra-http-api/`: Zebra printer HTTP rendering client, with a `zebra-render` example.
-- `zpl-proxy-api/`: Axum proxy, SQLite cache, Diesel models and migrations, and browser assets in `assets/`.
+- `zpl-proxy-api/`: Axum proxy, SQLite render cache and request history, Diesel models and migrations, and browser assets in `assets/`.
 
 Shared ZPL fixtures and optional TOML metadata live in `test-data/`. The `zpl-to-svg` example is unfinished.
 
@@ -31,6 +31,8 @@ cargo run -- --zd621-url http://printer.local/ --bind-addr 127.0.0.1:3000
 ```
 
 Replace the printer URL with your device address. Run from this crate directory because static assets use a relative path.
+The proxy requires `DATABASE_URL` and current migrations. It stores submitted ZPL,
+PNG results, errors, and request history; see `docs/proxy-cache.md`.
 
 ## Coding Style & Naming Conventions
 

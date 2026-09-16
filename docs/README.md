@@ -1,5 +1,11 @@
 # ZPL reference and parser design
 
+[Proxy telemetry](telemetry.md) documents fastrace spans, correlated logs, and
+optional OTLP export.
+
+[Printer proxy cache](proxy-cache.md) documents persistent ZPL, render results,
+request history, and cache refresh controls.
+
 [Browser preview](web-preview.md) documents the local WebAssembly editor and
 GitHub Pages deployment.
 
