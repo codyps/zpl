@@ -63,3 +63,10 @@ fitted outlines, and training-versus-validation results.
 
 [Stroke-width parameter fitting](font-stroke-fitting.md) extends the outline
 experiment with size-dependent quantization and reports held-out accuracy.
+
+[Font refinement plan](font-refinement-plan.md) prioritizes pipeline calibration,
+TrueType parameter recovery, fresh validation, and structured hint fitting.
+
+[Font refinement execution](font-refinement-results.md) records the new capture
+campaign, calibration results, recovered spacing constraints, and the gate that
+keeps the experimental model out of the renderer.
