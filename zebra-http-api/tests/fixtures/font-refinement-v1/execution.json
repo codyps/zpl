@@ -1,0 +1,34 @@
+{
+  "dates": "2026-09-14/15",
+  "device": "ZTC ZD621-203dpi ZPL",
+  "firmware": "V93.21.33Z",
+  "preview_requests": 197,
+  "sequence": [
+    {
+      "phase": "primary campaign",
+      "requests": 131
+    },
+    {
+      "phase": "calibration repeated after binary RAM download",
+      "requests": 20
+    },
+    {
+      "phase": "prep scan control",
+      "requests": 30
+    },
+    {
+      "phase": "glyph scan control",
+      "requests": 12
+    },
+    {
+      "phase": "adaptive spacing and missing-font controls",
+      "requests": 4
+    }
+  ],
+  "rejected_preview_download": "20 original fallback PNGs and hashes retained; same ZPL as corresponding development calibration pages",
+  "request_ledger": "introduced before final four requests; earlier 193 requests accounted by retained PNGs",
+  "sealed_policy": "22 pages quality-checked for dimensions/clipping only; excluded from fitting, model selection and comparison reports",
+  "cleanup": "nine temporary RAM fonts removed; directory absence verified",
+  "renderer_changed": false,
+  "integration_gate": "unresolved calibration residuals; no new outline/hint model promoted"
+}
