@@ -2,6 +2,7 @@
 name = "zpl"
 version = "0.1.0"
 edition = "2021"
+license.workspace = true
 
 [dependencies]
 raster-diff = { version = "0.1.0", path = "../raster-diff" }

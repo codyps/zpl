@@ -2,6 +2,7 @@
 name = "zebra-http-api"
 version = "0.1.0"
 edition = "2021"
+license.workspace = true
 
 [dependencies]
 eyre = "0.6.12"
