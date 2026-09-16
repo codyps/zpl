@@ -1,6 +1,6 @@
 # Local renderer
 
-The renderer is entirely local and adds no dependencies. It is a practical
+The renderer is entirely local and adds no runtime dependencies. It is a practical
 preview implementation, not a complete Zebra printer emulator. Unsupported
 commands and unsupported parameter modes return `RenderError` with a byte offset;
 no partial document is returned on failure. Nothing is sent to a printer.
@@ -52,7 +52,7 @@ direnv exec . cargo run -p zpl --example zpl-to-svg -- docs/examples/local-label
 | Blocks | `FB`: left/center/right alignment, word wrapping, explicit `\&` breaks; overflow, hyphenation, hanging indent and justified text return errors |
 | Shapes | `GB` including rounded corners, `GC`, `GE`; black outlines/fills |
 | Graphics | `~DG`, `XG`, `GFA`, `GFB`: raw hex, Zebra ASCII run lengths/row shortcuts, B64, Z64; CRC16 and zlib checksums checked |
-| Barcodes | `B3` Code 39 without optional checksum; `BC` Code 128 subset B with mandatory checksum; `BY`; below-bar interpretation line |
+| Barcodes | Original per-code linear, matrix, stacked, and postal encoders; `BY`; see [coverage, limitations, specifications, and decoder tests](barcodes.md) |
 
 Text uses [embedded resident font 0](../zpl/assets/README.md), captured from the
 ZD621 preview at 32 dots and 203 DPI. All 95 printable ASCII glyphs, including
@@ -77,7 +77,7 @@ an extracted scalable outline font.
 Leave adequate clear space around barcode fields; quiet zones are not inserted
 automatically. Barcode interpretation text also uses embedded font 0.
 
-Examples of explicit errors include QR/Data Matrix/EAN/UPC, Code 128 invocation
+Examples of explicit errors include unsupported barcode variants, Code 128 invocation
 sequences and UCC/automatic modes, downloaded fonts, stored formats, serialization,
 white ZPL shapes, compressed binary `GFC`, and printer configuration commands.
 The parser still frames these commands; rendering coverage is separate from

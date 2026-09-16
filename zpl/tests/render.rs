@@ -62,7 +62,7 @@ fn inversion_and_clipping() {
 #[test]
 fn errors_are_explicit() {
     for z in [
-        "^XA^BQ^XZ",
+        "^XA^BQN,1^FDLA,X^FS^XZ",
         "^XA^A@N,20,20,FONT^FDX^FS^XZ",
         "^XA^FO1,2^FDa^XZ",
         "^XA^GB2,2^GB2,2^FS^XZ",
@@ -75,7 +75,7 @@ fn errors_are_explicit() {
     ] {
         assert!(render(z.as_bytes(), Options::default()).is_err(), "{z}")
     }
-    let e = render(b"^XA^BQ", Options::default()).unwrap_err();
+    let e = render(b"^XA^BQN,2,4,L,0,extra", Options::default()).unwrap_err();
     assert_eq!(e.offset, 3);
     assert!(e.message.contains("BQ"));
 }

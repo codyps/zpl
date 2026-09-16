@@ -48,6 +48,7 @@ struct Field {
     reverse: bool,
     hex: Option<u8>,
     barcode: Option<(f64, bool, bool)>,
+    other_barcode: Option<barcode::Barcode>,
     path: Option<Path>,
     block: Option<(f64, usize, f64, u8)>,
     baseline_height: f64,
@@ -63,6 +64,7 @@ impl Default for Field {
             reverse: false,
             hex: None,
             barcode: None,
+            other_barcode: None,
             path: None,
             block: None,
             baseline_height: 0.,
@@ -90,38 +92,6 @@ fn rotation(s: &str) -> Result<u8, String> {
         [c @ (b'N' | b'R' | b'I' | b'B')] => Ok(*c),
         _ => Err("unsupported orientation".into()),
     }
-}
-fn code39(s: &str, module: f64, ratio: f64, h: f64) -> Result<Path, String> {
-    const CHARS: &str = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ-. $/+%*";
-    const PATTERNS: [u16; 44] = [
-        0x034, 0x121, 0x061, 0x160, 0x031, 0x130, 0x070, 0x025, 0x124, 0x064, 0x109, 0x049, 0x148,
-        0x019, 0x118, 0x058, 0x00d, 0x10c, 0x04c, 0x01c, 0x103, 0x043, 0x142, 0x013, 0x112, 0x052,
-        0x007, 0x106, 0x046, 0x016, 0x181, 0x0c1, 0x1c0, 0x091, 0x190, 0x0d0, 0x085, 0x184, 0x0c4,
-        0x0a8, 0x0a2, 0x08a, 0x02a, 0x094,
-    ];
-    let mut p = Path::default();
-    let mut x = 0.;
-    for c in std::iter::once('*')
-        .chain(s.chars())
-        .chain(std::iter::once('*'))
-    {
-        let idx = CHARS.find(c).ok_or("unsupported Code 39 character")?;
-        let mask = PATTERNS[idx];
-        for i in 0..9 {
-            let w = module
-                * if mask & (1 << (8 - i)) != 0 {
-                    ratio
-                } else {
-                    1.
-                };
-            if i % 2 == 0 {
-                p.rect(x, 0., w, h)
-            }
-            x += w;
-        }
-        x += module;
-    }
-    Ok(p)
 }
 /// Convert a command stream to printer-dot paths. No printer or network access occurs.
 pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
@@ -414,6 +384,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                     }
                 }
                 "BC" => {
+                    field.other_barcode = None;
                     field.rotation = rotation(p[0])?;
                     let h = number(&p, 1, bar_h)?;
                     if p.get(2).is_some_and(|v| !matches!(*v, "" | "Y" | "N")) {
@@ -431,6 +402,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                     field.barcode = Some((h, show, true));
                 }
                 "B3" => {
+                    field.other_barcode = None;
                     field.rotation = rotation(p[0])?;
                     if p.get(1).is_some_and(|v| !matches!(*v, "" | "N")) {
                         return Err("Code 39 checksum unsupported".into());
@@ -444,6 +416,30 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                         return Err("barcode text above unsupported".into());
                     }
                     field.barcode = Some((h, show, false));
+                }
+                n if barcode::supported(n) => {
+                    field.rotation = if n == "BD" || n == "BQ" {
+                        b'N'
+                    } else if p[0].is_empty() {
+                        if n == "BR" {
+                            b'R'
+                        } else if n == "BB" {
+                            b'N'
+                        } else {
+                            default_rotation
+                        }
+                    } else {
+                        rotation(p[0])?
+                    };
+                    field.barcode = None;
+                    field.other_barcode = Some(barcode::Barcode::new(
+                        n,
+                        &p,
+                        module,
+                        ratio,
+                        bar_h,
+                        options.dpi,
+                    )?);
                 }
                 "FD" | "FV" => {
                     if field.path.is_some() {
@@ -466,7 +462,10 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                             i += 1;
                         }
                     }
-                    if field.barcode.is_none_or(|(_, show, _)| show)
+                    if field
+                        .other_barcode
+                        .as_ref()
+                        .map_or_else(|| field.barcode.is_none_or(|(_, show, _)| show), |b| b.show)
                         && (font_w != 32.
                             || font_h != 32.
                             || options.dpi != 203
@@ -478,17 +477,25 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                     if bytes.len() > 4096 {
                         return Err("field data exceeds 4096-byte renderer limit".into());
                     }
-                    let value = std::str::from_utf8(&bytes)
-                        .map_err(|_| "only ASCII preview text supported")?;
-                    let path = if let Some((h, show, code128)) = field.barcode {
+                    let value = if field.other_barcode.is_some() {
+                        ""
+                    } else {
+                        std::str::from_utf8(&bytes)
+                            .map_err(|_| "only ASCII preview text supported")?
+                    };
+                    let path = if let Some(b) = &field.other_barcode {
+                        let (path, height) = b.render(&bytes, font_w, font_h)?;
+                        field.baseline_height = height;
+                        path
+                    } else if let Some((h, show, code128)) = field.barcode {
                         if (!code128 && value.contains('*')) || h <= 0. {
                             return Err("invalid Code 39 data or height".into());
                         }
                         field.baseline_height = h;
                         let mut b = if code128 {
-                            barcode::code128(value, module, h)?
+                            barcode::code128::render(value, module, h)?
                         } else {
-                            code39(value, module, ratio, h)?
+                            barcode::code39::render(value, module, ratio, h)?
                         };
                         if show {
                             let mut t = font::text(value, font_w, font_h)?;
