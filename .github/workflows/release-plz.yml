@@ -8,11 +8,15 @@ on:
 
 permissions: {}
 
+env:
+  CARGO_NET_RETRY: 2
+  CARGO_HTTP_TIMEOUT: 30
+
 jobs:
   release-pr:
     if: github.repository == 'codyps/zpl' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 15
     permissions:
       contents: write
       pull-requests: write
