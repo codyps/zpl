@@ -1,9 +1,11 @@
 use diesel::prelude::*;
 use std::env;
 
+pub mod cache;
 pub mod models;
 pub mod realip;
 pub mod schema;
+pub mod telemetry;
 
 pub fn establish_connection() -> SqliteConnection {
     let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");

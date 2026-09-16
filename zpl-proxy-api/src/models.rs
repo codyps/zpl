@@ -12,26 +12,14 @@ pub struct Input {
 }
 
 #[derive(Queryable, Selectable)]
-#[diesel(table_name = crate::schema::clients)]
-#[diesel(check_for_backend(diesel::sqlite::Sqlite))]
-pub struct Client {
-    pub id: i64,
-    pub ip: String,
-}
-
-#[derive(Insertable)]
-#[diesel(table_name = crate::schema::clients)]
-pub struct NewClient<'a> {
-    pub ip: &'a str,
-}
-
-#[derive(Queryable, Selectable)]
 #[diesel(table_name = crate::schema::pngs)]
 #[diesel(check_for_backend(diesel::sqlite::Sqlite))]
 pub struct Png {
     pub id: i64,
+    pub public_id: String,
     pub hash: Vec<u8>,
     pub data: Vec<u8>,
+    pub created_at: i64,
 }
 
 #[derive(Queryable, Selectable)]
@@ -39,7 +27,11 @@ pub struct Png {
 #[diesel(check_for_backend(diesel::sqlite::Sqlite))]
 pub struct PngRequest {
     pub rowid: i64,
-    pub peer_id: i64,
     pub timestamp: String,
     pub input_id: i64,
+    pub renderer_key: Option<Vec<u8>>,
+    pub png_id: Option<i64>,
+    pub error: Option<String>,
+    pub completed_at: Option<String>,
+    pub cache_hit: bool,
 }
