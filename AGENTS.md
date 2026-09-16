@@ -36,6 +36,8 @@ Replace the printer URL with your device address. Run from this crate directory 
 
 Use rustfmt defaults, including four-space Rust indentation. Use `snake_case` for functions/modules and `UpperCamelCase` for types. Keep parsing, printer transport, and proxy concerns in their respective crates. Add database changes as timestamped Diesel migrations with `up.sql` and `down.sql`; keep `src/schema.rs` synchronized.
 
+Ensure the standards, documents, specifications, etc used are referenced in comments in code and tests. Identify specific pages/paragraphs if possible. Include a link to the source if available online.
+
 ## Testing Guidelines
 
 Tests use Rust's built-in `#[test]` harness. Follow existing names such as `test_parse_prefixes_*`, preferably adding descriptive case names. Add focused parser assertions and fixture-based regression cases for changed behavior. No numeric coverage threshold is configured; the fixture harness remains minimal.
@@ -44,4 +46,4 @@ Tests use Rust's built-in `#[test]` harness. Follow existing names such as `test
 
 ## Commit & Pull Request Guidelines
 
-History uses short, informal subjects, including `cargo update` and `wip`; no strict convention is established. Prefer concise, descriptive subjects identifying the affected component. PRs should explain behavior changes, list validation performed, link relevant issues, and include screenshots for asset/UI changes. Keep generated files, local databases, and credentials out of commits.
+Prefer concise, descriptive subjects identifying the affected component. PRs should explain behavior changes, list validation performed, link relevant issues, and include screenshots for asset/UI changes. Keep generated files, local databases, and credentials out of commits.
