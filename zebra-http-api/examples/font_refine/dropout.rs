@@ -1,7 +1,7 @@
 //! Follow-up designed after the first calibration identified thin-stroke residuals.
 use super::{campaign, sfnt};
 use eyre::{ensure, eyre, Result};
-use image_diff::{compare, Raster};
+use raster_diff::{compare, Raster};
 use serde_json::json;
 use std::{fs, path::Path, time::Duration};
 use tokio::io::AsyncWriteExt;

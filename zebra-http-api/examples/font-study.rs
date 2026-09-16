@@ -1,7 +1,7 @@
 //! Repeatable preview-only study of font scaling and rotation.
 use clap::Parser;
 use eyre::{ensure, eyre, Result};
-use image_diff::{compare, Raster};
+use raster_diff::{compare, Raster};
 use serde_json::json;
 use std::{fmt::Write as _, fs, io::Read, path::PathBuf, time::Duration};
 mod font_support;

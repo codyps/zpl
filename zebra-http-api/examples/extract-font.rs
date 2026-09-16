@@ -234,7 +234,7 @@ async fn run(args: Args) -> Result<()> {
         let (zpl, expected) =
             font_extract::verification_plan(&glyphs, settings, text).map_err(|e| eyre!(e))?;
         let (data, actual) = capture.page("verification", &zpl).await?;
-        let diff = image_diff::compare(&expected, &actual, false).map_err(|e| eyre!(e))?;
+        let diff = raster_diff::compare(&expected, &actual, false).map_err(|e| eyre!(e))?;
         let report = json!({"text":text,"different_pixels":diff.different_pixels(),"sha256":font_support::sha256(&data)});
         json_write(&args.output.join("verification.json"), &report)?;
         // The same directional diff used by png-diff also diagnoses font verification.

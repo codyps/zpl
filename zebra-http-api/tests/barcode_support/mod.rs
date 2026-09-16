@@ -1,6 +1,6 @@
 //! Fixed preview-only corpus, shared by capture tooling and offline tests.
 use eyre::{ensure, eyre, Result};
-use image_diff::{compare, Raster};
+use raster_diff::{compare, Raster};
 use serde_json::{json, Value};
 use std::path::Path;
 #[path = "../../examples/font_support/mod.rs"]

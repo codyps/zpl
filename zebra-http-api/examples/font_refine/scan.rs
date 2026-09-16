@@ -1,6 +1,6 @@
 //! Explicit research hypotheses, not a replacement for the production rasterizer.
 use super::{campaign::Probe, sfnt};
-use image_diff::Raster;
+use raster_diff::Raster;
 #[derive(Clone, Copy, Debug)]
 pub struct Rules {
     pub nonzero: bool,

@@ -95,7 +95,7 @@ fn corpus_covers_every_barcode_command() {
 
 #[test]
 fn comparison_detects_pixel_and_canvas_changes() {
-    use image_diff::{Png, Raster};
+    use raster_diff::{Png, Raster};
     let zpl = "^XA^PW8^LL8^FO1,1^GB2,2,2^FS^XZ";
     let raster = barcode_support::local(zpl).unwrap();
     let observe =

@@ -1,7 +1,7 @@
 //! Bounded preview campaign. Defaults to an offline dry-run manifest.
 use clap::Parser;
 use eyre::{ensure, eyre, Result};
-use image_diff::Raster;
+use raster_diff::Raster;
 use serde_json::json;
 use std::{
     fs,

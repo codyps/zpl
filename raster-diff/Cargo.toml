@@ -1,5 +1,5 @@
 [package]
-name = "image-diff"
+name = "raster-diff"
 version = "0.1.0"
 edition = "2021"
 description = "Dependency-free binary raster comparison and PNG diagnostics"

@@ -1,6 +1,6 @@
 //! Axis-aligned stem constraints with learned, size-dependent quantization.
 use super::{loss, Model, Sample, ANCHOR};
-use image_diff::Raster;
+use raster_diff::Raster;
 use std::collections::BTreeMap;
 #[derive(Clone, Debug)]
 pub struct Axis {

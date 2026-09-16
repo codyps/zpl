@@ -51,7 +51,7 @@ sampler, bitmap font exports, resumable captures, and pixel-level verification.
 
 ## Rendering comparisons
 
-[Binary PNG image diff](image-diff.md) describes the Rust `png-diff` tool,
+[Binary PNG image diff](raster-diff.md) describes the Rust `png-diff` tool,
 its directional colors, pixel statistics, and CI exit codes.
 
 [Font reconstruction study](font-reconstruction.md) measures size and rotation

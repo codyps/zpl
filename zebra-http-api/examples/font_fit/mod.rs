@@ -1,5 +1,5 @@
 //! Deterministic outline fitting; coordinates are dots at the 128-dot source size.
-use image_diff::Raster;
+use raster_diff::Raster;
 pub mod strokes;
 use std::collections::BTreeMap;
 #[derive(Clone, Debug)]

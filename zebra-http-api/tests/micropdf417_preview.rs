@@ -1,7 +1,7 @@
 //! Offline, exact comparisons against real ZD621 HTTP previews.
 #[path = "../examples/font_support/mod.rs"]
 mod digest;
-use image_diff::{compare, Raster};
+use raster_diff::{compare, Raster};
 
 #[test]
 fn micropdf417_matches_printer_probes() {

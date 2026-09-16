@@ -1,5 +1,5 @@
-//! Compare reference and candidate binary PNGs; see docs/image-diff.md.
-use image_diff::Raster;
+//! Compare reference and candidate binary PNGs; see docs/raster-diff.md.
+use raster_diff::Raster;
 use std::{
     env,
     fs::{self, OpenOptions},
@@ -60,7 +60,7 @@ fn run() -> Result<bool, Box<dyn std::error::Error>> {
     }
     let reference = Raster::decode_png_with_threshold(&read(&paths[0])?, threshold)?;
     let candidate = Raster::decode_png_with_threshold(&read(&paths[1])?, threshold)?;
-    let diff = image_diff::compare(&reference, &candidate, pad)?;
+    let diff = raster_diff::compare(&reference, &candidate, pad)?;
     let png = diff.png(scale)?;
     let mut file = OpenOptions::new()
         .write(true)
