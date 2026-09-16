@@ -4,4 +4,4 @@ pub mod parse;
 pub mod output;
 pub mod render;
 
-pub mod font_extract;
+pub mod bitmap_font;

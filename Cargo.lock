@@ -4334,6 +4334,7 @@ dependencies = [
  "serde_json",
  "tokio",
  "zpl",
+ "zpl-font-extract",
 ]
 
 [[package]]
@@ -4438,6 +4439,14 @@ dependencies = [
  "serde",
  "tokio",
  "toml",
+]
+
+[[package]]
+name = "zpl-font-extract"
+version = "0.1.0"
+dependencies = [
+ "raster-diff",
+ "zpl",
 ]
 
 [[package]]

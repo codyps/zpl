@@ -2,8 +2,11 @@
 
 ## Project Structure & Module Organization
 
-This Rust 2021 Cargo workspace contains three crates:
+This Rust 2021 Cargo workspace contains these crates:
 
+- `zpl-font-extract/`: Resident-font sampling, bitmap extraction, export, and verification. Uses the bitmap strike types and decoder in `zpl::bitmap_font`.
+- `raster-diff/`: Raster image decoding and comparison.
+- `zpl-wasm/`: Browser rendering bindings.
 - `zpl/`: ZPL parsing and command/format types. Parser unit tests live in `src/parse/test.rs`; integration tests live in `tests/`.
 - `zebra-http-api/`: Zebra printer HTTP rendering client, with a `zebra-render` example.
 - `zpl-proxy-api/`: Axum proxy, SQLite render cache and request history, Diesel models and migrations, and browser assets in `assets/`.

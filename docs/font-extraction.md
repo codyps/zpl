@@ -1,8 +1,11 @@
 # Extracting preview fonts
 
 The Rust `extract-font` example samples resident glyphs through
-`zebra_http_api::zpl_to_png_with_credentials`. Sampling, PNG decoding, baseline
-measurement and BDF generation live in `zpl::font_extract` and `zpl::output`.
+`zebra_http_api::zpl_to_png_with_credentials`. Sampling, baseline
+measurement, BDF/ZBF export, and verification live in the `zpl-font-extract` crate.
+The rendering crate retains bitmap strike types and ZBF decoding in
+`zpl::bitmap_font`, plus raster support in `zpl::output`. The extraction crate
+depends on `zpl`; rendering does not depend on extraction.
 It reuses libraries already in the workspace; no new external crates were added.
 Python and imaging executables are not needed. Only preview requests are sent.
 
@@ -102,6 +105,7 @@ and HTTP transport boundaries.
 
 ```sh
 direnv exec . cargo test -p zpl --lib
+direnv exec . cargo test -p zpl-font-extract
 direnv exec . cargo test -p zebra-http-api --lib --example extract-font
 ```
 

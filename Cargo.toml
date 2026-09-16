@@ -1,5 +1,6 @@
 [workspace]
 members = [
+    "zpl-font-extract",
     "raster-diff",
     "zpl-wasm",
 	"zpl",
