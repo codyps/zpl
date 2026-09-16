@@ -240,8 +240,8 @@ async fn main() -> Result<()> {
             }
             let rotation =
                 compare(normal.as_ref().unwrap(), &normalized, false).map_err(|e| eyre!(e))?;
-            let doc = zpl::render::render(z.as_bytes(), zpl::render::Options::default())?;
-            let local = zpl::output::rasterize(&doc.labels[0])?;
+            let doc = zpl::render(z.as_bytes(), zpl::Options::default())?;
+            let local = zpl::output::raster::rasterize(&doc.labels[0])?;
             let diff = compare(&actual, &local, false).map_err(|e| eyre!(e))?;
             derived(
                 &args.output.join(format!("{name}-local-diff.png")),

@@ -24,7 +24,10 @@ PNG files prioritize simplicity over compression. Curves are flattened for PNG;
 SVG viewers may antialias edges differently.
 
 ```rust
-use zpl::{render::{render, Options}, output::{Adapter, Png, Svg}};
+use zpl::{
+    output::{Adapter, Png, Svg},
+    render, Options,
+};
 let document = render(b"^XA^FO20,20^FDHELLO^FS^XZ", Options::default())?;
 for scene in &document.labels {
     let png = Png.encode(scene)?;

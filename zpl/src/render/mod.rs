@@ -1,6 +1,6 @@
 //! Local, deterministic ZPL previews. Unsupported rendering semantics are errors.
 mod barcode;
-use crate::compression;
+use raster_diff::compression;
 mod font;
 mod graphics;
 use crate::{

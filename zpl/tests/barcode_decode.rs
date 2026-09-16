@@ -1,9 +1,6 @@
 //! Independent decoder tests: runtime encoders never link rxing.
 use rxing::BarcodeFormat;
-use zpl::{
-    output::rasterize,
-    render::{render, Options},
-};
+use zpl::{output::raster::rasterize, render, Options};
 fn decode(command: &str, payload: &str, expected: &str, format: BarcodeFormat) {
     let zpl = format!("^XA^PW1600^LL1000^FO50,50^BY3,2,90^{command}^FD{payload}^FS^XZ");
     let doc = render(zpl.as_bytes(), Options::default())

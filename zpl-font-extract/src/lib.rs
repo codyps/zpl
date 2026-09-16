@@ -2,7 +2,7 @@
 use std::fmt::Write;
 use zpl::{
     bitmap_font::{validate_glyphs, Glyph, Settings},
-    output::Raster,
+    output::raster::Raster,
 };
 #[derive(Debug, Clone)]
 pub struct Tile {

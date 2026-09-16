@@ -1,4 +1,5 @@
 use super::*;
+use crate::output::raster::rasterize;
 #[derive(Debug, Default, Clone, Copy)]
 pub struct Png;
 impl Adapter for Png {

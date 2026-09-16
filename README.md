@@ -48,7 +48,7 @@ cargo run -p zpl --example zpl-parse -- test-data/cc.zpl
 ```rust
 use zpl::{
     output::{Adapter, Png, Svg},
-    render::{render, Options},
+    render, Options,
 };
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {

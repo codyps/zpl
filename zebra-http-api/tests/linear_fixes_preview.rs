@@ -23,8 +23,8 @@ fn four_barcode_printer_probes() {
             printer.pixels.contains(&0),
             "{name}: blank is not barcode parity"
         );
-        let doc = zpl::render::render(&source, Default::default()).unwrap();
-        let local = zpl::output::rasterize(&doc.labels[0]).unwrap();
+        let doc = zpl::render(&source, Default::default()).unwrap();
+        let local = zpl::output::raster::rasterize(&doc.labels[0]).unwrap();
         let diff = compare(&printer, &local, false).unwrap();
         if !diff.matches() {
             failures.push(format!("{name}: {} pixels", diff.different_pixels()));
@@ -43,8 +43,8 @@ fn original_four_barcode_previews_with_known_padding() {
         let source = std::fs::read(root.join(format!("{name}.zpl"))).unwrap();
         let png = std::fs::read(root.join(format!("{name}.png"))).unwrap();
         let printer = Raster::decode_png(&png).unwrap();
-        let doc = zpl::render::render(&source, Default::default()).unwrap();
-        let local = zpl::output::rasterize(&doc.labels[0]).unwrap();
+        let doc = zpl::render(&source, Default::default()).unwrap();
+        let local = zpl::output::raster::rasterize(&doc.labels[0]).unwrap();
         assert_eq!((local.width, local.height), (812, 1218));
         let mut padded = Raster {
             width: 832,

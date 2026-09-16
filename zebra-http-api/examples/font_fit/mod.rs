@@ -337,7 +337,7 @@ mod tests {
                 });
                 assert_eq!(
                     render(&model, h, w),
-                    zpl::output::rasterize(&scene).unwrap()
+                    zpl::output::raster::rasterize(&scene).unwrap()
                 );
             }
         }

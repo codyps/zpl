@@ -211,10 +211,7 @@ fn gs1_128_linkage() {
 
 #[test]
 fn rendered_composite_components_and_alignment() {
-    use crate::{
-        output::rasterize,
-        render::{render, Options},
-    };
+    use crate::{output::raster::rasterize, render, Options};
     for (variant, payload, rows, ec, width, capacity) in [
         (11, "10ABC".to_owned(), 3, 4, 99, 78),
         (11, format!("91{}", "A".repeat(50)), 15, 21, 99, 352),
@@ -297,7 +294,7 @@ fn rendered_composite_components_and_alignment() {
 
 #[test]
 fn composite_input_errors() {
-    use crate::render::{render, Options};
+    use crate::{render, Options};
     for variant in [11, 12] {
         for data in [
             "0103212345678906",

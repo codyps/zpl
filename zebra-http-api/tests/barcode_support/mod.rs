@@ -83,9 +83,8 @@ pub fn request(case: &Case) -> String {
     )
 }
 pub fn local(zpl: &str) -> std::result::Result<Raster, String> {
-    let doc = zpl::render::render(zpl.as_bytes(), zpl::render::Options::default())
-        .map_err(|e| e.to_string())?;
-    zpl::output::rasterize(&doc.labels[0]).map_err(|e| e.to_string())
+    let doc = zpl::render(zpl.as_bytes(), zpl::Options::default()).map_err(|e| e.to_string())?;
+    zpl::output::raster::rasterize(&doc.labels[0]).map_err(|e| e.to_string())
 }
 fn raster_info(r: &Raster) -> Value {
     json!({"width":r.width,"height":r.height,"ink":r.pixels.iter().filter(|&&p|p==0).count(),"pixels_sha256":digest::sha256(&r.pixels)})
