@@ -1,5 +1,4 @@
 use axum::{
-    async_trait,
     extract::{FromRef, FromRequestParts},
     http::request::Parts,
 };
@@ -12,7 +11,7 @@ use std::{convert::Infallible, net::SocketAddr};
 #[derive(Debug, Clone)]
 pub struct RealIp(pub std::net::IpAddr);
 
-#[async_trait]
+// https://docs.rs/axum/0.8/axum/extract/trait.FromRequestParts.html
 impl<S> FromRequestParts<S> for RealIp
 where
     RealIpState: FromRef<S>,

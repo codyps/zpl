@@ -3,7 +3,6 @@ use std::sync::Arc;
 use std::time::Duration;
 
 use axum::{
-    async_trait,
     body::Body,
     error_handling::HandleError,
     extract::{Form, FromRequest, Json, Multipart, State},
@@ -192,7 +191,8 @@ async fn render_cached(zd621: Zd621, print_spec: PrintSpec) -> eyre::Result<(Vec
 
 struct JsonOrForm(PrintSpec);
 
-#[async_trait]
+// Axum 0.8 extractors return native futures.
+// https://docs.rs/axum/0.8/axum/extract/trait.FromRequest.html
 impl<S> FromRequest<S> for JsonOrForm
 where
     S: Send + Sync,
@@ -216,7 +216,7 @@ where
 
             if content_type.starts_with("multipart/form-data") {
                 // Axum enforces its default body limit for Multipart too.
-                // https://docs.rs/axum/0.7/axum/extract/struct.Multipart.html
+                // https://docs.rs/axum/0.8/axum/extract/struct.Multipart.html
                 let mut multipart: Multipart =
                     req.extract().await.map_err(IntoResponse::into_response)?;
                 let mut zpl = None;
@@ -524,7 +524,7 @@ mod tests {
 
     #[tokio::test]
     async fn multipart_keeps_axum_body_limit() {
-        // https://docs.rs/axum/0.7/axum/extract/struct.DefaultBodyLimit.html
+        // https://docs.rs/axum/0.8/axum/extract/struct.DefaultBodyLimit.html
         let value = vec![b'x'; 2 * 1024 * 1024 + 1];
         assert_eq!(
             extract(MULTIPART, multipart(&[("zpl", &value)])).await,
