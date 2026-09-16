@@ -246,7 +246,7 @@ async fn run(args: Args) -> Result<()> {
             bail!(
                 "verification differs by {} pixels; see verification-diff.png",
                 diff.different_pixels()
-            )
+            );
         }
         document["verification"] = report;
         eprintln!("verification: exact pixel match");
