@@ -1,16 +1,81 @@
 //! Rasterize scenes into monochrome pixels.
 
+use std::ops::Range;
+
 use crate::output::{OutputError, Paint, Path, Point, Scene, Segment, MAX_SEGMENTS};
 pub use raster_diff::Raster;
 
+/// Destination for monochrome rasterization, independent of pixel storage.
+///
+/// Spans arrive in scene draw order, not necessarily row order. Implementations
+/// must apply [`Paint::Invert`] to the pixels already present in the destination.
+/// This is a compositing destination, not a stream of final scanlines.
+pub trait RasterOutput {
+    /// Prepare a white image of the given dimensions, discarding previous content.
+    /// `rasterize_into` supplies nonzero, validated dimensions.
+    fn reset(&mut self, width: u32, height: u32) -> Result<(), OutputError>;
+
+    /// Apply `paint` to a nonempty, half-open horizontal span.
+    /// `rasterize_into` guarantees `y < height` and `x.start < x.end <= width`
+    /// for the dimensions passed to `reset`.
+    fn paint_span(&mut self, y: u32, x: Range<u32>, paint: Paint) -> Result<(), OutputError>;
+}
+
+impl RasterOutput for Raster {
+    fn reset(&mut self, width: u32, height: u32) -> Result<(), OutputError> {
+        let len = (width as usize)
+            .checked_mul(height as usize)
+            .filter(|&len| width != 0 && height != 0 && len <= super::MAX_PIXELS)
+            .ok_or(OutputError("invalid or excessive image dimensions"))?;
+        self.pixels.resize(len, 255);
+        self.pixels.fill(255);
+        self.width = width;
+        self.height = height;
+        Ok(())
+    }
+
+    fn paint_span(&mut self, y: u32, x: Range<u32>, paint: Paint) -> Result<(), OutputError> {
+        if y >= self.height || x.start >= x.end || x.end > self.width {
+            return Err(OutputError("invalid raster span"));
+        }
+        let row = y as usize * self.width as usize;
+        let pixels = self
+            .pixels
+            .get_mut(row + x.start as usize..row + x.end as usize)
+            .ok_or(OutputError("invalid raster pixel buffer"))?;
+        match paint {
+            Paint::Black => pixels.fill(0),
+            Paint::White => pixels.fill(255),
+            Paint::Invert => pixels.iter_mut().for_each(|pixel| *pixel = 255 - *pixel),
+        }
+        Ok(())
+    }
+}
+
 /// Rasterize filled paths into shared monochrome pixels.
 pub fn rasterize(scene: &Scene) -> Result<Raster, OutputError> {
-    scene.validate()?;
     let mut image = Raster {
-        width: scene.width,
-        height: scene.height,
-        pixels: vec![255; scene.width as usize * scene.height as usize],
+        width: 0,
+        height: 0,
+        pixels: Vec::new(),
     };
+    rasterize_into(scene, &mut image)?;
+    Ok(image)
+}
+
+/// Rasterize filled paths into a caller-provided destination.
+///
+/// The scene is validated before the destination is touched, then the destination
+/// is reset to white. Spans are clipped to the scene dimensions and emitted in
+/// draw order using the even-odd fill rule. No intermediate pixel buffer is
+/// allocated. Destination errors are propagated immediately; output may be
+/// partially written if a destination, flattening, or scan-budget error occurs.
+pub fn rasterize_into<O: RasterOutput + ?Sized>(
+    scene: &Scene,
+    output: &mut O,
+) -> Result<(), OutputError> {
+    scene.validate()?;
+    output.reset(scene.width, scene.height)?;
     let mut work = 0u64;
     for draw in &scene.draws {
         let edges = flatten(&draw.path)?;
@@ -46,20 +111,15 @@ pub fn rasterize(scene: &Scene) -> Result<Raster, OutputError> {
             }
             intersections.sort_by(f64::total_cmp);
             for pair in intersections.as_chunks::<2>().0 {
-                let start = (pair[0] - 0.5).ceil().max(0.0).min(scene.width as f64) as usize;
-                let end = (pair[1] - 0.5).ceil().max(0.0).min(scene.width as f64) as usize;
-                for x in start..end {
-                    let pixel = &mut image.pixels[y as usize * scene.width as usize + x];
-                    *pixel = match draw.paint {
-                        Paint::Black => 0,
-                        Paint::White => 255,
-                        Paint::Invert => 255 - *pixel,
-                    };
+                let start = (pair[0] - 0.5).ceil().max(0.0).min(scene.width as f64) as u32;
+                let end = (pair[1] - 0.5).ceil().max(0.0).min(scene.width as f64) as u32;
+                if start < end {
+                    output.paint_span(y, start..end, draw.paint)?;
                 }
             }
         }
     }
-    Ok(image)
+    Ok(())
 }
 fn midpoint(a: Point, b: Point) -> Point {
     Point::new((a.x + b.x) / 2.0, (a.y + b.y) / 2.0)
