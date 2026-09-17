@@ -1,13 +1,16 @@
 # Printer proxy cache
 
-The printer-backed `/api/zpl-zd621` endpoint stores every accepted ZPL submission
+The printer-backed `/api/zpl-zd621` endpoint first enforces the
+[rendering-only admission policy](proxy-validation.md), then stores every accepted ZPL submission
 and each completed outcome in SQLite. This is separate from the GitHub Pages
 preview, which remains browser-local and uploads nothing.
 
 Set `DATABASE_URL` and run `diesel migration run` from `zpl-proxy-api/` before
 starting the proxy. Existing databases require the new persist-render-results
-migration; startup fails clearly if it has not been applied. No production
-database is automatically migrated. Back up existing databases before migration.
+migration; startup fails clearly if it has not been applied. The standalone proxy
+does not automatically migrate databases. The [NixOS module](nixos.md) runs
+migrations before starting its managed service. Back up existing databases before
+migration.
 
 ## Stored data and cache behavior
 

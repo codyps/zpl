@@ -4034,6 +4034,7 @@ dependencies = [
  "tower-layer",
  "tower-livereload",
  "zebra-http-api",
+ "zpl",
 ]
 
 [[package]]

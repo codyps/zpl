@@ -29,6 +29,7 @@ opentelemetry = { version = "0.32.0", default-features = false, features = ["tra
 opentelemetry_sdk = { version = "0.32.1", default-features = false, features = ["trace"] }
 opentelemetry-otlp = { version = "0.32.0", default-features = false, features = ["http-proto", "reqwest-blocking-client", "reqwest-rustls", "trace"] }
 zebra-http-api = { version = "0.1.0", path = "../zebra-http-api" }
+zpl = { version = "0.1.0", path = "../zpl" }
 
 [dev-dependencies]
 tempfile = "3.27.0"

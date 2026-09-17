@@ -17,6 +17,7 @@ use serde::Deserialize;
 use tower_layer::Layer;
 use zpl_proxy_api::cache::{self, Cache};
 use zpl_proxy_api::telemetry;
+use zpl_proxy_api::validation::{RenderZpl, ValidationError};
 
 #[derive(Debug, Parser)]
 struct Args {
@@ -120,9 +121,6 @@ async fn zd621_zpl_to_png(
     State(zd621): State<Zd621>,
     JsonOrForm(print_spec): JsonOrForm,
 ) -> impl IntoResponse {
-    // TODO: parse zpl, check that it contains only commands we allow.
-    // TODO: modify zpl to set fixed initial state
-
     // Finish persistence even when the requesting client disconnects.
     let result = telemetry::spawn("render.task", render_cached(zd621, print_spec)).await;
     match result {
@@ -132,6 +130,11 @@ async fn zd621_zpl_to_png(
             .header("X-ZPL-Cache", if cache_hit { "hit" } else { "miss" })
             .body(Body::from(png))
             .unwrap(),
+        Ok(Err(error)) if error.downcast_ref::<ValidationError>().is_some() => (
+            StatusCode::BAD_REQUEST,
+            error.downcast_ref::<ValidationError>().unwrap().to_string(),
+        )
+            .into_response(),
         _ => {
             log::error!("render or cache operation failed");
             (
@@ -145,6 +148,11 @@ async fn zd621_zpl_to_png(
 
 #[fastrace::trace(name = "render.cached")]
 async fn render_cached(zd621: Zd621, print_spec: PrintSpec) -> eyre::Result<(Vec<u8>, bool)> {
+    // Validate before cache lookup too: historical cache entries are not proof
+    // that the current admission policy permits this input.
+    let zpl =
+        telemetry::spawn_blocking("render.validate", move || RenderZpl::parse(print_spec.zpl))
+            .await??;
     // Zebra uses a shared TEST1 preview object. Serialize the entire POST/GET
     // cycle as well as cache misses so concurrent requests cannot mix images.
     let _guard = zd621
@@ -155,7 +163,7 @@ async fn render_cached(zd621: Zd621, print_spec: PrintSpec) -> eyre::Result<(Vec
     let attempt = zd621
         .cache
         .begin(
-            print_spec.zpl.as_bytes().to_vec(),
+            zpl.as_str().as_bytes().to_vec(),
             zd621.renderer_key.clone(),
             print_spec.refresh,
         )
@@ -168,7 +176,7 @@ async fn render_cached(zd621: Zd621, print_spec: PrintSpec) -> eyre::Result<(Vec
     match zebra_http_api::zpl_to_png(
         zd621.zd621_client.clone(),
         (*zd621.zd621_url).clone(),
-        &print_spec.zpl,
+        zpl.as_str(),
     )
     .in_span(
         Span::enter_with_local_parent("printer.preview").with_property(|| ("span.kind", "client")),
@@ -387,6 +395,144 @@ mod tests {
             1
         );
         server.abort();
+    }
+
+    #[tokio::test]
+    async fn rejects_unsafe_zpl_in_every_http_format_before_cache_or_printer() {
+        let directory = tempfile::tempdir().unwrap();
+        let path = directory.path().join("cache.sqlite");
+        let mut connection = diesel::SqliteConnection::establish(path.to_str().unwrap()).unwrap();
+        for migration in [
+            include_str!("../migrations/2024-10-03-035443_cache-results/up.sql"),
+            include_str!("../migrations/2026-09-14-000000_fix-request-client/up.sql"),
+            include_str!("../migrations/2026-09-15-220000_persist-render-results/up.sql"),
+            include_str!("../migrations/2026-09-15-230000_remove-client-ips/up.sql"),
+        ] {
+            connection.batch_execute(migration).unwrap();
+        }
+        let calls = Arc::new(AtomicUsize::new(0));
+        let printer = Router::new()
+            .route(
+                "/zpl",
+                post({
+                    let calls = calls.clone();
+                    move || {
+                        calls.fetch_add(1, Ordering::SeqCst);
+                        async { "<IMG SRC=\"/image\">" }
+                    }
+                }),
+            )
+            .route("/image", axum::routing::get(|| async { "safe PNG" }));
+        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let url: reqwest::Url = format!("http://{}/", listener.local_addr().unwrap())
+            .parse()
+            .unwrap();
+        let printer_task =
+            tokio::spawn(async move { axum::serve(listener, printer).await.unwrap() });
+        let state = Zd621 {
+            zd621_client: reqwest::Client::builder().no_proxy().build().unwrap(),
+            renderer_key: cache::renderer_key(url.as_str(), &[], "test"),
+            zd621_url: Arc::new(url),
+            cache: Cache::open(path.to_str().unwrap()).unwrap(),
+            render_lock: Arc::new(tokio::sync::Mutex::new(())),
+        };
+        // Simulate a result cached before admission validation existed. The new
+        // policy must not disclose it, including when refresh is requested.
+        let forbidden = "^XA^XGR:PRIVATE.GRF,1,1^FS^XZ";
+        let attempt = state
+            .cache
+            .begin(
+                forbidden.as_bytes().to_vec(),
+                state.renderer_key.clone(),
+                false,
+            )
+            .await
+            .unwrap();
+        state
+            .cache
+            .success(attempt, b"private cached PNG".to_vec())
+            .await
+            .unwrap();
+        let app = Router::new()
+            .route("/api/zpl-zd621", post(zd621_zpl_to_png))
+            .with_state(state);
+        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let endpoint = format!("http://{}/api/zpl-zd621", listener.local_addr().unwrap());
+        let proxy_task = tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+        let client = reqwest::Client::builder().no_proxy().build().unwrap();
+        for zpl in [
+            forbidden,
+            "^XA^FO1,2^FDhello^FS^XZ^",
+            "^XA^WD*:*.*^XZ",
+            "^XA^FXcomment\n! U1 getvar \"allcv\"\n^FS^XZ",
+        ] {
+            for refresh in [false, true] {
+                let requests = [
+                    client
+                        .post(&endpoint)
+                        .json(&serde_json::json!({ "zpl": zpl, "refresh": refresh })),
+                    client.post(&endpoint).form(&[
+                        ("zpl", zpl),
+                        ("refresh", if refresh { "true" } else { "false" }),
+                    ]),
+                    client
+                        .post(&endpoint)
+                        .header(header::CONTENT_TYPE, MULTIPART)
+                        .body(multipart(&[
+                            ("zpl", zpl.as_bytes()),
+                            ("refresh", if refresh { b"true" } else { b"false" }),
+                        ])),
+                ];
+                for request in requests {
+                    let response = request.send().await.unwrap();
+                    assert_eq!(response.status(), StatusCode::BAD_REQUEST, "{zpl:?}");
+                    assert!(response.text().await.unwrap().starts_with("ZPL byte "));
+                }
+            }
+        }
+        assert_eq!(calls.load(Ordering::SeqCst), 0);
+        use zpl_proxy_api::schema::{inputs, png_requests};
+        assert_eq!(
+            inputs::table
+                .count()
+                .get_result::<i64>(&mut connection)
+                .unwrap(),
+            1
+        );
+        assert_eq!(
+            png_requests::table
+                .count()
+                .get_result::<i64>(&mut connection)
+                .unwrap(),
+            1
+        );
+        // Ordinary labels still reach the printer, then serve from the cache.
+        for (index, request) in [
+            client
+                .post(&endpoint)
+                .json(&serde_json::json!({"zpl": "^XA^FO10,20^FDhello^FS^XZ"})),
+            client
+                .post(&endpoint)
+                .form(&[("zpl", "^XA^FO10,20^FDhello^FS^XZ")]),
+            client
+                .post(&endpoint)
+                .header(header::CONTENT_TYPE, MULTIPART)
+                .body(multipart(&[("zpl", b"^XA^FO10,20^FDhello^FS^XZ")])),
+        ]
+        .into_iter()
+        .enumerate()
+        {
+            let response = request.send().await.unwrap();
+            assert_eq!(response.status(), StatusCode::OK);
+            assert_eq!(
+                response.headers()["X-ZPL-Cache"],
+                if index == 0 { "miss" } else { "hit" }
+            );
+            assert_eq!(response.bytes().await.unwrap().as_ref(), b"safe PNG");
+        }
+        assert_eq!(calls.load(Ordering::SeqCst), 1);
+        proxy_task.abort();
+        printer_task.abort();
     }
 
     async fn extract(content_type: &str, body: impl Into<Body>) -> Result<String, StatusCode> {

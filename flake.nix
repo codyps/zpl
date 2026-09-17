@@ -6,7 +6,10 @@
   };
 
   outputs = { self, flake-utils, nixpkgs, nixpkgs-intel-darwin }:
-    flake-utils.lib.eachDefaultSystem (system:
+    {
+      nixosModules.zpl-proxy-api = import ./nix/module.nix;
+      nixosModules.default = self.nixosModules.zpl-proxy-api;
+    } // flake-utils.lib.eachDefaultSystem (system:
       let
         # Unstable no longer supports Intel macOS.
         nixpkgsForSystem = if system == "x86_64-darwin" then nixpkgs-intel-darwin else nixpkgs;
@@ -19,6 +22,15 @@
       in
       {
         formatter = pkgs.nixpkgs-fmt;
+
+        packages = lib.optionalAttrs stdenv.hostPlatform.isLinux {
+          zpl-proxy-api = pkgs.callPackage ./nix/package.nix { };
+          default = self.packages.${system}.zpl-proxy-api;
+        };
+
+        checks = lib.optionalAttrs stdenv.hostPlatform.isLinux {
+          zpl-proxy-api = import ./nix/test.nix { inherit pkgs; };
+        };
 
         devShells.default = pkgs.mkShell {
           nativeBuildInputs = with pkgs; [

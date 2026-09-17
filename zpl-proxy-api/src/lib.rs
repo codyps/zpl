@@ -6,6 +6,7 @@ pub mod models;
 pub mod realip;
 pub mod schema;
 pub mod telemetry;
+pub mod validation;
 
 pub fn establish_connection() -> SqliteConnection {
     let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
