@@ -1,5 +1,9 @@
 # ZPL reference and parser design
 
+[ZPL library comparison](https://github.com/codyps/zpl-comparison) contains the
+standalone benchmarks, printer accuracy reports, rendering conformance corpus,
+and compatibility reference by library, command and feature.
+
 [Proxy telemetry](telemetry.md) documents fastrace spans, correlated logs, and
 optional OTLP export.
 
