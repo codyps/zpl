@@ -1,3 +1,5 @@
+mod listener;
+
 use std::path::Path;
 use std::sync::Arc;
 use std::time::Duration;
@@ -25,8 +27,8 @@ struct Args {
     zd621_url: reqwest::Url,
     #[clap(long)]
     zd621_header: Vec<String>,
-    #[clap(long)]
-    bind_addr: std::net::SocketAddr,
+    #[command(flatten)]
+    listen: listener::ListenOptions,
     /// Change after printer firmware, fonts, media, or other rendering state changes.
     #[clap(long, default_value = "default")]
     cache_namespace: String,
@@ -41,11 +43,18 @@ struct Zd621 {
     render_lock: Arc<tokio::sync::Mutex<()>>,
 }
 
-#[tokio::main]
-async fn main() {
-    let _telemetry = telemetry::init().expect("initialize telemetry");
-
+fn main() -> eyre::Result<()> {
     let args = Args::parse();
+    // Consume activation environment and bind before runtime/exporter threads.
+    let listener = listener::Listener::open(&args.listen)?;
+    let runtime = tokio::runtime::Builder::new_multi_thread()
+        .enable_all()
+        .build()?;
+    runtime.block_on(run(args, listener))
+}
+
+async fn run(args: Args, listener: listener::Listener) -> eyre::Result<()> {
+    let _telemetry = telemetry::init().expect("initialize telemetry");
 
     let zd621_client = reqwest::Client::builder()
         .timeout(Duration::from_secs(30))
@@ -91,23 +100,19 @@ async fn main() {
 
     let app = Router::new()
         .nest("/api", api_router)
-        .nest_service(
-            "/",
-            HandleError::new(
-                livereload.layer(tower_http::services::ServeDir::new(Path::new("assets"))),
-                |error| async move {
-                    log::error!("static asset service error: {}", error);
-                    StatusCode::INTERNAL_SERVER_ERROR
-                },
-            ),
-        )
+        // Axum 0.8 rejects nesting at "/"; use the static service as fallback.
+        // https://docs.rs/axum/0.8.9/axum/struct.Router.html#method.fallback_service
+        .fallback_service(HandleError::new(
+            livereload.layer(tower_http::services::ServeDir::new(Path::new("assets"))),
+            |error| async move {
+                log::error!("static asset service error: {}", error);
+                StatusCode::INTERNAL_SERVER_ERROR
+            },
+        ))
         .layer(axum::middleware::from_fn(telemetry::request));
 
-    let listener = tokio::net::TcpListener::bind(args.bind_addr).await.unwrap();
-    axum::serve(listener, app)
-        .with_graceful_shutdown(telemetry::shutdown_signal())
-        .await
-        .unwrap();
+    listener.serve(app).await?;
+    Ok(())
 }
 
 #[derive(Deserialize)]
