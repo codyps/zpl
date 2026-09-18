@@ -40,10 +40,9 @@ impl Process {
 }
 
 fn directory() -> tempfile::TempDir {
-    // Keep Unix socket paths below macOS's sockaddr_un.sun_path limit.
     tempfile::Builder::new()
         .prefix("zpl-listener-")
-        .tempdir_in("/tmp")
+        .tempdir()
         .unwrap()
 }
 
