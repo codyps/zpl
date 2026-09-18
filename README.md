@@ -101,7 +101,8 @@ cargo run -p zebra-http-api --example zebra-render -- \
   --host http://printer.local/ docs/examples/local-label.zpl /tmp/printer-label.png
 ```
 
-For a managed Linux service, use the [NixOS module](docs/nixos.md).
+For a socket-activated Linux service with TCP or Unix sockets, use the
+[NixOS module](docs/nixos.md).
 
 To run the proxy and its browser interface, start in the repository root inside
 the development shell:

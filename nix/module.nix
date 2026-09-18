@@ -6,8 +6,7 @@ let
   arguments = [
     "--zd621-url"
     cfg.printerUrl
-    "--bind-addr"
-    "${bindAddress}:${toString cfg.port}"
+    "--socket-activation"
     "--cache-namespace"
     cfg.cacheNamespace
   ] ++ lib.concatMap (header: [ "--zd621-header" header ]) cfg.printerHeaders;
@@ -36,17 +35,34 @@ in
       type = lib.types.str;
       default = "127.0.0.1";
       example = "0.0.0.0";
-      description = "IP address to listen on; use an unbracketed address for IPv6.";
+      description = "TCP address when unixSocket is null; use an unbracketed address for IPv6.";
     };
     port = lib.mkOption {
       type = lib.types.port;
       default = 3000;
-      description = "HTTP listening port.";
+      description = "TCP port when unixSocket is null.";
+    };
+    unixSocket = lib.mkOption {
+      type = lib.types.nullOr lib.types.str;
+      default = null;
+      example = "/run/zpl-proxy-api.sock";
+      description = "Absolute Unix socket path instead of TCP. Systemd owns the socket.";
+    };
+    unixSocketMode = lib.mkOption {
+      type = lib.types.strMatching "[0-7]{3,4}";
+      default = "0660";
+      description = "Filesystem permissions for the Unix socket.";
+    };
+    unixSocketGroup = lib.mkOption {
+      type = lib.types.str;
+      default = "root";
+      example = "nginx";
+      description = "Existing group allowed to connect to the Unix socket.";
     };
     openFirewall = lib.mkOption {
       type = lib.types.bool;
       default = false;
-      description = "Whether to open the HTTP port in the firewall.";
+      description = "Whether to open the TCP port in the firewall; has no effect with unixSocket.";
     };
     cacheNamespace = lib.mkOption {
       type = lib.types.str;
@@ -70,6 +86,10 @@ in
   config = lib.mkIf cfg.enable {
     assertions = [
       {
+        assertion = cfg.unixSocket == null || lib.hasPrefix "/" cfg.unixSocket;
+        message = "services.zpl-proxy-api.unixSocket must be an absolute filesystem path.";
+      }
+      {
         assertion = lib.hasPrefix "http://" cfg.printerUrl || lib.hasPrefix "https://" cfg.printerUrl;
         message = "services.zpl-proxy-api.printerUrl must be an HTTP(S) URL.";
       }
@@ -83,12 +103,37 @@ in
       }
     ];
 
-    networking.firewall.allowedTCPPorts = lib.mkIf cfg.openFirewall [ cfg.port ];
+    networking.firewall.allowedTCPPorts = lib.mkIf (cfg.openFirewall && cfg.unixSocket == null) [ cfg.port ];
+    # One shared listener (Accept=no); the proxy serializes printer access.
+    # https://www.freedesktop.org/software/systemd/man/latest/systemd.socket.html
+    systemd.sockets.zpl-proxy-api = {
+      description = "ZPL printer rendering proxy socket";
+      wantedBy = [ "sockets.target" ];
+      listenStreams = [
+        (if cfg.unixSocket != null then cfg.unixSocket else "${bindAddress}:${toString cfg.port}")
+      ];
+      socketConfig = {
+        Accept = false;
+      } // lib.optionalAttrs (cfg.unixSocket != null) {
+        SocketMode = cfg.unixSocketMode;
+        SocketGroup = cfg.unixSocketGroup;
+        DirectoryMode = "0755";
+        RemoveOnStop = true;
+      };
+    };
     systemd.services.zpl-proxy-api = {
       description = "ZPL printer rendering proxy";
-      wantedBy = [ "multi-user.target" ];
+      requires = [ "zpl-proxy-api.socket" ];
       wants = [ "network-online.target" ];
-      after = [ "network-online.target" ];
+      after = [ "network-online.target" "zpl-proxy-api.socket" ];
+      # Mount only the ExecStart/ExecStartPre runtime closures, not the whole
+      # store or unit closure (which can include unrelated environment paths).
+      # https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/security/systemd-confinement.nix
+      confinement = {
+        enable = true;
+        mode = "chroot-only";
+        binSh = null;
+      };
       environment = cfg.environment // {
         DATABASE_URL = "/var/lib/zpl-proxy-api/db.sqlite";
       };
@@ -109,13 +154,26 @@ in
         StateDirectoryMode = "0700";
         UMask = "0077";
         EnvironmentFile = lib.mkIf (cfg.environmentFile != null) cfg.environmentFile;
-        AmbientCapabilities = lib.optional (cfg.port < 1024) "CAP_NET_BIND_SERVICE";
-        CapabilityBoundingSet = lib.optional (cfg.port < 1024) "CAP_NET_BIND_SERVICE";
+        # Systemd binds even privileged ports; the worker needs no capabilities.
+        CapabilityBoundingSet = "";
         NoNewPrivileges = true;
         PrivateTmp = true;
         PrivateDevices = true;
         ProtectSystem = "strict";
         ProtectHome = true;
+        # RootDirectory confinement hides host data; StateDirectory is mounted
+        # automatically. EnvironmentFile is read by the host service manager.
+        # systemd.exec(5), BindReadOnlyPaths=, StateDirectory=, EnvironmentFile=:
+        # https://www.freedesktop.org/software/systemd/man/latest/systemd.exec.html
+        BindReadOnlyPaths = [
+          "/etc/hosts"
+          "/etc/resolv.conf"
+          "/etc/nsswitch.conf"
+          "/etc/ssl/certs/ca-certificates.crt"
+        ];
+        MountAPIVFS = true;
+        ProtectProc = "invisible";
+        ProcSubset = "pid";
         ProtectKernelTunables = true;
         ProtectKernelModules = true;
         ProtectControlGroups = true;
