@@ -19,6 +19,27 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  toml-fmt:
+    name: TOML formatting
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      # https://taplo.tamasfe.dev/cli/installation/binary.html
+      - name: Install Taplo 0.10.0
+        run: |
+          curl --fail --silent --show-error --location --retry 3 \
+            https://github.com/tamasfe/taplo/releases/download/0.10.0/taplo-linux-x86_64.gz \
+            --output "$RUNNER_TEMP/taplo.gz"
+          echo "8fe196b894ccf9072f98d4e1013a180306e17d244830b03986ee5e8eabeb6156  $RUNNER_TEMP/taplo.gz" | sha256sum --check
+          gzip --decompress --stdout "$RUNNER_TEMP/taplo.gz" > "$RUNNER_TEMP/taplo"
+          chmod +x "$RUNNER_TEMP/taplo"
+          echo "$RUNNER_TEMP" >> "$GITHUB_PATH"
+      # https://taplo.tamasfe.dev/cli/usage/formatting.html#check
+      - run: taplo fmt --check
+
   fmt:
     name: Cargo fmt
     runs-on: ubuntu-latest

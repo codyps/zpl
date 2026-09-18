@@ -37,6 +37,7 @@
             rustc
             cargo
             rustfmt
+            taplo
             clippy
             rust-analyzer
             bacon

@@ -1,0 +1,12 @@
+# https://taplo.tamasfe.dev/configuration/file.html
+include = ["**/*.toml"]
+exclude = [
+    "**/target/**",
+    "**/node_modules/**",
+    "**/_*/**",
+    ".git/**",
+    ".direnv/**",
+]
+
+[formatting]
+indent_string = "    "

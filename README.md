@@ -145,10 +145,13 @@ Run from the repository root in the development shell:
 cargo test --workspace
 cargo test -p zpl --lib
 cargo fmt --all -- --check
+taplo fmt --check
 cargo clippy --workspace --all-targets
 ```
 
-Use `nix fmt` for Nix files. `test-data/generate.sh` is a separate external-service
+Use `taplo fmt` to automatically format TOML files and `nix fmt` for Nix files.
+CI checks TOML formatting with the same Taplo configuration.
+`test-data/generate.sh` is a separate external-service
 check: it sends fixtures to Labelary and writes PDFs under `test-data/_gen/`.
 See [AGENTS.md](AGENTS.md) for contribution and testing conventions.
 

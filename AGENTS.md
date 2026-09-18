@@ -22,6 +22,7 @@ Run workspace commands from the repository root:
 - `cargo test --workspace`: run workspace tests.
 - `cargo test -p zpl --lib`: run parser unit tests.
 - `cargo fmt --all -- --check`: check Rust formatting.
+- `taplo fmt`: automatically format TOML files; `taplo fmt --check` checks formatting as in CI.
 - `cargo clippy --workspace --all-targets`: inspect lint diagnostics.
 - `nix fmt`: format the Nix configuration.
 
