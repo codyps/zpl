@@ -167,6 +167,10 @@ The supplied PDFs remain outside the repository and are not redistributed here.
   specification and scale with DPI. No claim of UPS label compliance.
 - DataBar: Omnidirectional/Truncated (1/2), Stacked/Stacked Omnidirectional (3/4),
   Limited (5), Expanded/Expanded Stacked (6), and EAN/UPC aliases (7–10).
+  The printer profile uses captured fixed UPC/EAN proportions and requires eleven
+  uncompressed UPC-A digits for `BR8`; all four zero-suppression forms are supported.
+  The specification profile also accepts compressed UPC-E input. Retail aliases
+  ignore the height operand, which applies only to composite GS1-128 components.
   Expanded uses general-purpose method 00, numeric/alphanumeric/ISO-646 switching,
   and 2–22 even-numbered segments per row. Specialized AI compression is not
   implemented, so some messages that fit a printer exceed local capacity.

@@ -12,6 +12,8 @@ pub const SPECIFICATION: Options = Options {
     height: 1218,
     dpi: 203,
     compatibility: Compatibility {
+        databar_retail_printer_dimensions: false,
+        databar_upce_requires_upca_data: false,
         composite_height_in_modules: false,
         composite_linear_quiet_zone: false,
         validation_retail_long_is_short: false,
@@ -55,6 +57,8 @@ pub const ZD621_203_DPI: Options = Options {
     height: 1218,
     dpi: 203,
     compatibility: Compatibility {
+        databar_retail_printer_dimensions: true,
+        databar_upce_requires_upca_data: true,
         composite_height_in_modules: true,
         composite_linear_quiet_zone: true,
         validation_retail_long_is_short: true,

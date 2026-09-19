@@ -265,3 +265,24 @@ fn composite_height_and_quiet_zone_are_independent() {
     let shifted = bounds(&raster(body, options));
     assert_eq!(shifted, (spec.0 + 20, spec.1, spec.2 + 20, spec.3));
 }
+
+#[test]
+fn databar_retail_dimensions_and_upce_input_are_independent() {
+    // ^BR p. 135: e applies to composite GS1-128, not the retail aliases.
+    for options in [SPECIFICATION, ZD621_203_DPI] {
+        assert_eq!(
+            raster("^FO60,60^BRN,9,2,1,20^FD590123412345", options),
+            raster("^FO60,60^BRN,9,2,1,80^FD590123412345", options)
+        );
+    }
+    let body = "^FO60,60^BRN,8,2,1,20^FD425261";
+    let mut options = ZD621_203_DPI;
+    options.compatibility.databar_upce_requires_upca_data = false;
+    assert_eq!(bounds(&raster(body, options)), (74, 60, 176, 208));
+    options.compatibility.databar_retail_printer_dimensions = false;
+    assert_eq!(raster(body, options), raster(body, SPECIFICATION));
+    assert_eq!(
+        raster(body, SPECIFICATION),
+        raster("^FO60,60^BRN,8,2,1,20^FD04210000526", SPECIFICATION)
+    );
+}

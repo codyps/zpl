@@ -13,6 +13,13 @@
 /// initial value: the renderer does not reapply it after you change an option.
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct Compatibility {
+    /// Give ^BR UPC/EAN components uniform 74X (EAN-8: 60X) bars and a
+    /// seven-module left margin, as captured on the ZD621. Default: nominal
+    /// GS1 proportions with five-module guard extensions and no origin margin.
+    pub databar_retail_printer_dimensions: bool,
+    /// Require eleven uncompressed UPC-A digits for ^BR UPC-E. The printer
+    /// rejects the compressed six/seven/eight-digit form accepted by ^B9.
+    pub databar_upce_requires_upca_data: bool,
     /// Interpret ^BR composite linear height as modules instead of the dots
     /// specified on guide p. 135. Observed with module widths one through three.
     pub composite_height_in_modules: bool,

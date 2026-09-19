@@ -59,7 +59,7 @@ cases! {
     databar_expanded: "BRN,6,2,1,80,22", "0100012345678905";
     databar_expanded_stacked: "BRN,6,2,1,80,4", "01950123456789033103000123";
     databar_upca: "BRN,7,2,1,80", "03600029145";
-    databar_upce: "BRN,8,2,1,80", "042526";
+    databar_upce: "BRN,8,2,1,80", "04210000526";
     databar_ean13: "BRN,9,2,1,80", "590123412345";
     databar_ean8: "BRN,10,2,1,80", "1234567";
     composite_a: "BRN,11,2,1,80", "0103212345678906|10ABC";

@@ -119,18 +119,59 @@ pub(super) fn render(b: &Barcode, data: &[u8]) -> Result<Path, String> {
     linear.height = b.num(4, 25., 1., 32000.)?;
     match variant {
         7..=10 => {
+            // ^BR e applies only to GS1-128 composite components (guide p. 135).
+            // GS1 General Specifications 23.0, EAN/UPC dimensions: nominal X
+            // 0.33 mm, bars 22.85 mm (EAN-8: 18.23), excluding guard extensions.
+            // https://ref.gs1.org/standards/genspecs/23.0.0/
+            let printer = b.compatibility.databar_retail_printer_dimensions;
+            linear.height = module
+                * if printer {
+                    if variant == 10 {
+                        60.
+                    } else {
+                        74.
+                    }
+                } else if variant == 10 {
+                    18.23 / 0.33
+                } else {
+                    22.85 / 0.33
+                };
+            if !printer {
+                linear.name = match variant {
+                    7 => "BU",
+                    8 => "B9",
+                    9 => "BE",
+                    _ => "B8",
+                }
+                .into();
+                linear.compatibility.retail_guard_extension_dots = None;
+            }
+            let compressed;
+            let data = if variant == 8 && data.len() == 11 {
+                compressed = upce::compress(data)?;
+                compressed.as_slice()
+            } else {
+                if variant == 8 && b.compatibility.databar_upce_requires_upca_data {
+                    return Err("^BR UPC-E requires 11 uncompressed UPC-A digits".into());
+                }
+                data
+            };
             linear.params = vec![
                 "N".into(),
                 linear.height.to_string(),
                 "N".into(),
                 "N".into(),
             ];
-            return match variant {
+            let mut path = match variant {
                 7 => upca::render(&linear, data),
                 8 => upce::render(&linear, data),
                 9 => ean13::render(&linear, data),
                 _ => ean8::render(&linear, data),
-            };
+            }?;
+            if printer {
+                path.transform(|p| Point::new(p.x + 7. * module, p.y));
+            }
+            return Ok(path);
         }
         3 | 4 => return databar_stacked::render(&linear, data, variant == 4, separator),
         5 => return databar_limited::render(&linear, data),

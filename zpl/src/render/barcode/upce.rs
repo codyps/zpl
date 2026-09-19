@@ -1,6 +1,26 @@
 //! UPC-E; ISO/IEC 15420; Zebra page 85.
 //! Specification links and implementation limits: docs/barcodes.md.
 use super::*;
+/// Inverse of the four UPC-E zero-suppression expansions (ISO/IEC 15420).
+pub(super) fn compress(data: &[u8]) -> Result<Vec<u8>, String> {
+    let d = digits(data)?;
+    if d.len() != 11 || d[0] > 1 {
+        return Err("UPC-E requires an 11-digit UPC-A value with number system 0 or 1".into());
+    }
+    let mut out = vec![d[0], d[1], d[2]];
+    if d[3] <= 2 && d[4..8] == [0, 0, 0, 0] {
+        out.extend([d[8], d[9], d[10], d[3]]);
+    } else if d[3] >= 3 && d[4..9] == [0, 0, 0, 0, 0] {
+        out.extend([d[3], d[9], d[10], 3]);
+    } else if d[4] != 0 && d[5..10] == [0, 0, 0, 0, 0] {
+        out.extend([d[3], d[4], d[10], 4]);
+    } else if d[5] != 0 && d[6..10] == [0, 0, 0, 0] && d[10] >= 5 {
+        out.extend([d[3], d[4], d[5], d[10]]);
+    } else {
+        return Err("UPC-A value cannot be zero-suppressed to UPC-E".into());
+    }
+    Ok(out.into_iter().map(|v| b'0' + v).collect())
+}
 pub(super) fn canonical(data: &[u8]) -> Result<Vec<u8>, String> {
     let mut d = digits(data)?;
     if d.len() == 6 {

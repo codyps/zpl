@@ -88,8 +88,8 @@ that the guide specifies those scan-conversion details.
 
 ## Remaining accuracy work
 
-This is not yet 100% non-text parity. Of the 133 comparison cases, 109 are exact,
-24 render with differences, and none report unsupported input. All 31 additional
+This is not yet 100% non-text parity. Of the 133 comparison cases, 113 are exact,
+20 render with differences, and none report unsupported input. All 31 additional
 controls are exact. Text and non-text failures remain separate in the provenance
 and per-case baseline; aggregate percentages must not conceal either category.
 
@@ -100,7 +100,9 @@ The tested firmware produces identical QR images for requested masks 0/3/7;
 the renderer still honors the documented mask operand. Do not substitute a
 payload-specific mask table for the missing general selection behavior.
 LOGMARS interpretation now includes its checksum and matches exactly.
-The blank DataBar UPC-E printer response needs separate validation.
+The invalid six-digit DataBar UPC-E input and blank printer response are preserved
+as a rejection control. Its positive case now uses eleven uncompressed UPC-A
+digits and a fresh nonblank printer response; all four retail aliases match.
 
 Independent barcode decoder tests remain necessary: different valid encodings
 can decode to the same content without matching printer pixels. Captured cases
@@ -154,5 +156,5 @@ The [resident-font suite](../zpl/tests/fixtures/resident-fonts-zd621-v1/README.m
 adds 118 exact page/caption controls and 34 origin controls. Rotated font-0
 controls pin up to four differing dots and exceed 99.3% ink IoU individually;
 font A/D controls are exact. This does not promise 80% at arbitrary unsampled
-sizes or for unimplemented scripts. The remaining 24 corpus differences are
+sizes or for unimplemented scripts. The remaining 20 corpus differences are
 non-text shapes/barcodes, still pinned and not claimed as complete.

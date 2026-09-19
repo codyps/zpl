@@ -411,17 +411,17 @@
     },
     "databar_ean13": {
       "comparison": {
-        "both_black": 4640,
-        "diff_rgb_sha256": "72b9a70f55945cf4b08f4eac135deb363d3fa7b61468baf2dcd6cb018b1c892c",
+        "both_black": 14504,
+        "diff_rgb_sha256": "15859245bdb7407da9c62d0dc2a97dee214f60ea6b3967dd947f0d322d38b3fa",
         "dimensions_match": true,
-        "exact": false,
-        "local_only": 3200,
-        "printer_only": 9864
+        "exact": true,
+        "local_only": 0,
+        "printer_only": 0
       },
       "local": {
         "height": 1218,
-        "ink": 7840,
-        "pixels_sha256": "4a1e85e70ab8f661d8059080939c701d2bb4303e2d69469bd2fa1afe8240f405",
+        "ink": 14504,
+        "pixels_sha256": "73a7a7d4aef2a137bc5db58c1d41040d41380fab332546ad54fe92729b4313ad",
         "width": 832
       },
       "printer": {
@@ -435,17 +435,17 @@
     },
     "databar_ean8": {
       "comparison": {
-        "both_black": 2560,
-        "diff_rgb_sha256": "9cc4d5c5f6ef9e46624508534ebcce14165cc9f452fb5f9266e13f027959022c",
+        "both_black": 7680,
+        "diff_rgb_sha256": "1c96dffbc276575e88ecd070db711f85f4bd5608c3d25f68b51de630823a93dc",
         "dimensions_match": true,
-        "exact": false,
-        "local_only": 2560,
-        "printer_only": 5120
+        "exact": true,
+        "local_only": 0,
+        "printer_only": 0
       },
       "local": {
         "height": 1218,
-        "ink": 5120,
-        "pixels_sha256": "d7a4f1df6f23db4e31be66bacb484076846e5def9e93d416903c58bacc0ad577",
+        "ink": 7680,
+        "pixels_sha256": "c931a6b94dbccee5088608c0d8df2acd676fb6834d57a39536a0531712437ebf",
         "width": 832
       },
       "printer": {
@@ -627,17 +627,17 @@
     },
     "databar_upca": {
       "comparison": {
-        "both_black": 5760,
-        "diff_rgb_sha256": "7e3c81130faa036cb49b0bd1028ed51f5eb7185efc48460a6bd0acb40af5b940",
+        "both_black": 15392,
+        "diff_rgb_sha256": "95ea8df79271092852fdcbe0c52748ae053b34fd6f04e0d888df712fd954f4ec",
         "dimensions_match": true,
-        "exact": false,
-        "local_only": 2560,
-        "printer_only": 9632
+        "exact": true,
+        "local_only": 0,
+        "printer_only": 0
       },
       "local": {
         "height": 1218,
-        "ink": 8320,
-        "pixels_sha256": "42d2b36f1b72cddb396ea4e85686eb59356c9208e2f1ebd44c8f820acfddaada",
+        "ink": 15392,
+        "pixels_sha256": "fe60e3e3cefe2eee0657fc048753d61a8e26241703ac414a92b5a81d8b949ccb",
         "width": 832
       },
       "printer": {
@@ -651,27 +651,27 @@
     },
     "databar_upce": {
       "comparison": {
-        "both_black": 0,
-        "diff_rgb_sha256": "4163962f3d6c87aaabdc1a5967893d71b9afc275286108ff8481481e76b30d9b",
+        "both_black": 8288,
+        "diff_rgb_sha256": "58ea9679c8f2dbbb74a1f372791df4fa71631ae2976ed278ae8e43b1c823f1a8",
         "dimensions_match": true,
-        "exact": false,
-        "local_only": 4480,
+        "exact": true,
+        "local_only": 0,
         "printer_only": 0
       },
       "local": {
         "height": 1218,
-        "ink": 4480,
-        "pixels_sha256": "b7e4e04501f2de656a9cd113d04a5757abc8f482bc877304ff8a3ad1966d2145",
+        "ink": 8288,
+        "pixels_sha256": "16fd3f68ea659ca20e5fd7144325193cb033a6865cbe924fc79858314d2ad4c7",
         "width": 832
       },
       "printer": {
         "height": 1218,
-        "ink": 0,
-        "pixels_sha256": "f6e1b1c67a27d7697ff80406a1659d946e9428a39662e24679bf13d946bbcf3e",
+        "ink": 8288,
+        "pixels_sha256": "16fd3f68ea659ca20e5fd7144325193cb033a6865cbe924fc79858314d2ad4c7",
         "width": 832
       },
-      "printer_png_sha256": "f886a1807b034d9f0ff8efb3ddca53b9b4c250128650ef97cbe45102a3cd23f3",
-      "zpl_sha256": "02f2fced16c5bd7bbe5fb118479bf99ffa0a8ae2c79f9d954a35b01cb0cf0aed"
+      "printer_png_sha256": "eeff957f3b0070746bbb61155e01f944ba26e53a1796b2e402f95b00c5c265f4",
+      "zpl_sha256": "3b313e0cd1b56186d659f175c07a4c588b8d31cf9cd8046a5857328b79f2c562"
     },
     "ean13": {
       "comparison": {
@@ -1442,6 +1442,7 @@
       "zpl_sha256": "4f8e4563e0693cb497b8c189b16fdaf9529aa8671b2be536551510a7408fa9d7"
     }
   },
+  "databar_upce_capture_note": "Recaptured 2026-09-19 UTC with valid eleven-digit UPC-A data. Original invalid six-digit input and blank response retained in zpl/tests/fixtures/databar-retail-zd621-v1.",
   "device": "ZTC ZD621-203dpi ZPL; firmware V93.21.33Z",
   "dpi": 203,
   "height": 1218,
