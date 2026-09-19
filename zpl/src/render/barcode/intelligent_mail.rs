@@ -137,16 +137,20 @@ fn states(data: &[u8]) -> Result<Vec<(bool, bool)>, String> {
 pub(super) fn render(b: &Barcode, data: &[u8]) -> Result<Path, String> {
     let mut path = Path::default();
     for (i, (ascend, descend)) in states(data)?.into_iter().enumerate() {
-        let top = if ascend { 0. } else { (b.height / 3.).floor() };
-        let bottom = if descend {
+        let mut top = if ascend { 0. } else { b.height / 3. };
+        let mut bottom = if descend {
             b.height
         } else {
-            (b.height * 2. / 3.).ceil()
+            b.height * 2. / 3.
         };
+        if b.compatibility.intelligent_mail_outward_rounding {
+            top = top.floor();
+            bottom = bottom.ceil();
+        }
         path.rect(
             // The ZD621 uses the same fixed postal pitch as POSTNET/PLANET.
             // See docs/printer-accuracy.md for the printer reference.
-            i as f64 * (b.module * 2.5).floor(),
+            i as f64 * b.postal_pitch(),
             top,
             b.module,
             bottom - top,

@@ -221,7 +221,16 @@ mod tests {
             numeric(data.as_bytes(), &mut words);
             assert_eq!(words, expected);
         }
-        let b = Barcode::new("B4", &["N", "8", "N", "A"], 2., 2., 90., 203).unwrap();
+        let b = Barcode::new(
+            "B4",
+            &["N", "8", "N", "A"],
+            2.,
+            2.,
+            90.,
+            203,
+            Default::default(),
+        )
+        .unwrap();
         for length in 1..=81 {
             let digits: String = (0..length)
                 .map(|i| (b'0' + (i % 10) as u8) as char)
@@ -253,7 +262,16 @@ mod tests {
     }
     #[test]
     fn full_ascii_round_trip() {
-        let b = Barcode::new("B4", &["N", "8", "N", "0"], 2., 2., 90., 203).unwrap();
+        let b = Barcode::new(
+            "B4",
+            &["N", "8", "N", "0"],
+            2.,
+            2.,
+            90.,
+            203,
+            Default::default(),
+        )
+        .unwrap();
         for first in (0u8..128).step_by(16) {
             let data: Vec<_> = (first..first + 16).collect();
             // Manual alphanumeric input avoids numeric-mode reconstruction,
@@ -284,7 +302,16 @@ mod tests {
     }
     #[test]
     fn independent_decode() {
-        let b = Barcode::new("B4", &["N", "8", "N", "A"], 2., 2., 90., 203).unwrap();
+        let b = Barcode::new(
+            "B4",
+            &["N", "8", "N", "A"],
+            2.,
+            2.,
+            90.,
+            203,
+            Default::default(),
+        )
+        .unwrap();
         for length in 1..=49 {
             let data: Vec<_> = (0..length)
                 .map(|i| ALPHABET[(i * 7 + length) % 43])

@@ -1,4 +1,55 @@
-use crate::output::Path;
+use crate::output::{Path, Point, Segment};
+
+/// A diagonal band bounded by the ^GD box (Zebra Programming Guide, p. 213).
+/// The guide specifies the box and thickness, not a dot stepping algorithm.
+/// Clip the band to both sides of its centerline, preserving perpendicular
+/// thickness instead of letting hardware-specific horizontal runs escape.
+pub(super) fn diagonal(w: f64, h: f64, thickness: f64, left: bool) -> Path {
+    let mut polygon = vec![
+        Point::new(0., 0.),
+        Point::new(w, 0.),
+        Point::new(w, h),
+        Point::new(0., h),
+    ];
+    let limit = thickness * w.hypot(h) / 2.;
+    let distance = |p: Point| {
+        if left {
+            h * p.x - w * p.y
+        } else {
+            h * p.x + w * p.y - w * h
+        }
+    };
+    for sign in [-1., 1.] {
+        let mut clipped = Vec::new();
+        if let Some(&last) = polygon.last() {
+            let mut previous = last;
+            for &current in &polygon {
+                let a = sign * distance(previous) - limit;
+                let b = sign * distance(current) - limit;
+                if (a <= 0.) != (b <= 0.) {
+                    let t = a / (a - b);
+                    clipped.push(Point::new(
+                        previous.x + t * (current.x - previous.x),
+                        previous.y + t * (current.y - previous.y),
+                    ));
+                }
+                if b <= 0. {
+                    clipped.push(current);
+                }
+                previous = current;
+            }
+        }
+        polygon = clipped;
+    }
+    let mut path = Path::default();
+    if let Some((&first, rest)) = polygon.split_first() {
+        path.segments.push(Segment::Move(first));
+        path.segments
+            .extend(rest.iter().copied().map(Segment::Line));
+        path.segments.push(Segment::Close);
+    }
+    path
+}
 fn hex(c: u8) -> Result<u8, String> {
     (c as char)
         .to_digit(16)

@@ -60,6 +60,7 @@ pub(super) struct Barcode {
     module: f64,
     ratio: f64,
     dpi: u32,
+    compatibility: super::compatibility::Compatibility,
 }
 pub(super) fn supported(name: &str) -> bool {
     matches!(
@@ -93,11 +94,18 @@ pub(super) fn supported(name: &str) -> bool {
     )
 }
 impl Barcode {
+    fn postal_pitch(&self) -> f64 {
+        if self.compatibility.postal_fixed_pitch {
+            (self.module * 2.5).floor()
+        } else {
+            self.module * (1. + self.ratio)
+        }
+    }
     pub fn field_origin_y(&self) -> f64 {
         // ZD621 V93.21.33Z controls with ^BY heights 40/60/100 place ^FO
         // QR ink at y + height - 1. This does not apply to ^FT. See the
         // captured controls and reproduction notes in docs/printer-accuracy.md.
-        if self.name == "BQ" {
+        if self.name == "BQ" && self.compatibility.qr_fo_uses_by_height {
             self.height - 1.
         } else {
             0.
@@ -110,6 +118,7 @@ impl Barcode {
         ratio: f64,
         height: f64,
         dpi: u32,
+        compatibility: super::compatibility::Compatibility,
     ) -> Result<Self, String> {
         let max = match name {
             "BD" | "BF" | "BL" => 3,
@@ -132,6 +141,7 @@ impl Barcode {
             module,
             ratio,
             dpi,
+            compatibility,
         };
         let layout = match name {
             "B1" | "BK" | "BM" | "BP" => Some((2, 3, 4)),
@@ -290,7 +300,7 @@ impl Barcode {
             height = self.height;
         }
         let mut baseline = height;
-        if self.name == "BQ" {
+        if self.name == "BQ" && self.compatibility.qr_ft_includes_margin {
             // ^FT includes a three-module lower margin, less one dot. Verified
             // with ZD621 magnifications 1–5 and ^BY heights 40/100; unlike ^FO,
             // this anchor is independent of the default linear barcode height.
@@ -314,7 +324,7 @@ impl Barcode {
             return plessey::interpretation(self, bytes);
         }
         if self.name == "BA" {
-            return code93::interpretation(bytes);
+            return code93::interpretation(bytes, self.compatibility.code93_normalize_input);
         }
         let mut decimal = match self.name.as_str() {
             "B8" => Some(retail::checked(bytes, 8)?),

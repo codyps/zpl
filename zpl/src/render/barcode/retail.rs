@@ -12,6 +12,13 @@ pub(super) fn render(b: &Barcode, bits: &[bool], upca: bool) -> Result<Path, Str
         return Ok(path);
     }
     let middle = bits.len() / 2;
+    // ISO/IEC 15420:2009, 4.3.3 specifies a five-module extension.
+    // https://www.iso.org/standard/46143.html
+    let extension = b
+        .compatibility
+        .retail_guard_extension_dots
+        .map(f64::from)
+        .unwrap_or(5. * b.module);
     for (i, &black) in bits.iter().enumerate() {
         let guard = i < 3
             || i >= bits.len() - 3
@@ -19,12 +26,7 @@ pub(super) fn render(b: &Barcode, bits: &[bool], upca: bool) -> Result<Path, Str
             || (bits.len() == 51 && i >= 45)
             || (upca && (i < 10 || i >= bits.len() - 10));
         if black && guard {
-            path.rect(
-                i as f64 * b.module,
-                b.height,
-                b.module,
-                13. * b.dpi as f64 / 203.,
-            );
+            path.rect(i as f64 * b.module, b.height, b.module, extension);
         }
     }
     Ok(path)

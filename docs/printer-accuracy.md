@@ -44,6 +44,15 @@ behavior change. Never replace a printer reference with a locally rendered PNG.
 Source changes require a new printer preview and matching capture provenance.
 A blank printer image is an observation, not evidence of barcode correctness.
 
+## Rendering options used by the tests
+
+Every captured-font, hardware barcode and corpus accuracy test starts with
+`zpl::render::profiles::ZD621_203_DPI`, overriding canvas dimensions as needed.
+The profile enables the independently selectable compatibility options described
+in [printer profiles](local-renderer.md#printer-profiles). Existing pixel hashes
+and overpaint/underpaint counts are unchanged by this separation. Tests in
+`zpl/tests/profiles.rs` also cover defaults and individual option overrides.
+
 ## Improvements verified against the printer
 
 - White `^GB/^GC/^GE` painting uses white compositing rather than rejection.
@@ -66,7 +75,8 @@ A blank printer image is an observation, not evidence of barcode correctness.
   height even with interpretation text disabled. The four corpus cases and
   extra EAN-13/UPC-A module-width controls are exact. Guard extension is 13 dots
   at 203 DPI and independent of font height in the tested 10/20/40-dot controls.
-  Scaling this extension to other resolutions is not yet printer-verified.
+  The profile stores this as an explicit 13-dot override; changing DPI does not
+  scale it. Other resolutions are not printer-verified.
 
 Command references: Zebra ZPL II Programming Guide, `^B3` p. 70, `^BQ`
 pp. 128–131, and `^GB/^GC/^GD/^GE` pp. 210–214. The command/page index is

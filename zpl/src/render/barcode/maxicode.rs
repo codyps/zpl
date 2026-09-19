@@ -240,7 +240,7 @@ mod tests {
             (max_x - min_x, max_y - min_y)
         }
         for dpi in [203, 300, 600] {
-            let b = Barcode::new("BD", &["4"], 2., 2., 90., dpi).unwrap();
+            let b = Barcode::new("BD", &["4"], 2., 2., 90., dpi, Default::default()).unwrap();
             let path = render(&b, b"A").unwrap();
             let unit = dpi as f64 / 25.4;
             let (width, height) = extent(&path.segments[..7]);
@@ -263,7 +263,7 @@ mod tests {
     }
     #[test]
     fn full_byte_alphabet_round_trip() {
-        let b = Barcode::new("BD", &["4"], 2., 2., 90., 203).unwrap();
+        let b = Barcode::new("BD", &["4"], 2., 2., 90., 203, Default::default()).unwrap();
         for first in (0u16..256).step_by(16) {
             let data: Vec<_> = (first..first + 16).map(|v| v as u8).collect();
             let m = encode(&b, &data).unwrap();
@@ -282,7 +282,16 @@ mod tests {
     #[test]
     fn independent_decode() {
         for mode in [2, 3, 4, 5, 6] {
-            let b = Barcode::new("BD", &[&mode.to_string()], 2., 2., 90., 203).unwrap();
+            let b = Barcode::new(
+                "BD",
+                &[&mode.to_string()],
+                2.,
+                2.,
+                90.,
+                203,
+                Default::default(),
+            )
+            .unwrap();
             let data = match mode {
                 2 => b"001840123450000Hello MaxiCode".as_slice(),
                 3 => b"001826ABC123Hello MaxiCode".as_slice(),

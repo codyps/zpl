@@ -3,24 +3,29 @@
 //! <https://www.zebra.com/content/dam/support-dam/en/documentation/unrestricted/guide/software/zpl-zbi2-pg-en.pdf>
 use super::*;
 const ALPHABET: &[u8] = b"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ-. $/+%";
-fn field_values(data: &[u8]) -> Vec<usize> {
+fn field_values(data: &[u8], normalize: bool) -> Result<Vec<usize>, String> {
     // Zebra guide pp. 87–89: these are control-code substitutes, not literal
     // punctuation. The ZD621 uppercases raw letters and skips unsupported bytes.
-    data.iter()
-        .filter_map(|c| {
-            let c = c.to_ascii_uppercase();
-            match c {
-                b'&' => Some(43),
-                b'\'' => Some(44),
-                b'(' => Some(45),
-                b')' => Some(46),
-                _ => ALPHABET.iter().position(|&v| v == c),
-            }
-        })
-        .collect()
+    let mut values = Vec::new();
+    for &c in data {
+        let c = if normalize { c.to_ascii_uppercase() } else { c };
+        let value = match c {
+            b'&' => Some(43),
+            b'\'' => Some(44),
+            b'(' => Some(45),
+            b')' => Some(46),
+            _ => ALPHABET.iter().position(|&v| v == c),
+        };
+        if let Some(value) = value {
+            values.push(value);
+        } else if !normalize {
+            return Err("Code 93 requires the ZPL alphabet or full-ASCII shift substitutes".into());
+        }
+    }
+    Ok(values)
 }
-pub(super) fn interpretation(data: &[u8]) -> Result<String, String> {
-    let values = field_values(data);
+pub(super) fn interpretation(data: &[u8], normalize: bool) -> Result<String, String> {
+    let values = field_values(data, normalize)?;
     let mut text = String::new();
     let mut i = 0;
     while i < values.len() {
@@ -62,7 +67,7 @@ pub(super) fn render(b: &Barcode, data: &[u8]) -> Result<Path, String> {
         0x1b4, 0x1b2, 0x1ac, 0x1a6, 0x196, 0x19a, 0x16c, 0x166, 0x136, 0x13a, 0x12e, 0x1d4, 0x1d2,
         0x1ca, 0x16e, 0x176, 0x1ae, 0x126, 0x1da, 0x1d6, 0x132, 0x15e,
     ];
-    let mut values = field_values(data);
+    let mut values = field_values(data, b.compatibility.code93_normalize_input)?;
     for cycle in [20, 15] {
         let check = values
             .iter()
@@ -86,9 +91,12 @@ mod tests {
     use super::*;
     #[test]
     fn interpretation_uses_zpl_shifts() {
-        assert_eq!(interpretation(b"Hello93!").unwrap(), "HELLO93");
-        assert_eq!(interpretation(b")A)B)C(A").unwrap(), "abc!");
-        assert_eq!(interpretation(b"(D(E(O'V'W").unwrap(), "$%/@`");
-        assert_eq!(interpretation(b"'U&A").unwrap(), "\0\x01");
+        assert_eq!(interpretation(b"Hello93!", true).unwrap(), "HELLO93");
+        assert!(interpretation(b"Hello93!", false).is_err());
+        for normalize in [false, true] {
+            assert_eq!(interpretation(b")A)B)C(A", normalize).unwrap(), "abc!");
+            assert_eq!(interpretation(b"(D(E(O'V'W", normalize).unwrap(), "$%/@`");
+            assert_eq!(interpretation(b"'U&A", normalize).unwrap(), "\0\x01");
+        }
     }
 }

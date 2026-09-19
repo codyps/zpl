@@ -39,7 +39,7 @@ fn printer_accuracy() {
             zpl::Options {
                 width: n(1) as u32,
                 height: n(2) as u32,
-                dpi: 203,
+                ..zpl::render::profiles::ZD621_203_DPI
             },
         );
         match document {

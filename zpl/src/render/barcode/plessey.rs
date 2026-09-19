@@ -65,8 +65,26 @@ mod tests {
     use super::*;
     #[test]
     fn check_display_does_not_change_bars() {
-        let no = Barcode::new("BP", &["N", "N", "80", "Y", "N"], 2., 2., 80., 203).unwrap();
-        let yes = Barcode::new("BP", &["N", "Y", "80", "Y", "N"], 2., 2., 80., 203).unwrap();
+        let no = Barcode::new(
+            "BP",
+            &["N", "N", "80", "Y", "N"],
+            2.,
+            2.,
+            80.,
+            203,
+            Default::default(),
+        )
+        .unwrap();
+        let yes = Barcode::new(
+            "BP",
+            &["N", "Y", "80", "Y", "N"],
+            2.,
+            2.,
+            80.,
+            203,
+            Default::default(),
+        )
+        .unwrap();
         assert_eq!(interpretation(&no, b"123ABC").unwrap(), "123ABC");
         assert_eq!(interpretation(&yes, b"123ABC").unwrap(), "123ABC0B");
         assert_eq!(

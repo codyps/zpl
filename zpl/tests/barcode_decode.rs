@@ -2,9 +2,18 @@
 use rxing::BarcodeFormat;
 use zpl::{output::raster::rasterize, render, Options};
 fn decode(command: &str, payload: &str, expected: &str, format: BarcodeFormat) {
+    decode_with_options(command, payload, expected, format, Options::default());
+}
+fn decode_with_options(
+    command: &str,
+    payload: &str,
+    expected: &str,
+    format: BarcodeFormat,
+    options: Options,
+) {
     let zpl = format!("^XA^PW1600^LL1000^FO50,50^BY3,2,90^{command}^FD{payload}^FS^XZ");
-    let doc = render(zpl.as_bytes(), Options::default())
-        .unwrap_or_else(|e| panic!("{command}, {payload:?}: {e}"));
+    let doc =
+        render(zpl.as_bytes(), options).unwrap_or_else(|e| panic!("{command}, {payload:?}: {e}"));
     let raster = rasterize(&doc.labels[0]).unwrap();
     let mut left = raster.width;
     let mut top = raster.height;
@@ -57,7 +66,7 @@ fn linear_round_trips() {
             "123456",
             BarcodeFormat::CODABAR,
         ),
-        ("BAN,90,N,N", "Hello93!", "HELLO93", BarcodeFormat::CODE_93),
+        ("BAN,90,N,N", "HELLO93", "HELLO93", BarcodeFormat::CODE_93),
         ("BAN,90,N,N", ")A)B)C(A", "abc!", BarcodeFormat::CODE_93),
         ("B3N,N,90,N,N", "CODE39", "CODE39", BarcodeFormat::CODE_39),
         (
@@ -363,7 +372,15 @@ fn field_hex_ascii_and_barcode_state() {
     let text = "\0\x01!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~\x7f";
     let encoded: String = text.bytes().map(|v| format!("_{v:02X}")).collect();
     for (field, expected) in [("_29A_28A_26A", "a!\x01"), ("abc", "ABC"), ("A!b?C", "ABC")] {
-        decode("BAN,90,N,N^FH", field, expected, BarcodeFormat::CODE_93);
+        // Raw input normalization is a printer departure. Strict full-ASCII
+        // substitute encoding remains covered by code93_zpl_full_ascii_substitutes.
+        decode_with_options(
+            "BAN,90,N,N^FH",
+            field,
+            expected,
+            BarcodeFormat::CODE_93,
+            zpl::render::profiles::ZD621_203_DPI,
+        );
     }
     decode(
         "BQN,2,4,L,0^FH",

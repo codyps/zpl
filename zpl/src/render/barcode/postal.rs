@@ -28,9 +28,9 @@ pub(super) fn draw(b: &Barcode, data: &[u8], planet: bool) -> Result<Path, Strin
         p.rect(
             // ZD621 module-width probes (1, 2, 3 dots) produce pitches 2, 5,
             // and 7 dots: truncate the fixed 2.5-module pitch per bar. The
-            // variable-width ^BY ratio does not apply to POSTNET/PLANET.
+            // captured firmware ignores the documented ^BY ratio support.
             // Capture provenance: docs/printer-accuracy.md.
-            i as f64 * (b.module * 2.5).floor(),
+            i as f64 * b.postal_pitch(),
             b.height - height,
             b.module,
             height,

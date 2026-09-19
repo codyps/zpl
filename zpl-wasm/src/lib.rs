@@ -32,8 +32,16 @@ fn preview(input: &str, width: u32, height: u32, dpi: u32, label: u32) -> Result
     if width == 0 || height == 0 || width > 4096 || height > 4096 || !(1..=1200).contains(&dpi) {
         return Err("Use dimensions from 1 to 4096 dots and DPI from 1 to 1200.".into());
     }
-    let document =
-        render(input.as_bytes(), Options { width, height, dpi }).map_err(|e| e.to_string())?;
+    let document = render(
+        input.as_bytes(),
+        Options {
+            width,
+            height,
+            dpi,
+            ..Options::default()
+        },
+    )
+    .map_err(|e| e.to_string())?;
     let scene = document
         .labels
         .get(label as usize)
@@ -76,6 +84,7 @@ mod tests {
                 width: 100,
                 height: 80,
                 dpi: 203,
+                ..Options::default()
             },
         )
         .unwrap();

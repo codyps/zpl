@@ -1,5 +1,7 @@
 //! Local, deterministic ZPL previews. Unsupported rendering semantics are errors.
 mod barcode;
+pub mod compatibility;
+pub mod profiles;
 use raster_diff::compression;
 mod font;
 mod graphics;
@@ -19,11 +21,13 @@ impl fmt::Display for RenderError {
     }
 }
 impl Error for RenderError {}
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct Options {
     pub width: u32,
     pub height: u32,
     pub dpi: u32,
+    /// Explicit printer departures and quantization choices. Disabled by default.
+    pub compatibility: compatibility::Compatibility,
 }
 impl Default for Options {
     fn default() -> Self {
@@ -31,6 +35,7 @@ impl Default for Options {
             width: 812,
             height: 1218,
             dpi: 203,
+            compatibility: compatibility::Compatibility::default(),
         }
     }
 }
@@ -444,6 +449,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                         ratio,
                         bar_h,
                         options.dpi,
+                        options.compatibility,
                     )?);
                 }
                 "FD" | "FV" => {
@@ -561,16 +567,20 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                         "L" | "\\" => true,
                         _ => return Err("invalid diagonal orientation".into()),
                     };
-                    let step = ((w as u64) << 16) / h as u64;
                     let mut path = Path::default();
-                    for y in 0..h as u64 {
-                        let x = (((y + 1) * step) >> 16) as f64;
-                        path.rect(
-                            if left { x } else { w - x },
-                            y as f64,
-                            t.max((w / h).floor()),
-                            1.,
-                        );
+                    if options.compatibility.diagonal_dot_runs {
+                        let step = ((w as u64) << 16) / h as u64;
+                        for y in 0..h as u64 {
+                            let x = (((y + 1) * step) >> 16) as f64;
+                            path.rect(
+                                if left { x } else { w - x },
+                                y as f64,
+                                t.max((w / h).floor()),
+                                1.,
+                            );
+                        }
+                    } else {
+                        path = graphics::diagonal(w, h, t, left);
                     }
                     field.path = Some(path);
                 }

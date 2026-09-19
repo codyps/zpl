@@ -10,6 +10,7 @@ fn scene(z: &[u8]) -> Scene {
             width: 100,
             height: 100,
             dpi: 203,
+            ..Options::default()
         },
     )
     .unwrap()
@@ -234,7 +235,7 @@ fn captured_font_matches_every_printer_atlas_and_held_out_text() {
             None,
         )
         .unwrap();
-        let doc = render(&zpl, Options::default()).unwrap();
+        let doc = render(&zpl, zpl::render::profiles::ZD621_203_DPI).unwrap();
         assert!(doc.warnings.is_empty(), "{name}");
         let actual = zpl::output::raster::rasterize(&doc.labels[0]).unwrap();
         let diff = raster_diff::compare(&reference, &actual, false).unwrap();
@@ -267,14 +268,14 @@ fn proportional_blocks_align_and_wrap_by_advance() {
 fn captured_font_layout_baselines_blocks_and_rotations() {
     let input = include_bytes!("fixtures/font0-32/layout.zpl");
     let reference = Raster::decode_png(include_bytes!("fixtures/font0-32/layout.png")).unwrap();
-    let doc = render(input, Options::default()).unwrap();
+    let doc = render(input, zpl::render::profiles::ZD621_203_DPI).unwrap();
     let actual = zpl::output::raster::rasterize(&doc.labels[0]).unwrap();
     assert!(raster_diff::compare(&reference, &actual, false)
         .unwrap()
         .matches());
     let input = include_bytes!("fixtures/font0-32/rotations.zpl");
     let reference = Raster::decode_png(include_bytes!("fixtures/font0-32/rotations.png")).unwrap();
-    let doc = render(input, Options::default()).unwrap();
+    let doc = render(input, zpl::render::profiles::ZD621_203_DPI).unwrap();
     assert_eq!(doc.warnings.len(), 1);
     let actual = zpl::output::raster::rasterize(&doc.labels[0]).unwrap();
     // Zebra rasterizes rotated outlines slightly differently: three edge pixels

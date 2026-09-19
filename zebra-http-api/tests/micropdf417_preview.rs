@@ -19,7 +19,7 @@ fn micropdf417_matches_printer_probes() {
         assert_eq!(digest::sha256(&png), fields[2], "{name}: capture");
         let printer = Raster::decode_png(&png).unwrap();
         assert!(printer.pixels.contains(&0), "{name}: blank preview");
-        let doc = zpl::render(&source, Default::default()).unwrap();
+        let doc = zpl::render(&source, zpl::render::profiles::ZD621_203_DPI).unwrap();
         let local = zpl::output::raster::rasterize(&doc.labels[0]).unwrap();
         let diff = compare(&printer, &local, false).unwrap();
         assert!(
@@ -40,7 +40,7 @@ fn recaptured_micropdf417_previews_match() {
         let source = std::fs::read(root.join(format!("{name}.zpl"))).unwrap();
         let printer =
             Raster::decode_png(&std::fs::read(root.join(format!("{name}.png"))).unwrap()).unwrap();
-        let doc = zpl::render(&source, Default::default()).unwrap();
+        let doc = zpl::render(&source, zpl::render::profiles::ZD621_203_DPI).unwrap();
         let local = zpl::output::raster::rasterize(&doc.labels[0]).unwrap();
         assert_eq!((local.width, local.height), (832, 1218));
         assert!(

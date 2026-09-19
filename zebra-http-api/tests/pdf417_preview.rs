@@ -11,7 +11,7 @@ fn recaptured_pdf417_previews_match() {
         let source = std::fs::read(root.join(format!("{name}.zpl"))).unwrap();
         let printer =
             Raster::decode_png(&std::fs::read(root.join(format!("{name}.png"))).unwrap()).unwrap();
-        let doc = zpl::render(&source, zpl::Options::default()).unwrap();
+        let doc = zpl::render(&source, zpl::render::profiles::ZD621_203_DPI).unwrap();
         let local = zpl::output::raster::rasterize(&doc.labels[0]).unwrap();
         assert_eq!((printer.width, printer.height), (832, 1218));
         assert_eq!((local.width, local.height), (832, 1218));
@@ -47,7 +47,7 @@ fn pdf417_matches_printer_probes() {
                 "{name}: printer capture changed"
             );
             let printer = Raster::decode_png(&png).unwrap();
-            let doc = zpl::render(&source, zpl::Options::default());
+            let doc = zpl::render(&source, zpl::render::profiles::ZD621_203_DPI);
             if fields[3] == "error" {
                 assert!(
                     printer.pixels.iter().all(|&p| p == 255),

@@ -12,7 +12,8 @@ errors, and approximate font rendering produces warnings. See
 [parser coverage](docs/parser-coverage.md), [renderer coverage](docs/local-renderer.md),
 and [barcode support](docs/barcodes.md) for the exact boundaries.
 [Printer accuracy tests](docs/printer-accuracy.md) pin overpaint, underpaint,
-and pixel hashes against checked-in ZD621 previews.
+and pixel hashes against checked-in ZD621 previews using the overridable
+[ZD621 renderer profile](docs/local-renderer.md#printer-profiles).
 
 ## Quick start
 

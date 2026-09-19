@@ -136,7 +136,16 @@ mod tests {
             b"\x01ABC\x7fDEF".as_slice(),
             b"A".as_slice(),
         ] {
-            let b = Barcode::new("BB", &["N", "8", "Y", "8"], 2., 2., 90., 203).unwrap();
+            let b = Barcode::new(
+                "BB",
+                &["N", "8", "Y", "8"],
+                2.,
+                2.,
+                90.,
+                203,
+                Default::default(),
+            )
+            .unwrap();
             let m = encode(&b, data).unwrap();
             let mut other = anyd::output::BitMatrix::new(m.w, m.h, 0);
             for y in 0..m.h {

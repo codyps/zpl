@@ -83,7 +83,8 @@ pub fn request(case: &Case) -> String {
     )
 }
 pub fn local(zpl: &str) -> std::result::Result<Raster, String> {
-    let doc = zpl::render(zpl.as_bytes(), zpl::Options::default()).map_err(|e| e.to_string())?;
+    let doc = zpl::render(zpl.as_bytes(), zpl::render::profiles::ZD621_203_DPI)
+        .map_err(|e| e.to_string())?;
     zpl::output::raster::rasterize(&doc.labels[0]).map_err(|e| e.to_string())
 }
 fn raster_info(r: &Raster) -> Value {
