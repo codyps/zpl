@@ -39,6 +39,14 @@ complete local pixel hash. qr_preview.rs renders the unchanged source using
 ZD621_203_DPI. Zero-error cases and known gaps are both pinned; passing the suite
 does not claim that every QR symbol matches the printer.
 
+For reproducible offline mask research, build the `zpl-to-svg` example, then run
+`python3 scripts/analyze-qr-masks.py /tmp/qr-masks.json` from the repository root
+with Pillow installed. The exporter checks capture hashes and format BCH bits,
+verifies exact full-canvas rendering with the captured masks, and exports all
+eight candidate module matrices per symbol. It does not contact the printer or
+update fixtures, baselines, or renderer behavior. The JSON is diagnostic evidence,
+not an accuracy result for unchanged requests.
+
 References: Zebra Programming Guide ^BQ, pp. 128–131, and ^BY, p. 148;
 ISO/IEC 18004:2000, section 8.8.2 and Annex M.8 for QR mask evaluation;
 section 8.9 and Annexes C.1/M.9 for format-bit placement and decoding.
