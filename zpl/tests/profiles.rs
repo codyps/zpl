@@ -250,3 +250,18 @@ fn caption_gap_override_preserves_explicit_font_and_bars() {
     o.compatibility.barcode_interpretation_printer_layout = false;
     assert_eq!(raster(body, o), spec);
 }
+
+#[test]
+fn composite_height_and_quiet_zone_are_independent() {
+    // Zebra ^BR p. 135 specifies dots; captured ZD621 previews multiply by X.
+    let body = "^FO60,60^BRN,11,2,1,30^FD0103212345678906|10ABC";
+    let spec = bounds(&raster(body, SPECIFICATION));
+    assert_eq!(spec, (60, 60, 350, 104));
+    let mut options = SPECIFICATION;
+    options.compatibility.composite_height_in_modules = true;
+    assert_eq!(bounds(&raster(body, options)).3, 134);
+    options.compatibility.composite_height_in_modules = false;
+    options.compatibility.composite_linear_quiet_zone = true;
+    let shifted = bounds(&raster(body, options));
+    assert_eq!(shifted, (spec.0 + 20, spec.1, spec.2 + 20, spec.3));
+}

@@ -291,17 +291,17 @@
     },
     "composite_a": {
       "comparison": {
-        "both_black": 7468,
-        "diff_rgb_sha256": "4309bf9db860041fbd2032a00e32b4be9d4b5b503d8dda6c2496e66533ad5f0b",
+        "both_black": 28388,
+        "diff_rgb_sha256": "e7f7bb94e111d95b734e3e87374a0467ed7cd1c6ff69a3a92ca3dcc8425503ec",
         "dimensions_match": true,
-        "exact": false,
-        "local_only": 7480,
-        "printer_only": 20920
+        "exact": true,
+        "local_only": 0,
+        "printer_only": 0
       },
       "local": {
         "height": 1218,
-        "ink": 14948,
-        "pixels_sha256": "84474c52acf0b4b8511601f9148af63886c80de32c1d2cc061a1331d07728937",
+        "ink": 28388,
+        "pixels_sha256": "2f5fdf851359bfb3d4a292f67b5dad7af13815fec81e10017a29139a4a9e20ee",
         "width": 832
       },
       "printer": {
@@ -315,17 +315,17 @@
     },
     "composite_b": {
       "comparison": {
-        "both_black": 9628,
-        "diff_rgb_sha256": "9831f890e35ba4c8d4848c1a06187fef5d322eb11cdddf4c5ade9fe2d467e34e",
+        "both_black": 33116,
+        "diff_rgb_sha256": "22bda74f5d435576ec7aab4994306e9c3b567ff2e046b00839d70618d8839817",
         "dimensions_match": true,
-        "exact": false,
-        "local_only": 10048,
-        "printer_only": 23488
+        "exact": true,
+        "local_only": 0,
+        "printer_only": 0
       },
       "local": {
         "height": 1218,
-        "ink": 19676,
-        "pixels_sha256": "7757fd89710fdbd4341873aa672e6d936fb191fe385a70f0755185495a580770",
+        "ink": 33116,
+        "pixels_sha256": "3a674326d0179934c458a390f85d538b256a6a88119dd0c63ecabdda969ee941",
         "width": 832
       },
       "printer": {
@@ -339,17 +339,17 @@
     },
     "composite_c": {
       "comparison": {
-        "both_black": 8456,
-        "diff_rgb_sha256": "d3cfb6ad2e2e24fa0a1d66e5b7001b59d2e012719570fb1c1fc314a61559ed4c",
+        "both_black": 28752,
+        "diff_rgb_sha256": "e20d9d15e302bdf5d3e2bd2e25ebaaf61c19e36d3357f950e7bbff9e91aa8e00",
         "dimensions_match": true,
-        "exact": false,
-        "local_only": 7496,
-        "printer_only": 20296
+        "exact": true,
+        "local_only": 0,
+        "printer_only": 0
       },
       "local": {
         "height": 1218,
-        "ink": 15952,
-        "pixels_sha256": "6e9be59a17de911dba42846dffc507860a7664bc38a13eb923b83970d0157a22",
+        "ink": 28752,
+        "pixels_sha256": "e11954cff855e088938d2a986e33153cc1339ff6e3f62f0435fa26ae1e8d8fd9",
         "width": 832
       },
       "printer": {

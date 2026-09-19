@@ -35,8 +35,12 @@ pub(super) fn render(
     // CC-C's first interior space is X=8; the linear start's second module
     // is X=1. CC-A/B's right quiet-zone module follows its 99X body.
     let offset = if cc_c { -7isize } else { target as isize - 99 };
-    let linear_x = (-offset).max(0) as f64 * b.module;
-    let composite_x = offset.max(0) as f64 * b.module;
+    let linear_x = if b.compatibility.composite_linear_quiet_zone {
+        10. * b.module
+    } else {
+        (-offset).max(0) as f64 * b.module
+    };
+    let composite_x = linear_x + offset as f64 * b.module;
     let two_d_height = matrix.h as f64 * row_height * b.module;
     let mut path = b.matrix(&matrix, b.module, row_height * b.module)?;
     path.transform(|p| Point::new(p.x + composite_x, p.y));
@@ -45,7 +49,11 @@ pub(super) fn render(
     let mut sep =
         separator_barcode.linear(&linear.iter().map(|&v| !v).collect::<Vec<_>>(), None)?;
     sep.transform(|p| Point::new(p.x + linear_x, p.y + two_d_height));
-    let mut bars = b.linear(&linear, None)?;
+    let mut linear_barcode = b.clone();
+    if b.compatibility.composite_height_in_modules {
+        linear_barcode.height *= b.module;
+    }
+    let mut bars = linear_barcode.linear(&linear, None)?;
     bars.transform(|p| {
         Point::new(
             p.x + linear_x,

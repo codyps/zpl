@@ -26,3 +26,8 @@ compatibility options do not claim that physical printing ignores the commands.
 
 References: bundled Zebra ZPL Programming Guide, ^BB pp. 90–93, ^FB pp. 185–187,
 ^LT and ^PO; AIM USS CODABLOCK F (row padding and separators).
+
+Four composite controls vary module width (1/3) and CC-A/C. Together with the
+original CC-A/B/C captures they establish the ten-module linear left margin
+and linear height multiplier. Both are independently selectable compatibility
+options; the specification profile preserves the guide p. 135 height in dots.

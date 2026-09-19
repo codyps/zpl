@@ -12,6 +12,8 @@ pub const SPECIFICATION: Options = Options {
     height: 1218,
     dpi: 203,
     compatibility: Compatibility {
+        composite_height_in_modules: false,
+        composite_linear_quiet_zone: false,
         validation_retail_long_is_short: false,
         validation_legacy_small_is_parameter: false,
         macro_pdf417_file_id: None,
@@ -53,6 +55,8 @@ pub const ZD621_203_DPI: Options = Options {
     height: 1218,
     dpi: 203,
     compatibility: Compatibility {
+        composite_height_in_modules: true,
+        composite_linear_quiet_zone: true,
         validation_retail_long_is_short: true,
         validation_legacy_small_is_parameter: true,
         macro_pdf417_file_id: Some([0, 0, 36]),

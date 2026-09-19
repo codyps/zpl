@@ -13,6 +13,12 @@
 /// initial value: the renderer does not reapply it after you change an option.
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct Compatibility {
+    /// Interpret ^BR composite linear height as modules instead of the dots
+    /// specified on guide p. 135. Observed with module widths one through three.
+    pub composite_height_in_modules: bool,
+    /// Include ten modules before the GS1-128 component of ^BR composites.
+    /// Captured preview placement; default: anchor the complete symbol at ^FO.
+    pub composite_linear_quiet_zone: bool,
     /// Include the ZD621's trailing ink margin for inverted, right-justified
     /// ^FO text: bitmap-font gap plus two dots; font 0's trailing bearing less
     /// one dot, clamped to zero. Default: anchor the right ink edge (^FO p. 201).

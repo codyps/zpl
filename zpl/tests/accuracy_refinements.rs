@@ -29,5 +29,5 @@ fn printer_controls_are_pixel_exact() {
         );
         count += 1;
     }
-    assert_eq!(count, 15);
+    assert_eq!(count, 19);
 }
