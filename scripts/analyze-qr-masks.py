@@ -78,7 +78,12 @@ def export(renderer):
                     raise ValueError(f"{name}: changed {key}")
             source = source.decode("ascii")
             commands = list(COMMAND.finditer(source))
-            fields = 12 if name.startswith("byte-") else 1
+            if name.startswith("placement-"):
+                fields = 24
+            elif name.startswith("byte-"):
+                fields = 12
+            else:
+                fields = 1
             if len(commands) != fields:
                 raise ValueError(f"{name}: unexpected QR command count")
             with Image.open(FIXTURES / f"{name}.png") as image:

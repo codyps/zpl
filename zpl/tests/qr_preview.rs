@@ -44,7 +44,7 @@ fn printer_controls_pin_every_painted_pixel() {
         );
         count += 1;
     }
-    assert_eq!(count, 40);
+    assert_eq!(count, 44);
 }
 
 #[test]
@@ -65,15 +65,24 @@ fn encoding_matches_every_printer_module_with_the_captured_mask() {
         let png = fs::read(root.join(format!("{name}.png"))).unwrap();
         let reference = raster_diff::Raster::decode_png(&png).unwrap();
         let starts: Vec<_> = input.match_indices("^BQ").map(|(i, _)| i + 3).collect();
-        assert_eq!(starts.len(), if name.starts_with("byte-") { 12 } else { 1 });
+        let placement_control = name.starts_with("placement-");
+        let expected_fields = if placement_control {
+            24
+        } else if name.starts_with("byte-") {
+            12
+        } else {
+            1
+        };
+        assert_eq!(starts.len(), expected_fields);
         let mut diagnostic = input.clone();
+        let mut placement_mask = None;
         for (index, &start) in starts.iter().enumerate().rev() {
             let end = start + input[start..].find('^').unwrap();
             let mut operands: Vec<_> = input[start..end].split(',').collect();
             assert_eq!(operands.len(), 5);
             let scale: usize = operands[2].parse().unwrap();
             let width = reference.width as usize;
-            // Byte-mode controls use eight 104-dot columns and 100-dot rows.
+            // Atlases use eight 104-dot columns and 100-dot rows.
             // Restrict format-bit discovery to this field, but compare the full
             // unmodified printer canvas after replacing all mask operands.
             let region = if starts.len() == 1 {
@@ -117,6 +126,12 @@ fn encoding_matches_every_printer_module_with_the_captured_mask() {
             }
             assert_eq!(remainder, 0, "{name}: captured format BCH");
             let mask = ((format >> 10) & 7).to_string();
+            if placement_control {
+                if let Some(previous) = &placement_mask {
+                    assert_eq!(&mask, previous, "{name}: placement-independent mask");
+                }
+                placement_mask = Some(mask.clone());
+            }
             operands[4] = &mask;
             diagnostic.replace_range(start..end, &operands.join(","));
             symbol_count += 1;
@@ -128,6 +143,6 @@ fn encoding_matches_every_printer_module_with_the_captured_mask() {
         assert_eq!(diff.candidate_only, 0, "{name}: encoding overpaint");
         count += 1;
     }
-    assert_eq!(count, 40);
-    assert_eq!(symbol_count, 128);
+    assert_eq!(count, 44);
+    assert_eq!(symbol_count, 224);
 }

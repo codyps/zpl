@@ -1,8 +1,8 @@
 # ZD621 QR mask-selection controls
 
-40 unmodified HTTP Preview Label responses from ZD621 203 DPI, firmware
+44 unmodified HTTP Preview Label responses from ZD621 203 DPI, firmware
 V93.21.33Z, collected 2026-09-19 with zebra-render. Sources use PW832,
-magnification two and requested mask zero.
+magnification two (except the placement controls) and requested mask zero.
 
 The 32 original single-symbol frames cover both QR models, all four error-correction levels,
 and four payload classes: one letter, fifteen digits, eight uppercase letters,
@@ -20,10 +20,18 @@ the same encoding and mask in both input modes. These controls distinguish
 selection effects of the encoded data from the input-mode operand itself.
 Atlases use LL200, explicit BY2,3,10, eight 104-dot columns and 100-dot rows.
 
+Four placement atlases add 96 symbols at magnifications one, two and three,
+with origins covering all eight horizontal byte phases and three vertical
+phases. Each atlas repeats one payload: Model 1/M `A`, Model 2/H `ABCDEFGH`,
+Model 2/H `HELLO123`, or Model 2/L `Hello QR 123`. Their captured masks are
+respectively 7, 5, 7 and 7, independent of position, magnification and preceding
+fields. These atlases use LL300 and explicit BY2,3,10. The encoding test also
+requires mask invariance within each placement atlas.
+
 A separate encoding test reads the mask from the printer image's format bits,
 checks their BCH remainder, and changes only the request's mask operand. It
-requires an exact match across the entire raw printer image for all 128 symbols
-in the 40 frames. For atlases it locates each symbol within its cell, changes
+requires an exact match across the entire raw printer image for all 224 symbols
+in the 44 frames. For atlases it locates each symbol within its cell, changes
 only the mask operands, and compares the full canvas without aligning images.
 This isolates bitstream generation, error correction, module placement and
 geometry from mask selection. It does not replace the unchanged-input test or
