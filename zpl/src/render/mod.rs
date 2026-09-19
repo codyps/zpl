@@ -622,7 +622,16 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                             } else {
                                 value
                             };
-                            let mut b = barcode::code39::render(encoded, module, ratio, h)?;
+                            // ^BY p. 148: only whole dots can be printed. Its
+                            // worked example rounds to nearest; ZD621 captures
+                            // instead truncate each wide element independently.
+                            let wide = module * ratio;
+                            let wide = if options.compatibility.code39_floor_wide_elements {
+                                wide.floor()
+                            } else {
+                                wide.round()
+                            };
+                            let mut b = barcode::code39::render(encoded, module, wide / module, h)?;
                             if show {
                                 let mut t = font::text_for(font_id, value, font_w, font_h)?;
                                 if field.code39_above {

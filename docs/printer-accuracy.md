@@ -108,7 +108,7 @@ This is not yet 100% non-text parity. Of the 133 comparison cases, 127 are exact
 controls are exact. Text and non-text failures remain separate in the provenance
 and per-case baseline; aggregate percentages must not conceal either category.
 
-The remaining known non-text issue is QR automatic mask selection.
+The remaining non-text issue in the original comparison corpus is QR automatic mask selection.
 The tested firmware produces identical QR images for requested masks 0/3/7;
 the renderer still honors the documented mask operand. Do not substitute a
 payload-specific mask table for the missing general selection behavior.
@@ -260,3 +260,24 @@ including nearly circular ellipses. Their former 944 differing pixels are now
 eliminated. Four final holdout atlases add 48 larger sizes with varied borders
 and both orientations; all are exact. Raw printer captures and full renderer
 pixel hashes remain pinned in the same regression test.
+
+## Fractional Code 39 widths and broader conformance checks
+
+Sixteen [Code 39 ratio captures](../zpl/tests/fixtures/code39-ratios-zd621-v1/README.md)
+cover 56 symbols, including all ratio tenths from 2.0 to 3.0 at module widths
+1, 3, 7 and 9. The ZD621 truncates each wide element to whole dots. Retaining
+fractional widths previously accumulated position errors: the original
+module-1/ratio-2.5 and module-3/ratio-2.5 controls had 2640 and 7600 differing
+dots. All sixteen frames now match exactly. Run
+`cargo test -p zpl --test code39_ratios_preview --test profiles`.
+
+`code39_floor_wide_elements` independently selects the observed ^B3 behavior.
+The specification profile instead follows the nearest-dot worked example in
+^BY, p. 148. The printer profile enables truncation; both profiles now quantize
+individual elements before accumulating their positions.
+
+The broader conformance hardware audit also found outstanding differences in
+above-bar interpretation layout, rotated interpretation text, and PDF417
+compaction. Successful rendering of that broader corpus did not establish
+pixel accuracy. These findings remain separate from the six QR mismatches in
+the original 133-case comparison corpus; overall non-text parity is not complete.

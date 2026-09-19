@@ -54,6 +54,26 @@ fn profile_is_an_overridable_initial_value() {
 }
 
 #[test]
+fn code39_wide_elements_follow_the_selected_rounding_policy() {
+    // ^BY p. 148 explicitly rounds module 9, ratio 2.4 from 21.6 to 22
+    // dots. Raw ZD621 captures instead use 21 dots. *A* contains nine wide
+    // elements and twenty narrow elements, including the intercharacter gaps.
+    let body = "^BY9,2.4,20^FO10,10^B3N,N,20,N,N^FDA";
+    let spec = raster(body, SPECIFICATION);
+    let printer = raster(body, ZD621_203_DPI);
+    let s = bounds(&spec);
+    let p = bounds(&printer);
+    assert_eq!(s.2 - s.0, 20 * 9 + 9 * 22);
+    assert_eq!(p.2 - p.0, 20 * 9 + 9 * 21);
+    let mut options = SPECIFICATION;
+    options.compatibility.code39_floor_wide_elements = true;
+    assert_eq!(raster(body, options).pixels, printer.pixels);
+    options = ZD621_203_DPI;
+    options.compatibility.code39_floor_wide_elements = false;
+    assert_eq!(raster(body, options).pixels, spec.pixels);
+}
+
+#[test]
 fn qr_origins_have_independent_overrides() {
     for height in [40, 60, 100] {
         let fo = format!("^BY2,3,{height}^FO80,60^BQN,2,3,L,0^FDLA,HELLO123");

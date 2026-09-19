@@ -13,6 +13,11 @@
 /// initial value: the renderer does not reapply it after you change an option.
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct Compatibility {
+    /// Truncate standalone Code 39 wide elements to whole dots. The ZD621
+    /// captures in code39-ratios-zd621-v1 use floor(module * ratio), including
+    /// 9 * 2.4 = 21 dots. The ^BY example (p. 148) instead rounds that width
+    /// to 22 dots; with this override disabled, use nearest-dot rounding.
+    pub code39_floor_wide_elements: bool,
     /// Use measured ZD621 rounded-box geometry: a minimum two-dot border,
     /// dimensions no smaller than that border, and an independent inner
     /// rounding percentage. With the integer curve enabled, both corner radii
