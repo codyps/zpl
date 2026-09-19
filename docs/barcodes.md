@@ -176,8 +176,9 @@ The supplied PDFs remain outside the repository and are not redistributed here.
 
 Except for Code 49's built-in row quiet zones, quiet zones are caller-owned.
 Interpretation text uses the renderer's embedded
-font and is not a reproduction of printer-specific retail typography/guard-bar
-extensions. Retail generated checks and MSI's check-display flag are handled;
+font and is not a reproduction of printer-specific retail typography. Standalone
+UPC/EAN guard-bar extensions match the captured 203-DPI printer controls; see
+[printer accuracy](printer-accuracy.md). Retail generated checks and MSI's check-display flag are handled;
 other interpretation lines generally display the submitted field data. Binary
 payloads should disable interpretation text. Rotation/origins use the common
 scene path machinery. There are no placeholder rectangles for unsupported codes.

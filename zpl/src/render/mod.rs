@@ -46,6 +46,8 @@ struct Field {
     baseline: bool,
     rotation: u8,
     reverse: bool,
+    white: bool,
+    code39_check: bool,
     hex: Option<u8>,
     barcode: Option<(f64, bool, bool)>,
     other_barcode: Option<barcode::Barcode>,
@@ -62,6 +64,8 @@ impl Default for Field {
             baseline: false,
             rotation: b'N',
             reverse: false,
+            white: false,
+            code39_check: false,
             hex: None,
             barcode: None,
             other_barcode: None,
@@ -225,7 +229,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                 "CI" | "PW" | "LL" | "LS" | "LT" | "LR" | "PO" | "FH" => Some(1),
                 "LH" | "FW" => Some(2),
                 "FO" | "FT" | "CF" | "BY" | "XG" => Some(3),
-                "GB" | "B3" | "FB" => Some(5),
+                "GB" | "GD" | "B3" | "FB" => Some(5),
                 "BC" => Some(6),
                 "GE" => Some(4),
                 "GC" => Some(3),
@@ -404,9 +408,10 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                 "B3" => {
                     field.other_barcode = None;
                     field.rotation = rotation(p[0])?;
-                    if p.get(1).is_some_and(|v| !matches!(*v, "" | "N")) {
-                        return Err("Code 39 checksum unsupported".into());
+                    if p.get(1).is_some_and(|v| !matches!(*v, "" | "N" | "Y")) {
+                        return Err("invalid Code 39 checksum flag".into());
                     }
+                    field.code39_check = p.get(1) == Some(&"Y");
                     let h = number(&p, 2, bar_h)?;
                     if p.get(3).is_some_and(|v| !matches!(*v, "" | "Y" | "N")) {
                         return Err("invalid barcode text flag".into());
@@ -484,7 +489,11 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                             .map_err(|_| "only ASCII preview text supported")?
                     };
                     let path = if let Some(b) = &field.other_barcode {
-                        let (path, height) = b.render(&bytes, font_w, font_h)?;
+                        let (mut path, height) = b.render(&bytes, font_w, font_h)?;
+                        if !field.baseline {
+                            let offset = b.field_origin_y();
+                            path.transform(|p| Point::new(p.x, p.y + offset));
+                        }
                         field.baseline_height = height;
                         path
                     } else if let Some((h, show, code128)) = field.barcode {
@@ -495,7 +504,16 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                         let mut b = if code128 {
                             barcode::code128::render(value, module, h)?
                         } else {
-                            barcode::code39::render(value, module, ratio, h)?
+                            // Zebra Programming Guide, ^B3 (p. 70): optional Mod-43
+                            // checksum is encoded before the stop character.
+                            let checked;
+                            let encoded = if field.code39_check {
+                                checked = barcode::code39::with_checksum(value)?;
+                                &checked
+                            } else {
+                                value
+                            };
+                            barcode::code39::render(encoded, module, ratio, h)?
                         };
                         if show {
                             let mut t = font::text(value, font_w, font_h)?;
@@ -519,6 +537,43 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                     };
                     field.path = Some(path);
                 }
+                "GD" => {
+                    // Zebra Programming Guide, ^GD, p. 213. The ZD621 draws
+                    // horizontal runs, with the x accumulator advanced before
+                    // each row. Integer-slope and fractional-slope captures are
+                    // in tests/fixtures/printer-accuracy (see its provenance).
+                    let t = number(&p, 2, 1.)?;
+                    let w = number(&p, 0, t.max(3.))?;
+                    let h = number(&p, 1, t.max(3.))?;
+                    if !(3. ..=32000.).contains(&w)
+                        || !(3. ..=32000.).contains(&h)
+                        || !(1. ..=32000.).contains(&t)
+                        || [w, h, t].iter().any(|v| v.fract() != 0.)
+                    {
+                        return Err("invalid diagonal dimensions".into());
+                    }
+                    if p.get(3).is_some_and(|v| !matches!(*v, "" | "B" | "W")) {
+                        return Err("invalid shape color".into());
+                    }
+                    field.white = p.get(3) == Some(&"W");
+                    let left = match p.get(4).copied().unwrap_or("") {
+                        "" | "R" | "/" => false,
+                        "L" | "\\" => true,
+                        _ => return Err("invalid diagonal orientation".into()),
+                    };
+                    let step = ((w as u64) << 16) / h as u64;
+                    let mut path = Path::default();
+                    for y in 0..h as u64 {
+                        let x = (((y + 1) * step) >> 16) as f64;
+                        path.rect(
+                            if left { x } else { w - x },
+                            y as f64,
+                            t.max((w / h).floor()),
+                            1.,
+                        );
+                    }
+                    field.path = Some(path);
+                }
                 "GB" | "GE" | "GC" => {
                     let w = number(&p, 0, 1.)?;
                     let h = if name == "GC" { w } else { number(&p, 1, 1.)? };
@@ -527,9 +582,12 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                     if w <= 0. || h <= 0. || t <= 0. {
                         return Err("invalid shape dimensions".into());
                     }
-                    if p.get(ti + 1).is_some_and(|v| !matches!(*v, "" | "B")) {
-                        return Err("white shapes unsupported".into());
+                    if p.get(ti + 1).is_some_and(|v| !matches!(*v, "" | "B" | "W")) {
+                        return Err("invalid shape color".into());
                     }
+                    // Zebra Programming Guide, ^GB/^GC/^GE, pp. 210–214:
+                    // W paints white; it does not toggle the pixels underneath.
+                    field.white = p.get(ti + 1) == Some(&"W");
                     let mut path = Path::default();
                     if name == "GB" {
                         let r = number(&p, 4, 0.)?;
@@ -635,6 +693,8 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                             path,
                             paint: if field.reverse || reverse {
                                 Paint::Invert
+                            } else if field.white {
+                                Paint::White
                             } else {
                                 Paint::Black
                             },

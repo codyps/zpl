@@ -4,7 +4,7 @@ mod digest;
 use raster_diff::{compare, Raster};
 
 #[test]
-fn original_pdf417_captures_match_after_known_preview_padding() {
+fn recaptured_pdf417_previews_match() {
     let root =
         std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("tests/fixtures/barcodes-zd621-v1");
     for name in ["pdf417", "pdf417_truncated"] {
@@ -14,20 +14,9 @@ fn original_pdf417_captures_match_after_known_preview_padding() {
         let doc = zpl::render(&source, zpl::Options::default()).unwrap();
         let local = zpl::output::raster::rasterize(&doc.labels[0]).unwrap();
         assert_eq!((printer.width, printer.height), (832, 1218));
-        assert_eq!((local.width, local.height), (812, 1218));
-        // Fixed experimentally established HTTP preview padding, not fitted
-        // registration or content-dependent cropping/scaling.
-        let mut padded = Raster {
-            width: 832,
-            height: 1218,
-            pixels: vec![255; 832 * 1218],
-        };
-        for y in 0..1218 {
-            padded.pixels[y * 832 + 10..y * 832 + 822]
-                .copy_from_slice(&local.pixels[y * 812..(y + 1) * 812]);
-        }
+        assert_eq!((local.width, local.height), (832, 1218));
         assert!(
-            compare(&printer, &padded, false).unwrap().matches(),
+            compare(&printer, &local, false).unwrap().matches(),
             "{name}"
         );
     }

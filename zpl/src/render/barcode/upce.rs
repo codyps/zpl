@@ -34,5 +34,5 @@ pub(super) fn render(b: &Barcode, data: &[u8]) -> Result<Path, String> {
         retail::digit(&mut out, digit, parity & (1 << (5 - i)) != 0);
     }
     append_pattern(&mut out, 0b010101, 6);
-    b.linear(&out, None)
+    retail::render(b, &out, false)
 }

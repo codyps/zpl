@@ -1,6 +1,19 @@
 //! Code 39 (ISO/IEC 16388), retained from the original local renderer.
 //! Specification links and implementation limits: docs/barcodes.md.
 use crate::output::Path;
+const CHECK_CHARS: &str = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ-. $/+%";
+
+pub(in crate::render) fn with_checksum(s: &str) -> Result<String, String> {
+    let sum = s.chars().try_fold(0, |sum, c| {
+        CHECK_CHARS
+            .find(c)
+            .map(|index| sum + index)
+            .ok_or("unsupported Code 39 character")
+    })?;
+    let mut result = s.to_owned();
+    result.push(CHECK_CHARS.as_bytes()[sum % 43] as char);
+    Ok(result)
+}
 pub(in crate::render) fn render(s: &str, module: f64, ratio: f64, h: f64) -> Result<Path, String> {
     const CHARS: &str = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ-. $/+%*";
     const PATTERNS: [u16; 44] = [

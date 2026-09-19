@@ -93,6 +93,16 @@ pub(super) fn supported(name: &str) -> bool {
     )
 }
 impl Barcode {
+    pub fn field_origin_y(&self) -> f64 {
+        // ZD621 V93.21.33Z controls with ^BY heights 40/60/100 place ^FO
+        // QR ink at y + height - 1. This does not apply to ^FT. See the
+        // captured controls and reproduction notes in docs/printer-accuracy.md.
+        if self.name == "BQ" {
+            self.height - 1.
+        } else {
+            0.
+        }
+    }
     pub fn new(
         name: &str,
         p: &[&str],
@@ -274,8 +284,18 @@ impl Barcode {
             "BZ" => postal::render(self, bytes),
             _ => unreachable!(),
         }?;
-        let (_, _, _, height) = super::bounds(&p);
+        let (_, _, _, mut height) = super::bounds(&p);
+        if matches!(self.name.as_str(), "B8" | "B9" | "BE" | "BU") {
+            // Guard extensions descend into the interpretation-line area.
+            height = self.height;
+        }
         let mut baseline = height;
+        if self.name == "BQ" {
+            // ^FT includes a three-module lower margin, less one dot. Verified
+            // with ZD621 magnifications 1–5 and ^BY heights 40/100; unlike ^FO,
+            // this anchor is independent of the default linear barcode height.
+            baseline += 3. * self.num(2, self.scale(), 1., 100.)? - 1.;
+        }
         if self.show {
             let value = self.interpretation(bytes)?;
             let mut t = super::font::text(&value, fw, fh)?;

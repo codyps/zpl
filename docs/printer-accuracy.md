@@ -1,0 +1,96 @@
+# Printer accuracy regressions
+
+Run `cargo test -p zpl --test printer_accuracy -- --nocapture` for the offline
+accuracy gate, or `cargo test --workspace` to include it with all existing tests.
+No printer or external renderer is contacted by these tests.
+
+Set `ZPL_ACCURACY_ARTIFACTS=/tmp/zpl-accuracy` when running the test to write
+render/diff PNGs for differing cases. Magenta means underpaint; cyan means
+overpaint. These diagnostics do not update references or expectations.
+
+The corpus has 133 cases from `codyps-zpl` in the sibling `zpl-comparison`
+benchmark and 31 independent controls for the fixes below. The original corpus
+was taken from comparison commit `4346d33e1238de3f31cc0e81d493cff187494075`.
+All comparison printer responses were **replaced** by new ZD621 previews using
+`^PW832`; the old 812-dot barcode captures and test-side padding were removed.
+This intentionally leaves printer preview width adjustment outside this work.
+
+The printer is a ZTC ZD621-203dpi ZPL, firmware V93.21.33Z. These are HTTP
+**Preview Label** responses, not scanned physical labels. Capture metadata,
+input/image hashes and the separate state-reset request are in
+[`provenance.json`](../zpl/tests/fixtures/printer-accuracy/provenance.json).
+The argument capture includes a repeated control with identical pixels.
+Barcode fixtures remain in `zebra-http-api/tests/fixtures/barcodes-zd621-v1`;
+the zpl test reuses those files rather than maintaining a second copy.
+
+## Regression contract
+
+[`baseline.tsv`](../zpl/tests/fixtures/printer-accuracy/baseline.tsv) records each
+case's exact underpaint (printer-only ink), overpaint (renderer-only ink), canvas
+dimensions, output pixel SHA-256, input/capture SHA-256, and any known render
+error. Pixels are compared at the original origin with threshold 128. There is
+no padding, registration, rescaling, cropping, or whole-white-canvas tolerance.
+
+Both improvements and regressions fail until their individual baseline rows are
+reviewed and deliberately edited. The output hash also detects spatial changes
+that preserve the two error counts. Known unsupported cases must retain their
+specific diagnostic; replacing one failure with another is not accepted.
+A successful render of a previously unsupported case also requires review.
+There is no automatic baseline-update mode.
+
+Before updating a row, inspect the reference and candidate and compare both
+error counts. Do not raise a count to make CI green without explaining the
+behavior change. Never replace a printer reference with a locally rendered PNG.
+Source changes require a new printer preview and matching capture provenance.
+A blank printer image is an observation, not evidence of barcode correctness.
+
+## Improvements verified against the printer
+
+- White `^GB/^GC/^GE` painting uses white compositing rather than rejection.
+  The captured overlapping white box is exact.
+- `^B3` Mod-43 checksums are encoded before the stop character. The checksum
+  probe is exact; the interpretation line still uses the original data.
+- `^GD` diagonal lines use horizontal dot runs. Both directions and eight
+  additional square, wide, tall, thin and thick controls are exact. Fractional
+  slopes use a truncated fixed-point accumulator; untested dimensions remain
+  subject to printer verification.
+- `^BQ` with `^FO` uses the default `^BY` height minus one dot as its vertical
+  offset. Independent heights 40, 60 and 100 verify this behavior. With `^FT`,
+  the anchor includes a lower margin of three modules minus one dot; controls
+  cover magnifications 1–5 and show independence from the `^BY` height.
+- POSTNET/PLANET use a fixed 2.5-module pitch truncated per bar, independent of
+  the variable-width barcode ratio. Module widths 1–3 are exact. Intelligent
+  Mail uses this pitch and outward-rounded tracker boundaries; its corpus
+  capture is exact.
+- Standalone EAN-8/EAN-13/UPC-A/UPC-E extend their guard bars below the nominal
+  height even with interpretation text disabled. The four corpus cases and
+  extra EAN-13/UPC-A module-width controls are exact. Guard extension is 13 dots
+  at 203 DPI and independent of font height in the tested 10/20/40-dot controls.
+  Scaling this extension to other resolutions is not yet printer-verified.
+
+Command references: Zebra ZPL II Programming Guide, `^B3` p. 70, `^BQ`
+pp. 128–131, and `^GB/^GC/^GD/^GE` pp. 210–214. The command/page index is
+[`zpl-command-index.tsv`](zpl-command-index.tsv); the full guide is available
+from [Zebra](https://www.zebra.com/us/en/support-downloads/knowledge-articles/ait/zpl-command-information-and-details.html).
+Dot-level placement rules above are empirical firmware observations, not claims
+that the guide specifies those scan-conversion details.
+
+## Remaining accuracy work
+
+This is not yet 100% non-text parity. Of the 133 comparison cases, 85 are exact,
+37 render with differences, and 11 report unsupported input. All 31 additional
+controls are exact. Text and non-text failures remain separate in the provenance
+and per-case baseline; aggregate percentages must not conceal either category.
+
+Remaining non-text issues include circle/ellipse/rounded-box scan conversion,
+QR automatic mask selection and Model 1, Aztec/Data Matrix encoding choices,
+CODABLOCK, MaxiCode, composite/DataBar component layout, and TLC39 linked data.
+The tested firmware produces identical QR images for requested masks 0/3/7;
+the renderer still honors the documented mask operand. Do not substitute a
+payload-specific mask table for the missing general selection behavior.
+LOGMARS includes an interpretation line and therefore is not a text-free case.
+The blank DataBar UPC-E printer response needs separate validation.
+
+Independent barcode decoder tests remain necessary: different valid encodings
+can decode to the same content without matching printer pixels. Captured cases
+are development fixtures, not a holdout or proof for every parameter/payload.

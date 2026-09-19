@@ -78,7 +78,7 @@ cases! {
 }
 pub fn request(case: &Case) -> String {
     format!(
-        "^XA^PW812^LL1218^LH0,0^LS0^LT0^PON^LRN^CI27^FWN^CF0,20,0^FO60,60^BY2,2,80^{}^FD{}^FS^XZ\n",
+        "^XA^PW832^LL1218^LH0,0^LS0^LT0^PON^LRN^CI27^FWN^CF0,20,0^FO60,60^BY2,2,80^{}^FD{}^FS^XZ\n",
         case.command, case.data
     )
 }

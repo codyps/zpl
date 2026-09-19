@@ -36,7 +36,7 @@ fn four_barcode_printer_probes() {
 }
 
 #[test]
-fn original_four_barcode_previews_with_known_padding() {
+fn recaptured_four_barcode_previews_match() {
     let root =
         std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("tests/fixtures/barcodes-zd621-v1");
     for name in ["code11", "code49", "code93", "plessey"] {
@@ -45,18 +45,9 @@ fn original_four_barcode_previews_with_known_padding() {
         let printer = Raster::decode_png(&png).unwrap();
         let doc = zpl::render(&source, Default::default()).unwrap();
         let local = zpl::output::raster::rasterize(&doc.labels[0]).unwrap();
-        assert_eq!((local.width, local.height), (812, 1218));
-        let mut padded = Raster {
-            width: 832,
-            height: 1218,
-            pixels: vec![255; 832 * 1218],
-        };
-        for y in 0..1218 {
-            padded.pixels[y * 832 + 10..y * 832 + 822]
-                .copy_from_slice(&local.pixels[y * 812..(y + 1) * 812]);
-        }
+        assert_eq!((local.width, local.height), (832, 1218));
         assert!(
-            compare(&printer, &padded, false).unwrap().matches(),
+            compare(&printer, &local, false).unwrap().matches(),
             "{name}"
         );
     }

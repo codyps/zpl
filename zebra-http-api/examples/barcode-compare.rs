@@ -76,8 +76,27 @@ async fn main() -> Result<()> {
                 }
             }))
             .build()?;
-        let mut manifest = json!({"schema":"zpl-printer-barcode-comparison-v1","host":host.as_str(),"device":device,"dpi":203,"captured_unix_seconds":SystemTime::now().duration_since(UNIX_EPOCH)?.as_secs(),"preview_requests":support::CASES.len(),"cases":{}});
+        // Reset preview layout state separately so each case is independent of
+        // its predecessor. Empty formats need not yield a fetchable image.
+        // Same protocol as zpl_to_png; see docs/printer-accuracy.md.
+        let reset =
+            "^XA^PMN^PA0,0,0,0^FPH,0^CVN^BY2,3,100^CI27^CF0,32,0^FWN^LH0,0^LS0^LT0^PON^LRN^XZ";
+        let mut manifest = json!({"schema":"zpl-printer-barcode-comparison-v1","host":host.as_str(),"device":device,"dpi":203,"width":832,"height":1218,"preview_reset_zpl":reset,"captured_unix_seconds":SystemTime::now().duration_since(UNIX_EPOCH)?.as_secs(),"preview_requests":support::CASES.len(),"cases":{}});
         for (i, case) in support::CASES.iter().enumerate() {
+            client
+                .post(host.join("zpl")?)
+                .form(&[
+                    ("dev", "R"),
+                    ("oname", "TEST1"),
+                    ("otype", "ZPL"),
+                    ("username", ""),
+                    ("pw", ""),
+                    ("data", reset),
+                    ("prev", "Preview Label"),
+                ])
+                .send()
+                .await?
+                .error_for_status()?;
             let zpl = support::request(case);
             create(
                 args.output.join(format!("{}.zpl", case.name)),

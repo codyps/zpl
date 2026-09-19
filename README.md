@@ -11,6 +11,8 @@ The local renderer supports a practical subset of ZPL; unsupported commands retu
 errors, and approximate font rendering produces warnings. See
 [parser coverage](docs/parser-coverage.md), [renderer coverage](docs/local-renderer.md),
 and [barcode support](docs/barcodes.md) for the exact boundaries.
+[Printer accuracy tests](docs/printer-accuracy.md) pin overpaint, underpaint,
+and pixel hashes against checked-in ZD621 previews.
 
 ## Quick start
 

@@ -290,8 +290,20 @@ fn postal_round_trips() {
         let r = rasterize(&doc.labels[0]).unwrap();
         let bars = if imb { 65 } else { (data.len() + 1) * 5 + 2 };
         let mut matrix = anyd::output::BitMatrix::new(bars * 2 - 1, 3, 0);
-        for i in 0..bars {
-            let x = 21 + i * 9;
+        // Discover bar columns from ink instead of assuming a renderer pitch.
+        // Pixel spacing is independently pinned by the ZD621 accuracy captures;
+        // this test checks that the resulting bar states decode correctly.
+        let mut columns = Vec::new();
+        let mut previous = false;
+        for x in 0..r.width as usize {
+            let ink = (20..110).any(|y| r.pixels[y * r.width as usize + x] == 0);
+            if ink && !previous {
+                columns.push(x);
+            }
+            previous = ink;
+        }
+        assert_eq!(columns.len(), bars, "{command}");
+        for (i, x) in columns.into_iter().enumerate() {
             for (row, y) in if imb { [35, 65, 95] } else { [35, 95, 115] }
                 .into_iter()
                 .enumerate()

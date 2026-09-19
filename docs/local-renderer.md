@@ -53,7 +53,7 @@ direnv exec . cargo run -p zpl --example zpl-to-svg -- docs/examples/local-label
 | Layout | `PW`, `LL`, `LH`, `LS`, `LT`, `FO`, explicit-coordinate `FT`, `FW`, `PO`, `FR`, `LR`; left field justification |
 | Text | `CF0`, `A0`, `FD`, `FV`, `FH`; ASCII glyphs only; `CI0/27/28` without remapping |
 | Blocks | `FB`: left/center/right alignment, word wrapping, explicit `\&` breaks; overflow, hyphenation, hanging indent and justified text return errors |
-| Shapes | `GB` including rounded corners, `GC`, `GE`; black outlines/fills |
+| Shapes | `GB` including rounded corners, `GC`, `GE`, `GD`; black or white outlines/fills |
 | Graphics | `~DG`, `XG`, `GFA`, `GFB`: raw hex, Zebra ASCII run lengths/row shortcuts, B64, Z64; CRC16 and zlib checksums checked |
 | Barcodes | Original per-code linear, matrix, stacked, and postal encoders; `BY`; see [coverage, limitations, specifications, and decoder tests](barcodes.md) |
 
@@ -82,7 +82,7 @@ automatically. Barcode interpretation text also uses embedded font 0.
 
 Examples of explicit errors include unsupported barcode variants, Code 128 invocation
 sequences and UCC/automatic modes, downloaded fonts, stored formats, serialization,
-white ZPL shapes, compressed binary `GFC`, and printer configuration commands.
+compressed binary `GFC`, and printer configuration commands.
 The parser still frames these commands; rendering coverage is separate from
 command-stream parsing coverage. Configuration persists only within one `render`
 call. Each field must end with `FS` before another drawing command.

@@ -137,14 +137,16 @@ fn states(data: &[u8]) -> Result<Vec<(bool, bool)>, String> {
 pub(super) fn render(b: &Barcode, data: &[u8]) -> Result<Path, String> {
     let mut path = Path::default();
     for (i, (ascend, descend)) in states(data)?.into_iter().enumerate() {
-        let top = if ascend { 0. } else { b.height / 3. };
+        let top = if ascend { 0. } else { (b.height / 3.).floor() };
         let bottom = if descend {
             b.height
         } else {
-            b.height * 2. / 3.
+            (b.height * 2. / 3.).ceil()
         };
         path.rect(
-            i as f64 * b.module * (1. + b.ratio),
+            // The ZD621 uses the same fixed postal pitch as POSTNET/PLANET.
+            // See docs/printer-accuracy.md for the printer reference.
+            i as f64 * (b.module * 2.5).floor(),
             top,
             b.module,
             bottom - top,

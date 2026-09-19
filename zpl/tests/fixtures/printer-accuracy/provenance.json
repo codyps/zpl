@@ -1,0 +1,1444 @@
+{
+  "source_commit": "4346d33e1238de3f31cc0e81d493cff187494075",
+  "fresh_reference": {
+    "schema": 1,
+    "status": "complete",
+    "device": "ZTC ZD621-203dpi ZPL",
+    "firmware": "V93.21.33Z",
+    "dpi": 203,
+    "host": "http://printer.local/",
+    "captured_utc": "2026-09-18T23:34:22Z",
+    "method": "printer HTTP Preview Label; not physical print/scan",
+    "repeat_pixels_equal": true,
+    "preview_reset_zpl": "^XA^PMN^PA0,0,0,0^FPH,0^CVN^BY2,3,100^CI27^CF0,32,0^FWN^LH0,0^LS0^LT0^PON^LRN^XZ"
+  },
+  "archived_reference": {
+    "captured_unix_seconds": 1789774462,
+    "device": "ZTC ZD621-203dpi ZPL; firmware V93.21.33Z",
+    "dpi": 203,
+    "host": "http://printer.local/",
+    "preview_requests": 60,
+    "schema": "zpl-printer-barcode-comparison-v1",
+    "width": 832,
+    "height": 1218,
+    "preview_reset_zpl": "^XA^PMN^PA0,0,0,0^FPH,0^CVN^BY2,3,100^CI27^CF0,32,0^FWN^LH0,0^LS0^LT0^PON^LRN^XZ",
+    "method": "printer HTTP Preview Label; not physical print/scan"
+  },
+  "cases": [
+    {
+      "id": "argument-font0-height-16",
+      "group": "text",
+      "command": "^A",
+      "arguments": "font=0,o=N,h=16,w=0",
+      "zpl_sha256": "8cb445e5ce6410ea664df45719260c864dd5ffe92988c001d9aedfa3bbc998b6",
+      "png_sha256": "5ccd22463bacce75f04e60334e04356f30fce1d44c05333a3761e1f8f743af4c",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-font0-height-32",
+      "group": "text",
+      "command": "^A",
+      "arguments": "font=0,o=N,h=32,w=0",
+      "zpl_sha256": "e8152ef0bae2be075ed896b06c41e6ae10b40df25e1719caca13e65ef184d119",
+      "png_sha256": "9ece2775fb2fc596adbe0f1dc3876a404933c5d109899f9ebcb23f35ac48f6e4",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-font0-height-64",
+      "group": "text",
+      "command": "^A",
+      "arguments": "font=0,o=N,h=64,w=0",
+      "zpl_sha256": "57ca3e74736d5211475329649c01f0f387e59253d341cfd5166d305dc529dc1d",
+      "png_sha256": "22f643c147fc9d0a558ae4b3279ebf6a9824f029175c4fe9f6d9c6aa992ab712",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-font0-width-16",
+      "group": "text",
+      "command": "^A",
+      "arguments": "font=0,o=N,h=32,w=16",
+      "zpl_sha256": "f836fbbf66f33dd990887048bd8768c0d0ed837a7b92765b963eed5ac265954f",
+      "png_sha256": "d02e66ca1df071e0018fde540d334ac130fbc261c5e97ef00a9dc25efb5e923d",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-font0-width-32",
+      "group": "text",
+      "command": "^A",
+      "arguments": "font=0,o=N,h=32,w=32",
+      "zpl_sha256": "9fcb6ddff5ac03ae3d03f446d973840b778de05b259ee4d6f13211bbb380461d",
+      "png_sha256": "9ece2775fb2fc596adbe0f1dc3876a404933c5d109899f9ebcb23f35ac48f6e4",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-font0-width-64",
+      "group": "text",
+      "command": "^A",
+      "arguments": "font=0,o=N,h=32,w=64",
+      "zpl_sha256": "b6a700652dcbb6a6a294ee2bfc4a537e3181511865b097d545c14cdf0f5a1ea8",
+      "png_sha256": "33321a88e6e235ddc518ae56daab35c258a5d66b22f61ffdc9c5558f7a0a9dd9",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-font0-rotation-N",
+      "group": "text",
+      "command": "^A",
+      "arguments": "font=0,o=N,h=32,w=0",
+      "zpl_sha256": "179195d6688642204315a26dd6b25aa0fbd605ea7c29042fb99401f3998ce1d0",
+      "png_sha256": "95519f12ab88f4762b8181eec460670e4b3a760ad1e4a0b42182867091099a9a",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-font0-rotation-R",
+      "group": "text",
+      "command": "^A",
+      "arguments": "font=0,o=R,h=32,w=0",
+      "zpl_sha256": "5befe08cbb064985c7afc794011de29958a5f613dee16717bff3479081408be1",
+      "png_sha256": "581f3010ad190ac650b8bfa6a252e6c6b84f2245ddfdb4c9aa5043c7449c12e5",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-font0-rotation-I",
+      "group": "text",
+      "command": "^A",
+      "arguments": "font=0,o=I,h=32,w=0",
+      "zpl_sha256": "a8a8024cb78ab0709aa25779dc8a63983527138de77d422e771558e73557c6c1",
+      "png_sha256": "9d5796e767f49384254d2388b812bdcbd0bb862507c1cf0f1bbddf0dd40cb504",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-font0-rotation-B",
+      "group": "text",
+      "command": "^A",
+      "arguments": "font=0,o=B,h=32,w=0",
+      "zpl_sha256": "665c5fd63e70dca7048a963e6495b70924ddc475f06c4d5d9dce1adf70e87632",
+      "png_sha256": "cf280cfa3f5fa4ba8bda5d511b9868e99f0c26bb52903524fd52d0c614cabd4c",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-font-A",
+      "group": "text",
+      "command": "^A",
+      "arguments": "font=A,o=N,h=32,w=24",
+      "zpl_sha256": "5f31474e0d1d65c2d31c55e44cdb769cbded94fd72e8ae8502790f9e78b80af6",
+      "png_sha256": "262a2f55378072e5580ea9db6fcd50c7ba065385a3b2cfb2f3c1885bda5d4ac7",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-font-D",
+      "group": "text",
+      "command": "^A",
+      "arguments": "font=D,o=N,h=32,w=24",
+      "zpl_sha256": "56dff5750e3c29427bace9da71593991a37bfa64d262f4a26c92e2b9122107c2",
+      "png_sha256": "32c659a2c5d2a06fd60e45e0f2a5b1e60553c04a34282886655950cb05503563",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-fo-justify-0",
+      "group": "layout",
+      "command": "^FO",
+      "arguments": "x=220,y=80,z=0",
+      "zpl_sha256": "94ad268e77f5fb5aa13e7eb46ef94c9e078eb6e9b898122bd5719f423ae5124c",
+      "png_sha256": "2d543e357e86af06e6354154b3321905a059efb99b4eed6836dfb59d8bfab2e6",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-fo-justify-1",
+      "group": "layout",
+      "command": "^FO",
+      "arguments": "x=220,y=80,z=1",
+      "zpl_sha256": "bbbd5151a76dfe96cd9c7e0ed30b2e9d2c12e9b237ebfdb2fb74bb1e2af60735",
+      "png_sha256": "aa426cae475678a5b166672066f5b83efb40d48fe0b3469ba80c3c202d721ba8",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-fo-justify-2",
+      "group": "layout",
+      "command": "^FO",
+      "arguments": "x=220,y=80,z=2",
+      "zpl_sha256": "258f60466ae5622549121741f164ca91e537e9f238a87bc85ba1e8f44572d8a0",
+      "png_sha256": "2d543e357e86af06e6354154b3321905a059efb99b4eed6836dfb59d8bfab2e6",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-ft-baseline",
+      "group": "layout",
+      "command": "^FT",
+      "arguments": "x=80,y=100",
+      "zpl_sha256": "5213601589c3e1a09ca88f3355191a74ac9540ef8c3e4bc7bda1a874122ae846",
+      "png_sha256": "2762774389a89b7eaf70c9343b0622e866a1813d097a366b90f0edcbc42a2e4d",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-layout-LH",
+      "group": "layout",
+      "command": "^LH",
+      "arguments": "30,20",
+      "zpl_sha256": "f2972e5d720925b6301d53efcf58f9394d8264702464b1869ac8977067ca77bb",
+      "png_sha256": "bba0c820317ebb5d7cec7a57343a2bac637ccab5d4cf51efc2b423adcb7c1051",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-layout-LS",
+      "group": "layout",
+      "command": "^LS",
+      "arguments": "20",
+      "zpl_sha256": "635384f8b305e45e2a43c527af0b8f5e08bb614c9554a4079566dd0993508d32",
+      "png_sha256": "10e8b1fda5c9c8b94e978f6185d5f18203b3f6d3431089005cfc66af48e9997e",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-layout-LT",
+      "group": "layout",
+      "command": "^LT",
+      "arguments": "20",
+      "zpl_sha256": "79bce22d91ad8d3384a176c1a73250bcac87b71a72acea64046ebf886088c816",
+      "png_sha256": "cbdd7bb99d9e25c24957dd60625acf3e6647574fbf445e8d1da028867afaafed",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-layout-PO",
+      "group": "layout",
+      "command": "^PO",
+      "arguments": "I",
+      "zpl_sha256": "af1ca6655fb85746f04c11f5346d2a9108d38bf536cea8026e610dc15d581b14",
+      "png_sha256": "cbdd7bb99d9e25c24957dd60625acf3e6647574fbf445e8d1da028867afaafed",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-layout-LR",
+      "group": "layout",
+      "command": "^LR",
+      "arguments": "Y",
+      "zpl_sha256": "06f24c34d8f9357d6ad6ef4432978889f9f04aba89e919c022997a7045ff8863",
+      "png_sha256": "cbdd7bb99d9e25c24957dd60625acf3e6647574fbf445e8d1da028867afaafed",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-layout-FW",
+      "group": "layout",
+      "command": "^FW",
+      "arguments": "R",
+      "zpl_sha256": "7207f3799cde2ce0e1dc31615ed1f79cda98c4e8c768650574fc9244181a7795",
+      "png_sha256": "6a557dafb3000acdc2b46b63f6c6b1f0dbc80281e54c72e8b52dfbcea99fdb2d",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-field-reverse",
+      "group": "layout",
+      "command": "^FR",
+      "arguments": "reverse current field",
+      "zpl_sha256": "b9986546dc3eceeea7a2fa346691821610a4fbd52f9b333eadc6aa9ddbe8bac3",
+      "png_sha256": "a5ee3945b53c9e15fc831e7deaa97085ecef36f32d5f2675c39989f16a5ad28c",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-block-L",
+      "group": "text",
+      "command": "^FB",
+      "arguments": "w=220,lines=3,space=2,align=L,indent=0",
+      "zpl_sha256": "660d702336df5dd1c34aad4b0419fa72d586160e24a210b8134cd79a1c5b5eef",
+      "png_sha256": "967e4e9d561c07de5f4622be5dbf4e9e9c2e8e947819045ee4fa5eaf7624cf0a",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-block-C",
+      "group": "text",
+      "command": "^FB",
+      "arguments": "w=220,lines=3,space=2,align=C,indent=0",
+      "zpl_sha256": "3d7a1c65c8b77d3b8082131f0e85ef196ddc395c233c735eac532a0ee41a4546",
+      "png_sha256": "3ff5f611cbe10a11cb1d1509f8c2d4d03908b67d17fac97a3191afb4926bef4e",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-block-R",
+      "group": "text",
+      "command": "^FB",
+      "arguments": "w=220,lines=3,space=2,align=R,indent=0",
+      "zpl_sha256": "7c2c50ef7a78cc2f50edd22c0e4cec7bcc7552ba3522ea0ea3bf3fac270dd47d",
+      "png_sha256": "69eee3eed23f132bbf4f3cce185b7d507d3dc47617d5f8f5808942e4a9c35665",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-block-J",
+      "group": "text",
+      "command": "^FB",
+      "arguments": "w=220,lines=3,space=2,align=J,indent=0",
+      "zpl_sha256": "b527aee943490fc4fdbff2f7a56a6d60b5843b354f61733e7a7b4b24000b701f",
+      "png_sha256": "a9234e67718b304260287bd26263aae9fd8c47d4b442fb0e0d618f49160805d6",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-block-indent",
+      "group": "text",
+      "command": "^FB",
+      "arguments": "indent=20",
+      "zpl_sha256": "cc2aa0f3b062b9bb93e1b47ee6c795d3ea7bb041584134681435558217dd6e84",
+      "png_sha256": "a820799d6da49261d20817b8a60bc835511439491c24f3c63703adf2e95e2252",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-block-explicit-break",
+      "group": "text",
+      "command": "^FB",
+      "arguments": "explicit \\& break",
+      "zpl_sha256": "eb349aebe07ba1aecc000f28dad39b96d02be93eaf182da3a50bdb008b2ed910",
+      "png_sha256": "13ed0ce989f798e3eef5ef6d41c3390ed536ee6327b24f9316dd6fc2fce4ae25",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-field-hex",
+      "group": "text",
+      "command": "^FH",
+      "arguments": "indicator=_, bytes _41_42_43",
+      "zpl_sha256": "9b61dc48184db5c42623ebb0311256c046b6589d4898842008ad468ca4fad8b4",
+      "png_sha256": "cbdd7bb99d9e25c24957dd60625acf3e6647574fbf445e8d1da028867afaafed",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-variable-data",
+      "group": "text",
+      "command": "^FV",
+      "arguments": "literal field value",
+      "zpl_sha256": "807a66f0c16f04b91f3290204aa96f17fcd97dd2a6b0d38a5ee29796824b92a8",
+      "png_sha256": "cbdd7bb99d9e25c24957dd60625acf3e6647574fbf445e8d1da028867afaafed",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-encoding-0",
+      "group": "text",
+      "command": "^CI",
+      "arguments": "encoding=0",
+      "zpl_sha256": "747547447e2abbacff6bdc5d52a130486d776b6b1ae07cf027a40e530286faa9",
+      "png_sha256": "d7b9fb66bfdad894352e922a8a45f616f83458ac3b252a91e05aed04aac0ce30",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-encoding-27",
+      "group": "text",
+      "command": "^CI",
+      "arguments": "encoding=27",
+      "zpl_sha256": "e4519e3a3e97466e406582b6a723d8c09138377cf88a2608bfe9291bce1a7179",
+      "png_sha256": "d7b9fb66bfdad894352e922a8a45f616f83458ac3b252a91e05aed04aac0ce30",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-encoding-28",
+      "group": "text",
+      "command": "^CI",
+      "arguments": "encoding=28",
+      "zpl_sha256": "21bd494aa243ed8a1a189f05f3282b97668856900831824c267a2865bc01b7e6",
+      "png_sha256": "d7b9fb66bfdad894352e922a8a45f616f83458ac3b252a91e05aed04aac0ce30",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-utf8-accent",
+      "group": "text",
+      "command": "^CI",
+      "arguments": "encoding=28; UTF-8 \u00e9",
+      "zpl_sha256": "fb2ec76fde4a1d67bbf7fb700c70a56f9f64a4f4ba2f39ea02bb916d16501a2e",
+      "png_sha256": "c45301d965a56c8ee10d3e8e273096cfed6d19e428608da01c2b49f2c22830c6",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-box-thickness-1",
+      "group": "shapes",
+      "command": "^GB",
+      "arguments": "w=100,h=60,t=1,color=B,round=0",
+      "zpl_sha256": "c5daa70f566e54faf39555871c35c63e6b36c7ecc7db8ec2a502c2f133818855",
+      "png_sha256": "afeb435202fc3c0231fa94cd7b0d2d3b145df965dfcff03f10f2ff1297d99089",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-box-thickness-4",
+      "group": "shapes",
+      "command": "^GB",
+      "arguments": "w=100,h=60,t=4,color=B,round=0",
+      "zpl_sha256": "d3aac80a362071e269ed21903e9329d393f9fb21b79ad7d75a5dd40d04956128",
+      "png_sha256": "51ed2e1366e7e3818b9f4ebbbf3516a1b1294fa39271b453bc8a11123113378b",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-box-thickness-60",
+      "group": "shapes",
+      "command": "^GB",
+      "arguments": "w=100,h=60,t=60,color=B,round=0",
+      "zpl_sha256": "2c331dc3f381101cc897bc14fb6612f11a5c007c2a9e388db5fed5f0ae717f50",
+      "png_sha256": "3e600229024f0524ee4c87f58a427f3074d8ff62f6ecdd922fd4e540a2910a39",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-box-round",
+      "group": "shapes",
+      "command": "^GB",
+      "arguments": "round=4",
+      "zpl_sha256": "dda65783abb15f627e7363669f7db5c179751acb1d7827e3d5847db00010aefd",
+      "png_sha256": "5cfec07b4b030bf23f854fa33c4ae70c9c73f20c5219f39fec1e6fae1fc39ebe",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-box-white",
+      "group": "shapes",
+      "command": "^GB",
+      "arguments": "color=W",
+      "zpl_sha256": "32ebda919a1ed936772137e5fa44d90dd12aa672820f37e89cb409459a48d65f",
+      "png_sha256": "226ba0be1691502b8c3985447be8a2c0b831cd48f5c3f95d7fd46330665886d1",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-shape-GC-B",
+      "group": "shapes",
+      "command": "^GC",
+      "arguments": "80,3,B",
+      "zpl_sha256": "d728a84c33e24441404fbdb47573840cb5080e970abc43fdef4968272317b0ca",
+      "png_sha256": "36640c9532bcfb4e53477efea92268c01b5b421f13f8e1257bd98cc561682010",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-shape-GE-B",
+      "group": "shapes",
+      "command": "^GE",
+      "arguments": "120,60,3,B",
+      "zpl_sha256": "605bd3f7940149bc905922c91f2e332b895ca00abc4d6225730cf4e51c19bd23",
+      "png_sha256": "e0c24aacfdbfd45695295bc00e54b8b8bdf5d20c06c65a98b34352e2f9177cb8",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-shape-GD-R",
+      "group": "shapes",
+      "command": "^GD",
+      "arguments": "120,60,3,B,R",
+      "zpl_sha256": "f9735eac090c1a4a5cd5188c3335c419a778113e879681403e787b5ff2a4b5e1",
+      "png_sha256": "06fbf127a59d5afc67e93b40627e8f57486e005b2cca9cccd98903ecae5da56c",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-shape-GD-L",
+      "group": "shapes",
+      "command": "^GD",
+      "arguments": "120,60,3,B,L",
+      "zpl_sha256": "6f25b316dc901782ba35960c66e0effae189ea89d212bff8a87f24cf83f473e0",
+      "png_sha256": "827ae46ba5c8640ad4493feb6303c29a0dab4272ea283d52f51392ed70888098",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-graphic-hex",
+      "group": "graphics",
+      "command": "^GF",
+      "arguments": "A,8,8,1; raw hex",
+      "zpl_sha256": "2df24f2b8cb89320d114ab5ee3315822452ba611acb58e0b8231972711205350",
+      "png_sha256": "581d40033b5e51bb3838fceb81213300d043c6b19db7a39190b3e406bbb0dfef",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-graphic-binary",
+      "group": "graphics",
+      "command": "^GF",
+      "arguments": "B,8,8,1; ASCII binary bytes",
+      "zpl_sha256": "d6d383a5a117257962f6f406c4b531dc32f80fb2c67ed8d154c5ca29ad838718",
+      "png_sha256": "38f7a6982081af347a7d2ab4ad21641fb685f5570ba4d42e67e0bcaf5bd74c3c",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-graphic-B64",
+      "group": "graphics",
+      "command": "^GF",
+      "arguments": "A,8,8,1; B64, CRC16",
+      "zpl_sha256": "c5842b80b696522f97bd855472934206ac021ea569d00ba09b667fae787219a5",
+      "png_sha256": "581d40033b5e51bb3838fceb81213300d043c6b19db7a39190b3e406bbb0dfef",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-graphic-Z64",
+      "group": "graphics",
+      "command": "^GF",
+      "arguments": "A,8,8,1; Z64, CRC16",
+      "zpl_sha256": "4ced3f4a16e6a02b67b7c17893762a89ff824ea0d09074f27a36291ffb061640",
+      "png_sha256": "581d40033b5e51bb3838fceb81213300d043c6b19db7a39190b3e406bbb0dfef",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-code39-ratio-2",
+      "group": "barcode-arguments",
+      "command": "^BY",
+      "arguments": "w=2,ratio=2,height=60",
+      "zpl_sha256": "4fa209b59f743420aafce67f0fab6cbc0d99139f1731790ce0f66425be737f16",
+      "png_sha256": "e0f5516fea3f11bace4082bb798bfd5edc04d354159e6dd569cb665d523ff68d",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-code39-ratio-3",
+      "group": "barcode-arguments",
+      "command": "^BY",
+      "arguments": "w=2,ratio=3,height=60",
+      "zpl_sha256": "5da9840fb90f7fa5b3a64ddc880bcd264cf74c2ef3ee0a83ac232186a499d79f",
+      "png_sha256": "6038dab27d423f12b2d641e83ba299cddfbc8338c65ba14b132b50ce5c90e4e9",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-code39-check-N",
+      "group": "barcode-arguments",
+      "command": "^B3",
+      "arguments": "o=N,check=N,h=60,readable=N",
+      "zpl_sha256": "fac7587d37a7aff781321f04bcac001a8877d6bc411766bbf89b2bce6d43bc9b",
+      "png_sha256": "6038dab27d423f12b2d641e83ba299cddfbc8338c65ba14b132b50ce5c90e4e9",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-code39-check-Y",
+      "group": "barcode-arguments",
+      "command": "^B3",
+      "arguments": "o=N,check=Y,h=60,readable=N",
+      "zpl_sha256": "8d3887ec19881538b249dae906c79088eb53b5952f5af967d882b087e6c78e48",
+      "png_sha256": "1368db60483da997ebc623e0e09bbd29e0b272dc1f8e0ed0164efaea5196847f",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-code128-text-NN",
+      "group": "barcode-arguments",
+      "command": "^BC",
+      "arguments": "h=60,interpretation=N,above=N",
+      "zpl_sha256": "2cdc85216044404a33ad2a6d4ae940828e5285f21291d5ba26dcd8989007f574",
+      "png_sha256": "b99ee78c67ab55fb2f21f47aff965dcd7123034323528963d1011f4f949f4be4",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-code128-text-YN",
+      "group": "barcode-arguments",
+      "command": "^BC",
+      "arguments": "h=60,interpretation=Y,above=N",
+      "zpl_sha256": "38826815ddf5c3a0df8287d46dcc08603ca2e8bf4a700bac0dca297e43ac1585",
+      "png_sha256": "c4fb67c68eee8908854fe0ea519e3fc7673fcbd345a8921a4c637b448207bf06",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-code128-text-YY",
+      "group": "barcode-arguments",
+      "command": "^BC",
+      "arguments": "h=60,interpretation=Y,above=Y",
+      "zpl_sha256": "5d694c134748c8d98484c1f7e26be99a493d58f1486b730c0af945bc71c388a0",
+      "png_sha256": "e8a91f2259065669d2afd93bcf3057d297ca87807d5e5a2adc426e5f554e22bc",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-code128-rotation-R",
+      "group": "barcode-arguments",
+      "command": "^BC",
+      "arguments": "o=R,h=60",
+      "zpl_sha256": "b4cf9c2f202bb11cb72ee528343b39adb26af5747b6e6ce52df6c7e8117860bd",
+      "png_sha256": "b4edb8dedf49d2bf34a2970b112028a7cddb3a7a182763d8b6363677e2b2c791",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-code128-rotation-I",
+      "group": "barcode-arguments",
+      "command": "^BC",
+      "arguments": "o=I,h=60",
+      "zpl_sha256": "03cfe37fc26d19f030326faeddd7fb542d797f6cfd9f35ce3663b2d2e0dfa059",
+      "png_sha256": "2f292eb63fbad898b0fd4ae1f8449bbd7255189f49b0d3a7d99a00a6d5dfb88b",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-code128-rotation-B",
+      "group": "barcode-arguments",
+      "command": "^BC",
+      "arguments": "o=B,h=60",
+      "zpl_sha256": "621004156bddc70ed7420f65363ac87c4fb5644c434d38589fde27e92b3411f4",
+      "png_sha256": "58204533ae25dc56a7986e12bda4f2e61bdeb47f1d57657515bf7980257f8f3d",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-code128-mode-N",
+      "group": "barcode-arguments",
+      "command": "^BC",
+      "arguments": "mode=N",
+      "zpl_sha256": "42fe5ed13de31fbe4841e3b9e36fe5aa94e0c3b4320c61c5143eaadcc72ea660",
+      "png_sha256": "63745e9b2850dd9566b957faa1d8613b04544b1e5c7ab54c613bf836e89c6527",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-code128-mode-A",
+      "group": "barcode-arguments",
+      "command": "^BC",
+      "arguments": "mode=A",
+      "zpl_sha256": "8028e81521ddefce824f4029f8b1f702c81d18b549ed0b4dcada43247922ac9b",
+      "png_sha256": "cb212ee7ec9bf25314050820ee2944b0fd1e96852b2188221bb73f10b6fa1c7c",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-qr-model-1",
+      "group": "barcode-arguments",
+      "command": "^BQ",
+      "arguments": "o=N,model=1,magnification=3,EC=L,mask=0",
+      "zpl_sha256": "9a3f4260cfa8f6516cb6d69fcfc52065448773e69fc2aaaf32bd5b2c301c801f",
+      "png_sha256": "04d2728343a2707139575b4a52e3faba6f6b4f4c585a1d9478b2a452cba20082",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-qr-model-2",
+      "group": "barcode-arguments",
+      "command": "^BQ",
+      "arguments": "o=N,model=2,magnification=3,EC=L,mask=0",
+      "zpl_sha256": "ef881a411b4f28765292014b85d8d1dfd90e8c032a7d0f27e6967a0e0ced8b26",
+      "png_sha256": "bd5cd670e8fdda524969e2876c010871bfbb0b73e78244119c2390ddc81e8b22",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-qr-ec-L",
+      "group": "barcode-arguments",
+      "command": "^BQ",
+      "arguments": "model=2,magnification=3,EC=L,mask=0",
+      "zpl_sha256": "ef881a411b4f28765292014b85d8d1dfd90e8c032a7d0f27e6967a0e0ced8b26",
+      "png_sha256": "bd5cd670e8fdda524969e2876c010871bfbb0b73e78244119c2390ddc81e8b22",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-qr-ec-M",
+      "group": "barcode-arguments",
+      "command": "^BQ",
+      "arguments": "model=2,magnification=3,EC=M,mask=0",
+      "zpl_sha256": "ace4360ae8a1e5b501be61943ca1643c089345905a1aa7422d8c97128c32c7d7",
+      "png_sha256": "73a5a2164383ba6bde4ffc3721305524eed1c60a066953c8c9ef724a9880e527",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-qr-ec-Q",
+      "group": "barcode-arguments",
+      "command": "^BQ",
+      "arguments": "model=2,magnification=3,EC=Q,mask=0",
+      "zpl_sha256": "b90fbbfea016c7226d842876fe95a8ef3278a912bdfd95f9c77eb8d5242cebd0",
+      "png_sha256": "ab1918f7cf5d55e9c4a6616da0cdeb19e94b363ea76b56c555e3afe15dde07cd",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-qr-ec-H",
+      "group": "barcode-arguments",
+      "command": "^BQ",
+      "arguments": "model=2,magnification=3,EC=H,mask=0",
+      "zpl_sha256": "8cd8c48faf3874485a8c0954ef9202c09ebbc8c3fb1d6835900dde5d4271e925",
+      "png_sha256": "407a9db3bbee3badeb931dd98a3262cd1d7530e1996e9718d2013b2e36e3749e",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-qr-module-2",
+      "group": "barcode-arguments",
+      "command": "^BQ",
+      "arguments": "magnification=2",
+      "zpl_sha256": "c3bdefd5c4e9c22fdd66baeece8ddd00a24e08fa31a0500647a19c27754695cc",
+      "png_sha256": "61ea0b937a6132f73e8052c46997c33c91217cfb1bbc4fd28e036e6b29286895",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-qr-module-5",
+      "group": "barcode-arguments",
+      "command": "^BQ",
+      "arguments": "magnification=5",
+      "zpl_sha256": "93f1a00420fa99ee8972a4f8fa7f4fbc23747dadb9b1a0effd45b0cefd08162f",
+      "png_sha256": "20ae62ecc6a6ed9621bc4557ea9c3046d8dc166a446c41de0b4675f104b2c8e5",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-qr-mask-0",
+      "group": "barcode-arguments",
+      "command": "^BQ",
+      "arguments": "mask=0",
+      "zpl_sha256": "ef881a411b4f28765292014b85d8d1dfd90e8c032a7d0f27e6967a0e0ced8b26",
+      "png_sha256": "bd5cd670e8fdda524969e2876c010871bfbb0b73e78244119c2390ddc81e8b22",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-qr-mask-3",
+      "group": "barcode-arguments",
+      "command": "^BQ",
+      "arguments": "mask=3",
+      "zpl_sha256": "958c4627a8bbff1f3d8e3616883808e9f1bd9f734897b78c46d748d358651745",
+      "png_sha256": "bd5cd670e8fdda524969e2876c010871bfbb0b73e78244119c2390ddc81e8b22",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-qr-mask-7",
+      "group": "barcode-arguments",
+      "command": "^BQ",
+      "arguments": "mask=7",
+      "zpl_sha256": "453727fc0edb69f5832baba008fefbfc336a601e67415254e67b81d2d38fa419",
+      "png_sha256": "bd5cd670e8fdda524969e2876c010871bfbb0b73e78244119c2390ddc81e8b22",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-datamatrix-module-2",
+      "group": "barcode-arguments",
+      "command": "^BX",
+      "arguments": "o=N,module=2,quality=200",
+      "zpl_sha256": "ecc9cd7deac93789b6edbdde7497b4297e4fa47e7365b053406545834701f40f",
+      "png_sha256": "de5c453485cd55c362e92685b0df48246692c9412615512f7695ba25b8de5167",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "argument-datamatrix-module-4",
+      "group": "barcode-arguments",
+      "command": "^BX",
+      "arguments": "o=N,module=4,quality=200",
+      "zpl_sha256": "36ea09faee394962ff152901b7953d965b964035c0a512d74cda6191cb3b36b4",
+      "png_sha256": "c52813968fcae69dabd201785088ea1a688fb4312aa246bc8a2fee766b1a521a",
+      "source": "fresh arguments"
+    },
+    {
+      "id": "barcode-aztec",
+      "group": "barcode-formats",
+      "command": "^BO",
+      "arguments": "See exact archived ZPL",
+      "zpl_sha256": "227c0bae856655b365bb774bec7d83fefa16f19bf573fc32756b9afb3d995993",
+      "png_sha256": "3ffae9c01e8b2875c5275fb679cba505d4a8d6387e70a80ec9d40ff460d942d3",
+      "source": "archived barcode development corpus"
+    },
+    {
+      "id": "barcode-aztec_alias",
+      "group": "barcode-formats",
+      "command": "^B0",
+      "arguments": "See exact archived ZPL",
+      "zpl_sha256": "e85ea234afef130997c4e52816670545b876ca8683495dae4d84efd1621b03af",
+      "png_sha256": "3ffae9c01e8b2875c5275fb679cba505d4a8d6387e70a80ec9d40ff460d942d3",
+      "source": "archived barcode development corpus"
+    },
+    {
+      "id": "barcode-aztec_rune",
+      "group": "barcode-formats",
+      "command": "^BO",
+      "arguments": "See exact archived ZPL",
+      "zpl_sha256": "125de589369cf0c7c0bbc83e70c4030409ce7365d5f5f19901b10a14e570d273",
+      "png_sha256": "da5d1d4fc0b2a38ca3f4afa1788f1f7687d73382555090dc40ef811a6fdd962b",
+      "source": "archived barcode development corpus"
+    },
+    {
+      "id": "barcode-codabar",
+      "group": "barcode-formats",
+      "command": "^BK",
+      "arguments": "See exact archived ZPL",
+      "zpl_sha256": "0a40058c769ec1e24fb5a973910cc906b4d882ffd321e0b234c2980a3e701958",
+      "png_sha256": "c175d3055983ce7445ad45b957186ffeacbe44dce24311fd3ff72054e9315ecb",
+      "source": "archived barcode development corpus"
+    },
+    {
+      "id": "barcode-codablock_a",
+      "group": "barcode-formats",
+      "command": "^BB",
+      "arguments": "See exact archived ZPL",
+      "zpl_sha256": "624ec097053d0ac7b771839be78dd7b958b2f4529622d860ce4b302a8effd7b3",
+      "png_sha256": "e1d399669fe86d9e0956c2ed6eb4e71df6e5231020d35de0f0bb7727840bc9f9",
+      "source": "archived barcode development corpus"
+    },
+    {
+      "id": "barcode-codablock_e",
+      "group": "barcode-formats",
+      "command": "^BB",
+      "arguments": "See exact archived ZPL",
+      "zpl_sha256": "c5310eae9cd3962980ed63aa235afa84610d37a383ba7eb72de61bf3b7448923",
+      "png_sha256": "7276c8ad7671a5a3f4e6484003c9131892a4a81213968bb0865edff0497e3f2a",
+      "source": "archived barcode development corpus"
+    },
+    {
+      "id": "barcode-codablock_f",
+      "group": "barcode-formats",
+      "command": "^BB",
+      "arguments": "See exact archived ZPL",
+      "zpl_sha256": "808ed43478077960ce3758abbbc2671d47739e6daee3d6d986c23343c60a7c54",
+      "png_sha256": "d66b8e6b700f72a8dab9a5fbc411ca603d1fb2c175a941d40d7b157342a52f57",
+      "source": "archived barcode development corpus"
+    },
+    {
+      "id": "barcode-code11",
+      "group": "barcode-formats",
+      "command": "^B1",
+      "arguments": "See exact archived ZPL",
+      "zpl_sha256": "d32689a37d72c3cd213db9daa4fbee77f39a1ddc0ebef9ec82a70cbcd4e2b603",
+      "png_sha256": "0c567a215cf52442e5d9ec3e071c0e203b61cedab8206806aa26eb27037fc423",
+      "source": "archived barcode development corpus"
+    },
+    {
+      "id": "barcode-code128",
+      "group": "barcode-formats",
+      "command": "^BC",
+      "arguments": "See exact archived ZPL",
+      "zpl_sha256": "85fd959b91acb595223af2323bb252a9ed9fda0a41a34e8573c1d6413b8baaaa",
+      "png_sha256": "5354b2df041f176e5fcbe87b52fae6099964fb5a3e3e6bfc972ba626bc78249c",
+      "source": "archived barcode development corpus"
+    },
+    {
+      "id": "barcode-code39",
+      "group": "barcode-formats",
+      "command": "^B3",
+      "arguments": "See exact archived ZPL",
+      "zpl_sha256": "0c3aa62b1549bef15fedec3c9a1d647c33ab4e5e96cce4c8de5ba68dce3aea69",
+      "png_sha256": "d3b2a1b52fae837e3cc578ead4429a656d4fa59c67572482c1fb37c169e5b627",
+      "source": "archived barcode development corpus"
+    },
+    {
+      "id": "barcode-code49",
+      "group": "barcode-formats",
+      "command": "^B4",
+      "arguments": "See exact archived ZPL",
+      "zpl_sha256": "dc2e6f8ca6607714aa72195d5c9047be9063623853fc2afea87ca88bcb991f82",
+      "png_sha256": "d4ce1be7f8d1e31e1c2929be8b12745e8f7a979c1cc63509e817b31e37b3ebac",
+      "source": "archived barcode development corpus"
+    },
+    {
+      "id": "barcode-code93",
+      "group": "barcode-formats",
+      "command": "^BA",
+      "arguments": "See exact archived ZPL",
+      "zpl_sha256": "634905534f6f5ae329514a7fc3afc4cc4741850011528526dbd80557795fce6a",
+      "png_sha256": "9e31969f4cd473e1d453b783f8f8be7dd411c6d6e306a7fe544469ef44a22f0c",
+      "source": "archived barcode development corpus"
+    },
+    {
+      "id": "barcode-composite_a",
+      "group": "barcode-formats",
+      "command": "^BR",
+      "arguments": "See exact archived ZPL",
+      "zpl_sha256": "726642fe94a2cd7be7f28638a290be94759a9a2213b4c7a388de5df8ae7f2868",
+      "png_sha256": "9fef1bfc451f6f87bb3958260b10a061f57d9091e367fd5d38a40628d66cd9d9",
+      "source": "archived barcode development corpus"
+    },
+    {
+      "id": "barcode-composite_b",
+      "group": "barcode-formats",
+      "command": "^BR",
+      "arguments": "See exact archived ZPL",
+      "zpl_sha256": "971427617f683c279da66e9d8a6c20c2bb9b381ffa1fe4b629d7c07b9015ff2a",
+      "png_sha256": "38479db05202699b0a854f76928936a5d4181d03d63d944b21b5bf7aba35b57f",
+      "source": "archived barcode development corpus"
+    },
+    {
+      "id": "barcode-composite_c",
+      "group": "barcode-formats",
+      "command": "^BR",
+      "arguments": "See exact archived ZPL",
+      "zpl_sha256": "578a5c7890bb5a04aac94aec27815198bd8f0912a921deeae65719eecbcf5820",
+      "png_sha256": "2731bf7807402fba93da01f309fce5e690950779bd04527d16c38bd0ef55aedd",
+      "source": "archived barcode development corpus"
+    },
+    {
+      "id": "barcode-data_matrix",
+      "group": "barcode-formats",
+      "command": "^BX",
+      "arguments": "See exact archived ZPL",
+      "zpl_sha256": "7a3bb5d68899e55f54b4d126af141393173dce73b315cd186286a6ab90f2d711",
+      "png_sha256": "e028660853d8e5291b37da99b6ea3e1becd5acc092c9721883bf7bc409497723",
+      "source": "archived barcode development corpus"
+    },
+    {
+      "id": "barcode-data_matrix_rectangular",
+      "group": "barcode-formats",
+      "command": "^BX",
+      "arguments": "See exact archived ZPL",
+      "zpl_sha256": "9160917d497ad71382d1d2a5e7d5353e41042cfdf8b36aca41c825e69e3bb392",
+      "png_sha256": "201e2cb8063f1c2941d266c224cbf9a8bc10a3594f05f5cce961a067f81fae62",
+      "source": "archived barcode development corpus"
+    },
+    {
+      "id": "barcode-databar_ean13",
+      "group": "barcode-formats",
+      "command": "^BR",
+      "arguments": "See exact archived ZPL",
+      "zpl_sha256": "39d1267c9389722731040e83ddb9313fe97e49713721efe78feb45645bfc6c7f",
+      "png_sha256": "e5070b5e30fbd6c24b0c53c0a62a3d84a377f77ed79799c653b8f6521c559f0f",
+      "source": "archived barcode development corpus"
+    },
+    {
+      "id": "barcode-databar_ean8",
+      "group": "barcode-formats",
+      "command": "^BR",
+      "arguments": "See exact archived ZPL",
+      "zpl_sha256": "04305076b879b991cc5f16f37ebcf9106b2d2980b0bfdc7362d327af7ee51a5e",
+      "png_sha256": "b1ccabf2321252616181cf4d72ddd013f763fd2c779eb69c20765c35c66614e9",
+      "source": "archived barcode development corpus"
+    },
+    {
+      "id": "barcode-databar_expanded",
+      "group": "barcode-formats",
+      "command": "^BR",
+      "arguments": "See exact archived ZPL",
+      "zpl_sha256": "eec9638001599a426ded0ad193534d69d3e9e3a4a20bd44fb398cbf2d43bfc78",
+      "png_sha256": "9c4ebbd5bdf72cc2aba8398c5ad231d51b9bc73987fdfd2a1a9164405cb5ea78",
+      "source": "archived barcode development corpus"
+    },
+    {
+      "id": "barcode-databar_expanded_stacked",
+      "group": "barcode-formats",
+      "command": "^BR",
+      "arguments": "See exact archived ZPL",
+      "zpl_sha256": "f9d3d568b09dd3ddb90312d097921ef2239f4e54201084dbfb70ed266ebda549",
+      "png_sha256": "3abd9a523cb8d852f2c636a1b60b988353d92b0d28ae2d2a312109d8795bf307",
+      "source": "archived barcode development corpus"
+    },
+    {
+      "id": "barcode-databar_limited",
+      "group": "barcode-formats",
+      "command": "^BR",
+      "arguments": "See exact archived ZPL",
+      "zpl_sha256": "14a1e79c7686ee8dfed1e23a135f4c1fb68005870e969e786c930c6742fa1c00",
+      "png_sha256": "b04002ddd610bec0053b02344eadf3e151cfe0008d3d2dd6e8f1a407222e1e33",
+      "source": "archived barcode development corpus"
+    },
+    {
+      "id": "barcode-databar_omni",
+      "group": "barcode-formats",
+      "command": "^BR",
+      "arguments": "See exact archived ZPL",
+      "zpl_sha256": "74c6e4c43217d49bcdf686f2726d7f79cd12bf644f073f1216eb5de87a7d2f4d",
+      "png_sha256": "b2a75403ae9814ef80cdfdf083e0497e6777f634c2109828a26649af77895aa7",
+      "source": "archived barcode development corpus"
+    },
+    {
+      "id": "barcode-databar_stacked",
+      "group": "barcode-formats",
+      "command": "^BR",
+      "arguments": "See exact archived ZPL",
+      "zpl_sha256": "8f705b79d4e12c5a6a2e6f17a47203df8713a9406ef346e1c9f58f4a64d8086e",
+      "png_sha256": "c4da60e86555e3b2b2ecaa3ffc0dab9e685874e5b0349ab62dde7cfac782b2b0",
+      "source": "archived barcode development corpus"
+    },
+    {
+      "id": "barcode-databar_stacked_omni",
+      "group": "barcode-formats",
+      "command": "^BR",
+      "arguments": "See exact archived ZPL",
+      "zpl_sha256": "a3ad9ceb25b6c4def44f88a36fb8aea11c9d69f8122ed9fd5adf87589d5fa5d1",
+      "png_sha256": "7ac0354d326aa77865687d6a91d9940ffd29ae169010404dcf1f45cf46930f22",
+      "source": "archived barcode development corpus"
+    },
+    {
+      "id": "barcode-databar_truncated",
+      "group": "barcode-formats",
+      "command": "^BR",
+      "arguments": "See exact archived ZPL",
+      "zpl_sha256": "ea15f39d8eb7739910a1352ddc97309628e5f8863f00b475994da9c527eb506b",
+      "png_sha256": "d0b2b538a050d4c2662fe8e01cb74c4a8ee818b0349eb55c91fe09c7de838436",
+      "source": "archived barcode development corpus"
+    },
+    {
+      "id": "barcode-databar_upca",
+      "group": "barcode-formats",
+      "command": "^BR",
+      "arguments": "See exact archived ZPL",
+      "zpl_sha256": "93d4db16db6e2c911e22d41ca645f52bbe64fb8cbd3a8ebf1b5fe7247da8cedd",
+      "png_sha256": "7b8953f73898ef700ec37eee279ed3cd3be1a743f8a580c4aaeecbdefe423491",
+      "source": "archived barcode development corpus"
+    },
+    {
+      "id": "barcode-databar_upce",
+      "group": "barcode-formats",
+      "command": "^BR",
+      "arguments": "See exact archived ZPL",
+      "zpl_sha256": "02f2fced16c5bd7bbe5fb118479bf99ffa0a8ae2c79f9d954a35b01cb0cf0aed",
+      "png_sha256": "f886a1807b034d9f0ff8efb3ddca53b9b4c250128650ef97cbe45102a3cd23f3",
+      "source": "archived barcode development corpus"
+    },
+    {
+      "id": "barcode-ean13",
+      "group": "barcode-formats",
+      "command": "^BE",
+      "arguments": "See exact archived ZPL",
+      "zpl_sha256": "742a53a79ca60e0d6b19f4e0ae9b912ea90f165d5b57e5dceea9a11d3e42c440",
+      "png_sha256": "f296ee37f38af0a608944c3e8a4492f3f0237b32930a17f37520ba97d491c9b8",
+      "source": "archived barcode development corpus"
+    },
+    {
+      "id": "barcode-ean8",
+      "group": "barcode-formats",
+      "command": "^B8",
+      "arguments": "See exact archived ZPL",
+      "zpl_sha256": "9c84acd03d369be15828268478f6ee6d263536a2ef55c64b7bed5c80ac85deef",
+      "png_sha256": "9bfe809fc00a4b8f128e7c549b222d0e07c3dc8faaf36bf6a3dd9bd3479c42ec",
+      "source": "archived barcode development corpus"
+    },
+    {
+      "id": "barcode-extension2",
+      "group": "barcode-formats",
+      "command": "^BS",
+      "arguments": "See exact archived ZPL",
+      "zpl_sha256": "f77d58036b4585eb3bcedf358ecf170fd230545cba4d39290efc64373470bed8",
+      "png_sha256": "df49c3e54838154c8080dfc04e67fa252c23b15ca09226fc4e4b37453ef39162",
+      "source": "archived barcode development corpus"
+    },
+    {
+      "id": "barcode-extension5",
+      "group": "barcode-formats",
+      "command": "^BS",
+      "arguments": "See exact archived ZPL",
+      "zpl_sha256": "4c25882ddd06875e72ed0071d6d63f0d765ea6d909916b3283310bfced558f87",
+      "png_sha256": "0383330b843173434d7a2651fbff0eb4738565c55484c03d1fa5093dab91c613",
+      "source": "archived barcode development corpus"
+    },
+    {
+      "id": "barcode-industrial2of5",
+      "group": "barcode-formats",
+      "command": "^BI",
+      "arguments": "See exact archived ZPL",
+      "zpl_sha256": "b0976c57662a03ea832f8a0816a46b248d6916719499cd4de8188c248bd83246",
+      "png_sha256": "b1b54173e27c797674f16bdd5c00669027414891e9bbd6eefe08a511cdd6c247",
+      "source": "archived barcode development corpus"
+    },
+    {
+      "id": "barcode-intelligent_mail",
+      "group": "barcode-formats",
+      "command": "^BZ",
+      "arguments": "See exact archived ZPL",
+      "zpl_sha256": "bb2ca33c8c620dc70ba951d090e4b08be5c3a17aba8edb3857967f988221b940",
+      "png_sha256": "507671641b9d1907f923fba9e2dddf9340c2fbb322217f595048bfb2b403afb3",
+      "source": "archived barcode development corpus"
+    },
+    {
+      "id": "barcode-interleaved2of5",
+      "group": "barcode-formats",
+      "command": "^B2",
+      "arguments": "See exact archived ZPL",
+      "zpl_sha256": "8bbc33fc95caee703a8d8b96fa388344175c0ce9fd5e863565c7ab4f4165121b",
+      "png_sha256": "b47c0483daae263484761e7db6c0f2739301b7bf19cfca78e8b24836a73d1d49",
+      "source": "archived barcode development corpus"
+    },
+    {
+      "id": "barcode-logmars",
+      "group": "barcode-formats",
+      "command": "^BL",
+      "arguments": "See exact archived ZPL",
+      "zpl_sha256": "cf9c5f0b149e47e80a6356bbc49074d34d19429412cd5b3be799128cc21b5986",
+      "png_sha256": "6bbbf0006b53955e509b281740fa815d4dcb74f57d09a4d8304a1e14a85cc4a1",
+      "source": "archived barcode development corpus"
+    },
+    {
+      "id": "barcode-maxicode2",
+      "group": "barcode-formats",
+      "command": "^BD",
+      "arguments": "See exact archived ZPL",
+      "zpl_sha256": "71fe256cde77dd71a940b7c5f9e57f5029a0055bdd8e987e183155d3ba23fce5",
+      "png_sha256": "32505cbea4b042939d2e5c6bccbd20d193d375014762cde291a97c944fdb7bac",
+      "source": "archived barcode development corpus"
+    },
+    {
+      "id": "barcode-maxicode3",
+      "group": "barcode-formats",
+      "command": "^BD",
+      "arguments": "See exact archived ZPL",
+      "zpl_sha256": "198d5253c17ee0adec4ff027f5602d6f029b0d2f20498a90c7fa677d983f7bc2",
+      "png_sha256": "9d5f4802fb3a3df48c0ca1584e632c4750a925180d3dcde6c8dd6439581005f4",
+      "source": "archived barcode development corpus"
+    },
+    {
+      "id": "barcode-maxicode4",
+      "group": "barcode-formats",
+      "command": "^BD",
+      "arguments": "See exact archived ZPL",
+      "zpl_sha256": "83dddd887d6c9e459a17e4ac3e132d9331002f029e4bccaba256a6de97024968",
+      "png_sha256": "17bca8980e91716e51aa9f27e16079aba5537430029b3761c19bbc0d853c10da",
+      "source": "archived barcode development corpus"
+    },
+    {
+      "id": "barcode-maxicode5",
+      "group": "barcode-formats",
+      "command": "^BD",
+      "arguments": "See exact archived ZPL",
+      "zpl_sha256": "a4a64a757bf1c3ccaebcb039d0d0ee8e312450ccdb45019841ed44ba1f1f35f5",
+      "png_sha256": "c060ae0e88d2776f28c1b916b0d7fd084c0f6fe55031986610ce24c8cd8d3055",
+      "source": "archived barcode development corpus"
+    },
+    {
+      "id": "barcode-maxicode6",
+      "group": "barcode-formats",
+      "command": "^BD",
+      "arguments": "See exact archived ZPL",
+      "zpl_sha256": "828e7b703fa4bb36edffb763ca776eb93e8450392460fb26dbafc61d60d47af7",
+      "png_sha256": "b8b61a789bd511a43df8e0c537399eb73e441706e8174b3fa00f05527a17f73e",
+      "source": "archived barcode development corpus"
+    },
+    {
+      "id": "barcode-micropdf417_1",
+      "group": "barcode-formats",
+      "command": "^BF",
+      "arguments": "See exact archived ZPL",
+      "zpl_sha256": "4ab860b7a0761aeb7f4b06af020d8901e75014267374c5fbdf2450114497bfef",
+      "png_sha256": "70c261862a142778677616672d9927e60aaf7ba9ba3a438cab23cae7fa582505",
+      "source": "archived barcode development corpus"
+    },
+    {
+      "id": "barcode-micropdf417_3",
+      "group": "barcode-formats",
+      "command": "^BF",
+      "arguments": "See exact archived ZPL",
+      "zpl_sha256": "075cc8ecd929670fb48f261e2bc21d4f64614dffa1c3dc37528cf8a395b823d1",
+      "png_sha256": "dcdf1d6e5807d43d64aaafe069950d77ae35fe3ad8afcb43b1ded7c914f4ac8e",
+      "source": "archived barcode development corpus"
+    },
+    {
+      "id": "barcode-micropdf417_4",
+      "group": "barcode-formats",
+      "command": "^BF",
+      "arguments": "See exact archived ZPL",
+      "zpl_sha256": "8ddd96c6fd7b4a0245c033b2d807bf48909ed6bd6233dead85be645c0ac4e441",
+      "png_sha256": "1551bedec11c9f962448f12ed637628ac5b349213803e7ca25d3de6e9ce70aed",
+      "source": "archived barcode development corpus"
+    },
+    {
+      "id": "barcode-msi_a",
+      "group": "barcode-formats",
+      "command": "^BM",
+      "arguments": "See exact archived ZPL",
+      "zpl_sha256": "9e8d688719c54826ae10e2409108ad259af9d43e15540cbfff720d6dbfaaeeec",
+      "png_sha256": "f459f8768fb28a25bdb7f801071cfa13fbe7e4c3728fa7baf129311687d9920f",
+      "source": "archived barcode development corpus"
+    },
+    {
+      "id": "barcode-msi_b",
+      "group": "barcode-formats",
+      "command": "^BM",
+      "arguments": "See exact archived ZPL",
+      "zpl_sha256": "b604eb8d1cb47071aca54eec971795cac8de14565698a2886634bd655e0e822d",
+      "png_sha256": "de2afb732615690b34c6791b2ddecfaec817d23c42c9da1cabbac3fac5be142b",
+      "source": "archived barcode development corpus"
+    },
+    {
+      "id": "barcode-msi_c",
+      "group": "barcode-formats",
+      "command": "^BM",
+      "arguments": "See exact archived ZPL",
+      "zpl_sha256": "ee3ef08f896ac8c037e1cb7dd540a47b0bb698639059d1f9e5a0a3fb1aa9470d",
+      "png_sha256": "103352b86a4ca621c16ee7a821fc2abeb49946a4688a1037a522c5a0b247dd30",
+      "source": "archived barcode development corpus"
+    },
+    {
+      "id": "barcode-msi_d",
+      "group": "barcode-formats",
+      "command": "^BM",
+      "arguments": "See exact archived ZPL",
+      "zpl_sha256": "167e07e1c964b78ba7018f4354210aaf4aa29e0a417b50622daaf2a1ee23ff04",
+      "png_sha256": "103352b86a4ca621c16ee7a821fc2abeb49946a4688a1037a522c5a0b247dd30",
+      "source": "archived barcode development corpus"
+    },
+    {
+      "id": "barcode-pdf417",
+      "group": "barcode-formats",
+      "command": "^B7",
+      "arguments": "See exact archived ZPL",
+      "zpl_sha256": "97b88879b55074538c8a9c550819f4e76e3c8ef1f438703530059aaa7914db98",
+      "png_sha256": "8ed32ecc964763fe1ea376b55af5c58d45ffc750e260882ab4a04e1b2af2ed98",
+      "source": "archived barcode development corpus"
+    },
+    {
+      "id": "barcode-pdf417_truncated",
+      "group": "barcode-formats",
+      "command": "^B7",
+      "arguments": "See exact archived ZPL",
+      "zpl_sha256": "dcf88c20b91cd8057c6650a8ec08ae3efe7e4848f8dc8a7529b46d42ce16f0d9",
+      "png_sha256": "ee85fc378561f2f943ac700854b780e2f08f05f71a17cd0b932b39020ab50be8",
+      "source": "archived barcode development corpus"
+    },
+    {
+      "id": "barcode-planet",
+      "group": "barcode-formats",
+      "command": "^B5",
+      "arguments": "See exact archived ZPL",
+      "zpl_sha256": "c423f03f0fb39bf56c70472a6518462966ef1fa7807a12b3c269c25c2b8de06f",
+      "png_sha256": "1f43c54888dab67d7b976905aec7b9c215ac05ea85d782d26ac5de3569ab8f43",
+      "source": "archived barcode development corpus"
+    },
+    {
+      "id": "barcode-plessey",
+      "group": "barcode-formats",
+      "command": "^BP",
+      "arguments": "See exact archived ZPL",
+      "zpl_sha256": "e0ba555cda0485be6cef8f00cce6e8dea4818323c7c2a76790a660d93cd27e58",
+      "png_sha256": "90e403aa85ed6ebe5e2a9d10e5df379d0e010ee515dd35bb9f5cb2d36295ee9c",
+      "source": "archived barcode development corpus"
+    },
+    {
+      "id": "barcode-postal_planet",
+      "group": "barcode-formats",
+      "command": "^BZ",
+      "arguments": "See exact archived ZPL",
+      "zpl_sha256": "c33ea7a525d06e830d93d8adc4b20b58b2f4066de5f63aeb2ffcaf380b05e9b3",
+      "png_sha256": "1f43c54888dab67d7b976905aec7b9c215ac05ea85d782d26ac5de3569ab8f43",
+      "source": "archived barcode development corpus"
+    },
+    {
+      "id": "barcode-postnet",
+      "group": "barcode-formats",
+      "command": "^BZ",
+      "arguments": "See exact archived ZPL",
+      "zpl_sha256": "d4a2272088a1cb63f9d0ecb53a8688b4ea95996a0ea2a6578e6dfca4a230a78c",
+      "png_sha256": "a76626f3dafa0c81dab09879053eb08a88c0e46e7c42fca6a0feb472f1196153",
+      "source": "archived barcode development corpus"
+    },
+    {
+      "id": "barcode-qr",
+      "group": "barcode-formats",
+      "command": "^BQ",
+      "arguments": "See exact archived ZPL",
+      "zpl_sha256": "4751aff11c58850815b8428fcf199074e1fe7ea634b90138187518f505726370",
+      "png_sha256": "0dee367165095e196178c014e31cab83809d453566df7cdb1018708c866dad97",
+      "source": "archived barcode development corpus"
+    },
+    {
+      "id": "barcode-standard2of5",
+      "group": "barcode-formats",
+      "command": "^BJ",
+      "arguments": "See exact archived ZPL",
+      "zpl_sha256": "c057a88f340a2bcca096da5fdac5300b30273670a8ad286b06eb3f731a38fcdd",
+      "png_sha256": "116e3315adbaa2a86c99e4e2008ac7a0b6c6fda55ff72690ee07193cbbde7858",
+      "source": "archived barcode development corpus"
+    },
+    {
+      "id": "barcode-tlc39_linear",
+      "group": "barcode-formats",
+      "command": "^BT",
+      "arguments": "See exact archived ZPL",
+      "zpl_sha256": "ec25e9bb3400a3a351ce8c5aadbfe685702b5d75987b34392d7cb79338df69e5",
+      "png_sha256": "aa1bd1e5228d6677df74c2b2d92f60f795ca99af0192d7c955772c775bf19753",
+      "source": "archived barcode development corpus"
+    },
+    {
+      "id": "barcode-tlc39_linked",
+      "group": "barcode-formats",
+      "command": "^BT",
+      "arguments": "See exact archived ZPL",
+      "zpl_sha256": "62768cae0a2bfa5e196259d9459090b4875c05dd1c57ff686af883b7ab126550",
+      "png_sha256": "5510601db5298cdee52b0cffc9e2775b789c6c38cebdd90c2ebd02f60545a830",
+      "source": "archived barcode development corpus"
+    },
+    {
+      "id": "barcode-upca",
+      "group": "barcode-formats",
+      "command": "^BU",
+      "arguments": "See exact archived ZPL",
+      "zpl_sha256": "ae640d1f7d4b6e6ac3af33610b00b28e7055fb1d8288fb81d6ce8bf835276044",
+      "png_sha256": "04bf602d93cfe126bcd1ce3e694add3c47a8f39a1dcd7460e23347a9c7a073c0",
+      "source": "archived barcode development corpus"
+    },
+    {
+      "id": "barcode-upce",
+      "group": "barcode-formats",
+      "command": "^B9",
+      "arguments": "See exact archived ZPL",
+      "zpl_sha256": "4f8e4563e0693cb497b8c189b16fdaf9529aa8671b2be536551510a7408fa9d7",
+      "png_sha256": "cc5db575baacf68643d7b5fbd98c6d9918762a55f3b0a17853f8246dcfff7933",
+      "source": "archived barcode development corpus"
+    },
+    {
+      "id": "control-ean-font-10",
+      "group": "controls",
+      "source": "independent ZD621 preview controls, 2026-09-18 UTC",
+      "zpl_sha256": "a8bc3b5da24ac1c9e800dc461896e5b9a199982c9b69ee9e4473002542c97307",
+      "png_sha256": "0ddf0a44e23c830f8199a0e84e2c12754f885f006be274c6a1f17a9c24072c17"
+    },
+    {
+      "id": "control-ean-font-40",
+      "group": "controls",
+      "source": "independent ZD621 preview controls, 2026-09-18 UTC",
+      "zpl_sha256": "6109643c9645369ff1cbe01a5ba9de9c14dd415bd43ca92ba8909f3d7468525e",
+      "png_sha256": "0ddf0a44e23c830f8199a0e84e2c12754f885f006be274c6a1f17a9c24072c17"
+    },
+    {
+      "id": "control-ean13-module-1",
+      "group": "controls",
+      "source": "independent ZD621 preview controls, 2026-09-18 UTC",
+      "zpl_sha256": "fde59cfef7c08bafe9dc68cae5587c4e3b22291d50b0fdc36bf4114a1f9918f4",
+      "png_sha256": "adc33459aa426290e0ced75d67be800ea182387723e8ac8692e45ecec24677c0"
+    },
+    {
+      "id": "control-ean13-module-2",
+      "group": "controls",
+      "source": "independent ZD621 preview controls, 2026-09-18 UTC",
+      "zpl_sha256": "bd5203a0e8fa112f2c5da4bc525b95a99d750e550ceda8224d204ed9b428386f",
+      "png_sha256": "0ddf0a44e23c830f8199a0e84e2c12754f885f006be274c6a1f17a9c24072c17"
+    },
+    {
+      "id": "control-ean13-module-3",
+      "group": "controls",
+      "source": "independent ZD621 preview controls, 2026-09-18 UTC",
+      "zpl_sha256": "4e268ad34ec093e5d6558b524fcd6b41a9ddef90e0d0384d128ae62e576d1fc2",
+      "png_sha256": "f7674340a9a2335b81bd8ef7116162aa8f86d08c43018f19f871bd6965a7c152"
+    },
+    {
+      "id": "control-gd-100-40-1-L",
+      "group": "controls",
+      "source": "independent ZD621 preview controls, 2026-09-18 UTC",
+      "zpl_sha256": "d889ef5cc0a61398795bc069a9697e9b51d211793493b53968b7e6310e477c99",
+      "png_sha256": "820d89dd483f1a72d85b423ee2f99e7b867f050642a246d8bfe31b8763d41c4f"
+    },
+    {
+      "id": "control-gd-100-40-1-R",
+      "group": "controls",
+      "source": "independent ZD621 preview controls, 2026-09-18 UTC",
+      "zpl_sha256": "05bbd6c1c90b07a1050ecb87cb45e6f9e72661d1b14334180d7fbe80eb87872c",
+      "png_sha256": "4241617e7f1b78f00682e0f63745f0bd99059c4a25e16e8cee02e3053861c37b"
+    },
+    {
+      "id": "control-gd-100-40-4-L",
+      "group": "controls",
+      "source": "independent ZD621 preview controls, 2026-09-18 UTC",
+      "zpl_sha256": "d04422c40807b19edea1d4df234d2e2c0ea33223dd0a36acef4fdc4ce1bec421",
+      "png_sha256": "59665ba508986fb49bc85c4ac48b85f70a71f38700ebc347929089f27068480e"
+    },
+    {
+      "id": "control-gd-100-40-4-R",
+      "group": "controls",
+      "source": "independent ZD621 preview controls, 2026-09-18 UTC",
+      "zpl_sha256": "038d08617055937eaee1a6011175b5c225757fe1efb7e1670821ff0ed4c065c0",
+      "png_sha256": "932466428719b1785f1643912cbb019a6d03edb37e32bff39a197d8bc39c201b"
+    },
+    {
+      "id": "control-gd-15-15-2-L",
+      "group": "controls",
+      "source": "independent ZD621 preview controls, 2026-09-18 UTC",
+      "zpl_sha256": "286a8fb5dc6f9cf95b3bdf66b60c7ef06f60cedfb4a415be5aa2b113db561c15",
+      "png_sha256": "4fbc86f1b32f86118b572c75e594bca4ac89e5d75758db3aacfe8272309a3176"
+    },
+    {
+      "id": "control-gd-15-15-2-R",
+      "group": "controls",
+      "source": "independent ZD621 preview controls, 2026-09-18 UTC",
+      "zpl_sha256": "00e946d24ab061ce25aafce8ef8280c1304b74cbef9779b3200989ebe88e4e43",
+      "png_sha256": "ecdc8079fcd2ac44c3c63cf98e6f1826196e2f0b2cb83836bea5d821866cc7a3"
+    },
+    {
+      "id": "control-gd-40-100-3-L",
+      "group": "controls",
+      "source": "independent ZD621 preview controls, 2026-09-18 UTC",
+      "zpl_sha256": "f9f065773dc31c07c0ede47755fba9b3b2baa6217e47227b73d11f178157dcae",
+      "png_sha256": "bf0deeec4507917e10541e6c1ed6332291945fcf4a95915777e0c2e69355fd6e"
+    },
+    {
+      "id": "control-gd-40-100-3-R",
+      "group": "controls",
+      "source": "independent ZD621 preview controls, 2026-09-18 UTC",
+      "zpl_sha256": "8645be534cfdf1f5b0991dbd30458367c3b47a8ee2541560c508e4206c3be9fc",
+      "png_sha256": "7fd9d427a7be0c7b1f2592fb0a3b6243a999798e65cfae454d157231da2e5420"
+    },
+    {
+      "id": "control-planet-module-1",
+      "group": "controls",
+      "source": "independent ZD621 preview controls, 2026-09-18 UTC",
+      "zpl_sha256": "352aace372ce83e16914f712986cad202c2f9e05d16453050396e49724198705",
+      "png_sha256": "5adf532f2fb7035fbcf108e007ec98f0f45aaad1b2a320c601d5e5a5f17345f5"
+    },
+    {
+      "id": "control-planet-module-2",
+      "group": "controls",
+      "source": "independent ZD621 preview controls, 2026-09-18 UTC",
+      "zpl_sha256": "bae01e003c576ba7841fbc6a0736284fa20e8781d27899f45425ddf068863ffd",
+      "png_sha256": "5c2f670b838ecb89f05736fdd2e8a8673a422fc3d3d721ad000b322dbd79d89f"
+    },
+    {
+      "id": "control-planet-module-3",
+      "group": "controls",
+      "source": "independent ZD621 preview controls, 2026-09-18 UTC",
+      "zpl_sha256": "5043443b23b064f0a10de00074c19d115b0cbd019051c6641322a1d72d6990f2",
+      "png_sha256": "e0d81dcdf8b5468e5a1187d8ea5e29a5118393b4225f76186a1d10cb1e510f23"
+    },
+    {
+      "id": "control-postnet-module-1",
+      "group": "controls",
+      "source": "independent ZD621 preview controls, 2026-09-18 UTC",
+      "zpl_sha256": "3b3a4750e45386851f5b2fac1c01f0b39853638fe6715b0f6d7caf965087a3e0",
+      "png_sha256": "70a1ce76a7b29c493b8fd0aaa51924a53d94086779abbe88b52b7a9f8b74600e"
+    },
+    {
+      "id": "control-postnet-module-2",
+      "group": "controls",
+      "source": "independent ZD621 preview controls, 2026-09-18 UTC",
+      "zpl_sha256": "a4095a882df8802bf4d104b40b9df6f65bf149811632ba2774eb575af3427b7d",
+      "png_sha256": "c2db63302031c5cf3ca6f2553be1b2eaa74ac337236b489ea46809ad9d457394"
+    },
+    {
+      "id": "control-postnet-module-3",
+      "group": "controls",
+      "source": "independent ZD621 preview controls, 2026-09-18 UTC",
+      "zpl_sha256": "839c28e1e1195651bdf46338f8075798b584dd5d7aba750875dd16c6ae1480e1",
+      "png_sha256": "029e4b2c6aaa8731df881840ab6461965f10d85172e9ecc0a94850462fe5fa76"
+    },
+    {
+      "id": "control-qr-by-100",
+      "group": "controls",
+      "source": "independent ZD621 preview controls, 2026-09-18 UTC",
+      "zpl_sha256": "3c239ef12730aa67a1efabd56bdc52b7d69bc87d81dab24b7c11b3c4f2d5b3c1",
+      "png_sha256": "bd5cd670e8fdda524969e2876c010871bfbb0b73e78244119c2390ddc81e8b22"
+    },
+    {
+      "id": "control-qr-by-40",
+      "group": "controls",
+      "source": "independent ZD621 preview controls, 2026-09-18 UTC",
+      "zpl_sha256": "40c1bf3f0bcbc329448fcad8681ec0d9a5abb27de0f2c082ebf9da0749066fc6",
+      "png_sha256": "32ec5d7efcefaaa2fb42dcbf9b9e1f2002216b61cc1b59acdb73376ed47c7a2c"
+    },
+    {
+      "id": "control-qr-by-60",
+      "group": "controls",
+      "source": "independent ZD621 preview controls, 2026-09-18 UTC",
+      "zpl_sha256": "a92fd648282d65cee184cd3e8e2848c1f43a8e1d328bd0c9db56c28bbf9b2ff9",
+      "png_sha256": "aec9b1705bba044ca8bdc2c30f708c9d61c7fd9c1e45d080bfbb0f02aa60ca4e"
+    },
+    {
+      "id": "control-qr-ft-100",
+      "group": "controls",
+      "source": "independent ZD621 preview controls, 2026-09-18 UTC",
+      "zpl_sha256": "912061a715250be0b113a110a971bffdbae64d4106098f38d1f0f421977613f9",
+      "png_sha256": "064271ba2a5268e8aa58935681b518ff0177d23a8950f12352422b856e9e9af1"
+    },
+    {
+      "id": "control-qr-ft-40",
+      "group": "controls",
+      "source": "independent ZD621 preview controls, 2026-09-18 UTC",
+      "zpl_sha256": "4f393dbb6e2348f2d19977c7ac3afd6c4c1237ce7cc00865695cc1fd5f0dec75",
+      "png_sha256": "064271ba2a5268e8aa58935681b518ff0177d23a8950f12352422b856e9e9af1"
+    },
+    {
+      "id": "control-qr-ft-scale-1",
+      "group": "controls",
+      "source": "independent ZD621 preview controls, 2026-09-18 UTC",
+      "zpl_sha256": "7bcc9a01bc1a9103111853e53d9eed83be48c2abbaa10b3141273b30db4de714",
+      "png_sha256": "b76cb78211358f3a301348e15ac96f12bd1807aa011d55f4af370d47bea89007"
+    },
+    {
+      "id": "control-qr-ft-scale-2",
+      "group": "controls",
+      "source": "independent ZD621 preview controls, 2026-09-18 UTC",
+      "zpl_sha256": "8501aded002e461aacd6a94e0776d0b05e37f21600e13623ec5b35d9455a4c3a",
+      "png_sha256": "d2697ead7d2e566492e2ea594516b148b56f5319c6d75c2b086ecd837482fa92"
+    },
+    {
+      "id": "control-qr-ft-scale-4",
+      "group": "controls",
+      "source": "independent ZD621 preview controls, 2026-09-18 UTC",
+      "zpl_sha256": "fdbfc980e3c03b51a78f34ea6da1c1f39ff0fc442a2cf6e744fed9579ddf5488",
+      "png_sha256": "6f9ccda6c92f300e10d416194506691aae76e171b9dda8579a2c3b66dd4ea179"
+    },
+    {
+      "id": "control-qr-ft-scale-5",
+      "group": "controls",
+      "source": "independent ZD621 preview controls, 2026-09-18 UTC",
+      "zpl_sha256": "ff492ce113ca70a2901e8e61249500be30217c92bb1a1e4df0b3dc55455fe600",
+      "png_sha256": "27e7e7300f7db415044c968d326af27a2c5dc39e2f1ebcaf930e723d1d18a09a"
+    },
+    {
+      "id": "control-upca-module-1",
+      "group": "controls",
+      "source": "independent ZD621 preview controls, 2026-09-18 UTC",
+      "zpl_sha256": "7bd4e6a5c0466bc007592b778f8adeec0261e1583712d2e83ff012f3495fba46",
+      "png_sha256": "58b2addbfc28aa76579593c3448d63f6f6bc0aa49b404fe3ba672d9554281d7c"
+    },
+    {
+      "id": "control-upca-module-2",
+      "group": "controls",
+      "source": "independent ZD621 preview controls, 2026-09-18 UTC",
+      "zpl_sha256": "016228417c1848e77034e0c3db01da9506346785cdcf6e9bab40c2550c5f13f7",
+      "png_sha256": "153661ebc234f045083625d7ddcf6d8993cc9277512094bb00b6faa1a5134e0f"
+    },
+    {
+      "id": "control-upca-module-3",
+      "group": "controls",
+      "source": "independent ZD621 preview controls, 2026-09-18 UTC",
+      "zpl_sha256": "73fe27d9f28579612a5d5f725ab8aea4087c997bda4c105a13715fca95860e75",
+      "png_sha256": "012cd2760833171f15368015a0a6074265bed037e34d3ee1078387b9dcb395e0"
+    }
+  ],
+  "recapture_note": "All 133 comparison references replaced at PW832; comparison source_commit identifies the original corpus, not these recaptures."
+}

@@ -1,4 +1,34 @@
 use super::*;
+
+/// UPC/EAN guard extensions. ZD621 203-DPI captures extend 13 dots below
+/// the nominal bar height, even when the interpretation line is disabled.
+/// Module-width 1/2/3 and font-height 10/20/40 controls: docs/printer-accuracy.md.
+/// The guard locations follow ISO/IEC 15420 (see docs/barcodes.md).
+pub(super) fn render(b: &Barcode, bits: &[bool], upca: bool) -> Result<Path, String> {
+    let mut path = b.linear(bits, None)?;
+    // ^BR also reuses the encoders below, but has its own component layout.
+    // The standalone ^B8/^B9/^BE/^BU controls do not establish that layout.
+    if !matches!(b.name.as_str(), "B8" | "B9" | "BE" | "BU") {
+        return Ok(path);
+    }
+    let middle = bits.len() / 2;
+    for (i, &black) in bits.iter().enumerate() {
+        let guard = i < 3
+            || i >= bits.len() - 3
+            || (bits.len() != 51 && i.abs_diff(middle) <= 2)
+            || (bits.len() == 51 && i >= 45)
+            || (upca && (i < 10 || i >= bits.len() - 10));
+        if black && guard {
+            path.rect(
+                i as f64 * b.module,
+                b.height,
+                b.module,
+                13. * b.dpi as f64 / 203.,
+            );
+        }
+    }
+    Ok(path)
+}
 pub(super) const LEFT: [u32; 10] = [13, 25, 19, 61, 35, 49, 47, 59, 55, 11];
 pub(super) fn digit(out: &mut Vec<bool>, d: u8, even: bool) {
     let mut p = LEFT[d as usize];

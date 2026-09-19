@@ -26,7 +26,11 @@ pub(super) fn draw(b: &Barcode, data: &[u8], planet: bool) -> Result<Path, Strin
     for (i, tall) in bars.into_iter().enumerate() {
         let height = if tall { b.height } else { b.height * 0.4 };
         p.rect(
-            i as f64 * b.module * (1. + b.ratio),
+            // ZD621 module-width probes (1, 2, 3 dots) produce pitches 2, 5,
+            // and 7 dots: truncate the fixed 2.5-module pitch per bar. The
+            // variable-width ^BY ratio does not apply to POSTNET/PLANET.
+            // Capture provenance: docs/printer-accuracy.md.
+            i as f64 * (b.module * 2.5).floor(),
             b.height - height,
             b.module,
             height,

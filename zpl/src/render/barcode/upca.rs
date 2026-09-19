@@ -6,5 +6,5 @@ pub(super) fn render(b: &Barcode, data: &[u8]) -> Result<Path, String> {
     let v = retail::checked(data, 12)?;
     let mut d = vec![b'0'];
     d.extend(v.iter().map(|v| v + b'0'));
-    b.linear(&retail::encode(&d, 13)?, None)
+    retail::render(b, &retail::encode(&d, 13)?, true)
 }
