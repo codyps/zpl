@@ -1,0 +1,1 @@
+^XA^PW832^LL400^LH0,0^LS0^LT0^PON^LRN^CI27^CF0,32,0^FO60,60^BY2,2,80^BQN,1,3,M,0^FDMA,abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcd^FS^XZ

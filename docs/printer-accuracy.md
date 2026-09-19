@@ -88,14 +88,14 @@ that the guide specifies those scan-conversion details.
 
 ## Remaining accuracy work
 
-This is not yet 100% non-text parity. Of the 133 comparison cases, 85 are exact,
-37 render with differences, and 11 report unsupported input. All 31 additional
+This is not yet 100% non-text parity. Of the 133 comparison cases, 87 are exact,
+39 render with differences, and seven report unsupported text/layout input. All 31 additional
 controls are exact. Text and non-text failures remain separate in the provenance
 and per-case baseline; aggregate percentages must not conceal either category.
 
 Remaining non-text issues include circle/ellipse/rounded-box scan conversion,
-QR automatic mask selection and Model 1, Aztec/Data Matrix encoding choices,
-CODABLOCK, MaxiCode, composite/DataBar component layout, and TLC39 linked data.
+QR automatic mask selection, Aztec/Data Matrix encoding choices,
+CODABLOCK F/E, MaxiCode, composite/DataBar component layout, and TLC39 linked data.
 The tested firmware produces identical QR images for requested masks 0/3/7;
 the renderer still honors the documented mask operand. Do not substitute a
 payload-specific mask table for the missing general selection behavior.
@@ -105,3 +105,26 @@ The blank DataBar UPC-E printer response needs separate validation.
 Independent barcode decoder tests remain necessary: different valid encodings
 can decode to the same content without matching printer pixels. Captured cases
 are development fixtures, not a holdout or proof for every parameter/payload.
+
+## Formerly unsupported barcode modes
+
+Code 128 above-text and automatic mode, QR Model 1, and CODABLOCK A now render.
+The existing automatic Code 128 and CODABLOCK A captures match exactly. The
+above-text case retains font differences; Model 1 retains the mask-selection
+mismatch. Their baseline rows were changed from exact expected errors to reviewed
+pixel counts and hashes. No printer reference was replaced.
+
+An additional 159 [barcode mode controls](../zpl/tests/fixtures/barcode-modes-zd621-v1/README.md)
+cover Code 128 starts/switches/FNC1/UCC/GS1, CODABLOCK A sizing/checks/padding,
+all QR Model 1 versions, legacy Data Matrix ECC 000–140 at every size, `^CV`,
+and PDF417/MicroPDF417 `^FM`. Run `cargo test -p zpl --test barcode_modes_preview`.
+All 138 non-QR controls are pixel-exact. The 21 Model 1 controls pin
+ordinary render differences and separately match every printer module when
+using the mask encoded in the reference. That second check validates encoding
+and placement without claiming that automatic-mask parity is implemented.
+
+The expanded implementation also renders all 130 barcode-family/argument inputs
+in the sibling comparison repository's conformance suite without unsupported
+command errors. This is coverage evidence, not an assertion that all 130 match
+hardware. New legacy/multiple-origin/validation references were captured from the
+printer, while the existing accuracy references remain unchanged.

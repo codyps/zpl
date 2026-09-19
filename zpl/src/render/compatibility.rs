@@ -13,6 +13,20 @@
 /// initial value: the renderer does not reapply it after you change an option.
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct Compatibility {
+    /// For ^FM MicroPDF417 at I/B orientations, omit the two ten-module side
+    /// row-address patterns from the origin adjustment. Captured ZD621 choice;
+    /// default: the complete symbol extent required by ^FO (guide p. 201).
+    pub macro_micropdf417_reverse_origin_omits_side_raps: bool,
+    /// Report an overlong UPC/EAN field as INVALID-S instead of the INVALID-L
+    /// specified by ^CV (p. 167), as seen in ZD621 EAN-8 previews.
+    pub validation_retail_long_is_short: bool,
+    /// Report forced legacy Data Matrix capacity failures as INVALID-P instead
+    /// of INVALID-L (^BX p. 144), as observed on the captured firmware.
+    pub validation_legacy_small_is_parameter: bool,
+    /// Override Macro PDF417's three file-ID codewords. `None` derives an ID
+    /// from the payload. ZD621 HTTP previews consistently use [0, 0, 36].
+    /// This is an implementation choice allowed by USS PDF417 Appendix G.4.
+    pub macro_pdf417_file_id: Option<[u16; 3]>,
     /// Offset QR `^FO` ink by the current `^BY` height minus one dot.
     /// Default: the upper-left origin specified by `^FO` (Zebra guide p. 201).
     pub qr_fo_uses_by_height: bool,
@@ -39,4 +53,14 @@ pub struct Compatibility {
     /// full-ASCII shift substitutes (Zebra guide pp. 87–89), returning errors
     /// instead of silently changing the field data.
     pub code93_normalize_input: bool,
+    /// Treat CODABLOCK A's row height operand as dots, without multiplying by
+    /// the module width as specified by the Zebra guide ^BB (p. 90).
+    pub codablock_a_row_height_in_dots: bool,
+    /// Wrap CODABLOCK A's weighted checksum sums at 16 bits before modulo 43,
+    /// as observed on long/padded ZD621 symbols. Default: mathematical sums.
+    pub codablock_a_wrapping_checks: bool,
+    /// Keep Code 128 bars at the field origin when interpretation is above,
+    /// placing the text above that origin. Default: include the interpretation
+    /// in the field's upper-left extent (^FO p. 201; ^BC pp. 94–95).
+    pub code128_above_text_keeps_bar_origin: bool,
 }

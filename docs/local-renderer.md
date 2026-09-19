@@ -75,6 +75,9 @@ overridable. It targets a 203-DPI ZD621 running V93.21.33Z, with initial dimensi
 | `intelligent_mail_outward_rounding` | Fractional tracker thirds | Round tracker edges outward |
 | `retail_guard_extension_dots` | `None`: five modules | `Some(13)`: 13 dots |
 | `code93_normalize_input` | Reject bytes outside the ZPL alphabet/shift substitutes | Uppercase raw letters and discard unsupported bytes |
+| `codablock_a_row_height_in_dots` | Multiply row height by module width | Row height operand is dots |
+| `codablock_a_wrapping_checks` | Mathematical weighted sums modulo 43 | Wrap sums at 16 bits first |
+| `code128_above_text_keeps_bar_origin` | Above-text included in field extent | Bars retain origin; text extends above |
 
 The origin, ratio, and Code 93 rules follow the Zebra guide (`^FO` p. 201,
 `^FT` p. 205 Table 7, `^BZ` p. 150, `^BA` pp. 87–89). The specification profile
@@ -118,10 +121,15 @@ pixel differences, recorded as a regression bound. This is a bitmap strike, not
 an extracted scalable outline font.
 
 Leave adequate clear space around barcode fields; quiet zones are not inserted
-automatically. Barcode interpretation text also uses embedded font 0.
+automatically. Barcode interpretation text also uses embedded font 0. `^CV` validation panels
+use the separately sampled fixed validation lettering. `^CVY` persists across
+labels in the same call; unsupported encoder semantics remain errors.
 
-Examples of explicit errors include unsupported barcode variants, Code 128 invocation
-sequences and UCC/automatic modes, downloaded fonts, stored formats, serialization,
+Legacy Data Matrix ECC 000–140 and `^FM` structured append for PDF417 and
+MicroPDF417 are supported. See [barcode scope](barcodes.md) for limits and the
+printer options controlling observed departures.
+
+Examples of explicit errors include Code 128 extended-byte FNC4, downloaded fonts, stored formats, serialization,
 compressed binary `GFC`, and printer configuration commands.
 The parser still frames these commands; rendering coverage is separate from
 command-stream parsing coverage. Configuration persists only within one `render`

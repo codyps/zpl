@@ -3,6 +3,7 @@ mod aztec;
 mod bits;
 mod codabar;
 mod codablock;
+mod codablock_a;
 mod code11;
 pub(super) mod code128;
 pub(super) mod code39;
@@ -16,6 +17,7 @@ mod composite_c;
 #[cfg(test)]
 mod composite_tests;
 mod data_matrix;
+mod data_matrix_legacy;
 mod databar;
 mod databar_expanded;
 mod databar_limited;
@@ -32,6 +34,7 @@ mod maxicode;
 mod maxicode_modules;
 mod micropdf417;
 mod msi;
+mod multi_origin;
 mod pdf417;
 mod pdf417_patterns;
 mod planet;
@@ -39,6 +42,7 @@ mod plessey;
 mod postal;
 mod postnet;
 mod qr;
+mod qr_model1;
 mod reed_solomon;
 mod retail;
 mod standard2of5;
@@ -74,6 +78,7 @@ pub(super) fn supported(name: &str) -> bool {
             | "B9"
             | "BA"
             | "BB"
+            | "BC"
             | "BD"
             | "BE"
             | "BF"
@@ -101,6 +106,27 @@ impl Barcode {
             self.module * (1. + self.ratio)
         }
     }
+    pub fn multiple_origin_offset(&self, rotation: u8) -> (f64, f64) {
+        if self.name == "BF"
+            && self
+                .compatibility
+                .macro_micropdf417_reverse_origin_omits_side_raps
+        {
+            match rotation {
+                b'I' => (-20. * self.module, 0.),
+                b'B' => (0., -20. * self.module),
+                _ => (0., 0.),
+            }
+        } else {
+            (0., 0.)
+        }
+    }
+    pub fn uses_multiple_origins(&self) -> bool {
+        matches!(self.name.as_str(), "B7" | "BF")
+    }
+    pub fn render_multiple(&self, bytes: &[u8], count: usize) -> Result<Vec<Path>, String> {
+        multi_origin::render(self, bytes, count)
+    }
     pub fn field_origin_y(&self) -> f64 {
         // ZD621 V93.21.33Z controls with ^BY heights 40/60/100 place ^FO
         // QR ink at y + height - 1. This does not apply to ^FT. See the
@@ -124,7 +150,7 @@ impl Barcode {
             "BD" | "BF" | "BL" => 3,
             "B5" | "B8" | "BE" | "BI" | "BJ" | "BS" | "B4" => 4,
             "B1" | "B9" | "BA" | "BP" | "BQ" | "BU" | "BZ" => 5,
-            "B2" | "B7" | "BB" | "BM" | "BR" | "BT" => 6,
+            "B2" | "B7" | "BB" | "BC" | "BM" | "BR" | "BT" => 6,
             "BK" | "BO" | "B0" => 7,
             "BX" => 8,
             _ => return Err("unknown barcode".into()),
@@ -145,7 +171,7 @@ impl Barcode {
         };
         let layout = match name {
             "B1" | "BK" | "BM" | "BP" => Some((2, 3, 4)),
-            "B2" | "B5" | "B8" | "B9" | "BA" | "BE" | "BI" | "BJ" | "BS" | "BU" | "BZ" => {
+            "BC" | "B2" | "B5" | "B8" | "B9" | "BA" | "BE" | "BI" | "BJ" | "BS" | "BU" | "BZ" => {
                 Some((1, 2, 3))
             }
             _ => None,
@@ -276,6 +302,7 @@ impl Barcode {
             "B9" => upce::render(self, bytes),
             "BA" => code93::render(self, bytes),
             "BB" => codablock::render(self, bytes),
+            "BC" => code128::render(self, bytes),
             "BD" => maxicode::render(self, bytes),
             "BE" => ean13::render(self, bytes),
             "BF" => micropdf417::render(self, bytes),
@@ -309,7 +336,12 @@ impl Barcode {
         if self.show {
             let value = self.interpretation(bytes)?;
             let mut t = super::font::text(&value, fw, fh)?;
-            if self.above {
+            if self.above
+                && self.name == "BC"
+                && self.compatibility.code128_above_text_keeps_bar_origin
+            {
+                t.transform(|p| Point::new(p.x, p.y - fh - 3.));
+            } else if self.above {
                 p.transform(|p| Point::new(p.x, p.y + fh + 3.));
                 baseline += fh + 3.;
             } else {
@@ -320,6 +352,9 @@ impl Barcode {
         Ok((p, baseline))
     }
     fn interpretation(&self, bytes: &[u8]) -> Result<String, String> {
+        if self.name == "BC" {
+            return code128::interpretation(self, bytes);
+        }
         if self.name == "BP" {
             return plessey::interpretation(self, bytes);
         }

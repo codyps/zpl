@@ -34,7 +34,13 @@ const SIZES: &[(usize, usize, usize, usize, usize, usize, usize)] = &[
     (48, 16, 22, 14, 49, 28, 1),
 ];
 pub(super) fn render(b: &Barcode, data: &[u8]) -> Result<Path, String> {
-    b.require(2, "0", &["200"])?;
+    let quality = b.integer(2, 0, 0, 200)?;
+    if matches!(quality, 0 | 50 | 80 | 100 | 140) {
+        return data_matrix_legacy::render(b, data, quality);
+    }
+    if quality != 200 {
+        return Err("invalid Data Matrix quality level".into());
+    }
     b.integer(5, 6, 0, 6)?;
     let shape = b.integer(7, 1, 1, 2)?;
     let columns = b.integer(3, 0, 0, 144)?;

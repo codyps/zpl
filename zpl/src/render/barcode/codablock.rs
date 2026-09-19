@@ -118,6 +118,9 @@ fn encode(b: &Barcode, data: &[u8]) -> Result<Matrix, String> {
     Ok(m)
 }
 pub(super) fn render(b: &Barcode, data: &[u8]) -> Result<Path, String> {
+    if b.param(5, "F") == "A" {
+        return super::codablock_a::render(b, data);
+    }
     let m = encode(b, data)?;
     let row = b.num(1, 8., 2., 32000.)? * b.module;
     let mut path = b.matrix(&m, b.module, row)?;

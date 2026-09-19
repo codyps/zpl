@@ -153,3 +153,37 @@ fn code93_normalization_is_explicit() {
     let explicit = b"^XA^FO20,20^BAN,80,N,N^FD)H)E)L)L)O93(A^FS^XZ";
     assert!(render(explicit, options).is_ok());
 }
+
+#[test]
+fn codablock_a_printer_options_are_independent() {
+    let body = "^FO20,20^BY2,2,80^BBN,10,Y,10,2,A^FDABC123";
+    assert_eq!(bounds(&raster(body, ZD621_203_DPI)).3, 42);
+    assert_eq!(bounds(&raster(body, SPECIFICATION)).3, 62);
+    let mut options = ZD621_203_DPI;
+    options.compatibility.codablock_a_row_height_in_dots = false;
+    assert_eq!(raster(body, options), raster(body, SPECIFICATION));
+    let long = "^FO20,20^BY2,2,80^BBN,10,Y,10,10,A^FDABCDEF";
+    let mut specification = SPECIFICATION;
+    specification.compatibility.codablock_a_row_height_in_dots = true;
+    options = ZD621_203_DPI;
+    options.compatibility.codablock_a_wrapping_checks = false;
+    assert_eq!(raster(long, options), raster(long, specification));
+    assert_ne!(raster(long, options), raster(long, ZD621_203_DPI));
+}
+
+#[test]
+fn code128_above_text_can_keep_the_bar_origin() {
+    let plain = raster("^FO80,80^BCN,60,N,N,N,N^FDABC123", ZD621_203_DPI);
+    let above = "^FO80,80^BCN,60,Y,Y,N,N^FDABC123";
+    let printer = raster(above, ZD621_203_DPI);
+    for y in 80..140 {
+        assert_eq!(
+            &plain.pixels[y * 400..(y + 1) * 400],
+            &printer.pixels[y * 400..(y + 1) * 400]
+        );
+    }
+    let mut options = ZD621_203_DPI;
+    options.compatibility.code128_above_text_keeps_bar_origin = false;
+    assert_eq!(raster(above, options), raster(above, SPECIFICATION));
+    assert_ne!(raster(above, options), printer);
+}

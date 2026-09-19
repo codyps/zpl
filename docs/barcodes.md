@@ -36,7 +36,7 @@ specification; no separate complete normative specification was obtained.
 | EAN-8 / `B8` | `ean8.rs` | 83 | [ISO/IEC 15420:2009](https://www.iso.org/standard/46143.html), EAN/UPC |
 | UPC-E / `B9` | `upce.rs` | 85 | [ISO/IEC 15420:2009](https://www.iso.org/standard/46143.html), zero suppression and parity |
 | Code 93 / `BA` | `code93.rs` | 87 | [Zebra guide, Code 93](zpl-zbi2-pg-en.pdf); full ASCII shifts and C/K checks |
-| CODABLOCK / `BB` | `codablock.rs` | 90 | [AIM ISS CODABLOCK F](https://web.aimglobal.org/external/wcpages/wcecommerce/eComItemDetailsPage.aspx?Category=9&ItemID=236); [BarTender documentation](https://barcodeguide.seagullscientific.com/Content/Symbologies/Codablock_F.htm) |
+| CODABLOCK / `BB` | `codablock.rs`, `codablock_a.rs` | 90 | [AIM ISS CODABLOCK F](https://web.aimglobal.org/external/wcpages/wcecommerce/eComItemDetailsPage.aspx?Category=9&ItemID=236); [BarTender documentation](https://barcodeguide.seagullscientific.com/Content/Symbologies/Codablock_F.htm) |
 | Code 128 / `BC` | `code128.rs` | 94 | [Zebra guide, Code 128](zpl-zbi2-pg-en.pdf); ISO/IEC 15417 |
 | MaxiCode / `BD` | `maxicode.rs` | 106 | [ISO/IEC 16023:2000](https://www.iso.org/standard/29835.html); [preview including Figure 5](https://cdn.standards.iteh.ai/samples/29835/8a88c580bf31467788aeb63128a1e9f7/ISO-IEC-16023-2000.pdf); [Toshiba character-set tables](https://www.toshibatec.co.jp/products/manual/BV410T31_interface-barcode.pdf), printed pages 478–479 |
 | EAN-13 / `BE` | `ean13.rs` | 109 | [ISO/IEC 15420:2009](https://www.iso.org/standard/46143.html) |
@@ -53,7 +53,7 @@ specification; no separate complete normative specification was obtained.
 | UPC/EAN extensions / `BS` | `upc_extension.rs` | 137 | [ISO/IEC 15420:2009](https://www.iso.org/standard/46143.html), two- and five-digit supplements |
 | TLC39 / `BT` | `tlc39.rs` | 140 | [Zebra guide, TLC39](zpl-zbi2-pg-en.pdf); [US20010045461A1](https://patents.google.com/patent/US20010045461A1/en), paragraphs 0024–0029 (T flag, placement, linkage codeword 918, GS separators) |
 | UPC-A / `BU` | `upca.rs` | 142 | [ISO/IEC 15420:2009](https://www.iso.org/standard/46143.html) |
-| Data Matrix / `BX` | `data_matrix.rs` | 144 | [ISO/IEC 16022](https://www.iso.org/standard/80926.html), ECC200 |
+| Data Matrix / `BX` | `data_matrix.rs`, `data_matrix_legacy.rs` | 144 | [ISO/IEC 16022:2000](https://previewnorm.com/iec/ISO%20IEC%2016022-2000%20PDF.pdf), legacy §§5.2–5.7 and Annexes B–F; ECC200 §6 |
 | POSTNET / `BZ` type 0 | `postnet.rs` | 150 | [Zebra guide, POSTAL](zpl-zbi2-pg-en.pdf); legacy two-height postal encoding |
 | Intelligent Mail / `BZ` type 3 | `intelligent_mail.rs` | 150 | [USPS-B-3200 Rev H](https://postalpro.usps.com/storages/2017-08/2190_USPSB3200IntelligentMailBarcode4State_0.pdf), sections 2.2.1–2.2.6 and Appendix E Table 22; [published USPS vector](https://about.usps.com/kits/kit600/kit600_v04-2026_020.htm) |
 
@@ -90,17 +90,21 @@ The supplied PDFs remain outside the repository and are not redistributed here.
   `&`, `'`, `(` and `)` shift substitutes after `FH`. With the specification profile, unsupported raw bytes are errors. The ZD621 profile
   uppercases raw lowercase and skips unsupported bytes. Literal full
   ASCII must be expressed through the documented substitute pairs.
-  Existing Code 39 optional checksum and Code 128
-  subset switching/UCC/automatic modes remain unsupported.
-- QR: Model 2 versions 1–40; all four error levels and eight requested masks;
+  Code 39 supports its optional Mod-43 checksum and above/below interpretation.
+  Code 128 supports ZPL subset A/B/C starts and switches, SHIFT/FNC1–3, automatic
+  ASCII compaction, UCC Mod-10 and case mode U, and parenthesized GS1 mode D
+  with AI 00/01/02 key checks. Extended-byte FNC4 remains unsupported.
+  Interpretation typography remains approximate.
+- QR: Model 1 versions 1–14 and Model 2 versions 1–40; all four error levels and eight requested masks;
   automatic selection of one numeric/alphanumeric/byte segment and manual
-  `N`, `A`, `Bdddd` inputs. No Model 1, Kanji, mixed manual segments, ECI, or
+  `N`, `A`, `Bdddd` inputs. No Kanji, mixed manual segments, ECI, or
   structured append. The field's error-level switch selects error correction.
 - Data Matrix: ECC200 ASCII encodation, digit-pair compression, upper shift,
-  standard square sizes 10–144 and six rectangular sizes. Explicit `200` is
-  required (`^BX` defaults to an older unsupported ECC mode). `_1` inserts FNC1;
-  doubled escape encodes the escape itself. Quality modes 0–140 and other
-  control escapes are rejected. The legacy format selector is unused with
+  standard square sizes 10–144 and six rectangular sizes. `_1` inserts FNC1;
+  doubled escape encodes the escape itself. Other ECC200 control escapes are rejected.
+  Legacy ECC 000/050/080/100/140 supports all six input formats, CRC, convolutional
+  correction and odd square sizes 9–49; omitted quality now selects ECC 000.
+  Legacy payload length is bounded at 511 characters by its nine-bit length field. The legacy format selector is unused with
   ECC200, as documented by Zebra; payloads use ECC200 ASCII rather than
   optimized C40/Text/X12/EDIFACT/Base256 encodation.
 - Aztec: compact/full symbols, fixed layer counts, percentage selection, and
@@ -115,7 +119,7 @@ The supplied PDFs remain outside the repository and are not redistributed here.
   nominal 2:1 width:height at Y=3X, before applying the requested row height.
   Numeric runs of at least eight digits follow the sampled ZD621 threshold.
   Compaction is deterministic, not globally optimal or guaranteed identical to
-  every firmware for every payload. Macro PDF417/ECI remain unsupported.
+  every firmware for every payload. Macro PDF417 is supported through `^FM`; ECI remains unsupported.
 - MicroPDF417: all 34 `BF` modes in Zebra order (mode 33 is 4×4), text/numeric/
   byte compaction and byte shifts. The initial mode is Byte, so text requires
   codeword 900 (ISO/IEC 24728 §§5.2.4, 5.4). `\&` and doubled backslashes are
@@ -126,8 +130,22 @@ The supplied PDFs remain outside the repository and are not redistributed here.
   text-latch sequence, including its column-dependent restart. See the
   [real-printer probes](../zebra-http-api/tests/fixtures/micropdf417-zd621-v1/README.md).
   These are sampled firmware choices, not a guarantee of identical compaction
-  for all payloads/firmwares. ECI and structured append remain unsupported.
+  for all payloads/firmwares. `^FM` structured append is supported; ECI remains unsupported.
   TLC39 and composite CC-B retain their separate compaction/padding paths.
+- Multiple origins (`^FM`): up to 60 coordinate pairs for PDF417/MicroPDF417,
+  independent per-segment compaction, file ID, segment index/count and final
+  terminator (USS PDF417 Appendix G). Excluded pairs consume a segment without
+  painting it; too few origins produce no symbols, as specified by Zebra p. 199.
+  Other field types ignore `^FM`. The printer profile selects the captured
+  file ID [0,0,36], MicroPDF417 reverse-origin adjustment;
+  specification options derive a stable file ID from the payload and use the
+  complete symbol extent. File IDs are grouping aids, not globally unique IDs.
+- Code validation (`^CV`): valid fields render normally; recognized character,
+  check-digit, length and parameter errors produce reverse INVALID fields.
+  State persists across labels within a render call. The printer profile enables
+  captured retail/legacy Data Matrix error-code departures. Unimplemented encoder
+  semantics remain renderer errors. This does not emulate firmware internal-error
+  panels or every firmware-specific data normalization path.
 - Code 49: full ASCII, 2–8 rows, row and symbol checks. Automatic mode compacts
   digit runs of five or more with the USS base-48 rules, including special tail
   groups, and selects initial numeric/shift modes. Capacity reaches 81 digits.
@@ -136,8 +154,12 @@ The supplied PDFs remain outside the repository and are not redistributed here.
   extend across them, while internal separators span only the 70X row.
   Interpretation typography remains approximate. See the
   [four-code printer regressions](../zebra-http-api/tests/fixtures/linear-fixes-zd621-v1/README.md).
-- CODABLOCK: F/E, ASCII A/B switching, 2–44 rows, row/symbol checks. **A is not
-  implemented**; special ZPL function escapes are rejected. No optimized set C.
+- CODABLOCK A: Code 39 alphabet, 1–22 rows, automatic/explicit row and column
+  sizing, row indicators, padding and optional modulo-43 block checks. The
+  ZD621 profile selects its unscaled row-height operand and 16-bit checksum
+  accumulation; specification settings use module-scaled height and mathematical
+  sums. F/E: ASCII A/B switching, 2–44 rows, row/symbol checks; special ZPL
+  function escapes are rejected. No optimized set C.
 - MaxiCode: modes 2–6, structured carrier headers, byte character sets, nine-digit
   compression, and primary/secondary Reed–Solomon checks. Lowercase/extended
   characters use individual shifts, not optimal latching. Hexagonal ink dimensions

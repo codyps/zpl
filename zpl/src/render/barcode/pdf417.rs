@@ -5,6 +5,10 @@
 mod high_level;
 use super::*;
 
+pub(super) fn compact_full(data: &[u8]) -> Vec<usize> {
+    high_level::encode(data)
+}
+
 pub(super) fn compact_micro(data: &[u8]) -> Vec<usize> {
     high_level::encode_micro(data)
 }

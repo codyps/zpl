@@ -65,11 +65,11 @@ fn inversion_and_clipping() {
 #[test]
 fn errors_are_explicit() {
     for z in [
-        "^XA^BQN,1^FDLA,X^FS^XZ",
+        "^XA^BQN,3^FDLA,X^FS^XZ",
         "^XA^A@N,20,20,FONT^FDX^FS^XZ",
         "^XA^FO1,2^FDa^XZ",
         "^XA^GB2,2^GB2,2^FS^XZ",
-        "^XA^BCN,20,N,N,N,A^FD123^FS^XZ",
+        "^XA^BCN,20,N,N,N,Z^FD123^FS^XZ",
         "^XA^PW-1^XZ",
         "^XA^GB2,2,1,B,9^FS^XZ",
         "^XA^FDé^FS^XZ",

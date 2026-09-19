@@ -358,8 +358,8 @@ fn matrix_dimensions_and_pdf_ecc() {
 }
 
 #[test]
-fn unsupported_variants_are_explicit() {
-    for command in ["BQN,1", "BXN,4,0", "BBN,8,Y,10,2,A"] {
+fn invalid_or_unimplemented_variants_are_explicit() {
+    for command in ["BQN,3", "BXN,4,42", "BBN,8,Y,10,2,Z"] {
         let label = format!("^XA^{command}^FD123456,ABC^FS^XZ");
         assert!(
             render(label.as_bytes(), SPECIFICATION).is_err(),
@@ -858,4 +858,133 @@ fn tlc39_linkage_and_components() {
             at += width * 2;
         }
     }
+}
+
+#[test]
+fn qr_model1_round_trips() {
+    // ISO/IEC 18004:2000 Annex M; independent decoder handles the Model 1 format mask.
+    for level in ["L", "M", "Q", "H"] {
+        for mask in 0..8 {
+            for data in ["12345678", "HELLO123", "hello!"] {
+                decode(
+                    &format!("BQN,1,3,{level},{mask}"),
+                    &format!("{level}A,{data}"),
+                    data,
+                    BarcodeFormat::QR_CODE,
+                );
+            }
+        }
+        for len in [20, 30] {
+            let data = "a".repeat(len);
+            decode(
+                &format!("BQN,1,3,{level},3"),
+                &format!("{level}A,{data}"),
+                &data,
+                BarcodeFormat::QR_CODE,
+            );
+        }
+    }
+}
+
+#[test]
+fn code128_modes_and_invocations() {
+    for (mode, data, expected) in [
+        ("N", ">:Abc123", "Abc123"),
+        ("N", ">;12345678", "12345678"),
+        ("N", ">:AB>51234>6CD", "AB1234CD"),
+        ("N", ">;>80112345678901231", "0112345678901231"),
+        ("N", ">9", ""),
+        ("A", "abc12345678DEF", "abc12345678DEF"),
+        ("A", "12345abc6789", "12345abc6789"),
+        ("D", "(01)12345678901231(10)ABC", "011234567890123110ABC"),
+        ("D", "(10)ABC(21)DEF", "10ABC21DEF"),
+    ] {
+        if !expected.is_empty() {
+            decode(
+                &format!("BCN,80,N,N,N,{mode}"),
+                data,
+                expected,
+                BarcodeFormat::CODE_128,
+            );
+        }
+    }
+}
+
+#[test]
+fn code128_automatic_full_ascii_through_field_hex() {
+    let mut data = Vec::new();
+    for c in 0..=127u8 {
+        if c == b'>' {
+            data.extend(b">0");
+        } else {
+            data.push(c);
+        }
+    }
+    let field: String = data.iter().map(|c| format!("_{c:02X}")).collect();
+    let expected: String = (0..=127u8).map(char::from).collect();
+    // Use a narrow module so all 128 characters fit on the decoder canvas.
+    decode(
+        "BY1,2,90^BCN,80,N,N,N,A^FH",
+        &field,
+        &expected,
+        BarcodeFormat::CODE_128,
+    );
+    decode(
+        "BCN,80,N,N,Y,N",
+        ">;>80012345678901234567",
+        "00123456789012345675",
+        BarcodeFormat::CODE_128,
+    );
+    decode(
+        "BCN,80,N,N,N,U",
+        "1234567890123456789",
+        "12345678901234567890",
+        BarcodeFormat::CODE_128,
+    );
+    decode(
+        "BCN,80,N,N,N,D",
+        "(01)12345678901230(10)ABC",
+        "011234567890123110ABC",
+        BarcodeFormat::CODE_128,
+    );
+}
+
+#[test]
+fn codablock_a_rows_decode_independently() {
+    use rxing::oned::OneDReader;
+    // ^BB pp. 90–93: two data rows, padding and two block checks.
+    // The row framing and checks also match independent printer captures.
+    let source = b"^XA^PW832^LL300^FO60,60^BY2,2,80^BBN,10,Y,10,2,A^FDABCDEF^FS^XZ";
+    let doc = render(source, SPECIFICATION).unwrap();
+    let raster = rasterize(&doc.labels[0]).unwrap();
+    for (y, expected) in [(65, "MABCDEF    M"), (85, "0        3V0")] {
+        let mut bits = rxing::common::BitArray::default();
+        for x in 0..raster.width {
+            bits.appendBit(raster.pixels[(y * raster.width + x) as usize] < 128);
+        }
+        let decoded = rxing::oned::Code39Reader::default()
+            .decode_row(0, &bits, &Default::default())
+            .unwrap();
+        assert_eq!(decoded.getText(), expected);
+    }
+    for body in [
+        "^BBN,10,Y,4,2,A^FDABCDEF12",
+        "^BBN,10,Y,10,23,A^FDA",
+        "^BBN,10,Y,1,2,A^FDA",
+        "^BBN,10,Y,10,2,A^FDabc",
+    ] {
+        assert!(render(format!("^XA{body}^FS^XZ").as_bytes(), SPECIFICATION).is_err());
+    }
+}
+
+#[test]
+fn code128_shift_is_consumed_by_an_invoked_data_character() {
+    // ^BC invocation table (Zebra guide pp. 97–101): >4 is SHIFT and >=
+    // invokes word 94. In A that word is RS; the following 'a' is back in B.
+    decode(
+        "BCN,90,N,N,N,N",
+        ">:A>4>=a",
+        "A\u{1e}a",
+        BarcodeFormat::CODE_128,
+    );
 }

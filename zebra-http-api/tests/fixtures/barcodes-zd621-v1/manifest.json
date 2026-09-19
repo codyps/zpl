@@ -98,7 +98,20 @@
       "zpl_sha256": "0a40058c769ec1e24fb5a973910cc906b4d882ffd321e0b234c2980a3e701958"
     },
     "codablock_a": {
-      "local_error": "ZPL byte 89: BB: parameter 6 mode unsupported",
+      "comparison": {
+        "both_black": 5260,
+        "diff_rgb_sha256": "65db7bb6843b4b23dcf18b4cbadbc002893798fa55a252404fa0d68bce8193ef",
+        "dimensions_match": true,
+        "exact": true,
+        "local_only": 0,
+        "printer_only": 0
+      },
+      "local": {
+        "height": 1218,
+        "ink": 5260,
+        "pixels_sha256": "adc084dd7d1a9031e19d4654be9d7611909d1159fa02160cec5ee0e92e8f4c34",
+        "width": 832
+      },
       "printer": {
         "height": 1218,
         "ink": 5260,

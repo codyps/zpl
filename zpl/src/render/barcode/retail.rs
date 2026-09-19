@@ -43,12 +43,12 @@ pub(super) fn checked(data: &[u8], n: usize) -> Result<Vec<u8>, String> {
     let mut v = digits(data)?;
     if v.len() == n - 1 {
         v.push(mod10(&v));
-    } else if v.len() != n || mod10(&v[..n - 1]) != v[n - 1] {
-        return Err(format!(
-            "expected {} data digits or {} digits with a valid check digit",
-            n - 1,
-            n
-        ));
+    } else if v.len() < n - 1 {
+        return Err("retail barcode data too short".into());
+    } else if v.len() > n {
+        return Err("retail barcode data too long".into());
+    } else if mod10(&v[..n - 1]) != v[n - 1] {
+        return Err("retail barcode check digit mismatch".into());
     }
     Ok(v)
 }

@@ -3,7 +3,7 @@ use super::*;
 
 pub(super) fn render(b: &Barcode, data: &[u8]) -> Result<Path, String> {
     b.require(0, "N", &["N"])?;
-    b.require(1, "2", &["2"])?;
+    b.require(1, "2", &["1", "2"])?;
     b.require(3, "Q", &["L", "M", "Q", "H"])?;
     let scale = b.num(2, b.scale(), 1., 100.)?;
     let mask = b.integer(4, 7, 0, 7)?;
@@ -47,7 +47,12 @@ pub(super) fn render(b: &Barcode, data: &[u8]) -> Result<Path, String> {
         },
         _ => return Err("unsupported QR input mode".into()),
     };
-    b.matrix(&encode(payload, mode, level, mask)?, scale, scale)
+    let matrix = if b.param(1, "2") == "1" {
+        super::qr_model1::encode(payload, mode, level, mask)?
+    } else {
+        encode(payload, mode, level, mask)?
+    };
+    b.matrix(&matrix, scale, scale)
 }
 const ALPHABET: &[u8] = b"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:";
 // ISO/IEC 18004 tables, cross-checked against Thonky error-correction tables.
@@ -98,7 +103,7 @@ fn raw_modules(v: usize) -> usize {
     }
     n
 }
-fn message(data: &[u8], mode: usize, v: usize) -> Result<Vec<bool>, String> {
+pub(super) fn message(data: &[u8], mode: usize, v: usize) -> Result<Vec<bool>, String> {
     let mut out = Vec::new();
     bits::push(&mut out, mode, 4);
     bits::push(
@@ -321,16 +326,7 @@ fn encode(data: &[u8], mode: usize, level: usize, mask: usize) -> Result<Matrix,
                 if !fixed.get(x, y) {
                     let bit = stream.get(index).copied().unwrap_or(false);
                     index += 1;
-                    let flip = match mask {
-                        0 => (x + y) % 2 == 0,
-                        1 => y % 2 == 0,
-                        2 => x % 3 == 0,
-                        3 => (x + y) % 3 == 0,
-                        4 => (x / 3 + y / 2) % 2 == 0,
-                        5 => x * y % 2 + x * y % 3 == 0,
-                        6 => (x * y % 2 + x * y % 3) % 2 == 0,
-                        _ => ((x + y) % 2 + x * y % 3) % 2 == 0,
-                    };
+                    let flip = mask_bit(mask, x, y);
                     m.set(x, y, bit ^ flip);
                 }
             }
@@ -342,4 +338,17 @@ fn encode(data: &[u8], mode: usize, level: usize, mask: usize) -> Result<Matrix,
         right -= 2;
     }
     Ok(m)
+}
+
+pub(super) fn mask_bit(mask: usize, x: usize, y: usize) -> bool {
+    match mask {
+        0 => (x + y).is_multiple_of(2),
+        1 => y.is_multiple_of(2),
+        2 => x.is_multiple_of(3),
+        3 => (x + y).is_multiple_of(3),
+        4 => (x / 3 + y / 2).is_multiple_of(2),
+        5 => x * y % 2 + x * y % 3 == 0,
+        6 => (x * y % 2 + x * y % 3).is_multiple_of(2),
+        _ => ((x + y) % 2 + x * y % 3).is_multiple_of(2),
+    }
 }

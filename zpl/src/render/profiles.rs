@@ -12,6 +12,10 @@ pub const SPECIFICATION: Options = Options {
     height: 1218,
     dpi: 203,
     compatibility: Compatibility {
+        validation_retail_long_is_short: false,
+        validation_legacy_small_is_parameter: false,
+        macro_pdf417_file_id: None,
+        macro_micropdf417_reverse_origin_omits_side_raps: false,
         qr_fo_uses_by_height: false,
         qr_ft_includes_margin: false,
         diagonal_dot_runs: false,
@@ -19,6 +23,9 @@ pub const SPECIFICATION: Options = Options {
         intelligent_mail_outward_rounding: false,
         retail_guard_extension_dots: None,
         code93_normalize_input: false,
+        codablock_a_row_height_in_dots: false,
+        codablock_a_wrapping_checks: false,
+        code128_above_text_keeps_bar_origin: false,
     },
 };
 
@@ -39,6 +46,10 @@ pub const ZD621_203_DPI: Options = Options {
     height: 1218,
     dpi: 203,
     compatibility: Compatibility {
+        validation_retail_long_is_short: true,
+        validation_legacy_small_is_parameter: true,
+        macro_pdf417_file_id: Some([0, 0, 36]),
+        macro_micropdf417_reverse_origin_omits_side_raps: true,
         qr_fo_uses_by_height: true,
         qr_ft_includes_margin: true,
         diagonal_dot_runs: true,
@@ -46,5 +57,8 @@ pub const ZD621_203_DPI: Options = Options {
         intelligent_mail_outward_rounding: true,
         retail_guard_extension_dots: Some(13),
         code93_normalize_input: true,
+        codablock_a_row_height_in_dots: true,
+        codablock_a_wrapping_checks: true,
+        code128_above_text_keeps_bar_origin: true,
     },
 };
