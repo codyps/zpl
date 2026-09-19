@@ -1,8 +1,9 @@
 //! Independent decoder tests: runtime encoders never link rxing.
 use rxing::BarcodeFormat;
+use zpl::render::profiles::SPECIFICATION;
 use zpl::{output::raster::rasterize, render, Options};
 fn decode(command: &str, payload: &str, expected: &str, format: BarcodeFormat) {
-    decode_with_options(command, payload, expected, format, Options::default());
+    decode_with_options(command, payload, expected, format, SPECIFICATION);
 }
 fn decode_with_options(
     command: &str,
@@ -264,14 +265,14 @@ fn new_barcode_input_errors() {
         assert!(
             render(
                 format!("^XA^{command}^FD{data}^FS^XZ").as_bytes(),
-                Options::default()
+                SPECIFICATION
             )
             .is_err(),
             "{command}, {data}"
         );
     }
     let overlong = format!("^XA^BRN,6^FD91{}^FS^XZ", "1".repeat(100));
-    assert!(render(overlong.as_bytes(), Options::default()).is_err());
+    assert!(render(overlong.as_bytes(), SPECIFICATION).is_err());
 }
 #[test]
 fn codabar_alphabet() {
@@ -295,7 +296,7 @@ fn postal_round_trips() {
         ("BZN,90,N,N,3", "00270123456200800001", true),
     ] {
         let label = format!("^XA^PW1200^LL200^FO20,20^BY3,2^{command}^FD{data}^FS^XZ");
-        let doc = render(label.as_bytes(), Options::default()).unwrap();
+        let doc = render(label.as_bytes(), SPECIFICATION).unwrap();
         let r = rasterize(&doc.labels[0]).unwrap();
         let bars = if imb { 65 } else { (data.len() + 1) * 5 + 2 };
         let mut matrix = anyd::output::BitMatrix::new(bars * 2 - 1, 3, 0);
@@ -361,7 +362,7 @@ fn unsupported_variants_are_explicit() {
     for command in ["BQN,1", "BXN,4,0", "BBN,8,Y,10,2,A"] {
         let label = format!("^XA^{command}^FD123456,ABC^FS^XZ");
         assert!(
-            render(label.as_bytes(), Options::default()).is_err(),
+            render(label.as_bytes(), SPECIFICATION).is_err(),
             "{command}"
         );
     }
@@ -455,7 +456,7 @@ fn code93_zpl_full_ascii_substitutes() {
 
 fn linear_sample(command: &str, data: &str) -> anyd::output::Encoding {
     let label = format!("^XA^PW6000^LL200^FO20,20^BY3,2,90^{command}^FD{data}^FS^XZ");
-    let doc = render(label.as_bytes(), Options::default()).unwrap();
+    let doc = render(label.as_bytes(), SPECIFICATION).unwrap();
     let r = rasterize(&doc.labels[0]).unwrap();
     let mut end = 20;
     for x in 20..r.width {
@@ -602,7 +603,7 @@ fn maxicode_raster_round_trips() {
             _ => "Hello MaxiCode",
         };
         let label = format!("^XA^PW400^LL400^FO20,20^BD{mode}^FD{data}^FS^XZ");
-        let doc = render(label.as_bytes(), Options::default()).unwrap();
+        let doc = render(label.as_bytes(), SPECIFICATION).unwrap();
         let r = rasterize(&doc.labels[0]).unwrap();
         let pitch = (25.50 / 29.) * 203. / 25.4;
         let radius = pitch / 3f64.sqrt();
@@ -685,7 +686,7 @@ fn pdf417_compaction_and_field_escapes() {
     let data: Vec<u8> = (0..=255).collect();
     let field: String = data.iter().map(|v| format!("_{v:02X}")).collect();
     let source = format!("^XA^PW1600^LL1600^FO50,50^BY3,2,90^B7N,9,2,10^FH^FD{field}^FS^XZ");
-    let doc = render(source.as_bytes(), Options::default()).unwrap();
+    let doc = render(source.as_bytes(), SPECIFICATION).unwrap();
     let r = rasterize(&doc.labels[0]).unwrap();
     let found =
         rxing::helpers::detect_in_luma(r.pixels, r.width, r.height, Some(BarcodeFormat::PDF_417))
@@ -704,7 +705,7 @@ fn sampled(
     y_scale: usize,
 ) -> anyd::output::BitMatrix {
     let label = format!("^XA^PW2000^LL1200^FO20,20^BY3,2,90^{command}^FD{data}^FS^XZ");
-    let doc = render(label.as_bytes(), Options::default()).unwrap();
+    let doc = render(label.as_bytes(), SPECIFICATION).unwrap();
     let r = rasterize(&doc.labels[0]).unwrap();
     let mut m = anyd::output::BitMatrix::new(w, h, 0);
     for y in 0..h {
@@ -790,7 +791,7 @@ fn micropdf417_compaction_and_capacity() {
             "mode {mode}: {data}"
         );
     }
-    assert!(render(b"^XA^BFN,4,0^FDABCDEFG^FS^XZ", Options::default())
+    assert!(render(b"^XA^BFN,4,0^FDABCDEFG^FS^XZ", SPECIFICATION)
         .unwrap_err()
         .to_string()
         .contains("capacity"));
@@ -805,7 +806,7 @@ fn tlc39_linkage_and_components() {
         ("ABC,DEF", "ABC\u{1d}DEF", 4, 8),
     ] {
         let label = format!("^XA^PW600^LL500^FO20,20^BTN,2,2,40,2,4^FD239316,{payload}^FS^XZ");
-        let doc = render(label.as_bytes(), Options::default()).unwrap();
+        let doc = render(label.as_bytes(), SPECIFICATION).unwrap();
         let raster = rasterize(&doc.labels[0]).unwrap();
         let pixel = |x: usize, y: usize| raster.pixels[y * raster.width as usize + x] < 128;
         let mut codewords = Vec::new();

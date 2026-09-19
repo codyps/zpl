@@ -1,5 +1,6 @@
 //! Component-level independent decoder adapters, not a complete GS1 scanner.
 use super::*;
+use crate::render::profiles::SPECIFICATION;
 use rxing::oned::rss::expanded::decoders::DecodedObject;
 use rxing::oned::OneDReader;
 
@@ -211,7 +212,7 @@ fn gs1_128_linkage() {
 
 #[test]
 fn rendered_composite_components_and_alignment() {
-    use crate::{output::raster::rasterize, render, Options};
+    use crate::{output::raster::rasterize, render};
     for (variant, payload, rows, ec, width, capacity) in [
         (11, "10ABC".to_owned(), 3, 4, 99, 78),
         (11, format!("91{}", "A".repeat(50)), 15, 21, 99, 352),
@@ -220,7 +221,7 @@ fn rendered_composite_components_and_alignment() {
         for module in [2, 3] {
             for separator in [1, 2] {
                 let zpl=format!("^XA^PW1000^LL1000^FO40,40^BRN,{variant},{module},{separator},60^FD0103212345678906|{payload}^FS^XZ");
-                let doc = render(zpl.as_bytes(), Options::default()).unwrap();
+                let doc = render(zpl.as_bytes(), SPECIFICATION).unwrap();
                 let raster = rasterize(&doc.labels[0]).unwrap();
                 let pixel = |x: usize, y: usize| raster.pixels[y * raster.width as usize + x] < 128;
                 let (linear_x, cc_x, row_height) = if variant == 12 {
@@ -294,7 +295,7 @@ fn rendered_composite_components_and_alignment() {
 
 #[test]
 fn composite_input_errors() {
-    use crate::{render, Options};
+    use crate::render;
     for variant in [11, 12] {
         for data in [
             "0103212345678906",
@@ -304,16 +305,13 @@ fn composite_input_errors() {
             "0103212345678906|10@",
         ] {
             let zpl = format!("^XA^BRN,{variant}^FD{data}^FS^XZ");
-            assert!(
-                render(zpl.as_bytes(), Options::default()).is_err(),
-                "{data}"
-            );
+            assert!(render(zpl.as_bytes(), SPECIFICATION).is_err(), "{data}");
         }
         let zpl = format!(
             "^XA^BRN,{variant}^FD0103212345678906|91{}^FS^XZ",
             "A".repeat(2400)
         );
-        assert!(render(zpl.as_bytes(), Options::default()).is_err());
+        assert!(render(zpl.as_bytes(), SPECIFICATION).is_err());
     }
 }
 

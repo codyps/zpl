@@ -240,7 +240,16 @@ mod tests {
             (max_x - min_x, max_y - min_y)
         }
         for dpi in [203, 300, 600] {
-            let b = Barcode::new("BD", &["4"], 2., 2., 90., dpi, Default::default()).unwrap();
+            let b = Barcode::new(
+                "BD",
+                &["4"],
+                2.,
+                2.,
+                90.,
+                dpi,
+                crate::render::profiles::SPECIFICATION.compatibility,
+            )
+            .unwrap();
             let path = render(&b, b"A").unwrap();
             let unit = dpi as f64 / 25.4;
             let (width, height) = extent(&path.segments[..7]);
@@ -263,7 +272,16 @@ mod tests {
     }
     #[test]
     fn full_byte_alphabet_round_trip() {
-        let b = Barcode::new("BD", &["4"], 2., 2., 90., 203, Default::default()).unwrap();
+        let b = Barcode::new(
+            "BD",
+            &["4"],
+            2.,
+            2.,
+            90.,
+            203,
+            crate::render::profiles::SPECIFICATION.compatibility,
+        )
+        .unwrap();
         for first in (0u16..256).step_by(16) {
             let data: Vec<_> = (first..first + 16).map(|v| v as u8).collect();
             let m = encode(&b, &data).unwrap();
@@ -289,7 +307,7 @@ mod tests {
                 2.,
                 90.,
                 203,
-                Default::default(),
+                crate::render::profiles::SPECIFICATION.compatibility,
             )
             .unwrap();
             let data = match mode {

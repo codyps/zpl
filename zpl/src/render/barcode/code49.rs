@@ -228,7 +228,7 @@ mod tests {
             2.,
             90.,
             203,
-            Default::default(),
+            crate::render::profiles::SPECIFICATION.compatibility,
         )
         .unwrap();
         for length in 1..=81 {
@@ -269,7 +269,7 @@ mod tests {
             2.,
             90.,
             203,
-            Default::default(),
+            crate::render::profiles::SPECIFICATION.compatibility,
         )
         .unwrap();
         for first in (0u8..128).step_by(16) {
@@ -309,7 +309,7 @@ mod tests {
             2.,
             90.,
             203,
-            Default::default(),
+            crate::render::profiles::SPECIFICATION.compatibility,
         )
         .unwrap();
         for length in 1..=49 {

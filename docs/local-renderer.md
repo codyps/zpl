@@ -37,7 +37,7 @@ for scene in &document.labels {
 ```
 
 The library returns all labels and preview warnings. Options default to
-812 × 1218 dots at 203 DPI; `^PW` and `^LL` override dimensions. The CLI takes
+832 × 1218 dots at 203 DPI; `^PW` and `^LL` override dimensions. The CLI takes
 one label and selects the adapter by output extension:
 
 ```sh
@@ -47,8 +47,11 @@ direnv exec . cargo run -p zpl --example zpl-to-svg -- docs/examples/local-label
 
 ## Printer profiles
 
-`Options::default()` disables empirical printer overrides. To match the captured
-ZD621 HTTP preview behavior, start with the printer's initial options:
+`zpl::render::profiles::SPECIFICATION` explicitly disables every printer
+compatibility override and is used by specification-based tests.
+`Options::default()` returns `ZD621_203_DPI`, including its compatibility
+overrides. To select the captured ZD621 HTTP preview behavior explicitly, start
+with the printer's initial options:
 
 ```rust
 use zpl::{render, render::profiles::ZD621_203_DPI};
@@ -63,7 +66,7 @@ overridable. It targets a 203-DPI ZD621 running V93.21.33Z, with initial dimensi
 832 × 1218 dots. Changing DPI does not recalibrate firmware-specific dot counts.
 `^PW` and `^LL` still override dimensions.
 
-| `options.compatibility` field | Default behavior | ZD621 profile |
+| `options.compatibility` field | Specification profile | ZD621 profile |
 | --- | --- | --- |
 | `qr_fo_uses_by_height` | QR ink begins at `^FO` | Offset by `^BY` height minus one dot |
 | `qr_ft_includes_margin` | QR base at `^FT` | Include three modules minus one dot below symbol |
@@ -74,12 +77,12 @@ overridable. It targets a 203-DPI ZD621 running V93.21.33Z, with initial dimensi
 | `code93_normalize_input` | Reject bytes outside the ZPL alphabet/shift substitutes | Uppercase raw letters and discard unsupported bytes |
 
 The origin, ratio, and Code 93 rules follow the Zebra guide (`^FO` p. 201,
-`^FT` p. 205 Table 7, `^BZ` p. 150, `^BA` pp. 87–89). The default standalone
+`^FT` p. 205 Table 7, `^BZ` p. 150, `^BA` pp. 87–89). The specification profile
 retail guard extension follows [ISO/IEC 15420:2009](https://www.iso.org/standard/46143.html),
 §4.3.3. The guide does not define exact diagonal scan conversion or Intelligent
 Mail dot rounding; those options select empirical quantization choices.
 See [printer accuracy](printer-accuracy.md) for capture evidence and remaining
-gaps. Neither defaults nor the profile imply complete specification or printer
+gaps. Neither profile implies complete specification or printer
 parity. Preview width adjustment remains unimplemented.
 
 ## Supported subset

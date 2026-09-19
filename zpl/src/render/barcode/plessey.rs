@@ -72,7 +72,7 @@ mod tests {
             2.,
             80.,
             203,
-            Default::default(),
+            crate::render::profiles::SPECIFICATION.compatibility,
         )
         .unwrap();
         let yes = Barcode::new(
@@ -82,7 +82,7 @@ mod tests {
             2.,
             80.,
             203,
-            Default::default(),
+            crate::render::profiles::SPECIFICATION.compatibility,
         )
         .unwrap();
         assert_eq!(interpretation(&no, b"123ABC").unwrap(), "123ABC");

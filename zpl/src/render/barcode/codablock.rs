@@ -143,7 +143,7 @@ mod tests {
                 2.,
                 90.,
                 203,
-                Default::default(),
+                crate::render::profiles::SPECIFICATION.compatibility,
             )
             .unwrap();
             let m = encode(&b, data).unwrap();

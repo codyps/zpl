@@ -84,7 +84,7 @@ mod tests {
                 width: 100,
                 height: 80,
                 dpi: 203,
-                ..Options::default()
+                ..zpl::render::profiles::SPECIFICATION
             },
         )
         .unwrap();

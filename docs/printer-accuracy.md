@@ -51,7 +51,8 @@ Every captured-font, hardware barcode and corpus accuracy test starts with
 The profile enables the independently selectable compatibility options described
 in [printer profiles](local-renderer.md#printer-profiles). Existing pixel hashes
 and overpaint/underpaint counts are unchanged by this separation. Tests in
-`zpl/tests/profiles.rs` also cover defaults and individual option overrides.
+`zpl/tests/profiles.rs` also cover the explicit specification profile, the ZD621 default, and individual
+option overrides.
 
 ## Improvements verified against the printer
 

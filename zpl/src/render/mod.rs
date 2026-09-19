@@ -26,17 +26,14 @@ pub struct Options {
     pub width: u32,
     pub height: u32,
     pub dpi: u32,
-    /// Explicit printer departures and quantization choices. Disabled by default.
+    /// Explicit printer departures and quantization choices. See [`profiles`].
     pub compatibility: compatibility::Compatibility,
 }
+/// Defaults to the captured ZD621 profile. Use [`profiles::SPECIFICATION`]
+/// explicitly to disable all printer compatibility overrides.
 impl Default for Options {
     fn default() -> Self {
-        Self {
-            width: 812,
-            height: 1218,
-            dpi: 203,
-            compatibility: compatibility::Compatibility::default(),
-        }
+        profiles::ZD621_203_DPI
     }
 }
 #[derive(Debug)]

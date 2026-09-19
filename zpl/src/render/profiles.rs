@@ -1,5 +1,26 @@
-//! Initial rendering options for identified printers, not runtime device modes.
+//! Initial rendering options for specification behavior and identified printers.
 use super::{compatibility::Compatibility, Options};
+
+/// Specification-based rendering with every printer compatibility override disabled.
+///
+/// Command behavior follows the references in [`Compatibility`]; this is not a
+/// claim of complete ZPL support. The 812 × 1218-dot canvas and 203 DPI are
+/// application defaults, not dimensions mandated by the specification.
+/// `^PW`/`^LL` and caller edits can override these initial settings.
+pub const SPECIFICATION: Options = Options {
+    width: 812,
+    height: 1218,
+    dpi: 203,
+    compatibility: Compatibility {
+        qr_fo_uses_by_height: false,
+        qr_ft_includes_margin: false,
+        diagonal_dot_runs: false,
+        postal_fixed_pitch: false,
+        intelligent_mail_outward_rounding: false,
+        retail_guard_extension_dots: None,
+        code93_normalize_input: false,
+    },
+};
 
 /// Zebra ZD621, 203 DPI, firmware V93.21.33Z HTTP Preview Label behavior.
 ///

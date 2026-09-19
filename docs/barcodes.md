@@ -87,7 +87,7 @@ The supplied PDFs remain outside the repository and are not redistributed here.
   only controls displaying its two hexadecimal check digits. Plessey honors the
   `BY` ratio and uses a wide-plus-narrow termination bar. Code 11 preserves
   the extra-wide `(2r−1)X` elements in 0, 9 and dash. Code 93 interprets Zebra's
-  `&`, `'`, `(` and `)` shift substitutes after `FH`. By default, unsupported raw bytes are errors. The ZD621 profile
+  `&`, `'`, `(` and `)` shift substitutes after `FH`. With the specification profile, unsupported raw bytes are errors. The ZD621 profile
   uppercases raw lowercase and skips unsupported bytes. Literal full
   ASCII must be expressed through the documented substitute pairs.
   Existing Code 39 optional checksum and Code 128
@@ -177,7 +177,7 @@ The supplied PDFs remain outside the repository and are not redistributed here.
 Except for Code 49's built-in row quiet zones, quiet zones are caller-owned.
 Interpretation text uses the renderer's embedded
 font and is not a reproduction of printer-specific retail typography. Standalone
-UPC/EAN guard-bar extensions default to five modules; the ZD621 profile uses
+UPC/EAN guard-bar extensions use five modules in the specification profile; the ZD621 profile uses
 13 dots to match the captured 203-DPI printer controls. See
 [printer accuracy](printer-accuracy.md). Retail generated checks and MSI's check-display flag are handled;
 other interpretation lines generally display the submitted field data. Binary

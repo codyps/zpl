@@ -1,3 +1,4 @@
+use zpl::render::profiles::SPECIFICATION;
 use zpl::{
     output::raster::Raster,
     output::{Adapter, Draw, Paint, Path, Png, Point, Scene, Segment, Svg},
@@ -10,7 +11,7 @@ fn scene(z: &[u8]) -> Scene {
             width: 100,
             height: 100,
             dpi: 203,
-            ..Options::default()
+            ..SPECIFICATION
         },
     )
     .unwrap()
@@ -75,9 +76,9 @@ fn errors_are_explicit() {
         "^XA^FT,2^FDX^FS^XZ",
         "^XA~FO1,2^XZ",
     ] {
-        assert!(render(z.as_bytes(), Options::default()).is_err(), "{z}")
+        assert!(render(z.as_bytes(), SPECIFICATION).is_err(), "{z}")
     }
-    let e = render(b"^XA^BQN,2,4,L,0,extra", Options::default()).unwrap_err();
+    let e = render(b"^XA^BQN,2,4,L,0,extra", SPECIFICATION).unwrap_err();
     assert_eq!(e.offset, 3);
     assert!(e.message.contains("BQ"));
 }
@@ -85,7 +86,7 @@ fn errors_are_explicit() {
 fn syntax_and_multiple_labels() {
     let doc = render(
         b"^CC!!XA!CD;!PW20!LL30!FO2;3!GB4;5;4!FS!XZ!XA!XZ",
-        Options::default(),
+        SPECIFICATION,
     )
     .unwrap();
     assert_eq!(doc.labels.len(), 2);
@@ -121,20 +122,20 @@ fn graphics_binary_ascii_and_rle() {
 fn field_blocks_hex_and_font_warning() {
     let d = render(
         b"^XA^CF0,32,32^FO20,20^FB60,2,1,L^FH^FDA_20B\\&C^FS^XZ",
-        Options::default(),
+        SPECIFICATION,
     )
     .unwrap();
     assert!(d.warnings.is_empty());
     let expected = render(
         b"^XA^CF0,32,32^FO20,20^FDA B^FS^FO20,53^FDC^FS^XZ",
-        Options::default(),
+        SPECIFICATION,
     )
     .unwrap();
     assert_eq!(
         zpl::output::raster::rasterize(&d.labels[0]).unwrap(),
         zpl::output::raster::rasterize(&expected.labels[0]).unwrap()
     );
-    let scaled = render(b"^XA^CF0,16^FDA^FS^XZ", Options::default()).unwrap();
+    let scaled = render(b"^XA^CF0,16^FDA^FS^XZ", SPECIFICATION).unwrap();
     assert_eq!(scaled.warnings.len(), 1);
 }
 
@@ -177,14 +178,14 @@ fn invalid_output_rejected_by_both_adapters() {
 fn compressed_graphics_and_crc() {
     let expected = scene(b"^XA^GFA,2,2,1,FF81^FS^XZ");
     assert_eq!(scene(b"^XA^GFA,2,2,1,:B64:/4E=:EF02^FS^XZ"), expected);
-    assert!(render(b"^XA^GFA,2,2,1,:B64:/4E=:0000^FS^XZ", Options::default()).is_err());
+    assert!(render(b"^XA^GFA,2,2,1,:B64:/4E=:0000^FS^XZ", SPECIFICATION).is_err());
     assert_eq!(
         scene(b"^XA^GFA,2,2,1,:Z64:eJz73wgAAoEBgQ==:12CE^FS^XZ"),
         expected
     );
     assert!(render(
         b"^XA^GFA,2,2,1,:Z64:eJz73wgAAoEBgQ==:0000^FS^XZ",
-        Options::default()
+        SPECIFICATION
     )
     .is_err());
 }
@@ -192,7 +193,7 @@ fn compressed_graphics_and_crc() {
 fn practical_label_fixture() {
     let d = render(
         include_bytes!("../../docs/examples/local-label.zpl"),
-        Options::default(),
+        SPECIFICATION,
     )
     .unwrap();
     assert_eq!((d.labels[0].width, d.labels[0].height), (600, 400));
@@ -206,7 +207,7 @@ fn font_override_is_field_local_and_zero_width_is_inferred() {
     let b = scene(b"^XA^CF0,7,6^FO0,0^A0N,14,14^FDA^FS^FO20,0^A0N,7,6^FDA^FS^XZ");
     assert_eq!(a, b);
     for z in [b"^FDLOST^XA^XZ".as_slice(), b"^GFB,1,1,1,\xff^XA^XZ"] {
-        assert!(render(z, Options::default()).is_err())
+        assert!(render(z, SPECIFICATION).is_err())
     }
 }
 #[test]
@@ -218,7 +219,7 @@ fn malformed_streams_never_panic() {
             state = state.wrapping_mul(6364136223846793005).wrapping_add(1);
             data.push((state >> 32) as u8)
         }
-        let _ = render(&data, Options::default());
+        let _ = render(&data, SPECIFICATION);
     }
 }
 
@@ -261,7 +262,7 @@ fn proportional_blocks_align_and_wrap_by_advance() {
         zpl::output::raster::rasterize(&c).unwrap(),
         zpl::output::raster::rasterize(&d).unwrap()
     );
-    assert!(render(b"^XA^AAN,32,32^FDA^FS^XZ", Options::default()).is_err());
+    assert!(render(b"^XA^AAN,32,32^FDA^FS^XZ", SPECIFICATION).is_err());
 }
 
 #[test]

@@ -1,5 +1,7 @@
-//! Independently selectable printer preview behavior. Defaults leave empirical
-//! overrides disabled; this does not imply complete ZPL implementation coverage.
+//! Independently selectable printer preview behavior. `Compatibility::default()`
+//! disables empirical overrides, as does [`super::profiles::SPECIFICATION`].
+//! [`super::Options::default()`] instead selects the ZD621 printer profile.
+//! Neither profile implies complete ZPL implementation coverage.
 //!
 //! Page references below use the [Zebra ZPL II Programming Guide](https://www.zebra.com/content/dam/support-dam/en/documentation/unrestricted/guide/software/zpl-zbi2-pg-en.pdf).
 //! Retail dimensions follow [ISO/IEC 15420:2009](https://www.iso.org/standard/46143.html).
