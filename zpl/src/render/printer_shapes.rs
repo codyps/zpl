@@ -156,42 +156,49 @@ pub(super) fn circle(path: &mut Path, diameter: f64, thickness: f64) -> Result<(
 // Zebra ^GE (Programming Guide p. 214) specifies dimensions, not scan conversion.
 // The preview uses the minor-axis radius for its initial decision, with truncated
 // aspect-ratio products in the steep region. These rules were measured from
-// ellipses-zd621-v1. The shallow-region transition is still an approximation:
-// the manifests retain the small residuals instead of claiming exact parity.
+// ellipses-zd621-v1, including independent nearly circular and flat shapes.
 fn ellipse_half_widths(width: usize, height: usize) -> Vec<usize> {
     let radius = height / 2;
+    if radius == 0 {
+        return vec![1];
+    }
     let ratio = (width as f64 / height as f64).powi(2);
     let mut widths = vec![usize::MAX; radius + 1];
     let mut point = |x: usize, y: usize| widths[y] = widths[y].min(x);
     let (mut x, mut y) = (0, radius);
     let mut error = 1. - height as f64 / 2.;
-    let mut last_x = 0;
-    while (x as f64) < ratio * y as f64 {
+    loop {
         point(x, y);
-        last_x = x;
-        x += 1;
-        if error < 0. {
-            error += (2 * x + 1) as f64;
-        } else {
-            y -= 1;
-            error += (2 * x + 1) as f64 - 2. * (ratio * y as f64).floor();
+        let next_x = x + 1;
+        let next_y = y - usize::from(error >= 0.);
+        // The shallow region starts at the last steep-region point. Advancing
+        // first loses a center pixel in flat ellipses such as 19 by 7 dots.
+        if next_x as f64 >= ratio * next_y as f64 {
+            break;
         }
+        if error < 0. {
+            error += (2 * next_x + 1) as f64;
+        } else {
+            error += (2 * next_x + 1) as f64 - 2. * (ratio * next_y as f64).floor();
+        }
+        x = next_x;
+        y = next_y;
     }
-    error = (error - x as f64 + y as f64) / ratio - 3. * y as f64 + 5.;
+    // Truncate the aspect-ratio product before updating the decision value;
+    // dividing the recurrence by the ratio changes its rounding decisions.
+    error = (error - x as f64 - y as f64 - 2. * (ratio * (y as f64 - 1.)).trunc() + 3.).floor();
     while y > 0 {
         point(x, y);
-        last_x = x;
         y -= 1;
         if error > 0. {
-            error += 3. - 2. * y as f64;
+            error += 1. - 2. * (ratio * (y as f64 - 1.)).trunc();
         } else {
             x += 1;
-            error += 2. * x as f64 / ratio + 3. - 2. * y as f64;
+            error += (2 * x + 1) as f64 - 2. * (ratio * (y as f64 - 1.)).trunc();
         }
     }
-    // Preserve the last emitted span at the axis. Even a two-dot minor axis
-    // has a visible two-dot center span in the independent tiny-size controls.
-    point(last_x.max(1), 0);
+    // Include the final step to the axis; a two-dot minor axis still has ink.
+    point(x.max(1), 0);
     for half in &mut widths {
         if *half == usize::MAX {
             *half = 0;

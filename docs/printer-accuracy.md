@@ -57,9 +57,9 @@ option overrides.
 ## Improvements verified against the printer
 
 - `^GE` uses a measured scan conversion behind `ellipse_printer_curve`. The
-  original case and six earlier controls are exact. Across 272 atlas instances,
-  every shape improves or preserves ink IoU. Small residuals remain pinned in
-  the independent holdouts; the shallow-region transition is still approximate.
+  original case, all ten earlier controls, and 520 atlas instances are exact.
+  Independent holdouts include nearly circular and very flat ellipses, both
+  orientations, borders 1–1000, and major axes through 395 dots.
 
 - `^GC` uses the captured integer circle curve and cap/side span endpoints.
   The original circle and twelve earlier controls are exact, along with
@@ -108,8 +108,7 @@ This is not yet 100% non-text parity. Of the 133 comparison cases, 127 are exact
 controls are exact. Text and non-text failures remain separate in the provenance
 and per-case baseline; aggregate percentages must not conceal either category.
 
-Remaining non-text issues include ellipse scan conversion
-and QR automatic mask selection.
+The remaining known non-text issue is QR automatic mask selection.
 The tested firmware produces identical QR images for requested masks 0/3/7;
 the renderer still honors the documented mask operand. Do not substitute a
 payload-specific mask table for the missing general selection behavior.
@@ -226,8 +225,8 @@ A further [25 exact captures](../zpl/tests/fixtures/rounded-boxes-zd621-v1/READM
 cover dense small-radius atlases and independent radii through 257. The integer
 curve and geometry rules have separate printer options.
 
-The original ellipse case now matches exactly. Small edge residuals remain in
-independent unequal-axis ellipse controls. QR encoding
+The original ellipse case and independent unequal-axis controls now match
+exactly. QR encoding
 matches captured symbols when given the captured mask, but the firmware's
 automatic mask scoring is not yet reproduced; it also ignores the requested
 mask. TLC39 text/numeric compaction, padding, component placement and extended
@@ -247,19 +246,17 @@ The [34 curved-shape controls](../zpl/tests/fixtures/shapes-zd621-v1/README.md)
 were captured before the outage and preserve border, radius and even/odd size
 boundaries. `cargo test -p zpl --test shape_preview` pins their current counts
 and exact differing-pixel positions. The twelve rounded-box and twelve circle controls are exact;
-six of the ten ellipse controls are also exact. The other four retain
-4–10 missing pixels each in explicit known-gap baselines.
+all ten ellipse controls are also exact.
 
 Additional [ellipse atlases](../zpl/tests/fixtures/ellipses-zd621-v1/README.md)
 and [32 QR controls](../zpl/tests/fixtures/qr-zd621-v1/README.md) pin the remaining
 work across aspect ratios, borders, both QR models, all correction levels and
 several payload classes. Run `cargo test -p zpl --test ellipse_preview --test qr_preview`.
-These tests retain explicit known-gap counts and pixel hashes; passing them is
-not a claim of zero error. The independent ellipse holdouts must improve along
-with the original corpus when scan conversion changes.
+The ellipse test requires zero differing pixels. QR controls retain explicit
+known-gap counts and pixel hashes; passing them is not a claim of zero QR error.
 
 Four further filled ellipse atlases add 200 independently selected sizes,
-including nearly circular ellipses. They retain 944 differing pixels with the
-current renderer and expose shallow-region step differences beyond the earlier
-transition residuals. Their raw captures, exact underpaint/overpaint counts and
-full output hashes are included in the same regression test.
+including nearly circular ellipses. Their former 944 differing pixels are now
+eliminated. Four final holdout atlases add 48 larger sizes with varied borders
+and both orientations; all are exact. Raw printer captures and full renderer
+pixel hashes remain pinned in the same regression test.
