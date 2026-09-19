@@ -115,6 +115,11 @@ pub(super) fn encode_micro(data: &[u8]) -> Vec<usize> {
 }
 
 pub(super) fn encode_tlc(data: &[u8]) -> Vec<usize> {
+    // ISO/IEC 24728 §5.4 permits an initial Numeric latch. ZD621 TLC39
+    // captures digits-1/3/6/7 use it even below the mixed-data threshold.
+    if !data.is_empty() && data.iter().all(u8::is_ascii_digit) {
+        return encode_micro(data);
+    }
     encode_initial(data, false, false)
 }
 
@@ -170,6 +175,20 @@ fn encode_initial(data: &[u8], mut in_text: bool, micro: bool) -> Vec<usize> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn tlc_short_numeric_payloads_use_numeric_compaction() {
+        // ISO/IEC 24728 §5.4; printer captures in tlc39-zd621-v1/digits-*.
+        for data in ["1", "123", "123456", "1234567", "12345678"] {
+            let encoded = encode_tlc(data.as_bytes());
+            assert_eq!(encoded[0], 902);
+            let mut words = vec![(encoded.len() + 2) as u32];
+            words.extend(encoded.iter().map(|&v| v as u32));
+            words.push(900);
+            let decoded =
+                rxing::pdf417::decoder::decoded_bit_stream_parser::decode(&words, "").unwrap();
+            assert_eq!(decoded.getText(), data);
+        }
+    }
     #[test]
     fn micro_initial_modes_and_byte_shift() {
         assert_eq!(encode_micro(b"A"), [900, 29]);

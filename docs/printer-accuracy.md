@@ -213,8 +213,9 @@ The curve gaps concern the firmware's discrete outline geometry. QR encoding
 matches captured symbols when given the captured mask, but the firmware's
 automatic mask scoring is not yet reproduced; it also ignores the requested
 mask. TLC39 text/numeric compaction, padding, component placement and extended
-flag geometry now match the original corpus case and 48 of 50 new controls.
-The two long-payload controls still select fewer rows than firmware. See the
+flag geometry now match the original corpus case and 62 of 75 new controls.
+Short all-numeric payloads now use Numeric compaction, including one digit.
+Thirteen multi-field controls still select fewer rows than firmware. See the
 [TLC39 controls](../zpl/tests/fixtures/tlc39-zd621-v1/README.md).
 
 Focused suites cover more than the original corpus. All 48 additional DataBar

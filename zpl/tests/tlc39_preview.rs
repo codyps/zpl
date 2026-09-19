@@ -44,5 +44,5 @@ fn printer_controls_pin_every_painted_pixel() {
         );
         count += 1;
     }
-    assert_eq!(count, 50);
+    assert_eq!(count, 75);
 }
