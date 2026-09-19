@@ -1,6 +1,6 @@
 # ZD621 unequal-axis ellipse controls
 
-Eight unmodified HTTP Preview Label captures from ZD621 203 DPI, firmware
+Twelve unmodified HTTP Preview Label captures from ZD621 203 DPI, firmware
 V93.21.33Z, collected 2026-09-19 with zebra-render. Each source explicitly sets
 PW832, label length and field origins. These are previews, not scanned labels.
 No image is cropped, registered, rescaled or repaired for the comparisons.
@@ -11,6 +11,10 @@ No image is cropped, registered, rescaled or repaired for the comparisons.
   tall ellipses and odd dimensions, at borders 1, 3 and 1000.
 - Two independent holdout atlases cover 40 further width/height pairs at borders
   3 and 1000, including relatively prime sizes and heights as small as two dots.
+- Four further filled atlases cover 200 unique width/height pairs, selected with
+  Python `random.Random(621203)`: width 8–199 and height 2 through width minus one.
+  These include nearly circular ellipses that were sparse in the earlier sets.
+  Their exact dimensions are preserved in the ZPL sources.
 
 The filled cases separate outer scan conversion from border geometry. Square
 ellipses already use the verified circle curve; unequal-axis ellipses retain
@@ -32,6 +36,13 @@ endpoint convention. All 272 instances improve or preserve foreground IoU.
 The two initial border-one/filled atlases are exact. Other atlases retain up to
 40 differing dots per frame because the shallow-region transition still needs
 refinement. SPECIFICATION disables this approximation.
+
+The additional 200 filled ellipses retain 944 differing dots. Their steep-region
+steps agree with the measured rule, but the shallow-region updates need further
+work as well as the transition. The earlier 272-instance improvement result
+does not establish pixel parity for these independent samples. These four
+frames pin the current errors and full output hashes without relaxing any of
+the earlier regression expectations.
 
 Some formerly overfilled frames now have a few missing pixels: for example, the
 filled ratio atlas changes from 0 underpaint / 3538 overpaint to 12 / 0. This is

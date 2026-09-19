@@ -257,3 +257,9 @@ several payload classes. Run `cargo test -p zpl --test ellipse_preview --test qr
 These tests retain explicit known-gap counts and pixel hashes; passing them is
 not a claim of zero error. The independent ellipse holdouts must improve along
 with the original corpus when scan conversion changes.
+
+Four further filled ellipse atlases add 200 independently selected sizes,
+including nearly circular ellipses. They retain 944 differing pixels with the
+current renderer and expose shallow-region step differences beyond the earlier
+transition residuals. Their raw captures, exact underpaint/overpaint counts and
+full output hashes are included in the same regression test.
