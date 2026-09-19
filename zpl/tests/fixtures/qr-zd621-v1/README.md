@@ -12,6 +12,13 @@ when the printer's mask is forced during diagnosis, but the regression test
 renders the original input unchanged. Mask selection remains an accuracy gap.
 Do not replace the general selection algorithm with a payload-specific lookup.
 
+A separate encoding test reads the mask from the printer image's format bits,
+checks their BCH remainder, and changes only the request's mask operand. It
+requires an exact match across the entire raw printer image for all 32 cases.
+This isolates bitstream generation, error correction, module placement and
+geometry from mask selection. It does not replace the unchanged-input test or
+count diagnostic renders as end-to-end accuracy improvements.
+
 The captured QR top edge is nine dots below FO60, matching the initial BY height
 of ten dots. Recapture with that printer state; BY operands can persist between
 HTTP requests. The renderer's specification and ZD621 profiles both start with
@@ -23,6 +30,7 @@ ZD621_203_DPI. Zero-error cases and known gaps are both pinned; passing the suit
 does not claim that every QR symbol matches the printer.
 
 References: Zebra Programming Guide ^BQ, pp. 128–131, and ^BY, p. 148;
-ISO/IEC 18004:2000, section 8.8.2 and Annex M.8 for QR mask evaluation.
+ISO/IEC 18004:2000, section 8.8.2 and Annex M.8 for QR mask evaluation;
+section 8.9 and Annexes C.1/M.9 for format-bit placement and decoding.
 See docs/zpl-zbi2-pg-en.pdf and the
 [Zebra command reference](https://www.zebra.com/us/en/support-downloads/knowledge-articles/ait/zpl-command-information-and-details.html).
