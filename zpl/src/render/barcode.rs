@@ -333,6 +333,9 @@ impl Barcode {
             height = self.height;
         }
         let mut baseline = height;
+        if self.name == "BD" && self.compatibility.maxicode_printer_dot_geometry {
+            baseline = 199. * self.dpi as f64 / 203.;
+        }
         if self.name == "BQ" && self.compatibility.qr_ft_includes_margin {
             // ^FT includes a three-module lower margin, less one dot. Verified
             // with ZD621 magnifications 1–5 and ^BY heights 40/100; unlike ^FO,

@@ -13,6 +13,23 @@
 /// initial value: the renderer does not reapply it after you change an option.
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct Compatibility {
+    /// Suppress mode 4/6 MaxiCode fields shorter than six bytes, as in ZD621
+    /// previews. The ^BD description (Zebra guide p. 107) gives no such limit.
+    pub maxicode_standard_minimum_six_bytes: bool,
+    /// End MaxiCode input at NUL, matching the printer preview. ISO/IEC
+    /// 16023:2000 Annex A otherwise permits NUL in code set E.
+    pub maxicode_nul_terminates_data: bool,
+    /// Emit a final A/B latch before MaxiCode padding, as in ZD621 previews.
+    /// ISO/IEC 16023:2000 §4.4.4.8 permits padding directly in either set.
+    pub maxicode_terminal_latch: bool,
+    /// Use the captured ZD621 dot template for MaxiCode modules and finder rings.
+    /// Includes the full 199-dot symbol baseline for ^FT. Default: nominal
+    /// physical geometry from ISO/IEC 16023:2000 §4.11.
+    pub maxicode_printer_dot_geometry: bool,
+    /// Draw only the fixed finder/orientation marks for MaxiCode mode 5,
+    /// matching ZD621 V93.21.33Z HTTP preview. This deliberately reproduces
+    /// an undecodable preview, not the full mode-5 symbol specified by ^BD.
+    pub maxicode_mode5_preview_omits_data: bool,
     /// Use tilde as the default ECC200 escape, observed on the ZD621 despite
     /// the guide's modern-firmware underscore note (^BX pp. 145–147).
     /// An explicit ^BX g operand takes precedence.

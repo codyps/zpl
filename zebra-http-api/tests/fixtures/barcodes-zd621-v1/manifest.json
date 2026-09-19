@@ -867,17 +867,17 @@
     },
     "maxicode2": {
       "comparison": {
-        "both_black": 8693,
-        "diff_rgb_sha256": "284a92726e8c006df86a76a03301a08faf5e5380d0e3f1f9d389a2d33aa311f7",
+        "both_black": 12540,
+        "diff_rgb_sha256": "e51bc0dbc920897717baae77cc884023400c7b326a2dff89a3a255573f426f7e",
         "dimensions_match": true,
-        "exact": false,
-        "local_only": 5245,
-        "printer_only": 3847
+        "exact": true,
+        "local_only": 0,
+        "printer_only": 0
       },
       "local": {
         "height": 1218,
-        "ink": 13938,
-        "pixels_sha256": "b69e2dc3900283ecdd340fcd217220de227f424e8c4fb6ae02d1660d39ff4945",
+        "ink": 12540,
+        "pixels_sha256": "74d901d69ba83e6bbf0c40765f0d93e74afad7ea0fad032063472f48078b2f34",
         "width": 832
       },
       "printer": {
@@ -891,17 +891,17 @@
     },
     "maxicode3": {
       "comparison": {
-        "both_black": 8958,
-        "diff_rgb_sha256": "0bd11983eaac7ea44ca4601694fce6f8a6b2808ebe59709ee7097a2c37d8ef74",
+        "both_black": 12840,
+        "diff_rgb_sha256": "5d3706533b8a4233dd05c7224f9fda6cc451cfc680373c30f2caa14f4541cdb6",
         "dimensions_match": true,
-        "exact": false,
-        "local_only": 5308,
-        "printer_only": 3882
+        "exact": true,
+        "local_only": 0,
+        "printer_only": 0
       },
       "local": {
         "height": 1218,
-        "ink": 14266,
-        "pixels_sha256": "527e4448e1e930e44752d77797fad64057d49575370d0a169ee1a35c574f7533",
+        "ink": 12840,
+        "pixels_sha256": "7cea64a25bebb8059f3c3e6c3d26d784f71dcb9e628bea14f84c680c809fba16",
         "width": 832
       },
       "printer": {
@@ -915,17 +915,17 @@
     },
     "maxicode4": {
       "comparison": {
-        "both_black": 8568,
-        "diff_rgb_sha256": "d6e1f7a752623fe3489f883138183187b75245fca5e80e676e4b3630c0846e03",
+        "both_black": 13140,
+        "diff_rgb_sha256": "31314d2139b4c0c3000e59b724b26d8774207029492868d396486104da4f9d12",
         "dimensions_match": true,
-        "exact": false,
-        "local_only": 5670,
-        "printer_only": 4572
+        "exact": true,
+        "local_only": 0,
+        "printer_only": 0
       },
       "local": {
         "height": 1218,
-        "ink": 14238,
-        "pixels_sha256": "09e07842a7ad3aa0095569b1851a5444b616b61847a8253d87652f54b4d84399",
+        "ink": 13140,
+        "pixels_sha256": "2e984949973268205c2bea9e6405ccf891a8daadb275dedb9e1f7181732b71f8",
         "width": 832
       },
       "printer": {
@@ -939,17 +939,17 @@
     },
     "maxicode5": {
       "comparison": {
-        "both_black": 1894,
-        "diff_rgb_sha256": "c3399356339c368abe3e67582465e84461c1c3fb183e405bc928e2297cf8d6ea",
+        "both_black": 2010,
+        "diff_rgb_sha256": "701c72377986672522afdf4b9f8fe60f3871a2d379c1834fb0a628523f05315c",
         "dimensions_match": true,
-        "exact": false,
-        "local_only": 13362,
-        "printer_only": 116
+        "exact": true,
+        "local_only": 0,
+        "printer_only": 0
       },
       "local": {
         "height": 1218,
-        "ink": 15256,
-        "pixels_sha256": "b4ef11ebf984428d7be7b9e6ba36e5e233f8f72212b5e8d818ec07461c90eb7e",
+        "ink": 2010,
+        "pixels_sha256": "d9cfeefdc1c6fa94858a7761fcf45da1c4ae550e553058e4cdc882ccba54be8a",
         "width": 832
       },
       "printer": {
@@ -963,17 +963,17 @@
     },
     "maxicode6": {
       "comparison": {
-        "both_black": 8588,
-        "diff_rgb_sha256": "5a91cc1d0343405260d912b5301f4ce1421a84c80d114d535c2b765df3fa5879",
+        "both_black": 13200,
+        "diff_rgb_sha256": "2a8d7696ca48b310187784fb27536f3f8ac8812068eebadfa7e01819dbd60359",
         "dimensions_match": true,
-        "exact": false,
-        "local_only": 5657,
-        "printer_only": 4612
+        "exact": true,
+        "local_only": 0,
+        "printer_only": 0
       },
       "local": {
         "height": 1218,
-        "ink": 14245,
-        "pixels_sha256": "b2629a7fc028057ab9fbea7697effc252a48935f7a69d34bf9c52e56b5aa1aad",
+        "ink": 13200,
+        "pixels_sha256": "879fe34762f5a5ef4106b7a2b9b83ab9d38e52bf6cc5ec63a9ce0c1f27837ed4",
         "width": 832
       },
       "printer": {

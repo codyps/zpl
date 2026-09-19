@@ -169,10 +169,13 @@ The supplied PDFs remain outside the repository and are not redistributed here.
   sums. F/E: ASCII A/B switching, B/C padding, 2–44 rows, subset-dependent row/symbol checks including the implicit mode-E FNC1; internal and outer separators. ZD621 options select unscaled row heights and data-fitted rows. Special ZPL
   function escapes are rejected. No optimized set C.
 - MaxiCode: modes 2–6, structured carrier headers, byte character sets, nine-digit
-  compression, and primary/secondary Reed–Solomon checks. Lowercase/extended
-  characters use individual shifts, not optimal latching. Hexagonal ink dimensions
-  and the six finder radii follow the nominal physical dimensions in the full
-  specification and scale with DPI. No claim of UPS label compliance.
+  compression, A/B latches, two/three-character shifts, C/D/E lock-in, and
+  primary/secondary Reed–Solomon checks. Compaction follows ISO 16023 Annex F.
+  Specification geometry uses nominal physical dimensions; the ZD621 profile
+  selects calibrated dot geometry, a terminal latch, NUL termination, mode 4/6
+  minimum length of six bytes, and mode-5 finder-only previews. That last option
+  reproduces a firmware defect and deliberately omits barcode data; disable it
+  to obtain a complete symbol. No claim of UPS label compliance.
 - DataBar: Omnidirectional/Truncated (1/2), Stacked/Stacked Omnidirectional (3/4),
   Limited (5), Expanded/Expanded Stacked (6), and EAN/UPC aliases (7–10).
   The printer profile uses captured fixed UPC/EAN proportions and requires eleven

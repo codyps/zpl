@@ -62,6 +62,92 @@ fn character(c: u8) -> (usize, usize) {
     }
     unreachable!("MaxiCode character tables cover all 256 byte values")
 }
+// ISO/IEC 16023:2000 Annex A pp. 24–25, Annex F.1–F.4 pp. 32–33.
+// Original implementation of the recommended run-based switching rules.
+fn compact(data: &[u8]) -> (Vec<usize>, usize) {
+    fn value(c: u8, set: usize) -> Option<usize> {
+        if set == 0 {
+            return set_a(c);
+        }
+        if set == 1 {
+            if (28..=30).contains(&c) {
+                return Some(c as usize);
+            }
+            if (96..=122).contains(&c) {
+                return Some((c - 96) as usize);
+            }
+            return b"{\0}~\x7f;<=>?[\\]^_ ,./:@!|"
+                .iter()
+                .position(|&v| v == c && c != 0)
+                .map(|v| v + 32);
+        }
+        if c == 32 {
+            return Some(59);
+        }
+        if (28..=30).contains(&c) {
+            return Some(c as usize + if set == 4 { 4 } else { 0 });
+        }
+        if set == 4 && c <= 26 {
+            return Some(c as usize);
+        }
+        let (shift, v) = character(c);
+        (shift == set + 58).then_some(v)
+    }
+    let (mut out, mut set, mut i) = (Vec::new(), 0, 0);
+    while i < data.len() {
+        let tail = &data[i..];
+        if tail.len() >= 9 && tail[..9].iter().all(u8::is_ascii_digit) {
+            let n = tail[..9]
+                .iter()
+                .fold(0usize, |n, v| n * 10 + (v - b'0') as usize);
+            out.push(31);
+            out.extend((0..5).rev().map(|k| (n >> (6 * k)) & 63));
+            i += 9;
+            continue;
+        }
+        let run = |target| {
+            tail.iter()
+                .take_while(|&&c| value(c, target).is_some())
+                .count()
+        };
+        if set == 1 && data[i] != b' ' && run(0) >= 4 {
+            out.push(63);
+            set = 0;
+        }
+        if let Some(v) = value(data[i], set) {
+            out.push(v);
+            i += 1;
+            continue;
+        }
+        let target = (0..5).find(|&s| value(data[i], s).is_some()).unwrap();
+        let count = run(target);
+        if target < 2 {
+            if set >= 2 || target == 1 && count >= 2 || target == 0 && count >= 4 {
+                out.push(if target == 0 && set >= 2 { 58 } else { 63 });
+                set = target;
+            } else {
+                let count = if target == 0 { count.min(3) } else { 1 };
+                out.push(if count == 1 { 59 } else { 54 + count });
+                for &c in &tail[..count] {
+                    out.push(value(c, target).unwrap());
+                }
+                i += count;
+            }
+        } else {
+            let shift = target + 58;
+            out.push(shift);
+            if count >= if set < 2 { 4 } else { 2 } {
+                out.push(shift);
+                set = target;
+            } else {
+                out.push(value(data[i], target).unwrap());
+                i += 1;
+            }
+        }
+    }
+    (out, set)
+}
+
 fn encode(b: &Barcode, data: &[u8]) -> Result<Matrix, String> {
     let mode = b.integer(0, 2, 2, 6)?;
     let number = b.integer(1, 1, 1, 8)?;
@@ -103,32 +189,25 @@ fn encode(b: &Barcode, data: &[u8]) -> Result<Matrix, String> {
     } else {
         words[0] = mode;
     }
+    if b.compatibility.maxicode_nul_terminates_data {
+        body = body.split(|&c| c == 0).next().unwrap_or_default();
+    }
+    let secondary = if mode == 5 { 68 } else { 84 };
+    let capacity = secondary + if mode >= 4 { 9 } else { 0 };
+    // Even all-numeric data cannot exceed this bound. Limit the compaction
+    // search before allocating suffixes for arbitrary input lengths.
+    if body.len() > capacity * 9 / 6 {
+        return Err("MaxiCode data exceeds symbol capacity".into());
+    }
     let mut stream = Vec::new();
     if total > 1 {
         stream.extend([33, (number - 1) * 8 + total - 1]);
     }
-    let mut i = 0;
-    while i < body.len() {
-        if body[i..].len() >= 9 && body[i..i + 9].iter().all(u8::is_ascii_digit) {
-            let n = body[i..i + 9]
-                .iter()
-                .fold(0usize, |n, &v| n * 10 + (v - b'0') as usize);
-            stream.push(31);
-            for k in (0..5).rev() {
-                stream.push((n >> (6 * k)) & 63);
-            }
-            i += 9;
-        } else {
-            let (shift, value) = character(body[i]);
-            if shift != 0 {
-                stream.push(shift);
-            }
-            stream.push(value);
-            i += 1;
-        }
+    let (encoded, final_set) = compact(body);
+    stream.extend(encoded);
+    if final_set >= 2 || b.compatibility.maxicode_terminal_latch {
+        stream.push(63);
     }
-    let secondary = if mode == 5 { 68 } else { 84 };
-    let capacity = secondary + if mode >= 4 { 9 } else { 0 };
     if stream.len() > capacity {
         return Err("MaxiCode data exceeds symbol capacity".into());
     }
@@ -172,7 +251,23 @@ fn encode(b: &Barcode, data: &[u8]) -> Result<Matrix, String> {
     Ok(matrix)
 }
 pub(super) fn render(b: &Barcode, data: &[u8]) -> Result<Path, String> {
-    let m = encode(b, data)?;
+    if b.compatibility.maxicode_standard_minimum_six_bytes
+        && matches!(b.integer(0, 2, 2, 6)?, 4 | 6)
+        && data.len() < 6
+    {
+        return Ok(Path::default());
+    }
+    let mut m = encode(b, data)?;
+    if b.compatibility.maxicode_mode5_preview_omits_data && b.integer(0, 2, 2, 6)? == 5 {
+        for (y, row) in maxicode_modules::MODULES.iter().enumerate() {
+            for (x, &n) in row.iter().enumerate() {
+                m.set(x, y, n == 865 || y == 0 && x >= 28);
+            }
+        }
+    }
+    if b.compatibility.maxicode_printer_dot_geometry {
+        return Ok(printer_geometry(&m, b.dpi));
+    }
     // ISO/IEC 16023:2000 4.11, Tables 6–8: nominal L=25.50 mm.
     let dots_per_mm = b.dpi as f64 / 25.4;
     let pitch = (25.50 / 29.) * dots_per_mm;
@@ -207,6 +302,56 @@ pub(super) fn render(b: &Barcode, data: &[u8]) -> Result<Path, String> {
     }
     Ok(p)
 }
+/// The ZD621's fixed dot stencil, measured from independent mode 2–6 preview
+/// captures (tests/fixtures/maxicode-zd621-v1). It is independent of payload.
+/// Six-by-seven-dot hexagons use a 7×6 pitch; odd rows shift three dots.
+/// Squared ring thresholds lie between the last inside and first outside
+/// pixel-centre distances in the captured concentric finder. These are printer
+/// calibration values, not the nominal millimetre radii in ISO 16023 §4.11.
+fn printer_geometry(m: &Matrix, dpi: u32) -> Path {
+    let scale = dpi as f64 / 203.;
+    let mut p = Path::default();
+    for y in 0..33 {
+        for x in 0..30 {
+            if !m.get(x, y) {
+                continue;
+            }
+            for (dy, width) in [2, 4, 6, 6, 6, 4, 2].into_iter().enumerate() {
+                p.rect(
+                    (1 + x * 7 + (y % 2) * 3 + (6 - width) / 2) as f64 * scale,
+                    (1 + y * 6 + dy) as f64 * scale,
+                    width as f64 * scale,
+                    scale,
+                );
+            }
+        }
+    }
+    for y in 0..64 {
+        let mut start = None;
+        for x in 0..=64 {
+            let d = (x as f64 - 32.5).powi(2) + (y as f64 - 32.5).powi(2);
+            let dark = x < 64
+                && [(16.5, 81.5), (229.5, 402.5), (689.5, 967.5)]
+                    .iter()
+                    .any(|&(lo, hi)| d > lo && d < hi);
+            if dark && start.is_none() {
+                start = Some(x);
+            }
+            if !dark {
+                if let Some(first) = start.take() {
+                    p.rect(
+                        (69 + first) as f64 * scale,
+                        (68 + y) as f64 * scale,
+                        (x - first) as f64 * scale,
+                        scale,
+                    );
+                }
+            }
+        }
+    }
+    p
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

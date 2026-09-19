@@ -88,8 +88,8 @@ that the guide specifies those scan-conversion details.
 
 ## Remaining accuracy work
 
-This is not yet 100% non-text parity. Of the 133 comparison cases, 118 are exact,
-15 render with differences, and none report unsupported input. All 31 additional
+This is not yet 100% non-text parity. Of the 133 comparison cases, 123 are exact,
+10 render with differences, and none report unsupported input. All 31 additional
 controls are exact. Text and non-text failures remain separate in the provenance
 and per-case baseline; aggregate percentages must not conceal either category.
 
@@ -156,7 +156,7 @@ The [resident-font suite](../zpl/tests/fixtures/resident-fonts-zd621-v1/README.m
 adds 118 exact page/caption controls and 34 origin controls. Rotated font-0
 controls pin up to four differing dots and exceed 99.3% ink IoU individually;
 font A/D controls are exact. This does not promise 80% at arbitrary unsampled
-sizes or for unimplemented scripts. The remaining 15 corpus differences are
+sizes or for unimplemented scripts. The remaining 10 corpus differences are
 non-text shapes/barcodes, still pinned and not claimed as complete.
 
 
@@ -181,3 +181,12 @@ pixel-exact. A further 48 [printer controls](../zpl/tests/fixtures/databar-expan
 pin all pixels and separate overpaint/underpaint counts. Some stacked separators
 and the firmware's malformed long-weight/no-date encodings still differ.
 Run `cargo test -p zpl --test databar_expanded_preview`.
+
+MaxiCode now uses Annex F's numeric shifts, A/B latches and two/three-character
+shifts, plus C/D/E lock-in. All five original MaxiCode cases match the printer.
+The [61 focused captures](../zpl/tests/fixtures/maxicode-zd621-v1/README.md)
+cover switching boundaries, all extended sets, control bytes, short inputs and
+alternate origins. Printer options independently control dot geometry, terminal
+latching, NUL termination, short-input suppression and mode-5 payload omission.
+The last option deliberately matches an undecodable HTTP preview; specification
+rendering retains mode-5 payload data. Run `cargo test -p zpl --test maxicode_preview`.

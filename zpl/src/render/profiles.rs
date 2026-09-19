@@ -12,6 +12,11 @@ pub const SPECIFICATION: Options = Options {
     height: 1218,
     dpi: 203,
     compatibility: Compatibility {
+        maxicode_standard_minimum_six_bytes: false,
+        maxicode_nul_terminates_data: false,
+        maxicode_terminal_latch: false,
+        maxicode_printer_dot_geometry: false,
+        maxicode_mode5_preview_omits_data: false,
         data_matrix_default_tilde_escape: false,
         data_matrix_edifact_printer_transitions: false,
         aztec_floor_default_error_correction: false,
@@ -61,6 +66,11 @@ pub const ZD621_203_DPI: Options = Options {
     height: 1218,
     dpi: 203,
     compatibility: Compatibility {
+        maxicode_standard_minimum_six_bytes: true,
+        maxicode_nul_terminates_data: true,
+        maxicode_terminal_latch: true,
+        maxicode_printer_dot_geometry: true,
+        maxicode_mode5_preview_omits_data: true,
         data_matrix_default_tilde_escape: true,
         data_matrix_edifact_printer_transitions: true,
         aztec_floor_default_error_correction: true,

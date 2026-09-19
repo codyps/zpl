@@ -323,3 +323,41 @@ fn data_matrix_escape_and_edifact_choices_are_independent() {
         .data_matrix_edifact_printer_transitions = false;
     assert!(raster(edifact, options) == raster(edifact, SPECIFICATION));
 }
+
+#[test]
+fn maxicode_preview_departures_are_independent_options() {
+    // ISO 16023:2000 Annex A/F and Zebra ^BD pp. 106–108. Captured
+    // firmware behavior, including its undecodable mode-5 preview, is opt-in.
+    let body = "^FO20,20^BD4^FDABCDEF";
+    let printer = raster(body, ZD621_203_DPI);
+    for change in [
+        |c: &mut Compatibility| c.maxicode_terminal_latch = false,
+        |c: &mut Compatibility| c.maxicode_printer_dot_geometry = false,
+    ] {
+        let mut options = ZD621_203_DPI;
+        change(&mut options.compatibility);
+        assert_ne!(printer.pixels, raster(body, options).pixels);
+    }
+    let short = "^FO20,20^BD4^FDABC";
+    assert!(raster(short, ZD621_203_DPI)
+        .pixels
+        .iter()
+        .all(|&v| v == 255));
+    let mut options = ZD621_203_DPI;
+    options.compatibility.maxicode_standard_minimum_six_bytes = false;
+    assert!(raster(short, options).pixels.contains(&0));
+    let nul = "^FO20,20^BD4^FH^FDABCDEF_00XYZ";
+    assert_eq!(printer.pixels, raster(nul, ZD621_203_DPI).pixels);
+    options = ZD621_203_DPI;
+    options.compatibility.maxicode_nul_terminates_data = false;
+    assert_ne!(printer.pixels, raster(nul, options).pixels);
+    let mode5 = "^FO20,20^BD5^FDABCDEF";
+    let fixed = raster(mode5, ZD621_203_DPI);
+    assert_eq!(
+        fixed.pixels,
+        raster("^FO20,20^BD5^FD123456789", ZD621_203_DPI).pixels
+    );
+    options = ZD621_203_DPI;
+    options.compatibility.maxicode_mode5_preview_omits_data = false;
+    assert_ne!(fixed.pixels, raster(mode5, options).pixels);
+}
