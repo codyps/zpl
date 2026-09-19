@@ -3,17 +3,17 @@
   "cases": {
     "aztec": {
       "comparison": {
-        "both_black": 1392,
-        "diff_rgb_sha256": "bcfbfcb1fd6fe2cf74dc27f48f2200e05ac5a3ccc142f480a1c0d558b7a9afb0",
+        "both_black": 1920,
+        "diff_rgb_sha256": "7f73d07e31e2b3c9b2faa5320c4c02ab161b4ec858d6332925f145e64e65362e",
         "dimensions_match": true,
-        "exact": false,
-        "local_only": 416,
-        "printer_only": 528
+        "exact": true,
+        "local_only": 0,
+        "printer_only": 0
       },
       "local": {
         "height": 1218,
-        "ink": 1808,
-        "pixels_sha256": "a920847d59670cfbfccb558ce2e0f7d1e12bc8c6098b77d30aaf81af889f6d96",
+        "ink": 1920,
+        "pixels_sha256": "0a4e7b13b31f8361fa697bb4401a8c59bf2e59aa174c41c2ddcc49522b376011",
         "width": 832
       },
       "printer": {
@@ -27,17 +27,17 @@
     },
     "aztec_alias": {
       "comparison": {
-        "both_black": 1392,
-        "diff_rgb_sha256": "bcfbfcb1fd6fe2cf74dc27f48f2200e05ac5a3ccc142f480a1c0d558b7a9afb0",
+        "both_black": 1920,
+        "diff_rgb_sha256": "7f73d07e31e2b3c9b2faa5320c4c02ab161b4ec858d6332925f145e64e65362e",
         "dimensions_match": true,
-        "exact": false,
-        "local_only": 416,
-        "printer_only": 528
+        "exact": true,
+        "local_only": 0,
+        "printer_only": 0
       },
       "local": {
         "height": 1218,
-        "ink": 1808,
-        "pixels_sha256": "a920847d59670cfbfccb558ce2e0f7d1e12bc8c6098b77d30aaf81af889f6d96",
+        "ink": 1920,
+        "pixels_sha256": "0a4e7b13b31f8361fa697bb4401a8c59bf2e59aa174c41c2ddcc49522b376011",
         "width": 832
       },
       "printer": {

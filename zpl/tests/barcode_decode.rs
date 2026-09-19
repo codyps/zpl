@@ -623,8 +623,27 @@ fn maxicode_raster_round_trips() {
 }
 #[test]
 fn aztec_round_trips() {
-    for data in ["A", "ABC123", "Hello Aztec 1234567890"] {
-        decode("BON,5", data, data, BarcodeFormat::AZTEC);
+    for options in [SPECIFICATION, zpl::render::profiles::ZD621_203_DPI] {
+        for data in [
+            "A",
+            "ABC123",
+            "Hello Aztec 1234567890",
+            "abc. DEF, xyz: 123",
+            "ABC\r\ndef\txyz",
+            "!@#$%^&*()[]{}",
+        ] {
+            let hex: String = data.bytes().map(|v| format!("_{v:02X}")).collect();
+            decode_with_options("BON,5^FH", &hex, data, BarcodeFormat::AZTEC, options);
+        }
+        for len in [6, 31, 32, 62, 63, 100] {
+            decode_with_options(
+                "BON,5^FH",
+                &"_80".repeat(len),
+                &"\u{80}".repeat(len),
+                BarcodeFormat::AZTEC,
+                options,
+            );
+        }
     }
 }
 #[test]

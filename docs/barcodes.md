@@ -108,7 +108,11 @@ The supplied PDFs remain outside the repository and are not redistributed here.
   ECC200, as documented by Zebra; payloads use ECC200 ASCII rather than
   optimized C40/Text/X12/EDIFACT/Base256 encodation.
 - Aztec: compact/full symbols, fixed layer counts, percentage selection, and
-  runes; binary-shift payload encoding. No ECI, structured append, or reader
+  runes; original shortest-path Upper/Lower/Mixed/Punctuation/Digit and binary
+  encodation, including punctuation pairs. Default parity reserves 23% of symbol
+  capacity plus three words. The printer profile truncates the default fractional
+  requirement and preserves contiguous non-text binary runs; explicit percentage
+  requests round up. No ECI, structured append, or reader
   initialization. Compaction is not optimized like printer firmware.
 - PDF417: text, numeric and byte compaction (including one-byte shifts), ECC
   levels 0–8, requested/automatic dimensions and truncated layout. `\&` and

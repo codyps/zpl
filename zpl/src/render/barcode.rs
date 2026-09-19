@@ -1,5 +1,6 @@
 use crate::output::Path;
 mod aztec;
+mod aztec_text;
 mod bits;
 mod codabar;
 mod codablock;

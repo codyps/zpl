@@ -13,6 +13,14 @@
 /// initial value: the renderer does not reapply it after you change an option.
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct Compatibility {
+    /// Truncate fractional default Aztec parity-codeword requirements, as in ZD621
+    /// boundary captures. Default: round up to meet the requested minimum
+    /// percentage (ISO/IEC 24778 §11.2; Zebra ^BO p. 124).
+    pub aztec_floor_default_error_correction: bool,
+    /// Keep runs of bytes outside Aztec's text tables in one binary shift
+    /// (up to 2078 bytes). The ZD621 uses an extended count for 32–62 bytes;
+    /// default encodation can save one bit by using two short binary shifts.
+    pub aztec_preserve_binary_runs: bool,
     /// Give ^BR UPC/EAN components uniform 74X (EAN-8: 60X) bars and a
     /// seven-module left margin, as captured on the ZD621. Default: nominal
     /// GS1 proportions with five-module guard extensions and no origin margin.

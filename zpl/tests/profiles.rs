@@ -286,3 +286,21 @@ fn databar_retail_dimensions_and_upce_input_are_independent() {
         raster("^FO60,60^BRN,8,2,1,20^FD04210000526", SPECIFICATION)
     );
 }
+
+#[test]
+fn aztec_binary_and_default_parity_choices_are_independent() {
+    // ISO/IEC 24778 Table 2 permits either extended or split binary counts.
+    let binary = format!("^FO60,60^BON,3^FH^FD{}", "_80".repeat(32));
+    let printer = raster(&binary, ZD621_203_DPI);
+    let mut options = ZD621_203_DPI;
+    options.compatibility.aztec_preserve_binary_runs = false;
+    assert_ne!(raster(&binary, options).pixels, printer.pixels);
+    assert_eq!(bounds(&raster(&binary, options)), bounds(&printer));
+    let small = format!("^FO60,60^BON,3^FH^FD{}", "_80".repeat(6));
+    assert_eq!(bounds(&raster(&small, options)), (60, 60, 105, 105));
+    options.compatibility.aztec_floor_default_error_correction = false;
+    assert_eq!(bounds(&raster(&small, options)), (60, 60, 117, 117));
+    // Explicit percentages meet their minimum; only the default is truncated.
+    let explicit = format!("^FO60,60^BON,3,N,10^FH^FD{}", "_80".repeat(9));
+    assert_eq!(raster(&explicit, options), raster(&explicit, ZD621_203_DPI));
+}

@@ -1,4 +1,4 @@
-//! Original ISO/IEC 24778 binary-shift encoder, stuffing and layer placement.
+//! Original ISO/IEC 24778 encoder, stuffing and layer placement.
 use super::*;
 pub(super) fn render(b: &Barcode, data: &[u8]) -> Result<Path, String> {
     b.require(2, "N", &["N"])?;
@@ -25,19 +25,7 @@ pub(super) fn render(b: &Barcode, data: &[u8]) -> Result<Path, String> {
         mode(&mut matrix, &message, true);
         return b.matrix(&matrix, scale, scale);
     }
-    let mut input = Vec::new();
-    for chunk in data.chunks(2078) {
-        bits::push(&mut input, 31, 5);
-        if chunk.len() <= 31 {
-            bits::push(&mut input, chunk.len(), 5);
-        } else {
-            bits::push(&mut input, 0, 5);
-            bits::push(&mut input, chunk.len() - 31, 11);
-        }
-        for &v in chunk {
-            bits::push(&mut input, v as usize, 8);
-        }
-    }
+    let input = aztec_text::encode(data, b.compatibility.aztec_preserve_binary_runs);
     let percentage = if size == 0 {
         23
     } else if size <= 99 {
@@ -46,34 +34,49 @@ pub(super) fn render(b: &Barcode, data: &[u8]) -> Result<Path, String> {
         0
     };
     let mut selected = None;
-    for layers in 1..=32 {
-        for compact in [true, false] {
-            if compact && layers > 4 {
-                continue;
-            }
-            if size >= 100 && size != layers + if compact { 100 } else { 200 } {
-                continue;
-            }
-            let word = if layers <= 2 {
-                6
-            } else if layers <= 8 {
-                8
-            } else if layers <= 22 {
-                10
-            } else {
-                12
-            };
-            let stuffed = stuff(&input, word);
-            let total = ((if compact { 88 } else { 112 }) + 16 * layers) * layers;
-            let words = total / word;
-            if (!compact || stuffed.len() <= 64)
-                && stuffed.len() * word + input.len() * percentage / 100 + 11 <= words * word
-            {
-                selected = Some((layers, compact, word, total, stuffed));
-                break;
-            }
+    // Select the smallest physical symbol, preferring compact when dimensions
+    // tie. Full layer 1 and compact layer 2 both occupy a 19-module square.
+    let mut candidates: Vec<_> = (1..=32)
+        .flat_map(|layers| {
+            [true, false]
+                .into_iter()
+                .filter(move |&compact| !compact || layers <= 4)
+                .map(move |compact| (layers, compact))
+        })
+        .collect();
+    candidates.sort_by_key(|&(layers, compact)| (symbol_size(layers, compact), !compact));
+    for (layers, compact) in candidates {
+        if size >= 100 && size != layers + if compact { 100 } else { 200 } {
+            continue;
         }
-        if selected.is_some() {
+        let word = if layers <= 2 {
+            6
+        } else if layers <= 8 {
+            8
+        } else if layers <= 22 {
+            10
+        } else {
+            12
+        };
+        let stuffed = stuff(&input, word);
+        let total = ((if compact { 88 } else { 112 }) + 16 * layers) * layers;
+        let words = total / word;
+        // ISO/IEC 24778:2008 §§5(e), 11.2 and Annex G.2: the default is
+        // 23% of symbol capacity PLUS three codewords, not 23% of input bits.
+        let percent_words = if size == 0 && b.compatibility.aztec_floor_default_error_correction {
+            words * percentage / 100
+        } else {
+            (words * percentage).div_ceil(100)
+        };
+        let required_parity = if size == 0 {
+            percent_words + 3
+        } else if size < 100 {
+            percent_words
+        } else {
+            3
+        };
+        if (!compact || stuffed.len() <= 64) && stuffed.len() + required_parity <= words {
+            selected = Some((layers, compact, word, total, stuffed));
             break;
         }
     }
@@ -216,5 +219,14 @@ fn mode(m: &mut Matrix, bits: &[bool], compact: bool) {
         ] {
             m.set(x, y, bits[v]);
         }
+    }
+}
+
+fn symbol_size(layers: usize, compact: bool) -> usize {
+    if compact {
+        11 + 4 * layers
+    } else {
+        let base = 14 + 4 * layers;
+        base + 1 + 2 * ((base / 2 - 1) / 15)
     }
 }
