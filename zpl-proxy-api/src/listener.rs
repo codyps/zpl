@@ -183,6 +183,10 @@ mod tests {
             panic!("expected TCP listener")
         };
         let _client = std::net::TcpStream::connect(socket.local_addr().unwrap()).unwrap();
+        // A completed client connect need not make the nonblocking listener
+        // immediately readable on macOS. Wait for acceptance in this test;
+        // production keeps the descriptor nonblocking for Tokio.
+        socket.set_nonblocking(false).unwrap();
         socket.accept().unwrap();
     }
 }
