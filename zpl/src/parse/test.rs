@@ -360,3 +360,37 @@ fn every_truncated_binary_payload_fails_before_exposing_commands() {
         }
     }
 }
+
+#[test]
+fn data_matrix_escape_operand_can_equal_a_command_prefix() {
+    // Zebra ^BX g, pp. 145–147: tilde is a valid explicit escape character.
+    assert_eq!(
+        slices(b"^BXN,3,200,0,0,6,~^FH^FD_7E1ABC^FS"),
+        [
+            b"^BXN,3,200,0,0,6,~".as_slice(),
+            b"^FH",
+            b"^FD_7E1ABC",
+            b"^FS"
+        ]
+    );
+    assert_eq!(
+        slices(b"^BXN,3,200,0,0,6,~,2^FS"),
+        [b"^BXN,3,200,0,0,6,~,2".as_slice(), b"^FS"]
+    );
+    assert_eq!(
+        slices(b"^BXN,3,200,0,0,6,^FS~HS"),
+        [b"^BXN,3,200,0,0,6,".as_slice(), b"^FS", b"~HS"]
+    );
+    let syntax = Syntax {
+        format_prefix: b'!',
+        control_prefix: b'#',
+        delimiter: b';',
+    };
+    let elements: Vec<_> = ParseContext::with_syntax(b"!BXN;3;200;0;0;6;#!FDABC!FS", syntax)
+        .map(|e| e.unwrap().as_bytes())
+        .collect();
+    assert_eq!(
+        elements,
+        [b"!BXN;3;200;0;0;6;#".as_slice(), b"!FDABC", b"!FS"]
+    );
+}

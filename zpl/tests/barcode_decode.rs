@@ -109,9 +109,46 @@ fn large_matrix_round_trips() {
 }
 #[test]
 fn data_matrix_round_trips() {
-    for data in ["A", "ABC123", "Hello Data Matrix 1234567890"] {
-        decode("BXN,5,200", data, data, BarcodeFormat::DATA_MATRIX);
+    // ISO/IEC 16022:2006 §§5.2.5–5.2.9: triples, shifts, terminal ASCII slots,
+    // EDIFACT tails and the Base256 one/two-byte length boundary.
+    for data in [
+        "A",
+        "ABC123",
+        "Hello Data Matrix 1234567890",
+        "ABC>ABC>ABC>12",
+        "@ABC^DEF?GHI!12",
+        "~ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+        "abcd!@ABCxyz\x01\x7f",
+    ] {
+        let hex: String = data.bytes().map(|v| format!("_{v:02X}")).collect();
+        decode("BXN,5,200^FH", &hex, data, BarcodeFormat::DATA_MATRIX);
     }
+    for len in 1..=26 {
+        let data = &"abcdefghijklmnopqrstuvwxyz"[..len];
+        decode("BXN,4,200", data, data, BarcodeFormat::DATA_MATRIX);
+        if len <= 18 {
+            decode(
+                "BXN,4,200,0,0,6,_,2",
+                data,
+                data,
+                BarcodeFormat::DATA_MATRIX,
+            );
+        }
+    }
+    for len in [31, 249, 250] {
+        decode(
+            "BXN,4,200^FH",
+            &"_80".repeat(len),
+            &"\u{80}".repeat(len),
+            BarcodeFormat::DATA_MATRIX,
+        );
+    }
+    decode(
+        "BXN,4,200^FH",
+        "_41_42_43_5F_31_64_65_66",
+        "ABC\x1ddef",
+        BarcodeFormat::DATA_MATRIX,
+    );
 }
 #[test]
 fn databar_round_trips() {

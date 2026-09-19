@@ -88,13 +88,13 @@ that the guide specifies those scan-conversion details.
 
 ## Remaining accuracy work
 
-This is not yet 100% non-text parity. Of the 133 comparison cases, 115 are exact,
-18 render with differences, and none report unsupported input. All 31 additional
+This is not yet 100% non-text parity. Of the 133 comparison cases, 116 are exact,
+17 render with differences, and none report unsupported input. All 31 additional
 controls are exact. Text and non-text failures remain separate in the provenance
 and per-case baseline; aggregate percentages must not conceal either category.
 
 Remaining non-text issues include circle/ellipse/rounded-box scan conversion,
-QR automatic mask selection, Data Matrix encoding choices,
+QR automatic mask selection,
 MaxiCode, DataBar component layout, and TLC39 linked data.
 The tested firmware produces identical QR images for requested masks 0/3/7;
 the renderer still honors the documented mask operand. Do not substitute a
@@ -156,7 +156,7 @@ The [resident-font suite](../zpl/tests/fixtures/resident-fonts-zd621-v1/README.m
 adds 118 exact page/caption controls and 34 origin controls. Rotated font-0
 controls pin up to four differing dots and exceed 99.3% ink IoU individually;
 font A/D controls are exact. This does not promise 80% at arbitrary unsampled
-sizes or for unimplemented scripts. The remaining 18 corpus differences are
+sizes or for unimplemented scripts. The remaining 17 corpus differences are
 non-text shapes/barcodes, still pinned and not claimed as complete.
 
 
@@ -165,3 +165,12 @@ sets, punctuation pairs, binary length boundaries, default/explicit error levels
 and fixed compact/full layers. The default parity truncation and preservation of
 contiguous binary runs are independently selectable printer options. Both original
 Aztec aliases now match exactly. Independent decoder tests exercise both profiles.
+
+
+`data_matrix_preview.rs` adds 67 exact ECC200 controls for all six compaction
+modes, short tails, rectangular/forced sizes, binary length boundaries and
+explicit/default escape characters. The implementation was checked against the
+supplied ISO/IEC 16022:2006 second edition, Cor.1:2008 and Cor.2:2011. The latter
+correct grading/reference decoding rather than encodation. ZD621 tilde defaults
+and EDIFACT transition choices are separately selectable compatibility behavior.
+The original Data Matrix corpus case is now exact; legacy modes remain covered.

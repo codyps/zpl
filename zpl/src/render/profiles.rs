@@ -12,6 +12,8 @@ pub const SPECIFICATION: Options = Options {
     height: 1218,
     dpi: 203,
     compatibility: Compatibility {
+        data_matrix_default_tilde_escape: false,
+        data_matrix_edifact_printer_transitions: false,
         aztec_floor_default_error_correction: false,
         aztec_preserve_binary_runs: false,
         databar_retail_printer_dimensions: false,
@@ -59,6 +61,8 @@ pub const ZD621_203_DPI: Options = Options {
     height: 1218,
     dpi: 203,
     compatibility: Compatibility {
+        data_matrix_default_tilde_escape: true,
+        data_matrix_edifact_printer_transitions: true,
         aztec_floor_default_error_correction: true,
         aztec_preserve_binary_runs: true,
         databar_retail_printer_dimensions: true,

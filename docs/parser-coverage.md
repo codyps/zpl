@@ -19,6 +19,7 @@ This is command-stream parsing, not typed parameter validation, decompression, r
 | ASCII graphics and legacy font downloads | Preserve encoded bytes. An active command boundary can abort an ASCII download. |
 | `:B64:` / `:Z64:` download data | Keep the encoded body, terminating colon, and four CRC digits together. Do not mistake decoded-size fields for wire lengths. |
 | `~DB` encoded glyph subfields | Preserve multiple encoded subfields within the font command. |
+| `^BX` escape operand | Preserve an explicit prefix-valued seventh operand before a delimiter or the next command; omitted operands do not consume following commands. |
 | `^FD`, `^FV`, `^FX`, `^FH` escapes | Frame raw input; do not turn decoded field text into commands. Comments end at a command boundary, not exclusively `^FS`. |
 
 The download length calculations use checked arithmetic and never allocate from the declared size. Missing syntax operands, incomplete binary headers, invalid lengths, truncated binary data, and incomplete encoded envelopes produce an error with a byte offset. Iteration stops at the failed command; its remainder is not reinterpreted as text commands. A malformed graphic cannot thereby invent a later prefix change.

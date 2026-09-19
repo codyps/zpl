@@ -19,6 +19,7 @@ mod composite_c;
 mod composite_tests;
 mod data_matrix;
 mod data_matrix_legacy;
+mod data_matrix_text;
 mod databar;
 mod databar_expanded;
 mod databar_limited;

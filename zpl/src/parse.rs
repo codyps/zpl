@@ -1,7 +1,7 @@
 //! Lossless framing of complete ZPL command streams.
 //!
-//! Parameters remain raw bytes. Only prefix/delimiter changes and download
-//! framing are interpreted; this is not a validator or a printer emulator.
+//! Parameters remain raw bytes. Prefix/delimiter changes, prefix-valued ^BX escape
+//! operands and download framing are interpreted; this is not a validator or a printer emulator.
 //! See `docs/parser-coverage.md` for the reference and coverage contract.
 
 use std::{error::Error, fmt, iter::FusedIterator};
@@ -286,6 +286,26 @@ impl<'a> ParseContext<'a> {
             };
             if let Some(data) = data {
                 return self.ascii_download_end(data, matches!(code, b"DB" | b"DL"));
+            }
+        }
+        // ^BX's seventh operand is a single escape character (Zebra guide
+        // pp. 145–147). A literal prefix immediately before a delimiter or
+        // the next command belongs to that operand, e.g. ...,6,~^FD.
+        // Do not consume an omitted operand's following ^FS/~HS mnemonic.
+        if format && code == b"BX" {
+            if let Some((_, escape)) = self.fields::<6>(start) {
+                if self
+                    .input
+                    .get(escape)
+                    .is_some_and(|&b| self.syntax.is_prefix(b))
+                    && self.input.get(escape + 1).is_none_or(|&b| {
+                        self.syntax.is_prefix(b)
+                            || b == self.syntax.delimiter
+                            || b.is_ascii_whitespace()
+                    })
+                {
+                    return Ok(self.next_boundary(escape + 1, self.syntax));
+                }
             }
         }
         // Always skip the mnemonic, even when its letters match a custom prefix.

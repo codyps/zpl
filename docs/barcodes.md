@@ -99,21 +99,25 @@ The supplied PDFs remain outside the repository and are not redistributed here.
   automatic selection of one numeric/alphanumeric/byte segment and manual
   `N`, `A`, `Bdddd` inputs. No Kanji, mixed manual segments, ECI, or
   structured append. The field's error-level switch selects error correction.
-- Data Matrix: ECC200 ASCII encodation, digit-pair compression, upper shift,
-  standard square sizes 10–144 and six rectangular sizes. `_1` inserts FNC1;
-  doubled escape encodes the escape itself. Other ECC200 control escapes are rejected.
+- Data Matrix: ECC200 ASCII, C40, Text, X12, EDIFACT and Base256 encodation,
+  digit pairs, upper shift, square sizes 10–144 and six rectangular sizes.
+  FNC1, doubled escape and escaped ASCII control characters are supported;
+  other ECC200 function escapes remain rejected. Explicit `BX` escape operands
+  take precedence; the specification profile defaults to underscore, while the
+  ZD621 profile uses the captured tilde default. Its EDIFACT transition choices
+  are a separate compatibility option. Encoding follows ISO/IEC 16022:2006
+  §§5.2.4–5.2.9 and Annex P; both supplied technical corrigenda were checked.
   Legacy ECC 000/050/080/100/140 supports all six input formats, CRC, convolutional
-  correction and odd square sizes 9–49; omitted quality now selects ECC 000.
-  Legacy payload length is bounded at 511 characters by its nine-bit length field. The legacy format selector is unused with
-  ECC200, as documented by Zebra; payloads use ECC200 ASCII rather than
-  optimized C40/Text/X12/EDIFACT/Base256 encodation.
+  correction and odd square sizes 9–49; omitted quality selects ECC 000.
+  Legacy payload length is bounded at 511 characters by its nine-bit length field.
+  The legacy format selector is unused with ECC200, as documented by Zebra.
 - Aztec: compact/full symbols, fixed layer counts, percentage selection, and
   runes; original shortest-path Upper/Lower/Mixed/Punctuation/Digit and binary
   encodation, including punctuation pairs. Default parity reserves 23% of symbol
   capacity plus three words. The printer profile truncates the default fractional
   requirement and preserves contiguous non-text binary runs; explicit percentage
   requests round up. No ECI, structured append, or reader
-  initialization. Compaction is not optimized like printer firmware.
+  initialization. The captured controls are exact; arbitrary firmware/payload parity is not guaranteed.
 - PDF417: text, numeric and byte compaction (including one-byte shifts), ECC
   levels 0–8, requested/automatic dimensions and truncated layout. `\&` and
   doubled-backslash field escapes are decoded after `FH`. Omitted row height

@@ -363,17 +363,17 @@
     },
     "data_matrix": {
       "comparison": {
-        "both_black": 1776,
-        "diff_rgb_sha256": "77506cd0179e9dcceb24a9bf660314b21904211ca85040b72dcc3d5e91a4522c",
+        "both_black": 2832,
+        "diff_rgb_sha256": "c82870df140257fbe0241e0d2e961f286ffd0e95c6d054f551834d16d9c55042",
         "dimensions_match": true,
-        "exact": false,
-        "local_only": 944,
-        "printer_only": 1056
+        "exact": true,
+        "local_only": 0,
+        "printer_only": 0
       },
       "local": {
         "height": 1218,
-        "ink": 2720,
-        "pixels_sha256": "6d01823734f10a1ed6eb890831d8af618aa4f201a0ebe0ff45045370242f65b0",
+        "ink": 2832,
+        "pixels_sha256": "1a1fe4b2d86caa9978f74de81047c602280658478b8dfbc51b95b2d682b823d5",
         "width": 832
       },
       "printer": {

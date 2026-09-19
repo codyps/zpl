@@ -304,3 +304,22 @@ fn aztec_binary_and_default_parity_choices_are_independent() {
     let explicit = format!("^FO60,60^BON,3,N,10^FH^FD{}", "_80".repeat(9));
     assert_eq!(raster(&explicit, options), raster(&explicit, ZD621_203_DPI));
 }
+
+#[test]
+fn data_matrix_escape_and_edifact_choices_are_independent() {
+    // ^BX pp. 145–147 have conflicting default-escape descriptions. Explicit
+    // g is unambiguous and takes precedence over the captured firmware default.
+    let body = "^FO60,60^BXN,3,200^FD_1ABC123";
+    let explicit = "^FO60,60^BXN,3,200,0,0,6,_^FD_1ABC123";
+    assert!(raster(body, SPECIFICATION) != raster(body, ZD621_203_DPI));
+    assert!(raster(explicit, ZD621_203_DPI) == raster(body, SPECIFICATION));
+    let mut options = ZD621_203_DPI;
+    options.compatibility.data_matrix_default_tilde_escape = false;
+    assert!(raster(body, options) == raster(body, SPECIFICATION));
+    let edifact = "^FO60,60^BXN,3,200,0,0,6,_^FH^FD@ABC_5EDEF?GHI1234";
+    assert!(raster(edifact, options) != raster(edifact, SPECIFICATION));
+    options
+        .compatibility
+        .data_matrix_edifact_printer_transitions = false;
+    assert!(raster(edifact, options) == raster(edifact, SPECIFICATION));
+}

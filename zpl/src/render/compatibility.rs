@@ -13,6 +13,14 @@
 /// initial value: the renderer does not reapply it after you change an option.
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct Compatibility {
+    /// Use tilde as the default ECC200 escape, observed on the ZD621 despite
+    /// the guide's modern-firmware underscore note (^BX pp. 145–147).
+    /// An explicit ^BX g operand takes precedence.
+    pub data_matrix_default_tilde_escape: bool,
+    /// Check EDIFACT transitions before the fourth character and retain equal-length
+    /// tails, as captured on the ZD621. Default: Annex P's four-character
+    /// boundary checks and ASCII tie choice.
+    pub data_matrix_edifact_printer_transitions: bool,
     /// Truncate fractional default Aztec parity-codeword requirements, as in ZD621
     /// boundary captures. Default: round up to meet the requested minimum
     /// percentage (ISO/IEC 24778 §11.2; Zebra ^BO p. 124).

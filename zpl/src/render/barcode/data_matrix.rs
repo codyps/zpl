@@ -1,4 +1,4 @@
-//! Original ECC200 ASCII encodation, interleaved RS and Utah placement.
+//! Original ECC200 encodation, interleaved RS and Utah placement.
 use super::*;
 // Full columns, rows, data-region columns/rows, data bytes, parity bytes, blocks.
 const SIZES: &[(usize, usize, usize, usize, usize, usize, usize)] = &[
@@ -45,41 +45,52 @@ pub(super) fn render(b: &Barcode, data: &[u8]) -> Result<Path, String> {
     let shape = b.integer(7, 1, 1, 2)?;
     let columns = b.integer(3, 0, 0, 144)?;
     let rows = b.integer(4, 0, 0, 144)?;
-    let escape = b.param(6, "_");
+    let escape = b.param(
+        6,
+        if b.compatibility.data_matrix_default_tilde_escape {
+            "~"
+        } else {
+            "_"
+        },
+    );
     if escape.len() != 1 {
         return Err("Data Matrix escape must be one byte".into());
     }
-    let mut code = Vec::new();
+    let mut input = Vec::new();
     let mut i = 0;
     while i < data.len() {
         let c = data[i];
         if c == escape.as_bytes()[0] {
             match data.get(i + 1) {
-                Some(b'1') => {
-                    code.push(232);
-                    i += 2;
-                    continue;
-                }
-                Some(x) if *x == c => {
-                    code.push(c as usize + 1);
-                    i += 2;
-                    continue;
-                }
+                Some(b'1') => input.push(data_matrix_text::FNC1),
+                Some(&x) if x == c => input.push(c as u16),
+                // ^BX p. 147: escape + @ through _ selects ASCII 0 through 31.
+                Some(&x @ b'@'..=b'_') => input.push((x - b'@') as u16),
                 _ => return Err("unsupported Data Matrix control escape".into()),
             }
-        }
-        if i + 1 < data.len() && c.is_ascii_digit() && data[i + 1].is_ascii_digit() {
-            code.push(130 + ((c - b'0') * 10 + data[i + 1] - b'0') as usize);
             i += 2;
         } else {
-            if c >= 128 {
-                code.extend([235, c as usize - 127]);
-            } else {
-                code.push(c as usize + 1);
-            }
+            input.push(c as u16);
             i += 1;
         }
     }
+    let capacity = |used| {
+        SIZES
+            .iter()
+            .filter(|&&(w, h, _, _, cap, _, _)| {
+                cap >= used
+                    && (shape == 1) == (w == h)
+                    && (columns == 0 || columns == w)
+                    && (rows == 0 || rows == h)
+            })
+            .min_by_key(|&&(w, h, ..)| w * h)
+            .map(|s| s.4)
+    };
+    let mut code = data_matrix_text::encode(
+        &input,
+        capacity,
+        b.compatibility.data_matrix_edifact_printer_transitions,
+    )?;
     let &(w, h, rw, rh, capacity, ec, blocks) = SIZES
         .iter()
         .filter(|&&(w, h, _, _, cap, _, _)| {
