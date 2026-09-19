@@ -199,7 +199,7 @@ These are current required counts, not a tolerance that may grow silently:
 
 | Case | Underpaint | Overpaint |
 | --- | ---: | ---: |
-| `argument-box-round` | 72 | 40 |
+| `argument-box-round` | 40 | 44 |
 | `argument-shape-GC-B` | 354 | 40 |
 | `argument-shape-GE-B` | 488 | 170 |
 | `argument-qr-model-1` | 522 | 522 |

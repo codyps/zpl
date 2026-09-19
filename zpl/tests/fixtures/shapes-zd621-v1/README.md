@@ -11,6 +11,13 @@ No printer image is cropped, resized or repaired.
   borders 1, 3 and 6.
 
 Command reference: Zebra Programming Guide ^GB/^GC/^GE, pp. 210–214.
+The profile option `rounded_box_printer_geometry` reproduces the minimum
+rounded-box border of two dots and independently computes the integer inner
+radius from the inner dimensions at the same rounding percentage. For example,
+a 100×60 box with border 4 and rounding 4 has outer radius 15 and inner radius
+13, rather than a constant-distance radius of 11. SPECIFICATION retains nominal
+constant-distance outlines. Every changed control improves or preserves ink IoU.
+
 The firmware's integer curve rasterization remains unreproduced. This suite
 preserves the observations for that work; it does not claim pixel parity.
 For example, the circle and ellipse one-dot outlines are substantially thicker

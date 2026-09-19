@@ -13,6 +13,12 @@
 /// initial value: the renderer does not reapply it after you change an option.
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct Compatibility {
+    /// Use measured ZD621 rounded-box geometry: a minimum two-dot border,
+    /// an integer inner radius computed from the inner box using the same
+    /// rounding percentage as the outer box. The nominal profile instead uses
+    /// a constant-distance outline.
+    /// Zebra ^GB, pp. 210–211, defines the rounding scale but not these details.
+    pub rounded_box_printer_geometry: bool,
     /// Reproduce ZD621 A1/B1 separator templates next to a four-module data
     /// bar, including A1 ink beneath a bar and a solid four-module space.
     /// ISO/IEC 24724:2011 §7.2.8 instead requires light dots beneath bars

@@ -448,3 +448,35 @@ fn databar_expanded_wide_bar_separator_is_optional() {
         );
     }
 }
+
+#[test]
+fn rounded_box_inner_geometry_is_optional() {
+    // Zebra ^GB pp. 210–211 and shapes-zd621-v1: the captured border floor
+    // and independent inner rounding percentage are printer choices.
+    let body = "^FO20,20^GB100,60,4,B,4";
+    let mut options = ZD621_203_DPI;
+    options.compatibility.rounded_box_printer_geometry = false;
+    assert_eq!(
+        raster(body, options).pixels,
+        raster(body, SPECIFICATION).pixels
+    );
+    assert_ne!(
+        raster(body, options).pixels,
+        raster(body, ZD621_203_DPI).pixels
+    );
+    let thin = "^FO20,20^GB60,40,1,B,4";
+    let two = "^FO20,20^GB60,40,2,B,4";
+    assert_eq!(
+        raster(thin, ZD621_203_DPI).pixels,
+        raster(two, ZD621_203_DPI).pixels
+    );
+    assert_ne!(
+        raster(thin, SPECIFICATION).pixels,
+        raster(two, SPECIFICATION).pixels
+    );
+    let square = "^FO20,20^GB60,40,1,B,0";
+    assert_eq!(
+        raster(square, ZD621_203_DPI).pixels,
+        raster(square, SPECIFICATION).pixels
+    );
+}
