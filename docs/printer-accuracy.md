@@ -249,7 +249,7 @@ and exact differing-pixel positions. The twelve rounded-box and twelve circle co
 all ten ellipse controls are also exact.
 
 Additional [ellipse atlases](../zpl/tests/fixtures/ellipses-zd621-v1/README.md)
-and [32 QR controls](../zpl/tests/fixtures/qr-zd621-v1/README.md) pin the remaining
+and [40 QR captures](../zpl/tests/fixtures/qr-zd621-v1/README.md) pin the remaining
 work across aspect ratios, borders, both QR models, all correction levels and
 several payload classes. Run `cargo test -p zpl --test ellipse_preview --test qr_preview`.
 The ellipse test requires zero differing pixels. QR controls retain explicit

@@ -1,10 +1,10 @@
 # ZD621 QR mask-selection controls
 
-32 unmodified HTTP Preview Label responses from ZD621 203 DPI, firmware
-V93.21.33Z, collected 2026-09-19 with zebra-render. Sources set PW832, LL400,
-label/origin state, magnification two and requested mask zero.
+40 unmodified HTTP Preview Label responses from ZD621 203 DPI, firmware
+V93.21.33Z, collected 2026-09-19 with zebra-render. Sources use PW832,
+magnification two and requested mask zero.
 
-The cross product covers both QR models, all four error-correction levels,
+The 32 original single-symbol frames cover both QR models, all four error-correction levels,
 and four payload classes: one letter, fifteen digits, eight uppercase letters,
 and mixed-case text containing digits. The printer chooses several different
 masks despite the same requested mask. The encoded modules match the renderer
@@ -12,9 +12,19 @@ when the printer's mask is forced during diagnosis, but the regression test
 renders the original input unchanged. Mask selection remains an accuracy gap.
 Do not replace the general selection algorithm with a payload-specific lookup.
 
+Eight byte-mode atlases add 96 symbols: both models and all correction levels,
+with six payloads each encoded automatically and explicitly as bytes. Payloads
+are `a`, `abcdefgh`, `hello`, `hello world`, `Hello QR`, and `Hello QR 123`.
+The last payload changes segmentation in automatic mode. The other five have
+the same encoding and mask in both input modes. These controls distinguish
+selection effects of the encoded data from the input-mode operand itself.
+Atlases use LL200, explicit BY2,3,10, eight 104-dot columns and 100-dot rows.
+
 A separate encoding test reads the mask from the printer image's format bits,
 checks their BCH remainder, and changes only the request's mask operand. It
-requires an exact match across the entire raw printer image for all 32 cases.
+requires an exact match across the entire raw printer image for all 128 symbols
+in the 40 frames. For atlases it locates each symbol within its cell, changes
+only the mask operands, and compares the full canvas without aligning images.
 This isolates bitstream generation, error correction, module placement and
 geometry from mask selection. It does not replace the unchanged-input test or
 count diagnostic renders as end-to-end accuracy improvements.
