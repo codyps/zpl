@@ -262,7 +262,7 @@ fn proportional_blocks_align_and_wrap_by_advance() {
         zpl::output::raster::rasterize(&c).unwrap(),
         zpl::output::raster::rasterize(&d).unwrap()
     );
-    assert!(render(b"^XA^AAN,32,32^FDA^FS^XZ", SPECIFICATION).is_err());
+    assert!(render(b"^XA^ABN,32,32^FDA^FS^XZ", SPECIFICATION).is_err());
 }
 
 #[test]
@@ -285,14 +285,14 @@ fn captured_font_layout_baselines_blocks_and_rotations() {
     assert!(d.different_pixels() <= 3);
 }
 #[test]
-fn captured_font_scaling() {
+fn unsampled_font_sizes_scale_the_fallback_strike() {
     let normal = scene(b"^XA^CF0,32,32^FT10,40^FDaWj|^FS^XZ");
-    let enlarged = scene(b"^XA^PW200^LL200^CF0,64,64^FT20,80^FDaWj|^FS^XZ");
+    let enlarged = scene(b"^XA^PW400^LL400^CF0,128,128^FT40,160^FDaWj|^FS^XZ");
     let a = zpl::output::raster::rasterize(&normal).unwrap();
     let b = zpl::output::raster::rasterize(&enlarged).unwrap();
-    for y in 0..200 {
-        for x in 0..200 {
-            assert_eq!(b.pixels[y * 200 + x], a.pixels[y / 2 * 100 + x / 2]);
+    for y in 0..400 {
+        for x in 0..400 {
+            assert_eq!(b.pixels[y * 400 + x], a.pixels[y / 4 * 100 + x / 4]);
         }
     }
 }

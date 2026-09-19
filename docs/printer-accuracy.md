@@ -88,8 +88,8 @@ that the guide specifies those scan-conversion details.
 
 ## Remaining accuracy work
 
-This is not yet 100% non-text parity. Of the 133 comparison cases, 94 are exact,
-34 render with differences, and five report unsupported text/layout input. All 31 additional
+This is not yet 100% non-text parity. Of the 133 comparison cases, 106 are exact,
+27 render with differences, and none report unsupported input. All 31 additional
 controls are exact. Text and non-text failures remain separate in the provenance
 and per-case baseline; aggregate percentages must not conceal either category.
 
@@ -99,7 +99,7 @@ MaxiCode, composite/DataBar component layout, and TLC39 linked data.
 The tested firmware produces identical QR images for requested masks 0/3/7;
 the renderer still honors the documented mask operand. Do not substitute a
 payload-specific mask table for the missing general selection behavior.
-LOGMARS includes an interpretation line and therefore is not a text-free case.
+LOGMARS interpretation now includes its checksum and matches exactly.
 The blank DataBar UPC-E printer response needs separate validation.
 
 Independent barcode decoder tests remain necessary: different valid encodings
@@ -141,3 +141,18 @@ Field blocks support hanging indents and full justification. The profile enables
 the captured trailing-space alignment rule, fixing centered text. Separate preview
 options ignore `^LT` and `^PO`, while the specification profile honors both.
 The original five affected layout/block cases and all fifteen controls are exact.
+
+## Resident-font and caption refinements
+
+All original text/layout cases now render pixel-exactly, including fonts A/D,
+font-0 size/width cases, right/automatic origins, accented UTF-8 and Code 128
+captions. The renderer selects captured strikes at supported sizes, scales native
+bitmap-font matrices by integers, and preserves explicit font selection for
+barcode captions. LOGMARS captions include the mandatory check character.
+
+The [resident-font suite](../zpl/tests/fixtures/resident-fonts-zd621-v1/README.md)
+adds 118 exact page/caption controls and 34 origin controls. Rotated font-0
+controls pin up to four differing dots and exceed 99.3% ink IoU individually;
+font A/D controls are exact. This does not promise 80% at arbitrary unsampled
+sizes or for unimplemented scripts. The remaining 27 corpus differences are
+non-text shapes/barcodes, still pinned and not claimed as complete.

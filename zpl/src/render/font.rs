@@ -8,30 +8,101 @@ const DATA: &[u8] = include_bytes!("../../assets/font0-32.zbf");
 fn strike() -> &'static (Settings, Vec<Glyph>) {
     static FONT: OnceLock<(Settings, Vec<Glyph>)> = OnceLock::new();
     FONT.get_or_init(|| {
-        bitmap_font::unpack(DATA).expect("embedded font strike is validated by tests")
+        let (settings, mut glyphs) = bitmap_font::unpack(DATA).expect("validated ASCII strike");
+        glyphs.extend(
+            bitmap_font::unpack(include_bytes!("../../assets/font0-32-latin1.zbf"))
+                .expect("validated Latin-1 supplement")
+                .1,
+        );
+        (settings, glyphs)
     })
 }
-fn glyph(c: char) -> Result<&'static Glyph, String> {
-    if !(' '..='~').contains(&c) {
-        return Err(format!("unsupported embedded font glyph {c:?}"));
+fn strikes() -> &'static Vec<(Settings, Vec<Glyph>)> {
+    static STRIKES: OnceLock<Vec<(Settings, Vec<Glyph>)>> = OnceLock::new();
+    STRIKES.get_or_init(|| {
+        [
+            include_bytes!("../../assets/font0-16-0.zbf").as_slice(),
+            include_bytes!("../../assets/font0-20-0.zbf").as_slice(),
+            include_bytes!("../../assets/font0-64-0.zbf").as_slice(),
+            include_bytes!("../../assets/font0-32-16.zbf").as_slice(),
+            include_bytes!("../../assets/font0-32-24.zbf").as_slice(),
+            include_bytes!("../../assets/font0-32-64.zbf").as_slice(),
+            include_bytes!("../../assets/fontA-9-5.zbf").as_slice(),
+            include_bytes!("../../assets/fontD-18-10.zbf").as_slice(),
+        ]
+        .into_iter()
+        .map(|data| bitmap_font::unpack(data).expect("validated resident strike"))
+        .collect()
+    })
+}
+fn selected(id: char, w: f64, h: f64) -> (&'static [Glyph], f64, f64) {
+    for (s, glyphs) in strikes() {
+        let sw = if s.width == 0 { s.height } else { s.width } as f64;
+        if s.font == id && (id != '0' || (s.height as f64 == h && sw == w)) {
+            return (glyphs, w / sw, h / s.height as f64);
+        }
     }
-    let g = &strike().1[(c as u32 - 32) as usize];
-    Ok(g)
+    (&strike().1, w / 32., h / 32.)
 }
-pub(super) fn baseline(h: f64) -> f64 {
-    h * 0.75
+fn glyph_from(glyphs: &'static [Glyph], c: char) -> Result<&'static Glyph, String> {
+    let index = glyphs
+        .binary_search_by_key(&(c as u32), |g| g.codepoint as u32)
+        .map_err(|_| format!("unsupported embedded font glyph {c:?}"))?;
+    Ok(&glyphs[index])
 }
-pub(super) fn width(s: &str, w: f64) -> Result<f64, String> {
-    s.chars()
-        .try_fold(0., |sum, c| Ok(sum + glyph(c)?.advance as f64 * w / 32.))
+#[cfg(test)]
+fn glyph(c: char) -> Result<&'static Glyph, String> {
+    glyph_from(&strike().1, c)
 }
-pub(super) fn text(s: &str, w: f64, h: f64) -> Result<Path, String> {
+#[cfg(test)]
+fn baseline(h: f64) -> f64 {
+    baseline_for('0', h)
+}
+pub(super) fn baseline_for(id: char, h: f64) -> f64 {
+    // Zebra guide p. 1582 gives one-based baselines 7 (A) and 14 (D).
+    // Captured ^FT bitmap offsets use their zero-based rows 6 and 13.
+    h * match id {
+        'A' => 6. / 9.,
+        'D' => 13. / 18.,
+        _ => 0.75,
+    }
+}
+#[cfg(test)]
+fn width(s: &str, w: f64) -> Result<f64, String> {
+    width_for('0', s, w, 32.)
+}
+pub(super) fn width_for(id: char, s: &str, w: f64, h: f64) -> Result<f64, String> {
+    let (glyphs, sx, _) = selected(id, w, h);
+    s.chars().try_fold(0., |sum, c| {
+        Ok(sum + glyph_from(glyphs, c)?.advance as f64 * sx)
+    })
+}
+pub(super) fn inverted_margin(id: char, value: &str, w: f64, h: f64) -> Result<f64, String> {
+    if id == 'A' {
+        return Ok(w / 5. + 2.);
+    }
+    if id == 'D' {
+        return Ok(w / 5. + 2.);
+    }
+    let Some(c) = value.chars().last() else {
+        return Ok(0.);
+    };
+    let (glyphs, sx, _) = selected(id, w, h);
+    let g = glyph_from(glyphs, c)?;
+    Ok(((g.advance as f64 - g.left as f64 - g.width as f64) * sx - 1.).max(0.))
+}
+#[cfg(test)]
+fn text(s: &str, w: f64, h: f64) -> Result<Path, String> {
+    text_for('0', s, w, h)
+}
+pub(super) fn text_for(id: char, s: &str, w: f64, h: f64) -> Result<Path, String> {
+    let (glyphs, sx, sy) = selected(id, w, h);
     // Merge ink spans before emitting even-odd subpaths. Proportional glyphs can
     // overhang their advance; overlapping strokes must remain black, not XOR.
     let mut rows: BTreeMap<i32, Vec<(f64, f64)>> = BTreeMap::new();
     let mut pen = 0.;
     for c in s.chars() {
-        let g = glyph(c)?;
+        let g = glyph_from(glyphs, c)?;
         for (y, row) in g.bitmap.iter().enumerate() {
             let mut start = None;
             for x in 0..=g.width as usize {
@@ -61,10 +132,10 @@ pub(super) fn text(s: &str, w: f64, h: f64) -> Result<Path, String> {
                     merged = Some((left, right.max(b)));
                 } else {
                     path.rect(
-                        left * w / 32.,
-                        baseline(h) + y as f64 * h / 32.,
-                        (right - left) * w / 32.,
-                        h / 32.,
+                        left * sx,
+                        baseline_for(id, h) + y as f64 * sy,
+                        (right - left) * sx,
+                        sy,
                     );
                     merged = Some((a, b));
                 }
@@ -74,10 +145,10 @@ pub(super) fn text(s: &str, w: f64, h: f64) -> Result<Path, String> {
         }
         if let Some((left, right)) = merged {
             path.rect(
-                left * w / 32.,
-                baseline(h) + y as f64 * h / 32.,
-                (right - left) * w / 32.,
-                h / 32.,
+                left * sx,
+                baseline_for(id, h) + y as f64 * sy,
+                (right - left) * sx,
+                sy,
             );
         }
     }
@@ -147,13 +218,13 @@ mod tests {
     fn embedded_strike_is_complete_and_compact() {
         let (s, g) = strike();
         assert_eq!((s.font, s.height, s.width, s.dpi), ('0', 32, 0, 203));
-        assert_eq!(g.len(), 95);
-        for (i, g) in g.iter().enumerate() {
+        assert_eq!(g.len(), 96);
+        for (i, g) in g.iter().take(95).enumerate() {
             assert_eq!(g.codepoint, i as u8 + 32)
         }
         assert!(DATA.len() < 4500);
         assert_eq!(width("Wi i", 32.).unwrap(), 51.);
-        assert!(glyph('é').is_err());
+        assert_eq!(glyph('é').unwrap().codepoint, 233);
     }
     #[test]
     fn lowercase_and_baselines() {

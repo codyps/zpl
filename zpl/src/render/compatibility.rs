@@ -13,6 +13,14 @@
 /// initial value: the renderer does not reapply it after you change an option.
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct Compatibility {
+    /// Include the ZD621's trailing ink margin for inverted, right-justified
+    /// ^FO text: bitmap-font gap plus two dots; font 0's trailing bearing less
+    /// one dot, clamped to zero. Default: anchor the right ink edge (^FO p. 201).
+    pub right_justified_inverted_text_uses_ink_margin: bool,
+    /// Use the captured interpretation gaps: six dots below bars, eight dots
+    /// after the font cell above. ^BC permits a preceding font command (p. 94)
+    /// but does not prescribe these raster gaps. Default: three-dot gaps.
+    pub barcode_interpretation_printer_layout: bool,
     /// Ignore label-top adjustment in HTTP previews. Physical-print ^LT
     /// semantics remain the default (Zebra guide p. 294).
     pub preview_ignores_label_top: bool,

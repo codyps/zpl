@@ -843,17 +843,17 @@
     },
     "logmars": {
       "comparison": {
-        "both_black": 11200,
-        "diff_rgb_sha256": "6707648595e1e1e736b5fe33b52650b87994ea7bad3758f938fb72ca30dda9dc",
+        "both_black": 11680,
+        "diff_rgb_sha256": "f7fe566cbd1c06261cfc64f05dd191bb2eea73a0327859279e9713053f440cc8",
         "dimensions_match": true,
-        "exact": false,
-        "local_only": 688,
-        "printer_only": 480
+        "exact": true,
+        "local_only": 0,
+        "printer_only": 0
       },
       "local": {
         "height": 1218,
-        "ink": 11888,
-        "pixels_sha256": "a9f07cf3f8a72d5dab187a1dae69834779d4ed34118a6280127aa9072d765865",
+        "ink": 11680,
+        "pixels_sha256": "4e0c82a44c67bf63f9238c0ac7ff8ff6fec3b7f429c6619161a39a85b6072f67",
         "width": 832
       },
       "printer": {

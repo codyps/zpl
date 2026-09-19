@@ -287,7 +287,11 @@ impl Barcode {
         }
         Ok(p)
     }
-    pub fn render(&self, bytes: &[u8], fw: f64, fh: f64) -> Result<(Path, f64), String> {
+    pub fn render(
+        &self,
+        bytes: &[u8],
+        font: Option<(char, f64, f64)>,
+    ) -> Result<(Path, f64), String> {
         if bytes.is_empty() {
             return Err(format!("{}: empty barcode data", self.name));
         }
@@ -335,17 +339,29 @@ impl Barcode {
         }
         if self.show {
             let value = self.interpretation(bytes)?;
-            let mut t = super::font::text(&value, fw, fh)?;
+            // ^BC p. 94 permits an explicit preceding font command. Without
+            // one, resident A scales with ^BY, independently of ^CF.
+            let (id, fw, fh) = font.unwrap_or(('A', 5. * self.module, 9. * self.module));
+            let mut t = super::font::text_for(id, &value, fw, fh)?;
+            let printer = self.compatibility.barcode_interpretation_printer_layout;
+            let gap_below = if printer { 6. } else { 3. };
+            let gap_above = if printer { 8. } else { 3. };
+            if font.is_none() {
+                let width = super::bounds(&p).2;
+                let advance = super::font::width_for(id, &value, fw, fh)?;
+                let x = ((width - advance) / 2.).floor();
+                t.transform(|p| Point::new(p.x + x, p.y));
+            }
             if self.above
                 && self.name == "BC"
                 && self.compatibility.code128_above_text_keeps_bar_origin
             {
-                t.transform(|p| Point::new(p.x, p.y - fh - 3.));
+                t.transform(|p| Point::new(p.x, p.y - fh - gap_above));
             } else if self.above {
-                p.transform(|p| Point::new(p.x, p.y + fh + 3.));
-                baseline += fh + 3.;
+                p.transform(|p| Point::new(p.x, p.y + fh + gap_above));
+                baseline += fh + gap_above;
             } else {
-                t.transform(|p| Point::new(p.x, p.y + height + 3.));
+                t.transform(|p| Point::new(p.x, p.y + height + gap_below));
             }
             p.segments.extend(t.segments);
         }
@@ -354,6 +370,16 @@ impl Barcode {
     fn interpretation(&self, bytes: &[u8]) -> Result<String, String> {
         if self.name == "BC" {
             return code128::interpretation(self, bytes);
+        }
+        if self.name == "BL" {
+            const ALPHABET: &[u8] = b"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ-. $/+%";
+            let sum = bytes
+                .iter()
+                .map(|c| ALPHABET.iter().position(|v| v == c).unwrap())
+                .sum::<usize>();
+            let mut value = ascii(bytes)?.to_string();
+            value.push(ALPHABET[sum % 43] as char);
+            return Ok(value);
         }
         if self.name == "BP" {
             return plessey::interpretation(self, bytes);

@@ -24,7 +24,7 @@ struct Args {
     width: u32,
     #[arg(long, default_value_t = 203)]
     dpi: u32,
-    /// Printable ASCII subset; default is all 95 characters.
+    /// Printable ASCII or Latin-1 subset; default is all 95 characters.
     #[arg(long)]
     characters: Option<String>,
     #[arg(long, default_value_t = 8)]
@@ -175,17 +175,25 @@ async fn run(args: Args) -> Result<()> {
     let mut codes: Vec<u8> = args
         .characters
         .as_ref()
-        .map(|s| s.as_bytes().to_vec())
+        .map(|s| {
+            s.chars()
+                .map(|c| u8::try_from(c as u32))
+                .collect::<Result<Vec<_>, _>>()
+        })
+        .transpose()?
         .unwrap_or_else(|| (32..=126).collect());
     codes.sort_unstable();
     codes.dedup();
     ensure!(
-        !codes.is_empty() && codes.iter().all(|c| (32..=126).contains(c)),
-        "characters must be nonempty printable ASCII"
+        !codes.is_empty() && codes.iter().all(|c| (32..=126).contains(c) || *c >= 160),
+        "characters must be nonempty printable ASCII or Latin-1"
     );
     if let Some(text) = &args.verify_text {
         ensure!(
-            !text.is_empty() && text.bytes().all(|c| codes.contains(&c)),
+            !text.is_empty()
+                && text
+                    .chars()
+                    .all(|c| c as u32 <= 255 && codes.contains(&(c as u8))),
             "verification text must use captured characters"
         );
     }

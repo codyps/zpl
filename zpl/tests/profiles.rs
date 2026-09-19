@@ -184,7 +184,11 @@ fn code128_above_text_can_keep_the_bar_origin() {
     }
     let mut options = ZD621_203_DPI;
     options.compatibility.code128_above_text_keeps_bar_origin = false;
-    assert_eq!(raster(above, options), raster(above, SPECIFICATION));
+    let mut specification = SPECIFICATION;
+    specification
+        .compatibility
+        .barcode_interpretation_printer_layout = true;
+    assert_eq!(raster(above, options), raster(above, specification));
     assert_ne!(raster(above, options), printer);
 }
 
@@ -223,4 +227,26 @@ fn codablock_row_options_are_independent() {
     assert_eq!(bounds_for(o).3, 142);
     assert_eq!(bounds_for(o), bounds_for(SPECIFICATION));
     assert!(render(b"^XA^BBN,10,Y,6,2,F^FDABC^FS^XZ", ZD621_203_DPI).is_err());
+}
+
+#[test]
+fn inverted_text_margin_is_an_independent_override() {
+    let body = "^FO250,200,1^AAI,36,25^FDABC";
+    assert_eq!(bounds(&raster(body, ZD621_203_DPI)).2, 257);
+    assert_eq!(bounds(&raster(body, SPECIFICATION)).2, 250);
+    let mut o = ZD621_203_DPI;
+    o.compatibility
+        .right_justified_inverted_text_uses_ink_margin = false;
+    assert_eq!(raster(body, o), raster(body, SPECIFICATION));
+}
+
+#[test]
+fn caption_gap_override_preserves_explicit_font_and_bars() {
+    let body = "^FO60,60^BY2^A0N,32,0^BCN,60,Y,N,N,N^FDABC123";
+    let spec = raster(body, SPECIFICATION);
+    let printer = raster(body, ZD621_203_DPI);
+    assert_eq!(bounds(&printer).3, bounds(&spec).3 + 3);
+    let mut o = ZD621_203_DPI;
+    o.compatibility.barcode_interpretation_printer_layout = false;
+    assert_eq!(raster(body, o), spec);
 }

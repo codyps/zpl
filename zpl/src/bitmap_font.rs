@@ -30,7 +30,7 @@ pub struct Glyph {
 }
 /// Validate bitmap dimensions and metrics before decoding or export.
 pub fn validate_glyphs(glyphs: &[Glyph]) -> Result<(), String> {
-    if glyphs.len() > 95 {
+    if glyphs.len() > 191 {
         return Err("too many glyphs".into());
     }
     for g in glyphs {
@@ -87,14 +87,14 @@ pub fn unpack(data: &[u8]) -> Result<(Settings, Vec<Glyph>), String> {
     };
     s.validate()?;
     let count = r.u16()? as usize;
-    if !(1..=95).contains(&count) {
+    if !(1..=191).contains(&count) {
         return Err("invalid strike glyph count".into());
     }
     let mut glyphs = Vec::with_capacity(count);
     let mut previous = 31;
     for _ in 0..count {
         let codepoint = r.byte()?;
-        if !(32..=126).contains(&codepoint) || codepoint <= previous {
+        if !((32..=126).contains(&codepoint) || codepoint >= 160) || codepoint <= previous {
             return Err("invalid strike glyph order".into());
         }
         previous = codepoint;

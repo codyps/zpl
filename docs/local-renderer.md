@@ -93,8 +93,8 @@ parity. Preview width adjustment remains unimplemented.
 | Area | Commands and restrictions |
 | --- | --- |
 | Framing | `XA`, `XZ`, `FS`, single-byte equivalents, `CC`, `CT`, `CD`, comments `FX`; ASCII parameter delimiter |
-| Layout | `PW`, `LL`, `LH`, `LS`, `LT`, `FO`, explicit-coordinate `FT`, `FW`, `PO`, `FR`, `LR`; left field justification |
-| Text | `CF0`, `A0`, `FD`, `FV`, `FH`; ASCII glyphs only; `CI0/27/28` without remapping |
+| Layout | `PW`, `LL`, `LH`, `LS`, `LT`, `FO`, explicit-coordinate `FT`, `FW`, `PO`, `FR`, `LR`; left/right/Latin-auto field justification |
+| Text | `CF`, `A0`, `AA`, `AD`, `FD`, `FV`, `FH`; printable ASCII in fonts 0/A/D and captured font-0 é; `CI27` Latin-1 subset and `CI28` UTF-8 |
 | Blocks | `FB`: left/center/right alignment, word wrapping, explicit `\&` breaks; overflow, hyphenation, hanging indent and justified text return errors |
 | Shapes | `GB` including rounded corners, `GC`, `GE`, `GD`; black or white outlines/fills |
 | Graphics | `~DG`, `XG`, `GFA`, `GFB`: raw hex, Zebra ASCII run lengths/row shortcuts, B64, Z64; CRC16 and zlib checksums checked |
@@ -104,14 +104,14 @@ Text uses [embedded resident font 0](../zpl/assets/README.md), captured from the
 ZD621 preview at 32 dots and 203 DPI. All 95 printable ASCII glyphs, including
 lowercase, retain their measured advances, bearings and baseline offsets. The
 renderer defaults to font 0 at 20 dots. `^CF0,32` or `^A0N,32,0` selects the
-captured size; omitted/zero width is proportional to height. Other resident font
-IDs and unsupported glyphs return errors.
+captured size; omitted/zero width is proportional to height. Resident A/D use native bitmap matrices with integer magnification. Other resident font
+IDs and uncaptured glyphs return errors.
 
 The 4,365-byte strike is compiled into the binary. Its pixels become horizontal
 filled path runs, shared by PNG and SVG. Overlapping glyph strokes are merged.
 Field blocks wrap and align using proportional advances, including spaces.
-`^FT` uses the captured baseline; `^FO` uses the font matrix. Other sizes use
-scaled bitmap paths and emit a warning. Rotation can also differ slightly from
+`^FT` uses the captured baseline; `^FO` uses the font matrix. Captured strikes also cover natural-width 16/20/64-dot text and 32-dot text at
+widths 16/24/64. Unsampled sizes use scaled bitmap paths and emit a warning. Rotation can also differ slightly from
 the printer's outline rasterizer, so it emits the same approximation warning.
 
 Normal-orientation text at 32 × 32 dots matches all captured atlas pages and a
@@ -121,7 +121,7 @@ pixel differences, recorded as a regression bound. This is a bitmap strike, not
 an extracted scalable outline font.
 
 Leave adequate clear space around barcode fields; quiet zones are not inserted
-automatically. Barcode interpretation text also uses embedded font 0. `^CV` validation panels
+automatically. Barcode interpretation defaults to module-scaled resident A, with explicit `^A` font overrides. `^CV` validation panels
 use the separately sampled fixed validation lettering. `^CVY` persists across
 labels in the same call; unsupported encoder semantics remain errors.
 
@@ -161,3 +161,8 @@ ZD621 preview refinements also expose independent options to ignore `^LT` and
 interpret CODABLOCK F/E row heights in dots, and fit its rows to actual data.
 The specification profile disables each override. These choices are tested
 against the raw captures in `accuracy-refinements-zd621-v1`.
+
+Font/caption controls additionally verify the independently selectable
+`barcode_interpretation_printer_layout` gaps and
+`right_justified_inverted_text_uses_ink_margin` origin adjustment. See
+[resident-font controls](../zpl/tests/fixtures/resident-fonts-zd621-v1/README.md).

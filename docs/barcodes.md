@@ -94,7 +94,7 @@ The supplied PDFs remain outside the repository and are not redistributed here.
   Code 128 supports ZPL subset A/B/C starts and switches, SHIFT/FNC1–3, automatic
   ASCII compaction, UCC Mod-10 and case mode U, and parenthesized GS1 mode D
   with AI 00/01/02 key checks. Extended-byte FNC4 remains unsupported.
-  Interpretation typography remains approximate.
+  Default interpretation uses captured resident A; explicit ^A selection is supported.
 - QR: Model 1 versions 1–14 and Model 2 versions 1–40; all four error levels and eight requested masks;
   automatic selection of one numeric/alphanumeric/byte segment and manual
   `N`, `A`, `Bdddd` inputs. No Kanji, mixed manual segments, ECI, or
@@ -152,7 +152,7 @@ The supplied PDFs remain outside the repository and are not redistributed here.
   Manual internal modes 0–5 remain accepted without automatic compaction.
   Rows include a 10X leading and 1X trailing quiet zone; outer separator bars
   extend across them, while internal separators span only the 70X row.
-  Interpretation typography remains approximate. See the
+  Default interpretation uses captured resident A; explicit ^A selection is supported. See the
   [four-code printer regressions](../zebra-http-api/tests/fixtures/linear-fixes-zd621-v1/README.md).
 - CODABLOCK A: Code 39 alphabet, 1–22 rows, automatic/explicit row and column
   sizing, row indicators, padding and optional modulo-43 block checks. The
@@ -197,8 +197,7 @@ The supplied PDFs remain outside the repository and are not redistributed here.
   preview field settings, not mailpiece qualification rules.
 
 Except for Code 49's built-in row quiet zones, quiet zones are caller-owned.
-Interpretation text uses the renderer's embedded
-font and is not a reproduction of printer-specific retail typography. Standalone
+Interpretation text uses captured resident A at the module magnification unless an explicit ^A command selects another supported font. Printer-specific retail typography remains incomplete. Standalone
 UPC/EAN guard-bar extensions use five modules in the specification profile; the ZD621 profile uses
 13 dots to match the captured 203-DPI printer controls. See
 [printer accuracy](printer-accuracy.md). Retail generated checks and MSI's check-display flag are handled;

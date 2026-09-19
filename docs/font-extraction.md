@@ -20,7 +20,9 @@ direnv exec . cargo run -p zebra-http-api --example extract-font -- \
 ```
 
 The default captures all 95 printable ASCII characters in 12 sequential preview
-requests. `--characters ' AgjW'` selects a smaller set. `--font` accepts `0` and
+requests. `--characters ' AgjW'` selects a smaller set. Explicit subsets may also include
+Latin-1 codepoints U+00A0–00FF, emitted as Windows-1252 bytes with `^CI27`.
+Blank or unavailable glyphs still fail extraction. `--font` accepts `0` and
 `A`–`H`; repeat the command into another directory for another font or size.
 Width zero asks the printer to choose its default width. DPI is metadata for BDF
 export; supply the printer's actual resolution.

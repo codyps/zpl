@@ -65,3 +65,14 @@ this embedded asset's metadata and completeness are checked in unit tests.
 See the [font reconstruction study](../../docs/font-reconstruction.md) for live captures across 14 size
 configurations, all four rotations, larger-strike scaling, and the assessment
 of outline and hint-parameter fitting.
+
+## Additional resident strikes
+
+`font0-16-0`, `font0-20-0`, `font0-64-0`, and `font0-32-{16,24,64}`
+provide complete printable ASCII strikes at those requested height/width pairs.
+`fontA-9-5` and `fontD-18-10` contain native bitmap matrices, enlarged by integer
+multipliers. `font0-32-latin1` supplements the natural-width 32-dot strike with é.
+Capture provenance, source/image hashes, asset hashes and regression controls
+are in `tests/fixtures/resident-fonts-zd621-v1`. ZBF1's one-byte codepoint also
+supports U+00A0–00FF; counts are bounded at 191 and C0/C1/DEL remain excluded.
+Unsampled font-0 sizes still fall back to scaling the original 32-dot strike.

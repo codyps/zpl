@@ -48,8 +48,10 @@ struct Field {
     y: f64,
     baseline: bool,
     rotation: u8,
+    justification: u8,
     reverse: bool,
     white: bool,
+    explicit_font: bool,
     code39_check: bool,
     code39_above: bool,
     hex: Option<u8>,
@@ -61,6 +63,7 @@ struct Field {
     multiple_paths: Option<Vec<(f64, f64, Path)>>,
     block: Option<(f64, usize, f64, u8, f64)>,
     baseline_height: f64,
+    inverted_margin: f64,
     text_size: Option<(f64, f64)>,
 }
 impl Default for Field {
@@ -70,8 +73,10 @@ impl Default for Field {
             y: 0.,
             baseline: false,
             rotation: b'N',
+            justification: 0,
             reverse: false,
             white: false,
+            explicit_font: false,
             code39_check: false,
             code39_above: false,
             hex: None,
@@ -83,9 +88,17 @@ impl Default for Field {
             multiple_paths: None,
             block: None,
             baseline_height: 0.,
+            inverted_margin: 0.,
             text_size: None,
         }
     }
+}
+fn justification(p: &[&str], i: usize, default: u8) -> Result<u8, String> {
+    let n = number(p, i, default as f64)?;
+    if !matches!(n, 0. | 1. | 2.) {
+        return Err("invalid field justification".into());
+    }
+    Ok(n as u8)
 }
 fn number(p: &[&str], i: usize, default: f64) -> Result<f64, String> {
     match p.get(i).filter(|s| !s.is_empty()) {
@@ -123,13 +136,16 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
     let mut field = Field::default();
     let (mut width, mut height) = (options.width, options.height);
     let (mut home_x, mut home_y) = (0., 0.);
+    let (mut font_id, mut default_font_id) = ('0', '0');
     let (mut font_w, mut font_h) = (20., 20.);
     let (mut default_w, mut default_h) = (20., 20.);
     let (mut module, mut ratio, mut bar_h) = (2., 3., 100.);
     let mut graphics = HashMap::<String, Path>::new();
     let mut warnings = Vec::new();
     let (mut shift, mut top) = (0., 0.);
+    let mut encoding = 0;
     let mut default_rotation = b'N';
+    let mut default_justification = 0;
     let mut reverse = false;
     let mut code_validation = false;
     let mut upside_down = false;
@@ -258,6 +274,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                     if s != "0" && s != "27" && s != "28" {
                         return Err("character encoding unsupported".into());
                     }
+                    encoding = s.parse::<u8>().unwrap();
                 }
                 "XA" => {
                     if scene.is_some() {
@@ -265,10 +282,12 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                     }
                     scene =
                         Some(Scene::new(width, height, options.dpi).map_err(|e| e.to_string())?);
+                    font_id = default_font_id;
                     font_w = default_w;
                     font_h = default_h;
                     field = Field {
                         rotation: default_rotation,
+                        justification: default_justification,
                         ..Field::default()
                     };
                 }
@@ -324,9 +343,8 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                 "FW" => {
                     default_rotation = rotation(p[0])?;
                     field.rotation = default_rotation;
-                    if number(&p, 1, 0.)? != 0. {
-                        return Err("default justification unsupported".into());
-                    }
+                    default_justification = justification(&p, 1, 0)?;
+                    field.justification = default_justification;
                 }
                 "FB" => {
                     let width = number(&p, 0, 0.)?;
@@ -396,28 +414,35 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                     {
                         return Err("FT requires explicit coordinates".into());
                     }
-                    if number(&p, 2, 0.)? != 0. {
-                        return Err("field justification unsupported".into());
-                    }
+                    field.justification = justification(&p, 2, default_justification)?;
                 }
                 "CF" => {
-                    if !matches!(p[0], "0" | "") {
-                        return Err("only resident font 0 is embedded; other font selections are unsupported".into());
-                    }
-                    (font_w, font_h) = font_dimensions(&p, default_w, default_h)?;
+                    font_id = match p[0] {
+                        "" => default_font_id,
+                        "0" => '0',
+                        "A" => 'A',
+                        "D" => 'D',
+                        _ => return Err("unsupported resident font".into()),
+                    };
+                    default_font_id = font_id;
+                    (font_w, font_h) = font_dimensions(&p, default_w, default_h, font_id)?;
                     default_w = font_w;
                     default_h = font_h;
                 }
                 n if n.starts_with('A') => {
-                    if n != "A0" {
-                        return Err("only resident font 0 is embedded; other font selections are unsupported".into());
-                    }
+                    field.explicit_font = true;
+                    font_id = match n {
+                        "A0" => '0',
+                        "AA" => 'A',
+                        "AD" => 'D',
+                        _ => return Err("unsupported resident font".into()),
+                    };
                     field.rotation = if p[0].is_empty() {
                         default_rotation
                     } else {
                         rotation(p[0])?
                     };
-                    (font_w, font_h) = font_dimensions(&p, default_w, default_h)?;
+                    (font_w, font_h) = font_dimensions(&p, default_w, default_h, font_id)?;
                 }
                 "FH" => {
                     if s.len() > 1 {
@@ -521,16 +546,29 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                             || field.rotation != b'N')
                         && warnings.is_empty()
                     {
-                        warnings.push("Font 0 uses a captured 32-dot, 203-DPI, normal-orientation bitmap strike; other sizes, resolutions or rotations can differ from printer rasterization.".into());
+                        warnings.push("Resident fonts use captured bitmap strikes; unsampled sizes, resolutions or rotations can differ from printer rasterization.".into());
                     }
                     if bytes.len() > 4096 {
                         return Err("field data exceeds 4096-byte renderer limit".into());
                     }
+                    let decoded;
                     let value = if field.other_barcode.is_some() || field.barcode_error.is_some() {
                         ""
+                    } else if encoding == 27 {
+                        // ^CI27 uses Windows-1252. ASCII and U+00A0–00FF map
+                        // directly; C1 mappings are rejected until glyphs exist.
+                        if bytes.iter().any(|b| (128..160).contains(b)) {
+                            return Err("unsupported Windows-1252 glyph".into());
+                        }
+                        decoded = bytes.iter().map(|&b| char::from(b)).collect::<String>();
+                        &decoded
                     } else {
-                        std::str::from_utf8(&bytes)
-                            .map_err(|_| "only ASCII preview text supported")?
+                        if encoding == 0 && !bytes.is_ascii() {
+                            return Err(
+                                "unsupported legacy text byte; select ^CI28 for UTF-8".into()
+                            );
+                        }
+                        std::str::from_utf8(&bytes).map_err(|_| "invalid UTF-8 text")?
                     };
                     let rendered = (|| -> Result<Path, String> {
                         if let Some(error) = &field.barcode_error {
@@ -554,7 +592,10 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                                 );
                                 return Ok(Path::default());
                             }
-                            let (mut path, height) = b.render(&bytes, font_w, font_h)?;
+                            let (mut path, height) = b.render(
+                                &bytes,
+                                field.explicit_font.then_some((font_id, font_w, font_h)),
+                            )?;
                             if !field.baseline {
                                 let offset = b.field_origin_y();
                                 path.transform(|p| Point::new(p.x, p.y + offset));
@@ -580,7 +621,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                             };
                             let mut b = barcode::code39::render(encoded, module, ratio, h)?;
                             if show {
-                                let mut t = font::text(value, font_w, font_h)?;
+                                let mut t = font::text_for(font_id, value, font_w, font_h)?;
                                 if field.code39_above {
                                     b.transform(|p| Point::new(p.x, p.y + font_h + 3.));
                                     field.baseline_height += font_h + 3.;
@@ -595,6 +636,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                                 return Err("font dimensions must be positive".into());
                             }
                             let (path, baseline) = text_block(
+                                font_id,
                                 value,
                                 font_w,
                                 font_h,
@@ -602,11 +644,18 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                                 options.compatibility.block_center_includes_trailing_space,
                             )?;
                             field.baseline_height = baseline;
+                            if options
+                                .compatibility
+                                .right_justified_inverted_text_uses_ink_margin
+                            {
+                                field.inverted_margin =
+                                    font::inverted_margin(font_id, value, font_w, font_h)?;
+                            }
                             field.text_size =
                                 Some(if let Some((width, lines, spacing, _, _)) = field.block {
                                     (width, lines as f64 * font_h + (lines - 1) as f64 * spacing)
                                 } else {
-                                    (font::width(value, font_w)?, font_h)
+                                    (font::width_for(font_id, value, font_w, font_h)?, font_h)
                                 });
                             path
                         };
@@ -777,6 +826,16 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                                 },
                         );
                         let (_, _, w, h) = bounds(&path);
+                        let left = path
+                            .segments
+                            .iter()
+                            .filter_map(|s| match s {
+                                crate::output::Segment::Move(p)
+                                | crate::output::Segment::Line(p) => Some(p.x),
+                                _ => None,
+                            })
+                            .reduce(f64::min)
+                            .unwrap_or(0.);
                         let base = if field.baseline {
                             if field.baseline_height > 0. {
                                 field.baseline_height
@@ -787,7 +846,17 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                             0.
                         };
                         path.transform(|p| {
-                            let (xp, yp) = (p.x, p.y - base);
+                            // ^FO/^FT pp. 201/205: right justification changes
+                            // the origin, not the character order. Auto (2) is
+                            // left for the supported Latin scripts.
+                            let advance = field.text_size.map_or(w, |s| s.0);
+                            let xp = p.x
+                                - if field.baseline && field.justification == 1 {
+                                    advance
+                                } else {
+                                    0.
+                                };
+                            let yp = p.y - base;
                             let (a, b) = match field.rotation {
                                 b'R' => (-yp, xp),
                                 b'I' => (-xp, -yp),
@@ -799,7 +868,13 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                             } else {
                                 let (w, h) = field
                                     .text_size
-                                    .map(|(w, h)| ((w - 1.).max(0.), (h - 1.).max(0.)))
+                                    .map(|(w, h)| {
+                                        if font_id == '0' {
+                                            ((w - 1.).max(0.), (h - 1.).max(0.))
+                                        } else {
+                                            (w, h)
+                                        }
+                                    })
                                     .unwrap_or((w, h));
                                 match field.rotation {
                                     b'R' => (h, 0.),
@@ -808,7 +883,28 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                                     _ => (0., 0.),
                                 }
                             };
-                            Point::new(x + a + dx, y + b + dy)
+                            let (jx, jy) = if !field.baseline && field.justification == 1 {
+                                if let Some((tw, th)) = field.text_size {
+                                    match field.rotation {
+                                        b'R' => (-th, -left),
+                                        b'I' => (field.inverted_margin - dx + left, 0.),
+                                        b'B' => (-th, 0.),
+                                        _ => (-tw, 0.),
+                                    }
+                                } else {
+                                    (
+                                        if matches!(field.rotation, b'R' | b'B') {
+                                            -h
+                                        } else {
+                                            -w
+                                        },
+                                        0.,
+                                    )
+                                }
+                            } else {
+                                (0., 0.)
+                            };
+                            Point::new(x + a + dx + jx, y + b + dy + jy)
                         });
                         total_segments += path.segments.len();
                         if total_segments > crate::output::MAX_SEGMENTS {
@@ -826,10 +922,12 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                         });
                         sc.validate().map_err(|e| e.to_string())?;
                     }
+                    font_id = default_font_id;
                     font_w = default_w;
                     font_h = default_h;
                     field = Field {
                         rotation: default_rotation,
+                        justification: default_justification,
                         ..Field::default()
                     };
                 }
@@ -880,6 +978,7 @@ fn bounds(path: &Path) -> (f64, f64, f64, f64) {
     (x, y, right - x, bottom - y)
 }
 fn text_block(
+    font_id: char,
     value: &str,
     w: f64,
     h: f64,
@@ -887,7 +986,10 @@ fn text_block(
     center_space: bool,
 ) -> Result<(Path, f64), String> {
     let Some((width, max_lines, spacing, align, indent)) = block else {
-        return Ok((font::text(value, w, h)?, font::baseline(h)));
+        return Ok((
+            font::text_for(font_id, value, w, h)?,
+            font::baseline_for(font_id, h),
+        ));
     };
     if spacing < 0. {
         return Err("overlapping field block lines unsupported".into());
@@ -896,7 +998,9 @@ fn text_block(
     for paragraph in value.split("\\&") {
         let mut line = String::new();
         for word in paragraph.split_whitespace() {
-            if font::width(word, w)? > width - if lines.is_empty() { 0. } else { indent } {
+            if font::width_for(font_id, word, w, h)?
+                > width - if lines.is_empty() { 0. } else { indent }
+            {
                 return Err("field block word hyphenation unsupported".into());
             }
             let next = if line.is_empty() {
@@ -905,7 +1009,8 @@ fn text_block(
                 format!("{line} {word}")
             };
             if !line.is_empty()
-                && font::width(&next, w)? > width - if lines.is_empty() { 0. } else { indent }
+                && font::width_for(font_id, &next, w, h)?
+                    > width - if lines.is_empty() { 0. } else { indent }
             {
                 lines.push(std::mem::take(&mut line));
                 line = word.to_string();
@@ -923,30 +1028,33 @@ fn text_block(
         // Zebra ^FB pp. 185–187: indent subsequent lines, distribute
         // justification between words, and leave the final line left-aligned.
         let inset = if i == 0 { 0. } else { indent };
-        let slack = width - inset - font::width(line, w)?;
+        let slack = width - inset - font::width_for(font_id, line, w, h)?;
         let gaps = line.bytes().filter(|&c| c == b' ').count();
         let mut p = if align == b'J'
-            && (i + 1 < lines.len() || (center_space && slack <= font::width(" ", w)?))
+            && (i + 1 < lines.len()
+                || (center_space && slack <= font::width_for(font_id, " ", w, h)?))
             && gaps > 0
         {
             let mut p = Path::default();
             let mut x: f64 = 0.;
             for word in line.split(' ') {
-                let mut word_path = font::text(word, w, h)?;
+                let mut word_path = font::text_for(font_id, word, w, h)?;
                 word_path.transform(|p| Point::new(p.x + x.round(), p.y));
                 p.segments.extend(word_path.segments);
-                x += font::width(word, w)? + font::width(" ", w)? + slack / gaps as f64;
+                x += font::width_for(font_id, word, w, h)?
+                    + font::width_for(font_id, " ", w, h)?
+                    + slack / gaps as f64;
             }
             p
         } else {
-            font::text(line, w, h)?
+            font::text_for(font_id, line, w, h)?
         };
         let x = inset
             + match align {
                 b'C' => {
                     (slack
-                        - if center_space && slack > font::width(" ", w)? {
-                            font::width(" ", w)?
+                        - if center_space && slack > font::width_for(font_id, " ", w, h)? {
+                            font::width_for(font_id, " ", w, h)?
                         } else {
                             0.
                         })
@@ -964,12 +1072,27 @@ fn text_block(
         } else {
             path
         },
-        (max_lines - 1) as f64 * (h + spacing) + font::baseline(h),
+        (max_lines - 1) as f64 * (h + spacing) + font::baseline_for(font_id, h),
     ))
 }
-fn font_dimensions(p: &[&str], default_w: f64, default_h: f64) -> Result<(f64, f64), String> {
+fn font_dimensions(
+    p: &[&str],
+    default_w: f64,
+    default_h: f64,
+    id: char,
+) -> Result<(f64, f64), String> {
     let h = number(p, 1, 0.)?;
     let w = number(p, 2, 0.)?;
+    if id != '0' {
+        let (nh, nw) = if id == 'A' { (9., 5.) } else { (18., 10.) };
+        let hs = (if h == 0. { default_h } else { h } / nh).round().max(1.);
+        let ws = if w == 0. {
+            hs
+        } else {
+            (w / nw).round().max(1.)
+        };
+        return Ok((nw * ws, nh * hs));
+    }
     let (w, h) = match (w, h) {
         (0., 0.) => (default_w, default_h),
         (0., h) => (h, h),

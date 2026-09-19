@@ -24,8 +24,11 @@ pub struct Page {
 /// ASCII glyphs are hex-escaped, including all ZPL syntax characters.
 pub fn page_plan(codes: &[u8], s: Settings) -> Result<Page, String> {
     s.validate()?;
-    if codes.is_empty() || codes.len() > 16 || codes.iter().any(|c| !(32..=126).contains(c)) {
-        return Err("sample must contain 1..16 printable ASCII glyphs".into());
+    if codes.is_empty()
+        || codes.len() > 16
+        || codes.iter().any(|c| !((32..=126).contains(c) || *c >= 160))
+    {
+        return Err("sample must contain 1..16 printable ASCII or Latin-1 glyphs".into());
     }
     let cw = s.height.max(s.width) * 6 + 32;
     let ch = s.height * 5 + 48;
@@ -239,11 +242,12 @@ pub fn verification_plan(
 ) -> Result<(String, Raster), String> {
     s.validate()?;
     validate_glyphs(glyphs)?;
-    if text.is_empty() || text.len() > 4096 || !text.is_ascii() {
+    if text.is_empty() || text.len() > 4096 || text.chars().any(|c| c as u32 > 255) {
         return Err("invalid verification text".into());
     }
     let selected: Vec<_> = text
-        .bytes()
+        .chars()
+        .map(|c| c as u8)
         .map(|c| {
             glyphs
                 .iter()
@@ -277,7 +281,7 @@ pub fn verification_plan(
         }
         pen += g.advance as i32;
     }
-    let encoded: String = text.bytes().map(|c| format!("_{c:02X}")).collect();
+    let encoded: String = text.chars().map(|c| format!("_{:02X}", c as u32)).collect();
     let zpl=format!("^XA^PW{width}^LL{height}^LH0,0^LS0^LT0^PON^LRN^CI27^FT16,{baseline}^A{}N,{},{}^FH^FD{encoded}^FS^XZ",s.font,s.height,s.width);
     Ok((zpl, image))
 }
@@ -288,10 +292,12 @@ pub fn pack(glyphs: &[Glyph], settings: Settings) -> Result<Vec<u8>, String> {
     settings.validate()?;
     validate_glyphs(glyphs)?;
     if glyphs.is_empty()
-        || glyphs.iter().any(|g| !(32..=126).contains(&g.codepoint))
+        || glyphs
+            .iter()
+            .any(|g| !((32..=126).contains(&g.codepoint) || g.codepoint >= 160))
         || glyphs.windows(2).any(|g| g[0].codepoint >= g[1].codepoint)
     {
-        return Err("strike glyphs must be sorted, unique printable ASCII".into());
+        return Err("strike glyphs must be sorted, unique printable ASCII or Latin-1".into());
     }
     let mut out = b"ZBF1".to_vec();
     out.push(settings.font as u8);
@@ -331,6 +337,32 @@ pub fn pack(glyphs: &[Glyph], settings: Settings) -> Result<Vec<u8>, String> {
 mod packed_tests {
     use super::*;
     use zpl::bitmap_font::unpack;
+    #[test]
+    fn latin1_strikes_round_trip_and_use_windows1252_field_bytes() {
+        let s = Settings {
+            font: '0',
+            height: 32,
+            width: 0,
+            dpi: 203,
+        };
+        let g = Glyph {
+            codepoint: 233,
+            advance: 2,
+            left: 0,
+            top: -1,
+            width: 1,
+            height: 1,
+            bitmap: vec![vec![128]],
+        };
+        let packed = pack(std::slice::from_ref(&g), s).unwrap();
+        assert_eq!(unpack(&packed).unwrap().1, vec![g.clone()]);
+        let (request, _) = verification_plan(&[g], s, "éé").unwrap();
+        assert!(request.contains("^CI27"));
+        assert!(request.contains("^FD_E9_E9"));
+        assert!(page_plan(&[233], s).unwrap().zpl.contains("^FD_E9"));
+        assert!(page_plan(&[127], s).is_err());
+        assert!(page_plan(&[159], s).is_err());
+    }
     #[test]
     fn compact_roundtrip_and_truncation() {
         let s = Settings {
@@ -491,7 +523,8 @@ mod tests {
     #[test]
     fn invalid_samples_and_clipping() {
         assert!(page_plan(&[], settings()).is_err());
-        assert!(page_plan(b"\xff", settings()).is_err());
+        assert!(page_plan(b"\x9f", settings()).is_err());
+        assert!(page_plan(b"\xff", settings()).is_ok());
         let (p, mut r) = fixture();
         let t = &p.tiles[1];
         r.pixels[(t.y * r.width + t.x) as usize] = 0;
