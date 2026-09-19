@@ -155,3 +155,9 @@ shape, and graphic commands. Output formats follow the
 [RFC 1950](https://www.rfc-editor.org/rfc/rfc1950),
 [RFC 1951](https://www.rfc-editor.org/rfc/rfc1951), and
 [SVG compositing](https://www.w3.org/TR/compositing-1/).
+
+ZD621 preview refinements also expose independent options to ignore `^LT` and
+`^PO` in previews, include the firmware's trailing-space field-block alignment,
+interpret CODABLOCK F/E row heights in dots, and fit its rows to actual data.
+The specification profile disables each override. These choices are tested
+against the raw captures in `accuracy-refinements-zd621-v1`.

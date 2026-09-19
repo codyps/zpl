@@ -187,3 +187,40 @@ fn code128_above_text_can_keep_the_bar_origin() {
     assert_eq!(raster(above, options), raster(above, SPECIFICATION));
     assert_ne!(raster(above, options), printer);
 }
+
+#[test]
+fn preview_layout_overrides_are_independent() {
+    let plain = "^FO80,80^GB40,20,3";
+    let top = "^LT20^FO80,80^GB40,20,3";
+    let inverted = "^POI^FO80,80^GB40,20,3";
+    assert_eq!(raster(plain, ZD621_203_DPI), raster(top, ZD621_203_DPI));
+    assert_eq!(
+        raster(plain, ZD621_203_DPI),
+        raster(inverted, ZD621_203_DPI)
+    );
+    assert_eq!(bounds(&raster(top, SPECIFICATION)), (80, 100, 120, 120));
+    assert_eq!(
+        bounds(&raster(inverted, SPECIFICATION)),
+        (280, 300, 320, 320)
+    );
+    let mut o = ZD621_203_DPI;
+    o.compatibility.preview_ignores_label_top = false;
+    assert_eq!(raster(top, o), raster(top, SPECIFICATION));
+    o = ZD621_203_DPI;
+    o.compatibility.preview_ignores_print_orientation = false;
+    assert_eq!(raster(inverted, o), raster(inverted, SPECIFICATION));
+}
+
+#[test]
+fn codablock_row_options_are_independent() {
+    let source = b"^XA^PW832^LL400^FO60,60^BY2^BBN,10,Y,6,4,F^FDABCDEFGHIJKLMNOP^FS^XZ";
+    let bounds_for = |o| bounds(&rasterize(&render(source, o).unwrap().labels[0]).unwrap());
+    assert_eq!(bounds_for(ZD621_203_DPI).3, 92);
+    let mut o = ZD621_203_DPI;
+    o.compatibility.codablock_f_fit_rows = false;
+    assert_eq!(bounds_for(o).3, 102);
+    o.compatibility.codablock_f_row_height_in_dots = false;
+    assert_eq!(bounds_for(o).3, 142);
+    assert_eq!(bounds_for(o), bounds_for(SPECIFICATION));
+    assert!(render(b"^XA^BBN,10,Y,6,2,F^FDABC^FS^XZ", ZD621_203_DPI).is_err());
+}

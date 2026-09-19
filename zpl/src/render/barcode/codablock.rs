@@ -61,26 +61,40 @@ fn encode(b: &Barcode, data: &[u8]) -> Result<Matrix, String> {
         }
         let final_row = cursor == data.len()
             && values.len() + 2 <= columns
-            && rows.len() + 1 >= requested.max(2);
+            && (b.compatibility.codablock_f_fit_rows || rows.len() + 1 >= requested.max(2));
         let limit = columns - if final_row { 2 } else { 0 };
+        // AIM USS CODABLOCK F: alternate Code C / Code B as no-data
+        // padding. The final subset also determines the check representation.
+        let mut set_c = false;
         while values.len() < limit {
-            values.push(if set_b { 101 } else { 100 });
-            set_b = !set_b;
+            values.push(if set_c { 100 } else { 99 });
+            set_c = !set_c;
         }
         if final_row {
-            let k1 = data
+            // Zebra ^BB (pp. 92–93) represents FNC1 as 0x80 in
+            // the source alphabet, including the implicit mode-E prefix.
+            let checked: Vec<_> = (b.param(5, "F") == "E")
+                .then_some(128u8)
+                .into_iter()
+                .chain(data.iter().copied())
+                .collect();
+            let k1 = checked
                 .iter()
                 .enumerate()
                 .map(|(i, &c)| (i + 1) * c as usize)
                 .sum::<usize>()
                 % 86;
-            let k2 = data
+            let k2 = checked
                 .iter()
                 .enumerate()
                 .map(|(i, &c)| i * c as usize)
                 .sum::<usize>()
                 % 86;
-            values.extend([control(k1), control(k2)]);
+            values.extend(if set_c {
+                [k1, k2]
+            } else {
+                [control(k1), control(k2)]
+            });
         }
         rows.push((values, set_b));
         if final_row {
@@ -89,6 +103,9 @@ fn encode(b: &Barcode, data: &[u8]) -> Result<Matrix, String> {
         if rows.len() >= 44 {
             return Err("CODABLOCK exceeds 44 rows".into());
         }
+    }
+    if rows.len() < 2 {
+        return Err("CODABLOCK F/E requires at least two populated rows".into());
     }
     let mut m = Matrix::new((columns + 4) * 11 + 13, rows.len());
     for (y, (row, _)) in rows.iter().enumerate() {
@@ -122,12 +139,25 @@ pub(super) fn render(b: &Barcode, data: &[u8]) -> Result<Path, String> {
         return super::codablock_a::render(b, data);
     }
     let m = encode(b, data)?;
-    let row = b.num(1, 8., 2., 32000.)? * b.module;
+    let mut row = b.num(1, 8., 2., 32000.)?;
+    if !b.compatibility.codablock_f_row_height_in_dots {
+        row *= b.module;
+    }
     let mut path = b.matrix(&m, b.module, row)?;
     let width = m.w as f64 * b.module;
-    path.rect(0., -b.module, width, b.module);
+    // Outer bearer bars occupy the top and bottom of the field; internal
+    // separators exclude the 11-module start and 13-module stop patterns.
+    for i in 1..m.h {
+        path.rect(
+            11. * b.module,
+            i as f64 * row,
+            width - 24. * b.module,
+            b.module,
+        );
+    }
+    path.rect(0., 0., width, b.module);
     path.rect(0., m.h as f64 * row, width, b.module);
-    Ok(path)
+    Ok(super::super::font::union_lines(path))
 }
 #[cfg(test)]
 mod tests {

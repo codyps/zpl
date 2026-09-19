@@ -123,17 +123,17 @@
     },
     "codablock_e": {
       "comparison": {
-        "both_black": 2960,
-        "diff_rgb_sha256": "a390eed8e9631df638bd85df107582c90e4ae74be6910c5aaa8a21e2f6aad9b5",
+        "both_black": 4092,
+        "diff_rgb_sha256": "898b93f7bbcf63bf2c6ed67077064f2fe1501ab119186c1ffef9222644f3f6c2",
         "dimensions_match": true,
-        "exact": false,
-        "local_only": 4200,
-        "printer_only": 1132
+        "exact": true,
+        "local_only": 0,
+        "printer_only": 0
       },
       "local": {
         "height": 1218,
-        "ink": 7160,
-        "pixels_sha256": "7ebc926055d50f7262e03902a3f99d570d3f10e644a1f7505440a8a94d43cfaa",
+        "ink": 4092,
+        "pixels_sha256": "8f142cb25f8133251c0d067b2aca44811e4757978445126364573d1778e3074d",
         "width": 832
       },
       "printer": {
@@ -147,17 +147,17 @@
     },
     "codablock_f": {
       "comparison": {
-        "both_black": 2944,
-        "diff_rgb_sha256": "db50a04c43c674c00f6e03671ddb05ebd1a7151c21bd9b280f5022a179509505",
+        "both_black": 4124,
+        "diff_rgb_sha256": "25bac80678feb3e1c7a2c72310f7e56acdd3174cb6191a1dedb4da67a877cd93",
         "dimensions_match": true,
-        "exact": false,
-        "local_only": 4296,
-        "printer_only": 1180
+        "exact": true,
+        "local_only": 0,
+        "printer_only": 0
       },
       "local": {
         "height": 1218,
-        "ink": 7240,
-        "pixels_sha256": "e1f0637ea16be582f2e58c9dcebec486ae658765949a4734d73918143acc6ae9",
+        "ink": 4124,
+        "pixels_sha256": "488032541729ae0c24d4f47d35686a90014505a8358b8d78f3890da29465979d",
         "width": 832
       },
       "printer": {
@@ -1444,11 +1444,11 @@
   },
   "device": "ZTC ZD621-203dpi ZPL; firmware V93.21.33Z",
   "dpi": 203,
-  "host": "http://printer.local/",
-  "preview_requests": 60,
-  "schema": "zpl-printer-barcode-comparison-v1",
-  "width": 832,
   "height": 1218,
+  "host": "http://printer.local/",
+  "method": "printer HTTP Preview Label; not physical print/scan",
+  "preview_requests": 60,
   "preview_reset_zpl": "^XA^PMN^PA0,0,0,0^FPH,0^CVN^BY2,3,100^CI27^CF0,32,0^FWN^LH0,0^LS0^LT0^PON^LRN^XZ",
-  "method": "printer HTTP Preview Label; not physical print/scan"
+  "schema": "zpl-printer-barcode-comparison-v1",
+  "width": 832
 }

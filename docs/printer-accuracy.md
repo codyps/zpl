@@ -88,14 +88,14 @@ that the guide specifies those scan-conversion details.
 
 ## Remaining accuracy work
 
-This is not yet 100% non-text parity. Of the 133 comparison cases, 87 are exact,
-39 render with differences, and seven report unsupported text/layout input. All 31 additional
+This is not yet 100% non-text parity. Of the 133 comparison cases, 94 are exact,
+34 render with differences, and five report unsupported text/layout input. All 31 additional
 controls are exact. Text and non-text failures remain separate in the provenance
 and per-case baseline; aggregate percentages must not conceal either category.
 
 Remaining non-text issues include circle/ellipse/rounded-box scan conversion,
 QR automatic mask selection, Aztec/Data Matrix encoding choices,
-CODABLOCK F/E, MaxiCode, composite/DataBar component layout, and TLC39 linked data.
+MaxiCode, composite/DataBar component layout, and TLC39 linked data.
 The tested firmware produces identical QR images for requested masks 0/3/7;
 the renderer still honors the documented mask operand. Do not substitute a
 payload-specific mask table for the missing general selection behavior.
@@ -128,3 +128,16 @@ in the sibling comparison repository's conformance suite without unsupported
 command errors. This is coverage evidence, not an assertion that all 130 match
 hardware. New legacy/multiple-origin/validation references were captured from the
 printer, while the existing accuracy references remain unchanged.
+
+## Layout and CODABLOCK refinements
+
+Fifteen additional [printer controls](../zpl/tests/fixtures/accuracy-refinements-zd621-v1/README.md)
+require exact full-canvas equality. CODABLOCK F/E now uses correct subset-dependent
+checks, includes mode E's implicit FNC1 in block checks, and draws internal/outer
+separators. The profile selects firmware row heights in dots and fits rows to
+actual data. Both original F/E comparisons are exact.
+
+Field blocks support hanging indents and full justification. The profile enables
+the captured trailing-space alignment rule, fixing centered text. Separate preview
+options ignore `^LT` and `^PO`, while the specification profile honors both.
+The original five affected layout/block cases and all fifteen controls are exact.

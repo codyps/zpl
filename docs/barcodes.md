@@ -158,7 +158,7 @@ The supplied PDFs remain outside the repository and are not redistributed here.
   sizing, row indicators, padding and optional modulo-43 block checks. The
   ZD621 profile selects its unscaled row-height operand and 16-bit checksum
   accumulation; specification settings use module-scaled height and mathematical
-  sums. F/E: ASCII A/B switching, 2–44 rows, row/symbol checks; special ZPL
+  sums. F/E: ASCII A/B switching, B/C padding, 2–44 rows, subset-dependent row/symbol checks including the implicit mode-E FNC1; internal and outer separators. ZD621 options select unscaled row heights and data-fitted rows. Special ZPL
   function escapes are rejected. No optimized set C.
 - MaxiCode: modes 2–6, structured carrier headers, byte character sets, nine-digit
   compression, and primary/secondary Reed–Solomon checks. Lowercase/extended

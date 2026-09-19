@@ -13,6 +13,22 @@
 /// initial value: the renderer does not reapply it after you change an option.
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct Compatibility {
+    /// Ignore label-top adjustment in HTTP previews. Physical-print ^LT
+    /// semantics remain the default (Zebra guide p. 294).
+    pub preview_ignores_label_top: bool,
+    /// Ignore inverted print orientation in HTTP previews. Default: honor
+    /// ^PO (Zebra guide p. 315); this option describes previews only.
+    pub preview_ignores_print_orientation: bool,
+    /// With explicit CODABLOCK F/E columns, fit the actual data instead of
+    /// padding to the requested row count. Captured ZD621 sizing choice.
+    pub codablock_f_fit_rows: bool,
+    /// Include a trailing space in ^FB alignment when it fits. A final line
+    /// without room for that space is fully justified. Observed in ZD621
+    /// previews; default: align only the actual text (^FB pp. 185–187).
+    pub block_center_includes_trailing_space: bool,
+    /// Interpret CODABLOCK F/E row height as dots, as in ZD621 previews,
+    /// instead of the module multiplier described by ^BB (guide p. 90).
+    pub codablock_f_row_height_in_dots: bool,
     /// For ^FM MicroPDF417 at I/B orientations, omit the two ten-module side
     /// row-address patterns from the origin adjustment. Captured ZD621 choice;
     /// default: the complete symbol extent required by ^FO (guide p. 201).

@@ -59,7 +59,7 @@ struct Field {
     path: Option<Path>,
     origins: Option<Vec<Option<(f64, f64)>>>,
     multiple_paths: Option<Vec<(f64, f64, Path)>>,
-    block: Option<(f64, usize, f64, u8)>,
+    block: Option<(f64, usize, f64, u8, f64)>,
     baseline_height: f64,
     text_size: Option<(f64, f64)>,
 }
@@ -277,7 +277,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                         return Err("field must end with FS".into());
                     }
                     let mut sc = scene.take().ok_or("XZ without XA")?;
-                    if upside_down {
+                    if upside_down && !options.compatibility.preview_ignores_print_orientation {
                         let (w, h) = (sc.width as f64, sc.height as f64);
                         for d in &mut sc.draws {
                             d.path.transform(|p| Point::new(w - p.x, h - p.y));
@@ -336,8 +336,8 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                     if width <= 0.
                         || !(1. ..=1000.).contains(&lines)
                         || lines.fract() != 0.
-                        || !matches!(align, "" | "L" | "C" | "R")
-                        || number(&p, 4, 0.)? != 0.
+                        || !matches!(align, "" | "L" | "C" | "R" | "J")
+                        || !(0. ..width).contains(&number(&p, 4, 0.)?)
                     {
                         return Err("unsupported or invalid field block parameters".into());
                     }
@@ -346,6 +346,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                         lines as usize,
                         spacing,
                         align.as_bytes().first().copied().unwrap_or(b'L'),
+                        number(&p, 4, 0.)?,
                     ));
                 }
                 "LH" => {
@@ -593,10 +594,16 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                             if font_w <= 0. || font_h <= 0. {
                                 return Err("font dimensions must be positive".into());
                             }
-                            let (path, baseline) = text_block(value, font_w, font_h, field.block)?;
+                            let (path, baseline) = text_block(
+                                value,
+                                font_w,
+                                font_h,
+                                field.block,
+                                options.compatibility.block_center_includes_trailing_space,
+                            )?;
                             field.baseline_height = baseline;
                             field.text_size =
-                                Some(if let Some((width, lines, spacing, _)) = field.block {
+                                Some(if let Some((width, lines, spacing, _, _)) = field.block {
                                     (width, lines as f64 * font_h + (lines - 1) as f64 * spacing)
                                 } else {
                                     (font::width(value, font_w)?, font_h)
@@ -759,7 +766,16 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                     });
                     for (origin_x, origin_y, mut path) in paths {
                         let sc = scene.as_mut().ok_or("field outside label")?;
-                        let (x, y) = (origin_x + home_x - shift, origin_y + home_y + top);
+                        let (x, y) = (
+                            origin_x + home_x - shift,
+                            origin_y
+                                + home_y
+                                + if options.compatibility.preview_ignores_label_top {
+                                    0.
+                                } else {
+                                    top
+                                },
+                        );
                         let (_, _, w, h) = bounds(&path);
                         let base = if field.baseline {
                             if field.baseline_height > 0. {
@@ -867,9 +883,10 @@ fn text_block(
     value: &str,
     w: f64,
     h: f64,
-    block: Option<(f64, usize, f64, u8)>,
+    block: Option<(f64, usize, f64, u8, f64)>,
+    center_space: bool,
 ) -> Result<(Path, f64), String> {
-    let Some((width, max_lines, spacing, align)) = block else {
+    let Some((width, max_lines, spacing, align, indent)) = block else {
         return Ok((font::text(value, w, h)?, font::baseline(h)));
     };
     if spacing < 0. {
@@ -879,7 +896,7 @@ fn text_block(
     for paragraph in value.split("\\&") {
         let mut line = String::new();
         for word in paragraph.split_whitespace() {
-            if font::width(word, w)? > width {
+            if font::width(word, w)? > width - if lines.is_empty() { 0. } else { indent } {
                 return Err("field block word hyphenation unsupported".into());
             }
             let next = if line.is_empty() {
@@ -887,7 +904,9 @@ fn text_block(
             } else {
                 format!("{line} {word}")
             };
-            if !line.is_empty() && font::width(&next, w)? > width {
+            if !line.is_empty()
+                && font::width(&next, w)? > width - if lines.is_empty() { 0. } else { indent }
+            {
                 lines.push(std::mem::take(&mut line));
                 line = word.to_string();
             } else {
@@ -901,13 +920,41 @@ fn text_block(
     }
     let mut path = Path::default();
     for (i, line) in lines.iter().enumerate() {
-        let mut p = font::text(line, w, h)?;
-        let slack = width - font::width(line, w)?;
-        let x = match align {
-            b'C' => slack / 2.,
-            b'R' => slack,
-            _ => 0.,
+        // Zebra ^FB pp. 185–187: indent subsequent lines, distribute
+        // justification between words, and leave the final line left-aligned.
+        let inset = if i == 0 { 0. } else { indent };
+        let slack = width - inset - font::width(line, w)?;
+        let gaps = line.bytes().filter(|&c| c == b' ').count();
+        let mut p = if align == b'J'
+            && (i + 1 < lines.len() || (center_space && slack <= font::width(" ", w)?))
+            && gaps > 0
+        {
+            let mut p = Path::default();
+            let mut x: f64 = 0.;
+            for word in line.split(' ') {
+                let mut word_path = font::text(word, w, h)?;
+                word_path.transform(|p| Point::new(p.x + x.round(), p.y));
+                p.segments.extend(word_path.segments);
+                x += font::width(word, w)? + font::width(" ", w)? + slack / gaps as f64;
+            }
+            p
+        } else {
+            font::text(line, w, h)?
         };
+        let x = inset
+            + match align {
+                b'C' => {
+                    (slack
+                        - if center_space && slack > font::width(" ", w)? {
+                            font::width(" ", w)?
+                        } else {
+                            0.
+                        })
+                        / 2.
+                }
+                b'R' => slack,
+                _ => 0.,
+            };
         p.transform(|p| Point::new(p.x + x, p.y + i as f64 * (h + spacing)));
         path.segments.extend(p.segments);
     }
