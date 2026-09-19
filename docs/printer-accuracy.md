@@ -298,3 +298,21 @@ PDF417 retains its separately verified eight-digit behavior; MicroPDF417 and
 TLC39 remain independent. Run `cargo test -p zpl --test pdf417_numeric_preview`.
 The broader above-bar and rotated interpretation layout gaps remain open,
 as does QR mask selection.
+
+## Barcode interpretation origins
+
+Forty [interpretation controls](../zpl/tests/fixtures/barcode-interpretation-zd621-v1/README.md)
+now match exactly, including their text. They cover all orientations for
+above-bar Code 128, Interleaved 2 of 5, EAN-13 and UPC-A; below-bar Code 128
+and Interleaved 2 of 5; and module-width 1/3 reversal holdouts. Run
+`cargo test -p zpl --test barcode_interpretation_preview --test profiles`.
+
+Three independent profile options reproduce the captured choices: rotated
+^FO anchoring by bar height, above-bar interpretation that preserves the bar
+origin, and a one-dot correction for reversed auto-centered interpretation.
+Code 128 keeps its existing separate above-text option. ^FM component origins
+are unaffected. Whole-canvas equality checks both bar geometry and text;
+previous reversed-text IoU of roughly 52–54% is now 100% in these controls.
+
+Code 39 interpretation and below-bar UPC/EAN layout remain unresolved, as does
+QR automatic mask selection. The goal is not complete.

@@ -598,6 +598,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                             let (mut path, height) = b.render(
                                 &bytes,
                                 field.explicit_font.then_some((font_id, font_w, font_h)),
+                                field.rotation,
                             )?;
                             if !field.baseline {
                                 let offset = b.field_origin_y();
@@ -932,6 +933,17 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                                         }
                                     })
                                     .unwrap_or((w, h));
+                                // ZD621 ^FO rotations pivot about the bar height,
+                                // not the combined bars/interpretation extent.
+                                // ^FM places its component paths separately.
+                                let h = if options.compatibility.barcode_fo_uses_bar_height
+                                    && field.other_barcode.is_some()
+                                    && field.origins.is_none()
+                                {
+                                    field.baseline_height
+                                } else {
+                                    h
+                                };
                                 match field.rotation {
                                     b'R' => (h, 0.),
                                     b'I' => (w, h),

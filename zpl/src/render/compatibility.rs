@@ -114,6 +114,20 @@ pub struct Compatibility {
     /// after the font cell above. ^BC permits a preceding font command (p. 94)
     /// but does not prescribe these raster gaps. Default: three-dot gaps.
     pub barcode_interpretation_printer_layout: bool,
+    /// Anchor rotated ^FO barcodes using bar height, excluding interpretation
+    /// text and retail guard extensions. Captured above/below interpretation
+    /// controls cover ^B2/^BC/^BE/^BU in all four orientations. The nominal
+    /// ^FO upper-left field extent (p. 201) includes the complete drawing.
+    pub barcode_fo_uses_bar_height: bool,
+    /// Place above-bar interpretation above the bar origin, rather than
+    /// pushing the bars down. Covers non-Code-128 barcodes; Code 128 retains
+    /// its separately selectable `code128_above_text_keeps_bar_origin` flag.
+    /// See the measured ^FO/^B2/^BE/^BU above-interpretation controls.
+    pub barcode_above_text_keeps_bar_origin: bool,
+    /// Shift automatically centered barcode interpretation one dot along its
+    /// reversed reading direction for I/B orientations. Normal/R controls
+    /// use the ordinary center. Explicitly selected fonts are unaffected.
+    pub barcode_reverse_interpretation_shift: bool,
     /// Ignore label-top adjustment in HTTP previews. Physical-print ^LT
     /// semantics remain the default (Zebra guide p. 294).
     pub preview_ignores_label_top: bool,

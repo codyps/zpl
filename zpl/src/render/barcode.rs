@@ -293,6 +293,7 @@ impl Barcode {
         &self,
         bytes: &[u8],
         font: Option<(char, f64, f64)>,
+        rotation: u8,
     ) -> Result<(Path, f64), String> {
         if bytes.is_empty() {
             return Err(format!("{}: empty barcode data", self.name));
@@ -354,13 +355,20 @@ impl Barcode {
             if font.is_none() {
                 let width = super::bounds(&p).2;
                 let advance = super::font::width_for(id, &value, fw, fh)?;
-                let x = ((width - advance) / 2.).floor();
+                let mut x = ((width - advance) / 2.).floor();
+                if self.compatibility.barcode_reverse_interpretation_shift
+                    && matches!(rotation, b'I' | b'B')
+                {
+                    x -= 1.;
+                }
                 t.transform(|p| Point::new(p.x + x, p.y));
             }
-            if self.above
-                && self.name == "BC"
-                && self.compatibility.code128_above_text_keeps_bar_origin
-            {
+            let preserve_bar_origin = if self.name == "BC" {
+                self.compatibility.code128_above_text_keeps_bar_origin
+            } else {
+                self.compatibility.barcode_above_text_keeps_bar_origin
+            };
+            if self.above && preserve_bar_origin {
                 t.transform(|p| Point::new(p.x, p.y - fh - gap_above));
             } else if self.above {
                 p.transform(|p| Point::new(p.x, p.y + fh + gap_above));

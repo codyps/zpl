@@ -74,6 +74,36 @@ fn code39_wide_elements_follow_the_selected_rounding_policy() {
 }
 
 #[test]
+fn barcode_interpretation_origin_overrides_are_independent() {
+    // ^FO p. 201 and ^B2 pp. 66–69; measured above/below controls in
+    // barcode-interpretation-zd621-v1. Text must not move the bar origin.
+    for (rotation, expected) in [
+        ('N', (80, 54, 242, 150)),
+        ('R', (80, 80, 176, 242)),
+        ('I', (80, 80, 242, 176)),
+        ('B', (54, 80, 150, 242)),
+    ] {
+        let body = format!("^BY2,3,60^FO80,80^B2{rotation},70,Y,Y^FD12345678");
+        assert_eq!(bounds(&raster(&body, ZD621_203_DPI)), expected);
+    }
+    let mut options = ZD621_203_DPI;
+    options.compatibility.barcode_above_text_keeps_bar_origin = false;
+    let normal = "^BY2,3,60^FO80,80^B2N,70,Y,Y^FD12345678";
+    assert_eq!(bounds(&raster(normal, options)), (80, 80, 242, 176));
+    options = ZD621_203_DPI;
+    options.compatibility.barcode_fo_uses_bar_height = false;
+    let rotated = "^BY2,3,60^FO80,80^B2R,70,Y,Y^FD12345678";
+    assert_eq!(bounds(&raster(rotated, options)), (106, 80, 202, 242));
+    options = ZD621_203_DPI;
+    options.compatibility.barcode_reverse_interpretation_shift = false;
+    let inverted = "^BY2,3,60^FO80,80^B2I,70,Y,Y^FD12345678";
+    assert_ne!(
+        raster(inverted, options).pixels,
+        raster(inverted, ZD621_203_DPI).pixels
+    );
+}
+
+#[test]
 fn qr_origins_have_independent_overrides() {
     for height in [40, 60, 100] {
         let fo = format!("^BY2,3,{height}^FO80,60^BQN,2,3,L,0^FDLA,HELLO123");
