@@ -797,7 +797,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                             path.rounded_rect(0., 0., w, h, radius);
                             path.rounded_rect(t, t, w - 2. * t, h - 2. * t, inner_radius);
                         }
-                    } else if name == "GC" && options.compatibility.circle_printer_curve {
+                    } else if w == h && options.compatibility.circle_printer_curve {
                         printer_shapes::circle(&mut path, w, t)?;
                     } else {
                         path.ellipse(0., 0., w, h);

@@ -1,6 +1,6 @@
 # ZD621 circle scan conversion
 
-38 unmodified HTTP Preview Label captures from ZD621 203 DPI, firmware
+44 unmodified HTTP Preview Label captures from ZD621 203 DPI, firmware
 V93.21.33Z, collected 2026-09-19 with zebra-render. Inputs explicitly set PW832,
 label length and field origins. No physical printing is needed. The manifest
 pins source and response hashes, zero underpaint/overpaint and local pixel
@@ -14,11 +14,16 @@ hashes. circle_preview.rs compares the entire canvas using ZD621_203_DPI.
 - A tiny-size atlas covers diameters 1–7 at borders 1, 2, 3 and 10. Its separate
   one-dot box ensures the preview remains nonblank regardless of circle behavior.
 
+- Three equal-axis `^GE` atlases verify the same circle rule for twelve sizes
+  and borders 1, 3 and 1000.
+- Three white-paint atlases verify `^GC` and equal-axis `^GE` over black boxes.
+
 The first three atlases established a two-region integer curve with half-dot
 radius decisions for odd diameters. The other samples independently validate
 it. Filled caps use exclusive right endpoints; outlined sides include the right
 endpoint and inset the inner curve. The minimum diameter and border are both
-two dots. The option circle_printer_curve controls these empirical departures;
+two dots. The option circle_printer_curve controls these empirical departures for `^GC`
+and equal-axis `^GE`;
 SPECIFICATION disables it. The implementation computes arbitrary diameters,
 without a table keyed by captured dimensions.
 

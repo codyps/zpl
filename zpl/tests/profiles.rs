@@ -547,6 +547,7 @@ fn circle_printer_scan_conversion_is_optional() {
         "^FO20,20^GC21,1,B",
         "^FO20,20^GC80,3,B",
         "^FO20,20^GC32,100,B",
+        "^FO20,20^GE32,32,3,B",
     ] {
         let mut options = ZD621_203_DPI;
         options.compatibility.circle_printer_curve = false;

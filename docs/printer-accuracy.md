@@ -58,8 +58,9 @@ option overrides.
 
 - `^GC` uses the captured integer circle curve and cap/side span endpoints.
   The original circle and twelve earlier controls are exact, along with
-  [38 new atlas and holdout captures](../zpl/tests/fixtures/circles-zd621-v1/README.md)
-  covering diameters 1–511 and thin, thick, and filled circles.
+  [44 new atlas and holdout captures](../zpl/tests/fixtures/circles-zd621-v1/README.md)
+  covering diameters 1–511, thin/thick/filled circles, equal-axis `^GE`,
+  and white painting over black boxes.
 
 - `^BY` starts with the documented 10-dot height and retains omitted operands.
   Twenty [Code 39/128 controls](../zpl/tests/fixtures/barcode-defaults-zd621-v1/README.md)
