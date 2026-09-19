@@ -218,7 +218,8 @@ The two long-payload controls still select fewer rows than firmware. See the
 [TLC39 controls](../zpl/tests/fixtures/tlc39-zd621-v1/README.md).
 
 Focused suites cover more than the original corpus: some DataBar Expanded
-stacked separators and malformed long-weight/no-date previews remain different,
+stacked separators remain different (the malformed long-weight/no-date
+headers and data now match),
 and the resident-font origin controls retain up to four differing dots. Their
 separate baselines continue to pin both counts and pixel locations.
 

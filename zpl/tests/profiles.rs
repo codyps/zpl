@@ -391,3 +391,34 @@ fn tlc39_preview_departures_are_independent_options() {
         raster(unlinked, SPECIFICATION).pixels
     );
 }
+
+#[test]
+fn databar_expanded_no_date_preview_is_optional() {
+    // ISO/IEC 24724:2011 §7.2.5.4.4, p. 28: a date sentinel of 38400
+    // terminates the fixed-length symbol. The preview violates that rule.
+    let mut options = ZD621_203_DPI;
+    options.compatibility.databar_expanded_no_date_preview = false;
+    for payload in [
+        "01900123456789083103032768",
+        "01900123456789083202010000",
+        "01900123456789083203022768",
+        "01900123456789083109099999",
+    ] {
+        for segments in [4, 22] {
+            let body = format!("^FO20,20^BRN,6,1,1,80,{segments}^FD{payload}");
+            let standard = raster(&body, SPECIFICATION);
+            assert_ne!(raster(&body, ZD621_203_DPI).pixels, standard.pixels);
+            assert_eq!(raster(&body, options).pixels, standard.pixels);
+        }
+    }
+    for payload in [
+        "01900123456789083103032767", // Short-weight method remains valid.
+        "0190012345678908310303276811250101", // An actual date remains valid.
+    ] {
+        let body = format!("^FO20,20^BRN,6,1,1,80,22^FD{payload}");
+        assert_eq!(
+            raster(&body, ZD621_203_DPI).pixels,
+            raster(&body, options).pixels
+        );
+    }
+}

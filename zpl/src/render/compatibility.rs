@@ -13,6 +13,11 @@
 /// initial value: the renderer does not reapply it after you change an option.
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct Compatibility {
+    /// Reproduce the malformed ZD621 DataBar Expanded long-weight/no-date
+    /// preview: nonstandard headers with the final digit repeated. ISO/IEC
+    /// 24724:2011 §7.2.5.4.4 instead specifies methods 56/57 and date 38400.
+    /// Keep disabled when a standards-conforming, decodable symbol is needed.
+    pub databar_expanded_no_date_preview: bool,
     /// Encode TLC39 additional-field separators as asterisks, as in ZD621
     /// previews. Default retains GS separators for TCIF supplementary fields.
     pub tlc39_asterisk_separator: bool,

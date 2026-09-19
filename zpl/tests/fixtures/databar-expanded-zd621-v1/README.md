@@ -17,6 +17,8 @@ pixel positions, so an equal-size but different error cannot pass unnoticed.
 
 Known differences remain in some stacked separator rows. The long-weight
 no-date printer controls contain nonstandard headers and repeat the final input
-digit after the 38400 no-date sentinel; the renderer uses the standard's complete
-fixed-length encoding. Independent decoder tests cover these standard outputs.
+digit after the 38400 no-date sentinel. The ZD621 profile reproduces these
+headers and data; all four unstacked long-weight controls are pixel exact.
+Disable `databar_expanded_no_date_preview` to retain the standard's complete
+fixed-length encoding. Independent decoder tests cover the standard outputs.
 The original two comparison-corpus Expanded cases are both pixel-exact.

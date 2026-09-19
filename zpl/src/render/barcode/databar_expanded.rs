@@ -3,22 +3,39 @@
 //! General-purpose and compressed AI methods, §7.2.5.4, pp. 26–29.
 use super::*;
 
-fn message(data: &[u8], per_row: usize) -> Result<Vec<usize>, String> {
+fn message(data: &[u8], per_row: usize, printer_no_date: bool) -> Result<Vec<usize>, String> {
     if data.len() > 74 {
         return Err("DataBar Expanded capacity exceeded".into());
     }
     if data.is_empty() {
         return Err("DataBar Expanded requires a GS1 AI element string".into());
     }
-    let (header, consumed, length_bits) = compressed_header(data);
-    let out = if let Some(position) = length_bits {
-        let mut out = gs1_compaction::encode_remainder(&data[consumed..], header, |length| {
-            let mut count = length.div_ceil(12).max(3) + 1;
-            if count > per_row && count % per_row == 1 {
-                count += 1;
-            }
-            (count <= 22).then_some((count - 1) * 12)
-        })?;
+    let (mut header, consumed, length_bits) = compressed_header(data);
+    let capacity = |length: usize| {
+        let mut count = length.div_ceil(12).max(3) + 1;
+        if count > per_row && count % per_row == 1 {
+            count += 1;
+        }
+        (count <= 22).then_some((count - 1) * 12)
+    };
+    let out = if printer_no_date && data.len() == 26 && header.len() == 84 {
+        // ZD621 controls kg-long/lb2-long/lb3-long/weight-max: the preview
+        // departs from ISO/IEC 24724:2011 §7.2.5.4.4's no-date method 56/57.
+        // It writes header 54/53 and encodes the last weight digit again in
+        // a general-purpose field. This malformed preview is profile-only.
+        let method = if data[17] == b'1' { 54 } else { 53 };
+        let mut prefix = vec![false];
+        bits::push(&mut prefix, method, 7);
+        header[..8].copy_from_slice(&prefix);
+        let mut out = gs1_compaction::encode_remainder(&data[25..], header, capacity)?;
+        if data[17] == b'1' {
+            // The metric header also carries the ordinary length parity bit:
+            // 54 for nine characters, 52 when stacking pads it to ten.
+            out[6] = (out.len() / 12 + 1) % 2 == 1;
+        }
+        out
+    } else if let Some(position) = length_bits {
+        let mut out = gs1_compaction::encode_remainder(&data[consumed..], header, capacity)?;
         let count = out.len() / 12 + 1;
         out[position] = count % 2 == 1;
         out[position + 1] = count > 14;
@@ -154,11 +171,25 @@ pub(super) fn render(b: &Barcode, data: &[u8], separator: usize) -> Result<Path,
     if per_row % 2 != 0 {
         return Err("DataBar Expanded segments per row must be even".into());
     }
-    b.matrix(&encode(data, per_row, separator)?, b.module, b.module)
+    b.matrix(
+        &encode(
+            data,
+            per_row,
+            separator,
+            b.compatibility.databar_expanded_no_date_preview,
+        )?,
+        b.module,
+        b.module,
+    )
 }
 
-fn encode(data: &[u8], per_row: usize, separator: usize) -> Result<Matrix, String> {
-    let words = message(data, per_row)?;
+fn encode(
+    data: &[u8],
+    per_row: usize,
+    separator: usize,
+    printer_no_date: bool,
+) -> Result<Matrix, String> {
+    let words = message(data, per_row, printer_no_date)?;
     let count = words.len() + 1;
     const FINDERS: [&[usize]; 10] = [
         &[0, 1],
@@ -287,7 +318,7 @@ mod tests {
         for length in 1..=68 {
             let data = format!("91{}", &"1234567890".repeat(7)[..length]);
             for per_row in (2..=22).step_by(2) {
-                let m = encode(data.as_bytes(), per_row, 1).unwrap();
+                let m = encode(data.as_bytes(), per_row, 1, false).unwrap();
                 let encoding = if m.h == 34 {
                     anyd::output::Encoding::Linear(anyd::output::LinearPattern {
                         modules: m.cells[..m.w].to_vec(),

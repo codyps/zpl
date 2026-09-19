@@ -12,6 +12,7 @@ pub const SPECIFICATION: Options = Options {
     height: 1218,
     dpi: 203,
     compatibility: Compatibility {
+        databar_expanded_no_date_preview: false,
         tlc39_asterisk_separator: false,
         tlc39_extended_link_flag: false,
         tlc39_printer_layout: false,
@@ -69,6 +70,7 @@ pub const ZD621_203_DPI: Options = Options {
     height: 1218,
     dpi: 203,
     compatibility: Compatibility {
+        databar_expanded_no_date_preview: true,
         tlc39_asterisk_separator: true,
         tlc39_extended_link_flag: true,
         tlc39_printer_layout: true,
