@@ -281,3 +281,20 @@ above-bar interpretation layout, rotated interpretation text, and PDF417
 compaction. Successful rendering of that broader corpus did not establish
 pixel accuracy. These findings remain separate from the six QR mismatches in
 the original 133-case comparison corpus; overall non-text parity is not complete.
+
+## Standalone PDF417 numeric transitions
+
+Thirteen [PDF417 numeric-transition frames](../zpl/tests/fixtures/pdf417-numeric-zd621-v1/README.md)
+now require exact full-canvas parity for 118 symbols. The renderer previously
+used an eight-digit Numeric threshold inside mixed text and encoded short
+prefixes as bytes. The printer instead uses fourteen digits for mixed input,
+eight for entirely numeric input, and preserves short Text prefixes before
+Numeric runs. Six conformance security/truncation cases are now exact, including
+the level-8 pair that each had 22764 differing dots. The seven boundary atlases
+cover digit lengths 1–16 with uppercase/lowercase prefixes and suffixes.
+
+These choices preserve valid PDF417 encoding under both profiles. Macro
+PDF417 retains its separately verified eight-digit behavior; MicroPDF417 and
+TLC39 remain independent. Run `cargo test -p zpl --test pdf417_numeric_preview`.
+The broader above-bar and rotated interpretation layout gaps remain open,
+as does QR mask selection.

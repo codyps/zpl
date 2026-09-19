@@ -39,7 +39,7 @@ pub(super) fn render(b: &Barcode, data: &[u8], origins: usize) -> Result<Vec<Pat
         if micro {
             pdf417::compact_micro(bytes)
         } else {
-            pdf417::compact_full(bytes)
+            pdf417::compact_macro(bytes)
         }
     };
     let (cols, rows, ec, variant) = if micro {

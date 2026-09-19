@@ -1,7 +1,8 @@
 //! Original PDF417/MicroPDF417 high-level compaction.
 //! USS PDF417 §§2.2.4.4–6, Appendix D.
 //! <https://www.expresscorp.com/wp-content/uploads/2023/02/USS-PDF-417.pdf>
-//! Numeric runs of eight or more reproduce the observed ZD621 threshold.
+//! Standalone ZD621 symbols use Numeric at eight digits for entirely numeric
+//! input, fourteen for mixed input. Macro PDF417 retains its separate threshold.
 //! Text submode choices are deterministic, not a minimum-codeword optimizer.
 //! MicroPDF417 mode initialization: ISO/IEC 24728 §5.4.
 //! <https://previewnorm.com/iec/ISO%20IEC%2024728-2006%20PDF.pdf>
@@ -106,12 +107,27 @@ fn numeric(data: &[u8], out: &mut Vec<usize>) {
     }
 }
 pub(super) fn encode(data: &[u8]) -> Vec<usize> {
-    encode_initial(data, true, false, 8)
+    // USS PDF417 §2.2.4.4 permits Numeric compaction; these selection
+    // thresholds are measured encoding choices, not validity constraints.
+    // Printer controls: pdf417-numeric-zd621-v1, lengths 1–16 with prefixes
+    // and suffixes. A numeric prefix alone does not select the lower threshold.
+    let threshold = if data.iter().all(u8::is_ascii_digit) {
+        8
+    } else {
+        14
+    };
+    encode_initial(data, true, false, threshold, true)
+}
+
+pub(super) fn encode_macro(data: &[u8]) -> Vec<usize> {
+    // Preserve the independently captured ^FM encoding, including mixed
+    // ten-digit runs in barcode-modes-zd621-v1/fm-B7-mixed.
+    encode_initial(data, true, false, 8, false)
 }
 
 // ISO/IEC 24728 §5.4: MicroPDF417 starts in Byte, not Text mode.
 pub(super) fn encode_micro(data: &[u8]) -> Vec<usize> {
-    encode_initial(data, false, true, 13)
+    encode_initial(data, false, true, 13, false)
 }
 
 pub(super) fn encode_tlc(data: &[u8]) -> Vec<usize> {
@@ -122,11 +138,17 @@ pub(super) fn encode_tlc(data: &[u8]) -> Vec<usize> {
     }
     // TLC keeps the full-PDF text submode choices, but its mixed-data Numeric
     // threshold is fourteen digits. Captured size-4-13/14-numeric
-    // controls distinguish this from the eight-digit full-PDF threshold.
-    encode_initial(data, false, false, 14)
+    // controls distinguish this from the eight-digit Macro PDF417 threshold.
+    encode_initial(data, false, false, 14, false)
 }
 
-fn encode_initial(data: &[u8], mut in_text: bool, micro: bool, threshold: usize) -> Vec<usize> {
+fn encode_initial(
+    data: &[u8],
+    mut in_text: bool,
+    micro: bool,
+    threshold: usize,
+    short_text_before_numeric: bool,
+) -> Vec<usize> {
     let mut out = Vec::new();
     if micro && !data.is_empty() && data.iter().all(u8::is_ascii_digit) {
         out.push(902);
@@ -146,7 +168,10 @@ fn encode_initial(data: &[u8], mut in_text: bool, micro: bool, threshold: usize)
             continue;
         }
         let n = text_run(remaining, threshold);
-        if n >= 5 || n == remaining.len() {
+        // Standalone captures with A/ABCD/abcd before fourteen digits keep
+        // the short prefix in Text, rather than emitting a Byte shift/latch.
+        let numeric_follows = n > 0 && digits(&remaining[n..]) >= threshold;
+        if n >= 5 || n == remaining.len() || (short_text_before_numeric && numeric_follows) {
             if !in_text {
                 out.push(900);
                 state = Text::Alpha;
@@ -177,6 +202,24 @@ fn encode_initial(data: &[u8], mut in_text: bool, micro: bool, threshold: usize)
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn standalone_short_prefixes_stay_in_text_before_numeric() {
+        // Decoded raw ZD621 rows in pdf417-numeric-zd621-v1. USS PDF417
+        // §2.2.4.4–6 defines the Text/Numeric latches and value packing.
+        assert_eq!(
+            encode(b"A01234567890123B"),
+            [29, 902, 154, 267, 648, 11, 223, 900, 59]
+        );
+        assert_eq!(
+            encode(b"ABCD01234567890123"),
+            [1, 63, 902, 154, 267, 648, 11, 223]
+        );
+        assert_eq!(
+            encode(b"abcd01234567890123"),
+            [810, 32, 119, 902, 154, 267, 648, 11, 223]
+        );
+    }
+
     #[test]
     fn tlc_short_numeric_payloads_use_numeric_compaction() {
         // ISO/IEC 24728 §5.4; printer captures in tlc39-zd621-v1/digits-*.
