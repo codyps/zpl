@@ -88,8 +88,8 @@ that the guide specifies those scan-conversion details.
 
 ## Remaining accuracy work
 
-This is not yet 100% non-text parity. Of the 133 comparison cases, 116 are exact,
-17 render with differences, and none report unsupported input. All 31 additional
+This is not yet 100% non-text parity. Of the 133 comparison cases, 118 are exact,
+15 render with differences, and none report unsupported input. All 31 additional
 controls are exact. Text and non-text failures remain separate in the provenance
 and per-case baseline; aggregate percentages must not conceal either category.
 
@@ -156,7 +156,7 @@ The [resident-font suite](../zpl/tests/fixtures/resident-fonts-zd621-v1/README.m
 adds 118 exact page/caption controls and 34 origin controls. Rotated font-0
 controls pin up to four differing dots and exceed 99.3% ink IoU individually;
 font A/D controls are exact. This does not promise 80% at arbitrary unsampled
-sizes or for unimplemented scripts. The remaining 17 corpus differences are
+sizes or for unimplemented scripts. The remaining 15 corpus differences are
 non-text shapes/barcodes, still pinned and not claimed as complete.
 
 
@@ -174,3 +174,10 @@ supplied ISO/IEC 16022:2006 second edition, Cor.1:2008 and Cor.2:2011. The latte
 correct grading/reference decoding rather than encodation. ZD621 tilde defaults
 and EDIFACT transition choices are separately selectable compatibility behavior.
 The original Data Matrix corpus case is now exact; legacy modes remain covered.
+
+DataBar Expanded's compressed GTIN, weight, price and date encodings follow
+ISO/IEC 24724:2011 §7.2.5.4, pp. 26–29. Both original Expanded cases are now
+pixel-exact. A further 48 [printer controls](../zpl/tests/fixtures/databar-expanded-zd621-v1/README.md)
+pin all pixels and separate overpaint/underpaint counts. Some stacked separators
+and the firmware's malformed long-weight/no-date encodings still differ.
+Run `cargo test -p zpl --test databar_expanded_preview`.

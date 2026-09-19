@@ -459,17 +459,17 @@
     },
     "databar_expanded": {
       "comparison": {
-        "both_black": 6800,
-        "diff_rgb_sha256": "876ee41f5b0ec708ec659eabde889dddf2b6f390d0f72ddcd28f783f66d6d3fe",
+        "both_black": 9656,
+        "diff_rgb_sha256": "f5cb3bfde82a751bd8644c626a3c57686602326f0966cbef44070292f2af6401",
         "dimensions_match": true,
-        "exact": false,
-        "local_only": 6800,
-        "printer_only": 2856
+        "exact": true,
+        "local_only": 0,
+        "printer_only": 0
       },
       "local": {
         "height": 1218,
-        "ink": 13600,
-        "pixels_sha256": "bdace41a1889f079dde018e9196a2b06a548f76f8980ee76448a43b4faba6a07",
+        "ink": 9656,
+        "pixels_sha256": "8b7d87c605a5bc8682314ecc20c700b2602784b5c3a04f831d7d58703b12fb5f",
         "width": 832
       },
       "printer": {
@@ -483,17 +483,17 @@
     },
     "databar_expanded_stacked": {
       "comparison": {
-        "both_black": 7424,
-        "diff_rgb_sha256": "3e2bd3579b64a957b93dd459f213240b1508e45b21b3fce1b315e141f05cac8e",
+        "both_black": 10780,
+        "diff_rgb_sha256": "2f02c4ce103eba3271671f3f76f9204939b2a0a2c72994498465b813449e9b54",
         "dimensions_match": true,
-        "exact": false,
-        "local_only": 9996,
-        "printer_only": 3356
+        "exact": true,
+        "local_only": 0,
+        "printer_only": 0
       },
       "local": {
         "height": 1218,
-        "ink": 17420,
-        "pixels_sha256": "2a435b76cc5b60efd93b2bc996f58fa90aab117e6cf01965cd9da6b7c42c4acb",
+        "ink": 10780,
+        "pixels_sha256": "ae8614bdaa6341e0bca3125f8e27385aea8e601c512f92658681da4bad4927fa",
         "width": 832
       },
       "printer": {

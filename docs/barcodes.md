@@ -179,9 +179,10 @@ The supplied PDFs remain outside the repository and are not redistributed here.
   uncompressed UPC-A digits for `BR8`; all four zero-suppression forms are supported.
   The specification profile also accepts compressed UPC-E input. Retail aliases
   ignore the height operand, which applies only to composite GS1-128 components.
-  Expanded uses general-purpose method 00, numeric/alphanumeric/ISO-646 switching,
-  and 2–22 even-numbered segments per row. Specialized AI compression is not
-  implemented, so some messages that fit a printer exceed local capacity.
+  Expanded supports compressed GTIN, weight, price and date methods (ISO/IEC
+  24724:2011 §7.2.5.4) plus general-purpose method 00, numeric/alphanumeric/ISO-646 switching,
+  and 2–22 even-numbered segments per row. Some printer separator rows and
+  malformed long-weight/no-date outputs still differ from the standard encoding.
   Supply Expanded data as a raw GS1 AI element string, not parenthesized display
   text; use `^FH` with `_1D` for internal FNC1 separators. Application-level GS1
   AI validation is caller-owned. Linked composite forms of DataBar/retail variants

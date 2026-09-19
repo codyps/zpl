@@ -1,28 +1,128 @@
 //! Original GS1 DataBar Expanded, ISO/IEC 24724:2011 §7, Tables 10–16.
 //! <https://www.iso.org/standard/51426.html>
-//! General-purpose method 00; specialized AI compression is not implemented.
+//! General-purpose and compressed AI methods, §7.2.5.4, pp. 26–29.
 use super::*;
 
 fn message(data: &[u8], per_row: usize) -> Result<Vec<usize>, String> {
     if data.len() > 74 {
         return Err("DataBar Expanded capacity exceeded".into());
     }
-    let mut out = gs1_compaction::encode(data, vec![false; 5], |length| {
-        let mut count = length.div_ceil(12).max(3) + 1;
-        if count > per_row && count % per_row == 1 {
-            count += 1;
-        }
-        (count <= 22).then_some((count - 1) * 12)
-    })?;
-    let count = out.len() / 12 + 1;
-    out[3] = count % 2 == 1;
-    out[4] = count > 14;
+    if data.is_empty() {
+        return Err("DataBar Expanded requires a GS1 AI element string".into());
+    }
+    let (header, consumed, length_bits) = compressed_header(data);
+    let out = if let Some(position) = length_bits {
+        let mut out = gs1_compaction::encode_remainder(&data[consumed..], header, |length| {
+            let mut count = length.div_ceil(12).max(3) + 1;
+            if count > per_row && count % per_row == 1 {
+                count += 1;
+            }
+            (count <= 22).then_some((count - 1) * 12)
+        })?;
+        let count = out.len() / 12 + 1;
+        out[position] = count % 2 == 1;
+        out[position + 1] = count > 14;
+        out
+    } else {
+        header
+    };
     Ok(out
         .as_chunks::<12>()
         .0
         .iter()
         .map(|word| bits::value(word))
         .collect())
+}
+
+/// ISO/IEC 24724:2011 §7.2.5.4 and Table 10. Only compress a checked
+/// GTIN; otherwise retain the complete input in general-purpose method 00.
+fn compressed_header(data: &[u8]) -> (Vec<bool>, usize, Option<usize>) {
+    let number = |d: &[u8]| d.iter().fold(0usize, |v, c| v * 10 + (c - b'0') as usize);
+    if data.len() < 16
+        || !data.starts_with(b"01")
+        || !data[2..16].iter().all(u8::is_ascii_digit)
+        || mod10(&data[2..15].iter().map(|c| c - b'0').collect::<Vec<_>>()) != data[15] - b'0'
+    {
+        return (vec![false; 5], 0, Some(3));
+    }
+    let mut method = 1;
+    let mut method_bits = 1;
+    let mut consumed = 16;
+    let mut extra = Vec::new();
+    let mut variable = true;
+    if data[2] == b'9' {
+        if matches!(data.len(), 26 | 34)
+            && data[16..].iter().all(u8::is_ascii_digit)
+            && (data[16..19] == *b"310" || data[16..19] == *b"320")
+        {
+            let weight = number(&data[20..26]);
+            let ai = &data[16..20];
+            let short_weight = match ai {
+                b"3103" if weight <= 32767 => Some((4, weight)),
+                b"3202" if weight <= 9999 => Some((5, weight)),
+                b"3203" if weight <= 22767 => Some((5, weight + 10000)),
+                _ => None,
+            };
+            if let Some((m, w)) = short_weight.filter(|_| data.len() == 26) {
+                method = m;
+                method_bits = 4;
+                consumed = 26;
+                variable = false;
+                bits::push(&mut extra, w, 15);
+            } else if weight <= 99999 {
+                let date = if data.len() == 26 {
+                    Some((0, 38400))
+                } else {
+                    let ai = number(&data[26..28]);
+                    let month = number(&data[30..32]);
+                    let day = number(&data[32..34]);
+                    if matches!(ai, 11 | 13 | 15 | 17) && (1..=12).contains(&month) && day <= 31 {
+                        Some((
+                            (ai - 11) / 2,
+                            number(&data[28..30]) * 384 + (month - 1) * 32 + day,
+                        ))
+                    } else {
+                        None
+                    }
+                };
+                if let Some((kind, date)) = date {
+                    method = 56 + kind * 2 + usize::from(data[17] == b'2');
+                    method_bits = 7;
+                    consumed = data.len();
+                    variable = false;
+                    bits::push(&mut extra, (data[19] - b'0') as usize * 100000 + weight, 20);
+                    bits::push(&mut extra, date, 16);
+                }
+            }
+        } else if data.len() > 20
+            && data[16..18] == *b"39"
+            && matches!(data[18], b'2' | b'3')
+            && (b'0'..=b'3').contains(&data[19])
+            && (data[18] == b'2' || data.len() > 23 && data[20..23].iter().all(u8::is_ascii_digit))
+        {
+            method = if data[18] == b'2' { 12 } else { 13 };
+            method_bits = 5;
+            consumed = if method == 12 { 20 } else { 23 };
+            bits::push(&mut extra, (data[19] - b'0') as usize, 2);
+            if method == 13 {
+                bits::push(&mut extra, number(&data[20..23]), 10);
+            }
+        }
+    }
+    let mut out = vec![false]; // Standalone, no linked 2D component.
+    bits::push(&mut out, method, method_bits);
+    let length_bits = variable.then_some(out.len());
+    if variable {
+        out.extend([false; 2]);
+    }
+    if method == 1 {
+        bits::push(&mut out, (data[2] - b'0') as usize, 4);
+    }
+    for group in data[3..15].as_chunks::<3>().0 {
+        bits::push(&mut out, number(group), 10);
+    }
+    out.extend(extra);
+    (out, consumed, length_bits)
 }
 
 fn character(value: usize) -> [usize; 8] {

@@ -11,12 +11,21 @@ fn alpha(c: u8) -> bool {
 
 pub(super) fn encode(
     data: &[u8],
-    mut out: Vec<bool>,
+    out: Vec<bool>,
     capacity_for: impl Fn(usize) -> Option<usize>,
 ) -> Result<Vec<bool>, String> {
     if data.is_empty() {
         return Err("GS1 requires a GS1 AI element string".into());
     }
+    encode_remainder(data, out, capacity_for)
+}
+
+/// Encode the optional general-purpose field after a compressed AI header.
+pub(super) fn encode_remainder(
+    data: &[u8],
+    mut out: Vec<bool>,
+    capacity_for: impl Fn(usize) -> Option<usize>,
+) -> Result<Vec<bool>, String> {
     let mut mode = 0; // Numeric, Alphanumeric, ISO/IEC 646
     let mut i = 0;
     while i < data.len() {
