@@ -207,7 +207,7 @@ These are current required counts, not a tolerance that may grow silently:
 | `argument-qr-ec-H` | 306 | 234 |
 | `argument-qr-mask-3` | 603 | 441 |
 | `argument-qr-mask-7` | 261 | 279 |
-| `barcode-qr` | 768 | 736 |
+| `barcode-qr` | 464 | 496 |
 
 The curve gaps concern the firmware's discrete outline geometry. QR encoding
 matches captured symbols when given the captured mask, but the firmware's

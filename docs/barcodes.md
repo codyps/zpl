@@ -96,7 +96,7 @@ The supplied PDFs remain outside the repository and are not redistributed here.
   with AI 00/01/02 key checks. Extended-byte FNC4 remains unsupported.
   Default interpretation uses captured resident A; explicit ^A selection is supported.
 - QR: Model 1 versions 1–14 and Model 2 versions 1–40; all four error levels and eight requested masks;
-  automatic selection of one numeric/alphanumeric/byte segment and manual
+  automatic optimization across numeric/alphanumeric/byte segments and manual
   `N`, `A`, `Bdddd` inputs. No Kanji, mixed manual segments, ECI, or
   structured append. The field's error-level switch selects error correction.
 - Data Matrix: ECC200 ASCII, C40, Text, X12, EDIFACT and Base256 encodation,

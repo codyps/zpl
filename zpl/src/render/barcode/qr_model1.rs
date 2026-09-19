@@ -31,8 +31,11 @@ pub(super) fn encode(
     mask: usize,
 ) -> Result<Matrix, String> {
     let mut chosen = None;
+    let mut msg = Vec::new();
     for v in 1..=14 {
-        let msg = qr::message(data, mode, v)?;
+        if matches!(v, 1 | 10) {
+            msg = qr::message(data, mode, v)?;
+        }
         let (n, k, _) = BLOCKS[v - 1][level];
         if msg.len() <= n * k * 8 - 4 {
             chosen = Some((v, msg));

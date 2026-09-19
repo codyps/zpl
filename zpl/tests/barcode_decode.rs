@@ -92,6 +92,20 @@ fn qr_round_trips() {
             );
         }
     }
+    for model in [1, 2] {
+        for data in [
+            "abc123456789012345678901234567890XYZ".to_owned(),
+            "12345678901234567890123abc45678901234567890123".to_owned(),
+            "Hello QR 123".repeat(if model == 1 { 6 } else { 40 }),
+        ] {
+            decode(
+                &format!("BQN,{model},3,L,7"),
+                &format!("LA,{data}"),
+                &data,
+                BarcodeFormat::QR_CODE,
+            );
+        }
+    }
 }
 #[test]
 fn large_matrix_round_trips() {

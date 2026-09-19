@@ -109,3 +109,20 @@ fn model1_all_versions_match_printer_with_the_captured_mask() {
     }
     assert_eq!(versions, (1..=14).collect());
 }
+
+#[test]
+fn model2_mixed_segments_match_printer_with_the_captured_mask() {
+    // ISO/IEC 18004:2000 §§8.2–8.4/Annex H. The immutable printer symbol
+    // encodes Byte("Hello") followed by Alphanumeric(" QR 123"). As in the
+    // Model 1 test, isolate compaction from the still-open automatic-mask gap.
+    let input = include_str!("../../zebra-http-api/tests/fixtures/barcodes-zd621-v1/qr.zpl");
+    let png = include_bytes!("../../zebra-http-api/tests/fixtures/barcodes-zd621-v1/qr.png");
+    let reference = raster_diff::Raster::decode_png(png).unwrap();
+    let controlled = input.replace("^BQN,2,4,L,0", "^BQN,2,4,L,7");
+    assert_ne!(controlled, input);
+    let doc = render(controlled.as_bytes(), ZD621_203_DPI).unwrap();
+    let actual = rasterize(&doc.labels[0]).unwrap();
+    assert!(raster_diff::compare(&reference, &actual, false)
+        .unwrap()
+        .matches());
+}

@@ -18,19 +18,7 @@ pub(super) fn render(b: &Barcode, data: &[u8]) -> Result<Path, String> {
         return Err("invalid QR field switches".into());
     }
     let (mode, payload) = match data.get(1) {
-        Some(b'A') => {
-            let d = &data[3..];
-            (
-                if d.iter().all(u8::is_ascii_digit) {
-                    1
-                } else if d.iter().all(|v| ALPHABET.contains(v)) {
-                    2
-                } else {
-                    4
-                },
-                d,
-            )
-        }
+        Some(b'A') => (0, &data[3..]),
         Some(b'M') => match data.get(3) {
             Some(b'N') => (1, &data[4..]),
             Some(b'A') => (2, &data[4..]),
@@ -103,40 +91,97 @@ fn raw_modules(v: usize) -> usize {
     }
     n
 }
+fn count_width(mode: usize, v: usize) -> usize {
+    match mode {
+        1 => {
+            if v < 10 {
+                10
+            } else if v < 27 {
+                12
+            } else {
+                14
+            }
+        }
+        2 => {
+            if v < 10 {
+                9
+            } else if v < 27 {
+                11
+            } else {
+                13
+            }
+        }
+        _ => {
+            if v < 10 {
+                8
+            } else {
+                16
+            }
+        }
+    }
+}
+
+// ISO/IEC 18004:2000 §§8.2–8.4 and Annex H: each segment carries a mode
+// indicator and version-dependent count. Minimize total bits, including those
+// switches; whole-field Byte encoding wastes space on mixed-case input.
+fn automatic_message(data: &[u8], v: usize) -> Result<Vec<bool>, String> {
+    if data.len() > 7089 {
+        return Err("QR data exceeds version 40 capacity".into());
+    }
+    if data.iter().all(u8::is_ascii_digit) {
+        return message(data, 1, v);
+    }
+    if data
+        .iter()
+        .all(|c| ALPHABET.contains(c) && !c.is_ascii_digit())
+    {
+        return message(data, 2, v);
+    }
+    if data.iter().all(|c| !ALPHABET.contains(c)) {
+        return message(data, 4, v);
+    }
+    let mut costs = vec![usize::MAX; data.len() + 1];
+    let mut next = vec![(0, 0); data.len()];
+    costs[data.len()] = 0;
+    for start in (0..data.len()).rev() {
+        for mode in [1, 2, 4] {
+            let width = count_width(mode, v);
+            for end in start + 1..=data.len().min(start + (1 << width) - 1) {
+                let c = data[end - 1];
+                if mode == 1 && !c.is_ascii_digit() || mode == 2 && !ALPHABET.contains(&c) {
+                    break;
+                }
+                let len = end - start;
+                let payload = match mode {
+                    1 => len / 3 * 10 + [0, 4, 7][len % 3],
+                    2 => len / 2 * 11 + len % 2 * 6,
+                    _ => len * 8,
+                };
+                let cost = 4 + width + payload + costs[end];
+                if cost < costs[start] {
+                    costs[start] = cost;
+                    next[start] = (end, mode);
+                }
+            }
+        }
+    }
+    let mut out = Vec::with_capacity(costs[0]);
+    let mut start = 0;
+    while start < data.len() {
+        let (end, mode) = next[start];
+        out.extend(message(&data[start..end], mode, v)?);
+        start = end;
+    }
+    Ok(out)
+}
+
 pub(super) fn message(data: &[u8], mode: usize, v: usize) -> Result<Vec<bool>, String> {
+    if mode == 0 {
+        return automatic_message(data, v);
+    }
     let mut out = Vec::new();
     bits::push(&mut out, mode, 4);
-    bits::push(
-        &mut out,
-        data.len(),
-        match mode {
-            1 => {
-                if v < 10 {
-                    10
-                } else if v < 27 {
-                    12
-                } else {
-                    14
-                }
-            }
-            2 => {
-                if v < 10 {
-                    9
-                } else if v < 27 {
-                    11
-                } else {
-                    13
-                }
-            }
-            _ => {
-                if v < 10 {
-                    8
-                } else {
-                    16
-                }
-            }
-        },
-    );
+    bits::push(&mut out, data.len(), count_width(mode, v));
     match mode {
         1 => {
             digits(data)?;
@@ -168,11 +213,14 @@ pub(super) fn message(data: &[u8], mode: usize, v: usize) -> Result<Vec<bool>, S
 }
 fn encode(data: &[u8], mode: usize, level: usize, mask: usize) -> Result<Matrix, String> {
     let mut chosen = None;
+    let mut msg = Vec::new();
     for v in 1..=40 {
-        let m = message(data, mode, v)?;
+        if matches!(v, 1 | 10 | 27) {
+            msg = message(data, mode, v)?;
+        }
         let capacity = raw_modules(v) / 8 - EC[level][v - 1] * BLOCKS[level][v - 1];
-        if m.len() <= capacity * 8 {
-            chosen = Some((v, capacity, m));
+        if msg.len() <= capacity * 8 {
+            chosen = Some((v, capacity, msg));
             break;
         }
     }

@@ -1299,17 +1299,17 @@
     },
     "qr": {
       "comparison": {
-        "both_black": 2912,
-        "diff_rgb_sha256": "c50a74105a31352c7972518f5e2844078f41ae9d836082e7e366825065ad04bf",
+        "both_black": 3216,
+        "diff_rgb_sha256": "093773097f54a2bad0b4e30730654b2afa3b645b0d703de0089f0e34b960ab0c",
         "dimensions_match": true,
         "exact": false,
-        "local_only": 736,
-        "printer_only": 768
+        "local_only": 496,
+        "printer_only": 464
       },
       "local": {
         "height": 1218,
-        "ink": 3648,
-        "pixels_sha256": "7aa9e3ac55754d2f601435335fdb61df138994562e60a2b182a498aeeeb474f9",
+        "ink": 3712,
+        "pixels_sha256": "fa555c036b7071b2611528f207044f977ea957f3c99f261eb7550b15f6d772cb",
         "width": 832
       },
       "printer": {
