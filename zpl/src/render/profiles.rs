@@ -14,6 +14,7 @@ pub const SPECIFICATION: Options = Options {
     compatibility: Compatibility {
         rounded_box_printer_geometry: false,
         rounded_box_printer_curve: false,
+        circle_printer_curve: false,
         databar_expanded_wide_bar_separator: false,
         databar_expanded_no_date_preview: false,
         tlc39_asterisk_separator: false,
@@ -76,6 +77,7 @@ pub const ZD621_203_DPI: Options = Options {
     compatibility: Compatibility {
         rounded_box_printer_geometry: true,
         rounded_box_printer_curve: true,
+        circle_printer_curve: true,
         databar_expanded_wide_bar_separator: true,
         databar_expanded_no_date_preview: true,
         tlc39_asterisk_separator: true,

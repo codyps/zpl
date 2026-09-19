@@ -538,3 +538,25 @@ fn rounded_box_curve_is_independently_optional() {
         raster(body, ZD621_203_DPI).pixels
     );
 }
+
+#[test]
+fn circle_printer_scan_conversion_is_optional() {
+    // Zebra ^GC, Programming Guide pp. 212–213, specifies nominal diameter
+    // and border. circles-zd621-v1 records the preview's different dot spans.
+    for body in [
+        "^FO20,20^GC21,1,B",
+        "^FO20,20^GC80,3,B",
+        "^FO20,20^GC32,100,B",
+    ] {
+        let mut options = ZD621_203_DPI;
+        options.compatibility.circle_printer_curve = false;
+        assert_eq!(
+            raster(body, options).pixels,
+            raster(body, SPECIFICATION).pixels
+        );
+        assert_ne!(
+            raster(body, options).pixels,
+            raster(body, ZD621_203_DPI).pixels
+        );
+    }
+}

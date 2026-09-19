@@ -19,7 +19,8 @@ a 100×60 box with border 4 and rounding 4 has outer radius 15 and inner radius
 constant-distance outlines. Every changed control improves or preserves ink IoU.
 
 All twelve rounded-box controls are now exact with the independently selectable
-`rounded_box_printer_curve` option. The remaining circle/ellipse controls preserve
+`rounded_box_printer_curve` option. All twelve circles are also exact with
+`circle_printer_curve`. The remaining ellipse controls preserve
 known gaps; this suite does not claim complete curved-shape parity.
 For example, the circle and ellipse one-dot outlines are substantially thicker
 in the preview than nominal geometry, and even/odd dimensions quantize differently.

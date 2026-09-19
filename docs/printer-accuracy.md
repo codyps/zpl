@@ -56,6 +56,11 @@ option overrides.
 
 ## Improvements verified against the printer
 
+- `^GC` uses the captured integer circle curve and cap/side span endpoints.
+  The original circle and twelve earlier controls are exact, along with
+  [38 new atlas and holdout captures](../zpl/tests/fixtures/circles-zd621-v1/README.md)
+  covering diameters 1–511 and thin, thick, and filled circles.
+
 - `^BY` starts with the documented 10-dot height and retains omitted operands.
   Twenty [Code 39/128 controls](../zpl/tests/fixtures/barcode-defaults-zd621-v1/README.md)
   match exactly after a separate default-state reset before each capture.
@@ -92,12 +97,12 @@ that the guide specifies those scan-conversion details.
 
 ## Remaining accuracy work
 
-This is not yet 100% non-text parity. Of the 133 comparison cases, 125 are exact,
-8 render with differences, and none report unsupported input. All 31 additional
+This is not yet 100% non-text parity. Of the 133 comparison cases, 126 are exact,
+7 render with differences, and none report unsupported input. All 31 additional
 controls are exact. Text and non-text failures remain separate in the provenance
 and per-case baseline; aggregate percentages must not conceal either category.
 
-Remaining non-text issues include circle/ellipse scan conversion
+Remaining non-text issues include ellipse scan conversion
 and QR automatic mask selection.
 The tested firmware produces identical QR images for requested masks 0/3/7;
 the renderer still honors the documented mask operand. Do not substitute a
@@ -197,13 +202,12 @@ rendering retains mode-5 payload data. Run `cargo test -p zpl --test maxicode_pr
 
 ## Remaining measured gaps
 
-The main 133-case comparison corpus has eight mismatches. The 31 additional
-controls in the same baseline are exact (156/164 baseline rows are exact).
+The main 133-case comparison corpus has seven mismatches. The 31 additional
+controls in the same baseline are exact (157/164 baseline rows are exact).
 These are current required counts, not a tolerance that may grow silently:
 
 | Case | Underpaint | Overpaint |
 | --- | ---: | ---: |
-| `argument-shape-GC-B` | 354 | 40 |
 | `argument-shape-GE-B` | 488 | 170 |
 | `argument-qr-model-1` | 522 | 522 |
 | `argument-qr-ec-M` | 522 | 540 |
@@ -217,7 +221,7 @@ A further [25 exact captures](../zpl/tests/fixtures/rounded-boxes-zd621-v1/READM
 cover dense small-radius atlases and independent radii through 257. The integer
 curve and geometry rules have separate printer options.
 
-The remaining circle/ellipse gaps concern the firmware's discrete outline geometry. QR encoding
+The remaining ellipse gaps concern the firmware's discrete outline geometry. QR encoding
 matches captured symbols when given the captured mask, but the firmware's
 automatic mask scoring is not yet reproduced; it also ignores the requested
 mask. TLC39 text/numeric compaction, padding, component placement and extended
@@ -236,5 +240,5 @@ retain up to four differing dots; their baselines pin counts and pixel locations
 The [34 curved-shape controls](../zpl/tests/fixtures/shapes-zd621-v1/README.md)
 were captured before the outage and preserve border, radius and even/odd size
 boundaries. `cargo test -p zpl --test shape_preview` pins their current counts
-and exact differing-pixel positions. The twelve rounded-box controls are exact;
-the circle/ellipse controls retain explicit known-gap baselines.
+and exact differing-pixel positions. The twelve rounded-box and twelve circle controls are exact;
+the ellipse controls retain explicit known-gap baselines.

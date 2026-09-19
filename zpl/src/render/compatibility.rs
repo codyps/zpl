@@ -22,6 +22,9 @@ pub struct Compatibility {
     /// Use the integer corner curve measured in ZD621 ^GB previews instead of
     /// cubic circular arcs. Rounded-box dimensions remain separately selectable.
     pub rounded_box_printer_curve: bool,
+    /// Use the measured ZD621 circle curve, minimum border, and span endpoints.
+    /// See circles-zd621-v1; ^GC does not specify pixel-level scan conversion.
+    pub circle_printer_curve: bool,
     /// Reproduce ZD621 A1/B1 separator templates next to a four-module data
     /// bar, including A1 ink beneath a bar and a solid four-module space.
     /// ISO/IEC 24724:2011 §7.2.8 instead requires light dots beneath bars
