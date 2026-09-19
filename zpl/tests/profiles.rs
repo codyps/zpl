@@ -561,3 +561,27 @@ fn circle_printer_scan_conversion_is_optional() {
         );
     }
 }
+
+#[test]
+fn unequal_axis_ellipse_curve_is_independently_optional() {
+    // ^GE dimensions and border: Zebra Programming Guide p. 214. The measured
+    // scan conversion and remaining residuals are pinned in ellipses-zd621-v1.
+    for body in ["^FO20,20^GE120,60,3,B", "^FO20,20^GE60,120,3,B"] {
+        let mut options = ZD621_203_DPI;
+        options.compatibility.ellipse_printer_curve = false;
+        assert_eq!(
+            raster(body, options).pixels,
+            raster(body, SPECIFICATION).pixels
+        );
+        assert_ne!(
+            raster(body, options).pixels,
+            raster(body, ZD621_203_DPI).pixels
+        );
+        options.compatibility.ellipse_printer_curve = true;
+        options.compatibility.circle_printer_curve = false;
+        assert_eq!(
+            raster(body, options).pixels,
+            raster(body, ZD621_203_DPI).pixels
+        );
+    }
+}

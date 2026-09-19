@@ -1,4 +1,4 @@
-//! Integer rounded-box scan conversion measured from ZD621 previews.
+//! Curved-shape scan conversion measured from ZD621 previews.
 //!
 //! Zebra ^GB (Programming Guide pp. 210–211) specifies the rounding percentage,
 //! not this rasterization. The recurrence is derived from the raw radius atlases
@@ -148,6 +148,107 @@ pub(super) fn circle(path: &mut Path, diameter: f64, thickness: f64) -> Result<(
             );
         } else {
             path.rect(left as f64, row as f64, (right - left) as f64, 1.);
+        }
+    }
+    Ok(())
+}
+
+// Zebra ^GE (Programming Guide p. 214) specifies dimensions, not scan conversion.
+// The preview uses the minor-axis radius for its initial decision, with truncated
+// aspect-ratio products in the steep region. These rules were measured from
+// ellipses-zd621-v1. The shallow-region transition is still an approximation:
+// the manifests retain the small residuals instead of claiming exact parity.
+fn ellipse_half_widths(width: usize, height: usize) -> Vec<usize> {
+    let radius = height / 2;
+    let ratio = (width as f64 / height as f64).powi(2);
+    let mut widths = vec![usize::MAX; radius + 1];
+    let mut point = |x: usize, y: usize| widths[y] = widths[y].min(x);
+    let (mut x, mut y) = (0, radius);
+    let mut error = 1. - height as f64 / 2.;
+    let mut last_x = 0;
+    while (x as f64) < ratio * y as f64 {
+        point(x, y);
+        last_x = x;
+        x += 1;
+        if error < 0. {
+            error += (2 * x + 1) as f64;
+        } else {
+            y -= 1;
+            error += (2 * x + 1) as f64 - 2. * (ratio * y as f64).floor();
+        }
+    }
+    error = (error - x as f64 + y as f64) / ratio - 3. * y as f64 + 5.;
+    while y > 0 {
+        point(x, y);
+        last_x = x;
+        y -= 1;
+        if error > 0. {
+            error += 3. - 2. * y as f64;
+        } else {
+            x += 1;
+            error += 2. * x as f64 / ratio + 3. - 2. * y as f64;
+        }
+    }
+    // Preserve the last emitted span at the axis. Even a two-dot minor axis
+    // has a visible two-dot center span in the independent tiny-size controls.
+    point(last_x.max(1), 0);
+    for half in &mut widths {
+        if *half == usize::MAX {
+            *half = 0;
+        }
+    }
+    widths
+}
+
+pub(super) fn ellipse(
+    path: &mut Path,
+    width: f64,
+    height: f64,
+    thickness: f64,
+) -> Result<(), String> {
+    let (width, height) = (
+        (width.floor() as usize).max(2),
+        (height.floor() as usize).max(2),
+    );
+    if width == height {
+        return circle(path, width as f64, thickness);
+    }
+    let transposed = width < height;
+    let (width, height) = (width.max(height), width.min(height));
+    let thickness = (thickness.floor() as usize).max(2);
+    let (cx, cy) = (width / 2, height / 2);
+    let outer = ellipse_half_widths(width, height);
+    let inner = (height > 2 * thickness)
+        .then(|| ellipse_half_widths(width - 2 * thickness, height - 2 * thickness));
+    for row in 0..=2 * cy {
+        let distance = row.abs_diff(cy);
+        let half = outer[distance];
+        if half == 0 {
+            continue;
+        }
+        if path.segments.len() + 10 > MAX_SEGMENTS {
+            return Err("geometry resource limit exceeded".into());
+        }
+        let left = cx.saturating_sub(half);
+        let right = cx + half + usize::from(distance + thickness < cy);
+        let gap = inner
+            .as_ref()
+            .and_then(|widths| widths.get(distance + 1))
+            .and_then(|half| half.checked_sub(1));
+        let mut span = |left: usize, right: usize| {
+            if right > left {
+                if transposed {
+                    path.rect(row as f64, left as f64, 1., (right - left) as f64);
+                } else {
+                    path.rect(left as f64, row as f64, (right - left) as f64, 1.);
+                }
+            }
+        };
+        if let Some(gap) = gap {
+            span(left, right.min(cx.saturating_sub(gap)));
+            span(left.max(cx + gap + 1), right);
+        } else {
+            span(left, right);
         }
     }
     Ok(())

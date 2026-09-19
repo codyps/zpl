@@ -799,6 +799,9 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                         }
                     } else if w == h && options.compatibility.circle_printer_curve {
                         printer_shapes::circle(&mut path, w, t)?;
+                    } else if name == "GE" && w != h && options.compatibility.ellipse_printer_curve
+                    {
+                        printer_shapes::ellipse(&mut path, w, h, t)?;
                     } else {
                         path.ellipse(0., 0., w, h);
                         if w > 2. * t && h > 2. * t {

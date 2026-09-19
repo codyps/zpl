@@ -26,6 +26,9 @@ pub struct Compatibility {
     /// for ^GC and equal-axis ^GE.
     /// See circles-zd621-v1; ^GC does not specify pixel-level scan conversion.
     pub circle_printer_curve: bool,
+    /// Use the measured unequal-axis ^GE curve and border geometry.
+    /// Small edge residuals remain pinned by the ellipses-zd621-v1 controls.
+    pub ellipse_printer_curve: bool,
     /// Reproduce ZD621 A1/B1 separator templates next to a four-module data
     /// bar, including A1 ink beneath a bar and a solid four-module space.
     /// ISO/IEC 24724:2011 §7.2.8 instead requires light dots beneath bars

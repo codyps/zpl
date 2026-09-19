@@ -25,3 +25,15 @@ explicitly reviewed baseline update. A passing test does not mean zero error.
 Zebra Programming Guide ^GE, p. 214, specifies dimensions, border and color,
 not the exact integer scan conversion observed here. See docs/zpl-zbi2-pg-en.pdf
 and the [Zebra command reference](https://www.zebra.com/us/en/support-downloads/knowledge-articles/ait/zpl-command-information-and-details.html).
+
+The `ellipse_printer_curve` option now uses measured steep-region steps, minor-
+axis quantization, transposition for tall ellipses, and the captured cap/side
+endpoint convention. All 272 instances improve or preserve foreground IoU.
+The two initial border-one/filled atlases are exact. Other atlases retain up to
+40 differing dots per frame because the shallow-region transition still needs
+refinement. SPECIFICATION disables this approximation.
+
+Some formerly overfilled frames now have a few missing pixels: for example, the
+filled ratio atlas changes from 0 underpaint / 3538 overpaint to 12 / 0. This is
+an inspected geometry improvement, not a relaxed tolerance; both counts and
+the complete output hash remain exact regression requirements.

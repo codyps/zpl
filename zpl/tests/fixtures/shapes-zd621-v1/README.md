@@ -20,8 +20,10 @@ constant-distance outlines. Every changed control improves or preserves ink IoU.
 
 All twelve rounded-box controls are now exact with the independently selectable
 `rounded_box_printer_curve` option. All twelve circles are also exact with
-`circle_printer_curve`. The remaining ellipse controls preserve
-known gaps; this suite does not claim complete curved-shape parity.
+`circle_printer_curve`. With `ellipse_printer_curve`, six of the ten ellipses
+also match exactly. The 80×120 ellipses each miss four dots; 121×61 misses ten
+and six dots at borders one and three. Those residuals remain pinned; this suite
+does not claim complete curved-shape parity.
 For example, the circle and ellipse one-dot outlines are substantially thicker
 in the preview than nominal geometry, and even/odd dimensions quantize differently.
 
