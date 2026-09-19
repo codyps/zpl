@@ -5,6 +5,7 @@ pub mod profiles;
 use raster_diff::compression;
 mod font;
 mod graphics;
+mod printer_shapes;
 mod validation;
 use crate::{
     output::{Draw, Paint, Path, Point, Scene},
@@ -757,14 +758,45 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                         let printer_geometry =
                             r > 0. && options.compatibility.rounded_box_printer_geometry;
                         let t = if printer_geometry { t.max(2.) } else { t };
+                        let (w, h) = if printer_geometry {
+                            (w.max(t), h.max(t))
+                        } else {
+                            (w, h)
+                        };
                         let radius = r / 8. * w.min(h) / 2.;
                         let inner_radius = if printer_geometry {
                             (r / 16. * (w - 2. * t).min(h - 2. * t)).floor().max(0.)
                         } else {
                             (radius - t).max(0.)
                         };
-                        path.rounded_rect(0., 0., w, h, radius);
-                        path.rounded_rect(t, t, w - 2. * t, h - 2. * t, inner_radius);
+                        if r > 0. && options.compatibility.rounded_box_printer_curve {
+                            let quantize = |radius: f64| {
+                                if printer_geometry {
+                                    radius.floor().max(2.)
+                                } else {
+                                    radius.floor()
+                                }
+                            };
+                            printer_shapes::rounded_rect(
+                                &mut path,
+                                0.,
+                                0.,
+                                w,
+                                h,
+                                quantize(radius),
+                            )?;
+                            printer_shapes::rounded_rect(
+                                &mut path,
+                                t,
+                                t,
+                                w - 2. * t,
+                                h - 2. * t,
+                                quantize(inner_radius),
+                            )?;
+                        } else {
+                            path.rounded_rect(0., 0., w, h, radius);
+                            path.rounded_rect(t, t, w - 2. * t, h - 2. * t, inner_radius);
+                        }
                     } else {
                         path.ellipse(0., 0., w, h);
                         if w > 2. * t && h > 2. * t {

@@ -495,6 +495,7 @@ fn rounded_box_inner_geometry_is_optional() {
     let body = "^FO20,20^GB100,60,4,B,4";
     let mut options = ZD621_203_DPI;
     options.compatibility.rounded_box_printer_geometry = false;
+    options.compatibility.rounded_box_printer_curve = false;
     assert_eq!(
         raster(body, options).pixels,
         raster(body, SPECIFICATION).pixels
@@ -517,5 +518,23 @@ fn rounded_box_inner_geometry_is_optional() {
     assert_eq!(
         raster(square, ZD621_203_DPI).pixels,
         raster(square, SPECIFICATION).pixels
+    );
+}
+
+#[test]
+fn rounded_box_curve_is_independently_optional() {
+    // Captured integer corner recurrence: rounded-boxes-zd621-v1.
+    let body = "^FO20,20^GB100,60,4,B,4";
+    let mut options = ZD621_203_DPI;
+    options.compatibility.rounded_box_printer_curve = false;
+    assert_ne!(
+        raster(body, options).pixels,
+        raster(body, ZD621_203_DPI).pixels
+    );
+    options.compatibility.rounded_box_printer_curve = true;
+    options.compatibility.rounded_box_printer_geometry = false;
+    assert_ne!(
+        raster(body, options).pixels,
+        raster(body, ZD621_203_DPI).pixels
     );
 }

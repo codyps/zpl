@@ -14,11 +14,14 @@
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct Compatibility {
     /// Use measured ZD621 rounded-box geometry: a minimum two-dot border,
-    /// an integer inner radius computed from the inner box using the same
-    /// rounding percentage as the outer box. The nominal profile instead uses
-    /// a constant-distance outline.
+    /// dimensions no smaller than that border, and an independent inner
+    /// rounding percentage. With the integer curve enabled, both corner radii
+    /// are at least two dots. The nominal profile uses constant-distance outlines.
     /// Zebra ^GB, pp. 210–211, defines the rounding scale but not these details.
     pub rounded_box_printer_geometry: bool,
+    /// Use the integer corner curve measured in ZD621 ^GB previews instead of
+    /// cubic circular arcs. Rounded-box dimensions remain separately selectable.
+    pub rounded_box_printer_curve: bool,
     /// Reproduce ZD621 A1/B1 separator templates next to a four-module data
     /// bar, including A1 ink beneath a bar and a solid four-module space.
     /// ISO/IEC 24724:2011 §7.2.8 instead requires light dots beneath bars
