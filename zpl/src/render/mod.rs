@@ -139,7 +139,9 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
     let (mut font_id, mut default_font_id) = ('0', '0');
     let (mut font_w, mut font_h) = (20., 20.);
     let (mut default_w, mut default_h) = (20., 20.);
-    let (mut module, mut ratio, mut bar_h) = (2., 3., 100.);
+    // Zebra Programming Guide ^BY, p. 148: initial module width 2 dots,
+    // ratio 3, and height 10 dots. Later omitted operands retain their values.
+    let (mut module, mut ratio, mut bar_h) = (2., 3., 10.);
     let mut graphics = HashMap::<String, Path>::new();
     let mut warnings = Vec::new();
     let (mut shift, mut top) = (0., 0.);
@@ -452,9 +454,9 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                 }
                 "FR" => field.reverse = true,
                 "BY" => {
-                    module = number(&p, 0, 2.)?;
-                    ratio = number(&p, 1, 3.)?;
-                    bar_h = number(&p, 2, 100.)?;
+                    module = number(&p, 0, module)?;
+                    ratio = number(&p, 1, ratio)?;
+                    bar_h = number(&p, 2, bar_h)?;
                     if !(1. ..=10.).contains(&module) || !(2. ..=3.).contains(&ratio) || bar_h <= 0.
                     {
                         return Err("invalid barcode dimensions".into());

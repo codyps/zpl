@@ -56,6 +56,10 @@ option overrides.
 
 ## Improvements verified against the printer
 
+- `^BY` starts with the documented 10-dot height and retains omitted operands.
+  Twenty [Code 39/128 controls](../zpl/tests/fixtures/barcode-defaults-zd621-v1/README.md)
+  match exactly after a separate default-state reset before each capture.
+
 - White `^GB/^GC/^GE` painting uses white compositing rather than rejection.
   The captured overlapping white box is exact.
 - `^B3` Mod-43 checksums are encoded before the stop character. The checksum

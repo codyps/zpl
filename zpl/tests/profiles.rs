@@ -394,6 +394,27 @@ fn tlc39_preview_departures_are_independent_options() {
 }
 
 #[test]
+fn barcode_defaults_follow_power_up_and_retained_by_values() {
+    // Zebra Programming Guide ^BY, p. 148. Both profiles use documented
+    // defaults; hardware comparisons are in barcode-defaults-zd621-v1.
+    for options in [SPECIFICATION, ZD621_203_DPI] {
+        let field = "^FO20,40^B3N,N,,N,N^FD123456";
+        assert_eq!(
+            raster(field, options).pixels,
+            raster(&format!("^BY2,3,10{field}"), options).pixels
+        );
+        assert_eq!(
+            raster(&format!("^BY3,2,64^BY{field}"), options).pixels,
+            raster(&format!("^BY3,2,64{field}"), options).pixels
+        );
+        assert_eq!(
+            raster(&format!("^BY3,2,64^BY,,10{field}"), options).pixels,
+            raster(&format!("^BY3,2,10{field}"), options).pixels
+        );
+    }
+}
+
+#[test]
 fn tlc39_additional_field_capacity_is_optional() {
     // ZD621 length-2-12 reserves Byte capacity despite emitting Text words.
     let multi = "^FO20,40^BTN,2,2,40,2,4^FD239316,AAAAAAAAAAAA,BBBBBBBBBBBB";
