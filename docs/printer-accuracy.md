@@ -243,3 +243,11 @@ were captured before the outage and preserve border, radius and even/odd size
 boundaries. `cargo test -p zpl --test shape_preview` pins their current counts
 and exact differing-pixel positions. The twelve rounded-box and twelve circle controls are exact;
 the ellipse controls retain explicit known-gap baselines.
+
+Additional [ellipse atlases](../zpl/tests/fixtures/ellipses-zd621-v1/README.md)
+and [32 QR controls](../zpl/tests/fixtures/qr-zd621-v1/README.md) pin the remaining
+work across aspect ratios, borders, both QR models, all correction levels and
+several payload classes. Run `cargo test -p zpl --test ellipse_preview --test qr_preview`.
+These tests retain explicit known-gap counts and pixel hashes; passing them is
+not a claim of zero error. The independent ellipse holdouts must improve along
+with the original corpus when scan conversion changes.
