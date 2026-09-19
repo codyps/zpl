@@ -252,19 +252,6 @@ fn encode(
                 *bit = !*bit;
             }
         }
-        if r % 2 == 1 && (per_row / 2).is_multiple_of(2) {
-            if chunk.len() < per_row && chunk.len().div_ceil(2) % 2 == 1 {
-                row.insert(0, false);
-                for x in &mut ranges {
-                    *x += 1;
-                }
-            } else {
-                row.reverse();
-                for x in &mut ranges {
-                    *x = row.len() - *x - 13;
-                }
-            }
-        }
         let mut sep: Vec<_> = row.iter().map(|v| !v).collect();
         for x in ranges {
             let mut previous = false;
@@ -276,6 +263,18 @@ fn encode(
         let width = sep.len();
         sep[..4].fill(false);
         sep[width - 4..].fill(false);
+        // ISO/IEC 24724:2011 §7.2.8, pp. 37–38: finder element numbering
+        // follows symbol order. Construct its separator in that order, then
+        // mirror the complete row (or offset a partial row with odd finders).
+        if r % 2 == 1 && (per_row / 2).is_multiple_of(2) {
+            if chunk.len() < per_row && chunk.len().div_ceil(2) % 2 == 1 {
+                row.insert(0, false);
+                sep.insert(0, false);
+            } else {
+                row.reverse();
+                sep.reverse();
+            }
+        }
         rows.push(Row {
             bits: row,
             separator: sep,
