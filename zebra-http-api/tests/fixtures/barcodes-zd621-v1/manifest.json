@@ -1371,17 +1371,17 @@
     },
     "tlc39_linked": {
       "comparison": {
-        "both_black": 10444,
-        "diff_rgb_sha256": "5b0cbadf1e40ab19f9d86082d13f699691e1f113009dd850a257493b7a6a70f2",
+        "both_black": 13052,
+        "diff_rgb_sha256": "c6b4962e40c5fcfb34907a04096c2fc1cdf7d4dca9c191646200611a8f0339e3",
         "dimensions_match": true,
-        "exact": false,
-        "local_only": 2812,
-        "printer_only": 2608
+        "exact": true,
+        "local_only": 0,
+        "printer_only": 0
       },
       "local": {
         "height": 1218,
-        "ink": 13256,
-        "pixels_sha256": "297c3a1fe5d68ce6b4be2b3dbf043d7b1d1cb70c8d674891b1a12cfde1ce9f46",
+        "ink": 13052,
+        "pixels_sha256": "add36029a8f56808f29cbaa44d5ad8bf6c1cbae239b256af8c1ed7097e490890",
         "width": 832
       },
       "printer": {

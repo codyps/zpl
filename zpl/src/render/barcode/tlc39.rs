@@ -35,9 +35,20 @@ pub(super) fn render(b: &Barcode, data: &[u8]) -> Result<Path, String> {
     }
     let payload: Vec<_> = payload
         .iter()
-        .map(|&c| if c == b',' { 29 } else { c })
+        .map(|&c| {
+            if c == b',' {
+                if b.compatibility.tlc39_asterisk_separator {
+                    b'*'
+                } else {
+                    29
+                }
+            } else {
+                c
+            }
+        })
         .collect();
-    let matrix = micropdf417::linked(&payload)?;
+    let printer_layout = b.compatibility.tlc39_printer_layout;
+    let matrix = micropdf417::linked(&payload, printer_layout)?;
     let xscale = b.num(4, if b.dpi >= 600 { 4. } else { 2. }, 1., 10.)?;
     let yscale = b.num(5, if b.dpi >= 600 { 8. } else { 4. }, 1., 255.)?;
     let mut micro = b.matrix(&matrix, xscale, yscale)?;
@@ -49,11 +60,29 @@ pub(super) fn render(b: &Barcode, data: &[u8]) -> Result<Path, String> {
     linear.module = module;
     linear.height = height;
     let mut flag = linear.linear(&flag_bits, Some(ratio))?;
-    flag.transform(|p| Point::new(p.x + right + 10. * module, p.y));
+    // US20010045461A1 ¶0067/Fig. 2 extends the flag to catch a tilted
+    // scan crossing the full linear symbol. Extrapolate its maximum slope
+    // (height / width) over the quiet zone and flag, then truncate to dots.
+    let extension = if b.compatibility.tlc39_extended_link_flag {
+        (height * (10. * module + super::super::bounds(&flag).2) / right).floor()
+    } else {
+        0.
+    };
+    flag.transform(|p| {
+        Point::new(
+            p.x + right + 10. * module,
+            p.y * (height + 2. * extension) / height - extension,
+        )
+    });
     path.segments.extend(flag.segments);
-    let offset = matrix.h as f64 * yscale + 2. * yscale;
+    let offset = matrix.h as f64 * yscale
+        + if printer_layout {
+            1. + module
+        } else {
+            2. * yscale
+        };
     path.transform(|p| Point::new(p.x, p.y + offset));
-    micro.transform(|p| Point::new(p.x + module, p.y));
+    micro.transform(|p| Point::new(p.x + module, p.y + if printer_layout { 1. } else { 0. }));
     path.segments.extend(micro.segments);
     Ok(path)
 }

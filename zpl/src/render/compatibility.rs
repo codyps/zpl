@@ -13,6 +13,17 @@
 /// initial value: the renderer does not reapply it after you change an option.
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct Compatibility {
+    /// Encode TLC39 additional-field separators as asterisks, as in ZD621
+    /// previews. Default retains GS separators for TCIF supplementary fields.
+    pub tlc39_asterisk_separator: bool,
+    /// Extend TLC39's linkage flag to intercept tilted scans across Code 39,
+    /// as in US20010045461A1 ¶0067/Fig. 2 and ZD621 previews. Default uses
+    /// the equal-height flag in the patent's original Fig. 1 embodiment.
+    pub tlc39_extended_link_flag: bool,
+    /// Use the ZD621 TLC39 component layout: at least six MicroPDF417 rows,
+    /// one dot above the 2D ink and one Code 39 module between components.
+    /// The TCIF patent US20010045461A1 ¶0027 leaves spacing/alignment open.
+    pub tlc39_printer_layout: bool,
     /// Suppress mode 4/6 MaxiCode fields shorter than six bytes, as in ZD621
     /// previews. The ^BD description (Zebra guide p. 107) gives no such limit.
     pub maxicode_standard_minimum_six_bytes: bool,

@@ -911,7 +911,7 @@ fn tlc39_linkage_and_components() {
     use rxing::oned::OneDReader;
     for (payload, expected, rows, ec) in [
         ("ABC", "ABC", 4, 8),
-        ("12345678901234", "12345678901234", 8, 14),
+        ("12345678901234", "12345678901234", 4, 8),
         ("ABC,DEF", "ABC\u{1d}DEF", 4, 8),
     ] {
         let label = format!("^XA^PW600^LL500^FO20,20^BTN,2,2,40,2,4^FD239316,{payload}^FS^XZ");

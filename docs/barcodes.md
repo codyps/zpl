@@ -205,8 +205,10 @@ The supplied PDFs remain outside the repository and are not redistributed here.
   input is bounded at 2361 bytes and additionally by the selected symbol capacity.
 - TLC39: six-digit Code 39 alone, or linked four-column MicroPDF417 above it,
   with the isolated T flag and linkage codeword 918. Comma-separated serial and
-  additional fields become GS-separated bytes. Byte compaction is not optimized;
-  maximum local payload capacity can be below the ZPL 150-character input limit.
+  additional fields become GS-separated bytes in SPECIFICATION, or asterisk-separated
+  data in the ZD621 profile. Text, numeric and byte compaction share the PDF417
+  encoder. Printer layout and the extended link flag have independent options.
+  Long supplementary payloads can still select a different row count from firmware.
 - Postal: POSTNET 5/9/11 digits, PLANET 11/13 digits, and Intelligent Mail with
   20 tracking plus 0/5/9/11 routing digits. POSTNET/PLANET are legacy codes;
   rendering them does not establish current postal acceptance. Dimensions follow

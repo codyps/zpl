@@ -12,7 +12,11 @@ pub(super) fn compact_full(data: &[u8]) -> Vec<usize> {
 pub(super) fn compact_micro(data: &[u8]) -> Vec<usize> {
     high_level::encode_micro(data)
 }
-// Shared byte packing; TLC39 deliberately retains its byte-only compaction.
+pub(super) fn compact_tlc(data: &[u8]) -> Vec<usize> {
+    high_level::encode_tlc(data)
+}
+
+// Shared byte packing for composite components.
 pub(super) fn compact(data: &[u8]) -> Vec<usize> {
     let mut out = vec![if data.len().is_multiple_of(6) {
         924

@@ -193,8 +193,8 @@ rendering retains mode-5 payload data. Run `cargo test -p zpl --test maxicode_pr
 
 ## Remaining measured gaps
 
-The main 133-case comparison corpus has ten mismatches. The 31 additional
-controls in the same baseline are exact (154/164 baseline rows are exact).
+The main 133-case comparison corpus has nine mismatches. The 31 additional
+controls in the same baseline are exact (155/164 baseline rows are exact).
 These are current required counts, not a tolerance that may grow silently:
 
 | Case | Underpaint | Overpaint |
@@ -208,24 +208,20 @@ These are current required counts, not a tolerance that may grow silently:
 | `argument-qr-mask-3` | 603 | 441 |
 | `argument-qr-mask-7` | 261 | 279 |
 | `barcode-qr` | 768 | 736 |
-| `barcode-tlc39_linked` | 2608 | 2812 |
 
 The curve gaps concern the firmware's discrete outline geometry. QR encoding
 matches captured symbols when given the captured mask, but the firmware's
 automatic mask scoring is not yet reproduced; it also ignores the requested
-mask. TLC39 needs MicroPDF417 text/numeric compaction, its padding sequence,
-and calibrated component/flag placement. Additional captures are needed before
-changing the geometry generally; matching one sample is insufficient evidence.
+mask. TLC39 text/numeric compaction, padding, component placement and extended
+flag geometry now match the original corpus case and 48 of 50 new controls.
+The two long-payload controls still select fewer rows than firmware. See the
+[TLC39 controls](../zpl/tests/fixtures/tlc39-zd621-v1/README.md).
 
 Focused suites cover more than the original corpus: some DataBar Expanded
 stacked separators and malformed long-weight/no-date previews remain different,
 and the resident-font origin controls retain up to four differing dots. Their
 separate baselines continue to pin both counts and pixel locations.
 
-On 2026-09-19 the next TLC39 capture timed out, and repeated read-only requests
-to the printer's HTTP root also timed out without response. No printer restart
-or configuration change was attempted. This prevents collecting further
-hardware evidence; it does not establish what caused the loss of response.
 
 The [34 curved-shape controls](../zpl/tests/fixtures/shapes-zd621-v1/README.md)
 were captured before the outage and preserve border, radius and even/odd size

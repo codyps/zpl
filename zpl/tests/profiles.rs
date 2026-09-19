@@ -361,3 +361,33 @@ fn maxicode_preview_departures_are_independent_options() {
     options.compatibility.maxicode_mode5_preview_omits_data = false;
     assert_ne!(fixed.pixels, raster(mode5, options).pixels);
 }
+
+#[test]
+fn tlc39_preview_departures_are_independent_options() {
+    // US20010045461A1 ¶0024–0029 and ¶0067/Fig. 2; Zebra ^BT pp. 140–141.
+    // Geometry and the observed '*' separator can each be disabled separately.
+    let body = "^FO20,40^BTN,2,2,40,2,4^FD239316,ABC,DEF";
+    let printer = raster(body, ZD621_203_DPI);
+    for change in [
+        |c: &mut Compatibility| c.tlc39_asterisk_separator = false,
+        |c: &mut Compatibility| c.tlc39_extended_link_flag = false,
+        |c: &mut Compatibility| c.tlc39_printer_layout = false,
+    ] {
+        let mut options = ZD621_203_DPI;
+        change(&mut options.compatibility);
+        assert_ne!(printer.pixels, raster(body, options).pixels);
+    }
+    let mut options = ZD621_203_DPI;
+    options.compatibility.tlc39_asterisk_separator = false;
+    options.compatibility.tlc39_extended_link_flag = false;
+    options.compatibility.tlc39_printer_layout = false;
+    assert_eq!(
+        raster(body, options).pixels,
+        raster(body, SPECIFICATION).pixels
+    );
+    let unlinked = "^FO20,40^BTN,2,2,40,2,4^FD239316";
+    assert_eq!(
+        raster(unlinked, ZD621_203_DPI).pixels,
+        raster(unlinked, SPECIFICATION).pixels
+    );
+}

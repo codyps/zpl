@@ -12,6 +12,9 @@ pub const SPECIFICATION: Options = Options {
     height: 1218,
     dpi: 203,
     compatibility: Compatibility {
+        tlc39_asterisk_separator: false,
+        tlc39_extended_link_flag: false,
+        tlc39_printer_layout: false,
         maxicode_standard_minimum_six_bytes: false,
         maxicode_nul_terminates_data: false,
         maxicode_terminal_latch: false,
@@ -66,6 +69,9 @@ pub const ZD621_203_DPI: Options = Options {
     height: 1218,
     dpi: 203,
     compatibility: Compatibility {
+        tlc39_asterisk_separator: true,
+        tlc39_extended_link_flag: true,
+        tlc39_printer_layout: true,
         maxicode_standard_minimum_six_bytes: true,
         maxicode_nul_terminates_data: true,
         maxicode_terminal_latch: true,

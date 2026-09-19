@@ -106,16 +106,19 @@ fn numeric(data: &[u8], out: &mut Vec<usize>) {
     }
 }
 pub(super) fn encode(data: &[u8]) -> Vec<usize> {
-    encode_initial(data, true)
+    encode_initial(data, true, false)
 }
 
 // ISO/IEC 24728 §5.4: MicroPDF417 starts in Byte, not Text mode.
 pub(super) fn encode_micro(data: &[u8]) -> Vec<usize> {
-    encode_initial(data, false)
+    encode_initial(data, false, true)
 }
 
-fn encode_initial(data: &[u8], mut in_text: bool) -> Vec<usize> {
-    let micro = !in_text;
+pub(super) fn encode_tlc(data: &[u8]) -> Vec<usize> {
+    encode_initial(data, false, false)
+}
+
+fn encode_initial(data: &[u8], mut in_text: bool, micro: bool) -> Vec<usize> {
     let threshold = if micro { 13 } else { 8 };
     let mut out = Vec::new();
     if micro && !data.is_empty() && data.iter().all(u8::is_ascii_digit) {
