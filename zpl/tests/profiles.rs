@@ -396,7 +396,9 @@ fn tlc39_preview_departures_are_independent_options() {
 fn databar_expanded_no_date_preview_is_optional() {
     // ISO/IEC 24724:2011 §7.2.5.4.4, p. 28: a date sentinel of 38400
     // terminates the fixed-length symbol. The preview violates that rule.
-    let mut options = ZD621_203_DPI;
+    let mut base = ZD621_203_DPI;
+    base.compatibility.databar_expanded_wide_bar_separator = false;
+    let mut options = base;
     options.compatibility.databar_expanded_no_date_preview = false;
     for payload in [
         "01900123456789083103032768",
@@ -407,7 +409,7 @@ fn databar_expanded_no_date_preview_is_optional() {
         for segments in [4, 22] {
             let body = format!("^FO20,20^BRN,6,1,1,80,{segments}^FD{payload}");
             let standard = raster(&body, SPECIFICATION);
-            assert_ne!(raster(&body, ZD621_203_DPI).pixels, standard.pixels);
+            assert_ne!(raster(&body, base).pixels, standard.pixels);
             assert_eq!(raster(&body, options).pixels, standard.pixels);
         }
     }
@@ -416,9 +418,33 @@ fn databar_expanded_no_date_preview_is_optional() {
         "0190012345678908310303276811250101", // An actual date remains valid.
     ] {
         let body = format!("^FO20,20^BRN,6,1,1,80,22^FD{payload}");
+        assert_eq!(raster(&body, base).pixels, raster(&body, options).pixels);
+    }
+}
+
+#[test]
+fn databar_expanded_wide_bar_separator_is_optional() {
+    // ISO/IEC 24724:2011 §7.2.8, p. 38; controls 3103-11-4 and gtin-4.
+    // The row direction fix applies to both profiles. Only the measured
+    // A1/B1 separator departure is selected by this compatibility option.
+    let mut options = ZD621_203_DPI;
+    options.compatibility.databar_expanded_wide_bar_separator = false;
+    for (payload, added, removed) in [
+        ("0190012345678908310301223311991231", 8, 0),
+        ("0100012345678905", 20, 4),
+    ] {
+        let body = format!("^FO20,20^BRN,6,2,1,80,4^FD{payload}");
+        let specification = raster(&body, SPECIFICATION);
+        assert_eq!(raster(&body, options).pixels, specification.pixels);
+        let printer = raster(&body, ZD621_203_DPI);
+        let pairs: Vec<_> = printer.pixels.iter().zip(&specification.pixels).collect();
         assert_eq!(
-            raster(&body, ZD621_203_DPI).pixels,
-            raster(&body, options).pixels
+            pairs.iter().filter(|(a, b)| **a == 0 && **b == 255).count(),
+            added
+        );
+        assert_eq!(
+            pairs.iter().filter(|(a, b)| **a == 255 && **b == 0).count(),
+            removed
         );
     }
 }

@@ -3,7 +3,7 @@ use std::{fs, path::Path};
 #[path = "../../zebra-http-api/examples/font_support/mod.rs"]
 mod digest;
 #[test]
-fn printer_controls_pin_every_painted_pixel() {
+fn printer_controls_are_pixel_exact() {
     let root =
         Path::new(env!("CARGO_MANIFEST_DIR")).join("tests/fixtures/databar-expanded-zd621-v1");
     let mut count = 0;
@@ -38,6 +38,7 @@ fn printer_controls_pin_every_painted_pixel() {
             "{} local pixels",
             c[0]
         );
+        assert!(diff.matches(), "{} must remain pixel exact", c[0]);
         assert!(
             diff.both_black > 0,
             "{}: positive control must contain ink",

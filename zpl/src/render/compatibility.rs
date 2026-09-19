@@ -13,6 +13,11 @@
 /// initial value: the renderer does not reapply it after you change an option.
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct Compatibility {
+    /// Reproduce ZD621 A1/B1 separator templates next to a four-module data
+    /// bar, including A1 ink beneath a bar and a solid four-module space.
+    /// ISO/IEC 24724:2011 §7.2.8 instead requires light dots beneath bars
+    /// and alternating dark/light dots beneath the finder spaces.
+    pub databar_expanded_wide_bar_separator: bool,
     /// Reproduce the malformed ZD621 DataBar Expanded long-weight/no-date
     /// preview: nonstandard headers with the final digit repeated. ISO/IEC
     /// 24724:2011 §7.2.5.4.4 instead specifies methods 56/57 and date 38400.

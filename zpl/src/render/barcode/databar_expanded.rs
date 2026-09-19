@@ -177,6 +177,7 @@ pub(super) fn render(b: &Barcode, data: &[u8], separator: usize) -> Result<Path,
             per_row,
             separator,
             b.compatibility.databar_expanded_no_date_preview,
+            b.compatibility.databar_expanded_wide_bar_separator,
         )?,
         b.module,
         b.module,
@@ -188,6 +189,7 @@ fn encode(
     per_row: usize,
     separator: usize,
     printer_no_date: bool,
+    printer_wide_bar_separator: bool,
 ) -> Result<Matrix, String> {
     let words = message(data, per_row, printer_no_date)?;
     let count = words.len() + 1;
@@ -229,10 +231,14 @@ fn encode(
         let start = r * per_row / 2;
         let mut elements = vec![1, 1];
         let mut ranges = Vec::new();
+        let mut printer_finders = Vec::new();
         for (p, pair) in chunk.chunks(2).enumerate() {
             elements.extend(pair[0]);
             let finder = finders[start + p];
             let x = elements.iter().sum::<usize>();
+            if printer_wide_bar_separator && matches!(finder, 0 | 2) && pair[0][7] == 4 {
+                printer_finders.push((x, finder));
+            }
             ranges.push(x + if finder.is_multiple_of(2) { 0 } else { 2 });
             let mut pattern = PATTERNS[finder / 2];
             if finder % 2 == 1 {
@@ -258,6 +264,18 @@ fn encode(
             for at in x..x + 13 {
                 sep[at] = !row[at] && !previous;
                 previous = sep[at];
+            }
+        }
+        for (x, finder) in printer_finders {
+            // ZD621 previews depart from ISO/IEC 24724:2011 §7.2.8 when
+            // a four-module data bar precedes A1/B1. Nineteen B1 controls
+            // leave its four-module space solid. The independent gtin-4 and
+            // 3103-13-4 controls also change A1's first nine modules to
+            // 000000100. These are finder templates, independent of payload.
+            sep[x + 9..x + 13].fill(true);
+            if finder == 0 {
+                sep[x..x + 9].fill(false);
+                sep[x + 6] = true;
             }
         }
         let width = sep.len();
@@ -317,7 +335,7 @@ mod tests {
         for length in 1..=68 {
             let data = format!("91{}", &"1234567890".repeat(7)[..length]);
             for per_row in (2..=22).step_by(2) {
-                let m = encode(data.as_bytes(), per_row, 1, false).unwrap();
+                let m = encode(data.as_bytes(), per_row, 1, false, false).unwrap();
                 let encoding = if m.h == 34 {
                     anyd::output::Encoding::Linear(anyd::output::LinearPattern {
                         modules: m.cells[..m.w].to_vec(),

@@ -12,6 +12,7 @@ pub const SPECIFICATION: Options = Options {
     height: 1218,
     dpi: 203,
     compatibility: Compatibility {
+        databar_expanded_wide_bar_separator: false,
         databar_expanded_no_date_preview: false,
         tlc39_asterisk_separator: false,
         tlc39_extended_link_flag: false,
@@ -70,6 +71,7 @@ pub const ZD621_203_DPI: Options = Options {
     height: 1218,
     dpi: 203,
     compatibility: Compatibility {
+        databar_expanded_wide_bar_separator: true,
         databar_expanded_no_date_preview: true,
         tlc39_asterisk_separator: true,
         tlc39_extended_link_flag: true,

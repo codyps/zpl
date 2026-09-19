@@ -88,14 +88,13 @@ that the guide specifies those scan-conversion details.
 
 ## Remaining accuracy work
 
-This is not yet 100% non-text parity. Of the 133 comparison cases, 123 are exact,
-10 render with differences, and none report unsupported input. All 31 additional
+This is not yet 100% non-text parity. Of the 133 comparison cases, 124 are exact,
+9 render with differences, and none report unsupported input. All 31 additional
 controls are exact. Text and non-text failures remain separate in the provenance
 and per-case baseline; aggregate percentages must not conceal either category.
 
 Remaining non-text issues include circle/ellipse/rounded-box scan conversion,
-QR automatic mask selection,
-MaxiCode, DataBar component layout, and TLC39 linked data.
+QR automatic mask selection, and long-payload TLC39 row sizing.
 The tested firmware produces identical QR images for requested masks 0/3/7;
 the renderer still honors the documented mask operand. Do not substitute a
 payload-specific mask table for the missing general selection behavior.
@@ -156,7 +155,7 @@ The [resident-font suite](../zpl/tests/fixtures/resident-fonts-zd621-v1/README.m
 adds 118 exact page/caption controls and 34 origin controls. Rotated font-0
 controls pin up to four differing dots and exceed 99.3% ink IoU individually;
 font A/D controls are exact. This does not promise 80% at arbitrary unsampled
-sizes or for unimplemented scripts. The remaining 10 corpus differences are
+sizes or for unimplemented scripts. The remaining 9 corpus differences are
 non-text shapes/barcodes, still pinned and not claimed as complete.
 
 
@@ -178,8 +177,9 @@ The original Data Matrix corpus case is now exact; legacy modes remain covered.
 DataBar Expanded's compressed GTIN, weight, price and date encodings follow
 ISO/IEC 24724:2011 §7.2.5.4, pp. 26–29. Both original Expanded cases are now
 pixel-exact. A further 48 [printer controls](../zpl/tests/fixtures/databar-expanded-zd621-v1/README.md)
-pin all pixels and separate overpaint/underpaint counts. Some stacked separators
-and the firmware's malformed long-weight/no-date encodings still differ.
+require exact pixels. Separate compatibility options reproduce the firmware's
+malformed long-weight/no-date encodings and adjacent-four-module-bar separator
+templates; SPECIFICATION retains the standard encodings and separators.
 Run `cargo test -p zpl --test databar_expanded_preview`.
 
 MaxiCode now uses Annex F's numeric shifts, A/B latches and two/three-character
@@ -217,12 +217,10 @@ flag geometry now match the original corpus case and 48 of 50 new controls.
 The two long-payload controls still select fewer rows than firmware. See the
 [TLC39 controls](../zpl/tests/fixtures/tlc39-zd621-v1/README.md).
 
-Focused suites cover more than the original corpus: some DataBar Expanded
-stacked separators remain different (the malformed long-weight/no-date
-headers and data now match),
-and the resident-font origin controls retain up to four differing dots. Their
-separate baselines continue to pin both counts and pixel locations.
-
+Focused suites cover more than the original corpus. All 48 additional DataBar
+Expanded controls now match exactly, including the firmware-specific separator
+templates and malformed no-date encodings. The resident-font origin controls
+retain up to four differing dots; their baselines pin counts and pixel locations.
 
 The [34 curved-shape controls](../zpl/tests/fixtures/shapes-zd621-v1/README.md)
 were captured before the outage and preserve border, radius and even/odd size
