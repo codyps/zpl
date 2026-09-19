@@ -381,6 +381,7 @@ fn tlc39_preview_departures_are_independent_options() {
     options.compatibility.tlc39_asterisk_separator = false;
     options.compatibility.tlc39_extended_link_flag = false;
     options.compatibility.tlc39_printer_layout = false;
+    options.compatibility.tlc39_additional_data_byte_capacity = false;
     assert_eq!(
         raster(body, options).pixels,
         raster(body, SPECIFICATION).pixels
@@ -389,6 +390,23 @@ fn tlc39_preview_departures_are_independent_options() {
     assert_eq!(
         raster(unlinked, ZD621_203_DPI).pixels,
         raster(unlinked, SPECIFICATION).pixels
+    );
+}
+
+#[test]
+fn tlc39_additional_field_capacity_is_optional() {
+    // ZD621 length-2-12 reserves Byte capacity despite emitting Text words.
+    let multi = "^FO20,40^BTN,2,2,40,2,4^FD239316,AAAAAAAAAAAA,BBBBBBBBBBBB";
+    let single = "^FO20,40^BTN,2,2,40,2,4^FD239316,AAAAAAAAAAAA";
+    let mut options = ZD621_203_DPI;
+    options.compatibility.tlc39_additional_data_byte_capacity = false;
+    assert_ne!(
+        raster(multi, options).pixels,
+        raster(multi, ZD621_203_DPI).pixels
+    );
+    assert_eq!(
+        raster(single, options).pixels,
+        raster(single, ZD621_203_DPI).pixels
     );
 }
 

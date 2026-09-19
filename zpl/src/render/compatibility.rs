@@ -40,6 +40,11 @@ pub struct Compatibility {
     /// one dot above the 2D ink and one Code 39 module between components.
     /// The TCIF patent US20010045461A1 ¶0027 leaves spacing/alignment open.
     pub tlc39_printer_layout: bool,
+    /// Reserve Byte-compaction capacity for TLC39 data containing additional
+    /// fields, while retaining the actual Text/Numeric encoding. Measured in
+    /// tlc39-zd621-v1 length-* controls; ^BT pp. 140–141 does not prescribe
+    /// this conservative sizing. Default: fit the actual codeword count.
+    pub tlc39_additional_data_byte_capacity: bool,
     /// Suppress mode 4/6 MaxiCode fields shorter than six bytes, as in ZD621
     /// previews. The ^BD description (Zebra guide p. 107) gives no such limit.
     pub maxicode_standard_minimum_six_bytes: bool,

@@ -48,7 +48,17 @@ pub(super) fn render(b: &Barcode, data: &[u8]) -> Result<Path, String> {
         })
         .collect();
     let printer_layout = b.compatibility.tlc39_printer_layout;
-    let matrix = micropdf417::linked(&payload, printer_layout)?;
+    // ISO/IEC 24728 §5.4 Byte compaction packs six bytes into five words;
+    // add the initial latch. The ZD621 length-*/size-* captures reserve this
+    // capacity for multiple fields, independent of actual encoding. The sizing
+    // estimate excludes the linkage word (13 bytes still select six rows).
+    let reserved =
+        if b.compatibility.tlc39_additional_data_byte_capacity && data[7..].contains(&b',') {
+            1 + payload.len() / 6 * 5 + payload.len() % 6
+        } else {
+            0
+        };
+    let matrix = micropdf417::linked(&payload, printer_layout, reserved)?;
     let xscale = b.num(4, if b.dpi >= 600 { 4. } else { 2. }, 1., 10.)?;
     let yscale = b.num(5, if b.dpi >= 600 { 8. } else { 4. }, 1., 255.)?;
     let mut micro = b.matrix(&matrix, xscale, yscale)?;

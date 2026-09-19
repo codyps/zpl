@@ -61,11 +61,11 @@ pub(super) fn encode(data: &[u8], mode: usize) -> Result<Matrix, String> {
 }
 
 // TLC39 adds a linkage codeword before the ordinary compaction latch.
-pub(super) fn linked(data: &[u8], printer_layout: bool) -> Result<Matrix, String> {
+pub(super) fn linked(data: &[u8], printer_layout: bool, reserved: usize) -> Result<Matrix, String> {
     let mut words = vec![918];
     words.extend(pdf417::compact_tlc(data));
     let mode = (if printer_layout { 24 } else { 23 }..34)
-        .find(|&i| 4 * ROWS[i] - EC[i] >= words.len())
+        .find(|&i| 4 * ROWS[i] - EC[i] >= words.len().max(reserved))
         .ok_or("TLC39 payload exceeds four-column MicroPDF417 capacity")?;
     // Valid text-mode latches emit no data; use the same padding sequence as
     // standalone MicroPDF417. The linkage marker precedes the mode latch.

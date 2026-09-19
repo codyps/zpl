@@ -94,7 +94,7 @@ controls are exact. Text and non-text failures remain separate in the provenance
 and per-case baseline; aggregate percentages must not conceal either category.
 
 Remaining non-text issues include circle/ellipse/rounded-box scan conversion,
-QR automatic mask selection, and long-payload TLC39 row sizing.
+and QR automatic mask selection.
 The tested firmware produces identical QR images for requested masks 0/3/7;
 the renderer still honors the documented mask operand. Do not substitute a
 payload-specific mask table for the missing general selection behavior.
@@ -213,9 +213,11 @@ The curve gaps concern the firmware's discrete outline geometry. QR encoding
 matches captured symbols when given the captured mask, but the firmware's
 automatic mask scoring is not yet reproduced; it also ignores the requested
 mask. TLC39 text/numeric compaction, padding, component placement and extended
-flag geometry now match the original corpus case and 62 of 75 new controls.
+flag geometry now match the original corpus case and all 119 additional controls.
 Short all-numeric payloads now use Numeric compaction, including one digit.
-Thirteen multi-field controls still select fewer rows than firmware. See the
+The profile reserves Byte-compaction capacity for additional fields while
+retaining the actual Text/Numeric encoding; a separate option disables this
+conservative sizing. Mixed-data numeric runs switch at fourteen digits. See the
 [TLC39 controls](../zpl/tests/fixtures/tlc39-zd621-v1/README.md).
 
 Focused suites cover more than the original corpus. All 48 additional DataBar
