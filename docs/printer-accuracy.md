@@ -1181,3 +1181,19 @@ limit, while allowing the larger GS dimensions documented by that command.
 See [the raw printer evidence](../zpl/tests/fixtures/bitmap-maximum-zd621-v1/README.md).
 The exploratory QR-to-Code-128 magnification-12 caption gap is now fixed;
 the separate unexpected QR ink from an empty field remains open.
+
+## Empty QR fields produce unstable printer output
+
+The unexpected empty-field QR ink is now reproduced independently: three
+identical BQ-without-FD requests returned different symbols, as did two
+identical FDQA, requests with an empty payload. Independent decoding recovered
+changing control bytes and fragments of temporary PNG filenames; a QR after
+Code 128 decoded to `__TMP758.PNG`, absent from its source. This is consistent
+with stale printer buffer contents, though its internal cause is unproven.
+
+`empty_qr_preview` preserves seven raw diagnostic captures and proves their
+source equality and output inequality. These are explicitly not successful
+accuracy comparisons: no deterministic renderer can match changing native
+pixels from the same source. The renderer continues leaving fields without
+FD empty and rejecting missing QR data, without inventing a compatibility
+mapping for unrelated buffer bytes. See [the evidence](../zpl/tests/fixtures/empty-qr-zd621-v1/README.md).
