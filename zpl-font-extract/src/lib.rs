@@ -21,6 +21,15 @@ pub struct Page {
     pub height: u32,
     tiles: Vec<Tile>,
 }
+// ^GS p. 217 selects the symbol face; it has no printable vertical-bar probe.
+fn field_command(font: char) -> String {
+    if font == 'S' {
+        "GS".into()
+    } else {
+        format!("A{font}")
+    }
+}
+
 /// ASCII glyphs are hex-escaped, including all ZPL syntax characters.
 pub fn page_plan(codes: &[u8], s: Settings) -> Result<Page, String> {
     s.validate()?;
@@ -35,6 +44,8 @@ pub fn page_plan(codes: &[u8], s: Settings) -> Result<Page, String> {
     let width = (cw * 2).div_ceil(64) * 64;
     let height = (codes.len() as u32 + 1).div_ceil(2) * ch;
     let mut zpl = format!("^XA^PW{width}^LL{height}^LH0,0^LS0^LT0^PON^LRN^CI27");
+    let command = field_command(s.font);
+    let sentinel = if s.font == 'S' { "_41" } else { "_7C" };
     let mut tiles = Vec::new();
     for (i, code) in std::iter::once(None)
         .chain(codes.iter().copied().map(Some))
@@ -47,10 +58,10 @@ pub fn page_plan(codes: &[u8], s: Settings) -> Result<Page, String> {
         if code.is_some() {
             write!(
                 zpl,
-                "\n^FT{},{}^A{}N,{},{}^FH^FD{}^FS",
+                "\n^FT{},{}^{}N,{},{}^FH^FD{}^FS",
                 x + 16,
                 base,
-                s.font,
+                command,
                 s.height,
                 s.width,
                 encoded
@@ -59,10 +70,10 @@ pub fn page_plan(codes: &[u8], s: Settings) -> Result<Page, String> {
         }
         write!(
             zpl,
-            "\n^FT{},{}^A{}N,{},{}^FH^FD_7C{}_7C^FS",
+            "\n^FT{},{}^{}N,{},{}^FH^FD{sentinel}{}{sentinel}^FS",
             x + 16,
             second,
-            s.font,
+            command,
             s.height,
             s.width,
             encoded
@@ -283,7 +294,8 @@ pub fn verification_plan(
         pen += g.advance as i32;
     }
     let encoded: String = text.chars().map(|c| format!("_{:02X}", c as u32)).collect();
-    let zpl=format!("^XA^PW{width}^LL{height}^LH0,0^LS0^LT0^PON^LRN^CI27^FT16,{baseline}^A{}N,{},{}^FH^FD{encoded}^FS^XZ",s.font,s.height,s.width);
+    let command = field_command(s.font);
+    let zpl=format!("^XA^PW{width}^LL{height}^LH0,0^LS0^LT0^PON^LRN^CI27^FT16,{baseline}^{}N,{},{}^FH^FD{encoded}^FS^XZ",command,s.height,s.width);
     Ok((zpl, image))
 }
 
@@ -417,6 +429,37 @@ mod packed_tests {
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn graphic_symbols_use_a_visible_registered_symbol_probe() {
+        let settings = Settings {
+            font: 'S',
+            height: 24,
+            width: 24,
+            dpi: 203,
+        };
+        let page = page_plan(&(64..=71).collect::<Vec<_>>(), settings).unwrap();
+        // ^GS p. 217: A-E are symbols; the usual vertical-bar probe is blank.
+        assert_eq!(
+            page.zpl.as_bytes(),
+            include_bytes!("../tests/fixtures/graphic-symbols/page-004.zpl")
+        );
+        let raster = Raster::decode_png(include_bytes!(
+            "../tests/fixtures/graphic-symbols/page-004.png"
+        ))
+        .unwrap();
+        let glyphs = extract_page(&raster, &page).unwrap();
+        assert!(glyphs.iter().all(|g| g.advance == 26));
+        assert_eq!(
+            glyphs
+                .iter()
+                .filter(|g| !g.bitmap.is_empty())
+                .map(|g| g.codepoint)
+                .collect::<Vec<_>>(),
+            b"ABCDE"
+        );
+        assert!(!page.zpl.contains("^AS"));
+    }
+
     #[test]
     fn printer_blank_glyphs_keep_their_measured_advances() {
         let settings = Settings {

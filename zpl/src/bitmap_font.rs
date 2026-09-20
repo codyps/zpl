@@ -1,6 +1,7 @@
 //! Bitmap strike types and ZBF1 decoding used by the renderer.
 #[derive(Debug, Clone, Copy)]
 pub struct Settings {
+    /// Resident font ID; S identifies the ^GS symbol face (not ^AS).
     pub font: char,
     pub height: u32,
     pub width: u32,
@@ -8,7 +9,7 @@ pub struct Settings {
 }
 impl Settings {
     pub fn validate(&self) -> Result<(), String> {
-        if !"0ABCDEFGH".contains(self.font)
+        if !"0ABCDEFGHS".contains(self.font)
             || !(1..=128).contains(&self.height)
             || self.width > 128
             || !(1..=2400).contains(&self.dpi)
