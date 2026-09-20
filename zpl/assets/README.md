@@ -116,3 +116,14 @@ letters have empty bitmaps with their full advance, as measured on the printer.
 Extraction, independent verification, asset hash and blank-versus-space controls
 are in [resident-h-zd621-v1](../tests/fixtures/resident-h-zd621-v1/README.md).
 Dimensions, gap and baseline follow Tables 29/31 of the ZPL Guide (pp. 1582–1583).
+
+## Font 0 at 28 by 14 dots
+
+`font0-28-14.zbf` adds a complete 95-character ASCII strike from the ZD621
+203-DPI V93.21.33Z printer. The separate `font0-28-14-legacy-backslash.zbf`
+preserves its CI0 backslash mapping. Both captures and their independent
+verification strings matched exactly; repeated first pages were identical.
+Raw requests, PNGs, asset hashes and regression comparisons live in
+`../tests/fixtures/bounded-text-zd621-v1/`. This removes scaled-font errors in
+the comparison corpus's TB cases; it does not claim other uncaptured sizes or
+Unicode glyphs are exact.

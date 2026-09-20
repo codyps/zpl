@@ -290,6 +290,14 @@ pub struct Compatibility {
     /// Disabled: use ordinary ^FP glyph flow and ^FB word spacing (Programming
     /// Guide ^FP p. 202, ^FB pp. 186–188; field-block-direction-zd621-v1).
     pub block_field_direction_printer_layout: bool,
+    /// Measured ZD621 TB line leading (Programming Guide p. 356).
+    /// Disabled: advance by the selected font height.
+    pub bounded_text_printer_pitch: bool,
+    /// Measured ZD621 TB rectangle anchors and proportional-font dot offsets.
+    pub bounded_text_printer_anchors: bool,
+    /// A subsequent ^A cancels a previously selected TB block on the ZD621.
+    /// Disabled: retain the block while changing the font (guide p. 356).
+    pub bounded_text_font_cancels_block: bool,
     /// In horizontal/reverse ^FB, omit the ^FP gap after ASCII word spaces.
     /// Disabled: apply the gap to every character, as in plain text.
     pub block_spaces_ignore_character_gap: bool,

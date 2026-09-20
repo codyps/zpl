@@ -4,6 +4,7 @@ mod barcode_edges;
 pub mod compatibility;
 pub mod profiles;
 use raster_diff::compression;
+mod bounded_text;
 mod field_block;
 mod font;
 mod graphics;
@@ -68,6 +69,8 @@ struct Field {
     origins: Option<Vec<Option<(f64, f64)>>>,
     multiple_paths: Option<Vec<(f64, f64, Path)>>,
     block: Option<(f64, usize, f64, u8, f64)>,
+    bounded: Option<(f64, f64)>,
+    requested_text_height: Option<f64>,
     barcode_split: Vec<barcode_edges::PartBoundary>,
     barcode_width: f64,
     baseline_height: f64,
@@ -98,6 +101,8 @@ impl Default for Field {
             origins: None,
             multiple_paths: None,
             block: None,
+            bounded: None,
+            requested_text_height: None,
             barcode_split: Vec::new(),
             barcode_width: 0.,
             baseline_height: 0.,
@@ -303,7 +308,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                 "XA" | "XZ" | "FS" | "FR" => Some(0),
                 "CI" | "PW" | "LL" | "LS" | "LT" | "LR" | "PO" | "FH" => Some(1),
                 "LH" | "FW" | "FP" => Some(2),
-                "FO" | "FT" | "CF" | "BY" | "XG" => Some(3),
+                "FO" | "FT" | "CF" | "BY" | "XG" | "TB" => Some(3),
                 "GB" | "GD" | "B3" | "FB" => Some(5),
                 "BC" => Some(6),
                 "GE" => Some(4),
@@ -427,7 +432,20 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                     }
                     field.direction = (direction, gap);
                 }
+                "TB" => {
+                    let width = number(&p, 1, 1.)?;
+                    let height = number(&p, 2, 1.)?;
+                    if width < 1. || height < 1. || width.fract() != 0. || height.fract() != 0. {
+                        return Err("invalid bounded text dimensions".into());
+                    }
+                    if !p[0].is_empty() {
+                        field.rotation = rotation(p[0])?;
+                    }
+                    field.bounded = Some((width, height));
+                    field.block = None;
+                }
                 "FB" => {
+                    field.bounded = None;
                     // ^FB selects text layout, replacing a preceding ^GS symbol field.
                     // ZD621 controls in graphic-symbols-zd621-v1 retain GS dimensions.
                     if font_id == 'S' {
@@ -539,10 +557,14 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                         (default_requested_w, default_requested_h)
                     };
                     (font_w, font_h) = font_dimensions(&p, dw, dh, font_id)?;
+                    field.requested_text_height = Some(number(&p, 1, dh)?);
                     default_w = font_w;
                     default_h = font_h;
                 }
                 n if n.starts_with('A') => {
+                    if options.compatibility.bounded_text_font_cancels_block {
+                        field.bounded = None;
+                    }
                     field.explicit_font = true;
                     font_id = match n {
                         "A0" => '0',
@@ -567,6 +589,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                         (default_requested_w, default_requested_h)
                     };
                     (font_w, font_h) = font_dimensions(&p, dw, dh, font_id)?;
+                    field.requested_text_height = Some(number(&p, 1, dh)?);
                 }
                 "GS" => {
                     // ^GS p. 217 selects a separate symbol face, not ^AS.
@@ -749,20 +772,46 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                                 baseline,
                                 parts,
                                 center_overflow,
-                            } = text_block(
-                                if block.is_some() {
-                                    text_font
-                                        .with_block_flow(field.direction, options.compatibility)
-                                } else {
-                                    text_font
-                                },
-                                value,
-                                font_w,
-                                font_h,
-                                block,
-                                options.compatibility,
-                                encoding,
-                            )?;
+                            } = if let Some(bounds) = field.bounded {
+                                if field.direction != (b'H', 0.) {
+                                    return Err("field direction with TB is unsupported".into());
+                                }
+                                bounded_text::layout(
+                                    text_font,
+                                    value,
+                                    (font_w, font_h),
+                                    field
+                                        .requested_text_height
+                                        .or(Some(default_requested_h))
+                                        .filter(|h| *h > 0.)
+                                        .unwrap_or(font_h),
+                                    if options.compatibility.bounded_text_printer_anchors
+                                        && font_id == '0'
+                                        && matches!(field.rotation, b'R' | b'I')
+                                    {
+                                        (bounds.0, (bounds.1 - 1.).max(0.))
+                                    } else {
+                                        bounds
+                                    },
+                                    field.justification == 1,
+                                    options.compatibility.bounded_text_printer_pitch,
+                                )?
+                            } else {
+                                text_block(
+                                    if block.is_some() {
+                                        text_font
+                                            .with_block_flow(field.direction, options.compatibility)
+                                    } else {
+                                        text_font
+                                    },
+                                    value,
+                                    font_w,
+                                    font_h,
+                                    block,
+                                    options.compatibility,
+                                    encoding,
+                                )?
+                            };
                             let (path, parts, direction_size) =
                                 if field.direction != (b'H', 0.) && block.is_none() {
                                     let layout = font::directed_text(
@@ -813,6 +862,9 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                                 } else {
                                     (font::width_for(text_font, value, font_w, font_h)?, font_h)
                                 });
+                            if let Some(size) = field.bounded {
+                                field.text_size = Some(size);
+                            }
                             if let Some(size) = direction_size {
                                 field.text_size = Some(size);
                             }
@@ -1105,6 +1157,18 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                             field.justification
                         };
                         let transform = |p: Point| {
+                            if let Some(bounds) = field.bounded {
+                                let p = bounded_text::position(
+                                    p,
+                                    bounds,
+                                    field.rotation,
+                                    field.baseline,
+                                    field_justification == 1,
+                                    font_id == '0',
+                                    options.compatibility.bounded_text_printer_anchors,
+                                );
+                                return Point::new(p.x + x, p.y + y);
+                            }
                             // ^FO/^FT pp. 201/205: right justification changes
                             // the origin, not the character order. Auto (2) is
                             // left for the supported Latin scripts.

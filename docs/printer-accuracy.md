@@ -118,7 +118,7 @@ as a rejection control. Its positive case now uses eleven uncompressed UPC-A
 digits and a fresh nonblank printer response; all four retail aliases match.
 
 A fresh audit of the completed 512-frame comparison conformance reference set
-also found unsupported text commands (`^TB`, `^PA`, numbered fields and
+also found unsupported text commands (`^PA`, numbered fields and
 serialization), missing glyphs/encodings and unsampled font sizes below the
 80% target. These remain work beyond the original 133 cases. Capture context
 must be preserved: its reset uses `^BY2,3,100`, and some inputs still use PW812,
@@ -710,6 +710,25 @@ options. Existing ordinary wrapping and backslash regressions remain in place.
 
 Run `cargo test -p zpl --test field_block_markers_preview --test profiles`.
 
-Field direction now has [100 passing printer comparisons](../zpl/tests/fixtures/field-direction-zd621-v1/README.md),
-with 685 text regions at 98.9474% foreground IoU or better. Two FP+FB
-wrapping cases remain explicitly unsupported and are excluded from that count.
+Field direction now has [102 passing printer comparisons](../zpl/tests/fixtures/field-direction-zd621-v1/README.md),
+with 697 text regions at 98.9474% foreground IoU or better. Both FP+FB
+command-order cases are exact. [41 additional directed-block frames](../zpl/tests/fixtures/field-block-direction-zd621-v1/README.md)
+cover wrapping, rotation, alignment and quotient/remainder word justification;
+all 230 regions exceed 99.80% IoU.
+
+### Bounded text blocks
+
+[50 TB frames](../zpl/tests/fixtures/bounded-text-zd621-v1/README.md) cover
+rectangle layout, height clipping, narrow wrapping, spaces, angle escapes,
+command order, all rotations and both origins/justifications. Forty-one frames
+are exact; every one of 362 regions exceeds 88.23% foreground IoU. The twelve
+independent conformance TB cases now meet the text target. An exact 28x14 font-0
+ASCII strike replaces scaled glyphs that previously scored around 34%.
+
+Separate options select measured printer line leading, rectangle anchors, and
+cancellation by later font selection; SPECIFICATION disables them. Source/PNG/
+render hashes and exact under/overpaint pins prevent silent regressions.
+Nondefault FP combined with TB remains explicitly unsupported; this suite does
+not establish accuracy for every text layout combination or font size.
+
+Run `cargo test -p zpl --test bounded_text --test bounded_text_preview`.

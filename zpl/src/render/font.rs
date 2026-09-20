@@ -60,6 +60,18 @@ impl Font {
         }
         self
     }
+    pub(super) fn bounded_pitch(self, w: f64, h: f64) -> Result<f64, String> {
+        // ZD621 TB controls: proportional line leading is 25%; A's leading
+        // is quantized at its horizontally magnified bitmap cell width.
+        Ok(match self.id {
+            '0' => h * 1.25,
+            'A' => {
+                let width = width_for(self, "A", w, h)? * 5. / 6.;
+                h * (width * 1.1).floor() / width
+            }
+            _ => h,
+        })
+    }
     pub(super) fn block_overprints(self) -> bool {
         self.block_flow
             .is_some_and(|flow| flow.printer_layout && flow.direction == b'V')
@@ -159,6 +171,7 @@ fn strikes() -> &'static Vec<(Settings, Vec<Glyph>)> {
             include_bytes!("../../assets/font0-16-0.zbf").as_slice(),
             include_bytes!("../../assets/font0-20-0.zbf").as_slice(),
             include_bytes!("../../assets/font0-24-24.zbf").as_slice(),
+            include_bytes!("../../assets/font0-28-14.zbf").as_slice(),
             include_bytes!("../../assets/font0-64-0.zbf").as_slice(),
             include_bytes!("../../assets/font0-32-16.zbf").as_slice(),
             include_bytes!("../../assets/font0-32-24.zbf").as_slice(),
@@ -197,6 +210,9 @@ fn legacy_strikes() -> &'static Vec<(Settings, Vec<Glyph>)> {
                 )),
                 ('0', 20, 0) => Some(include_bytes!(
                     "../../assets/font0-20-0-legacy-backslash.zbf"
+                )),
+                ('0', 28, 14) => Some(include_bytes!(
+                    "../../assets/font0-28-14-legacy-backslash.zbf"
                 )),
                 ('0', 24, 24) => Some(include_bytes!(
                     "../../assets/font0-24-24-legacy-backslash.zbf"
