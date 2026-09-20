@@ -12,6 +12,7 @@ pub const SPECIFICATION: Options = Options {
     height: 1218,
     dpi: 203,
     compatibility: Compatibility {
+        block_center_rounds_down: false,
         block_narrow_printer_layout: false,
         graphic_clamps_negative_origin: false,
         graphic_ft_last_row_baseline: false,
@@ -104,6 +105,7 @@ pub const ZD621_203_DPI: Options = Options {
     height: 1218,
     dpi: 203,
     compatibility: Compatibility {
+        block_center_rounds_down: true,
         block_narrow_printer_layout: true,
         graphic_clamps_negative_origin: true,
         graphic_ft_last_row_baseline: true,

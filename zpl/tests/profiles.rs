@@ -1130,3 +1130,25 @@ fn narrow_field_block_preview_behavior_is_optional() {
         );
     }
 }
+
+#[test]
+fn centered_blocks_quantize_before_rotation_only_when_selected() {
+    // Empirical ^FB p. 187 rounding: field-block-centering-zd621-v1.
+    // ABC advances 18 dots in resident A, leaving a half-dot center at 19.
+    let mut options = ZD621_203_DPI;
+    options.compatibility.block_center_rounds_down = false;
+    let normal = "^FO80,80^AAN,9,5^FB19,1,0,C^FDABC";
+    assert_eq!(
+        raster(normal, options).pixels,
+        raster(normal, ZD621_203_DPI).pixels
+    );
+    let inverted = normal.replace("AAN", "AAI");
+    assert_ne!(
+        raster(&inverted, options).pixels,
+        raster(&inverted, ZD621_203_DPI).pixels
+    );
+    assert_eq!(
+        raster(&inverted, ZD621_203_DPI).pixels,
+        raster(&inverted.replace(",0,C", ",0,L"), ZD621_203_DPI).pixels
+    );
+}

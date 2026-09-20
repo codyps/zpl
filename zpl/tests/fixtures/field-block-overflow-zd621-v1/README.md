@@ -6,7 +6,7 @@ The manifest pins input/capture hashes, exact underpaint/overpaint counts and
 rendered pixel hashes. Every frame must also exceed 80% foreground-ink IoU.
 
 The 24 resident A/F frames are pixel-exact. The 12 proportional font-0 frames
-score 97.98–100% foreground IoU; their small rotated-glyph residuals are pinned,
+retain small rotated-glyph residuals, which are pinned,
 not ignored or normalized. All ink in this suite is text, so whitespace cannot
 inflate the text score.
 
@@ -27,3 +27,6 @@ unit tests compare overprinting to independent fields on the same row.
 Reference: Zebra [ZPL II Programming Guide](https://www.zebra.com/content/dam/support-dam/en/documentation/unrestricted/guide/software/zpl-zbi2-pg-en.pdf),
 ^FB pp. 185–187 (maximum-line and justification parameters on p. 186),
 ^FO p. 201, ^FT p. 205. Exact printer placement is defined by these raw controls.
+
+Integer centering before rotation (field-block-centering-zd621-v1) reduces
+errors in six font-0 frames without changing their printer references.

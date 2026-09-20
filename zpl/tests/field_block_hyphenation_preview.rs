@@ -20,7 +20,7 @@ fn printer_controls_pin_every_painted_pixel() {
         let doc = zpl::render(&input, zpl::render::profiles::ZD621_203_DPI).unwrap();
         let actual = zpl::output::raster::rasterize(&doc.labels[0]).unwrap();
         let diff = raster_diff::compare(&reference, &actual, false).unwrap();
-        if c[0].starts_with("layout-") && (c[0].ends_with('B') || c[0].ends_with('I')) {
+        if c[0].starts_with("layout-0-") && c[0].ends_with('B') {
             assert!(diff.ink_iou() >= 0.8, "{} text IoU", c[0]);
         } else {
             assert!(diff.matches(), "{} must match the printer exactly", c[0]);

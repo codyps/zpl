@@ -13,6 +13,9 @@
 /// initial value: the renderer does not reapply it after you change an option.
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct Compatibility {
+    /// Round centered FB line positions down before rotating their paths.
+    /// Disabled: keep fractional centers through rasterization (^FB p. 187).
+    pub block_center_rounds_down: bool,
     /// Emit one character when a block cannot fit a character plus hyphen,
     /// adding a hyphen only if both fit. Separators can consume blank rows.
     /// Disabled: suppress blocks narrower than the font (^FB p. 186) and

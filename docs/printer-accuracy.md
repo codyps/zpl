@@ -575,9 +575,9 @@ retain their previous results. Run `cargo test -p zpl --test field_block_roundin
 ## Automatic field-block hyphenation
 
 [Sixty-one hyphenation frames](../zpl/tests/fixtures/field-block-hyphenation-zd621-v1/README.md)
-replace the previous overlong-word error with measured wrapping. Fifty-three
-frames are exact; eight inverted/rotated text layouts retain pinned residuals
-at 95.09–96.05% foreground IoU. Controls cover width boundaries, existing text
+replace the previous overlong-word error with measured wrapping. Fifty-nine
+frames are exact; two font-0 B layouts retain three underpaint dots each and
+zero overpaint. Controls cover width boundaries, existing text
 prefixes, hanging indents, final-row overflow, all alignments and rotations,
 FO/FT and CI0/27/28. Sixteen independently verified font captures supply native
 soft-hyphen/eth glyphs without modifying the previous ASCII assets.
@@ -614,4 +614,16 @@ when a block cannot fit a character plus hyphen, retains the measured exact-fit
 hyphen and separator behavior, and clamps negative alignment slack.
 SPECIFICATION instead suppresses text below the documented font-width minimum.
 Run `cargo test -p zpl --test field_block_narrow_preview --test profiles`.
-Explicit escapes and fractional centering under rotation remain open.
+Explicit escapes and negative rotated text origins remain open.
+
+
+## Centering before rotation
+
+[Four centering atlases](../zpl/tests/fixtures/field-block-centering-zd621-v1/README.md)
+contain 128 pixel-exact controls across fonts 0/A, FO/FT, every rotation and
+odd slack widths. `block_center_rounds_down` quantizes each centered line
+before rotating it; SPECIFICATION retains fractional positions. Fourteen
+older overflow/hyphenation frames improve, with six becoming exact. The 62
+saved centered-text frames reviewed show no increase in either error count.
+Run `cargo test -p zpl --test field_block_centering_preview --test field_block_hyphenation_preview
+--test field_block_overflow_preview --test profiles`.

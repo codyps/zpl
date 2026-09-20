@@ -1342,7 +1342,7 @@ fn text_block(
         let x = inset
             + match align {
                 b'C' => {
-                    (slack
+                    let center = (slack
                         - if center_space
                             && !*hard_break
                             && !*automatic_hyphen
@@ -1352,7 +1352,12 @@ fn text_block(
                         } else {
                             0.
                         })
-                        / 2.
+                        / 2.;
+                    if compatibility.block_center_rounds_down {
+                        center.floor()
+                    } else {
+                        center
+                    }
                 }
                 b'R' => slack,
                 _ => 0.,

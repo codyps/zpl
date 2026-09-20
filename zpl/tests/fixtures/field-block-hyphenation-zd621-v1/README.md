@@ -3,12 +3,11 @@
 Sixty-one raw ZD621 203-DPI V93.21.33Z previews captured 2026-09-20.
 Input/capture hashes, underpaint, overpaint and rendered-pixel hashes are pinned.
 No alignment, scaling or cropping is applied. Previously, overlong words caused
-an unsupported-rendering error. Fifty-three complete frames now match exactly;
-eight I/B layout frames retain pinned text residuals and achieve 95.09–96.05%
-foreground IoU. Each of the four aligned fields also independently requires
-at least 80% foreground IoU; the lowest field is 81.6%. Full-canvas pixel pins
-remain unchanged by that extra check. The normal/right-rotated layouts and all
-long-word atlases are exact.
+an unsupported-rendering error. Fifty-nine complete frames now match exactly;
+two font-0 B layouts retain three underpaint dots each and zero overpaint.
+Each of the four aligned fields independently requires at least 80% foreground
+IoU. Integer centering before rotation removed the previous I/B displacement;
+see field-block-centering-zd621-v1. Raw references are unchanged.
 
 Six atlases contain 72 width-boundary controls using fonts 0 and A: words alone,
 words after an existing prefix, and hanging indents. Six additional atlases
