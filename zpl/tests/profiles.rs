@@ -1062,3 +1062,46 @@ fn graphic_box_dimensions_default_to_and_are_at_least_thickness() {
         }
     }
 }
+
+#[test]
+fn graphics_do_not_inherit_field_rotation() {
+    // ^FW p. 208 only rotates commands with an orientation parameter.
+    for options in [SPECIFICATION, ZD621_203_DPI] {
+        for shape in [
+            "^GB80,50,3",
+            "^GC45,3",
+            "^GE80,40,3",
+            "^GD80,50,3,B,L",
+            "^GFA,4,4,1,AA5555AA",
+        ] {
+            for origin in ["FO", "FT"] {
+                let normal = raster(&format!("^FWN^{origin}100,100{shape}"), options);
+                for rotation in ['R', 'I', 'B'] {
+                    assert_eq!(
+                        normal.pixels,
+                        raster(&format!("^FW{rotation}^{origin}100,100{shape}"), options).pixels
+                    );
+                }
+            }
+        }
+    }
+}
+
+#[test]
+fn graphic_baseline_and_origin_clamping_are_independent() {
+    // Empirical ZD621 controls: graphic-placement-zd621-v1. FT p. 205
+    // identifies the bottom of the graphic area as its typesetting origin.
+    let body = "^FT40,100^GFA,8,8,1,8000000000000000";
+    assert_eq!(bounds(&raster(body, ZD621_203_DPI)), (40, 93, 41, 94));
+    let mut options = ZD621_203_DPI;
+    options.compatibility.graphic_ft_last_row_baseline = false;
+    assert_eq!(bounds(&raster(body, options)), (40, 92, 41, 93));
+    let body = "^LS12^FO4,40^GB20,10,10";
+    assert_eq!(bounds(&raster(body, ZD621_203_DPI)), (0, 40, 20, 50));
+    options = ZD621_203_DPI;
+    options.compatibility.graphic_clamps_negative_origin = false;
+    assert_eq!(bounds(&raster(body, options)), (0, 40, 12, 50));
+    let body = "^FT40,10^GB20,10,10";
+    assert_eq!(bounds(&raster(body, ZD621_203_DPI)), (40, 0, 60, 10));
+    assert_eq!(bounds(&raster(body, options)), (40, 1, 60, 11));
+}

@@ -13,6 +13,15 @@
 /// initial value: the renderer does not reapply it after you change an option.
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct Compatibility {
+    /// Clamp a graphic's top-left origin after home, shift and FT placement.
+    /// FO bitmaps apply justification after clamping. With the last-row
+    /// baseline enabled, FT y <= graphic height starts at row zero.
+    /// Disabled: clip negative coordinates at the canvas. Measured on ZD621
+    /// V93.21.33Z; ^FO p. 201, ^FT p. 205, ^LS p. 296.
+    pub graphic_clamps_negative_origin: bool,
+    /// Use nominal graphic height minus one as the FT baseline, including
+    /// blank bitmap rows. Disabled: use nominal graphic height (^FT p. 205 Table 7).
+    pub graphic_ft_last_row_baseline: bool,
     /// Use soft-hyphen advance, strict fit, and retained hyphen space for every
     /// chunk of an automatically split word (^FB p. 187). Disabled: use a
     /// normal hyphen, permit exact fits and keep a fitting remainder whole.

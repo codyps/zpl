@@ -12,6 +12,8 @@ pub const SPECIFICATION: Options = Options {
     height: 1218,
     dpi: 203,
     compatibility: Compatibility {
+        graphic_clamps_negative_origin: false,
+        graphic_ft_last_row_baseline: false,
         graphic_symbol_ignores_justification: false,
         graphic_symbol_last_row_baseline: false,
         bitmap_cf_font_only_resets_size: false,
@@ -101,6 +103,8 @@ pub const ZD621_203_DPI: Options = Options {
     height: 1218,
     dpi: 203,
     compatibility: Compatibility {
+        graphic_clamps_negative_origin: true,
+        graphic_ft_last_row_baseline: true,
         graphic_symbol_ignores_justification: true,
         graphic_symbol_last_row_baseline: true,
         bitmap_cf_font_only_resets_size: true,

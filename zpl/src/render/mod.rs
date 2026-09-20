@@ -66,6 +66,8 @@ struct Field {
     baseline_height: f64,
     inverted_margin: f64,
     text_size: Option<(f64, f64)>,
+    graphic_size: Option<(f64, f64)>,
+    graphic_bitmap: bool,
 }
 impl Default for Field {
     fn default() -> Self {
@@ -90,6 +92,8 @@ impl Default for Field {
             baseline_height: 0.,
             inverted_margin: 0.,
             text_size: None,
+            graphic_size: None,
+            graphic_bitmap: false,
         }
     }
 }
@@ -145,7 +149,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
     // Zebra Programming Guide ^BY, p. 148: initial module width 2 dots,
     // ratio 3, and height 10 dots. Later omitted operands retain their values.
     let (mut module, mut ratio, mut bar_h) = (2., 3., 10.);
-    let mut graphics = HashMap::<String, Path>::new();
+    let mut graphics = HashMap::<String, (Path, (f64, f64))>::new();
     let mut warnings = Vec::new();
     let (mut shift, mut top) = (0., 0.);
     let mut encoding = 0;
@@ -244,6 +248,8 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                     row,
                     true,
                 )?);
+                field.graphic_size = Some(((row * 8) as f64, (count / row) as f64));
+                field.graphic_bitmap = true;
                 return Ok(());
             }
             if !syntax.delimiter.is_ascii() {
@@ -750,6 +756,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                         path = graphics::diagonal(w, h, t, left);
                     }
                     field.path = Some(path);
+                    field.graphic_size = Some((w, h));
                 }
                 "GB" | "GE" | "GC" => {
                     let ti = if name == "GC" { 1 } else { 2 };
@@ -774,6 +781,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                     // W paints white; it does not toggle the pixels underneath.
                     field.white = p.get(ti + 1) == Some(&"W");
                     let mut path = Path::default();
+                    field.graphic_size = Some((w, h));
                     if name == "GB" {
                         let r = number(&p, 4, 0.)?;
                         if !(0. ..=8.).contains(&r) {
@@ -783,6 +791,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                             r > 0. && options.compatibility.rounded_box_printer_geometry;
                         let t = if printer_geometry { t.max(2.) } else { t };
                         let (w, h) = (w.max(t), h.max(t));
+                        field.graphic_size = Some((w, h));
                         let radius = r / 8. * w.min(h) / 2.;
                         let inner_radius = if printer_geometry {
                             (r / 16. * (w - 2. * t).min(h - 2. * t)).floor().max(0.)
@@ -838,12 +847,15 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                     let row = count(&p, 2)?;
                     graphics.insert(
                         p[0].to_string(),
-                        graphics::decode(
-                            p[3..].join(&delim.to_string()).as_bytes(),
-                            n,
-                            row,
-                            false,
-                        )?,
+                        (
+                            graphics::decode(
+                                p[3..].join(&delim.to_string()).as_bytes(),
+                                n,
+                                row,
+                                false,
+                            )?,
+                            ((row * 8) as f64, (n / row) as f64),
+                        ),
                     );
                 }
                 "GF" => {
@@ -858,9 +870,11 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                         row,
                         false,
                     )?);
+                    field.graphic_size = Some(((row * 8) as f64, (n / row) as f64));
+                    field.graphic_bitmap = true;
                 }
                 "XG" => {
-                    let mut path = graphics
+                    let (mut path, graphic_size) = graphics
                         .get(p[0])
                         .ok_or("unknown downloaded graphic")?
                         .clone();
@@ -870,9 +884,16 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                         return Err("invalid graphic magnification".into());
                     }
                     path.transform(|p| Point::new(p.x * x, p.y * y));
+                    field.graphic_size = Some((graphic_size.0 * x, graphic_size.1 * y));
+                    field.graphic_bitmap = true;
                     field.path = Some(path);
                 }
                 "FS" => {
+                    // ^FW p. 208 applies rotation to commands with an orientation
+                    // parameter. GB/GC/GE/GD/GF/XG have no such parameter.
+                    if field.graphic_size.is_some() {
+                        field.rotation = b'N';
+                    }
                     let paths = field.multiple_paths.take().unwrap_or_else(|| {
                         field
                             .path
@@ -907,10 +928,19 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                             if field.baseline_height > 0. {
                                 field.baseline_height
                             } else {
-                                h
+                                // ^FT p. 205 Table 7 anchors the graphic area,
+                                // including blank bitmap rows, rather than ink.
+                                field.graphic_size.map_or(h, |(_, h)| h)
                             }
                         } else {
                             0.
+                        };
+                        let base = if field.baseline
+                            && options.compatibility.graphic_ft_last_row_baseline
+                        {
+                            field.graphic_size.map_or(base, |(_, h)| (h - 1.).max(0.))
+                        } else {
+                            base
                         };
                         let base = if field.baseline {
                             field.barcode.as_ref().map_or(base, |barcode| {
@@ -939,7 +969,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                             // ^FO/^FT pp. 201/205: right justification changes
                             // the origin, not the character order. Auto (2) is
                             // left for the supported Latin scripts.
-                            let advance = field.text_size.map_or(w, |s| s.0);
+                            let advance = field.text_size.or(field.graphic_size).map_or(w, |s| s.0);
                             let xp = p.x
                                 - if field.baseline && field_justification == 1 {
                                     advance
@@ -1000,7 +1030,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                                         if matches!(field.rotation, b'R' | b'B') {
                                             -h
                                         } else {
-                                            -w
+                                            -field.graphic_size.map_or(w, |s| s.0)
                                         },
                                         0.,
                                     )
@@ -1008,7 +1038,31 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                             } else {
                                 (0., 0.)
                             };
-                            Point::new(x + a + dx + jx + ft_dx, y + b + dy + jy + ft_dy)
+                            let (tx, ty) = (x + a + dx + jx + ft_dx, y + b + dy + jy + ft_dy);
+                            if field.graphic_size.is_some()
+                                && options.compatibility.graphic_clamps_negative_origin
+                            {
+                                // Clamp the complete field origin, not each dot;
+                                // preserve the graphic at the edge (^FO/^FT/^LS).
+                                let gx = if field.graphic_bitmap && !field.baseline {
+                                    // FO bitmap justification follows origin clamping.
+                                    x.max(0.) + a - p.x + dx + jx
+                                } else {
+                                    (tx - p.x).max(0.)
+                                };
+                                let gy = ty - p.y;
+                                let gy = if field.baseline
+                                    && options.compatibility.graphic_ft_last_row_baseline
+                                    && gy <= 1.
+                                {
+                                    0.
+                                } else {
+                                    gy.max(0.)
+                                };
+                                Point::new(gx + p.x, gy + p.y)
+                            } else {
+                                Point::new(tx, ty)
+                            }
                         });
                         if options.compatibility.linear_barcode_rotated_edge_loses_dot {
                             if let Some(part) = field.barcode_split.get(1) {
@@ -1054,7 +1108,10 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                 }
                 _ => return Err(format!("unsupported command {name}")),
             }
-            if graphics.values().map(|p| p.segments.len()).sum::<usize>()
+            if graphics
+                .values()
+                .map(|(p, _)| p.segments.len())
+                .sum::<usize>()
                 > crate::output::MAX_SEGMENTS
             {
                 return Err("downloaded graphics path limit exceeded".into());

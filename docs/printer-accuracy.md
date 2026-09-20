@@ -589,3 +589,18 @@ SPECIFICATION disables both. Run `cargo test -p zpl --test field_block_hyphenati
 --test profiles`; the full renderer suite checks shared wrapping and font behavior.
 Explicit soft-hyphen escape handling, extremely narrow blocks, unsampled sizes,
 QR mask selection and broader command/encoding coverage remain open.
+
+## Graphic dimensions and placement
+
+[Three box atlases](../zpl/tests/fixtures/box-minimum-zd621-v1/README.md) cover
+27 zero, omitted and undersized dimension controls. Both profiles now honor
+the documented minimum/default thickness before computing rounded corners.
+
+[63 placement frames](../zpl/tests/fixtures/graphic-placement-zd621-v1/README.md)
+are pixel-exact across shifted origins, FO/FT, all FW values, top-edge boundaries,
+right justification, odd/even circle sizes and recalled bitmaps with blank rows.
+Graphics no longer inherit FW rotation, and right justification uses nominal
+width. The independently selectable `graphic_ft_last_row_baseline` and
+`graphic_clamps_negative_origin` options reproduce ZD621 dot placement;
+SPECIFICATION disables both. Run `cargo test -p zpl --test box_minimum_preview
+--test graphic_placement_preview --test profiles`.
