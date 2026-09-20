@@ -105,8 +105,35 @@ fn strike() -> &'static (Settings, Vec<Glyph>) {
         );
         extend_hyphens(settings, &mut glyphs);
         extend_cent(settings, &mut glyphs);
+        extend_unicode(settings, &mut glyphs);
         (settings, glyphs)
     })
+}
+// Unicode Hebrew letters, captured with CI28 and PA0 (Zebra guide ^CI,
+// pp. 156–159 and ^PA p. 315). Native pages and advance controls are pinned
+// in unicode-fonts-zd621-v1, including all five final forms.
+fn extend_unicode(settings: Settings, glyphs: &mut Vec<Glyph>) {
+    let sources: &[&[u8]] = match (settings.font, settings.height, settings.width) {
+        ('0', 32, 0) => &[include_bytes!("../../assets/font0-32-0-hebrew.zbf")],
+        ('0', 40, 24) => &[
+            include_bytes!("../../assets/font0-40-24-hebrew.zbf"),
+            include_bytes!("../../assets/font0-40-24-extended.zbf"),
+            include_bytes!("../../assets/font0-40-24-missing.zbf"),
+        ],
+        _ => return,
+    };
+    for data in sources {
+        // Missing-glyph captures include an ASCII A as an independent visible
+        // verification anchor; the base strike already supplies that glyph.
+        glyphs.extend(
+            bitmap_font::unpack(data)
+                .expect("validated Unicode strike")
+                .1
+                .into_iter()
+                .filter(|g| g.codepoint > 126),
+        );
+    }
+    glyphs.sort_by_key(|g| g.codepoint);
 }
 // CI27 cent character, measured independently at each embedded strike.
 // ^CI pp. 156–159; raw pages and advance checks: cent-glyph-zd621-v1.
@@ -172,6 +199,7 @@ fn strikes() -> &'static Vec<(Settings, Vec<Glyph>)> {
             include_bytes!("../../assets/font0-20-0.zbf").as_slice(),
             include_bytes!("../../assets/font0-24-24.zbf").as_slice(),
             include_bytes!("../../assets/font0-28-14.zbf").as_slice(),
+            include_bytes!("../../assets/font0-40-24.zbf").as_slice(),
             include_bytes!("../../assets/font0-64-0.zbf").as_slice(),
             include_bytes!("../../assets/font0-32-16.zbf").as_slice(),
             include_bytes!("../../assets/font0-32-24.zbf").as_slice(),
@@ -191,6 +219,7 @@ fn strikes() -> &'static Vec<(Settings, Vec<Glyph>)> {
                 bitmap_font::unpack(data).expect("validated resident strike");
             extend_hyphens(settings, &mut glyphs);
             extend_cent(settings, &mut glyphs);
+            extend_unicode(settings, &mut glyphs);
             (settings, glyphs)
         })
         .collect()
@@ -210,6 +239,9 @@ fn legacy_strikes() -> &'static Vec<(Settings, Vec<Glyph>)> {
                 )),
                 ('0', 20, 0) => Some(include_bytes!(
                     "../../assets/font0-20-0-legacy-backslash.zbf"
+                )),
+                ('0', 40, 24) => Some(include_bytes!(
+                    "../../assets/font0-40-24-legacy-backslash.zbf"
                 )),
                 ('0', 28, 14) => Some(include_bytes!(
                     "../../assets/font0-28-14-legacy-backslash.zbf"
@@ -259,7 +291,7 @@ fn legacy_strikes() -> &'static Vec<(Settings, Vec<Glyph>)> {
                 let (_, replacement) =
                     bitmap_font::unpack(data).expect("validated legacy backslash");
                 let index = glyphs
-                    .binary_search_by_key(&b'\\', |g| g.codepoint)
+                    .binary_search_by_key(&u32::from(b'\\'), |g| g.codepoint)
                     .expect("ASCII backslash");
                 glyphs[index] = replacement[0].clone();
             }
@@ -292,7 +324,7 @@ fn selected(id: impl Into<Font> + Copy, w: f64, h: f64) -> (&'static [Glyph], f6
 }
 fn glyph_from(glyphs: &'static [Glyph], c: char) -> Result<&'static Glyph, String> {
     let index = glyphs
-        .binary_search_by_key(&(c as u32), |g| g.codepoint as u32)
+        .binary_search_by_key(&(c as u32), |g| g.codepoint)
         .map_err(|_| format!("unsupported embedded font glyph {c:?}"))?;
     Ok(&glyphs[index])
 }
@@ -647,7 +679,10 @@ mod tests {
         assert_eq!((s.font, s.height, s.width, s.dpi), ('0', 32, 0, 203));
         assert_eq!(
             g.iter().map(|g| g.codepoint).collect::<Vec<_>>(),
-            (32..=126).chain([162, 173, 233, 240]).collect::<Vec<_>>()
+            (32..=126)
+                .chain([162, 173, 233, 240])
+                .chain(0x5d0..=0x5ea)
+                .collect::<Vec<_>>()
         );
         assert!(DATA.len() < 4500);
         assert_eq!(width("Wi i", 32.).unwrap(), 51.);

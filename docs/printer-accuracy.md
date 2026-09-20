@@ -760,3 +760,25 @@ after `^FH` decoding. The documented twelve-digit indexing limit is enforced in
 behavior of retaining longer numeric runs unchanged. `^PQ` iteration remains an
 explicit unsupported-command error. See the fixture README and Zebra guide
 `^SN`, pp. 341–342, for capture provenance and command semantics.
+
+## Unicode resident-font strikes and advanced-text defaults
+
+`unicode_fonts_preview` pins 40 complete native frames: 38 are pixel-exact;
+the two mixed-text rotation holdouts retain 11 underpaint and 3 overpaint
+pixels in total. Every independently positioned N/R/I/B text field is at
+least 99.7956% foreground IoU, above the 80% requirement. Source, PNG, rendered
+pixel and font-asset hashes prevent an unnoticed regression.
+
+Font 0 now has an exact 40×24 ASCII strike, its existing accented/special
+characters, and all 27 Hebrew letters/final forms at 40×24 and natural-width
+32 dots. The six sampled missing characters from `advanced-text-0000` have
+the native blank seven-dot advance at 40×24 with advanced features disabled.
+The unchanged original case was freshly captured and now matches every pixel.
+`^PA` with all features disabled is accepted; enabled fallback glyphs,
+bidirectional layout, shaping and OpenType processing remain explicit errors.
+This does not claim coverage of unmeasured glyphs or enabled advanced features.
+
+The sampler emits real UTF-8 byte escapes for `^CI28`. ZBF2 stores Unicode
+scalar values; the decoder still accepts ZBF1 and the exporter preserves
+byte-identical ZBF1 output for existing one-byte strikes. See the fixture
+README and the assets format documentation for provenance and limits.

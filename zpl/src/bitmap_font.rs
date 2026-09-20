@@ -1,4 +1,4 @@
-//! Bitmap strike types and ZBF1 decoding used by the renderer.
+//! Bitmap strike types and ZBF1/ZBF2 decoding used by the renderer.
 #[derive(Debug, Clone, Copy)]
 pub struct Settings {
     /// Resident font ID; S identifies the ^GS symbol face (not ^AS).
@@ -21,7 +21,7 @@ impl Settings {
 }
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Glyph {
-    pub codepoint: u8,
+    pub codepoint: u32,
     pub advance: u32,
     pub left: i32,
     pub top: i32,
@@ -31,11 +31,12 @@ pub struct Glyph {
 }
 /// Validate bitmap dimensions and metrics before decoding or export.
 pub fn validate_glyphs(glyphs: &[Glyph]) -> Result<(), String> {
-    if glyphs.len() > 191 {
+    if glyphs.len() > 4096 {
         return Err("too many glyphs".into());
     }
     for g in glyphs {
-        if g.width > 4096
+        if !valid_codepoint(g.codepoint)
+            || g.width > 4096
             || g.height > 4096
             || g.advance > 4096
             || g.advance == 0
@@ -51,7 +52,11 @@ pub fn validate_glyphs(glyphs: &[Glyph]) -> Result<(), String> {
     }
     Ok(())
 }
-/// Decode a ZBF1 bitmap strike. No external font or image libraries are used.
+/// Unicode scalar values other than C0/C1 controls and DEL, accepted by font captures.
+pub fn valid_codepoint(code: u32) -> bool {
+    char::from_u32(code).is_some() && ((32..=126).contains(&code) || code >= 160)
+}
+/// Decode a ZBF1 (byte codepoints) or ZBF2 (u32 Unicode codepoints) bitmap strike. No external font or image libraries are used.
 pub fn unpack(data: &[u8]) -> Result<(Settings, Vec<Glyph>), String> {
     if data.len() > 2 * 1024 * 1024 {
         return Err("packed strike exceeds 2 MiB".into());
@@ -77,9 +82,11 @@ pub fn unpack(data: &[u8]) -> Result<(Settings, Vec<Glyph>), String> {
         }
     }
     let mut r = Reader { data, pos: 0 };
-    if r.take(4)? != b"ZBF1" {
-        return Err("unknown bitmap strike format".into());
-    }
+    let unicode = match r.take(4)? {
+        b"ZBF1" => false,
+        b"ZBF2" => true,
+        _ => return Err("unknown bitmap strike format".into()),
+    };
     let s = Settings {
         font: char::from(r.byte()?),
         height: r.u16()? as u32,
@@ -88,14 +95,18 @@ pub fn unpack(data: &[u8]) -> Result<(Settings, Vec<Glyph>), String> {
     };
     s.validate()?;
     let count = r.u16()? as usize;
-    if !(1..=191).contains(&count) {
+    if !(1..=if unicode { 4096 } else { 191 }).contains(&count) {
         return Err("invalid strike glyph count".into());
     }
     let mut glyphs = Vec::with_capacity(count);
     let mut previous = 31;
     for _ in 0..count {
-        let codepoint = r.byte()?;
-        if !((32..=126).contains(&codepoint) || codepoint >= 160) || codepoint <= previous {
+        let codepoint = if unicode {
+            u32::from_le_bytes(r.take(4)?.try_into().unwrap())
+        } else {
+            r.byte()? as u32
+        };
+        if !valid_codepoint(codepoint) || codepoint <= previous {
             return Err("invalid strike glyph order".into());
         }
         previous = codepoint;

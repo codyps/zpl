@@ -62,7 +62,7 @@ fn native_font_b_asset_is_pinned_to_the_capture() {
     );
     assert_eq!(
         glyphs.iter().map(|g| g.codepoint).collect::<Vec<_>>(),
-        (32..=126).collect::<Vec<u8>>()
+        (32..=126).collect::<Vec<u32>>()
     );
     // ZPL Guide Table 29, p. 1582: seven matrix dots plus two gap dots.
     assert!(glyphs.iter().all(|g| g.advance == 9));

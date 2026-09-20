@@ -1,12 +1,12 @@
 //! Resident-font sampling, extraction, export, and verification without transport.
 use std::fmt::Write;
 use zpl::{
-    bitmap_font::{validate_glyphs, Glyph, Settings},
+    bitmap_font::{valid_codepoint, validate_glyphs, Glyph, Settings},
     output::raster::Raster,
 };
 #[derive(Debug, Clone)]
 pub struct Tile {
-    code: Option<u8>,
+    code: Option<u32>,
     x: u32,
     y: u32,
     width: u32,
@@ -30,20 +30,37 @@ fn field_command(font: char) -> String {
     }
 }
 
-/// ASCII glyphs are hex-escaped, including all ZPL syntax characters.
-pub fn page_plan(codes: &[u8], s: Settings) -> Result<Page, String> {
+/// Encode field bytes explicitly: ^CI28 is UTF-8; ^CI27 is the printable
+/// Latin-1 subset of Windows-1252. ^FH consumes byte pairs, not codepoints.
+/// Zebra Programming Guide ^CI pp. 156–159 and ^FH p. 190.
+/// https://www.zebra.com/content/dam/support-dam/en/documentation/unrestricted/guide/software/zpl-zbi2-pg-en.pdf
+pub fn encode_field(text: &str, encoding: u8) -> Result<String, String> {
+    let bytes: Vec<u8> = match encoding {
+        28 => text.as_bytes().to_vec(),
+        27 => text
+            .chars()
+            .map(|c| u8::try_from(c as u32).map_err(|_| "CI27 requires Latin-1".to_string()))
+            .collect::<Result<_, _>>()?,
+        0 | 13 if text.is_ascii() => text.as_bytes().to_vec(),
+        _ => return Err("unsupported sampling encoding or character".into()),
+    };
+    Ok(bytes.iter().map(|b| format!("_{b:02X}")).collect())
+}
+
+/// Glyph field bytes are hex-escaped, including all ZPL syntax characters.
+pub fn page_plan(codes: &[u32], s: Settings, encoding: u8) -> Result<Page, String> {
     s.validate()?;
-    if codes.is_empty()
-        || codes.len() > 16
-        || codes.iter().any(|c| !((32..=126).contains(c) || *c >= 160))
-    {
-        return Err("sample must contain 1..16 printable ASCII or Latin-1 glyphs".into());
+    if codes.is_empty() || codes.len() > 16 || codes.iter().any(|c| !valid_codepoint(*c)) {
+        return Err("sample must contain 1..16 printable Unicode glyphs".into());
     }
     let cw = s.height.max(s.width) * 6 + 32;
     let ch = s.height * 5 + 48;
     let width = (cw * 2).div_ceil(64) * 64;
     let height = (codes.len() as u32 + 1).div_ceil(2) * ch;
-    let mut zpl = format!("^XA^PW{width}^LL{height}^LH0,0^LS0^LT0^PON^LRN^CI27");
+    let mut zpl = format!(
+        "^XA^PW{width}^LL{height}^LH0,0^LS0^LT0^PON^LRN^CI{encoding}{}",
+        if encoding == 28 { "^PA0,0,0,0" } else { "" }
+    );
     let command = field_command(s.font);
     let sentinel = if s.font == 'S' { "_41" } else { "_7C" };
     let mut tiles = Vec::new();
@@ -54,7 +71,10 @@ pub fn page_plan(codes: &[u8], s: Settings) -> Result<Page, String> {
         let (x, y) = (i as u32 % 2 * cw, i as u32 / 2 * ch);
         let base = y + 16 + s.height * 2;
         let second = y + 32 + s.height * 4;
-        let encoded = code.map(|c| format!("_{c:02X}")).unwrap_or_default();
+        let encoded = code
+            .map(|c| encode_field(&char::from_u32(c).unwrap().to_string(), encoding))
+            .transpose()?
+            .unwrap_or_default();
         if code.is_some() {
             write!(
                 zpl,
@@ -251,15 +271,16 @@ pub fn verification_plan(
     glyphs: &[Glyph],
     s: Settings,
     text: &str,
+    encoding: u8,
 ) -> Result<(String, Raster), String> {
     s.validate()?;
     validate_glyphs(glyphs)?;
-    if text.is_empty() || text.len() > 4096 || text.chars().any(|c| c as u32 > 255) {
+    if text.is_empty() || text.len() > 4096 {
         return Err("invalid verification text".into());
     }
     let selected: Vec<_> = text
         .chars()
-        .map(|c| c as u8)
+        .map(|c| c as u32)
         .map(|c| {
             glyphs
                 .iter()
@@ -293,26 +314,26 @@ pub fn verification_plan(
         }
         pen += g.advance as i32;
     }
-    let encoded: String = text.chars().map(|c| format!("_{:02X}", c as u32)).collect();
+    let encoded = encode_field(text, encoding)?;
     let command = field_command(s.font);
-    let zpl=format!("^XA^PW{width}^LL{height}^LH0,0^LS0^LT0^PON^LRN^CI27^FT16,{baseline}^{}N,{},{}^FH^FD{encoded}^FS^XZ",command,s.height,s.width);
+    let advanced = if encoding == 28 { "^PA0,0,0,0" } else { "" };
+    let zpl=format!("^XA^PW{width}^LL{height}^LH0,0^LS0^LT0^PON^LRN^CI{encoding}{advanced}^FT16,{baseline}^{}N,{},{}^FH^FD{encoded}^FS^XZ",command,s.height,s.width);
     Ok((zpl, image))
 }
 
-/// Compact ZBF1 strike: settings and per-glyph metrics followed by contiguous
+/// Compact ZBF1 (byte) or ZBF2 (Unicode) strike: settings and glyph metrics followed by contiguous
 /// MSB-first bitmap bits (no per-row padding). Integers are little endian.
 pub fn pack(glyphs: &[Glyph], settings: Settings) -> Result<Vec<u8>, String> {
     settings.validate()?;
     validate_glyphs(glyphs)?;
     if glyphs.is_empty()
-        || glyphs
-            .iter()
-            .any(|g| !((32..=126).contains(&g.codepoint) || g.codepoint >= 160))
+        || glyphs.iter().any(|g| !valid_codepoint(g.codepoint))
         || glyphs.windows(2).any(|g| g[0].codepoint >= g[1].codepoint)
     {
-        return Err("strike glyphs must be sorted, unique printable ASCII or Latin-1".into());
+        return Err("strike glyphs must be sorted, unique printable Unicode scalars".into());
     }
-    let mut out = b"ZBF1".to_vec();
+    let unicode = glyphs.iter().any(|g| g.codepoint > 255);
+    let mut out = if unicode { b"ZBF2" } else { b"ZBF1" }.to_vec();
     out.push(settings.font as u8);
     for n in [
         settings.height,
@@ -323,7 +344,11 @@ pub fn pack(glyphs: &[Glyph], settings: Settings) -> Result<Vec<u8>, String> {
         out.extend((n as u16).to_le_bytes());
     }
     for g in glyphs {
-        out.push(g.codepoint);
+        if unicode {
+            out.extend(g.codepoint.to_le_bytes());
+        } else {
+            out.push(g.codepoint as u8);
+        }
         out.extend((g.advance as u16).to_le_bytes());
         out.extend((g.left as i16).to_le_bytes());
         out.extend((g.top as i16).to_le_bytes());
@@ -369,12 +394,12 @@ mod packed_tests {
         };
         let packed = pack(std::slice::from_ref(&g), s).unwrap();
         assert_eq!(unpack(&packed).unwrap().1, vec![g.clone()]);
-        let (request, _) = verification_plan(&[g], s, "éé").unwrap();
+        let (request, _) = verification_plan(&[g], s, "éé", 27).unwrap();
         assert!(request.contains("^CI27"));
         assert!(request.contains("^FD_E9_E9"));
-        assert!(page_plan(&[233], s).unwrap().zpl.contains("^FD_E9"));
-        assert!(page_plan(&[127], s).is_err());
-        assert!(page_plan(&[159], s).is_err());
+        assert!(page_plan(&[233], s, 27).unwrap().zpl.contains("^FD_E9"));
+        assert!(page_plan(&[127], s, 27).is_err());
+        assert!(page_plan(&[159], s, 27).is_err());
     }
     #[test]
     fn compact_roundtrip_and_truncation() {
@@ -430,6 +455,48 @@ mod packed_tests {
 #[cfg(test)]
 mod tests {
     #[test]
+    fn unicode_strikes_round_trip_and_emit_utf8_bytes() {
+        let s = Settings {
+            font: '0',
+            height: 40,
+            width: 24,
+            dpi: 203,
+        };
+        let glyph = Glyph {
+            codepoint: 'א' as u32,
+            advance: 12,
+            left: 1,
+            top: -20,
+            width: 1,
+            height: 1,
+            bitmap: vec![vec![128]],
+        };
+        let packed = pack(std::slice::from_ref(&glyph), s).unwrap();
+        assert_eq!(&packed[..4], b"ZBF2");
+        assert_eq!(
+            zpl::bitmap_font::unpack(&packed).unwrap().1,
+            vec![glyph.clone()]
+        );
+        let page = page_plan(&['א' as u32, '😀' as u32], s, 28).unwrap();
+        assert!(page.zpl.contains("^CI28^PA0,0,0,0"));
+        assert!(page.zpl.contains("^FD_D7_90"));
+        assert!(page.zpl.contains("^FD_F0_9F_98_80"));
+        let (verification, _) = verification_plan(&[glyph], s, "אא", 28).unwrap();
+        assert!(verification.contains("^FD_D7_90_D7_90"));
+        assert!(page_plan(&[0xd800], s, 28).is_err());
+        assert!(page_plan(&[0x110000], s, 28).is_err());
+        assert!(page_plan(&['א' as u32], s, 27).is_err());
+        let mut invalid = packed;
+        invalid[13..17].copy_from_slice(&0xd800u32.to_le_bytes());
+        assert!(zpl::bitmap_font::unpack(&invalid).is_err());
+    }
+    #[test]
+    fn legacy_strikes_repack_without_changing_bytes() {
+        let original = include_bytes!("../../zpl/assets/font0-32.zbf");
+        let (settings, glyphs) = zpl::bitmap_font::unpack(original).unwrap();
+        assert_eq!(pack(&glyphs, settings).unwrap(), original);
+    }
+    #[test]
     fn graphic_symbols_use_a_visible_registered_symbol_probe() {
         let settings = Settings {
             font: 'S',
@@ -437,7 +504,7 @@ mod tests {
             width: 24,
             dpi: 203,
         };
-        let page = page_plan(&(64..=71).collect::<Vec<_>>(), settings).unwrap();
+        let page = page_plan(&(64..=71).collect::<Vec<_>>(), settings, 27).unwrap();
         // ^GS p. 217: A-E are symbols; the usual vertical-bar probe is blank.
         assert_eq!(
             page.zpl.as_bytes(),
@@ -455,7 +522,7 @@ mod tests {
                 .filter(|g| !g.bitmap.is_empty())
                 .map(|g| g.codepoint)
                 .collect::<Vec<_>>(),
-            b"ABCDE"
+            b"ABCDE".map(u32::from)
         );
         assert!(!page.zpl.contains("^AS"));
     }
@@ -468,7 +535,7 @@ mod tests {
             width: 13,
             dpi: 203,
         };
-        let page = page_plan(&(96..=103).collect::<Vec<_>>(), settings).unwrap();
+        let page = page_plan(&(96..=103).collect::<Vec<_>>(), settings, 27).unwrap();
         assert_eq!(
             page.zpl.as_bytes(),
             include_bytes!("../tests/fixtures/font-h-blank/page-008.zpl")
@@ -501,7 +568,7 @@ mod tests {
             width: 0,
             dpi: 203,
         };
-        let page = super::page_plan(&(88..=95).collect::<Vec<_>>(), settings).unwrap();
+        let page = super::page_plan(&(88..=95).collect::<Vec<_>>(), settings, 27).unwrap();
         assert_eq!(
             page.zpl.as_bytes(),
             include_bytes!("../tests/fixtures/font64/page-007.zpl")
@@ -510,7 +577,10 @@ mod tests {
             super::Raster::decode_png(include_bytes!("../tests/fixtures/font64/page-007.png"))
                 .unwrap();
         let glyphs = super::extract_page(&raster, &page).unwrap();
-        let underscore = glyphs.iter().find(|g| g.codepoint == b'_').unwrap();
+        let underscore = glyphs
+            .iter()
+            .find(|g| g.codepoint == u32::from(b'_'))
+            .unwrap();
         assert!(underscore.height > 0);
         assert_eq!(
             (underscore.top, underscore.height, underscore.width),
@@ -550,14 +620,14 @@ mod tests {
         }
     }
     fn fixture() -> (Page, Raster) {
-        let p = page_plan(b" Aj", settings()).unwrap();
+        let p = page_plan(&[32, 65, 106], settings(), 27).unwrap();
         let mut r = Raster {
             width: p.width,
             height: p.height,
             pixels: vec![255; (p.width * p.height) as usize],
         };
         for t in &p.tiles {
-            let text = t.code.map(|c| vec![c]).unwrap_or_default();
+            let text = t.code.map(|c| vec![c as u8]).unwrap_or_default();
             draw(&mut r, &text, t.x + 16, t.baseline);
             let mut probe = vec![b'|'];
             probe.extend(text);
@@ -586,22 +656,22 @@ mod tests {
     fn verification_and_escaping() {
         let (p, r) = fixture();
         let g = extract_page(&r, &p).unwrap();
-        let (zpl, r) = verification_plan(&g, settings(), "A j").unwrap();
+        let (zpl, r) = verification_plan(&g, settings(), "A j", 27).unwrap();
         assert!(zpl.contains("^FD_41_20_6A^FS"));
         assert_eq!(r.pixels.iter().filter(|&&v| v == 0).count(), 14);
         assert_eq!(r.pixels[28 * r.width as usize + 18], 0);
         assert_eq!(r.pixels[33 * r.width as usize + 26], 0);
-        let p = page_plan(b"^~_", settings()).unwrap();
+        let p = page_plan(&[94, 126, 95], settings(), 27).unwrap();
         for s in ["_5E", "_7E", "_5F"] {
             assert!(p.zpl.contains(&format!("^FD{s}^FS")))
         }
-        assert!(verification_plan(&g, settings(), "missing").is_err());
+        assert!(verification_plan(&g, settings(), "missing", 27).is_err());
     }
     #[test]
     fn invalid_samples_and_clipping() {
-        assert!(page_plan(&[], settings()).is_err());
-        assert!(page_plan(b"\x9f", settings()).is_err());
-        assert!(page_plan(b"\xff", settings()).is_ok());
+        assert!(page_plan(&[], settings(), 27).is_err());
+        assert!(page_plan(&[159], settings(), 27).is_err());
+        assert!(page_plan(&[255], settings(), 27).is_ok());
         let (p, mut r) = fixture();
         let t = &p.tiles[1];
         r.pixels[(t.y * r.width + t.x) as usize] = 0;

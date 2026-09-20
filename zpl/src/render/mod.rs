@@ -312,7 +312,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                 "FO" | "FT" | "CF" | "BY" | "XG" | "TB" | "SN" => Some(3),
                 "GB" | "GD" | "B3" | "FB" => Some(5),
                 "BC" => Some(6),
-                "GE" => Some(4),
+                "GE" | "PA" => Some(4),
                 "GC" => Some(3),
                 n if n.starts_with('A') => Some(3),
                 _ => None,
@@ -323,6 +323,15 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
 
             match name {
                 "CC" | "CT" | "CD" | "FX" => {}
+                "PA" => {
+                    // Zebra Programming Guide ^PA, p. 315: all four advanced
+                    // https://www.zebra.com/content/dam/support-dam/en/documentation/unrestricted/guide/software/zpl-zbi2-pg-en.pdf
+                    // Text features default to off. Enabled features still
+                    // require explicit implementation rather than being ignored.
+                    if p.iter().any(|v| !matches!(*v, "" | "0")) {
+                        return Err("enabled advanced text properties are unsupported".into());
+                    }
+                }
                 "CI" => {
                     if s != "0" && s != "13" && s != "27" && s != "28" {
                         return Err("character encoding unsupported".into());

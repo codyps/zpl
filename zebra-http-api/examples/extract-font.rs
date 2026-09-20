@@ -25,10 +25,10 @@ struct Args {
     width: u32,
     #[arg(long, default_value_t = 203)]
     dpi: u32,
-    /// Printable ASCII or Latin-1 subset; default is all 95 characters.
+    /// Unicode characters to sample; default is the 95 printable ASCII characters.
     #[arg(long)]
     characters: Option<String>,
-    /// ZPL ^CI encoding (0, 13, 27 or 28). Non-27 sampling is ASCII-only.
+    /// ZPL ^CI encoding: 28 accepts Unicode, 27 Latin-1, and 0/13 ASCII.
     #[arg(long, default_value_t = 27)]
     encoding: u8,
     #[arg(long, default_value_t = 8)]
@@ -110,10 +110,6 @@ struct Capture<'a> {
 }
 impl Capture<'_> {
     async fn page(&self, name: &str, zpl: &str) -> Result<(Vec<u8>, Raster)> {
-        // Plans use CI27 by default. Select the requested character mapping
-        // for both measurement and independent verification (^CI pp. 156–159).
-        let zpl = zpl.replacen("^CI27", &format!("^CI{}", self.args.encoding), 1);
-        let zpl = zpl.as_str();
         let request = self.args.output.join(format!("{name}.zpl"));
         let png = self.args.output.join(format!("{name}.png"));
         if request.exists() {
@@ -147,7 +143,7 @@ impl Capture<'_> {
         Ok((data, image))
     }
 }
-fn capture_config(args: &Args, codes: &[u8]) -> Value {
+fn capture_config(args: &Args, codes: &[u32]) -> Value {
     let mut config = json!({"schema":"zpl-preview-bitmap-font-v1","font":args.font.to_string(),"requested_height":args.height,"requested_width":args.width,"dpi":args.dpi,"codepoints":codes,"batch_size":args.batch_size,"source":args.host,"coordinates":"printer dots; left/top relative to FT baseline; rows top-to-bottom, MSB-first"});
     // Preserve existing CI27 capture manifests for offline/resume workflows.
     if args.encoding != 27 {
@@ -185,33 +181,27 @@ async fn run(args: Args) -> Result<()> {
     if !host.path().ends_with('/') {
         host.set_path(&format!("{}/", host.path()));
     }
-    let mut codes: Vec<u8> = args
+    let mut codes: Vec<u32> = args
         .characters
         .as_ref()
-        .map(|s| {
-            s.chars()
-                .map(|c| u8::try_from(c as u32))
-                .collect::<Result<Vec<_>, _>>()
-        })
-        .transpose()?
+        .map(|s| s.chars().map(|c| c as u32).collect())
         .unwrap_or_else(|| (32..=126).collect());
     codes.sort_unstable();
     codes.dedup();
     ensure!(
         matches!(args.encoding, 0 | 13 | 27 | 28)
-            && (args.encoding == 27 || codes.iter().all(u8::is_ascii)),
-        "encoding must be 0, 13, 27 or 28; non-27 captures require ASCII characters"
+            && (args.encoding == 28
+                || (args.encoding == 27 && codes.iter().all(|c| *c <= 255))
+                || codes.iter().all(|c| *c <= 127)),
+        "encoding must be 0, 13, 27 or 28; CI28 accepts Unicode; CI27 Latin-1; CI0/13 ASCII"
     );
     ensure!(
-        !codes.is_empty() && codes.iter().all(|c| (32..=126).contains(c) || *c >= 160),
-        "characters must be nonempty printable ASCII or Latin-1"
+        !codes.is_empty() && codes.iter().all(|c| zpl::bitmap_font::valid_codepoint(*c)),
+        "characters must be nonempty printable Unicode"
     );
     if let Some(text) = &args.verify_text {
         ensure!(
-            !text.is_empty()
-                && text
-                    .chars()
-                    .all(|c| c as u32 <= 255 && codes.contains(&(c as u8))),
+            !text.is_empty() && text.chars().all(|c| codes.contains(&(c as u32))),
             "verification text must use captured characters"
         );
     }
@@ -245,7 +235,7 @@ async fn run(args: Args) -> Result<()> {
     };
     let (mut glyphs, mut captures) = (Vec::new(), Vec::new());
     for (page, batch) in codes.chunks(args.batch_size).enumerate() {
-        let plan = font_extract::page_plan(batch, settings).map_err(|e| eyre!(e))?;
+        let plan = font_extract::page_plan(batch, settings, args.encoding).map_err(|e| eyre!(e))?;
         let (data, image) = capture.page(&format!("page-{page:03}"), &plan.zpl).await?;
         glyphs.extend(font_extract::extract_page(&image, &plan).map_err(|e| eyre!(e))?);
         captures.push(json!({"page":page,"sha256":font_support::sha256(&data)}));
@@ -253,10 +243,11 @@ async fn run(args: Args) -> Result<()> {
     }
     let mut document = config;
     document["captures"] = json!(captures);
-    document["glyphs"]=json!(glyphs.iter().map(|g|json!({"codepoint":g.codepoint,"character":char::from(g.codepoint).to_string(),"advance":g.advance,"left":g.left,"top":g.top,"width":g.width,"height":g.height,"bitmap":g.bitmap.iter().map(|r|font_extract::hex(r)).collect::<Vec<_>>()})).collect::<Vec<_>>());
+    document["glyphs"]=json!(glyphs.iter().map(|g|json!({"codepoint":g.codepoint,"character":char::from_u32(g.codepoint).unwrap().to_string(),"advance":g.advance,"left":g.left,"top":g.top,"width":g.width,"height":g.height,"bitmap":g.bitmap.iter().map(|r|font_extract::hex(r)).collect::<Vec<_>>()})).collect::<Vec<_>>());
     if let Some(text) = &args.verify_text {
         let (zpl, expected) =
-            font_extract::verification_plan(&glyphs, settings, text).map_err(|e| eyre!(e))?;
+            font_extract::verification_plan(&glyphs, settings, text, args.encoding)
+                .map_err(|e| eyre!(e))?;
         let (data, actual) = capture.page("verification", &zpl).await?;
         let diff = raster_diff::compare(&expected, &actual, false).map_err(|e| eyre!(e))?;
         let report = json!({"text":text,"different_pixels":diff.different_pixels(),"sha256":font_support::sha256(&data)});
@@ -340,14 +331,14 @@ mod tests {
     fn saved_pages(path: &Path) {
         fs::create_dir(path).unwrap();
         let a = args(path);
-        json_write(&path.join("capture.json"), &capture_config(&a, b" A")).unwrap();
+        json_write(&path.join("capture.json"), &capture_config(&a, &[32, 65])).unwrap();
         let s = Settings {
             font: '0',
             height: 8,
             width: 0,
             dpi: 203,
         };
-        let plan = font_extract::page_plan(b" A", s).unwrap();
+        let plan = font_extract::page_plan(&[32, 65], s, 27).unwrap();
         let mut image = Raster {
             width: plan.width,
             height: plan.height,
@@ -388,7 +379,7 @@ mod tests {
         fs::write(path.join("page-000.zpl"), &plan.zpl).unwrap();
         fs::write(path.join("page-000.png"), encode(&image)).unwrap();
         let glyphs = font_extract::extract_page(&image, &plan).unwrap();
-        let (zpl, r) = font_extract::verification_plan(&glyphs, s, "A A").unwrap();
+        let (zpl, r) = font_extract::verification_plan(&glyphs, s, "A A", 27).unwrap();
         fs::write(path.join("verification.zpl"), zpl).unwrap();
         fs::write(path.join("verification.png"), encode(&r)).unwrap();
     }
@@ -398,7 +389,7 @@ mod tests {
         saved_pages(&temp.0);
         let mut a = args(&temp.0);
         a.encoding = 0;
-        json_write(&temp.0.join("capture.json"), &capture_config(&a, b" A")).unwrap();
+        json_write(&temp.0.join("capture.json"), &capture_config(&a, &[32, 65])).unwrap();
         for name in ["page-000.zpl", "verification.zpl"] {
             let path = temp.0.join(name);
             let source = fs::read_to_string(&path).unwrap().replace("^CI27", "^CI0");

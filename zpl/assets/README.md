@@ -31,7 +31,7 @@ be repacked with `--offline`. Keep the provenance hashes and reference fixtures
 consistent when intentionally changing the embedded strike. A subset capture is
 not a replacement for this complete 95-glyph asset.
 
-## ZBF1 layout
+## ZBF1 and ZBF2 layouts
 
 All multi-byte integers are little endian. Signed offsets are two's complement.
 
@@ -41,7 +41,7 @@ All multi-byte integers are little endian. Signed offsets are two's complement.
 | Resident font ID (ASCII) | 1 |
 | Requested height, requested width, DPI, glyph count (u16 each) | 8 |
 
-Glyphs follow in ascending ASCII codepoint order. Each record has:
+Glyphs follow in ascending Unicode codepoint order. Each record has:
 
 | Glyph field | Bytes |
 | --- | --- |
@@ -53,6 +53,14 @@ Glyphs follow in ascending ASCII codepoint order. Each record has:
 
 Bits are MSB-first, row-major, continuous across row boundaries. One is black.
 Unused trailing bits are zero. Space has no bitmap but retains its advance.
+
+ZBF2 uses the same layout with magic `ZBF2` and a four-byte little-endian
+Unicode scalar value instead of the one-byte codepoint. Its count limit is
+4096 glyphs; the existing two-MiB limit still applies. Surrogates and values
+above U+10FFFF are rejected. The extractor emits ZBF1 when all characters fit
+in one byte, preserving existing assets exactly, and ZBF2 otherwise. Sampling
+with `--encoding 28` sends UTF-8 bytes and disables advanced text layout in
+sampling pages so glyph metrics are measured without bidirectional reordering.
 This avoids JSON text and row-padding overhead while retaining exact metrics.
 
 `zpl_font_extract::pack` and `zpl::bitmap_font::unpack` implement the format, with dimension,
@@ -127,3 +135,14 @@ Raw requests, PNGs, asset hashes and regression comparisons live in
 `../tests/fixtures/bounded-text-zd621-v1/`. This removes scaled-font errors in
 the comparison corpus's TB cases; it does not claim other uncaptured sizes or
 Unicode glyphs are exact.
+
+
+`font0-40-24.zbf` adds a complete ASCII strike at that requested size;
+`font0-40-24-extended.zbf` preserves é, cent, soft hyphen and eth support.
+The `font0-{32-0,40-24}-hebrew.zbf` ZBF2 files contain all 27 Hebrew letters
+and final forms. The 40×24 missing-character supplement records the native
+blank advances of U+0378 and the five Arabic letters in the advanced-text
+benchmark under `^PA0`; its ASCII A is a verification anchor, not an override.
+The separate 40×24 legacy-backslash asset preserves native CI0/CI28 mapping.
+All six assets and their sampling, repeated-control and independent preview
+pages are pinned in `tests/fixtures/unicode-fonts-zd621-v1`.

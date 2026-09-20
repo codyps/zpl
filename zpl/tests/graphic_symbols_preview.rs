@@ -81,7 +81,7 @@ fn captured_symbol_and_text_assets_are_pinned() {
                     .filter(|g| !g.bitmap.is_empty())
                     .map(|g| g.codepoint)
                     .collect::<Vec<_>>(),
-                b"ABCDE"
+                b"ABCDE".map(u32::from)
             );
         }
     }

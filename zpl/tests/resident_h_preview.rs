@@ -66,7 +66,7 @@ fn native_font_h_asset_is_pinned_to_the_capture() {
     );
     assert_eq!(
         glyphs.iter().map(|g| g.codepoint).collect::<Vec<_>>(),
-        (32..=126).collect::<Vec<u8>>()
+        (32..=126).collect::<Vec<u32>>()
     );
     // ZPL Guide Table 29, p. 1582: 13 matrix dots plus six gap dots.
     assert!(glyphs.iter().all(|g| g.advance == 19));
@@ -76,6 +76,8 @@ fn native_font_h_asset_is_pinned_to_the_capture() {
             .filter(|g| g.bitmap.is_empty())
             .map(|g| g.codepoint)
             .collect::<Vec<_>>(),
-        std::iter::once(32).chain(b'a'..=b'z').collect::<Vec<_>>()
+        std::iter::once(32)
+            .chain((b'a'..=b'z').map(u32::from))
+            .collect::<Vec<_>>()
     );
 }

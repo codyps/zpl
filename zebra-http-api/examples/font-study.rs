@@ -325,7 +325,7 @@ mod tests {
                 zpl::bitmap_font::unpack(&std::fs::read(dir.join("font.zbf")).unwrap()).unwrap();
             assert_eq!(glyphs.len(), 95);
             let (request, expected) =
-                zpl_font_extract::verification_plan(&glyphs, settings, text).unwrap();
+                zpl_font_extract::verification_plan(&glyphs, settings, text, 27).unwrap();
             assert_eq!(
                 request.as_bytes(),
                 std::fs::read(dir.join("verification.zpl")).unwrap()
