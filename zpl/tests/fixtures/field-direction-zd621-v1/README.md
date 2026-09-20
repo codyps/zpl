@@ -34,9 +34,9 @@ field order. It replaces the previous last-character bearing estimate. The
 controls verify the calculation, including the pre-existing `gj ABC` regression.
 Explicit FPH,0 versus omitted FP and CI13 versus CI27 have identical positioning.
 
-The passing manifest contains 100 frames: 74 pixel-exact and twenty-six with small
+The passing manifest contains 102 frames: 76 pixel-exact and twenty-six with small
 font raster differences, totaling 90 underpaint and 34 overpaint pixels. The
-685 text regions have a minimum foreground IoU of 98.9474%. Tests pin source,
+697 text regions have a minimum foreground IoU of 98.9474%. Tests pin source,
 raw PNG, rendered pixel hashes, and exact under/overpaint counts. They also
 require at least 80% IoU in each region. Regions partition the canvas midway
 between field anchors; the full-frame comparison covers all remaining pixels.
@@ -45,7 +45,6 @@ Coverage includes FO/FT, all four rotations, both justifications, H/V/R,
 zero/nonzero gaps, field reset, and fonts A, F and sampled font-0 dimensions.
 This is not a claim about unsupported fonts, shaping, encodings, or every size.
 
-Two FP+FB cases are retained separately in `known-gaps.tsv`. Their native images
-are nonblank and identical for either command order. They still produce an
-explicit unsupported error locally and are NOT counted as passing accuracy
-cases. Direction-aware field-block wrapping remains follow-up work.
+The two FP+FB cases now pass pixel-for-pixel, including either command order.
+The separate `field-block-direction-zd621-v1` suite extends this coverage to
+rotation, anchors, alignment, gaps and justified word placement.

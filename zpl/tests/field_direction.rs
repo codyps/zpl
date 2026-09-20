@@ -72,3 +72,41 @@ fn inverted_font_zero_margin_remains_an_independent_option() {
     assert_eq!(image(body, options), image(body, SPECIFICATION));
     assert_ne!(image(body, options), image(body, ZD621_203_DPI));
 }
+
+#[test]
+fn specification_block_flow_applies_direction_and_gap_on_each_line() {
+    // ^FP p. 202 and ^FB pp. 186–188 in the linked Programming Guide:
+    // https://www.zebra.com/content/dam/support-dam/en/documentation/unrestricted/guide/software/zpl-zbi2-pg-en.pdf
+    // An 18-dot A face has a 12-dot cell. Each explicit block line
+    // starts a fresh directed run; the extra gap remains three dots.
+    for (direction, dx, dy) in [('H', 15, 0), ('V', 0, 21), ('R', -15, 0)] {
+        let body = format!("^FO100,100^FP{direction},3^FB160,2,0,L,0^AAN,18,10^FDAB\\&CD^FS");
+        let mut expected = String::new();
+        for (i, c) in "ABCD".chars().enumerate() {
+            expected += &format!(
+                "^FO{},{}^AAN,18,10^FD{c}^FS",
+                100 + (i % 2) as i32 * dx,
+                100 + (i / 2) as i32 * 18 + (i % 2) as i32 * dy,
+            );
+        }
+        assert_eq!(image(&body, SPECIFICATION), image(&expected, SPECIFICATION));
+    }
+}
+
+#[test]
+fn block_direction_departure_can_be_disabled_independently() {
+    let body = "^FO100,100^FPV,0^FB160,3,0,L,0^AAN,18,10^FDAB12^FS";
+    let mut options = ZD621_203_DPI;
+    options.compatibility.block_field_direction_printer_layout = false;
+    assert_eq!(image(body, options), image(body, SPECIFICATION));
+    assert_ne!(image(body, options), image(body, ZD621_203_DPI));
+}
+
+#[test]
+fn block_space_gap_departure_can_be_disabled_independently() {
+    let body = "^FO100,100^FPH,3^FB160,3,0,L,0^AAN,18,10^FDAB CD^FS";
+    let mut options = ZD621_203_DPI;
+    options.compatibility.block_spaces_ignore_character_gap = false;
+    assert_eq!(image(body, options), image(body, SPECIFICATION));
+    assert_ne!(image(body, options), image(body, ZD621_203_DPI));
+}

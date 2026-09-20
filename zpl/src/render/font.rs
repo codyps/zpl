@@ -12,13 +12,68 @@ use std::{collections::BTreeMap, sync::OnceLock};
 pub(super) struct Font {
     id: char,
     legacy_backslash: bool,
+    block_flow: Option<BlockFlow>,
 }
+#[derive(Clone, Copy)]
+struct BlockFlow {
+    direction: u8,
+    gap: f64,
+    vertical_gap: f64,
+    printer_layout: bool,
+    skip_space_gap: bool,
+}
+impl BlockFlow {
+    fn gap_for(self, c: char) -> f64 {
+        if self.skip_space_gap && self.direction != b'V' && c == ' ' {
+            0.
+        } else {
+            self.gap
+        }
+    }
+}
+
 impl Font {
     pub(super) fn new(id: char, legacy_backslash: bool) -> Self {
         Self {
             id,
             legacy_backslash,
+            block_flow: None,
         }
+    }
+    pub(super) fn with_block_flow(
+        mut self,
+        direction: (u8, f64),
+        compatibility: super::compatibility::Compatibility,
+    ) -> Self {
+        if direction != (b'H', 0.) {
+            self.block_flow = Some(BlockFlow {
+                direction: direction.0,
+                gap: direction.1,
+                vertical_gap: if compatibility.field_vertical_ignores_gap {
+                    0.
+                } else {
+                    direction.1
+                },
+                printer_layout: compatibility.block_field_direction_printer_layout,
+                skip_space_gap: compatibility.block_spaces_ignore_character_gap,
+            });
+        }
+        self
+    }
+    pub(super) fn block_overprints(self) -> bool {
+        self.block_flow
+            .is_some_and(|flow| flow.printer_layout && flow.direction == b'V')
+    }
+    pub(super) fn block_position(self, position: f64) -> f64 {
+        if self.block_reverses() {
+            -position
+        } else {
+            position
+        }
+    }
+    pub(super) fn block_reverses(self) -> bool {
+        self.block_flow
+            .is_some_and(|flow| flow.printer_layout && flow.direction == b'R')
     }
 }
 impl From<char> for Font {
@@ -260,9 +315,11 @@ pub(super) fn width_for(
     w: f64,
     h: f64,
 ) -> Result<f64, String> {
-    let (glyphs, sx, _) = selected(id, w, h);
+    let font = id.into();
+    let (glyphs, sx, _) = selected(font, w, h);
     s.chars().try_fold(0., |sum, c| {
-        Ok(sum + glyph_from(glyphs, c)?.advance as f64 * sx)
+        let gap = font.block_flow.map_or(0., |flow| flow.gap_for(c));
+        Ok(sum + glyph_from(glyphs, c)?.advance as f64 * sx + gap)
     })
 }
 /// ZD621 font-0 FO/I/right anchor: measure ink with a backwards pen.
@@ -343,6 +400,33 @@ pub(super) fn text_parts_for(
     w: f64,
     h: f64,
 ) -> Result<Vec<Path>, String> {
+    let font = id.into();
+    if let Some(flow) = font.block_flow {
+        let plain = Font {
+            block_flow: None,
+            ..font
+        };
+        let (mut x, mut y) = (0., 0.);
+        let mut parts = Vec::new();
+        for (i, c) in s.chars().enumerate() {
+            let value = c.to_string();
+            let advance = width_for(plain, &value, w, h)? + flow.gap_for(c);
+            if flow.direction == b'R' && (flow.printer_layout || i != 0) {
+                x -= advance;
+            }
+            let mut path = text_for(plain, &value, w, h)?;
+            path.transform(|p| crate::output::Point::new(p.x + x, p.y + y));
+            if !path.segments.is_empty() {
+                parts.push(path);
+            }
+            match flow.direction {
+                b'H' => x += advance,
+                b'V' if !flow.printer_layout => y += h + flow.vertical_gap,
+                _ => {}
+            }
+        }
+        return Ok(parts);
+    }
     let mut parts = Vec::new();
     let mut pen = 0.;
     for c in s.chars() {
@@ -362,7 +446,18 @@ pub(super) fn text_for(
     w: f64,
     h: f64,
 ) -> Result<Path, String> {
-    let (glyphs, sx, sy) = selected(id, w, h);
+    let font = id.into();
+    if font.block_flow.is_some() {
+        // ^FB pp. 186–187 wraps by advances including the ^FP gap (p. 202).
+        // Captured printer V fields overprint each line; R predecrements even
+        // the first character. Union preserves overlapping glyph ink.
+        let mut path = Path::default();
+        for part in text_parts_for(font, s, w, h)? {
+            path.segments.extend(part.segments);
+        }
+        return Ok(union_lines(path));
+    }
+    let (glyphs, sx, sy) = selected(font, w, h);
     // Merge ink spans before emitting even-odd subpaths. Proportional glyphs can
     // overhang their advance; overlapping strokes must remain black, not XOR.
     let mut rows: BTreeMap<i32, Vec<(f64, f64)>> = BTreeMap::new();

@@ -284,6 +284,15 @@ pub struct Compatibility {
     /// Captured ZD621 rotated right-justified ^FP anchor offsets.
     /// Disabled: use the field interaction anchors in guide pp. 1606–1611.
     pub field_direction_printer_anchors: bool,
+    /// In ^FB, vertical ^FP overprints each line and reverse ^FP starts one
+    /// advance before the line origin. Reverse alignment and justification
+    /// follow the captured printer positions, including forward remainders.
+    /// Disabled: use ordinary ^FP glyph flow and ^FB word spacing (Programming
+    /// Guide ^FP p. 202, ^FB pp. 186–188; field-block-direction-zd621-v1).
+    pub block_field_direction_printer_layout: bool,
+    /// In horizontal/reverse ^FB, omit the ^FP gap after ASCII word spaces.
+    /// Disabled: apply the gap to every character, as in plain text.
+    pub block_spaces_ignore_character_gap: bool,
     /// With explicit CODABLOCK F/E columns, fit the actual data instead of
     /// padding to the requested row count. Captured ZD621 sizing choice.
     pub codablock_f_fit_rows: bool,

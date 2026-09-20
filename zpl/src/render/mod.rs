@@ -750,7 +750,12 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                                 parts,
                                 center_overflow,
                             } = text_block(
-                                text_font,
+                                if block.is_some() {
+                                    text_font
+                                        .with_block_flow(field.direction, options.compatibility)
+                                } else {
+                                    text_font
+                                },
                                 value,
                                 font_w,
                                 font_h,
@@ -758,24 +763,22 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                                 options.compatibility,
                                 encoding,
                             )?;
-                            let (path, parts, direction_size) = if field.direction != (b'H', 0.) {
-                                if block.is_some() {
-                                    return Err("field direction with FB is unsupported".into());
-                                }
-                                let layout = font::directed_text(
-                                    text_font,
-                                    value,
-                                    font_w,
-                                    font_h,
-                                    field.direction,
-                                    options.compatibility,
-                                    field.justification == 1,
-                                )?;
-                                field.direction_metrics = layout.metrics;
-                                (layout.path, layout.parts, Some(layout.size))
-                            } else {
-                                (path, parts, None)
-                            };
+                            let (path, parts, direction_size) =
+                                if field.direction != (b'H', 0.) && block.is_none() {
+                                    let layout = font::directed_text(
+                                        text_font,
+                                        value,
+                                        font_w,
+                                        font_h,
+                                        field.direction,
+                                        options.compatibility,
+                                        field.justification == 1,
+                                    )?;
+                                    field.direction_metrics = layout.metrics;
+                                    (layout.path, layout.parts, Some(layout.size))
+                                } else {
+                                    (path, parts, None)
+                                };
                             field.text_parts = parts;
                             field.center_overflow = center_overflow;
                             // Table 29 p. 1582 gives GS a 3/4-height baseline.
@@ -1109,6 +1112,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                                 field.text_size.or(field.graphic_size).map_or(w, |s| s.0);
                             if options.compatibility.field_direction_printer_anchors
                                 && field.text_size.is_some()
+                                && field.block.is_none()
                                 && field.direction.0 == b'R'
                                 && matches!(field.rotation, b'I' | b'B')
                             {
@@ -1118,6 +1122,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                             }
                             if options.compatibility.field_direction_printer_anchors
                                 && field.text_size.is_some()
+                                && field.block.is_none()
                                 && field.direction.0 == b'R'
                                 && matches!(field.rotation, b'N' | b'R')
                             {
@@ -1549,11 +1554,28 @@ fn text_block(
                 // ^FB p. 187 distributes slack between words. The ZD621
                 // rounds fractional positions upward; compute cumulative slack
                 // directly to avoid rounding an accumulated floating-point error.
-                let position = if compatibility.block_justification_rounds_up {
+                let position = if font_id.block_reverses() {
+                    // Native ^FP R/^FB J distributes the integer quotient
+                    // backwards, but the remainder forwards, one dot in
+                    // each of the first remaining word gaps.
+                    // The raw width sweep in field-block-direction-zd621-v1
+                    // distinguishes this from rounding the signed position.
+                    let quotient = (slack / gaps as f64).trunc();
+                    let remainder = slack - quotient * gaps as f64;
+                    x + quotient * gap as f64 - (gap as f64).min(remainder)
+                } else if font_id.block_overprints() {
+                    let extra = slack * gap as f64 / gaps as f64;
+                    if compatibility.block_justification_rounds_up {
+                        extra.ceil()
+                    } else {
+                        extra.round()
+                    }
+                } else if compatibility.block_justification_rounds_up {
                     (x + slack * gap as f64 / gaps as f64).ceil()
                 } else {
                     x.round()
                 };
+                let position = font_id.block_position(position);
                 word_path.transform(|p| Point::new(p.x + position, p.y));
                 if collect_parts {
                     for mut part in font::text_parts_for(font_id, paint_word, w, h)? {
@@ -1578,7 +1600,7 @@ fn text_block(
             font::text_for(font_id, paint_line, w, h)?
         };
         let x = inset
-            + match align {
+            + font_id.block_position(match align {
                 b'C' => {
                     let center = (slack
                         - if center_space
@@ -1601,7 +1623,7 @@ fn text_block(
                 }
                 b'R' => slack,
                 _ => 0.,
-            };
+            });
         // ^FB p. 186: excess text overprints the last row. Union below keeps
         // overlapping glyph ink black. Captured in field-block-overflow-zd621-v1.
         let y = i.min(max_lines - 1) as f64 * (h + spacing);

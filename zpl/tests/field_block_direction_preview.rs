@@ -4,17 +4,18 @@ use std::{fs, path::Path};
 mod digest;
 
 #[test]
-fn printer_field_directions_pin_paint_and_each_text_region() {
+fn printer_block_directions_pin_paint_and_each_text_region() {
     let root =
-        Path::new(env!("CARGO_MANIFEST_DIR")).join("tests/fixtures/field-direction-zd621-v1");
-    let regions: Vec<Vec<&str>> = include_str!("fixtures/field-direction-zd621-v1/regions.tsv")
-        .lines()
-        .skip(1)
-        .map(|s| s.split('\t').collect())
-        .collect();
+        Path::new(env!("CARGO_MANIFEST_DIR")).join("tests/fixtures/field-block-direction-zd621-v1");
+    let regions: Vec<Vec<&str>> =
+        include_str!("fixtures/field-block-direction-zd621-v1/regions.tsv")
+            .lines()
+            .skip(1)
+            .map(|s| s.split('\t').collect())
+            .collect();
     let mut count = 0;
     let mut region_count = 0;
-    for row in include_str!("fixtures/field-direction-zd621-v1/manifest.tsv")
+    for row in include_str!("fixtures/field-block-direction-zd621-v1/manifest.tsv")
         .lines()
         .skip(1)
     {
@@ -60,6 +61,6 @@ fn printer_field_directions_pin_paint_and_each_text_region() {
         }
         count += 1;
     }
-    assert_eq!(count, 102);
-    assert_eq!(region_count, 697);
+    assert_eq!(count, 41);
+    assert_eq!(region_count, 230);
 }
