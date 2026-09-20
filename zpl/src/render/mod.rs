@@ -1269,7 +1269,38 @@ fn text_block(
     let mut lines = Vec::new();
     // Explicit paragraph ends affect centering and terminate justification.
     // Preserve them separately from automatic wraps (^FB pp. 185–187).
-    let mut paragraphs = value.split("\\&").peekable();
+    // ^FB p. 187 defines \\ as an escaped backslash. Consume pairs before
+    // recognizing \& so a literal backslash followed by '&' stays on its line.
+    // Keep other escapes intact here: soft-hyphen markers affect word wrapping.
+    let mut paragraphs = vec![String::new()];
+    let mut chars = value.chars().peekable();
+    while let Some(c) = chars.next() {
+        if c == '\\' {
+            match chars.peek() {
+                Some('\\') => {
+                    if encoding != 13 && !compatibility.block_backslash_without_ci13 {
+                        return Err("field-block backslash requires ^CI13".into());
+                    }
+                    if encoding != 13 && encoding != 27 {
+                        return Err(
+                            "field-block backslash glyph unsupported for this encoding".into()
+                        );
+                    }
+                    chars.next();
+                    paragraphs.last_mut().unwrap().push('\\');
+                    continue;
+                }
+                Some('&') => {
+                    chars.next();
+                    paragraphs.push(String::new());
+                    continue;
+                }
+                _ => {}
+            }
+        }
+        paragraphs.last_mut().unwrap().push(c);
+    }
+    let mut paragraphs = paragraphs.iter().peekable();
     while let Some(paragraph) = paragraphs.next() {
         let mut line = String::new();
         for (word_index, mut word) in paragraph.split_whitespace().enumerate() {

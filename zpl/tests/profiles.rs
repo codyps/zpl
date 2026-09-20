@@ -1204,3 +1204,24 @@ fn rotated_block_right_origins_are_independent_of_clamping() {
         raster(plain, ZD621_203_DPI).pixels
     );
 }
+
+#[test]
+fn field_block_backslash_encoding_departure_is_optional() {
+    // ^FB p. 187 Item 1 requires CI13; captured CI27 controls are in
+    // field-block-backslash-zd621-v1. Plain fields do not use FB escapes.
+    let input = br"^XA^PW400^LL400^CI27^FO50,50^AAN,9,5^FB200,4,0,L^FDABC\\DEF^FS^XZ";
+    let mut options = ZD621_203_DPI;
+    assert!(render(input, options).is_ok());
+    options.compatibility.block_backslash_without_ci13 = false;
+    assert!(render(input, options).is_err());
+    assert!(render(input, SPECIFICATION).is_err());
+    let mut options = SPECIFICATION;
+    options.compatibility.block_backslash_without_ci13 = true;
+    assert!(render(input, options).is_ok());
+    for ci in [0, 28] {
+        let source = String::from_utf8(input.to_vec())
+            .unwrap()
+            .replace("CI27", &format!("CI{ci}"));
+        assert!(render(source.as_bytes(), ZD621_203_DPI).is_err());
+    }
+}

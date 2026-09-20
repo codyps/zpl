@@ -13,6 +13,10 @@
 /// initial value: the renderer does not reapply it after you change an option.
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct Compatibility {
+    /// Allow escaped FB backslashes in CI27. The guide (^FB p. 187,
+    /// Item 1) requires CI13, which is not yet supported by this renderer.
+    /// Disabled: reject escaped backslashes in other encodings.
+    pub block_backslash_without_ci13: bool,
     /// Use the measured right-justified FO block anchors: B omits the final
     /// line height from its shift; I uses one dot minus block width.
     /// Disabled: use ordinary text-field justification (^FO p. 201, ^FB p. 187).

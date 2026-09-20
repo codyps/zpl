@@ -642,3 +642,20 @@ rotated glyph's ink origin, unioning overlapping ink. The independent
 anchors for FO blocks. SPECIFICATION disables both. Run `cargo test -p zpl
 --test text_edge_preview --test profiles`. Field-block escapes, QR mask
 selection and broader unverified coverage still leave the overall goal open.
+
+### Field-block backslash escapes
+
+[Four backslash atlases](../zpl/tests/fixtures/field-block-backslash-zd621-v1/README.md)
+cover 96 CI27 fields across resident fonts 0/A, narrow wrapping, repeated
+backslashes, and adjacent explicit newline escapes. Every full canvas is
+pixel-exact. Escape decoding consumes a backslash pair before recognizing a
+newline, so an escaped backslash followed by `&` stays on its line.
+
+`block_backslash_without_ci13` enables the printer's CI27 departure from the
+^FB p. 187 CI13 prerequisite. The specification profile disables it. CI13
+remains unsupported, and CI0/28's captured cent-glyph substitution remains
+unimplemented and returns an explicit error. Soft-hyphen escape markers and
+QR mask selection also remain open; these results do not establish the overall
+accuracy goal.
+
+Run `cargo test -p zpl --test field_block_backslash_preview --test profiles`.
