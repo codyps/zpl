@@ -1139,6 +1139,29 @@ width, across fields and within one field, with explicit BY reset controls.
 See [the native evidence](../zpl/tests/fixtures/qr-module-state-zd621-v1/README.md).
 
 Exploratory controls also exposed separate behavior when a barcode field ends
-without FD (the printer reuses earlier data), plus caption differences at QR
+without FD (the preview contains unexpected QR ink), plus caption differences at QR
 magnification 12 inherited by Code 128. Those cases are not claimed fixed by
 the module-state option and remain to be investigated.
+
+## Shipping-label and typography text sizes
+
+`shipping_fonts_preview` adds six native Font 0 strikes and 82 raw preview
+frames, including a fresh shipping-label capture identical to the original.
+The title, justified block and reversed lettering now match exactly. Inverted
+and vertical text exceed 98.9% foreground IoU. The full label retains only
+6 underpaint and 9 overpaint pixels, all in rotated text; its non-text pixels
+are exact. Per-field text gates prevent the label's white space or reversed
+text's black background from hiding regressions.
+
+All 78 sampling/verification frames are exact; extraction tests reconstruct
+the six embedded assets from the native pages. Forty independent FO/FT and
+rotation controls also enforce the 80% text floor. The typography frame,
+whose nine small headings previously scored 44–55%, is now pixel-exact. See
+[the capture evidence](../zpl/tests/fixtures/shipping-fonts-zd621-v1/README.md).
+
+After the width-state and font fixes, the 512-case audit contains 490 exact
+frames, 12 frames with residual text differences, nine blank previews, and
+one rejected invalid UPC-E request. The shipping label is 99.9898% foreground
+IoU, with separate text-field and non-text gates as described above. The
+exploratory empty-field and large-caption cases remain outside that audit and
+still require fixes; these aggregate counts do not close the overall goal.

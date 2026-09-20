@@ -234,6 +234,14 @@ fn strikes() -> &'static Vec<(Settings, Vec<Glyph>)> {
     static STRIKES: OnceLock<Vec<(Settings, Vec<Glyph>)>> = OnceLock::new();
     STRIKES.get_or_init(|| {
         [
+            // Native shipping/typography sizes, independently reconstructed
+            // from shipping-fonts-zd621-v1; ^A guide p. 60, FO/FT pp. 201/205.
+            include_bytes!("../../assets/font0-20-12.zbf").as_slice(),
+            include_bytes!("../../assets/font0-28-15.zbf").as_slice(),
+            include_bytes!("../../assets/font0-36-22.zbf").as_slice(),
+            include_bytes!("../../assets/font0-28-16.zbf").as_slice(),
+            include_bytes!("../../assets/font0-52-30.zbf").as_slice(),
+            include_bytes!("../../assets/font0-42-24.zbf").as_slice(),
             include_bytes!("../../assets/font0-10-0.zbf").as_slice(),
             include_bytes!("../../assets/font0-10-32.zbf").as_slice(),
             include_bytes!("../../assets/font0-32-10.zbf").as_slice(),

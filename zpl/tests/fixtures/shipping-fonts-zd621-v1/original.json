@@ -1,0 +1,18 @@
+{
+  "name": "torture-shipping-label",
+  "group": "torture",
+  "command": "^A ^B7 ^BC ^BQ ^BX ^BY ^CF ^CI ^FB ^FD ^FO ^FR ^FS ^FW ^GB ^GE ^LH ^LL ^LR ^LS ^LT ^PO ^PW ^XA ^XZ",
+  "arguments": "Dense mixed label: text wrapping, QR, Code128, DataMatrix, PDF417, reversal and rotation",
+  "width": 832,
+  "height": 1218,
+  "submission_mode": "inline-reset",
+  "object_name": "CMPACC",
+  "submitted_sha256": "a6955af2c0f31dd77d074acd598afc71e1836593b9e6613a21e9d355c07c6758",
+  "captured_utc": "2026-09-20T04:15:55Z",
+  "zpl_sha256": "01038700f79bb8d9e352b21c840c0b31b448a587b7159c3076c52370ab73bdee",
+  "png_sha256": "ba6c65dcaf5731646bb05e524f335d09db5c02c5999f6e31fbc9c179acd3a27f",
+  "printer_dimensions": [
+    832,
+    1218
+  ]
+}

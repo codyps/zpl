@@ -1,0 +1,18 @@
+{
+  "name": "torture-typography",
+  "group": "torture",
+  "command": "^A ^BY ^CF ^CI ^FD ^FO ^FS ^FW ^GB ^LH ^LL ^LR ^LS ^LT ^PO ^PW ^XA ^XZ",
+  "arguments": "Resident font atlas: mixed sizes, rotations, baselines and panel boundaries",
+  "width": 832,
+  "height": 1218,
+  "submission_mode": "inline-reset",
+  "object_name": "CMPACC",
+  "submitted_sha256": "9a58f821dde97256f38b5b43ced6e52f6a720dfdc375dd89f1435bbb99b65a13",
+  "captured_utc": "2026-09-20T04:15:48Z",
+  "zpl_sha256": "be2ea97401ce3fbdb3563fbbcd569c7fb2ffe3e9bccfca9c1f11fe64b621a7ac",
+  "png_sha256": "e17d503c3bc71531158d3822f9a6f0b03e3a81b73a9db5ecfed63d2993a78095",
+  "printer_dimensions": [
+    832,
+    1218
+  ]
+}
