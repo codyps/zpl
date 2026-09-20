@@ -119,3 +119,10 @@ direnv exec . cargo test -p zebra-http-api --lib --example extract-font
 See the [font reconstruction study](font-reconstruction.md) for live captures across 14 size
 configurations, all four rotations, larger-strike scaling, and the assessment
 of outline and hint-parameter fitting.
+
+Use `--encoding 0`, `13`, or `28` to sample an ASCII byte under another
+character mapping (^CI, Programming Guide pp. 156–159). The default remains
+27. Alternate encodings are recorded in the capture manifest and checked on
+resume; both the measurement and independent verification requests use that
+encoding. Non-27 captures accept only ASCII characters, avoiding ambiguity
+between Unicode characters and legacy byte values.

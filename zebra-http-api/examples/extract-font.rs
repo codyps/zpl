@@ -28,6 +28,9 @@ struct Args {
     /// Printable ASCII or Latin-1 subset; default is all 95 characters.
     #[arg(long)]
     characters: Option<String>,
+    /// ZPL ^CI encoding (0, 13, 27 or 28). Non-27 sampling is ASCII-only.
+    #[arg(long, default_value_t = 27)]
+    encoding: u8,
     #[arg(long, default_value_t = 8)]
     batch_size: usize,
     #[arg(long, default_value_t = 30.0)]
@@ -107,6 +110,10 @@ struct Capture<'a> {
 }
 impl Capture<'_> {
     async fn page(&self, name: &str, zpl: &str) -> Result<(Vec<u8>, Raster)> {
+        // Plans use CI27 by default. Select the requested character mapping
+        // for both measurement and independent verification (^CI pp. 156–159).
+        let zpl = zpl.replacen("^CI27", &format!("^CI{}", self.args.encoding), 1);
+        let zpl = zpl.as_str();
         let request = self.args.output.join(format!("{name}.zpl"));
         let png = self.args.output.join(format!("{name}.png"));
         if request.exists() {
@@ -141,7 +148,12 @@ impl Capture<'_> {
     }
 }
 fn capture_config(args: &Args, codes: &[u8]) -> Value {
-    json!({"schema":"zpl-preview-bitmap-font-v1","font":args.font.to_string(),"requested_height":args.height,"requested_width":args.width,"dpi":args.dpi,"codepoints":codes,"batch_size":args.batch_size,"source":args.host,"coordinates":"printer dots; left/top relative to FT baseline; rows top-to-bottom, MSB-first"})
+    let mut config = json!({"schema":"zpl-preview-bitmap-font-v1","font":args.font.to_string(),"requested_height":args.height,"requested_width":args.width,"dpi":args.dpi,"codepoints":codes,"batch_size":args.batch_size,"source":args.host,"coordinates":"printer dots; left/top relative to FT baseline; rows top-to-bottom, MSB-first"});
+    // Preserve existing CI27 capture manifests for offline/resume workflows.
+    if args.encoding != 27 {
+        config["encoding"] = json!(args.encoding);
+    }
+    config
 }
 async fn run(args: Args) -> Result<()> {
     let settings = Settings {
@@ -185,6 +197,11 @@ async fn run(args: Args) -> Result<()> {
         .unwrap_or_else(|| (32..=126).collect());
     codes.sort_unstable();
     codes.dedup();
+    ensure!(
+        matches!(args.encoding, 0 | 13 | 27 | 28)
+            && (args.encoding == 27 || codes.iter().all(u8::is_ascii)),
+        "encoding must be 0, 13, 27 or 28; non-27 captures require ASCII characters"
+    );
     ensure!(
         !codes.is_empty() && codes.iter().all(|c| (32..=126).contains(c) || *c >= 160),
         "characters must be nonempty printable ASCII or Latin-1"
@@ -374,6 +391,21 @@ mod tests {
         let (zpl, r) = font_extract::verification_plan(&glyphs, s, "A A").unwrap();
         fs::write(path.join("verification.zpl"), zpl).unwrap();
         fs::write(path.join("verification.png"), encode(&r)).unwrap();
+    }
+    #[tokio::test]
+    async fn alternate_encoding_is_applied_to_both_pages_and_pinned_on_resume() {
+        let temp = Temp::new();
+        saved_pages(&temp.0);
+        let mut a = args(&temp.0);
+        a.encoding = 0;
+        json_write(&temp.0.join("capture.json"), &capture_config(&a, b" A")).unwrap();
+        for name in ["page-000.zpl", "verification.zpl"] {
+            let path = temp.0.join(name);
+            let source = fs::read_to_string(&path).unwrap().replace("^CI27", "^CI0");
+            fs::write(path, source).unwrap();
+        }
+        run(a).await.unwrap();
+        assert!(run(args(&temp.0)).await.is_err());
     }
     #[tokio::test]
     async fn offline_resume_and_failed_verification_preserve_exports() {
