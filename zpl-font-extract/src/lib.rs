@@ -185,9 +185,10 @@ pub fn extract_page(image: &Raster, page: &Page) -> Result<Vec<Glyph>, String> {
                 }
                 g.bitmap.push(bits);
             }
-        } else if g.codepoint != 32 {
-            return Err(format!("blank printable glyph U+{:04X}", g.codepoint));
         }
+        // A validated, positive advance can belong to a blank glyph: ZD621
+        // resident H lowercase is blank. The nonempty sentinel probes above
+        // still reject blank or invalid captures (tests/fixtures/font-h-blank).
         glyphs.push(g);
     }
     Ok(glyphs)
@@ -416,6 +417,39 @@ mod packed_tests {
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn printer_blank_glyphs_keep_their_measured_advances() {
+        let settings = Settings {
+            font: 'H',
+            height: 21,
+            width: 13,
+            dpi: 203,
+        };
+        let page = page_plan(&(96..=103).collect::<Vec<_>>(), settings).unwrap();
+        assert_eq!(
+            page.zpl.as_bytes(),
+            include_bytes!("../tests/fixtures/font-h-blank/page-008.zpl")
+        );
+        let mut raster = Raster::decode_png(include_bytes!(
+            "../tests/fixtures/font-h-blank/page-008.png"
+        ))
+        .unwrap();
+        let glyphs = extract_page(&raster, &page).unwrap();
+        assert_eq!(glyphs.len(), 8);
+        assert!(glyphs[0].width > 0);
+        for glyph in &glyphs[1..] {
+            assert_eq!(glyph.advance, 19);
+            assert_eq!((glyph.width, glyph.height), (0, 0));
+            assert!(glyph.bitmap.is_empty());
+        }
+        let (_, decoded) = zpl::bitmap_font::unpack(&pack(&glyphs, settings).unwrap()).unwrap();
+        assert_eq!(decoded, glyphs);
+        raster.pixels.fill(255);
+        assert!(extract_page(&raster, &page)
+            .unwrap_err()
+            .contains("empty advance probe"));
+    }
+
     #[test]
     fn large_underscore_stays_in_the_isolated_glyph_tile() {
         let settings = super::Settings {
