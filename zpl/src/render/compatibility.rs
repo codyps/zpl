@@ -13,6 +13,9 @@
 /// initial value: the renderer does not reapply it after you change an option.
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct Compatibility {
+    /// End plain/TB text at NUL and remove NUL within FB. See
+    /// nul-text-zd621-v1; ^FD/^FH do not specify this termination behavior.
+    pub text_nul_processing: bool,
     /// Allow ^CI to remap the space image in legacy encodings. The guide
     /// p. 159 forbids this, but ZD621 Font 0 honors it (character-remap-zd621-v1).
     pub remap_space: bool,

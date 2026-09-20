@@ -1056,3 +1056,17 @@ restriction; SPECIFICATION disables it. See the
 The controls explicitly initialize and restore mappings because native preview
 requests retain these tables. A separate off-label UPC-caption placement gap
 was observed while testing and remains open.
+
+## NUL in text fields
+
+`nul_text_preview` covers the two previously failing field-hex corpus cases
+and a new thirteen-field native control. Plain and bounded text terminate at
+NUL; field blocks discard NUL and continue. `text_nul_processing` selects this
+printer behavior independently of other compatibility options. Barcode bytes
+and following fields are preserved by the text-processing option.
+
+The new control is pixel-exact. Each original hex case retains one underpaint
+and one overpaint pixel in a resident glyph; exact counts, raster hashes, and
+an 80% foreground-IoU floor are enforced. See the
+[native evidence](../zpl/tests/fixtures/nul-text-zd621-v1/README.md). Other control
+bytes, including Code 93 interpretation controls, remain distinct work.

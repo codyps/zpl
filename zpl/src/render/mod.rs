@@ -840,6 +840,16 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                     if bytes.len() > 4096 {
                         return Err("field data exceeds 4096-byte renderer limit".into());
                     }
+                    // Native ^FH NUL ends plain/TB text, while FB removes it.
+                    // ^FD/^FH pp. 190/193 do not specify C-string truncation;
+                    // printer-only evidence: nul-text-zd621-v1.
+                    if field.barcode.is_none() && options.compatibility.text_nul_processing {
+                        if field.block.is_some() {
+                            bytes.retain(|&byte| byte != 0);
+                        } else if let Some(end) = bytes.iter().position(|&byte| byte == 0) {
+                            bytes.truncate(end);
+                        }
+                    }
                     let decoded;
                     let value = if field.barcode.is_some() || field.barcode_error.is_some() {
                         ""
