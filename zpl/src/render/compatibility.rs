@@ -208,9 +208,10 @@ pub struct Compatibility {
     /// With explicit CODABLOCK F/E columns, fit the actual data instead of
     /// padding to the requested row count. Captured ZD621 sizing choice.
     pub codablock_f_fit_rows: bool,
-    /// Include a trailing space in ^FB alignment when it fits. A final line
-    /// without room for that space is fully justified. Observed in ZD621
-    /// previews; default: align only the actual text (^FB pp. 185–187).
+    /// Include a trailing space in automatic ^FB line alignment when it fits;
+    /// explicit paragraph breaks do not add it. A final non-overflow line
+    /// without room for that space is fully justified. See field-block-overflow-
+    /// zd621-v1; default: align actual text only (^FB pp. 185–187).
     pub block_center_includes_trailing_space: bool,
     /// Interpret CODABLOCK F/E row height as dots, as in ZD621 previews,
     /// instead of the module multiplier described by ^BB (guide p. 90).

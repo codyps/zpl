@@ -1071,7 +1071,10 @@ fn text_block(
         return Err("overlapping field block lines unsupported".into());
     }
     let mut lines = Vec::new();
-    for paragraph in value.split("\\&") {
+    // Explicit paragraph ends affect centering and terminate justification.
+    // Preserve them separately from automatic wraps (^FB pp. 185–187).
+    let mut paragraphs = value.split("\\&").peekable();
+    while let Some(paragraph) = paragraphs.next() {
         let mut line = String::new();
         for word in paragraph.split_whitespace() {
             if font::width_for(font_id, word, w, h)?
@@ -1088,25 +1091,24 @@ fn text_block(
                 && font::width_for(font_id, &next, w, h)?
                     > width - if lines.is_empty() { 0. } else { indent }
             {
-                lines.push(std::mem::take(&mut line));
+                lines.push((std::mem::take(&mut line), false));
                 line = word.to_string();
             } else {
                 line = next;
             }
         }
-        lines.push(line);
-    }
-    if lines.len() > max_lines {
-        return Err("field block overflow unsupported".into());
+        lines.push((line, paragraphs.peek().is_some()));
     }
     let mut path = Path::default();
-    for (i, line) in lines.iter().enumerate() {
+    for (i, (line, hard_break)) in lines.iter().enumerate() {
         // Zebra ^FB pp. 185–187: indent subsequent lines, distribute
         // justification between words, and leave the final line left-aligned.
         let inset = if i == 0 { 0. } else { indent };
         let slack = width - inset - font::width_for(font_id, line, w, h)?;
         let gaps = line.bytes().filter(|&c| c == b' ').count();
         let mut p = if align == b'J'
+            && !*hard_break
+            && (lines.len() <= max_lines || i + 1 < max_lines)
             && (i + 1 < lines.len()
                 || (center_space && slack <= font::width_for(font_id, " ", w, h)?))
             && gaps > 0
@@ -1129,7 +1131,10 @@ fn text_block(
             + match align {
                 b'C' => {
                     (slack
-                        - if center_space && slack > font::width_for(font_id, " ", w, h)? {
+                        - if center_space
+                            && !*hard_break
+                            && slack > font::width_for(font_id, " ", w, h)?
+                        {
                             font::width_for(font_id, " ", w, h)?
                         } else {
                             0.
@@ -1139,7 +1144,9 @@ fn text_block(
                 b'R' => slack,
                 _ => 0.,
             };
-        p.transform(|p| Point::new(p.x + x, p.y + i as f64 * (h + spacing)));
+        // ^FB p. 186: excess text overprints the last row. Union below keeps
+        // overlapping glyph ink black. Captured in field-block-overflow-zd621-v1.
+        p.transform(|p| Point::new(p.x + x, p.y + i.min(max_lines - 1) as f64 * (h + spacing)));
         path.segments.extend(p.segments);
     }
     Ok((

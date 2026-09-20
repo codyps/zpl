@@ -306,3 +306,25 @@ fn field_block_overshoots_union_with_descenders() {
         zpl::output::raster::rasterize(&separate).unwrap()
     );
 }
+
+#[test]
+fn field_block_overflow_unions_ink_on_the_last_row() {
+    // ^FB p. 186 specifies overprinting the final row. Real-printer controls:
+    // field-block-overflow-zd621-v1, including max-lines 1/2 and every rotation.
+    for max_lines in [1, 2, 3] {
+        let block = scene(
+            format!("^XA^AAN,9,5^FO20,20^FB60,{max_lines},4,L^FDAB\\&CD\\&EF\\&GH^FS^XZ")
+                .as_bytes(),
+        );
+        let mut separate = String::from("^XA");
+        for (i, text) in ["AB", "CD", "EF", "GH"].iter().enumerate() {
+            let y = 20 + i.min(max_lines - 1) * 13;
+            separate.push_str(&format!("^AAN,9,5^FO20,{y}^FD{text}^FS"));
+        }
+        separate.push_str("^XZ");
+        assert_eq!(
+            zpl::output::raster::rasterize(&block).unwrap(),
+            zpl::output::raster::rasterize(&scene(separate.as_bytes())).unwrap()
+        );
+    }
+}
