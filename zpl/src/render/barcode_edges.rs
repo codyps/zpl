@@ -110,3 +110,35 @@ pub(super) fn clamp(path: &mut Path, split: &[usize], reverse: bool) -> Result<(
     *path = out;
     Ok(())
 }
+
+/// ZD621 barcode-boundary-zd621-v1: R/I lose their last height dot at a
+/// nonpositive starting edge. N/B and all strictly positive controls retain it.
+/// Apply before independent ink clamping; leave caption glyphs unchanged.
+pub(super) fn trim_rotated_boundary(path: &mut Path, end: usize, rotation: u8) {
+    if !matches!(rotation, b'R' | b'I') {
+        return;
+    }
+    let coordinate = |p: &crate::output::Point| if rotation == b'R' { p.x } else { p.y };
+    let mut low = f64::INFINITY;
+    let mut high = f64::NEG_INFINITY;
+    for segment in &path.segments[..end] {
+        if let Segment::Move(p) | Segment::Line(p) = segment {
+            let v = coordinate(p);
+            low = low.min(v);
+            high = high.max(v);
+        }
+    }
+    if low > 0. {
+        return;
+    }
+    let limit = (high - 1.).max(low);
+    for segment in &mut path.segments[..end] {
+        if let Segment::Move(p) | Segment::Line(p) = segment {
+            if rotation == b'R' {
+                p.x = p.x.min(limit);
+            } else {
+                p.y = p.y.min(limit);
+            }
+        }
+    }
+}

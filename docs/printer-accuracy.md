@@ -411,5 +411,21 @@ then unions black ink. ^FR/^LR instead invert overlapping components twice.
 `linear_barcode_clamps_negative_ink` controls this independently of nominal
 ^FO/^FT geometry. The earlier caption suite's final residual now becomes exact.
 Run `cargo test -p zpl --test barcode_edges_preview --test linear_caption_preview
---test profiles`. A newly observed rotated ^FO origin-zero bar boundary still
-needs investigation; no full-coverage accuracy claim is implied.
+--test profiles`. The separately captured rotated origin-zero bar boundary
+is resolved below; no full-coverage accuracy claim is implied.
+
+
+## Rotated bar boundary at zero
+
+[Twenty-four boundary frames](../zpl/tests/fixtures/barcode-boundary-zd621-v1/README.md)
+pin Code 11/39/93/128 and Interleaved 2 of 5 at zero, positive and negative
+origins. Twenty are pixel-exact after `linear_barcode_rotated_edge_loses_dot`:
+R at nonpositive X and I at nonpositive Y lose one height dot, independently
+of negative-ink translation. The controls include heights 1–3 and 30/31/80,
+FO/FT, all rotations, and home/shift offsets.
+
+Four overlapping-caption holdouts retain small pinned Code 11 text residuals
+(12–112 underpaint and the same overpaint count). Short R/I glyphs keep padding
+on the printer; this remains a separate accuracy issue. Run
+`cargo test -p zpl --test barcode_boundary_preview --test barcode_edges_preview
+--test profiles`. QR mask selection and broader unverified coverage also remain.

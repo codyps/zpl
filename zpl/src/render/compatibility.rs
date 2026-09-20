@@ -13,6 +13,12 @@
 /// initial value: the renderer does not reapply it after you change an option.
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct Compatibility {
+    /// Remove the farthest bar-height dot for R at x <= 0 and I at y <= 0.
+    /// This uses the final bar ink position, after ^FO/^FT, home and shift.
+    /// Captured for ^B1/^B2/^B3/^BA/^BC in barcode-boundary-zd621-v1;
+    /// nominal field placement is specified by ^FO/^FT pp. 201/205.
+    /// Negative-ink translation is controlled independently by the next option.
+    pub linear_barcode_rotated_edge_loses_dot: bool,
     /// Clamp bars and individual caption glyphs at negative label edges, then
     /// union black ink (reverse printing toggles overlapping components twice).
     /// Captured for ^B1/^B2/^B3/^BA/^BC in

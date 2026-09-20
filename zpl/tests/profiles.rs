@@ -773,3 +773,33 @@ fn barcode_negative_ink_clamping_is_optional() {
         raster(inset, options).pixels
     );
 }
+
+#[test]
+fn rotated_bar_edge_trimming_is_independent_of_ink_clamping() {
+    // Raw hardware controls: barcode-boundary-zd621-v1; ^FO/^FT pp. 201/205.
+    let zero = "^BY1,2,30^FO0,40^BCR,30,N,N,N,N^FDCode128";
+    let mut untrimmed = ZD621_203_DPI;
+    untrimmed
+        .compatibility
+        .linear_barcode_rotated_edge_loses_dot = false;
+    assert_ne!(
+        raster(zero, ZD621_203_DPI).pixels,
+        raster(zero, untrimmed).pixels
+    );
+    let mut trim_only = ZD621_203_DPI;
+    trim_only.compatibility.linear_barcode_clamps_negative_ink = false;
+    assert_eq!(
+        raster(zero, ZD621_203_DPI).pixels,
+        raster(zero, trim_only).pixels
+    );
+    let caption = "^BY1,2,30^FO0,40^BCR,30,Y,Y,N,N^FDCode128";
+    assert_eq!(
+        raster(caption, ZD621_203_DPI).pixels,
+        raster(caption, trim_only).pixels
+    );
+    let inset = "^BY1,2,30^FO1,40^BCR,30,N,N,N,N^FDCode128";
+    assert_eq!(
+        raster(inset, ZD621_203_DPI).pixels,
+        raster(inset, untrimmed).pixels
+    );
+}

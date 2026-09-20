@@ -402,9 +402,11 @@ impl Barcode {
             // this anchor is independent of the default linear barcode height.
             baseline += 3. * self.num(2, self.scale(), 1., 100.)? - 1.;
         }
-        let clamp = self.compatibility.linear_barcode_clamps_negative_ink
-            && matches!(self.name.as_str(), "B1" | "B2" | "B3" | "BA" | "BC");
-        let mut split = if clamp {
+        let edge_family = matches!(self.name.as_str(), "B1" | "B2" | "B3" | "BA" | "BC");
+        let clamp = self.compatibility.linear_barcode_clamps_negative_ink && edge_family;
+        let track_bars =
+            edge_family && (clamp || self.compatibility.linear_barcode_rotated_edge_loses_dot);
+        let mut split = if track_bars {
             vec![0, p.segments.len()]
         } else {
             Vec::new()

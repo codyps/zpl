@@ -920,11 +920,22 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                             };
                             Point::new(x + a + dx + jx, y + b + dy + jy)
                         });
-                        barcode_edges::clamp(
-                            &mut path,
-                            &field.barcode_split,
-                            field.reverse || reverse,
-                        )?;
+                        if options.compatibility.linear_barcode_rotated_edge_loses_dot {
+                            if let Some(&end) = field.barcode_split.get(1) {
+                                barcode_edges::trim_rotated_boundary(
+                                    &mut path,
+                                    end,
+                                    field.rotation,
+                                );
+                            }
+                        }
+                        if options.compatibility.linear_barcode_clamps_negative_ink {
+                            barcode_edges::clamp(
+                                &mut path,
+                                &field.barcode_split,
+                                field.reverse || reverse,
+                            )?;
+                        }
                         total_segments += path.segments.len();
                         if total_segments > crate::output::MAX_SEGMENTS {
                             return Err("document path limit exceeded".into());

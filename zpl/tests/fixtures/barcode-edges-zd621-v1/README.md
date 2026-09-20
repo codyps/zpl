@@ -21,10 +21,9 @@ The implementation is limited to the five captured families. Other families
 need independent controls before extending the override.
 
 Related regression: `linear-caption-zd621-v1/above-linear-caption-B-0` formerly
-had 1146 underpaint and 207 overpaint dots and now matches exactly. A separate
-newly captured ^FO R origin-zero boundary case still needs investigation;
-its bars are one column shorter than at origin one. These controls do not
-claim full barcode or text coverage.
+had 1146 underpaint and 207 overpaint dots and now matches exactly. The separate ^FO R origin-zero bar boundary is resolved by the controls
+in `barcode-boundary-zd621-v1`, which also preserve a newly measured short-glyph
+caption gap. These controls do not claim full barcode or text coverage.
 
 Reference: Zebra [ZPL II Programming Guide](https://www.zebra.com/content/dam/support-dam/en/documentation/unrestricted/guide/software/zpl-zbi2-pg-en.pdf),
 ^FO p. 201, ^FT p. 205 Table 7, ^FR p. 203 and ^LR p. 295. Exact edge and
