@@ -103,14 +103,13 @@ pub struct Compatibility {
     /// preceding explicit ^A font selection, matching captured ZD621 previews.
     /// Default: honor the explicit font, as for the other linear barcodes.
     pub code39_interpretation_ignores_font: bool,
-    /// Use measured ZD621 rounded-box geometry: a minimum two-dot border,
-    /// dimensions no smaller than that border, and an independent inner
-    /// rounding percentage. With the integer curve enabled, both corner radii
+    /// Use measured ZD621 rounded-box geometry: a minimum two-dot border
+    /// and an independent inner rounding percentage. With the integer curve enabled, both corner radii
     /// are at least two dots. The nominal profile uses constant-distance outlines.
     /// Zebra ^GB, pp. 210–211, defines the rounding scale but not these details.
     pub rounded_box_printer_geometry: bool,
     /// Use the integer corner curve measured in ZD621 ^GB previews instead of
-    /// cubic circular arcs. Rounded-box dimensions remain separately selectable.
+    /// cubic circular arcs. Rounded-box border and radius rules remain separately selectable.
     pub rounded_box_printer_curve: bool,
     /// Use the measured ZD621 circle curve, minimum border, and span endpoints
     /// for ^GC and equal-axis ^GE.

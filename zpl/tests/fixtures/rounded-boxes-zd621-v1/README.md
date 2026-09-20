@@ -18,7 +18,7 @@ shallow-octant error recurrence. The implementation computes it for arbitrary
 radii rather than using a captured-radius lookup. The profile option
 `rounded_box_printer_curve` selects it independently of
 `rounded_box_printer_geometry`, which controls the two-dot minimum border,
-dimensions no smaller than the border, independent inner rounding percentage,
+independent inner rounding percentage,
 and two-dot minimum integer corner radius (including a zero inner-radius result).
 The two compatibility options are disabled in SPECIFICATION.
 
@@ -27,3 +27,6 @@ the exact integer recurrence and minimum-radius observations above are empirical
 firmware behavior, not claims made by the specification. See the bundled
 `docs/zpl-zbi2-pg-en.pdf` and
 [Zebra command reference](https://www.zebra.com/us/en/support-downloads/knowledge-articles/ait/zpl-command-information-and-details.html).
+
+Box dimensions default to and are at least the border thickness in both profiles,
+as specified on p. 210; see box-minimum-zd621-v1.

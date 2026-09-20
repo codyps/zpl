@@ -752,11 +752,19 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                     field.path = Some(path);
                 }
                 "GB" | "GE" | "GC" => {
-                    let w = number(&p, 0, 1.)?;
-                    let h = if name == "GC" { w } else { number(&p, 1, 1.)? };
                     let ti = if name == "GC" { 1 } else { 2 };
                     let t = number(&p, ti, 1.)?;
-                    if w <= 0. || h <= 0. || t <= 0. {
+                    // Zebra Programming Guide, ^GB, p. 210: omitted dimensions
+                    // default to thickness; adjust dimensions to at least t
+                    // before calculating rounding (including the zero-width example).
+                    let default_dimension = if name == "GB" { t } else { 1. };
+                    let w = number(&p, 0, default_dimension)?;
+                    let h = if name == "GC" {
+                        w
+                    } else {
+                        number(&p, 1, default_dimension)?
+                    };
+                    if t <= 0. || w < 0. || h < 0. || (name != "GB" && (w == 0. || h == 0.)) {
                         return Err("invalid shape dimensions".into());
                     }
                     if p.get(ti + 1).is_some_and(|v| !matches!(*v, "" | "B" | "W")) {
@@ -774,11 +782,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                         let printer_geometry =
                             r > 0. && options.compatibility.rounded_box_printer_geometry;
                         let t = if printer_geometry { t.max(2.) } else { t };
-                        let (w, h) = if printer_geometry {
-                            (w.max(t), h.max(t))
-                        } else {
-                            (w, h)
-                        };
+                        let (w, h) = (w.max(t), h.max(t));
                         let radius = r / 8. * w.min(h) / 2.;
                         let inner_radius = if printer_geometry {
                             (r / 16. * (w - 2. * t).min(h - 2. * t)).floor().max(0.)

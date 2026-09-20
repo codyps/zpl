@@ -1034,3 +1034,31 @@ fn automatic_hyphen_layout_and_ci27_glyph_are_independent() {
     assert_eq!(generic.pixels, raster(explicit, SPECIFICATION).pixels);
     assert_ne!(generic.pixels, hyphen.pixels);
 }
+
+#[test]
+fn graphic_box_dimensions_default_to_and_are_at_least_thickness() {
+    // Zebra Programming Guide, ^GB, p. 210: default/minimum dimensions
+    // are t; its zero-width example is a vertical line. Raw printer controls:
+    // box-minimum-zd621-v1 (square and rounded corners).
+    for options in [SPECIFICATION, ZD621_203_DPI] {
+        for rounding in [0, 1, 8] {
+            for (args, normalized) in [
+                ("80,50,100", "100,100,100"),
+                ("0,50,20", "20,50,20"),
+                ("50,0,20", "50,20,20"),
+                ("0,0,20", "20,20,20"),
+                (",,20", "20,20,20"),
+                (",50,20", "20,50,20"),
+                ("50,,20", "50,20,20"),
+                ("1,1,20", "20,20,20"),
+            ] {
+                let actual = raster(&format!("^FO40,40^GB{args},B,{rounding}"), options);
+                let expected = raster(&format!("^FO40,40^GB{normalized},B,{rounding}"), options);
+                assert_eq!(
+                    actual.pixels, expected.pixels,
+                    "{args}, rounding {rounding}"
+                );
+            }
+        }
+    }
+}
