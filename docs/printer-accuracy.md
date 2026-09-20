@@ -1,9 +1,17 @@
 # Printer accuracy regressions
 
-Current QR status: automatic mask selection now matches all 235 affected
-frames, including 32 fresh holdout symbols and extended Model 1 versions.
-See [the algorithm and evidence](qr-mask-selection.md). Earlier entries below
-record gaps at the time of those fixes; their QR-mask caveats are superseded.
+Current comparison-corpus status: the 164-case main gate is pixel-exact.
+The complete 512-case conformance gate has 490 exact nonblank frames, twelve
+with text-only differences (minimum per-field IoU 93.33%), nine blank controls,
+and one rejected invalid barcode input. Every non-text comparison is exact.
+Run `cargo test -p zpl --test printer_accuracy --test conformance_preview`.
+Exploratory TAB/ESC/DEL controls remain unfinished; this is not a claim that
+every possible ZPL input is covered. Later sections record current evidence.
+
+Automatic QR masks match all 235 affected frames, including 32 fresh holdout
+symbols and extended Model 1 versions; see [the algorithm](qr-mask-selection.md).
+Earlier entries below are a chronological record and may describe gaps that
+subsequent sections resolve.
 
 Run `cargo test -p zpl --test printer_accuracy -- --nocapture` for the offline
 accuracy gate, or `cargo test --workspace` to include it with all existing tests.
@@ -1197,3 +1205,24 @@ accuracy comparisons: no deterministic renderer can match changing native
 pixels from the same source. The renderer continues leaving fields without
 FD empty and rejecting missing QR data, without inventing a compatibility
 mapping for unrelated buffer bytes. See [the evidence](../zpl/tests/fixtures/empty-qr-zd621-v1/README.md).
+
+## Full comparison conformance regression gate
+
+`conformance_preview` brings the complete 512-case comparison corpus into the
+repository: 453 original captures plus 59 references to the corrected-width
+barcode captures. It preserves the source corpus and native capture manifests,
+verifies their hashes, and replays the captured state reset before each label.
+
+Current results are 490 pixel-exact nonblank frames, 12 frames with small text
+differences, nine blank controls, and one rejected invalid UPC-E input. The 12
+differing frames have 51 separately measured text fields, each above 80%
+foreground IoU; every non-text pixel must be exact. The main 164-case accuracy
+baseline also currently has zero directional paint errors in every case.
+All gates retain source/capture hashes, exact overpaint/underpaint counts and
+raster hashes, so improvements require explicit review as well as regressions.
+See [the corpus and gate details](../zpl/tests/fixtures/conformance-zd621-v1/README.md).
+
+This closes the exact-source coverage gap in the comparison corpus, but does
+not establish parity for all possible ZPL. An earlier exploratory control
+still exposes unsupported TAB and encoding-specific ESC/DEL behavior; it
+remains separate work before concluding the current accuracy investigation.

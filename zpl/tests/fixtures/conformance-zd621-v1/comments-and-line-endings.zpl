@@ -1,0 +1,3 @@
+^XA^PW832^LL1218^LH0,0^LS0^LT0^PON^LRN^FWN^CI27^CF0,32,0^BY2,3,60^FXNo ink from this comment^FS
+^FO80,80^FDVisible^FS
+^XZ
