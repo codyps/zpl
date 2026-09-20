@@ -49,14 +49,29 @@ pub fn encode_field(text: &str, encoding: u8) -> Result<String, String> {
 
 /// Glyph field bytes are hex-escaped, including all ZPL syntax characters.
 pub fn page_plan(codes: &[u32], s: Settings, encoding: u8) -> Result<Page, String> {
+    page_plan_with_columns(codes, s, encoding, 2)
+}
+
+/// Plan one or two columns without resizing the returned printer image.
+/// A single column keeps wide-glyph probes within a narrower printer canvas;
+/// callers must still check the planned width against their device's limit.
+pub fn page_plan_with_columns(
+    codes: &[u32],
+    s: Settings,
+    encoding: u8,
+    columns: u32,
+) -> Result<Page, String> {
     s.validate()?;
+    if !(1..=2).contains(&columns) {
+        return Err("sampling columns must be one or two".into());
+    }
     if codes.is_empty() || codes.len() > 16 || codes.iter().any(|c| !valid_codepoint(*c)) {
         return Err("sample must contain 1..16 printable Unicode glyphs".into());
     }
     let cw = s.height.max(s.width) * 6 + 32;
     let ch = s.height * 5 + 48;
-    let width = (cw * 2).div_ceil(64) * 64;
-    let height = (codes.len() as u32 + 1).div_ceil(2) * ch;
+    let width = (cw * columns).div_ceil(64) * 64;
+    let height = (codes.len() as u32 + 1).div_ceil(columns) * ch;
     let mut zpl = format!(
         "^XA^PW{width}^LL{height}^LH0,0^LS0^LT0^PON^LRN^CI{encoding}{}",
         if encoding == 28 { "^PA0,0,0,0" } else { "" }
@@ -68,7 +83,7 @@ pub fn page_plan(codes: &[u32], s: Settings, encoding: u8) -> Result<Page, Strin
         .chain(codes.iter().copied().map(Some))
         .enumerate()
     {
-        let (x, y) = (i as u32 % 2 * cw, i as u32 / 2 * ch);
+        let (x, y) = (i as u32 % columns * cw, i as u32 / columns * ch);
         let base = y + 16 + s.height * 2;
         let second = y + 32 + s.height * 4;
         let encoded = code
@@ -666,6 +681,28 @@ mod tests {
             assert!(p.zpl.contains(&format!("^FD{s}^FS")))
         }
         assert!(verification_plan(&g, settings(), "missing", 27).is_err());
+    }
+    #[test]
+    fn wide_glyph_page_can_fit_an_832_dot_canvas() {
+        // ZD621 preview evidence: a requested PW896 page returned 832 dots.
+        // Keep the two-column default, but permit a narrower capture layout.
+        let settings = Settings {
+            font: '0',
+            height: 65,
+            width: 0,
+            dpi: 203,
+        };
+        let wide = page_plan(&[65], settings, 27).unwrap();
+        let narrow = page_plan_with_columns(&[65], settings, 27, 1).unwrap();
+        assert_eq!((wide.width, narrow.width), (896, 448));
+        assert_eq!(narrow.tiles.len(), wide.tiles.len());
+        assert!(narrow
+            .tiles
+            .iter()
+            .all(|tile| tile.x + tile.width <= narrow.width));
+        for columns in [0, 3] {
+            assert!(page_plan_with_columns(&[65], settings, 27, columns).is_err());
+        }
     }
     #[test]
     fn invalid_samples_and_clipping() {

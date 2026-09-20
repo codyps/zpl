@@ -45,10 +45,16 @@ direnv exec . cargo run -p zebra-http-api --example extract-font -- --host http:
   --verify-text 'AVATAR Agj Wavy 123 _^~|!' _font-0-32
 ```
 
-Use the same font, dimensions, character set and batch size when resuming.
-Existing captures from the former Python tool are compatible; both versions use
+Use the same font, dimensions, character set, batch size and column count when resuming.
+Existing default two-column captures from the former Python tool remain compatible; both versions use
 the same configuration, page ZPL and JSON/BDF formats.
 `--batch-size`, `--delay`, and `--timeout` control page size and request pacing.
+`--columns 1` uses one column of glyph/probe tiles instead of the default two.
+Use it when wide glyphs would request a canvas beyond the printer's limit: the
+ZD621 caps an 896-dot request at 832 dots, while the same 65-dot glyph probes
+fit a 448-dot single-column page. Capture geometry changes, not the image.
+Choose a shorter `--verify-text` if that separate line exceeds the device width.
+Column count is pinned in the manifest; changing it requires a new capture directory.
 Run against an idle preview endpoint: concurrent preview clients can replace the
 shared `TEST1` preview object used by the existing API.
 

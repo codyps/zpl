@@ -37,6 +37,9 @@ struct Args {
     default_glyph: bool,
     #[arg(long, default_value_t = 8)]
     batch_size: usize,
+    /// Sampling columns; use one when wide glyphs exceed the printer canvas.
+    #[arg(long, default_value_t = 2)]
+    columns: u32,
     #[arg(long, default_value_t = 30.0)]
     timeout: f64,
     #[arg(long, default_value_t = 0.5)]
@@ -162,6 +165,9 @@ fn capture_config(args: &Args, codes: &[u32]) -> Value {
     if args.encoding != 27 {
         config["encoding"] = json!(args.encoding);
     }
+    if args.columns != 2 {
+        config["columns"] = json!(args.columns);
+    }
     if args.default_glyph {
         config["default_glyph"] = json!(true);
     }
@@ -177,12 +183,13 @@ async fn run(args: Args) -> Result<()> {
     settings.validate().map_err(|e| eyre!(e))?;
     ensure!(
         (1..=16).contains(&args.batch_size)
+            && (1..=2).contains(&args.columns)
             && args.timeout.is_finite()
             && args.timeout > 0.
             && args.timeout <= 3600.
             && args.delay.is_finite()
             && (0. ..=3600.).contains(&args.delay),
-        "invalid batch size, timeout or delay"
+        "invalid batch size, columns, timeout or delay"
     );
     let mut host = reqwest::Url::parse(&args.host)?;
     ensure!(
@@ -255,7 +262,9 @@ async fn run(args: Args) -> Result<()> {
     };
     let (mut glyphs, mut captures) = (Vec::new(), Vec::new());
     for (page, batch) in codes.chunks(args.batch_size).enumerate() {
-        let plan = font_extract::page_plan(batch, settings, args.encoding).map_err(|e| eyre!(e))?;
+        let plan =
+            font_extract::page_plan_with_columns(batch, settings, args.encoding, args.columns)
+                .map_err(|e| eyre!(e))?;
         let (data, image) = capture.page(&format!("page-{page:03}"), &plan.zpl).await?;
         glyphs.extend(font_extract::extract_page(&image, &plan).map_err(|e| eyre!(e))?);
         captures.push(json!({"page":page,"sha256":font_support::sha256(&data)}));
@@ -402,6 +411,18 @@ mod tests {
         let (zpl, r) = font_extract::verification_plan(&glyphs, s, "A A", 27).unwrap();
         fs::write(path.join("verification.zpl"), zpl).unwrap();
         fs::write(path.join("verification.png"), encode(&r)).unwrap();
+    }
+    #[tokio::test]
+    async fn changed_columns_cannot_reuse_a_different_saved_layout() {
+        let temp = Temp::new();
+        saved_pages(&temp.0);
+        let mut a = args(&temp.0);
+        a.columns = 1;
+        assert!(run(a)
+            .await
+            .unwrap_err()
+            .to_string()
+            .contains("configuration differs"));
     }
     #[tokio::test]
     async fn alternate_encoding_is_applied_to_both_pages_and_pinned_on_resume() {
