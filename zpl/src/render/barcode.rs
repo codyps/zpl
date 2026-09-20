@@ -102,11 +102,18 @@ pub(super) fn supported(name: &str) -> bool {
             | "BZ"
     )
 }
+#[derive(Clone)]
+pub(super) struct CaptionPart {
+    pub start: usize,
+    pub end: usize,
+    pub origin: Point,
+}
 pub(super) struct Rendered {
     pub path: Path,
     pub width: f64,
     pub baseline: f64,
     pub split: Vec<PartBoundary>,
+    pub caption_parts: Vec<CaptionPart>,
 }
 
 impl Barcode {
@@ -457,9 +464,16 @@ impl Barcode {
         } else {
             Vec::new()
         };
+        let mut caption_parts = Vec::new();
         if self.uses_retail_caption() {
-            p.segments
-                .extend(retail::caption(self, bytes, rotation, character_map)?.segments);
+            let (caption, mut parts) = retail::caption(self, bytes, rotation, character_map)?;
+            let offset = p.segments.len();
+            for part in &mut parts {
+                part.start += offset;
+                part.end += offset;
+            }
+            caption_parts = parts;
+            p.segments.extend(caption.segments);
         } else if self.show {
             let special = if self.name == "BA" {
                 code93::extended_caption(self, bytes)?
@@ -604,6 +618,7 @@ impl Barcode {
             width,
             baseline,
             split,
+            caption_parts,
         })
     }
     fn interpretation(&self, bytes: &[u8]) -> Result<String, String> {

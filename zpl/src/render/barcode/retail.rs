@@ -61,7 +61,7 @@ pub(super) fn caption(
     bytes: &[u8],
     rotation: u8,
     character_map: Option<[u8; 256]>,
-) -> Result<Path, String> {
+) -> Result<(Path, Vec<super::CaptionPart>), String> {
     let m = b.module;
     let (id, fw, fh) = if m < 3. {
         ('A', 5. * m, 9. * m)
@@ -79,6 +79,7 @@ pub(super) fn caption(
     };
     let half = (m / 2.).floor();
     let mut path = Path::default();
+    let mut parts = Vec::new();
     let mut group = |digits: &[u8], x: f64| -> Result<(), String> {
         let value: String = digits.iter().map(|v| (v + b'0') as char).collect();
         let mut text = super::super::font::text_for(id, &value, fw, fh)?;
@@ -87,7 +88,13 @@ pub(super) fn caption(
         text.transform(|p| {
             Point::new(p.x + x - if reverse { 1. } else { 0. }, p.y + b.height + 4.)
         });
+        let start = path.segments.len();
         path.segments.extend(text.segments);
+        parts.push(super::CaptionPart {
+            start,
+            end: path.segments.len(),
+            origin: Point::new(x - if reverse { 1. } else { 0. }, b.height + 4.),
+        });
         Ok(())
     };
     match b.name.as_str() {
@@ -116,7 +123,7 @@ pub(super) fn caption(
             }
         }
     }
-    Ok(path)
+    Ok((path, parts))
 }
 
 /// UPC/EAN guard extensions. ZD621 203-DPI captures extend 13 dots below

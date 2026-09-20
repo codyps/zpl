@@ -79,6 +79,7 @@ struct Field {
     bounded: Option<(f64, f64)>,
     requested_text_height: Option<f64>,
     barcode_split: Vec<barcode_edges::PartBoundary>,
+    retail_caption_parts: Vec<barcode::CaptionPart>,
     barcode_width: f64,
     baseline_height: f64,
     inverted_margin: f64,
@@ -112,6 +113,7 @@ impl Default for Field {
             bounded: None,
             requested_text_height: None,
             barcode_split: Vec::new(),
+            retail_caption_parts: Vec::new(),
             barcode_width: 0.,
             baseline_height: 0.,
             inverted_margin: 0.,
@@ -948,6 +950,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                                 path.transform(|p| Point::new(p.x, p.y + offset));
                             }
                             field.barcode_split = rendered.split;
+                            field.retail_caption_parts = rendered.caption_parts;
                             field.barcode_width = rendered.width;
                             field.baseline_height = rendered.baseline;
                             path
@@ -1710,6 +1713,67 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                                 }
                                 path = font::union_lines(shifted);
                             }
+                        }
+                        // Native retail captions clamp along their reading axis:
+                        // N/R use the caption origin, I/B use its visible edge.
+                        // Independent sizes/orientations: retail-caption-edges-zd621-v1.
+                        let caption_shifts: Vec<_> = if options
+                            .compatibility
+                            .retail_caption_clamps_negative_inline_origin
+                        {
+                            field
+                                .retail_caption_parts
+                                .iter()
+                                .map(|part| {
+                                    let origin = transform(part.origin);
+                                    let mut edge = if field.rotation == b'R' {
+                                        origin.y
+                                    } else {
+                                        origin.x
+                                    };
+                                    if matches!(field.rotation, b'I' | b'B') {
+                                        edge = path.segments[part.start..part.end]
+                                            .iter()
+                                            .filter_map(|s| match s {
+                                                crate::output::Segment::Move(p)
+                                                | crate::output::Segment::Line(p) => {
+                                                    let p = transform(*p);
+                                                    Some(if field.rotation == b'B' {
+                                                        p.y
+                                                    } else {
+                                                        p.x
+                                                    })
+                                                }
+                                                _ => None,
+                                            })
+                                            .fold(f64::INFINITY, f64::min);
+                                    }
+                                    (-edge).max(0.)
+                                })
+                                .collect()
+                        } else {
+                            Vec::new()
+                        };
+                        let mut moved_caption = false;
+                        for (part, delta) in field.retail_caption_parts.iter().zip(caption_shifts) {
+                            if delta == 0. {
+                                continue;
+                            }
+                            moved_caption = true;
+                            for segment in &mut path.segments[part.start..part.end] {
+                                if let crate::output::Segment::Move(p)
+                                | crate::output::Segment::Line(p) = segment
+                                {
+                                    p.x += if matches!(field.rotation, b'I' | b'B') {
+                                        -delta
+                                    } else {
+                                        delta
+                                    };
+                                }
+                            }
+                        }
+                        if moved_caption && !(field.reverse || reverse) {
+                            path = font::union_lines(path);
                         }
                         path.transform(transform);
                         if options.compatibility.linear_barcode_rotated_edge_loses_dot {

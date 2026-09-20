@@ -25,8 +25,9 @@ encodings and unsampled resident-font glyphs remain outside current support.
 Initial exploratory captures revealed that mappings survive HTTP preview
 requests. The committed controls explicitly initialize the entries they use;
 exploratory outputs without that initial state are not independent references.
-The positive-origin retail control separates remapping from an additional
-observed off-label UPC-caption placement gap, which remains to be fixed.
+The positive-origin retail control isolates remapping. Independent negative-edge
+coverage and its fix are recorded in
+[retail-caption-edges-zd621-v1](../retail-caption-edges-zd621-v1/README.md).
 
 Reference: [Zebra Programming Guide](https://www.zebra.com/content/dam/support-dam/en/documentation/unrestricted/guide/software/zpl-zbi2-pg-en.pdf),
 `^CI` pp. 155–159, especially the legacy-only remapping restriction on p. 155,

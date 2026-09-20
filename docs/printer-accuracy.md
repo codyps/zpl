@@ -1054,8 +1054,8 @@ controls. `remap_space` enables the ZD621 departure from the guide's space
 restriction; SPECIFICATION disables it. See the
 [capture evidence and limits](../zpl/tests/fixtures/character-remap-zd621-v1/README.md).
 The controls explicitly initialize and restore mappings because native preview
-requests retain these tables. A separate off-label UPC-caption placement gap
-was observed while testing and remains open.
+requests retain these tables. Off-label UPC-caption placement is covered by the retail-caption edge
+controls and fix below.
 
 ## NUL in text fields
 
@@ -1080,3 +1080,13 @@ module widths 1–3, optional checks, and four orientations. Both bars and text
 are exact. `code93_control_interpretation` selects the printer's solid-cell and
 printable-tail caption rules without changing encoded data or checksums. See
 [the native evidence](../zpl/tests/fixtures/code93-controls-zd621-v1/README.md).
+
+## Retail-caption edge placement
+
+`retail_caption_edges_preview` pins five pixel-exact native frames containing
+32 fields: UPC-A widths 1–6, all orientations, FT, label shift, reverse printing,
+UPC-E, EAN-13, EAN-8, and the original remapped-caption discovery case. The
+previously clipped OCR-B number-system digit now matches the native preview.
+`retail_caption_clamps_negative_inline_origin` independently refines printer
+retail-caption layout; barcode bars and interior captions remain in place.
+See [the native evidence](../zpl/tests/fixtures/retail-caption-edges-zd621-v1/README.md).

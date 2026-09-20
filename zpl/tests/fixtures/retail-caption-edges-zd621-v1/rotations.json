@@ -1,0 +1,31 @@
+{
+  "status": "complete",
+  "source_sha256": "dd4413bef0fef32123051fb52b6d8967cc6e8de4495f5c1692a6596a5a7f24e8",
+  "fields": [
+    [
+      3,
+      "R",
+      100,
+      0
+    ],
+    [
+      3,
+      "B",
+      400,
+      0
+    ],
+    [
+      3,
+      "N",
+      0,
+      400
+    ],
+    [
+      3,
+      "I",
+      0,
+      650
+    ]
+  ],
+  "printer_sha256": "bc13938106bd78053444eebe7b0e19ed0a40a9465bee552a828edc43121b7c7d"
+}

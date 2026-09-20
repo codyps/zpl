@@ -13,6 +13,9 @@
 /// initial value: the renderer does not reapply it after you change an option.
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct Compatibility {
+    /// Clamp off-label retail caption groups along the reading axis. N/R use
+    /// nominal origins, I/B visible edges; retail-caption-edges-zd621-v1.
+    pub retail_caption_clamps_negative_inline_origin: bool,
     /// Display Code 93 payload controls as a solid cell plus a printable tail,
     /// rather than interpreting the decoded ASCII control as a font glyph.
     /// Native exhaustive controls: code93-controls-zd621-v1; ^BA pp. 87–89.
