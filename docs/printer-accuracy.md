@@ -118,8 +118,7 @@ as a rejection control. Its positive case now uses eleven uncompressed UPC-A
 digits and a fresh nonblank printer response; all four retail aliases match.
 
 A fresh audit of the completed 512-frame comparison conformance reference set
-also found unsupported text commands (numbered fields and
-print-quantity serialization), missing glyphs/encodings and unsampled font sizes below the
+also found unsupported print-quantity serialization, missing glyphs/encodings and unsampled font sizes below the
 80% target. These remain work beyond the original 133 cases. Capture context
 must be preserved: its reset uses `^BY2,3,100`, and some inputs still use PW812,
 whose printer preview width adjustment remains outside this work. Those cases
@@ -803,3 +802,21 @@ operand persistence, omission of paired-bracket rule N0 and older treatment
 of isolates as class-L missing characters. All are disabled in SPECIFICATION
 and enabled in ZD621_203_DPI. See the advanced-text fixture README for provenance
 and the sequential-label context used by the persistence test.
+
+## Inline numbered fields
+
+`numbered_fields_preview` pins 19 complete native frames, all pixel-exact,
+including the unchanged original inline-numbered-fields case, forward and
+multiple references, independent numbers, empty/rebound data, mixed barcode/
+text styles, FH handling, prompts, boundary numbers and FV. The renderer plans
+data substitutions before drawing, preserving the original command syntax and
+error offsets. Bindings do not leak across labels.
+
+The ZD621's preview only populates preceding unresolved references; it consumes
+the binding's own drawing when references exist, and leaves later references
+blank. `numbered_fields_forward_only` independently controls that departure.
+SPECIFICATION shares the last supplied value with all data-less fields of the
+same number, while retaining explicit data on the binding fields themselves.
+Stored DF/XF formats and FN serialization remain explicit unsupported cases.
+The fixture README records capture provenance and the excluded unverified
+custom-prefix request.

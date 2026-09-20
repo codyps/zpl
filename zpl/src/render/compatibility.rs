@@ -13,6 +13,11 @@
 /// initial value: the renderer does not reapply it after you change an option.
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct Compatibility {
+    /// Assign inline FN data only to preceding unresolved references, consuming
+    /// the binding field when references exist. The ZD621 preview does not
+    /// reuse that value for subsequent references. Disabled: share the last
+    /// supplied value with all data-less fields of that number (^FN p. 200).
+    pub numbered_fields_forward_only: bool,
     /// Preserve PA properties whose operands are omitted, as the ZD621 does.
     /// Disabled: use the documented zero default for each missing operand
     /// (Zebra Programming Guide ^PA, p. 315).

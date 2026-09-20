@@ -9,6 +9,7 @@ mod bounded_text;
 mod field_block;
 mod font;
 mod graphics;
+mod numbered;
 mod printer_shapes;
 mod serial;
 mod validation;
@@ -155,6 +156,8 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
             message: "input exceeds 1 MiB renderer limit".into(),
         });
     }
+    let numbered = numbered::plan(input, options.compatibility.numbered_fields_forward_only)?;
+    let mut pending_terminator = None;
     // Dimensions can change after a field. Cull only beyond every declared
     // canvas, so a later PW/LL cannot reveal text discarded at an earlier FS.
     let (mut cull_width, mut cull_height) = (options.width, options.height);
@@ -202,13 +205,29 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
     let mut upside_down = false;
     let mut mirror = false;
     loop {
-        let syntax = parser.syntax();
-        let offset = parser.position();
-        let Some(item) = parser.next() else { break };
-        let item = item.map_err(|e| RenderError {
-            offset,
-            message: e.to_string(),
-        })?;
+        let (syntax, offset, mut item, replayed) =
+            if let Some((syntax, offset, item)) = pending_terminator.take() {
+                (syntax, offset, item, true)
+            } else {
+                let syntax = parser.syntax();
+                let offset = parser.position();
+                let Some(item) = parser.next() else { break };
+                let item = item.map_err(|e| RenderError {
+                    offset,
+                    message: e.to_string(),
+                })?;
+                (syntax, offset, item, false)
+            };
+        let replacement = if replayed {
+            None
+        } else {
+            numbered.get(&offset)
+        };
+        if matches!(replacement, Some(numbered::Action::Data(_))) {
+            // A reference receives its data at FS, under its own layout state.
+            pending_terminator = Some((syntax, offset, item));
+            item = Element::FormatCommand(b"^FD");
+        }
         let result = (|| -> Result<(), String> {
             let raw = item.as_bytes();
             if field.path.is_some()
@@ -325,6 +344,8 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
 
             match name {
                 "CC" | "CT" | "CD" | "FX" => {}
+                // Metadata was validated and resolved by numbered::plan.
+                "FN" => {}
                 "PA" => {
                     // Zebra Programming Guide ^PA, p. 315 documents zero defaults.
                     // The printer profile preserves omitted operands. The embedded repertoire has no extra
@@ -676,6 +697,9 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                     }
                 }
                 "FD" | "FV" | "SN" => {
+                    if matches!(replacement, Some(numbered::Action::Skip)) {
+                        return Ok(());
+                    }
                     if field.path.is_some() {
                         return Err("multiple drawing commands in one field".into());
                     }
@@ -686,7 +710,10 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                     } else {
                         data
                     };
-                    let mut bytes = Vec::new();
+                    let mut bytes = match replacement {
+                        Some(numbered::Action::Data(data)) => data.as_ref().clone(),
+                        _ => Vec::new(),
+                    };
                     let mut i = 0;
                     while i < data.len() {
                         if field.hex == Some(data[i]) {
