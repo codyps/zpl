@@ -511,3 +511,17 @@ Run `cargo test -p zpl --test resident_e_preview --test field_block_overflow_pre
 --test retail_caption_preview --test profiles --test render`. QR masks,
 remaining resident-font support and wider command coverage still leave the
 overall accuracy goal open.
+
+## Resident G
+
+[Seventy-two resident G frames](../zpl/tests/fixtures/resident-g-zd621-v1/README.md)
+are pixel-exact. The full 95-character 60 × 40 strike has a 48-dot advance and
+zero-based baseline 47. Twenty-five source frames preserve extraction and
+independent verification; 47 holdouts cover full ASCII, CF/A sizing, all
+rotations/origins/justifications, scale quantization, wrapping and explicit
+Code 128 captions wider than the bars. Existing bitmap compatibility options
+match G without an additional departure.
+
+Run `cargo test -p zpl --test resident_g_preview --test profiles`. QR masks,
+resident H and wider unverified text/command coverage still leave the overall
+accuracy goal open.

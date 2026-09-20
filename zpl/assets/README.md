@@ -101,3 +101,11 @@ are preserved in
 [resident-f-zd621-v1](../tests/fixtures/resident-f-zd621-v1/README.md).
 Native dimensions, baseline and gap follow Tables 29/31 of the ZPL Guide
 (pp. 1582–1583); magnified placement is checked against independent previews.
+
+`fontG-60-40.zbf` contains all 95 printable ASCII resident G glyphs, with
+48-dot advance and zero-based native baseline 47. Raw sampling uses four
+glyphs per page; the 24 pages, independent exact verification, metadata and
+asset hash are in
+[resident-g-zd621-v1](../tests/fixtures/resident-g-zd621-v1/README.md).
+Dimensions, gap and baseline follow Tables 29/31 of the ZPL Guide
+(pp. 1582–1583); independent printer controls verify magnification and placement.

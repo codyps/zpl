@@ -827,6 +827,7 @@ fn bitmap_ft_dot_origin_is_optional_and_leaves_fo_unchanged() {
         ('D', 36, 20),
         ('E', 56, 30),
         ('F', 52, 26),
+        ('G', 120, 80),
     ] {
         let body = format!("^FT100,100^A{font}N,{h},{w}^FDAb09");
         let mut geometric = ZD621_203_DPI;
@@ -895,6 +896,7 @@ fn explicit_bitmap_code128_caption_shift_is_optional() {
         ('D', 36, 20),
         ('E', 56, 30),
         ('F', 52, 26),
+        ('G', 120, 80),
         ('0', 32, 64),
     ] {
         for rotation in ['N', 'R', 'I', 'B'] {
@@ -942,4 +944,21 @@ fn ocr_b_inverted_margin_is_scaled_and_optional() {
         assert_eq!(bounds(&raster(&body, ZD621_203_DPI)).2, 200 + 6 * scale + 2);
         assert_eq!(bounds(&raster(&body, geometric)).2, 200);
     }
+}
+
+#[test]
+fn resident_g_font_only_cf_reset_is_optional() {
+    // ^CF p. 154; resident-g-zd621-v1 pins inherited and reset dimensions.
+    let body = "^CFG,180,80^CFG^FO20,20^FDAb";
+    let mut retained = ZD621_203_DPI;
+    retained.compatibility.bitmap_cf_font_only_resets_size = false;
+    assert_eq!(
+        raster(body, retained),
+        raster("^CFG,180,80^FO20,20^FDAb", retained)
+    );
+    assert_eq!(
+        raster(body, ZD621_203_DPI),
+        raster("^CFG,60,40^FO20,20^FDAb", retained)
+    );
+    assert_ne!(raster(body, retained), raster(body, ZD621_203_DPI));
 }
