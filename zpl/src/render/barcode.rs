@@ -162,11 +162,30 @@ impl Barcode {
         }
     }
     pub fn field_baseline_height(&self, height: f64, rotation: u8) -> f64 {
-        // ^FT p. 205, Table 7; Code 39 and UPC/EAN N/B captures include the
-        // last bar row on the baseline. Keep full bar height for ^FO pivots.
-        if ((self.name == "B3" && self.compatibility.code39_ft_uses_last_bar_row)
-            || (matches!(self.name.as_str(), "B8" | "B9" | "BE" | "BU")
-                && self.compatibility.retail_ft_uses_last_bar_row))
+        // ^FT p. 205, Table 7; linear-ft-zd621-v1 and Code 39/retail controls
+        // include the last bar row for N/B. Keep full height for ^FO pivots.
+        let linear = matches!(
+            self.name.as_str(),
+            "B1" | "B2"
+                | "B3"
+                | "B5"
+                | "B8"
+                | "B9"
+                | "BA"
+                | "BC"
+                | "BE"
+                | "BI"
+                | "BJ"
+                | "BK"
+                | "BL"
+                | "BM"
+                | "BP"
+                | "BS"
+                | "BU"
+        ) || (self.name == "BZ"
+            && self.integer(4, 0, 0, 3).is_ok_and(|kind| kind <= 1));
+        if linear
+            && self.compatibility.linear_barcode_ft_uses_last_bar_row
             && matches!(rotation, b'N' | b'B')
         {
             (height - 1.).max(0.)

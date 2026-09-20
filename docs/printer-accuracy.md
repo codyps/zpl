@@ -343,7 +343,7 @@ sampled and verified against a separate composed-text preview.
 
 `retail_interpretation_printer_layout` selects the captured 203-DPI below-bar
 layout, including integer OCR-B scaling, fixed four-dot gap, and rotation
-about the bar width. `retail_ft_uses_last_bar_row` independently selects the
+about the bar width. `linear_barcode_ft_uses_last_bar_row` independently selects the
 normal/bottom-up inclusive baseline, verified with captions above, below and
 hidden. The controls also cover alternate payloads, check-digit suppression,
 explicit fonts, all orientations, and module widths 1–7/9. Run
@@ -352,3 +352,13 @@ explicit fonts, all orientations, and module widths 1–7/9. Run
 QR automatic mask selection remains unresolved. Broader conformance and
 resident-font coverage still need hardware verification; the overall accuracy
 goal remains open.
+
+## Shared linear barcode FT boundary
+
+Twelve [linear FT atlases](../zpl/tests/fixtures/linear-ft-zd621-v1/README.md)
+add 72 exact fields across eighteen barcode variants and all four rotations.
+Normal/bottom-up symbols formerly sat one dot early; rotated/inverted controls
+were already exact. `linear_barcode_ft_uses_last_bar_row` now controls the shared
+boundary rule, replacing the earlier Code-39-only and retail-only options.
+This does not infer corresponding behavior for matrix/stacked symbols or
+other postal variants. Run `cargo test -p zpl --test linear_ft_preview`.

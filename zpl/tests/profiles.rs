@@ -50,9 +50,23 @@ fn retail_caption_and_baseline_overrides_are_independent() {
     );
     let body = "^BY2,3,60^FT80,80^B8N,1,N,N^FD1234567";
     options = ZD621_203_DPI;
-    options.compatibility.retail_ft_uses_last_bar_row = false;
+    options.compatibility.linear_barcode_ft_uses_last_bar_row = false;
     assert_eq!(bounds(&raster(body, ZD621_203_DPI)).1, 80);
     assert_eq!(bounds(&raster(body, options)).1, 79);
+}
+
+#[test]
+fn postal_baseline_uses_the_parsed_variant() {
+    // ^BZ numeric t parameter, pp. 150–153: equivalent spellings must
+    // select the same rendering and ^FT boundary policy.
+    for kind in [0, 1] {
+        let body = format!("^BY2,2,20^FT80,80^BZN,20,N,N,{kind}^FD12345678901");
+        let padded = body.replace(&format!(",{kind}^FD"), &format!(",0{kind}^FD"));
+        assert_eq!(
+            raster(&body, ZD621_203_DPI).pixels,
+            raster(&padded, ZD621_203_DPI).pixels
+        );
+    }
 }
 
 #[test]
@@ -151,7 +165,7 @@ fn code39_caption_and_baseline_overrides_are_independent() {
     let one_row = "^BY2,3,60^FT80,80^B3N,N,1,N,N^FDABC123";
     assert_eq!(bounds(&raster(one_row, ZD621_203_DPI)).1, 80);
     options = ZD621_203_DPI;
-    options.compatibility.code39_ft_uses_last_bar_row = false;
+    options.compatibility.linear_barcode_ft_uses_last_bar_row = false;
     assert_eq!(bounds(&raster(one_row, options)).1, 79);
 }
 

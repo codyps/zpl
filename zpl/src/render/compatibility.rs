@@ -18,9 +18,12 @@ pub struct Compatibility {
     /// the A/OCR-B switch; exact placement is pinned by retail-caption-zd621-v1.
     /// Other resolutions and above-bar captions retain their general layout.
     pub retail_interpretation_printer_layout: bool,
-    /// ZD621 normal/bottom-up UPC/EAN ^FT origins include the last bar row.
-    /// Independent of caption visibility and the below-bar digit layout.
-    pub retail_ft_uses_last_bar_row: bool,
+    /// ZD621 normal/bottom-up linear barcode ^FT origins include the last
+    /// bar row. Applies to ^B1/2/3/5/8/9/A/C/E/I/J/K/L/M/P/S/U and ^BZ
+    /// POSTNET/PLANET. R/I retain their opposite boundary; ^FO is unaffected.
+    /// Independent of caption visibility; see linear-ft-zd621-v1 controls
+    /// and ^FT p. 205 Table 7. Matrix/stacked families remain independent.
+    pub linear_barcode_ft_uses_last_bar_row: bool,
     /// Truncate standalone Code 39 wide elements to whole dots. The ZD621
     /// captures in code39-ratios-zd621-v1 use floor(module * ratio), including
     /// 9 * 2.4 = 21 dots. The ^BY example (p. 148) instead rounds that width
@@ -34,10 +37,6 @@ pub struct Compatibility {
     /// preceding explicit ^A font selection, matching captured ZD621 previews.
     /// Default: honor the explicit font, as for the other linear barcodes.
     pub code39_interpretation_ignores_font: bool,
-    /// Use the captured inclusive Code 39 ^FT baseline in N/B orientations.
-    /// R/I retain the opposite pixel boundary. The one-dot adjustment is
-    /// applied before rotation; ^FO is unaffected.
-    pub code39_ft_uses_last_bar_row: bool,
     /// Use measured ZD621 rounded-box geometry: a minimum two-dot border,
     /// dimensions no smaller than that border, and an independent inner
     /// rounding percentage. With the integer curve enabled, both corner radii

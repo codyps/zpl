@@ -16,7 +16,7 @@ outer number-system/check digits outside the bars. The vertical gap remains
 four dots. Outer digits do not change the bar-width rotation pivot.
 
 `retail_interpretation_printer_layout` selects this measured 203-DPI below-bar
-layout. The separate `retail_ft_uses_last_bar_row` selects the inclusive
+layout. The separate `linear_barcode_ft_uses_last_bar_row` selects the inclusive
 normal/bottom-up ^FT anchor independently of caption visibility. Both are
 enabled in ZD621_203_DPI and disabled in SPECIFICATION. Other resolutions
 and the above-bar font selection are outside this caption option's scope.
