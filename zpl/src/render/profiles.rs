@@ -12,6 +12,8 @@ pub const SPECIFICATION: Options = Options {
     height: 1218,
     dpi: 203,
     compatibility: Compatibility {
+        bitmap_cf_font_only_resets_size: false,
+        bitmap_font_ft_dot_origin: false,
         linear_barcode_rotated_edge_loses_dot: false,
         linear_barcode_clamps_negative_ink: false,
         code93_extended_checksum_preview: false,
@@ -93,6 +95,8 @@ pub const ZD621_203_DPI: Options = Options {
     height: 1218,
     dpi: 203,
     compatibility: Compatibility {
+        bitmap_cf_font_only_resets_size: true,
+        bitmap_font_ft_dot_origin: true,
         linear_barcode_rotated_edge_loses_dot: true,
         linear_barcode_clamps_negative_ink: true,
         code93_extended_checksum_preview: true,

@@ -262,7 +262,7 @@ fn proportional_blocks_align_and_wrap_by_advance() {
         zpl::output::raster::rasterize(&c).unwrap(),
         zpl::output::raster::rasterize(&d).unwrap()
     );
-    assert!(render(b"^XA^ABN,32,32^FDA^FS^XZ", SPECIFICATION).is_err());
+    assert!(render(b"^XA^AZN,32,32^FDA^FS^XZ", SPECIFICATION).is_err());
 }
 
 #[test]

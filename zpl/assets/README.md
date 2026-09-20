@@ -83,3 +83,10 @@ baseline 22. Raw sampling pages, extractor metadata and an independent exact
 verification are preserved in
 [retail-caption-zd621-v1](../tests/fixtures/retail-caption-zd621-v1/README.md).
 This limited strike does not enable general resident E text commands.
+
+`fontB-11-7.zbf` adds all 95 printable ASCII inputs for uppercase resident B,
+with nine-dot advance and zero-based native baseline 10. Extraction pages,
+metadata, an independent composition verification and the asset hash are in
+[resident-bc-zd621-v1](../tests/fixtures/resident-bc-zd621-v1/README.md).
+Font C reuses the captured D matrix, as specified by the ZPL Programming Guide
+Table 31 (p. 1583) and verified by full-ASCII printer controls.

@@ -94,7 +94,7 @@ parity. Preview width adjustment remains unimplemented.
 | --- | --- |
 | Framing | `XA`, `XZ`, `FS`, single-byte equivalents, `CC`, `CT`, `CD`, comments `FX`; ASCII parameter delimiter |
 | Layout | `PW`, `LL`, `LH`, `LS`, `LT`, `FO`, explicit-coordinate `FT`, `FW`, `PO`, `FR`, `LR`; left/right/Latin-auto field justification |
-| Text | `CF`, `A0`, `AA`, `AD`, `FD`, `FV`, `FH`; printable ASCII in fonts 0/A/D and captured font-0 é; `CI27` Latin-1 subset and `CI28` UTF-8 |
+| Text | `CF`, `A0`, `AA`, `AB`, `AC`, `AD`, `FD`, `FV`, `FH`; printable ASCII in fonts 0/A/B/C/D and captured font-0 é; `CI27` Latin-1 subset and `CI28` UTF-8 |
 | Blocks | `FB`: left/center/right alignment, word wrapping, explicit `\&` breaks; overflow, hyphenation, hanging indent and justified text return errors |
 | Shapes | `GB` including rounded corners, `GC`, `GE`, `GD`; black or white outlines/fills |
 | Graphics | `~DG`, `XG`, `GFA`, `GFB`: raw hex, Zebra ASCII run lengths/row shortcuts, B64, Z64; CRC16 and zlib checksums checked |
@@ -104,7 +104,10 @@ Text uses [embedded resident font 0](../zpl/assets/README.md), captured from the
 ZD621 preview at 32 dots and 203 DPI. All 95 printable ASCII glyphs, including
 lowercase, retain their measured advances, bearings and baseline offsets. The
 renderer defaults to font 0 at 20 dots. `^CF0,32` or `^A0N,32,0` selects the
-captured size; omitted/zero width is proportional to height. Resident A/D use native bitmap matrices with integer magnification. Other resident font
+captured size; omitted/zero width is proportional to height. Resident A/B/C/D use native bitmap matrices with integer magnification; C shares D's matrix and B renders lowercase input as uppercase. A single bitmap dimension determines the other proportionally; omitted A
+dimensions inherit the CF request. The printer profile's
+`bitmap_cf_font_only_resets_size` option resets a font-only bitmap CF command
+to native size; SPECIFICATION retains the previous size. Other resident font
 IDs and uncaptured glyphs return errors.
 
 The 4,365-byte strike is compiled into the binary. Its pixels become horizontal

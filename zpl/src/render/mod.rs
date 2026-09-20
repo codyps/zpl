@@ -137,6 +137,9 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
     let (mut font_id, mut default_font_id) = ('0', '0');
     let (mut font_w, mut font_h) = (20., 20.);
     let (mut default_w, mut default_h) = (20., 20.);
+    // Retain CF's requested dimensions as well as its resolved font size.
+    // In particular, a zero axis means proportional sizing for another font.
+    let (mut default_requested_w, mut default_requested_h) = (0., 20.);
     // Zebra Programming Guide ^BY, p. 148: initial module width 2 dots,
     // ratio 3, and height 10 dots. Later omitted operands retain their values.
     let (mut module, mut ratio, mut bar_h) = (2., 3., 10.);
@@ -421,11 +424,33 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                         "" => default_font_id,
                         "0" => '0',
                         "A" => 'A',
+                        "B" => 'B',
+                        "C" => 'C',
                         "D" => 'D',
                         _ => return Err("unsupported resident font".into()),
                     };
                     default_font_id = font_id;
-                    (font_w, font_h) = font_dimensions(&p, default_w, default_h, font_id)?;
+                    // ^CF p. 154: omitted dimensions retain the last CF request;
+                    // explicit zero is a supplied value, not omission.
+                    let supplied_size = p.get(1).is_some_and(|v| !v.is_empty())
+                        || p.get(2).is_some_and(|v| !v.is_empty());
+                    if options.compatibility.bitmap_cf_font_only_resets_size
+                        && font_id != '0'
+                        && !p[0].is_empty()
+                        && !supplied_size
+                    {
+                        default_requested_h = 0.;
+                        default_requested_w = 0.;
+                    } else if supplied_size {
+                        default_requested_h = number(&p, 1, 0.)?;
+                        default_requested_w = number(&p, 2, 0.)?;
+                    }
+                    let (dw, dh) = if font_id == '0' {
+                        (default_w, default_h)
+                    } else {
+                        (default_requested_w, default_requested_h)
+                    };
+                    (font_w, font_h) = font_dimensions(&p, dw, dh, font_id)?;
                     default_w = font_w;
                     default_h = font_h;
                 }
@@ -434,6 +459,8 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                     font_id = match n {
                         "A0" => '0',
                         "AA" => 'A',
+                        "AB" => 'B',
+                        "AC" => 'C',
                         "AD" => 'D',
                         _ => return Err("unsupported resident font".into()),
                     };
@@ -442,7 +469,12 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                     } else {
                         rotation(p[0])?
                     };
-                    (font_w, font_h) = font_dimensions(&p, default_w, default_h, font_id)?;
+                    let (dw, dh) = if font_id == '0' {
+                        (default_w, default_h)
+                    } else {
+                        (default_requested_w, default_requested_h)
+                    };
+                    (font_w, font_h) = font_dimensions(&p, dw, dh, font_id)?;
                 }
                 "FH" => {
                     if s.len() > 1 {
@@ -844,6 +876,14 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                         } else {
                             base
                         };
+                        let (ft_dx, ft_dy) = if options.compatibility.bitmap_font_ft_dot_origin
+                            && field.baseline
+                            && field.text_size.is_some()
+                        {
+                            font::printer_ft_offset(font_id, font_h, field.rotation)
+                        } else {
+                            (0., 0.)
+                        };
                         path.transform(|p| {
                             // ^FO/^FT pp. 201/205: right justification changes
                             // the origin, not the character order. Auto (2) is
@@ -918,7 +958,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                             } else {
                                 (0., 0.)
                             };
-                            Point::new(x + a + dx + jx, y + b + dy + jy)
+                            Point::new(x + a + dx + jx + ft_dx, y + b + dy + jy + ft_dy)
                         });
                         if options.compatibility.linear_barcode_rotated_edge_loses_dot {
                             if let Some(part) = field.barcode_split.get(1) {
@@ -1115,8 +1155,24 @@ fn font_dimensions(
     let h = number(p, 1, 0.)?;
     let w = number(p, 2, 0.)?;
     if id != '0' {
-        let (nh, nw) = if id == 'A' { (9., 5.) } else { (18., 10.) };
-        let hs = (if h == 0. { default_h } else { h } / nh).round().max(1.);
+        // ZPL Programming Guide Table 31, p. 1583: native bitmap matrices.
+        let (nh, nw) = match id {
+            'A' => (9., 5.),
+            'B' => (11., 7.),
+            _ => (18., 10.),
+        };
+        // ^A p. 61 and ^CF p. 154: one supplied dimension determines
+        // the other from the native matrix. With neither, use the last CF pair.
+        let (w, h) = if w == 0. && h == 0. {
+            (default_w, default_h)
+        } else {
+            (w, h)
+        };
+        let hs = if h == 0. {
+            (w / nw).round().max(1.)
+        } else {
+            (h / nh).round().max(1.)
+        };
         let ws = if w == 0. {
             hs
         } else {

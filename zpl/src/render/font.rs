@@ -1,4 +1,6 @@
-//! Embedded, captured resident font 0. Bitmap pixels become output-neutral paths.
+//! Embedded, captured resident fonts. Bitmap pixels become output-neutral paths.
+//! Metrics: ZPL Programming Guide Tables 29/31, pp. 1582–1583:
+//! https://www.zebra.com/content/dam/support-dam/en/documentation/unrestricted/guide/software/zpl-zbi2-pg-en.pdf
 use crate::{
     bitmap_font::{self, Glyph, Settings},
     output::Path,
@@ -28,6 +30,7 @@ fn strikes() -> &'static Vec<(Settings, Vec<Glyph>)> {
             include_bytes!("../../assets/font0-32-24.zbf").as_slice(),
             include_bytes!("../../assets/font0-32-64.zbf").as_slice(),
             include_bytes!("../../assets/fontA-9-5.zbf").as_slice(),
+            include_bytes!("../../assets/fontB-11-7.zbf").as_slice(),
             include_bytes!("../../assets/fontD-18-10.zbf").as_slice(),
             include_bytes!("../../assets/fontE-28-15-digits.zbf").as_slice(),
         ]
@@ -37,6 +40,9 @@ fn strikes() -> &'static Vec<(Settings, Vec<Glyph>)> {
     })
 }
 fn selected(id: char, w: f64, h: f64) -> (&'static [Glyph], f64, f64) {
+    // C and D share the 18x10 matrix (ZPL Programming Guide Table 31,
+    // p. 1583); resident-bc-zd621-v1 verifies the alias across all ASCII.
+    let id = if id == 'C' { 'D' } else { id };
     for (s, glyphs) in strikes() {
         let sw = if s.width == 0 { s.height } else { s.width } as f64;
         if s.font == id && (id != '0' || (s.height as f64 == h && sw == w)) {
@@ -60,11 +66,12 @@ fn baseline(h: f64) -> f64 {
     baseline_for('0', h)
 }
 pub(super) fn baseline_for(id: char, h: f64) -> f64 {
-    // Zebra guide p. 1582 gives one-based baselines 7 (A), 14 (D), 23 (E).
-    // Captured ^FT bitmap offsets use their zero-based rows 6, 13, 22.
+    // Zebra guide p. 1582: one-based baselines 7 (A), 11 (B), 14 (C/D),
+    // 23 (E). These zero-based offsets locate native glyph ink in its cell.
     h * match id {
         'A' => 6. / 9.,
-        'D' => 13. / 18.,
+        'B' => 10. / 11.,
+        'C' | 'D' => 13. / 18.,
         'E' => 22. / 28.,
         _ => 0.75,
     }
@@ -83,7 +90,10 @@ pub(super) fn inverted_margin(id: char, value: &str, w: f64, h: f64) -> Result<f
     if id == 'A' {
         return Ok(w / 5. + 2.);
     }
-    if id == 'D' {
+    if id == 'B' {
+        return Ok(2. * w / 7. + 2.);
+    }
+    if matches!(id, 'C' | 'D') {
         return Ok(w / 5. + 2.);
     }
     let Some(c) = value.chars().last() else {
@@ -211,6 +221,25 @@ pub(super) fn union_lines(path: Path) -> Path {
         }
     }
     output
+}
+
+/// Captured bitmap-font FT dot placement. Native glyph metrics describe the
+/// cell; rotated FT anchors include a final dot boundary. See resident-bc-zd621-v1
+/// scale/orientation controls and ^FT p. 205 Table 7 in the Programming Guide.
+pub(super) fn printer_ft_offset(id: char, height: f64, rotation: u8) -> (f64, f64) {
+    let native = match id {
+        'A' => 9.,
+        'B' => 11.,
+        'C' | 'D' => 18.,
+        _ => return (0., 0.),
+    };
+    let scale = height / native;
+    match rotation {
+        b'R' => (scale, 0.),
+        b'I' => (1., scale),
+        b'B' => (1. - scale, 1.),
+        _ => (0., 1. - scale),
+    }
 }
 
 #[cfg(test)]

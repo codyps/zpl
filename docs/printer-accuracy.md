@@ -448,3 +448,29 @@ SPECIFICATION disables it. Run `cargo test -p zpl --test barcode_padding_preview
 The boundary suite's last four caption residuals now become exact. Remaining
 QR-mask differences and broader font/command coverage still leave the overall
 accuracy goal open.
+
+
+## Resident B/C and magnified bitmap-font FT origins
+
+[Sixty-nine resident-font frames](../zpl/tests/fixtures/resident-bc-zd621-v1/README.md)
+now require exact full-canvas equality. B and C text commands were previously
+rejected. B uses a freshly captured 95-character native strike; C reuses the
+documented C/D matrix, verified across the full printable ASCII set. Source
+sampling, the independent composed-text verification and the B asset hash are
+preserved alongside the layout controls.
+
+The audit also found shared FT offsets for A/B/C/D at native and magnified
+sizes. `bitmap_font_ft_dot_origin` selects the measured dot placement after
+rotation; it leaves FO and proportional font 0 unchanged. The specification
+profile retains geometric scaled-native-baseline placement. Controls cover
+scales 1/2/3, unequal axes, all rotations, field justification, CF defaults,
+size quantization and wrapping. Ten further frames verify zero/omitted dimensions:
+a supplied axis determines the other, and A commands inherit both CF requests.
+`bitmap_cf_font_only_resets_size` selects the printer's native-size reset when
+CF selects a bitmap font without dimensions; SPECIFICATION retains the prior
+CF request as documented. Run `cargo test -p zpl --test resident_bc_preview
+--test resident_fonts_preview --test profiles`.
+
+This establishes ASCII coverage for B/C, not arbitrary encodings or all
+remaining resident fonts. QR-mask differences and broader unverified text and
+command coverage still leave the overall accuracy goal open.

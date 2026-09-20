@@ -13,6 +13,15 @@
 /// initial value: the renderer does not reapply it after you change an option.
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct Compatibility {
+    /// Selecting A/B/C/D with CF but no size resets to its native bitmap size,
+    /// as captured in resident-bc-zd621-v1. Disabled: retain the previous CF
+    /// dimensions, as specified by ^CF p. 154. A commands still inherit CF.
+    pub bitmap_cf_font_only_resets_size: bool,
+    /// Apply captured A/B/C/D bitmap-font FT dot offsets after scaling and
+    /// rotation. FO and proportional font 0 are unaffected. Disabled: use
+    /// the scaled native baseline geometrically. ^FT p. 205 Table 7;
+    /// resident-bc-zd621-v1 includes scales 1/2/3 and unequal-axis controls.
+    pub bitmap_font_ft_dot_origin: bool,
     /// Remove the farthest bar-height dot for R at x <= 0 and I at y <= 0.
     /// This uses the final bar ink position, after ^FO/^FT, home and shift.
     /// Captured for ^B1/^B2/^B3/^BA/^BC in barcode-boundary-zd621-v1;

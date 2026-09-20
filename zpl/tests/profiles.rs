@@ -816,3 +816,62 @@ fn caption_clamping_preserves_rotated_short_glyph_padding() {
         raster(body, unclamped).pixels
     );
 }
+
+#[test]
+fn bitmap_ft_dot_origin_is_optional_and_leaves_fo_unchanged() {
+    // ZPL Guide ^FT p. 205; resident-bc-zd621-v1 independent scale controls.
+    for (font, h, w) in [('A', 18, 10), ('B', 22, 14), ('C', 36, 20), ('D', 36, 20)] {
+        let body = format!("^FT100,100^A{font}N,{h},{w}^FDAb09");
+        let mut geometric = ZD621_203_DPI;
+        geometric.compatibility.bitmap_font_ft_dot_origin = false;
+        assert_ne!(
+            raster(&body, ZD621_203_DPI).pixels,
+            raster(&body, geometric).pixels
+        );
+        let fo = body.replace("^FT", "^FO");
+        assert_eq!(
+            raster(&fo, ZD621_203_DPI).pixels,
+            raster(&fo, geometric).pixels
+        );
+    }
+}
+
+#[test]
+fn bitmap_cf_font_only_reset_is_optional() {
+    // ^CF p. 154 says omitted sizes retain the last CF values; the ZD621
+    // controls in resident-bc-zd621-v1 instead reset an explicitly selected font.
+    let body = "^CFB,33,14^CFB^FO20,20^FDAb09";
+    let mut retained = ZD621_203_DPI;
+    retained.compatibility.bitmap_cf_font_only_resets_size = false;
+    assert_ne!(
+        raster(body, ZD621_203_DPI).pixels,
+        raster(body, retained).pixels
+    );
+    assert_eq!(
+        raster(body, retained).pixels,
+        raster("^CFB,33,14^FO20,20^FDAb09", retained).pixels
+    );
+    assert_eq!(
+        raster(body, ZD621_203_DPI).pixels,
+        raster("^CFB,11,7^FO20,20^FDAb09", retained).pixels
+    );
+}
+
+#[test]
+fn bitmap_sizes_use_the_supplied_axis_or_both_cf_dimensions() {
+    // ^A pp. 60–61, ^CF p. 154; hardware controls include these B/C cases.
+    for (font, h, w) in [('B', 11, 7), ('C', 18, 10)] {
+        let width_only = format!("^CF0,32,0^FO20,20^A{font}N,0,{}^FDAb09", w * 2);
+        let explicit = format!("^FO20,20^A{font}N,{},{}^FDAb09", h * 2, w * 2);
+        assert_eq!(
+            raster(&width_only, SPECIFICATION).pixels,
+            raster(&explicit, SPECIFICATION).pixels
+        );
+        let inherit = format!("^CF{font},{},{}^FO20,20^A{font}N,0,0^FDAb09", h * 3, w * 2);
+        let explicit = format!("^FO20,20^A{font}N,{},{}^FDAb09", h * 3, w * 2);
+        assert_eq!(
+            raster(&inherit, SPECIFICATION).pixels,
+            raster(&explicit, SPECIFICATION).pixels
+        );
+    }
+}
