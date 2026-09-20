@@ -162,15 +162,16 @@ The original five affected layout/block cases and all fifteen controls are exact
 All original text/layout cases now render pixel-exactly, including fonts A/D,
 font-0 size/width cases, right/automatic origins, accented UTF-8 and Code 128
 captions. The renderer selects captured strikes at supported sizes, scales native
-bitmap-font matrices by integers, and preserves explicit font selection for
-barcode captions. LOGMARS captions include the mandatory check character.
+bitmap-font matrices by integers, and honors explicit font selection for
+Code 128 captions. Other families follow their separately captured profile
+rules below. LOGMARS captions include the mandatory check character.
 
 The [resident-font suite](../zpl/tests/fixtures/resident-fonts-zd621-v1/README.md)
 adds 118 exact page/caption controls and 34 origin controls. Rotated font-0
 controls pin up to four differing dots and exceed 99.3% ink IoU individually;
 font A/D controls are exact. This does not promise 80% at arbitrary unsampled
-sizes or for unimplemented scripts. The remaining 8 corpus differences are
-non-text shapes/barcodes, still pinned and not claimed as complete.
+sizes or for unimplemented scripts. The remaining six original-corpus
+differences are QR mask cases, listed below and not claimed as complete.
 
 
 `aztec_preview.rs` adds 38 exact printer comparisons covering all five text
@@ -276,11 +277,11 @@ The specification profile instead follows the nearest-dot worked example in
 ^BY, p. 148. The printer profile enables truncation; both profiles now quantize
 individual elements before accumulating their positions.
 
-The broader conformance hardware audit also found outstanding differences in
-above-bar interpretation layout, rotated interpretation text, and PDF417
-compaction. Successful rendering of that broader corpus did not establish
-pixel accuracy. These findings remain separate from the six QR mismatches in
-the original 133-case comparison corpus; overall non-text parity is not complete.
+The broader conformance hardware audit also found differences in above-bar
+interpretation layout, rotated interpretation text, and PDF417 compaction.
+The captured cases are resolved by the fixes detailed below. Successful
+rendering still does not establish pixel accuracy for the broader corpus;
+overall non-text parity remains incomplete, including the six original QR cases.
 
 ## Standalone PDF417 numeric transitions
 
@@ -296,8 +297,9 @@ cover digit lengths 1–16 with uppercase/lowercase prefixes and suffixes.
 These choices preserve valid PDF417 encoding under both profiles. Macro
 PDF417 retains its separately verified eight-digit behavior; MicroPDF417 and
 TLC39 remain independent. Run `cargo test -p zpl --test pdf417_numeric_preview`.
-The broader above-bar and rotated interpretation layout gaps remain open,
-as does QR mask selection.
+The captured above-bar and rotated interpretation cases are resolved by the
+subsequent controls below. QR mask selection and broader unverified coverage
+remain open.
 
 ## Barcode interpretation origins
 
@@ -419,13 +421,30 @@ is resolved below; no full-coverage accuracy claim is implied.
 
 [Twenty-four boundary frames](../zpl/tests/fixtures/barcode-boundary-zd621-v1/README.md)
 pin Code 11/39/93/128 and Interleaved 2 of 5 at zero, positive and negative
-origins. Twenty are pixel-exact after `linear_barcode_rotated_edge_loses_dot`:
+origins. All twenty-four are pixel-exact after the boundary and padding fixes:
 R at nonpositive X and I at nonpositive Y lose one height dot, independently
 of negative-ink translation. The controls include heights 1–3 and 30/31/80,
 FO/FT, all rotations, and home/shift offsets.
 
-Four overlapping-caption holdouts retain small pinned Code 11 text residuals
-(12–112 underpaint and the same overpaint count). Short R/I glyphs keep padding
-on the printer; this remains a separate accuracy issue. Run
+Four overlapping-caption holdouts formerly had Code 11 text residuals
+(12–112 underpaint and the same overpaint count). The padding fix below now
+resolves them. Run
 `cargo test -p zpl --test barcode_boundary_preview --test barcode_edges_preview
 --test profiles`. QR mask selection and broader unverified coverage also remain.
+
+
+## Short-glyph padding in rotated barcode captions
+
+[Eighteen padding frames](../zpl/tests/fixtures/barcode-padding-zd621-v1/README.md)
+require exact full-canvas equality for 54 Code 11/128/39/93 symbols. R/I
+captions retain blank bottom rows of resident-A glyphs when their seven-row
+area crosses the label edge, even when their visible ink is already positive.
+N/B retain their measured visible-ink clamp. Widths 1/2/3, dots, dashes,
+triangles and a native checksum glyph distinguish these behaviors.
+
+The existing `linear_barcode_clamps_negative_ink` option selects this placement;
+SPECIFICATION disables it. Run `cargo test -p zpl --test barcode_padding_preview
+--test barcode_boundary_preview --test barcode_edges_preview --test profiles`.
+The boundary suite's last four caption residuals now become exact. Remaining
+QR-mask differences and broader font/command coverage still leave the overall
+accuracy goal open.

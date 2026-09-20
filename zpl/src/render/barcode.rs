@@ -1,3 +1,4 @@
+use super::barcode_edges::PartBoundary;
 use crate::output::Path;
 mod aztec;
 mod aztec_text;
@@ -352,7 +353,7 @@ impl Barcode {
         bytes: &[u8],
         font: Option<(char, f64, f64)>,
         rotation: u8,
-    ) -> Result<(Path, f64, Vec<usize>), String> {
+    ) -> Result<(Path, f64, Vec<PartBoundary>), String> {
         if bytes.is_empty() && self.name != "B3" {
             return Err(format!("{}: empty barcode data", self.name));
         }
@@ -407,7 +408,10 @@ impl Barcode {
         let track_bars =
             edge_family && (clamp || self.compatibility.linear_barcode_rotated_edge_loses_dot);
         let mut split = if track_bars {
-            vec![0, p.segments.len()]
+            vec![
+                PartBoundary::new(0, 0.),
+                PartBoundary::new(p.segments.len(), 0.),
+            ]
         } else {
             Vec::new()
         };
@@ -442,9 +446,17 @@ impl Barcode {
                 for c in value.chars() {
                     let value = c.to_string();
                     let mut glyph = super::font::text_for(id, &value, fw, fh)?;
+                    let padding = if id == 'A' {
+                        (7. * fh / 9. - super::bounds(&glyph).3).max(0.)
+                    } else {
+                        0.
+                    };
                     glyph.transform(|p| Point::new(p.x + x, p.y));
                     text.segments.extend(glyph.segments);
-                    split.push(p.segments.len() + text.segments.len());
+                    split.push(PartBoundary::new(
+                        p.segments.len() + text.segments.len(),
+                        padding,
+                    ));
                     x += super::font::width_for(id, &value, fw, fh)?;
                 }
                 text
@@ -474,7 +486,14 @@ impl Barcode {
                     };
                     caption_glyph(&mut t, x, fw, fh, marker);
                     if clamp {
-                        split.push(p.segments.len() + t.segments.len());
+                        split.push(PartBoundary::new(
+                            p.segments.len() + t.segments.len(),
+                            if id == 'A' {
+                                7_usize.saturating_sub(marker.len()) as f64 * fh / 9.
+                            } else {
+                                0.
+                            },
+                        ));
                     }
                 }
             }
@@ -483,7 +502,14 @@ impl Barcode {
                     let x = super::font::width_for(id, &value[..index], fw, fh)?;
                     caption_glyph(&mut t, x, fw, fh, glyph);
                     if clamp {
-                        split.push(p.segments.len() + t.segments.len());
+                        split.push(PartBoundary::new(
+                            p.segments.len() + t.segments.len(),
+                            if id == 'A' {
+                                7_usize.saturating_sub(glyph.len()) as f64 * fh / 9.
+                            } else {
+                                0.
+                            },
+                        ));
                     }
                 }
             }

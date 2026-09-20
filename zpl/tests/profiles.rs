@@ -803,3 +803,16 @@ fn rotated_bar_edge_trimming_is_independent_of_ink_clamping() {
         raster(inset, untrimmed).pixels
     );
 }
+
+#[test]
+fn caption_clamping_preserves_rotated_short_glyph_padding() {
+    // barcode-padding-zd621-v1: at x=16 the dash ink is already visible,
+    // but its seven-row resident-A area crosses the edge. ^FO p. 201.
+    let body = "^BY2,2,1^FO16,40^BCR,1,Y,N,N,N^FD----";
+    let mut unclamped = ZD621_203_DPI;
+    unclamped.compatibility.linear_barcode_clamps_negative_ink = false;
+    assert_ne!(
+        raster(body, ZD621_203_DPI).pixels,
+        raster(body, unclamped).pixels
+    );
+}

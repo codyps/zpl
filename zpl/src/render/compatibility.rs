@@ -21,8 +21,10 @@ pub struct Compatibility {
     pub linear_barcode_rotated_edge_loses_dot: bool,
     /// Clamp bars and individual caption glyphs at negative label edges, then
     /// union black ink (reverse printing toggles overlapping components twice).
+    /// R/I retain resident-A blank bottom rows; N/B clamp visible glyph ink.
     /// Captured for ^B1/^B2/^B3/^BA/^BC in
-    /// barcode-edges-zd621-v1; unlike the nominal ^FO/^FT placement (pp. 201/205).
+    /// barcode-edges-zd621-v1 and barcode-padding-zd621-v1; unlike nominal
+    /// ^FO/^FT placement (pp. 201/205).
     /// Disabled: clip the positioned field at the canvas boundary.
     pub linear_barcode_clamps_negative_ink: bool,
     /// Reproduce ZD621 Code 93 extended C-check interpretation, including

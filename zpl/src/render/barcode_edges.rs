@@ -3,14 +3,34 @@
 //! https://www.zebra.com/content/dam/support-dam/en/documentation/unrestricted/guide/software/zpl-zbi2-pg-en.pdf
 use crate::output::{Path, Segment, MAX_SEGMENTS};
 
-pub(super) fn clamp(path: &mut Path, split: &[usize], reverse: bool) -> Result<(), String> {
+/// Cumulative segment boundary and unpainted distance below resident-A ink.
+#[derive(Clone)]
+pub(super) struct PartBoundary {
+    pub end: usize,
+    pub reverse_padding: f64,
+}
+impl PartBoundary {
+    pub fn new(end: usize, reverse_padding: f64) -> Self {
+        Self {
+            end,
+            reverse_padding,
+        }
+    }
+}
+
+pub(super) fn clamp(
+    path: &mut Path,
+    split: &[PartBoundary],
+    reverse: bool,
+    rotation: u8,
+) -> Result<(), String> {
     if split.is_empty() {
         return Ok(());
     }
     let mut rects = Vec::new();
     let mut changed = false;
     for pair in split.windows(2) {
-        let part = &path.segments[pair[0]..pair[1]];
+        let part = &path.segments[pair[0].end..pair[1].end];
         let start = rects.len();
         let mut min_x = f64::INFINITY;
         let mut min_y = f64::INFINITY;
@@ -36,8 +56,12 @@ pub(super) fn clamp(path: &mut Path, split: &[usize], reverse: bool) -> Result<(
         if !remainder.is_empty() {
             return Ok(());
         }
-        let dx = -min_x.min(0.);
-        let dy = -min_y.min(0.);
+        // R/I clamp the resident-A seven-row cell, retaining blank bottom
+        // rows of short glyphs. N/B clamp visible ink. Independent controls
+        // with dashes, dots and triangles: barcode-padding-zd621-v1.
+        let padding = pair[1].reverse_padding;
+        let dx = -(min_x - if rotation == b'R' { padding } else { 0. }).min(0.);
+        let dy = -(min_y - if rotation == b'I' { padding } else { 0. }).min(0.);
         changed |= dx > 0. || dy > 0.;
         for r in &mut rects[start..] {
             r[0] += dx;

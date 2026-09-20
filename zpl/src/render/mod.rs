@@ -61,7 +61,7 @@ struct Field {
     origins: Option<Vec<Option<(f64, f64)>>>,
     multiple_paths: Option<Vec<(f64, f64, Path)>>,
     block: Option<(f64, usize, f64, u8, f64)>,
-    barcode_split: Vec<usize>,
+    barcode_split: Vec<barcode_edges::PartBoundary>,
     baseline_height: f64,
     inverted_margin: f64,
     text_size: Option<(f64, f64)>,
@@ -921,10 +921,10 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                             Point::new(x + a + dx + jx, y + b + dy + jy)
                         });
                         if options.compatibility.linear_barcode_rotated_edge_loses_dot {
-                            if let Some(&end) = field.barcode_split.get(1) {
+                            if let Some(part) = field.barcode_split.get(1) {
                                 barcode_edges::trim_rotated_boundary(
                                     &mut path,
-                                    end,
+                                    part.end,
                                     field.rotation,
                                 );
                             }
@@ -934,6 +934,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                                 &mut path,
                                 &field.barcode_split,
                                 field.reverse || reverse,
+                                field.rotation,
                             )?;
                         }
                         total_segments += path.segments.len();
