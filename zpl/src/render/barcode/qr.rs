@@ -22,6 +22,7 @@ pub(super) fn render(b: &Barcode, data: &[u8]) -> Result<Path, String> {
         Some(b'M') => match data.get(3) {
             Some(b'N') => (1, &data[4..]),
             Some(b'A') => (2, &data[4..]),
+            Some(b'K') => (8, &data[4..]),
             Some(b'B') if data.len() >= 8 => {
                 let n = ascii(&data[4..8])?
                     .parse::<usize>()
@@ -111,6 +112,15 @@ fn count_width(mode: usize, v: usize) -> usize {
                 13
             }
         }
+        8 => {
+            if v < 10 {
+                8
+            } else if v < 27 {
+                10
+            } else {
+                12
+            }
+        }
         _ => {
             if v < 10 {
                 8
@@ -181,7 +191,12 @@ pub(super) fn message(data: &[u8], mode: usize, v: usize) -> Result<Vec<bool>, S
     }
     let mut out = Vec::new();
     bits::push(&mut out, mode, 4);
-    bits::push(&mut out, data.len(), count_width(mode, v));
+    let count = if mode == 8 {
+        data.len() / 2
+    } else {
+        data.len()
+    };
+    bits::push(&mut out, count, count_width(mode, v));
     match mode {
         1 => {
             digits(data)?;
@@ -201,6 +216,27 @@ pub(super) fn message(data: &[u8], mode: usize, v: usize) -> Result<Vec<bool>, S
                             .ok_or("invalid QR alphanumeric character")?;
                 }
                 bits::push(&mut out, n, if part.len() == 2 { 11 } else { 6 });
+            }
+        }
+        8 => {
+            // ISO/IEC 18004:2000 §8.4.5, p. 24, and Table 3: Shift JIS
+            // pairs become 13-bit values; the count is characters, not bytes.
+            // https://qr.redelmann.ch/media/standard_qr.pdf
+            let (pairs, remainder) = data.as_chunks::<2>();
+            if !remainder.is_empty() {
+                return Err("incomplete QR Kanji character".into());
+            }
+            for pair in pairs {
+                let value = u16::from_be_bytes(*pair) as usize;
+                if !(0x40..=0xfc).contains(&pair[1]) || pair[1] == 0x7f {
+                    return Err("invalid QR Kanji character".into());
+                }
+                let shifted = match value {
+                    0x8140..=0x9ffc => value - 0x8140,
+                    0xe040..=0xebbf => value - 0xc140,
+                    _ => return Err("invalid QR Kanji character".into()),
+                };
+                bits::push(&mut out, (shifted >> 8) * 0xc0 + (shifted & 0xff), 13);
             }
         }
         _ => {
@@ -398,5 +434,38 @@ pub(super) fn mask_bit(mask: usize, x: usize, y: usize) -> bool {
         5 => x * y % 2 + x * y % 3 == 0,
         6 => (x * y % 2 + x * y % 3).is_multiple_of(2),
         _ => ((x + y) % 2 + x * y % 3).is_multiple_of(2),
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn kanji_normative_values_and_version_count_widths() {
+        // ISO/IEC 18004:2000 §8.4.5 p. 24 examples cover both Shift JIS ranges.
+        for (version, count_bits) in [(1, 8), (9, 8), (10, 10), (26, 10), (27, 12)] {
+            let message = message(&[0x93, 0x5f, 0xe4, 0xaa], 8, version).unwrap();
+            assert_eq!(bits::value(&message[..4]), 8);
+            assert_eq!(bits::value(&message[4..4 + count_bits]), 2);
+            assert_eq!(
+                bits::value(&message[4 + count_bits..17 + count_bits]),
+                0x0d9f
+            );
+            assert_eq!(bits::value(&message[17 + count_bits..]), 0x1aaa);
+        }
+    }
+
+    #[test]
+    fn kanji_rejects_incomplete_or_non_jis_pairs() {
+        for data in [
+            &[0x93][..],
+            b"AB",
+            &[0x81, 0x7f],
+            &[0xeb, 0xc0],
+            &[0x80, 0x40],
+        ] {
+            assert!(message(data, 8, 1).is_err());
+        }
     }
 }

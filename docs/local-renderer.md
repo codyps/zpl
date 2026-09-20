@@ -196,3 +196,9 @@ existing bitmap compatibility options in the printer profile.
 add 41 exact frames, including native OCR-A extraction, scaling, placement,
 captions and lowercase blanks with measured advances. The complete resident
 bitmap set A through H is now available for the captured ASCII inputs.
+
+[QR Kanji controls](../zpl/tests/fixtures/qr-kanji-zd621-v1/README.md) cover
+manual Shift JIS input for both QR models and all error-correction levels.
+Encoding matches the printer with its captured mask; automatic mask selection
+remains a separate, pinned accuracy gap. Unicode-to-Shift-JIS conversion is not
+part of this manual byte-input support.
