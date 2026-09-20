@@ -82,29 +82,46 @@ pub fn rasterize_into<O: RasterOutput + ?Sized>(
         if edges.is_empty() {
             continue;
         }
-        let min = edges
+        // Only visit edges whose vertical extent intersects this scanline.
+        // A long text field contains many short contours; scanning every edge
+        // on every row falsely exhausts the work limit for ordinary labels.
+        // Keep the original half-open crossing predicate below so shared
+        // vertices, horizontal edges and even-odd holes retain their pixels.
+        let row = |y: f64| y.max(0.0).min(scene.height as f64) as u32;
+        let mut scheduled: Vec<_> = edges
             .iter()
-            .map(|(a, b)| a.y.min(b.y))
-            .fold(f64::INFINITY, f64::min)
-            .floor()
-            .max(0.0)
-            .min(scene.height as f64) as u32;
-        let max = edges
-            .iter()
-            .map(|(a, b)| a.y.max(b.y))
-            .fold(f64::NEG_INFINITY, f64::max)
-            .ceil()
-            .max(0.0)
-            .min(scene.height as f64) as u32;
-        work = work.saturating_add(u64::from(max - min) * edges.len() as u64);
+            .enumerate()
+            .filter_map(|(index, (a, b))| {
+                if a.y == b.y {
+                    return None;
+                }
+                let start = row(a.y.min(b.y).floor());
+                let end = row(a.y.max(b.y).ceil());
+                (start < end).then_some((start, end, index))
+            })
+            .collect();
+        work = scheduled.iter().fold(work, |sum, &(start, end, _)| {
+            sum.saturating_add(u64::from(end - start))
+        });
         if work > 100_000_000 {
             return Err(OutputError("raster scan budget exceeded"));
         }
+        scheduled.sort_unstable_by_key(|&(start, _, _)| start);
+        let min = scheduled.first().map_or(0, |edge| edge.0);
+        let max = scheduled.iter().map(|edge| edge.1).max().unwrap_or(0);
+        let mut pending = scheduled.into_iter().peekable();
+        let mut active = Vec::new();
         let mut intersections = Vec::new();
         for y in min..max {
             intersections.clear();
             let scan = y as f64 + 0.5;
-            for &(a, b) in &edges {
+            active.retain(|&(end, _)| end > y);
+            while pending.peek().is_some_and(|edge| edge.0 <= y) {
+                let (_, end, index) = pending.next().unwrap();
+                active.push((end, index));
+            }
+            for &(_, index) in &active {
+                let (a, b) = edges[index];
                 if (a.y <= scan && b.y > scan) || (b.y <= scan && a.y > scan) {
                     intersections.push(a.x + (scan - a.y) * (b.x - a.x) / (b.y - a.y));
                 }

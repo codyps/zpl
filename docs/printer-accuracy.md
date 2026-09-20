@@ -989,3 +989,8 @@ The aligned barcode conformance suite (`barcode_aligned_preview`) replaces
 underpaint / 496 overpaint pixels and remains an open accuracy gap. A sixtieth
 capture, six-digit BR UPC-E, is a blank invalid-input control and is not counted
 as successful barcode rendering. See the fixture README for provenance.
+
+`long_field_preview` requires exact pixels for the original 3072-byte text
+field and thirteen native font-0 16x10 sampling/verification frames. Active-edge
+scan conversion removes the false work-limit rejection; the captured strike
+removes the scaled-font mismatch. The scan-work cap remains enforced.

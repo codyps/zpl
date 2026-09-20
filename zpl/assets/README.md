@@ -201,3 +201,7 @@ and 65 dots, plus 64x16, 16x64 and 96x96. Their raw pages, independent
 verification and regeneration tests are in
 [font0-dimensions-zd621-v1](../tests/fixtures/font0-dimensions-zd621-v1/README.md).
 Single-column pages keep the largest captures within the printer width.
+
+`font0-16-10.zbf` is a 95-character ASCII strike sampled from the ZD621 at
+16x10 dots. Raw pages and independent verification are in
+`tests/fixtures/long-field-zd621-v1`; the extraction test reproduces every byte.

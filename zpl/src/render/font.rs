@@ -217,6 +217,7 @@ fn strikes() -> &'static Vec<(Settings, Vec<Glyph>)> {
             include_bytes!("../../assets/font0-64-16.zbf").as_slice(),
             include_bytes!("../../assets/font0-16-64.zbf").as_slice(),
             include_bytes!("../../assets/font0-96-96.zbf").as_slice(),
+            include_bytes!("../../assets/font0-16-10.zbf").as_slice(),
             include_bytes!("../../assets/font0-16-0.zbf").as_slice(),
             include_bytes!("../../assets/font0-20-0.zbf").as_slice(),
             include_bytes!("../../assets/font0-20-18.zbf").as_slice(),

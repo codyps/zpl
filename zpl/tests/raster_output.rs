@@ -133,3 +133,43 @@ fn invalid_scene_does_not_touch_destination() {
     assert!(rasterize_into(&scene, &mut output).is_err());
     assert_eq!((output.resets, output.spans), (0, 0));
 }
+
+#[test]
+fn scan_budget_ignores_vertically_inactive_contours() {
+    // 12,000 short disjoint contours exceed the old all-edges * height
+    // estimate, but have only 24,000 actual vertical edge/row visits.
+    let mut scene = Scene::new(120, 4000, 203).unwrap();
+    let mut path = Path::default();
+    for row in 0..2000 {
+        for column in 0..6 {
+            path.rect(f64::from(column * 20), f64::from(row * 2), 2., 1.);
+        }
+    }
+    scene.draws.push(Draw {
+        path,
+        paint: Paint::Black,
+    });
+    let actual = rasterize(&scene).unwrap();
+    for y in 0..4000usize {
+        for x in 0..120usize {
+            assert_eq!(actual.pixels[y * 120 + x] == 0, y % 2 == 0 && x % 20 < 2);
+        }
+    }
+}
+
+#[test]
+fn scan_budget_still_limits_active_edge_work() {
+    let mut scene = Scene::new(10, 10000, 203).unwrap();
+    let mut path = Path::default();
+    for _ in 0..5001 {
+        path.rect(1., 0., 2., 10000.);
+    }
+    scene.draws.push(Draw {
+        path,
+        paint: Paint::Black,
+    });
+    assert_eq!(
+        rasterize(&scene),
+        Err(OutputError("raster scan budget exceeded"))
+    );
+}
