@@ -68,8 +68,21 @@ fn fallback_is_optional_and_excludes_real_preset_fonts() {
             assert!(zpl::render(source.as_bytes(), options).is_err());
         }
     }
-    for id in "STUV?".chars() {
-        let source = format!("^XA^FO80,80^A{id}N,32,24^FDAB12^FS^XZ");
-        assert!(zpl::render(source.as_bytes(), ZD621_203_DPI).is_err());
+    // Resident S–V now have independently captured strikes. They must render
+    // without the unavailable-font fallback (guide resident-font Table 29).
+    for id in "STUV".chars() {
+        let source = format!("^XA^PW832^LL200^FO80,80^A{id}N,32,24^FDAB12^FS^XZ");
+        let render = |options| {
+            let doc = zpl::render(source.as_bytes(), options).unwrap();
+            zpl::output::raster::rasterize(&doc.labels[0])
+                .unwrap()
+                .pixels
+        };
+        let mut options = ZD621_203_DPI;
+        options.compatibility.unavailable_fonts_use_default = false;
+        let actual = render(options);
+        assert!(actual.contains(&0));
+        assert_eq!(actual, render(ZD621_203_DPI));
     }
+    assert!(zpl::render(b"^XA^FO80,80^A?N,32,24^FDAB12^FS^XZ", ZD621_203_DPI).is_err());
 }
