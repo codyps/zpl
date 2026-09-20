@@ -205,5 +205,7 @@ part of this manual byte-input support.
 
 [QR structured-append controls](../zpl/tests/fixtures/qr-append-zd621-v1/README.md)
 verify the `D` sequence/parity envelope and mixed manual segments, including
-counted byte payloads containing commas. Printer mask selection and oversized
-Model 1 requests remain explicit known gaps.
+counted byte payloads containing commas. Printer mask selection remains an explicit known gap.
+[Extended Model 1 controls](../zpl/tests/fixtures/qr-model1-extended-zd621-v1/README.md)
+verify the ZD621 versions 15–40 behind `qr_model1_extended_versions`; the
+specification profile retains the standard version-14 limit.

@@ -300,6 +300,9 @@ pub struct Compatibility {
     /// from the payload. ZD621 HTTP previews consistently use [0, 0, 36].
     /// This is an implementation choice allowed by USS PDF417 Appendix G.4.
     pub macro_pdf417_file_id: Option<[u16; 3]>,
+    /// Allow captured ZD621 Model 1 versions 15–40 above the standard limit.
+    /// Disabled: ISO/IEC 18004:2000 Annex M limits Model 1 to version 14.
+    pub qr_model1_extended_versions: bool,
     /// Offset QR `^FO` ink by the current `^BY` height minus one dot.
     /// Default: the upper-left origin specified by `^FO` (Zebra guide p. 201).
     pub qr_fo_uses_by_height: bool,

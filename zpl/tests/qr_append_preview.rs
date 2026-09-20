@@ -82,26 +82,5 @@ fn structured_append_matches_printer_and_pins_mask_gaps() {
         );
         count += 1;
     }
-    assert_eq!(count, 17);
-}
-
-#[test]
-fn oversized_model1_printer_case_remains_an_explicit_known_gap() {
-    // The printer accepts this request and emits a 77-module symbol (v15).
-    // ISO/IEC 18004:2000 Annex M defines Model 1 only through v14. Preserve
-    // the evidence separately; this is not a successful accuracy comparison.
-    let root = Path::new(env!("CARGO_MANIFEST_DIR")).join("tests/fixtures/qr-append-zd621-v1");
-    let row = include_str!("fixtures/qr-append-zd621-v1/known-gaps.tsv")
-        .lines()
-        .nth(1)
-        .unwrap();
-    let c: Vec<_> = row.split('\t').collect();
-    let input = fs::read(root.join(format!("{}.zpl", c[0]))).unwrap();
-    let png = fs::read(root.join(format!("{}.png", c[0]))).unwrap();
-    assert_eq!(digest::sha256(&input), c[1]);
-    assert_eq!(digest::sha256(&png), c[2]);
-    let reference = raster_diff::Raster::decode_png(&png).unwrap();
-    assert!(reference.pixels.contains(&0));
-    let error = zpl::render(&input, zpl::render::profiles::ZD621_203_DPI).unwrap_err();
-    assert_eq!(error.message, c[3]);
+    assert_eq!(count, 18);
 }

@@ -18,16 +18,15 @@ input, counted byte data containing commas, sequence endpoints, and 180/200
 segments. Byte counts delimit payloads before comma separators are interpreted.
 The 180-segment Model 1 control reaches version 14 and matches the printer.
 
-Seventeen renderable frames have raw source/PNG hashes, unchanged-input
+All eighteen frames have raw source/PNG hashes, unchanged-input
 underpaint/overpaint counts and local pixel hashes pinned in `manifest.tsv`.
 Every one matches every printer pixel when only the mask operand is replaced
 by the BCH-validated mask decoded from the capture. Automatic mask selection
 remains an open gap; the unchanged-input comparisons keep it visible.
 
-The eighteenth frame, `m1-segments-200`, is retained in `known-gaps.tsv`.
-The printer accepts the Model 1 request and emits a 77-module symbol, beyond
-the specification's maximum Model 1 version 14. Our encoder still rejects it
-at that capacity boundary. Its source and printer response are preserved and
-its current error is pinned separately. This is unresolved behavior, not a
-successful rendering comparison or evidence that the global accuracy goal
-has been met.
+The `m1-segments-200` frame originally exceeded the supported Model 1 limit.
+The ZD621 emits a version-15 symbol for it. The independent
+`qr_model1_extended_versions` option now permits captured versions 15–40;
+its complete block-table controls are in `qr-model1-extended-zd621-v1`.
+The specification profile retains the Annex M version-14 limit. The original
+printer response is now included in the successful encoding comparisons above.

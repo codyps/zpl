@@ -1366,3 +1366,34 @@ fn off_canvas_text_culling_preserves_later_dimension_changes() {
         );
     }
 }
+
+#[test]
+fn extended_model1_versions_are_optional() {
+    // ZD621 extends Model 1 beyond ISO/IEC 18004:2000 Annex M's v14 limit.
+    let input = include_bytes!("fixtures/qr-append-zd621-v1/m1-segments-200.zpl");
+    assert!(zpl::render(input, ZD621_203_DPI).is_ok());
+    let mut options = ZD621_203_DPI;
+    options.compatibility.qr_model1_extended_versions = false;
+    for strict in [SPECIFICATION, options] {
+        assert_eq!(
+            zpl::render(input, strict).unwrap_err().message,
+            "QR Model 1 data exceeds version 14 capacity"
+        );
+    }
+    let small = include_str!("fixtures/qr-append-zd621-v1/m1-numeric.zpl");
+    let model2 = std::str::from_utf8(input)
+        .unwrap()
+        .replace("^BQN,1,", "^BQN,2,");
+    for source in [small, &model2] {
+        let native = zpl::render(source.as_bytes(), ZD621_203_DPI).unwrap();
+        let disabled = zpl::render(source.as_bytes(), options).unwrap();
+        assert_eq!(
+            zpl::output::raster::rasterize(&native.labels[0])
+                .unwrap()
+                .pixels,
+            zpl::output::raster::rasterize(&disabled.labels[0])
+                .unwrap()
+                .pixels
+        );
+    }
+}

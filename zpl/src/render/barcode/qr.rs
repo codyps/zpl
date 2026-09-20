@@ -9,7 +9,12 @@ pub(super) fn render(b: &Barcode, data: &[u8]) -> Result<Path, String> {
     let mask = b.integer(4, 7, 0, 7)?;
     let (level, input) = Input::parse(data)?;
     let matrix = if b.param(1, "2") == "1" {
-        super::qr_model1::encode(&input, level, mask)?
+        super::qr_model1::encode(
+            &input,
+            level,
+            mask,
+            b.compatibility.qr_model1_extended_versions,
+        )?
     } else {
         encode(&input, level, mask)?
     };

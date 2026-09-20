@@ -24,21 +24,78 @@ const TOTAL: [usize; 14] = [
     26, 46, 72, 100, 134, 170, 212, 256, 306, 358, 416, 476, 542, 610,
 ];
 
-pub(super) fn encode(input: &qr::Input<'_>, level: usize, mask: usize) -> Result<Matrix, String> {
+// Captured ZD621 extensions beyond ISO/IEC 18004:2000 Annex M's v14 limit.
+// Every data prefix and RS block was recovered and independently verified;
+// full printer comparisons and hashes: tests/fixtures/qr-model1-extended-zd621-v1.
+const PRINTER_BLOCKS: [[(usize, usize, usize); 4]; 26] = [
+    [(3, 184, 44), (4, 103, 68), (6, 58, 56), (7, 33, 64)],
+    [(3, 203, 50), (5, 92, 60), (6, 64, 62), (8, 33, 62)],
+    [(4, 168, 42), (5, 102, 66), (7, 60, 60), (9, 33, 60)],
+    [(4, 185, 46), (6, 94, 60), (8, 59, 56), (10, 32, 60)],
+    [(4, 204, 50), (6, 103, 66), (10, 51, 50), (11, 32, 60)],
+    [(5, 177, 44), (7, 96, 62), (11, 50, 50), (12, 32, 60)],
+    [(5, 193, 48), (7, 104, 68), (12, 50, 50), (12, 34, 66)],
+    [(6, 175, 42), (8, 99, 64), (13, 50, 50), (13, 34, 66)],
+    [(6, 189, 46), (9, 96, 60), (13, 54, 54), (15, 32, 62)],
+    [(6, 203, 50), (10, 92, 60), (15, 51, 50), (15, 35, 66)],
+    [(7, 187, 46), (10, 99, 64), (16, 52, 50), (16, 34, 68)],
+    [(7, 200, 50), (11, 99, 60), (18, 49, 48), (18, 33, 64)],
+    [(8, 188, 46), (11, 102, 68), (18, 52, 52), (18, 36, 68)],
+    [(8, 201, 48), (12, 102, 64), (19, 53, 52), (21, 33, 62)],
+    [(9, 190, 46), (13, 99, 64), (20, 54, 52), (21, 35, 66)],
+    [(9, 200, 50), (14, 97, 64), (23, 50, 48), (23, 34, 64)],
+    [(10, 193, 46), (14, 103, 68), (23, 52, 52), (23, 36, 68)],
+    [(10, 203, 50), (16, 98, 60), (23, 56, 54), (32, 27, 52)],
+    [(12, 179, 44), (18, 93, 56), (25, 55, 52), (26, 35, 68)],
+    [(14, 162, 40), (18, 97, 60), (28, 51, 50), (28, 35, 66)],
+    [(12, 200, 48), (19, 97, 60), (31, 48, 48), (31, 32, 64)],
+    [(13, 193, 48), (20, 97, 60), (32, 50, 48), (32, 34, 64)],
+    [(13, 204, 50), (21, 97, 60), (33, 50, 50), (33, 34, 66)],
+    [(14, 199, 48), (21, 101, 64), (33, 53, 52), (35, 33, 66)],
+    [(15, 194, 48), (23, 98, 60), (36, 51, 50), (36, 35, 66)],
+    [(16, 192, 46), (25, 92, 60), (38, 50, 50), (38, 34, 66)],
+];
+const PRINTER_TOTAL: [usize; 26] = [
+    684, 760, 842, 926, 1016, 1108, 1206, 1306, 1412, 1520, 1634, 1750, 1872, 1996, 2126, 2258,
+    2396, 2536, 2682, 2830, 2984, 3140, 3302, 3466, 3636, 3808,
+];
+fn parameters(version: usize, level: usize) -> (usize, usize, usize) {
+    if version <= 14 {
+        BLOCKS[version - 1][level]
+    } else {
+        PRINTER_BLOCKS[version - 15][level]
+    }
+}
+fn total_words(version: usize) -> usize {
+    if version <= 14 {
+        TOTAL[version - 1]
+    } else {
+        PRINTER_TOTAL[version - 15]
+    }
+}
+
+pub(super) fn encode(
+    input: &qr::Input<'_>,
+    level: usize,
+    mask: usize,
+    extended: bool,
+) -> Result<Matrix, String> {
     let mut chosen = None;
     let mut msg = Vec::new();
-    for v in 1..=14 {
-        if matches!(v, 1 | 10) {
+    let max_version = if extended { 40 } else { 14 };
+    for v in 1..=max_version {
+        if matches!(v, 1 | 10 | 27) {
             msg = input.message(v)?;
         }
-        let (n, k, _) = BLOCKS[v - 1][level];
+        let (n, k, _) = parameters(v, level);
         if msg.len() <= n * k * 8 - 4 {
             chosen = Some((v, msg));
             break;
         }
     }
-    let (v, mut msg) = chosen.ok_or("QR Model 1 data exceeds version 14 capacity")?;
-    let (n, k, ec) = BLOCKS[v - 1][level];
+    let (v, mut msg) =
+        chosen.ok_or_else(|| format!("QR Model 1 data exceeds version {max_version} capacity"))?;
+    let (n, k, ec) = parameters(v, level);
     let capacity = n * k * 8 - 4;
     msg.extend(std::iter::repeat_n(false, 4.min(capacity - msg.len())));
     while (msg.len() + 4) % 8 != 0 {
@@ -57,7 +114,7 @@ pub(super) fn encode(input: &qr::Input<'_>, level: usize, mask: usize) -> Result
     }
     words.extend(parity);
     pad = 0;
-    while words.len() < TOTAL[v - 1] {
+    while words.len() < total_words(v) {
         words.push([236, 17][pad % 2]);
         pad += 1;
     }
@@ -181,7 +238,7 @@ mod tests {
                 let mut source = format!("LM,B{len:04}").into_bytes();
                 source.extend_from_slice(&data);
                 let (_, input) = qr::Input::parse(&source).unwrap();
-                let m = encode(&input, level, 3).unwrap();
+                let m = encode(&input, level, 3, false).unwrap();
                 // rxing 0.9.3's generic DataBlock deinterleaver does not handle
                 // Model 1 multi-block symbols. Those are checked against printer
                 // modules in barcode_modes_preview instead (ISO Annex M.6).
