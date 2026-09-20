@@ -820,3 +820,18 @@ same number, while retaining explicit data on the binding fields themselves.
 Stored DF/XF formats and FN serialization remain explicit unsupported cases.
 The fixture README records capture provenance and the excluded unverified
 custom-prefix request.
+
+## Initial serialization masks
+
+The original `serial-mask` conformance input now renders pixel-exactly. `^SF`
+validates decimal, hexadecimal, octal, alphabetic, alphanumeric and skip masks
+and the combined 3 KiB mask/increment limit after FD/FV. It retains the initial
+field value, as documented; `^PQ` iteration remains an explicit unsupported
+command. This does not claim multi-label serialization support.
+
+`serial_mask_preview` pins 14 complete native frames, including text, barcode,
+FH and independent FD/SF pairs across CI0/13/27/28. Ten frames are exact; four
+retain zero underpaint and 168 overpaint pixels. The latter reveal an existing
+CI13 font-A zero difference (native unslashed versus embedded slashed), present
+with or without SF. All 18 separate text regions meet 80% foreground IoU;
+minimum 88.6792%. Barcode pixels have a separate exactness requirement.

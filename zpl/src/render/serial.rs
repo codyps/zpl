@@ -62,3 +62,27 @@ pub(super) fn suppress_zeros(
     }
     Ok(())
 }
+
+/// ^SF pp. 335–337 selects subsequent values; it does not change the initial
+/// FD value. ^PQ iteration remains explicit unsupported behavior, just as for
+/// SN. Invalid increment characters are documented zero digits, not errors.
+pub(super) fn validate_mask(parameters: &[&str]) -> Result<(), String> {
+    let mask = parameters.first().copied().unwrap_or("");
+    let increment = parameters.get(1).copied().unwrap_or("");
+    if mask.is_empty()
+        || !mask.bytes().all(|c| {
+            matches!(
+                c,
+                b'D' | b'd' | b'H' | b'h' | b'O' | b'o' | b'A' | b'a' | b'N' | b'n' | b'%'
+            )
+        })
+    {
+        return Err(
+            "SF requires a decimal, hex, octal, alphabetic, alphanumeric or skip mask".into(),
+        );
+    }
+    if parameters.len() > 2 || mask.len() + increment.len() > 3072 {
+        return Err("SF mask and increment exceed the 3 KiB limit or have extra operands".into());
+    }
+    Ok(())
+}

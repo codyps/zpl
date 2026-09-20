@@ -65,6 +65,7 @@ struct Field {
     reverse: bool,
     white: bool,
     explicit_font: bool,
+    standard_field_data: bool,
     hex: Option<u8>,
     barcode: Option<barcode::Barcode>,
     barcode_error: Option<String>,
@@ -97,6 +98,7 @@ impl Default for Field {
             reverse: false,
             white: false,
             explicit_font: false,
+            standard_field_data: false,
             hex: None,
             barcode: None,
             barcode_error: None,
@@ -323,13 +325,15 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                 .trim_end_matches(['\r', '\n']);
             let delim = syntax.delimiter as char;
             let p: Vec<_> = s.split(delim).collect();
-            if field.path.is_some() && !matches!(name, "FS" | "FR" | "FX" | "CC" | "CT" | "CD") {
+            if field.path.is_some()
+                && !matches!(name, "FS" | "FR" | "FX" | "CC" | "CT" | "CD" | "SF")
+            {
                 return Err("drawing must end with FS before another command".into());
             }
             let max = match name {
                 "XA" | "XZ" | "FS" | "FR" => Some(0),
                 "CI" | "PW" | "LL" | "LS" | "LT" | "LR" | "PO" | "FH" => Some(1),
-                "LH" | "FW" | "FP" => Some(2),
+                "LH" | "FW" | "FP" | "SF" => Some(2),
                 "FO" | "FT" | "CF" | "BY" | "XG" | "TB" | "SN" => Some(3),
                 "GB" | "GD" | "B3" | "FB" => Some(5),
                 "BC" => Some(6),
@@ -696,7 +700,14 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                         Err(error) => return Err(error),
                     }
                 }
+                "SF" => {
+                    if !field.standard_field_data {
+                        return Err("SF requires a preceding FD or FV in the same field".into());
+                    }
+                    serial::validate_mask(&p)?;
+                }
                 "FD" | "FV" | "SN" => {
+                    field.standard_field_data = matches!(name, "FD" | "FV");
                     if matches!(replacement, Some(numbered::Action::Skip)) {
                         return Ok(());
                     }
