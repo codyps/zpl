@@ -63,6 +63,25 @@ impl Layout {
         }
     }
     fn normal(&mut self, mut word: &str) -> Result<(), String> {
+        if word.is_empty() {
+            // Empty tokens preserve extra delimiters after the first separator.
+            // prefix drops them at the beginning of a physical line. Native
+            // tail-width controls reserve the next separator before wrapping,
+            // then discard trailing separators on the completed line. See
+            // fixtures/field-block-spaces-zd621-v1 for captures and the
+            // separately tracked narrow-block blank-line differences.
+            let next = self.prefix();
+            if !self.line.is_empty()
+                && !self.overflow_line
+                && self.measure(&next)? + self.measure(" ")? > self.limit()
+            {
+                self.line.truncate(self.line.trim_end_matches(' ').len());
+                self.flush(false, false);
+            } else {
+                self.line = next;
+            }
+            return Ok(());
+        }
         if self.overflow_line {
             self.line = format!("{}{word}", self.prefix());
             return Ok(());
@@ -282,7 +301,12 @@ pub(super) fn wrap(
             }
         }
         if c.is_whitespace() {
-            if !word.text.is_empty() || !word.markers.is_empty() {
+            if !word.text.is_empty()
+                || !word.markers.is_empty()
+                || (c == ' '
+                    && compatibility.block_preserves_extra_spaces
+                    && !paragraphs.last().unwrap().is_empty())
+            {
                 paragraphs
                     .last_mut()
                     .unwrap()

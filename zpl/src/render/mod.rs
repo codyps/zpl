@@ -1753,11 +1753,22 @@ fn text_block(
             slack
         };
         let gaps = line.bytes().filter(|&c| c == b' ').count();
+        // The native trailing-space width sweep extends final-line
+        // eligibility to two spaces when an extra separator is retained;
+        // see field-block-spaces-zd621-v1 (55 terminal-line controls).
         let justified = align == b'J'
             && !*hard_break
             && (lines.len() <= max_lines || i + 1 < max_lines)
             && (i + 1 < lines.len()
-                || (center_space && slack >= 0. && slack <= font::width_for(font_id, " ", w, h)?))
+                || (center_space
+                    && slack >= 0.
+                    && slack
+                        <= font::width_for(font_id, " ", w, h)?
+                            * if compatibility.block_preserves_extra_spaces && line.ends_with(' ') {
+                                2.
+                            } else {
+                                1.
+                            }))
             && gaps > 0;
         let mut line_parts = Vec::new();
         let mut p = if justified {

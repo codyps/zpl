@@ -933,3 +933,17 @@ exactly. A two-glyph supplement supplies the measured soft hyphen and eth at
 `font0_28_14_hyphen_preview` pins all thirteen cases plus the raw sampling and
 independent verification frames, all with zero underpaint and overpaint. An
 offline extraction test reproduces the asset; no layout rules change here.
+
+## Repeated spaces in field blocks
+
+`field_block_spaces_preview` pins [36 raw printer frames](../zpl/tests/fixtures/field-block-spaces-zd621-v1/README.md).
+The original `block-content-spaces` conformance case and 15 new ordinary / trailing
+space frames now match exactly. ZD621_203_DPI retains repeated ASCII separators
+inside and after words, trims leading separators, and reproduces the measured
+terminal-line justification threshold. SPECIFICATION keeps normalized whitespace;
+`block_preserves_extra_spaces` independently selects the native behavior.
+
+Twenty additional diagnostic frames pin current pixels and underpaint / overpaint
+for narrow widths and long space runs. Some still differ because the printer
+consumes an extra blank line; these are explicitly tracked residuals, not passing
+evidence for the 80% text goal. All captures are unmodified PW832 previews.
