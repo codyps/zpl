@@ -994,3 +994,8 @@ as successful barcode rendering. See the fixture README for provenance.
 field and thirteen native font-0 16x10 sampling/verification frames. Active-edge
 scan conversion removes the false work-limit rejection; the captured strike
 removes the scaled-font mismatch. The scan-work cap remains enforced.
+
+`resident_tuv_preview` covers native T/U/V resident faces with 43 raw printer
+frames. The three original unsupported-font cases and all 39 sampling and
+verification frames are exact. Each of the 24 separate rotated origin fields
+exceeds 97.65% foreground IoU, with pinned residuals and an 80% floor.

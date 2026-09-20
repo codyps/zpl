@@ -205,3 +205,7 @@ Single-column pages keep the largest captures within the printer width.
 `font0-16-10.zbf` is a 95-character ASCII strike sampled from the ZD621 at
 16x10 dots. Raw pages and independent verification are in
 `tests/fixtures/long-field-zd621-v1`; the extraction test reproduces every byte.
+
+Native ASCII strikes `fontT-48-42.zbf`, `fontU-59-53.zbf` and `fontV-80-71.zbf`
+are reproduced from `tests/fixtures/resident-tuv-zd621-v1`. The independent
+origin atlas measures their baselines; these are distinct resident faces.

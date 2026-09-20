@@ -9,7 +9,7 @@ pub struct Settings {
 }
 impl Settings {
     pub fn validate(&self) -> Result<(), String> {
-        if !"0ABCDEFGHPQRS".contains(self.font)
+        if !"0ABCDEFGHPQRSTUV".contains(self.font)
             || !(1..=128).contains(&self.height)
             || self.width > 128
             || !(1..=2400).contains(&self.dpi)

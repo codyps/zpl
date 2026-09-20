@@ -218,6 +218,9 @@ fn strikes() -> &'static Vec<(Settings, Vec<Glyph>)> {
             include_bytes!("../../assets/font0-16-64.zbf").as_slice(),
             include_bytes!("../../assets/font0-96-96.zbf").as_slice(),
             include_bytes!("../../assets/font0-16-10.zbf").as_slice(),
+            include_bytes!("../../assets/fontT-48-42.zbf").as_slice(),
+            include_bytes!("../../assets/fontU-59-53.zbf").as_slice(),
+            include_bytes!("../../assets/fontV-80-71.zbf").as_slice(),
             include_bytes!("../../assets/font0-16-0.zbf").as_slice(),
             include_bytes!("../../assets/font0-20-0.zbf").as_slice(),
             include_bytes!("../../assets/font0-20-18.zbf").as_slice(),
@@ -384,12 +387,13 @@ fn selected(id: impl Into<Font> + Copy, w: f64, h: f64) -> (&'static [Glyph], f6
     for (s, glyphs) in faces {
         let sw = if s.width == 0 { s.height } else { s.width } as f64;
         if s.font == id
-            && (!matches!(id, '0' | 'P' | 'Q' | 'R') || (s.height as f64 == h && sw == w))
+            && (!matches!(id, '0' | 'P' | 'Q' | 'R' | 'T' | 'U' | 'V')
+                || (s.height as f64 == h && sw == w))
         {
             return (glyphs, w / sw, h / s.height as f64);
         }
     }
-    if matches!(id, 'P' | 'Q' | 'R') {
+    if matches!(id, 'P' | 'Q' | 'R' | 'T' | 'U' | 'V') {
         // Preset strikes are hinted independently at each size. Use an exact
         // captured size above, otherwise scale the closest sampled strike.
         // Table 31 p. 1584 gives each preset's native matrix.
@@ -443,6 +447,10 @@ pub(super) fn baseline_for(id: impl Into<Font> + Copy, h: f64) -> f64 {
         // omits the presets (their matrices are in Table 31, p. 1584).
         'Q' => 22. / 28.,
         'R' => 28. / 35.,
+        // Independent native FO/FT atlas: resident-tuv-zd621-v1.
+        'T' => 36. / 48.,
+        'U' => 46. / 59.,
+        'V' => 62. / 80.,
         // Captured GS metrics use baseline 23; the specification FT anchor
         // is selected separately by graphic_symbol_last_row_baseline.
         'S' => 23. / 24.,

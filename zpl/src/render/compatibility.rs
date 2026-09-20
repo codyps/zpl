@@ -35,8 +35,9 @@ pub struct Compatibility {
     /// Pivot rotated preset-font FO fields at the final dot rather than the
     /// matrix boundary (^FO p. 201, Table 31 p. 1584). Captured P/Q controls
     /// use a height-scaled final row; R retains the vertical matrix boundary.
-    /// All three lose one dot of horizontal advance for I/B. FT retains its
-    /// baseline origin.
+    /// Native T/U/V controls subtract 3/1/2 height dots, scaled by matrix
+    /// magnification. All presets lose one dot of horizontal advance for I/B.
+    /// FT retains its baseline origin.
     pub preset_font_fo_last_dot: bool,
     /// Resolve unavailable resident IDs 1–9, I–O and W–Z using the current CF
     /// font for A fields, and font A for CF. Measured on ZD621 V93.21.33Z;

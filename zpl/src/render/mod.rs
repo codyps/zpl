@@ -582,6 +582,9 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                         "P" => 'P',
                         "Q" => 'Q',
                         "R" => 'R',
+                        "T" => 'T',
+                        "U" => 'U',
+                        "V" => 'V',
                         value
                             if matches!(
                                 value.as_bytes(),
@@ -642,6 +645,9 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                         "AP" => 'P',
                         "AQ" => 'Q',
                         "AR" => 'R',
+                        "AT" => 'T',
+                        "AU" => 'U',
+                        "AV" => 'V',
                         value
                             if matches!(
                                 value.as_bytes(),
@@ -1378,8 +1384,10 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                                     .text_size
                                     .map(|(w, h)| {
                                         if font_id == '0'
-                                            || (matches!(font_id, 'P' | 'Q' | 'R')
-                                                && options.compatibility.preset_font_fo_last_dot)
+                                            || (matches!(
+                                                font_id,
+                                                'P' | 'Q' | 'R' | 'T' | 'U' | 'V'
+                                            ) && options.compatibility.preset_font_fo_last_dot)
                                         {
                                             // A zero-width printer block still
                                             // pivots at width minus one dot.
@@ -1395,6 +1403,10 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                                                 'P' => font_h / 20.,
                                                 'Q' => font_h / 28.,
                                                 'R' => 0.,
+                                                // Native T/U/V atlas: resident-tuv-zd621-v1.
+                                                'T' => 3. * font_h / 48.,
+                                                'U' => font_h / 59.,
+                                                'V' => 2. * font_h / 80.,
                                                 _ => 1.,
                                             };
                                             (w, (h - last_row).max(0.))
@@ -1933,6 +1945,9 @@ fn font_dimensions(
             'P' => (20., 18.),
             'Q' => (28., 24.),
             'R' => (35., 31.),
+            'T' => (48., 42.),
+            'U' => (59., 53.),
+            'V' => (80., 71.),
             'S' => (24., 24.),
             _ => (18., 10.),
         };
