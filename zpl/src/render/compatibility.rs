@@ -14,7 +14,8 @@
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct Compatibility {
     /// Preserve additional ASCII space delimiters inside and after FB words,
-    /// while dropping leading delimiters. Disabled: normalize whitespace runs.
+    /// while discarding leading space glyphs. Oversized leading/internal runs
+    /// retain the measured blank row. Disabled: normalize whitespace runs.
     /// Native whitespace tokenization measured with L/C/R/J controls; ^FB
     /// pp. 186–187 does not prescribe how delimiter runs are normalized.
     pub block_preserves_extra_spaces: bool,

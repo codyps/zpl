@@ -68,8 +68,7 @@ impl Layout {
             // prefix drops them at the beginning of a physical line. Native
             // tail-width controls reserve the next separator before wrapping,
             // then discard trailing separators on the completed line. See
-            // fixtures/field-block-spaces-zd621-v1 for captures and the
-            // separately tracked narrow-block blank-line differences.
+            // fixtures/field-block-spaces-zd621-v1 for native comparisons.
             let next = self.prefix();
             if !self.line.is_empty()
                 && !self.overflow_line
@@ -262,6 +261,7 @@ pub(super) fn wrap(
     encoding: u8,
 ) -> Result<Vec<Line>, String> {
     let mut paragraphs: Vec<Vec<Word>> = vec![Vec::new()];
+    let mut leading_spaces = vec![0usize];
     let mut word = Word::default();
     let mut chars = value.chars().peekable();
     while let Some(c) = chars.next() {
@@ -284,6 +284,7 @@ pub(super) fn wrap(
                             .push(std::mem::take(&mut word));
                     }
                     paragraphs.push(Vec::new());
+                    leading_spaces.push(0);
                     continue;
                 }
                 Some(next)
@@ -299,6 +300,13 @@ pub(super) fn wrap(
                 }
                 _ => {}
             }
+        }
+        if c == ' '
+            && word.text.is_empty()
+            && word.markers.is_empty()
+            && paragraphs.last().unwrap().is_empty()
+        {
+            *leading_spaces.last_mut().unwrap() += 1;
         }
         if c.is_whitespace() {
             if !word.text.is_empty()
@@ -331,7 +339,67 @@ pub(super) fn wrap(
         overflow_line: false,
     };
     for (i, paragraph) in paragraphs.iter().enumerate() {
+        if compatibility.block_preserves_extra_spaces
+            && leading_spaces[i] as f64 * layout.measure(" ")? > layout.limit()
+        {
+            layout.flush(false, false);
+        }
+        let mut skip_until = 0;
         for (word_index, word) in paragraph.iter().enumerate() {
+            if word_index < skip_until {
+                continue;
+            }
+            if compatibility.block_preserves_extra_spaces
+                && word.text.is_empty()
+                && word.markers.is_empty()
+                && !layout.overflow_line
+                && (word_index == 0
+                    || !paragraph[word_index - 1].text.is_empty()
+                    || !paragraph[word_index - 1].markers.is_empty())
+            {
+                let count = paragraph[word_index..]
+                    .iter()
+                    .take_while(|word| word.text.is_empty() && word.markers.is_empty())
+                    .count();
+                let space = layout.measure(" ")?;
+                let previous = if layout.line.is_empty() {
+                    layout
+                        .lines
+                        .last()
+                        .filter(|line| line.3)
+                        .map(|line| line.0.as_str())
+                } else {
+                    Some(layout.line.as_str())
+                };
+                let previous_width = previous.map(|line| layout.measure(line)).transpose()?;
+                let next_limit = if layout.line.is_empty() {
+                    layout.limit()
+                } else {
+                    let width = layout.width - layout.indent;
+                    if width < 0. && compatibility.block_indent_printer_layout {
+                        f64::INFINITY
+                    } else {
+                        width
+                    }
+                };
+                // Native runs wider than the block consume one empty row when
+                // the preceding line has at most a separator of free space.
+                // Forced characters may already have flushed that line. The
+                // run is measured against the next (indented) line width; the
+                // preceding line must itself be full. See the native threshold,
+                // word-length and indentation controls in field-block-spaces-zd621-v1.
+                if layout.limit() > space
+                    && count as f64 * space > next_limit
+                    && previous_width.is_some_and(|width| width + space >= layout.limit())
+                {
+                    if !layout.line.is_empty() {
+                        layout.flush(false, false);
+                    }
+                    layout.flush(false, false);
+                    skip_until = word_index + count;
+                    continue;
+                }
+            }
             if compatibility.block_narrow_printer_layout
                 && word_index > 0
                 && layout.line.is_empty()
