@@ -15,6 +15,7 @@ mod printer_shapes;
 mod serial;
 mod validation;
 use crate::{
+    bitmap_font::GRAPHIC_SYMBOLS,
     output::{Draw, Paint, Path, Point, Scene},
     parse::{Element, ParseContext},
 };
@@ -494,7 +495,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                     field.bounded = None;
                     // ^FB selects text layout, replacing a preceding ^GS symbol field.
                     // ZD621 controls in graphic-symbols-zd621-v1 retain GS dimensions.
-                    if font_id == 'S' {
+                    if font_id == GRAPHIC_SYMBOLS {
                         font_id = default_font_id;
                     }
                     let width = number(&p, 0, 0.)?;
@@ -582,6 +583,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                         "P" => 'P',
                         "Q" => 'Q',
                         "R" => 'R',
+                        "S" => 'S',
                         "T" => 'T',
                         "U" => 'U',
                         "V" => 'V',
@@ -645,6 +647,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                         "AP" => 'P',
                         "AQ" => 'Q',
                         "AR" => 'R',
+                        "AS" => 'S',
                         "AT" => 'T',
                         "AU" => 'U',
                         "AV" => 'V',
@@ -679,7 +682,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                 }
                 "GS" => {
                     // ^GS p. 217 selects a separate symbol face, not ^AS.
-                    font_id = 'S';
+                    font_id = GRAPHIC_SYMBOLS;
                     field.barcode = None;
                     field.explicit_font = false;
                     field.rotation = if p[0].is_empty() {
@@ -904,7 +907,14 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                                         .compatibility
                                         .block_negative_pitch_clamps_to_zero
                                     {
-                                        spacing.max(-font_h)
+                                        spacing.max(
+                                            -font::block_metrics(
+                                                text_font,
+                                                font_h,
+                                                options.compatibility.font_s_block_metrics,
+                                            )
+                                            .0,
+                                        )
                                     } else {
                                         spacing
                                     };
@@ -987,7 +997,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                             field.center_overflow = center_overflow;
                             // Table 29 p. 1582 gives GS a 3/4-height baseline.
                             // Printer controls instead use native row 23 of 24.
-                            field.baseline_height = if font_id == 'S'
+                            field.baseline_height = if font_id == GRAPHIC_SYMBOLS
                                 && !options.compatibility.graphic_symbol_last_row_baseline
                             {
                                 baseline - font_h * 5. / 24.
@@ -1015,7 +1025,15 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                             field.text_size = Some(if let Some(size) = field.bounded {
                                 size
                             } else if let Some((width, lines, spacing, _, _)) = block {
-                                (width, lines as f64 * font_h + (lines - 1) as f64 * spacing)
+                                let (pitch, delta) = font::block_metrics(
+                                    text_font,
+                                    font_h,
+                                    options.compatibility.font_s_block_metrics,
+                                );
+                                (
+                                    width,
+                                    (lines - 1) as f64 * (pitch + spacing) + font_h + delta,
+                                )
                             } else {
                                 (font::width_for(text_font, value, font_w, font_h)?, font_h)
                             });
@@ -1306,7 +1324,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                         } else {
                             (0., 0.)
                         };
-                        let field_justification = if font_id == 'S'
+                        let field_justification = if font_id == GRAPHIC_SYMBOLS
                             && field.text_size.is_some()
                             && options.compatibility.graphic_symbol_ignores_justification
                         {
@@ -1386,7 +1404,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                                         if font_id == '0'
                                             || (matches!(
                                                 font_id,
-                                                'P' | 'Q' | 'R' | 'T' | 'U' | 'V'
+                                                'P' | 'Q' | 'R' | 'S' | 'T' | 'U' | 'V'
                                             ) && options.compatibility.preset_font_fo_last_dot)
                                         {
                                             // A zero-width printer block still
@@ -1403,6 +1421,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                                                 'P' => font_h / 20.,
                                                 'Q' => font_h / 28.,
                                                 'R' => 0.,
+                                                'S' => 2. * font_h / 40.,
                                                 // Native T/U/V atlas: resident-tuv-zd621-v1.
                                                 'T' => 3. * font_h / 48.,
                                                 'U' => font_h / 59.,
@@ -1757,6 +1776,8 @@ fn text_block(
             center_overflow: Vec::new(),
         });
     }
+    let (pitch, baseline_delta) =
+        font::block_metrics(font_id, h, compatibility.font_s_block_metrics);
     let lines = field_block::wrap(
         font_id,
         value,
@@ -1902,7 +1923,7 @@ fn text_block(
             });
         // ^FB p. 186: excess text overprints the last row. Union below keeps
         // overlapping glyph ink black. Captured in field-block-overflow-zd621-v1.
-        let y = i.min(max_lines - 1) as f64 * (h + spacing);
+        let y = i.min(max_lines - 1) as f64 * (pitch + spacing) + baseline_delta;
         p.transform(|p| Point::new(p.x + x, p.y + y));
         for mut part in line_parts {
             part.transform(|p| Point::new(p.x + x, p.y + y));
@@ -1919,7 +1940,9 @@ fn text_block(
         } else {
             path
         },
-        baseline: (max_lines - 1) as f64 * (h + spacing) + font::baseline_for(font_id, h),
+        baseline: (max_lines - 1) as f64 * (pitch + spacing)
+            + font::baseline_for(font_id, h)
+            + baseline_delta,
         parts: text_parts,
         center_overflow,
     })
@@ -1945,10 +1968,11 @@ fn font_dimensions(
             'P' => (20., 18.),
             'Q' => (28., 24.),
             'R' => (35., 31.),
+            'S' => (40., 35.),
             'T' => (48., 42.),
             'U' => (59., 53.),
             'V' => (80., 71.),
-            'S' => (24., 24.),
+            GRAPHIC_SYMBOLS => (24., 24.),
             _ => (18., 10.),
         };
         // ^A p. 61 and ^CF p. 154: one supplied dimension determines

@@ -55,7 +55,7 @@ fn captured_symbol_and_text_assets_are_pinned() {
         (
             include_bytes!("../assets/fontGS-24-24.zbf").as_slice(),
             include_str!("fixtures/graphic-symbols-zd621-v1/asset.sha256"),
-            'S',
+            zpl::bitmap_font::GRAPHIC_SYMBOLS,
         ),
         (
             include_bytes!("../assets/font0-24-24.zbf").as_slice(),
@@ -73,7 +73,7 @@ fn captured_symbol_and_text_assets_are_pinned() {
             glyphs.iter().map(|g| g.codepoint).collect::<Vec<_>>(),
             (32..=126).collect::<Vec<_>>()
         );
-        if font == 'S' {
+        if font == zpl::bitmap_font::GRAPHIC_SYMBOLS {
             assert!(glyphs.iter().all(|g| g.advance == 26));
             assert_eq!(
                 glyphs

@@ -999,3 +999,9 @@ removes the scaled-font mismatch. The scan-work cap remains enforced.
 frames. The three original unsupported-font cases and all 39 sampling and
 verification frames are exact. Each of the 24 separate rotated origin fields
 exceeds 97.65% foreground IoU, with pinned residuals and an 80% floor.
+
+`resident_s_preview` separates resident AS from GS and pins 32 native frames.
+The original S case, all 26 sampling/verification pages, and mixed AS/GS/CFS
+label are exact. All 72 origin/block/multiline fields exceed 97.10% foreground
+IoU with an enforced 80% floor. `font_s_block_metrics` selects the measured
+printer block ascents and pitches; specification behavior remains selectable.

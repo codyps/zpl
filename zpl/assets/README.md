@@ -38,7 +38,7 @@ All multi-byte integers are little endian. Signed offsets are two's complement.
 | Header field | Bytes |
 | --- | --- |
 | Magic `ZBF1` | 4 |
-| Resident font ID (ASCII) | 1 |
+| Resident font ID (ASCII), or `@` for graphic symbols | 1 |
 | Requested height, requested width, DPI, glyph count (u16 each) | 8 |
 
 Glyphs follow in ascending Unicode codepoint order. Each record has:
@@ -209,3 +209,8 @@ Single-column pages keep the largest captures within the printer width.
 Native ASCII strikes `fontT-48-42.zbf`, `fontU-59-53.zbf` and `fontV-80-71.zbf`
 are reproduced from `tests/fixtures/resident-tuv-zd621-v1`. The independent
 origin atlas measures their baselines; these are distinct resident faces.
+
+`fontS-40-35.zbf` and `fontS-80-70.zbf` are native resident-S ASCII strikes.
+They are independent of `fontGS-24-24.zbf`, whose explicit `@` face tag replaces
+its historical S tag. Offline tests reproduce both resident assets and the
+retagged graphic-symbol asset from unchanged native sampling pages.

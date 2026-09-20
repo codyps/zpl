@@ -26,12 +26,12 @@ selects the printer's observed treatment of FO/FT right justification.
 Both are enabled in ZD621_203_DPI and disabled in SPECIFICATION. Existing
 bitmap FT dot offsets independently control rotated and scaled origins.
 
-To reproduce assets offline, copy each source directory to a temporary
-location and run `extract-font` with its recorded host, `--offline`,
-`--batch-size 8`, and the copied output directory. For `font-source`, use
-`--font S --height 24 --width 24 --verify-text ABCDEEDCBA`; for `text-source`,
-use `--font 0 --height 24 --width 24 --verify-text 'AB CD EF AB CD'`.
-Compare the resulting font.zbf files with the two pinned assets.
+The graphic-symbol asset uses the explicit `@` strike tag, separating it from
+resident font S (`^AS`). Historical capture JSON retains the old S sampler
+identifier as provenance; the raw ZPL and PNGs are unchanged. Only the packed
+asset's face byte and its hash changed. The `graphic_symbols` extraction test
+reproduces the asset from all twelve native pages and checks the independent
+`ABCDEEDCBA` verification. New captures use `--font @ --height 24 --width 24`.
 
 Reference: [Zebra ZPL II Programming Guide](https://www.zebra.com/content/dam/support-dam/en/documentation/unrestricted/guide/software/zpl-zbi2-pg-en.pdf),
 ^GS p. 217, Table 29 p. 1582, ^FB pp. 185–187, ^FO p. 201, ^FT p. 205,

@@ -35,10 +35,14 @@ pub struct Compatibility {
     /// Pivot rotated preset-font FO fields at the final dot rather than the
     /// matrix boundary (^FO p. 201, Table 31 p. 1584). Captured P/Q controls
     /// use a height-scaled final row; R retains the vertical matrix boundary.
-    /// Native T/U/V controls subtract 3/1/2 height dots, scaled by matrix
+    /// Native S/T/U/V controls subtract 2/3/1/2 height dots, scaled by matrix
     /// magnification. All presets lose one dot of horizontal advance for I/B.
     /// FT retains its baseline origin.
     pub preset_font_fo_last_dot: bool,
+    /// Use measured resident-S FB line pitches and ascents at 40/80 dots.
+    /// Disabled: use nominal font height and the normal text baseline, per
+    /// ^FB pp. 186–188. Uncaptured sizes scale the closest measured height.
+    pub font_s_block_metrics: bool,
     /// Resolve unavailable resident IDs 1–9, I–O and W–Z using the current CF
     /// font for A fields, and font A for CF. Measured on ZD621 V93.21.33Z;
     /// the guide lists A–Z/0–9 (^A pp. 60–61) and invalid CF fallback (^CF

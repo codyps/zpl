@@ -2,7 +2,7 @@
 //! Metrics: ZPL Programming Guide Tables 29/31, pp. 1582–1583:
 //! https://www.zebra.com/content/dam/support-dam/en/documentation/unrestricted/guide/software/zpl-zbi2-pg-en.pdf
 use crate::{
-    bitmap_font::{self, Glyph, Settings},
+    bitmap_font::{self, Glyph, Settings, GRAPHIC_SYMBOLS},
     output::Path,
 };
 use std::{collections::BTreeMap, sync::OnceLock};
@@ -245,6 +245,8 @@ fn strikes() -> &'static Vec<(Settings, Vec<Glyph>)> {
             include_bytes!("../../assets/fontG-60-40.zbf").as_slice(),
             include_bytes!("../../assets/fontH-21-13.zbf").as_slice(),
             include_bytes!("../../assets/fontGS-24-24.zbf").as_slice(),
+            include_bytes!("../../assets/fontS-40-35.zbf").as_slice(),
+            include_bytes!("../../assets/fontS-80-70.zbf").as_slice(),
             include_bytes!("../../assets/fontE-28-15.zbf").as_slice(),
             include_bytes!("../../assets/fontP-20-18.zbf").as_slice(),
             include_bytes!("../../assets/fontP-40-18.zbf").as_slice(),
@@ -387,13 +389,13 @@ fn selected(id: impl Into<Font> + Copy, w: f64, h: f64) -> (&'static [Glyph], f6
     for (s, glyphs) in faces {
         let sw = if s.width == 0 { s.height } else { s.width } as f64;
         if s.font == id
-            && (!matches!(id, '0' | 'P' | 'Q' | 'R' | 'T' | 'U' | 'V')
+            && (!matches!(id, '0' | 'P' | 'Q' | 'R' | 'S' | 'T' | 'U' | 'V')
                 || (s.height as f64 == h && sw == w))
         {
             return (glyphs, w / sw, h / s.height as f64);
         }
     }
-    if matches!(id, 'P' | 'Q' | 'R' | 'T' | 'U' | 'V') {
+    if matches!(id, 'P' | 'Q' | 'R' | 'S' | 'T' | 'U' | 'V') {
         // Preset strikes are hinted independently at each size. Use an exact
         // captured size above, otherwise scale the closest sampled strike.
         // Table 31 p. 1584 gives each preset's native matrix.
@@ -453,7 +455,7 @@ pub(super) fn baseline_for(id: impl Into<Font> + Copy, h: f64) -> f64 {
         'V' => 62. / 80.,
         // Captured GS metrics use baseline 23; the specification FT anchor
         // is selected separately by graphic_symbol_last_row_baseline.
-        'S' => 23. / 24.,
+        GRAPHIC_SYMBOLS => 23. / 24.,
         _ => 0.75,
     }
 }
@@ -738,7 +740,7 @@ pub(super) fn printer_ft_offset(id: char, height: f64, rotation: u8) -> (f64, f6
         'F' => 26.,
         'G' => 60.,
         'H' => 21.,
-        'S' => 24.,
+        GRAPHIC_SYMBOLS => 24.,
         _ => return (0., 0.),
     };
     let scale = height / native;
@@ -934,4 +936,23 @@ pub(super) fn directed_text(
             bottom_margin: h - bottom,
         },
     })
+}
+
+/// Return line pitch and baseline adjustment.
+///
+/// Captured S block pitch and ascent: native FO/FT controls at 40 and 80 dots
+/// in resident-s-zd621-v1. ^FB pp. 186–188 describes nominal font-height
+/// spacing; this printer uses distinct preset metrics. Other sizes scale the
+/// closest measured height, just as unsampled glyph strikes are approximated.
+pub(super) fn block_metrics(id: impl Into<Font>, h: f64, printer_s: bool) -> (f64, f64) {
+    if !printer_s || id.into().id != 'S' {
+        return (h, 0.);
+    }
+    let (native, pitch, ascent) = if h < 60. {
+        (40., 34., 25.)
+    } else {
+        (80., 67., 50.)
+    };
+    let scale = h / native;
+    (pitch * scale, ascent * scale - baseline_for('S', h))
 }

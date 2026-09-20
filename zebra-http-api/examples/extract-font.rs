@@ -16,7 +16,7 @@ mod font_support;
 struct Args {
     #[arg(long)]
     host: String,
-    /// Resident font ID; S samples the ^GS graphic-symbol face.
+    /// Resident font ID; @ samples the separate ^GS graphic-symbol face.
     #[arg(long, default_value = "0")]
     font: char,
     #[arg(long, default_value_t = 32)]

@@ -1,7 +1,7 @@
 //! Resident-font sampling, extraction, export, and verification without transport.
 use std::fmt::Write;
 use zpl::{
-    bitmap_font::{valid_codepoint, validate_glyphs, Glyph, Settings},
+    bitmap_font::{valid_codepoint, validate_glyphs, Glyph, Settings, GRAPHIC_SYMBOLS},
     output::raster::Raster,
 };
 #[derive(Debug, Clone)]
@@ -23,7 +23,7 @@ pub struct Page {
 }
 // ^GS p. 217 selects the symbol face; it has no printable vertical-bar probe.
 fn field_command(font: char) -> String {
-    if font == 'S' {
+    if font == GRAPHIC_SYMBOLS {
         "GS".into()
     } else {
         format!("A{font}")
@@ -77,7 +77,11 @@ pub fn page_plan_with_columns(
         if encoding == 28 { "^PA0,0,0,0" } else { "" }
     );
     let command = field_command(s.font);
-    let sentinel = if s.font == 'S' { "_41" } else { "_7C" };
+    let sentinel = if s.font == GRAPHIC_SYMBOLS {
+        "_41"
+    } else {
+        "_7C"
+    };
     let mut tiles = Vec::new();
     for (i, code) in std::iter::once(None)
         .chain(codes.iter().copied().map(Some))
@@ -514,7 +518,7 @@ mod tests {
     #[test]
     fn graphic_symbols_use_a_visible_registered_symbol_probe() {
         let settings = Settings {
-            font: 'S',
+            font: GRAPHIC_SYMBOLS,
             height: 24,
             width: 24,
             dpi: 203,

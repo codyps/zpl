@@ -1,7 +1,10 @@
 //! Bitmap strike types and ZBF1/ZBF2 decoding used by the renderer.
+/// Internal strike tag for ^GS, distinct from the resident ^AS font.
+pub const GRAPHIC_SYMBOLS: char = '@';
+
 #[derive(Debug, Clone, Copy)]
 pub struct Settings {
-    /// Resident font ID; S identifies the ^GS symbol face (not ^AS).
+    /// Resident font ID, or GRAPHIC_SYMBOLS for the separate ^GS face.
     pub font: char,
     pub height: u32,
     pub width: u32,
@@ -9,7 +12,7 @@ pub struct Settings {
 }
 impl Settings {
     pub fn validate(&self) -> Result<(), String> {
-        if !"0ABCDEFGHPQRSTUV".contains(self.font)
+        if !"0ABCDEFGHPQRSTUV@".contains(self.font)
             || !(1..=128).contains(&self.height)
             || self.width > 128
             || !(1..=2400).contains(&self.dpi)
