@@ -1152,3 +1152,55 @@ fn centered_blocks_quantize_before_rotation_only_when_selected() {
         raster(&inverted.replace(",0,C", ",0,L"), ZD621_203_DPI).pixels
     );
 }
+
+#[test]
+fn negative_text_origins_are_profile_controlled() {
+    // ZD621 text-edge-zd621-v1 captures; ^FO p. 201, ^FT p. 205, ^LS p. 296.
+    // Field shift is clamped before glyph placement, preserving all letters.
+    let body = "^LS20^FO5,50^AAN,9,5^FDABC";
+    let mut options = ZD621_203_DPI;
+    options.compatibility.text_clamps_negative_origins = false;
+    assert_eq!(bounds(&raster(body, ZD621_203_DPI)), (0, 50, 17, 57));
+    assert_eq!(
+        raster(body, options).pixels,
+        raster(body, SPECIFICATION).pixels
+    );
+    assert_ne!(
+        raster(body, options).pixels,
+        raster(body, ZD621_203_DPI).pixels
+    );
+    // Positive ordinary and block fields must retain their exact pixels.
+    for origin in ["FO", "FT"] {
+        for rotation in ['N', 'R', 'I', 'B'] {
+            for block in ["", "^FB40,4,0,L"] {
+                let body = format!("^{origin}180,180^AA{rotation},9,5{block}^FDAB CD");
+                assert_eq!(
+                    raster(&body, options).pixels,
+                    raster(&body, ZD621_203_DPI).pixels
+                );
+            }
+        }
+    }
+}
+
+#[test]
+fn rotated_block_right_origins_are_independent_of_clamping() {
+    // ZD621 block-right-origin controls: ^FB p. 187 interacts with ^FO p. 201.
+    let mut options = ZD621_203_DPI;
+    options.compatibility.text_clamps_negative_origins = false;
+    let body = "^FO200,100,1^AAB,9,5^FB40,4,3,L^FDAB CD";
+    let printer = raster(body, options);
+    options
+        .compatibility
+        .block_fo_right_justification_printer_layout = false;
+    assert_ne!(printer.pixels, raster(body, options).pixels);
+    assert_eq!(
+        printer.pixels,
+        raster(&body.replace("FO200", "FO209"), options).pixels
+    );
+    let plain = "^FO200,100,1^AAB,9,5^FDAB CD";
+    assert_eq!(
+        raster(plain, options).pixels,
+        raster(plain, ZD621_203_DPI).pixels
+    );
+}

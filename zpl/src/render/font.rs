@@ -166,6 +166,22 @@ pub(super) fn inverted_margin(id: char, value: &str, w: f64, h: f64) -> Result<f
 fn text(s: &str, w: f64, h: f64) -> Result<Path, String> {
     text_for('0', s, w, h)
 }
+// Preserve individual glyph ink for printer edge placement. The regular
+// text path remains merged, so unclamped output does not change.
+pub(super) fn text_parts_for(id: char, s: &str, w: f64, h: f64) -> Result<Vec<Path>, String> {
+    let mut parts = Vec::new();
+    let mut pen = 0.;
+    for c in s.chars() {
+        let value = c.to_string();
+        let mut path = text_for(id, &value, w, h)?;
+        path.transform(|p| crate::output::Point::new(p.x + pen, p.y));
+        pen += width_for(id, &value, w, h)?;
+        if !path.segments.is_empty() {
+            parts.push(path);
+        }
+    }
+    Ok(parts)
+}
 pub(super) fn text_for(id: char, s: &str, w: f64, h: f64) -> Result<Path, String> {
     let (glyphs, sx, sy) = selected(id, w, h);
     // Merge ink spans before emitting even-odd subpaths. Proportional glyphs can

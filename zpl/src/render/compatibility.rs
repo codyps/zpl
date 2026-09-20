@@ -13,6 +13,14 @@
 /// initial value: the renderer does not reapply it after you change an option.
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct Compatibility {
+    /// Use the measured right-justified FO block anchors: B omits the final
+    /// line height from its shift; I uses one dot minus block width.
+    /// Disabled: use ordinary text-field justification (^FO p. 201, ^FB p. 187).
+    pub block_fo_right_justification_printer_layout: bool,
+    /// Clamp the field origin after label home/shift, then clamp each rotated
+    /// glyph's ink origin independently after FO/FT. Disabled: clip negative coordinates at the canvas.
+    /// Measured on ZD621; ^FO p. 201, ^FT p. 205 and ^FB pp. 186–187.
+    pub text_clamps_negative_origins: bool,
     /// Round centered FB line positions down before rotating their paths.
     /// Disabled: keep fractional centers through rasterization (^FB p. 187).
     pub block_center_rounds_down: bool,

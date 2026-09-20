@@ -627,3 +627,18 @@ older overflow/hyphenation frames improve, with six becoming exact. The 62
 saved centered-text frames reviewed show no increase in either error count.
 Run `cargo test -p zpl --test field_block_centering_preview --test field_block_hyphenation_preview
 --test field_block_overflow_preview --test profiles`.
+
+## Text origins at canvas edges
+
+[106 edge and origin frames](../zpl/tests/fixtures/text-edge-zd621-v1/README.md)
+cover 912 independently scored fields. Every field exceeds 99.84% foreground
+IoU; 85 frames are pixel-exact and 21 retain only pinned font-0 overpaint dots.
+The previously 79.21% narrow FT-B field is now exact. The tests partition all
+ink into field regions and enforce the 80% target separately for each field.
+
+`text_clamps_negative_origins` clamps the shifted field anchor, then each
+rotated glyph's ink origin, unioning overlapping ink. The independent
+`block_fo_right_justification_printer_layout` option reproduces the B/I right
+anchors for FO blocks. SPECIFICATION disables both. Run `cargo test -p zpl
+--test text_edge_preview --test profiles`. Field-block escapes, QR mask
+selection and broader unverified coverage still leave the overall goal open.

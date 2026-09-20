@@ -44,6 +44,11 @@ pub struct Document {
     pub labels: Vec<Scene>,
     pub warnings: Vec<String>,
 }
+struct TextLayout {
+    path: Path,
+    baseline: f64,
+    parts: Vec<Path>,
+}
 #[derive(Clone)]
 struct Field {
     x: f64,
@@ -66,6 +71,7 @@ struct Field {
     baseline_height: f64,
     inverted_margin: f64,
     text_size: Option<(f64, f64)>,
+    text_parts: Vec<Path>,
     graphic_size: Option<(f64, f64)>,
     graphic_bitmap: bool,
 }
@@ -92,6 +98,7 @@ impl Default for Field {
             baseline_height: 0.,
             inverted_margin: 0.,
             text_size: None,
+            text_parts: Vec::new(),
             graphic_size: None,
             graphic_bitmap: false,
         }
@@ -653,7 +660,11 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                             if font_w <= 0. || font_h <= 0. {
                                 return Err("font dimensions must be positive".into());
                             }
-                            let (path, baseline) = text_block(
+                            let TextLayout {
+                                path,
+                                baseline,
+                                parts,
+                            } = text_block(
                                 font_id,
                                 value,
                                 font_w,
@@ -662,6 +673,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                                 options.compatibility,
                                 encoding,
                             )?;
+                            field.text_parts = parts;
                             // Table 29 p. 1582 gives GS a 3/4-height baseline.
                             // Printer controls instead use native row 23 of 24.
                             field.baseline_height = if font_id == 'S'
@@ -913,6 +925,13 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                                     top
                                 },
                         );
+                        let (x, y) = if options.compatibility.text_clamps_negative_origins
+                            && field.text_size.is_some()
+                        {
+                            (x.max(0.), y.max(0.))
+                        } else {
+                            (x, y)
+                        };
                         let (_, _, w, h) = bounds(&path);
                         let left = path
                             .segments
@@ -965,7 +984,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                         } else {
                             field.justification
                         };
-                        path.transform(|p| {
+                        let transform = |p: Point| {
                             // ^FO/^FT pp. 201/205: right justification changes
                             // the origin, not the character order. Auto (2) is
                             // left for the supported Latin scripts.
@@ -1020,6 +1039,20 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                             let (jx, jy) = if !field.baseline && field_justification == 1 {
                                 if let Some((tw, th)) = field.text_size {
                                     match field.rotation {
+                                        b'B' if field.block.is_some()
+                                            && options
+                                                .compatibility
+                                                .block_fo_right_justification_printer_layout =>
+                                        {
+                                            (-th + font_h, 0.)
+                                        }
+                                        b'I' if field.block.is_some()
+                                            && options
+                                                .compatibility
+                                                .block_fo_right_justification_printer_layout =>
+                                        {
+                                            (1. - tw, 0.)
+                                        }
                                         b'R' => (-th, -left),
                                         b'I' => (field.inverted_margin - dx + left, 0.),
                                         b'B' => (-th, 0.),
@@ -1063,7 +1096,50 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                             } else {
                                 Point::new(tx, ty)
                             }
-                        });
+                        };
+                        if options.compatibility.text_clamps_negative_origins
+                            && !field.text_parts.is_empty()
+                        {
+                            let shifts: Vec<_> = field
+                                .text_parts
+                                .iter()
+                                .map(|part| {
+                                    let (min_x, min_y) = part
+                                        .segments
+                                        .iter()
+                                        .filter_map(|s| match s {
+                                            crate::output::Segment::Move(p)
+                                            | crate::output::Segment::Line(p) => {
+                                                Some(transform(*p))
+                                            }
+                                            _ => None,
+                                        })
+                                        .fold((f64::INFINITY, f64::INFINITY), |(x, y), p| {
+                                            (x.min(p.x), y.min(p.y))
+                                        });
+                                    ((-min_x).max(0.), (-min_y).max(0.))
+                                })
+                                .collect();
+                            if shifts.iter().any(|&(dx, dy)| dx > 0. || dy > 0.) {
+                                let mut shifted = Path::default();
+                                for (part, (dx, dy)) in field.text_parts.iter().zip(shifts) {
+                                    // Clamp glyph ink after anchoring the field. Move
+                                    // back in unrotated coordinates so overlapping
+                                    // glyphs can be unioned before the common transform.
+                                    let (dx, dy) = match field.rotation {
+                                        b'R' => (dy, -dx),
+                                        b'I' => (-dx, -dy),
+                                        b'B' => (-dy, dx),
+                                        _ => (dx, dy),
+                                    };
+                                    let mut component = part.clone();
+                                    component.transform(|p| Point::new(p.x + dx, p.y + dy));
+                                    shifted.segments.extend(component.segments);
+                                }
+                                path = font::union_lines(shifted);
+                            }
+                        }
+                        path.transform(transform);
                         if options.compatibility.linear_barcode_rotated_edge_loses_dot {
                             if let Some(part) = field.barcode_split.get(1) {
                                 barcode_edges::trim_rotated_boundary(
@@ -1163,13 +1239,20 @@ fn text_block(
     block: Option<(f64, usize, f64, u8, f64)>,
     compatibility: compatibility::Compatibility,
     encoding: u8,
-) -> Result<(Path, f64), String> {
+) -> Result<TextLayout, String> {
     let center_space = compatibility.block_center_includes_trailing_space;
     let Some((width, max_lines, spacing, align, indent)) = block else {
-        return Ok((
-            font::text_for(font_id, value, w, h)?,
-            font::baseline_for(font_id, h),
-        ));
+        let path = font::text_for(font_id, value, w, h)?;
+        let parts = if compatibility.text_clamps_negative_origins {
+            font::text_parts_for(font_id, value, w, h)?
+        } else {
+            Vec::new()
+        };
+        return Ok(TextLayout {
+            path,
+            baseline: font::baseline_for(font_id, h),
+            parts,
+        });
     };
     if spacing < 0. {
         return Err("overlapping field block lines unsupported".into());
@@ -1177,7 +1260,11 @@ fn text_block(
     // ^FB p. 186 specifies no printing below the selected font width.
     // Captured ZD621 previews instead emit individual characters.
     if !compatibility.block_narrow_printer_layout && width < w {
-        return Ok((Path::default(), font::baseline_for(font_id, h)));
+        return Ok(TextLayout {
+            path: Path::default(),
+            baseline: font::baseline_for(font_id, h),
+            parts: Vec::new(),
+        });
     }
     let mut lines = Vec::new();
     // Explicit paragraph ends affect centering and terminate justification.
@@ -1281,6 +1368,7 @@ fn text_block(
         lines.push((line, paragraphs.peek().is_some(), false, false));
     }
     let mut path = Path::default();
+    let mut text_parts = Vec::new();
     for (i, (line, hard_break, automatic_hyphen, forced_character)) in lines.iter().enumerate() {
         // CI27 incorrectly reinterprets the automatic soft-hyphen byte as eth.
         // Keep the selected hyphen for measurement and change only painted ink.
@@ -1305,13 +1393,14 @@ fn text_block(
             slack
         };
         let gaps = line.bytes().filter(|&c| c == b' ').count();
-        let mut p = if align == b'J'
+        let justified = align == b'J'
             && !*hard_break
             && (lines.len() <= max_lines || i + 1 < max_lines)
             && (i + 1 < lines.len()
                 || (center_space && slack <= font::width_for(font_id, " ", w, h)?))
-            && gaps > 0
-        {
+            && gaps > 0;
+        let mut line_parts = Vec::new();
+        let mut p = if justified {
             let mut p = Path::default();
             let mut x: f64 = 0.;
             for (gap, (word, paint_word)) in line.split(' ').zip(paint_line.split(' ')).enumerate()
@@ -1326,6 +1415,12 @@ fn text_block(
                     x.round()
                 };
                 word_path.transform(|p| Point::new(p.x + position, p.y));
+                if compatibility.text_clamps_negative_origins {
+                    for mut part in font::text_parts_for(font_id, paint_word, w, h)? {
+                        part.transform(|p| Point::new(p.x + position, p.y));
+                        line_parts.push(part);
+                    }
+                }
                 p.segments.extend(word_path.segments);
                 x += font::width_for(font_id, word, w, h)?
                     + font::width_for(font_id, " ", w, h)?
@@ -1337,6 +1432,9 @@ fn text_block(
             }
             p
         } else {
+            if compatibility.text_clamps_negative_origins {
+                line_parts = font::text_parts_for(font_id, paint_line, w, h)?;
+            }
             font::text_for(font_id, paint_line, w, h)?
         };
         let x = inset
@@ -1364,17 +1462,23 @@ fn text_block(
             };
         // ^FB p. 186: excess text overprints the last row. Union below keeps
         // overlapping glyph ink black. Captured in field-block-overflow-zd621-v1.
-        p.transform(|p| Point::new(p.x + x, p.y + i.min(max_lines - 1) as f64 * (h + spacing)));
+        let y = i.min(max_lines - 1) as f64 * (h + spacing);
+        p.transform(|p| Point::new(p.x + x, p.y + y));
+        for mut part in line_parts {
+            part.transform(|p| Point::new(p.x + x, p.y + y));
+            text_parts.push(part);
+        }
         path.segments.extend(p.segments);
     }
-    Ok((
-        if lines.len() > 1 {
+    Ok(TextLayout {
+        path: if lines.len() > 1 {
             font::union_lines(path)
         } else {
             path
         },
-        (max_lines - 1) as f64 * (h + spacing) + font::baseline_for(font_id, h),
-    ))
+        baseline: (max_lines - 1) as f64 * (h + spacing) + font::baseline_for(font_id, h),
+        parts: text_parts,
+    })
 }
 fn font_dimensions(
     p: &[&str],
