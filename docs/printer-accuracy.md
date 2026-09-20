@@ -895,3 +895,13 @@ and ten overpaint dots in rotated controls. All 16 isolated text regions exceed
 99.75% foreground IoU. Offline extraction tests reproduce both 95-character
 assets from raw sampling pages and independently verify composition. See the
 fixture README for provenance, specification references and scope limits.
+
+## Font-0 anchor accuracy at 40x22
+
+All 24 original FO/FT anchor cases now match every pixel, including their
+non-text reference crosses. The fix embeds the actual 40x22 hinted strike
+instead of scaling another size; existing origin/rotation rules are retained.
+`font0_40_22_preview` pins these frames and thirteen extraction/verification
+frames, all exact. An offline extraction test reproduces the 95-character
+asset byte-for-byte and verifies independent composition. Other unsampled
+sizes remain open; see the fixture README for provenance and guide references.

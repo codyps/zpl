@@ -169,3 +169,8 @@ regeneration tests are documented in
 with 95 ASCII glyphs each and measured baselines of 22 and 28. Raw native
 sources, capture settings and offline regeneration tests are documented in
 [resident-qr-zd621-v1](../tests/fixtures/resident-qr-zd621-v1/README.md).
+
+`font0-40-22.zbf` fixes the 24 conformance anchor cases at that size.
+[font0-40-22-zd621-v1](../tests/fixtures/font0-40-22-zd621-v1/README.md)
+contains its 95-glyph source pages, independent verification and regression
+controls; offline tests reproduce the asset byte-for-byte.
