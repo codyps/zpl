@@ -362,3 +362,24 @@ were already exact. `linear_barcode_ft_uses_last_bar_row` now controls the share
 boundary rule, replacing the earlier Code-39-only and retail-only options.
 This does not infer corresponding behavior for matrix/stacked symbols or
 other postal variants. Run `cargo test -p zpl --test linear_ft_preview`.
+
+## Linear interpretation symbols and Code 11 widths
+
+[Thirty caption frames](../zpl/tests/fixtures/linear-caption-zd621-v1/README.md)
+now pin Code 11 checksum/triangle glyphs, Code 93 box delimiters, Codabar
+start/stop letters, POSTNET/PLANET pitch-based centering, and explicit-font
+handling for ^B1/^B2/^B5/^BA/^BK. Twenty-nine frames are pixel-exact. Their
+previous caption-only IoUs ranged from about 12% to 72%; corrected unclipped
+controls reach 100%. Each behavior has a separate compatibility option.
+
+[Five Code 11 width atlases](../zpl/tests/fixtures/code11-widths-zd621-v1/README.md)
+require zero differences for 148 symbols, including the complete width 1–10,
+ratio-tenths 2.0–3.0 grid. `code11_printer_element_widths` selects independent
+whole-dot quantization of wide and extra-wide elements. The extra-wide
+formula is five-thirds of the unrounded wide width, rather than 2W-X.
+
+Run `cargo test -p zpl --test linear_caption_preview --test code11_widths_preview
+--test profiles`. The caption suite explicitly retains one left-edge rotated
+caption gap (1146 underpaint/207 overpaint); the inset counterpart is exact.
+Code 93 optional checksum interpretation remains unsupported. Those gaps,
+QR mask selection, and broader unverified coverage keep the overall goal open.

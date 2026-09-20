@@ -407,7 +407,10 @@ impl Barcode {
                 .extend(retail::caption(self, bytes, rotation)?.segments);
         } else if self.show {
             let value = self.interpretation(bytes)?;
-            let font = if self.name == "B3" && self.compatibility.code39_interpretation_ignores_font
+            let font = if (self.name == "B3"
+                && self.compatibility.code39_interpretation_ignores_font)
+                || (matches!(self.name.as_str(), "B1" | "B2" | "B5" | "BA" | "BK")
+                    && self.compatibility.linear_interpretation_ignores_font)
             {
                 None
             } else {
@@ -417,11 +420,55 @@ impl Barcode {
             // one, resident A scales with ^BY, independently of ^CF.
             let (id, fw, fh) = font.unwrap_or(('A', 5. * self.module, 9. * self.module));
             let mut t = super::font::text_for(id, &value, fw, fh)?;
+            // Captured ^B1/^BA interpretation uses dedicated start/stop
+            // glyphs, not the resident font's printable asterisk. Reserve
+            // their cells with spaces, then draw the measured native masks.
+            let marker: &[u8] = match self.name.as_str() {
+                "B1" if self.compatibility.code11_interpretation_symbols => &[4, 10, 17, 31],
+                "BA" if self.compatibility.code93_interpretation_symbols => {
+                    &[31, 17, 17, 17, 17, 17, 31]
+                }
+                _ => &[],
+            };
+            if !marker.is_empty() {
+                let right = super::font::width_for(id, &value, fw, fh)?
+                    - super::font::width_for(id, " ", fw, fh)?;
+                for x in [0., right] {
+                    // The two-check Code 11 stop glyph is a taller triangle;
+                    // its start glyph and the one-check stop stay four rows.
+                    let marker = if self.name == "B1" && x == right && !self.flag(1, false)? {
+                        &[4, 4, 10, 10, 17, 17, 31][..]
+                    } else {
+                        marker
+                    };
+                    for (row, bits) in marker.iter().enumerate() {
+                        for col in 0..5 {
+                            if bits & (16 >> col) != 0 {
+                                t.rect(
+                                    x + col as f64 * fw / 5.,
+                                    row as f64 * fh / 9.,
+                                    fw / 5.,
+                                    fh / 9.,
+                                );
+                            }
+                        }
+                    }
+                }
+            }
             let printer = self.compatibility.barcode_interpretation_printer_layout;
             let gap_below = if printer { 6. } else { 3. };
             let gap_above = if printer { 8. } else { 3. };
             if font.is_none() {
-                let width = super::bounds(&p).2;
+                let mut width = super::bounds(&p).2;
+                // ^B5/^BZ: captured interpretation spans complete postal
+                // pitches, while the path ends at the final bar's ink edge.
+                if self.compatibility.postal_interpretation_full_pitch
+                    && (self.name == "B5"
+                        || (self.name == "BZ"
+                            && self.integer(4, 0, 0, 3).is_ok_and(|kind| kind <= 1)))
+                {
+                    width += self.postal_pitch() - self.module;
+                }
                 let advance = super::font::width_for(id, &value, fw, fh)?;
                 let mut x = ((width - advance) / 2.).floor();
                 if self.compatibility.barcode_reverse_interpretation_shift
@@ -449,6 +496,27 @@ impl Barcode {
         Ok((p, baseline))
     }
     fn interpretation(&self, bytes: &[u8]) -> Result<String, String> {
+        if self.name == "B1" && self.compatibility.code11_interpretation_symbols {
+            let digits: String = code11::checked_values(self, bytes)?
+                .into_iter()
+                .map(|digit| {
+                    if digit == 10 {
+                        '-'
+                    } else {
+                        (b'0' + digit) as char
+                    }
+                })
+                .collect();
+            return Ok(format!(" {digits} "));
+        }
+        if self.name == "BK" && self.compatibility.codabar_interpretation_delimiters {
+            return Ok(format!(
+                "{}{}{}",
+                self.param(5, "A"),
+                ascii(bytes)?,
+                self.param(6, "A")
+            ));
+        }
         if self.name == "B3" && self.compatibility.code39_interpretation_symbols {
             let value = ascii(bytes)?;
             let value = if self.flag(1, false)? {
@@ -475,7 +543,12 @@ impl Barcode {
             return plessey::interpretation(self, bytes);
         }
         if self.name == "BA" {
-            return code93::interpretation(bytes, self.compatibility.code93_normalize_input);
+            let value = code93::interpretation(bytes, self.compatibility.code93_normalize_input)?;
+            return Ok(if self.compatibility.code93_interpretation_symbols {
+                format!(" {value} ")
+            } else {
+                value
+            });
         }
         let mut decimal = match self.name.as_str() {
             "B8" => Some(retail::checked(bytes, 8)?),

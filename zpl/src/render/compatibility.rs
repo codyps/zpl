@@ -13,6 +13,25 @@
 /// initial value: the renderer does not reapply it after you change an option.
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct Compatibility {
+    /// Quantize Code 11 wide elements to floor(module * ratio), and extra-wide
+    /// elements to floor(module * ratio * 5/3), as captured in code11-widths-zd621-v1.
+    /// Disabled: retain the nominal 2W-X extra-wide geometry.
+    pub code11_printer_element_widths: bool,
+    /// Include Code 11 checksum digits and captured triangular start/stop
+    /// interpretation glyphs. ^B1 p. 66; linear-caption-zd621-v1 controls.
+    pub code11_interpretation_symbols: bool,
+    /// Include the captured hollow-box Code 93 interpretation delimiters.
+    /// ^BA pp. 87–89; linear-caption-zd621-v1 controls.
+    pub code93_interpretation_symbols: bool,
+    /// Captured Codabar interpretation includes the selected start/stop letters.
+    /// ^BK pp. 118–119; see linear-caption-zd621-v1 controls.
+    pub codabar_interpretation_delimiters: bool,
+    /// Center POSTNET/PLANET captions over complete bar pitches, including
+    /// the final gap. Bar geometry is unchanged; ^B5/^BZ preview controls.
+    pub postal_interpretation_full_pitch: bool,
+    /// Captured ^B1/^B2/^B5/^BA/^BK interpretation uses module-scaled resident A
+    /// despite preceding explicit font commands. ^BC remains configurable.
+    pub linear_interpretation_ignores_font: bool,
     /// Captured ZD621 203-DPI below-bar UPC/EAN digit groups, font selection,
     /// four-dot gap, and bar-width rotation pivot. ^BU pp. 142–143 describes
     /// the A/OCR-B switch; exact placement is pinned by retail-caption-zd621-v1.

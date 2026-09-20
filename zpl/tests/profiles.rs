@@ -70,6 +70,40 @@ fn postal_baseline_uses_the_parsed_variant() {
 }
 
 #[test]
+fn linear_caption_overrides_preserve_bar_geometry() {
+    // Captured Code 11/93 delimiters, Codabar letters, and postal pitch:
+    // linear-caption-zd621-v1; ^B1/^BA/^BK/^BZ command descriptions.
+    for (body, option) in [
+        ("^B1N,N,40,Y,N^FD98765", 0),
+        ("^BAN,40,Y,N^FDABC123", 1),
+        ("^BKN,N,40,Y,N,C,D^FD98765", 2),
+        ("^B5N,40,Y,N^FD12345678901", 3),
+        ("^A0N,32,32^B2N,40,Y,N,N^FD12345678", 4),
+    ] {
+        let body = format!("^BY2,2,40^FO40,80{body}");
+        let printer = raster(&body, ZD621_203_DPI);
+        let mut options = ZD621_203_DPI;
+        match option {
+            0 => options.compatibility.code11_interpretation_symbols = false,
+            1 => options.compatibility.code93_interpretation_symbols = false,
+            2 => options.compatibility.codabar_interpretation_delimiters = false,
+            3 => options.compatibility.postal_interpretation_full_pitch = false,
+            _ => options.compatibility.linear_interpretation_ignores_font = false,
+        }
+        let without = raster(&body, options);
+        assert_ne!(printer.pixels, without.pixels);
+        assert_eq!(&printer.pixels[..120 * 400], &without.pixels[..120 * 400]);
+    }
+    let body = "^BY3,2,40^FO40,80^B1N,Y,40,N,N^FD09-";
+    let mut options = ZD621_203_DPI;
+    options.compatibility.code11_printer_element_widths = false;
+    assert_ne!(
+        raster(body, options).pixels,
+        raster(body, ZD621_203_DPI).pixels
+    );
+}
+
+#[test]
 fn profile_is_an_overridable_initial_value() {
     assert_eq!(Options::default(), ZD621_203_DPI);
     assert_eq!(SPECIFICATION.compatibility, Compatibility::default());
