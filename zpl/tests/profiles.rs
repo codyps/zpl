@@ -983,3 +983,25 @@ fn graphic_symbol_baseline_and_justification_are_independent_options() {
     assert_eq!(raster(ft, options).pixels, raster(ft, ZD621_203_DPI).pixels);
     assert_eq!(raster(fo, SPECIFICATION).pixels, raster(fo, options).pixels);
 }
+
+#[test]
+fn justified_word_rounding_is_an_independent_printer_option() {
+    // ^FB p. 187 distributes slack between words. The 72 raw controls in
+    // field-block-rounding-zd621-v1 distinguish ceiling from nearest/floor.
+    let body = "^FO50,50^A0N,24,24^FB140,2,4,J^FDAB CD EF AB CD";
+    let printer = raster(body, ZD621_203_DPI);
+    let mut options = ZD621_203_DPI;
+    options.compatibility.block_justification_rounds_up = false;
+    let nearest = raster(body, options);
+    assert_eq!(nearest.pixels, raster(body, SPECIFICATION).pixels);
+    assert_eq!(bounds(&printer), bounds(&nearest));
+    assert_eq!(
+        printer
+            .pixels
+            .iter()
+            .zip(&nearest.pixels)
+            .filter(|(a, b)| a != b)
+            .count(),
+        110
+    );
+}

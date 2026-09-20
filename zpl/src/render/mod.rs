@@ -653,7 +653,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                                 font_w,
                                 font_h,
                                 field.block,
-                                options.compatibility.block_center_includes_trailing_space,
+                                options.compatibility,
                             )?;
                             // Table 29 p. 1582 gives GS a 3/4-height baseline.
                             // Printer controls instead use native row 23 of 24.
@@ -1099,8 +1099,9 @@ fn text_block(
     w: f64,
     h: f64,
     block: Option<(f64, usize, f64, u8, f64)>,
-    center_space: bool,
+    compatibility: compatibility::Compatibility,
 ) -> Result<(Path, f64), String> {
+    let center_space = compatibility.block_center_includes_trailing_space;
     let Some((width, max_lines, spacing, align, indent)) = block else {
         return Ok((
             font::text_for(font_id, value, w, h)?,
@@ -1155,13 +1156,25 @@ fn text_block(
         {
             let mut p = Path::default();
             let mut x: f64 = 0.;
-            for word in line.split(' ') {
+            for (gap, word) in line.split(' ').enumerate() {
                 let mut word_path = font::text_for(font_id, word, w, h)?;
-                word_path.transform(|p| Point::new(p.x + x.round(), p.y));
+                // ^FB p. 187 distributes slack between words. The ZD621
+                // rounds fractional positions upward; compute cumulative slack
+                // directly to avoid rounding an accumulated floating-point error.
+                let position = if compatibility.block_justification_rounds_up {
+                    (x + slack * gap as f64 / gaps as f64).ceil()
+                } else {
+                    x.round()
+                };
+                word_path.transform(|p| Point::new(p.x + position, p.y));
                 p.segments.extend(word_path.segments);
                 x += font::width_for(font_id, word, w, h)?
                     + font::width_for(font_id, " ", w, h)?
-                    + slack / gaps as f64;
+                    + if compatibility.block_justification_rounds_up {
+                        0.
+                    } else {
+                        slack / gaps as f64
+                    };
             }
             p
         } else {

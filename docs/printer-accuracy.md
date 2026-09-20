@@ -547,9 +547,8 @@ accuracy goal open.
 
 [Sixty graphic-symbol controls](../zpl/tests/fixtures/graphic-symbols-zd621-v1/README.md)
 add `^GS` rendering, its 95-entry ASCII strike, and font 0 at 24 by 24 dots.
-Fifty-nine frames are exact. The remaining field-block frame switches to ordinary
-text and has a pinned 55-dot underpaint/overpaint residual in justified text
-(97.65% foreground IoU); all symbol-only fields and the other alignments match.
+All sixty frames are exact, including the field-block frame that switches
+from symbols to ordinary text.
 The capture includes independent composed verification for both new strikes.
 
 The ZD621 profile enables two new options: `graphic_symbol_last_row_baseline`
@@ -560,3 +559,16 @@ all rotations/origins, reverse fields and label reversal. Run `cargo test -p zpl
 --test graphic_symbols_preview --test profiles` and `cargo test -p zpl-font-extract`.
 QR mask selection, justified-text spacing and broader unverified sizes,
 commands and encodings still leave the overall accuracy goal open.
+
+
+## Justified word-position rounding
+
+[Six spacing atlases](../zpl/tests/fixtures/field-block-rounding-zd621-v1/README.md)
+contain 72 controls using fonts 0 and A, one to three word gaps, and widths
+that distribute fractional slack. Every full frame is pixel-exact. The new
+`block_justification_rounds_up` option selects the ZD621's upward dot rounding;
+SPECIFICATION keeps nearest-dot rounding. The remaining GS field-block residual
+improves from 55 underpaint/overpaint dots to zero. Other saved justified blocks
+retain their previous results. Run `cargo test -p zpl --test field_block_rounding_preview
+--test field_block_overflow_preview --test graphic_symbols_preview --test resident_fonts_preview
+--test profiles`. Automatic word hyphenation and broader command coverage remain open.

@@ -16,10 +16,9 @@ Thirty-four layout frames cover FO/FT, all rotations, right justification,
 native/double/triple/unequal dimensions, omitted dimensions, CF/FW defaults,
 all ASCII, FR/LR, and barcode/GS command ordering. GS after BC selects symbols;
 BC after GS selects bars with the normal caption. FB after GS selects text
-with the preceding dimensions. Fifty-nine frames require exact pixel equality.
-`GS-blocks` has 55 underpaint and 55 overpaint dots, all in justified ordinary
-text (97.65% foreground IoU); L/C/R rows are exact. This residual is pinned,
-not accepted as a variable tolerance. All symbol-only controls are exact.
+with the preceding dimensions. All sixty frames require exact pixel equality.
+The ordinary text in `GS-blocks` also matches after applying the printer's upward rounding of justified word
+positions, independently measured in `field-block-rounding-zd621-v1`.
 
 `graphic_symbol_last_row_baseline` selects native row 23 rather than the
 specified 3/4-height FT baseline. `graphic_symbol_ignores_justification`

@@ -5,9 +5,9 @@ mod digest;
 #[test]
 fn printer_controls_pin_every_painted_pixel() {
     let root =
-        Path::new(env!("CARGO_MANIFEST_DIR")).join("tests/fixtures/graphic-symbols-zd621-v1");
+        Path::new(env!("CARGO_MANIFEST_DIR")).join("tests/fixtures/field-block-rounding-zd621-v1");
     let mut count = 0;
-    for row in include_str!("fixtures/graphic-symbols-zd621-v1/manifest.tsv")
+    for row in include_str!("fixtures/field-block-rounding-zd621-v1/manifest.tsv")
         .lines()
         .skip(1)
     {
@@ -46,43 +46,5 @@ fn printer_controls_pin_every_painted_pixel() {
         );
         count += 1;
     }
-    assert_eq!(count, 60);
-}
-
-#[test]
-fn captured_symbol_and_text_assets_are_pinned() {
-    for (asset, hash, font) in [
-        (
-            include_bytes!("../assets/fontGS-24-24.zbf").as_slice(),
-            include_str!("fixtures/graphic-symbols-zd621-v1/asset.sha256"),
-            'S',
-        ),
-        (
-            include_bytes!("../assets/font0-24-24.zbf").as_slice(),
-            include_str!("fixtures/graphic-symbols-zd621-v1/text-asset.sha256"),
-            '0',
-        ),
-    ] {
-        assert_eq!(digest::sha256(asset), hash.trim());
-        let (settings, glyphs) = zpl::bitmap_font::unpack(asset).unwrap();
-        assert_eq!(
-            (settings.font, settings.height, settings.width, settings.dpi),
-            (font, 24, 24, 203)
-        );
-        assert_eq!(
-            glyphs.iter().map(|g| g.codepoint).collect::<Vec<_>>(),
-            (32..=126).collect::<Vec<_>>()
-        );
-        if font == 'S' {
-            assert!(glyphs.iter().all(|g| g.advance == 26));
-            assert_eq!(
-                glyphs
-                    .iter()
-                    .filter(|g| !g.bitmap.is_empty())
-                    .map(|g| g.codepoint)
-                    .collect::<Vec<_>>(),
-                b"ABCDE"
-            );
-        }
-    }
+    assert_eq!(count, 6);
 }

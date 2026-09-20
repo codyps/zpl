@@ -13,6 +13,10 @@
 /// initial value: the renderer does not reapply it after you change an option.
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct Compatibility {
+    /// Round fractional justified word positions upward (^FB p. 187).
+    /// Disabled: round to the nearest dot. Measured with resident 0 and A
+    /// across one, two and three gaps in field-block-rounding-zd621-v1.
+    pub block_justification_rounds_up: bool,
     /// Ignore FO/FT right justification for GS symbol fields. Disabled: honor
     /// the requested field justification (^FO p. 201, ^FT p. 205).
     pub graphic_symbol_ignores_justification: bool,
