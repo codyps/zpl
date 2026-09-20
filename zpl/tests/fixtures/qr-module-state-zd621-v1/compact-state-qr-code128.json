@@ -1,0 +1,18 @@
+{
+  "name": "compact-state-qr-code128",
+  "group": "compact-barcodes",
+  "command": "^BC ^BQ ^BY ^CF ^CI ^FD ^FO ^FS ^FW ^LH ^LL ^LR ^LS ^LT ^PO ^PW ^XA ^XZ",
+  "arguments": "Barcode state/escape/compaction regression: state-qr-code128",
+  "width": 640,
+  "height": 320,
+  "submission_mode": "inline-reset",
+  "object_name": "CMPACC",
+  "submitted_sha256": "b69200c796a292779d3bb109ddcf6ca0b77b9e5946f27f4d33ffecd974c1857b",
+  "captured_utc": "2026-09-20T04:19:01Z",
+  "zpl_sha256": "7879c265c406c7ef042100b41f3e51374e526a46570518356f20935ac7171b33",
+  "png_sha256": "1e38a64e8f072aaba1348d7081d9814f251cc7dc033d50fb556633bbcb1f2d48",
+  "printer_dimensions": [
+    640,
+    320
+  ]
+}

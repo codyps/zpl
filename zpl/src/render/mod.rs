@@ -763,9 +763,14 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                         bar_h,
                         options.dpi,
                         options.compatibility,
-                    );
+                    )
+                    .and_then(|barcode| {
+                        let next_module = barcode.module_after_command()?;
+                        Ok((barcode, next_module))
+                    });
                     match barcode {
-                        Ok(barcode) => {
+                        Ok((barcode, next_module)) => {
+                            module = next_module;
                             field.barcode = Some(barcode);
                             field.barcode_error = None;
                         }

@@ -317,6 +317,15 @@ impl Barcode {
             ))
         }
     }
+    pub(super) fn module_after_command(&self) -> Result<f64, String> {
+        // ^BQ pp. 129–134 describes QR magnification, not a ^BY state change.
+        // Native same/next-field and reset controls: qr-module-state-zd621-v1.
+        if self.name == "BQ" && self.compatibility.qr_updates_barcode_module_width {
+            self.num(2, self.scale(), 1., 100.)
+        } else {
+            Ok(self.module)
+        }
+    }
     fn scale(&self) -> f64 {
         match self.dpi {
             0..=150 => 1.,

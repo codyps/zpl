@@ -16,6 +16,9 @@ pub struct Compatibility {
     /// Ignore the requested QR mask and select using the printer's staged
     /// penalty evaluation. See docs/qr-mask-selection.md and native holdouts.
     pub qr_printer_mask_selection: bool,
+    /// Let ^BQ magnification replace the shared barcode module width, including
+    /// later fields, until ^BY changes it. Native qr-module-state-zd621-v1.
+    pub qr_updates_barcode_module_width: bool,
     /// Clamp off-label retail caption groups along the reading axis. N/R use
     /// nominal origins, I/B visible edges; retail-caption-edges-zd621-v1.
     pub retail_caption_clamps_negative_inline_origin: bool,

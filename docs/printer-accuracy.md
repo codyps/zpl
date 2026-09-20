@@ -1129,3 +1129,16 @@ QR-to-Code-128 state case is a module-width side effect, not mask selection.
 The shipping label's non-text fields are exact, but several text regions are
 below 80% IoU despite its 95.93% whole-label score; the overall goal remains
 open pending those field-level improvements and verification.
+
+## QR magnification and subsequent barcode width
+
+`qr_module_state_preview` pins four exact native frames with 17 barcode fields.
+The previously differing compact QR-to-Code-128 state case now matches exactly.
+`qr_updates_barcode_module_width` reproduces BQ's effect on the shared module
+width, across fields and within one field, with explicit BY reset controls.
+See [the native evidence](../zpl/tests/fixtures/qr-module-state-zd621-v1/README.md).
+
+Exploratory controls also exposed separate behavior when a barcode field ends
+without FD (the printer reuses earlier data), plus caption differences at QR
+magnification 12 inherited by Code 128. Those cases are not claimed fixed by
+the module-state option and remain to be investigated.

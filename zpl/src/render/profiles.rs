@@ -13,6 +13,7 @@ pub const SPECIFICATION: Options = Options {
     dpi: 203,
     compatibility: Compatibility {
         qr_printer_mask_selection: false,
+        qr_updates_barcode_module_width: false,
         font0_fo_floor_baseline: false,
         font0_minimum_dimensions: false,
         block_preserves_extra_spaces: false,
@@ -148,6 +149,7 @@ pub const ZD621_203_DPI: Options = Options {
     dpi: 203,
     compatibility: Compatibility {
         qr_printer_mask_selection: true,
+        qr_updates_barcode_module_width: true,
         font0_fo_floor_baseline: true,
         font0_minimum_dimensions: true,
         block_preserves_extra_spaces: true,
