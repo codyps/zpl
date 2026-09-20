@@ -1,0 +1,9 @@
+{
+  "status": "complete",
+  "original_source_sha256": "882b40f5258e02f107fc4b9575d322de4c9327b0f283ad757e3ffc52e3a52dfd",
+  "source_sha256": "66c40efcb89461a0dac1eb0662d597ec2b11ebf2aa7344c23de6e65cad7211ce",
+  "original_width": 812,
+  "requested_width": 832,
+  "reset_zpl": "^XA^PMN^PA0,0,0,0^FPH,0^CVN^BY2,3,100^CI27^CF0,32,0^FWN^LH0,0^LS0^LT0^PON^LRN^XZ",
+  "printer_sha256": "b2a75403ae9814ef80cdfdf083e0497e6777f634c2109828a26649af77895aa7"
+}

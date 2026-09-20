@@ -982,3 +982,10 @@ include 126 exact sampling/verification/conformance comparisons and a 72-field
 origin/rotation atlas whose fields all exceed 97.1% IoU. Tests pin residuals
 and hashes and independently regenerate all nine assets. This does not close
 remaining QR, unsupported encoding/font, or preview-width coverage gaps.
+
+The aligned barcode conformance suite (`barcode_aligned_preview`) replaces
+812-dot requests with fresh 832-dot native captures. Of 59 rendered frames,
+58 are pixel exact; the remaining QR mask difference is pinned at 464
+underpaint / 496 overpaint pixels and remains an open accuracy gap. A sixtieth
+capture, six-digit BR UPC-E, is a blank invalid-input control and is not counted
+as successful barcode rendering. See the fixture README for provenance.
