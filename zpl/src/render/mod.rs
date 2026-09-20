@@ -429,6 +429,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                         "B" => 'B',
                         "C" => 'C',
                         "D" => 'D',
+                        "E" => 'E',
                         "F" => 'F',
                         _ => return Err("unsupported resident font".into()),
                     };
@@ -465,6 +466,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                         "AB" => 'B',
                         "AC" => 'C',
                         "AD" => 'D',
+                        "AE" => 'E',
                         "AF" => 'F',
                         _ => return Err("unsupported resident font".into()),
                     };
@@ -1171,6 +1173,7 @@ fn font_dimensions(
         let (nh, nw) = match id {
             'A' => (9., 5.),
             'B' => (11., 7.),
+            'E' => (28., 15.),
             'F' => (26., 13.),
             _ => (18., 10.),
         };

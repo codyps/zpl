@@ -33,7 +33,7 @@ fn strikes() -> &'static Vec<(Settings, Vec<Glyph>)> {
             include_bytes!("../../assets/fontB-11-7.zbf").as_slice(),
             include_bytes!("../../assets/fontD-18-10.zbf").as_slice(),
             include_bytes!("../../assets/fontF-26-13.zbf").as_slice(),
-            include_bytes!("../../assets/fontE-28-15-digits.zbf").as_slice(),
+            include_bytes!("../../assets/fontE-28-15.zbf").as_slice(),
         ]
         .into_iter()
         .map(|data| bitmap_font::unpack(data).expect("validated resident strike"))
@@ -94,6 +94,11 @@ pub(super) fn inverted_margin(id: char, value: &str, w: f64, h: f64) -> Result<f
     }
     if id == 'B' {
         return Ok(2. * w / 7. + 2.);
+    }
+    if id == 'E' {
+        // resident-e-zd621-v1: OCR-B's inverted margin is six native dots,
+        // although its ordinary advance includes only five gap dots.
+        return Ok(6. * w / 15. + 2.);
     }
     if id == 'F' {
         return Ok(3. * w / 13. + 2.);
@@ -236,6 +241,7 @@ pub(super) fn printer_ft_offset(id: char, height: f64, rotation: u8) -> (f64, f6
         'A' => 9.,
         'B' => 11.,
         'C' | 'D' => 18.,
+        'E' => 28.,
         'F' => 26.,
         _ => return (0., 0.),
     };

@@ -825,6 +825,7 @@ fn bitmap_ft_dot_origin_is_optional_and_leaves_fo_unchanged() {
         ('B', 22, 14),
         ('C', 36, 20),
         ('D', 36, 20),
+        ('E', 56, 30),
         ('F', 52, 26),
     ] {
         let body = format!("^FT100,100^A{font}N,{h},{w}^FDAb09");
@@ -892,6 +893,7 @@ fn explicit_bitmap_code128_caption_shift_is_optional() {
         ('B', 22, 14),
         ('C', 36, 20),
         ('D', 36, 20),
+        ('E', 56, 30),
         ('F', 52, 26),
         ('0', 32, 64),
     ] {
@@ -925,5 +927,19 @@ fn code128_bar_width_pivot_is_independent_of_caption_shift() {
             raster(&hidden, ZD621_203_DPI).pixels,
             raster(&hidden, full_extent).pixels
         );
+    }
+}
+
+#[test]
+fn ocr_b_inverted_margin_is_scaled_and_optional() {
+    // ^FO p. 201; resident-e-zd621-v1 varies width and the trailing glyph.
+    let mut geometric = ZD621_203_DPI;
+    geometric
+        .compatibility
+        .right_justified_inverted_text_uses_ink_margin = false;
+    for scale in [1, 2, 3] {
+        let body = format!("^FO200,100,1^AEI,28,{}^FDAb09", 15 * scale);
+        assert_eq!(bounds(&raster(&body, ZD621_203_DPI)).2, 200 + 6 * scale + 2);
+        assert_eq!(bounds(&raster(&body, geometric)).2, 200);
     }
 }

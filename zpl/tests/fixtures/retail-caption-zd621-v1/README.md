@@ -23,8 +23,10 @@ and the above-bar font selection are outside this caption option's scope.
 
 `font-source/` preserves the raw independent OCR-B digit sampling pages,
 a separate composed-text verification, and extractor metadata. The renderer
-asset is `zpl/assets/fontE-28-15-digits.zbf`; it contains only decimal digits,
-not a complete general-purpose resident E font. Reproduce extraction with:
+now uses the full `zpl/assets/fontE-28-15.zbf` strike; these ten digit glyphs
+are unchanged. Full ASCII provenance is in
+[resident-e-zd621-v1](../resident-e-zd621-v1/README.md). Reproduce this original
+digit-only extraction with:
 
 ```sh
 cargo run -p zebra-http-api --example extract-font -- \

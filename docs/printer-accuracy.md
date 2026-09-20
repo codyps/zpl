@@ -491,3 +491,23 @@ Run `cargo test -p zpl --test resident_f_preview --test profiles`.
 
 This does not close the overall accuracy goal. QR mask selection, remaining
 resident-font support and proportional-font rotated glyphs still need work.
+
+## Resident E and field-block overflow
+
+[Thirty-three resident E frames](../zpl/tests/fixtures/resident-e-zd621-v1/README.md)
+are exact. The full 95-character OCR-B strike replaces the retail-only subset;
+its original digits are unchanged. CF/A sizing, all rotations, justification,
+wrapping and explicit Code 128 captions are covered. Inverted right-justified
+E uses a six-dot scaled margin plus two dots under the existing margin option.
+
+[Thirty-six field-block frames](../zpl/tests/fixtures/field-block-overflow-zd621-v1/README.md)
+cover documented last-row overflow, previously rejected, and explicit breaks.
+Bitmap A/F frames are exact; font-0 frames score 97.98–100% foreground IoU.
+Exact residual counts and pixel hashes guard every frame, in addition to the
+80% text floor. Explicit breaks end justification and do not add the printer's
+centering space. Overflow ink is unioned on the final row.
+
+Run `cargo test -p zpl --test resident_e_preview --test field_block_overflow_preview
+--test retail_caption_preview --test profiles --test render`. QR masks,
+remaining resident-font support and wider command coverage still leave the
+overall accuracy goal open.

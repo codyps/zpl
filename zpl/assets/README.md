@@ -77,12 +77,15 @@ are in `tests/fixtures/resident-fonts-zd621-v1`. ZBF1's one-byte codepoint also
 supports U+00A0–00FF; counts are bounded at 191 and C0/C1/DEL remain excluded.
 Unsampled font-0 sizes still fall back to scaling the original 32-dot strike.
 
-`fontE-28-15-digits.zbf` supplies the ten OCR-B digits for UPC/EAN captions.
+`fontE-28-15.zbf` supplies all 95 printable ASCII OCR-B glyphs, including the
+ten unchanged digits used for UPC/EAN captions.
 It is a native 203-DPI printer strike, with a 20-dot advance and zero-based
 baseline 22. Raw sampling pages, extractor metadata and an independent exact
 verification are preserved in
 [retail-caption-zd621-v1](../tests/fixtures/retail-caption-zd621-v1/README.md).
-This limited strike does not enable general resident E text commands.
+The full strike replaces the original digit-only asset and enables general
+resident E text. Its complete sampling, independent verification and asset
+hash are in [resident-e-zd621-v1](../tests/fixtures/resident-e-zd621-v1/README.md).
 
 `fontB-11-7.zbf` adds all 95 printable ASCII inputs for uppercase resident B,
 with nine-dot advance and zero-based native baseline 10. Extraction pages,
