@@ -13,6 +13,13 @@
 /// initial value: the renderer does not reapply it after you change an option.
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct Compatibility {
+    /// Resolve unavailable resident IDs 1–9, I–O and W–Z using the current CF
+    /// font for A fields, and font A for CF. Measured on ZD621 V93.21.33Z;
+    /// the guide lists A–Z/0–9 (^A pp. 60–61) and invalid CF fallback (^CF
+    /// p. 154), without specifying unavailable field-font resolution.
+    /// Disabled: report these unavailable fonts as unsupported. P–V are
+    /// separate preset fonts and are never substituted by this option.
+    pub unavailable_fonts_use_default: bool,
     /// Match FE token parsing on the ZD621: doubled markers escape one marker,
     /// directions are case-insensitive, negative lengths extend to the end,
     /// and a space or command-delimiter operand selects the default # marker. Disabled:

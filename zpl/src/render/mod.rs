@@ -579,6 +579,14 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                         "F" => 'F',
                         "G" => 'G',
                         "H" => 'H',
+                        value
+                            if matches!(
+                                value.as_bytes(),
+                                [b'1'..=b'9' | b'I'..=b'O' | b'W'..=b'Z']
+                            ) && options.compatibility.unavailable_fonts_use_default =>
+                        {
+                            'A'
+                        }
                         _ => return Err("unsupported resident font".into()),
                     };
                     default_font_id = font_id;
@@ -622,6 +630,14 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                         "AF" => 'F',
                         "AG" => 'G',
                         "AH" => 'H',
+                        value
+                            if matches!(
+                                value.as_bytes(),
+                                [b'A', b'1'..=b'9' | b'I'..=b'O' | b'W'..=b'Z']
+                            ) && options.compatibility.unavailable_fonts_use_default =>
+                        {
+                            default_font_id
+                        }
                         _ => return Err("unsupported resident font".into()),
                     };
                     field.rotation = if p[0].is_empty() {

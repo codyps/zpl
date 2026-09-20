@@ -851,3 +851,20 @@ SPECIFICATION disables them and follows the guide's backward example and
 adjacency rule; ZD621_203_DPI enables them. Both retain the field-data size limit.
 The fixture README records exact controls and remaining scope limits, including
 unsupported non-ASCII delimiter operands and stored formats.
+
+## Unavailable resident font selection
+
+The 20 original `font-id-*` cases for IDs 1–9, I–O and W–Z now match the
+printer exactly. `unavailable_fonts_use_default` selects the measured ZD621
+resolution: unavailable ^A fonts inherit the current ^CF family, independently
+of preceding fields; unavailable ^CF fonts select A. SPECIFICATION continues
+to report unavailable font assets as unsupported. P–V are genuine preset
+fonts and are excluded from this fallback.
+
+`font_fallback_preview` pins 33 raw printer frames with source/image hashes
+and exact underpaint/overpaint counts. Thirty-two frames are pixel exact;
+the four-rotation font-0 frame retains two underpaint and two overpaint dots,
+with each text field independently required to exceed 80% foreground IoU.
+Thirteen fresh controls cover default families 0/A/B, sizing, field history,
+rotations and repeatability. See the fixture README for capture provenance
+and the relevant ^A/^CF programming-guide sections.
