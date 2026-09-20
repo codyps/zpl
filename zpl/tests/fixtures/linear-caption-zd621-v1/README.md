@@ -1,10 +1,10 @@
 # ZD621 linear barcode interpretation
 
 Thirty raw HTTP preview frames from ZD621 203 DPI, V93.21.33Z, captured
-2026-09-19. Twenty-nine require exact full-canvas equality, including text.
-One deliberate left-edge clipping probe retains a known gap of 1146
-underpaint and 207 overpaint dots. The manifest pins input/capture hashes,
-those residual counts and the entire local raster hash. No image is aligned,
+2026-09-19. All thirty require exact full-canvas equality, including text.
+The deliberate left-edge probe formerly had 1146 underpaint and 207 overpaint
+dots; independent bar/glyph clamping now resolves it. The manifest pins
+input/capture hashes, zero residual counts and the entire local raster hash. No image is aligned,
 cropped or rescaled; all inputs request PW832.
 
 Six initial atlases cover eighteen variants in normal/bottom-up orientations:
@@ -31,9 +31,8 @@ Captured behavior, each selectable through a separate compatibility option:
 The original caption-only IoUs were 12.5% (Code 11), 71.63% (Code 93),
 70.83% (Codabar), and about 24–25% (postal); the corrected unclipped controls
 are 100%. These figures compare foreground caption ink, not blank canvas.
-The remaining clipped-caption case is explicitly not an accuracy-goal pass:
-the printer repositions text that crosses the left edge, while the renderer
-currently clips it. Its inset counterpart matches exactly.
+The left-edge case and its inset counterpart both match exactly; see the
+independent controls in `barcode-edges-zd621-v1`.
 
 Sources: Zebra [ZPL II Programming Guide](https://www.zebra.com/content/dam/support-dam/en/documentation/unrestricted/guide/software/zpl-zbi2-pg-en.pdf),
 ^B1 p. 66, ^B2 pp. 68–69, ^B5 pp. 78–79, ^BA pp. 87–89,

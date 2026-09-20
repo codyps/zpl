@@ -13,6 +13,12 @@
 /// initial value: the renderer does not reapply it after you change an option.
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct Compatibility {
+    /// Clamp bars and individual caption glyphs at negative label edges, then
+    /// union black ink (reverse printing toggles overlapping components twice).
+    /// Captured for ^B1/^B2/^B3/^BA/^BC in
+    /// barcode-edges-zd621-v1; unlike the nominal ^FO/^FT placement (pp. 201/205).
+    /// Disabled: clip the positioned field at the canvas boundary.
+    pub linear_barcode_clamps_negative_ink: bool,
     /// Reproduce ZD621 Code 93 extended C-check interpretation, including
     /// shift lookahead, resident control glyphs and malformed repeated tails.
     /// Disabled: print the documented ZPL substitutes for checksum values

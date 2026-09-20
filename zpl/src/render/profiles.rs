@@ -12,6 +12,7 @@ pub const SPECIFICATION: Options = Options {
     height: 1218,
     dpi: 203,
     compatibility: Compatibility {
+        linear_barcode_clamps_negative_ink: false,
         code93_extended_checksum_preview: false,
         code11_printer_element_widths: false,
         code11_interpretation_symbols: false,
@@ -91,6 +92,7 @@ pub const ZD621_203_DPI: Options = Options {
     height: 1218,
     dpi: 203,
     compatibility: Compatibility {
+        linear_barcode_clamps_negative_ink: true,
         code93_extended_checksum_preview: true,
         code11_printer_element_widths: true,
         code11_interpretation_symbols: true,

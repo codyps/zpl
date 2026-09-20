@@ -758,3 +758,18 @@ fn unequal_axis_ellipse_curve_is_independently_optional() {
         );
     }
 }
+
+#[test]
+fn barcode_negative_ink_clamping_is_optional() {
+    // Raw ZD621 controls: barcode-edges-zd621-v1; ^FO/^FT pp. 201/205.
+    let body = "^BY3,2,80^FO60,10^B1N,Y,80,Y,Y^FD123-45678";
+    let printer = raster(body, ZD621_203_DPI);
+    let mut options = ZD621_203_DPI;
+    options.compatibility.linear_barcode_clamps_negative_ink = false;
+    assert_ne!(printer.pixels, raster(body, options).pixels);
+    let inset = "^BY3,2,80^FO60,60^B1N,Y,80,Y,Y^FD123-45678";
+    assert_eq!(
+        raster(inset, ZD621_203_DPI).pixels,
+        raster(inset, options).pixels
+    );
+}

@@ -352,7 +352,7 @@ impl Barcode {
         bytes: &[u8],
         font: Option<(char, f64, f64)>,
         rotation: u8,
-    ) -> Result<(Path, f64), String> {
+    ) -> Result<(Path, f64, Vec<usize>), String> {
         if bytes.is_empty() && self.name != "B3" {
             return Err(format!("{}: empty barcode data", self.name));
         }
@@ -402,6 +402,13 @@ impl Barcode {
             // this anchor is independent of the default linear barcode height.
             baseline += 3. * self.num(2, self.scale(), 1., 100.)? - 1.;
         }
+        let clamp = self.compatibility.linear_barcode_clamps_negative_ink
+            && matches!(self.name.as_str(), "B1" | "B2" | "B3" | "BA" | "BC");
+        let mut split = if clamp {
+            vec![0, p.segments.len()]
+        } else {
+            Vec::new()
+        };
         if self.uses_retail_caption() {
             p.segments
                 .extend(retail::caption(self, bytes, rotation)?.segments);
@@ -427,7 +434,21 @@ impl Barcode {
             // ^BC p. 94 permits an explicit preceding font command. Without
             // one, resident A scales with ^BY, independently of ^CF.
             let (id, fw, fh) = font.unwrap_or(('A', 5. * self.module, 9. * self.module));
-            let mut t = super::font::text_for(id, &value, fw, fh)?;
+            let mut t = if clamp {
+                let mut text = Path::default();
+                let mut x = 0.;
+                for c in value.chars() {
+                    let value = c.to_string();
+                    let mut glyph = super::font::text_for(id, &value, fw, fh)?;
+                    glyph.transform(|p| Point::new(p.x + x, p.y));
+                    text.segments.extend(glyph.segments);
+                    split.push(p.segments.len() + text.segments.len());
+                    x += super::font::width_for(id, &value, fw, fh)?;
+                }
+                text
+            } else {
+                super::font::text_for(id, &value, fw, fh)?
+            };
             // Captured ^B1/^BA interpretation uses dedicated start/stop
             // glyphs, not the resident font's printable asterisk. Reserve
             // their cells with spaces, then draw the measured native masks.
@@ -450,12 +471,18 @@ impl Barcode {
                         marker
                     };
                     caption_glyph(&mut t, x, fw, fh, marker);
+                    if clamp {
+                        split.push(p.segments.len() + t.segments.len());
+                    }
                 }
             }
             if let Some(caption) = special {
                 for (index, glyph) in caption.glyphs {
                     let x = super::font::width_for(id, &value[..index], fw, fh)?;
                     caption_glyph(&mut t, x, fw, fh, glyph);
+                    if clamp {
+                        split.push(p.segments.len() + t.segments.len());
+                    }
                 }
             }
             let printer = self.compatibility.barcode_interpretation_printer_layout;
@@ -496,7 +523,7 @@ impl Barcode {
             }
             p.segments.extend(t.segments);
         }
-        Ok((p, baseline))
+        Ok((p, baseline, split))
     }
     fn interpretation(&self, bytes: &[u8]) -> Result<String, String> {
         if self.name == "B1" && self.compatibility.code11_interpretation_symbols {

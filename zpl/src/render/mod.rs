@@ -1,5 +1,6 @@
 //! Local, deterministic ZPL previews. Unsupported rendering semantics are errors.
 mod barcode;
+mod barcode_edges;
 pub mod compatibility;
 pub mod profiles;
 use raster_diff::compression;
@@ -60,6 +61,7 @@ struct Field {
     origins: Option<Vec<Option<(f64, f64)>>>,
     multiple_paths: Option<Vec<(f64, f64, Path)>>,
     block: Option<(f64, usize, f64, u8, f64)>,
+    barcode_split: Vec<usize>,
     baseline_height: f64,
     inverted_margin: f64,
     text_size: Option<(f64, f64)>,
@@ -82,6 +84,7 @@ impl Default for Field {
             origins: None,
             multiple_paths: None,
             block: None,
+            barcode_split: Vec::new(),
             baseline_height: 0.,
             inverted_margin: 0.,
             text_size: None,
@@ -566,7 +569,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                                 );
                                 return Ok(Path::default());
                             }
-                            let (mut path, height) = b.render(
+                            let (mut path, height, split) = b.render(
                                 &bytes,
                                 field.explicit_font.then_some((font_id, font_w, font_h)),
                                 field.rotation,
@@ -575,6 +578,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                                 let offset = b.field_origin_y();
                                 path.transform(|p| Point::new(p.x, p.y + offset));
                             }
+                            field.barcode_split = split;
                             field.baseline_height = height;
                             path
                         } else {
@@ -916,6 +920,11 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                             };
                             Point::new(x + a + dx + jx, y + b + dy + jy)
                         });
+                        barcode_edges::clamp(
+                            &mut path,
+                            &field.barcode_split,
+                            field.reverse || reverse,
+                        )?;
                         total_segments += path.segments.len();
                         if total_segments > crate::output::MAX_SEGMENTS {
                             return Err("document path limit exceeded".into());

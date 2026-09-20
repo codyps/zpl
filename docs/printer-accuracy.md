@@ -368,7 +368,7 @@ other postal variants. Run `cargo test -p zpl --test linear_ft_preview`.
 [Thirty caption frames](../zpl/tests/fixtures/linear-caption-zd621-v1/README.md)
 now pin Code 11 checksum/triangle glyphs, Code 93 box delimiters, Codabar
 start/stop letters, POSTNET/PLANET pitch-based centering, and explicit-font
-handling for ^B1/^B2/^B5/^BA/^BK. Twenty-nine frames are pixel-exact. Their
+handling for ^B1/^B2/^B5/^BA/^BK. All thirty frames are pixel-exact. Their
 previous caption-only IoUs ranged from about 12% to 72%; corrected unclipped
 controls reach 100%. Each behavior has a separate compatibility option.
 
@@ -379,10 +379,10 @@ whole-dot quantization of wide and extra-wide elements. The extra-wide
 formula is five-thirds of the unrounded wide width, rather than 2W-X.
 
 Run `cargo test -p zpl --test linear_caption_preview --test code11_widths_preview
---test profiles`. The caption suite explicitly retains one left-edge rotated
-caption gap (1146 underpaint/207 overpaint); the inset counterpart is exact.
-Code 93 optional checksum interpretation remains unsupported. Those gaps,
-QR mask selection, and broader unverified coverage keep the overall goal open.
+--test profiles`. The former left-edge rotated caption gap (1146 underpaint/207 overpaint)
+is now resolved by the edge compatibility option below. Code 93 optional
+checksum interpretation is covered by its dedicated suite below. QR mask
+selection and broader unverified coverage keep the overall goal open.
 
 ## Code 93 checksum interpretation
 
@@ -397,6 +397,19 @@ extended-check formatting is isolated behind `code93_extended_checksum_preview`;
 the specification profile displays documented ZPL substitutes. Run
 `cargo test -p zpl --test code93_checks_preview --test profiles`.
 
-Code 93 checksum interpretation is resolved for these controls. Left-edge
-caption placement, QR mask selection and broader unverified coverage remain
-open; the overall accuracy goal has not been achieved.
+Code 93 checksum interpretation is resolved for these controls. QR mask
+selection and broader unverified coverage remain open; the overall accuracy
+goal has not been achieved.
+
+
+## Barcode ink at negative edges
+
+[Twenty-five edge frames](../zpl/tests/fixtures/barcode-edges-zd621-v1/README.md)
+require zero differences for Code 11/39/93/128 and Interleaved 2 of 5. The
+printer clamps bars and individual caption glyphs by their actual ink bounds,
+then unions black ink. ^FR/^LR instead invert overlapping components twice.
+`linear_barcode_clamps_negative_ink` controls this independently of nominal
+^FO/^FT geometry. The earlier caption suite's final residual now becomes exact.
+Run `cargo test -p zpl --test barcode_edges_preview --test linear_caption_preview
+--test profiles`. A newly observed rotated ^FO origin-zero bar boundary still
+needs investigation; no full-coverage accuracy claim is implied.

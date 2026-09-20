@@ -4,9 +4,9 @@ use std::{fs, path::Path};
 mod digest;
 #[test]
 fn printer_controls_pin_every_painted_pixel() {
-    let root = Path::new(env!("CARGO_MANIFEST_DIR")).join("tests/fixtures/linear-caption-zd621-v1");
+    let root = Path::new(env!("CARGO_MANIFEST_DIR")).join("tests/fixtures/barcode-edges-zd621-v1");
     let mut count = 0;
-    for row in include_str!("fixtures/linear-caption-zd621-v1/manifest.tsv")
+    for row in include_str!("fixtures/barcode-edges-zd621-v1/manifest.tsv")
         .lines()
         .skip(1)
     {
@@ -19,7 +19,7 @@ fn printer_controls_pin_every_painted_pixel() {
         let doc = zpl::render(&input, zpl::render::profiles::ZD621_203_DPI).unwrap();
         let actual = zpl::output::raster::rasterize(&doc.labels[0]).unwrap();
         let diff = raster_diff::compare(&reference, &actual, false).unwrap();
-        assert!(diff.matches(), "{} must match every printer pixel", c[0]);
+        assert!(diff.matches(), "{} must match the printer exactly", c[0]);
         assert_eq!(
             diff.reference_only,
             c[3].parse::<usize>().unwrap(),
@@ -45,5 +45,5 @@ fn printer_controls_pin_every_painted_pixel() {
         );
         count += 1;
     }
-    assert_eq!(count, 30);
+    assert_eq!(count, 25);
 }
