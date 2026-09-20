@@ -6,6 +6,7 @@ pub mod compatibility;
 pub mod profiles;
 use raster_diff::compression;
 mod bounded_text;
+mod concatenation;
 mod field_block;
 mod font;
 mod graphics;
@@ -158,7 +159,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
             message: "input exceeds 1 MiB renderer limit".into(),
         });
     }
-    let numbered = numbered::plan(input, options.compatibility.numbered_fields_forward_only)?;
+    let numbered = numbered::plan(input, options.compatibility)?;
     let mut pending_terminator = None;
     // Dimensions can change after a field. Cull only beyond every declared
     // canvas, so a later PW/LL cannot reveal text discarded at an earlier FS.
@@ -349,7 +350,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
             match name {
                 "CC" | "CT" | "CD" | "FX" => {}
                 // Metadata was validated and resolved by numbered::plan.
-                "FN" => {}
+                "FN" | "FE" => {}
                 "PA" => {
                     // Zebra Programming Guide ^PA, p. 315 documents zero defaults.
                     // The printer profile preserves omitted operands. The embedded repertoire has no extra
@@ -722,10 +723,16 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                         data
                     };
                     let mut bytes = match replacement {
-                        Some(numbered::Action::Data(data)) => data.as_ref().clone(),
+                        Some(numbered::Action::Data(data) | numbered::Action::Value(data)) => {
+                            data.as_ref().clone()
+                        }
                         _ => Vec::new(),
                     };
-                    let mut i = 0;
+                    let mut i = if matches!(replacement, Some(numbered::Action::Value(_))) {
+                        data.len()
+                    } else {
+                        0
+                    };
                     while i < data.len() {
                         if field.hex == Some(data[i]) {
                             if i + 2 >= data.len() {

@@ -9,6 +9,7 @@ use std::{collections::HashMap, sync::Arc};
 
 pub(super) enum Action {
     Data(Arc<Vec<u8>>),
+    Value(Arc<Vec<u8>>),
     Skip,
 }
 pub(super) type Plan = HashMap<usize, Action>;
@@ -112,22 +113,29 @@ fn finish(fields: &mut Vec<Field>, printer: bool, plan: &mut Plan) {
         }
     }
 }
-pub(super) fn plan(input: &[u8], printer: bool) -> Result<Plan, RenderError> {
+pub(super) fn plan(
+    input: &[u8],
+    compatibility: super::compatibility::Compatibility,
+) -> Result<Plan, RenderError> {
     let mut plan = Plan::new();
-    if !input.windows(2).any(|b| b == b"FN") {
+    if !input.windows(2).any(|b| b == b"FN" || b == b"FE") {
         return Ok(plan);
     }
     let mut parser = ParseContext::from_bytes(input);
     let mut fields = Vec::new();
     let (mut field_number, mut data, mut hex) = (None, None, None);
     let mut label = false;
+    let mut concat = None;
+    let mut encoding = 0;
+    let mut values = HashMap::new();
     loop {
+        let syntax = parser.syntax();
         let offset = parser.position();
         let Some(item) = parser.next() else { break };
         let item = item.map_err(|e| error(offset, e.to_string()))?;
         let raw = item.as_bytes();
         let (name, operands) = match item {
-            Element::FormatCommand(_) => (&raw[1..3], &raw[3..]),
+            Element::FormatCommand(_) | Element::ControlCommand(_) => (&raw[1..3], &raw[3..]),
             Element::ControlCharacter(_) => (
                 match raw[0] {
                     2 => &b"XA"[..],
@@ -139,16 +147,42 @@ pub(super) fn plan(input: &[u8], printer: bool) -> Result<Plan, RenderError> {
             ),
             _ => continue,
         };
+        let marker = concat.take();
+        if compatibility.concatenation_retains_delimiter && !matches!(name, b"FD" | b"FV") {
+            concat = marker;
+        }
         match name {
             b"XA" => {
                 label = true;
             }
             b"XZ" => {
-                finish(&mut fields, printer, &mut plan);
+                finish(
+                    &mut fields,
+                    compatibility.numbered_fields_forward_only,
+                    &mut plan,
+                );
+                values.clear();
+                concat = None;
                 label = false;
                 field_number = None;
                 data = None;
                 hex = None;
+            }
+            b"CI" => {
+                encoding = std::str::from_utf8(operands)
+                    .ok()
+                    .and_then(|s| s.trim_end().parse::<u8>().ok())
+                    .unwrap_or(0);
+            }
+            b"FE" => {
+                concat = Some(
+                    super::concatenation::delimiter(
+                        operands,
+                        syntax,
+                        compatibility.concatenation_printer_syntax,
+                    )
+                    .map_err(|e| error(offset, e))?,
+                );
             }
             b"FN" => {
                 if !label {
@@ -169,11 +203,31 @@ pub(super) fn plan(input: &[u8], printer: bool) -> Result<Plan, RenderError> {
                         .unwrap_or(b'_'),
                 );
             }
-            b"FD" | b"FV" if field_number.is_some() => {
+            b"FD" | b"FV" if field_number.is_some() || marker.is_some() => {
                 if data.is_some() {
                     return Err(error(offset, "multiple data commands in numbered field"));
                 }
-                data = Some((offset, decoded(operands, hex, offset)?));
+                let mut value = decoded(operands, hex, offset)?;
+                if let Some(marker) = marker {
+                    value = Arc::new(
+                        super::concatenation::expand(
+                            &value,
+                            marker,
+                            &values,
+                            encoding == 28,
+                            compatibility.concatenation_backward_reads_forward,
+                            compatibility.concatenation_printer_syntax,
+                        )
+                        .map_err(|e| error(offset, e))?,
+                    );
+                    plan.insert(offset, Action::Value(value.clone()));
+                }
+                if let Some(number) = field_number {
+                    // FE reads the first supplied field with this number. Later
+                    // explicit bindings remain independent drawings on hardware.
+                    values.entry(number).or_insert_with(|| value.clone());
+                    data = Some((offset, value));
+                }
             }
             b"SN" if field_number.is_some() => {
                 return Err(error(offset, "serialization with FN is unsupported"))
@@ -187,6 +241,7 @@ pub(super) fn plan(input: &[u8], printer: bool) -> Result<Plan, RenderError> {
                     });
                 }
                 hex = None;
+                concat = None;
             }
             _ => {}
         }

@@ -12,6 +12,9 @@ pub const SPECIFICATION: Options = Options {
     height: 1218,
     dpi: 203,
     compatibility: Compatibility {
+        concatenation_printer_syntax: false,
+        concatenation_retains_delimiter: false,
+        concatenation_backward_reads_forward: false,
         numbered_fields_forward_only: false,
         advanced_text_omitted_flags_persist: false,
         bidi_isolates_as_missing_glyphs: false,
@@ -130,6 +133,9 @@ pub const ZD621_203_DPI: Options = Options {
     height: 1218,
     dpi: 203,
     compatibility: Compatibility {
+        concatenation_printer_syntax: true,
+        concatenation_retains_delimiter: true,
+        concatenation_backward_reads_forward: true,
         numbered_fields_forward_only: true,
         advanced_text_omitted_flags_persist: true,
         bidi_isolates_as_missing_glyphs: true,

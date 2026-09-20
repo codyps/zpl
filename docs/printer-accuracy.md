@@ -835,3 +835,19 @@ retain zero underpaint and 168 overpaint pixels. The latter reveal an existing
 CI13 font-A zero difference (native unslashed versus embedded slashed), present
 with or without SF. All 18 separate text regions meet 80% foreground IoU;
 minimum 88.6792%. Barcode pixels have a separate exactness requirement.
+
+## Field concatenation and substring extraction
+
+All five original `field-concat-*` cases now render exactly. The
+`field_concatenation_preview` test pins 26 complete native frames, all with zero
+underpaint and overpaint, including mixed text/barcodes, nested and missing
+bindings, hex decoding, Unicode character indexing, delimiter and scope controls.
+The existing numbered-field planning pass resolves concatenation before drawing;
+inserted command bytes remain data and errors retain original input offsets.
+
+Three independent compatibility options select native backward extraction,
+retention across intervening commands, and permissive token/delimiter parsing.
+SPECIFICATION disables them and follows the guide's backward example and
+adjacency rule; ZD621_203_DPI enables them. Both retain the field-data size limit.
+The fixture README records exact controls and remaining scope limits, including
+unsupported non-ASCII delimiter operands and stored formats.

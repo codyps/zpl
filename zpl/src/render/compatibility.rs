@@ -13,6 +13,18 @@
 /// initial value: the renderer does not reapply it after you change an option.
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct Compatibility {
+    /// Match FE token parsing on the ZD621: doubled markers escape one marker,
+    /// directions are case-insensitive, negative lengths extend to the end,
+    /// and a space or command-delimiter operand selects the default # marker. Disabled:
+    /// preserve doubled markers and use the documented parameter forms.
+    pub concatenation_printer_syntax: bool,
+    /// Keep FE active across intervening commands until field data. Disabled:
+    /// require FE immediately before FD as documented (^FE pp. 191–192).
+    pub concatenation_retains_delimiter: bool,
+    /// For FE backward extraction, count the start from the end, then read
+    /// forward. Disabled: select the requested characters ending at that
+    /// position, matching the guide example b,1,4 -> Data (^FE p. 192).
+    pub concatenation_backward_reads_forward: bool,
     /// Assign inline FN data only to preceding unresolved references, consuming
     /// the binding field when references exist. The ZD621 preview does not
     /// reuse that value for subsequent references. Disabled: share the last
