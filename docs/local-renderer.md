@@ -94,7 +94,7 @@ parity. Preview width adjustment remains unimplemented.
 | --- | --- |
 | Framing | `XA`, `XZ`, `FS`, single-byte equivalents, `CC`, `CT`, `CD`, comments `FX`; ASCII parameter delimiter |
 | Layout | `PW`, `LL`, `LH`, `LS`, `LT`, `FO`, explicit-coordinate `FT`, `FW`, `PO`, `FR`, `LR`; left/right/Latin-auto field justification |
-| Text | `CF`, `A0`, `AA`, `AB`, `AC`, `AD`, `FD`, `FV`, `FH`; printable ASCII in fonts 0/A/B/C/D and captured font-0 é; `CI27` Latin-1 subset and `CI28` UTF-8 |
+| Text | `CF`, `A0`, `AA`, `AB`, `AC`, `AD`, `AF`, `FD`, `FV`, `FH`; printable ASCII in fonts 0/A/B/C/D/F and captured font-0 é; `CI27` Latin-1 subset and `CI28` UTF-8 |
 | Blocks | `FB`: left/center/right alignment, word wrapping, explicit `\&` breaks; overflow, hyphenation, hanging indent and justified text return errors |
 | Shapes | `GB` including rounded corners, `GC`, `GE`, `GD`; black or white outlines/fills |
 | Graphics | `~DG`, `XG`, `GFA`, `GFB`: raw hex, Zebra ASCII run lengths/row shortcuts, B64, Z64; CRC16 and zlib checksums checked |
@@ -104,7 +104,7 @@ Text uses [embedded resident font 0](../zpl/assets/README.md), captured from the
 ZD621 preview at 32 dots and 203 DPI. All 95 printable ASCII glyphs, including
 lowercase, retain their measured advances, bearings and baseline offsets. The
 renderer defaults to font 0 at 20 dots. `^CF0,32` or `^A0N,32,0` selects the
-captured size; omitted/zero width is proportional to height. Resident A/B/C/D use native bitmap matrices with integer magnification; C shares D's matrix and B renders lowercase input as uppercase. A single bitmap dimension determines the other proportionally; omitted A
+captured size; omitted/zero width is proportional to height. Resident A/B/C/D/F use native bitmap matrices with integer magnification; C shares D's matrix and B renders lowercase input as uppercase. A single bitmap dimension determines the other proportionally; omitted A
 dimensions inherit the CF request. The printer profile's
 `bitmap_cf_font_only_resets_size` option resets a font-only bitmap CF command
 to native size; SPECIFICATION retains the previous size. Other resident font
@@ -169,3 +169,10 @@ Font/caption controls additionally verify the independently selectable
 `barcode_interpretation_printer_layout` gaps and
 `right_justified_inverted_text_uses_ink_margin` origin adjustment. See
 [resident-font controls](../zpl/tests/fixtures/resident-fonts-zd621-v1/README.md).
+
+[Resident F and bitmap-caption controls](../zpl/tests/fixtures/resident-f-zd621-v1/README.md)
+add 41 exact frames. Explicit A/B/C/D/F Code 128 captions use the selectable
+`barcode_reverse_interpretation_shift` in I/B orientation. The independent
+`code128_fo_uses_bar_width` option anchors the FO rotation pivot at the bars,
+including captions wider than the symbol. Both are enabled in the printer
+profile and disabled in SPECIFICATION.

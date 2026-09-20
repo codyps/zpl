@@ -820,7 +820,13 @@ fn caption_clamping_preserves_rotated_short_glyph_padding() {
 #[test]
 fn bitmap_ft_dot_origin_is_optional_and_leaves_fo_unchanged() {
     // ZPL Guide ^FT p. 205; resident-bc-zd621-v1 independent scale controls.
-    for (font, h, w) in [('A', 18, 10), ('B', 22, 14), ('C', 36, 20), ('D', 36, 20)] {
+    for (font, h, w) in [
+        ('A', 18, 10),
+        ('B', 22, 14),
+        ('C', 36, 20),
+        ('D', 36, 20),
+        ('F', 52, 26),
+    ] {
         let body = format!("^FT100,100^A{font}N,{h},{w}^FDAb09");
         let mut geometric = ZD621_203_DPI;
         geometric.compatibility.bitmap_font_ft_dot_origin = false;
@@ -872,6 +878,52 @@ fn bitmap_sizes_use_the_supplied_axis_or_both_cf_dimensions() {
         assert_eq!(
             raster(&inherit, SPECIFICATION).pixels,
             raster(&explicit, SPECIFICATION).pixels
+        );
+    }
+}
+
+#[test]
+fn explicit_bitmap_code128_caption_shift_is_optional() {
+    // ^BC p. 94; resident-f-zd621-v1 measures all orientations and A/B/C/D/F.
+    let mut unshifted = ZD621_203_DPI;
+    unshifted.compatibility.barcode_reverse_interpretation_shift = false;
+    for (font, h, w) in [
+        ('A', 18, 10),
+        ('B', 22, 14),
+        ('C', 36, 20),
+        ('D', 36, 20),
+        ('F', 52, 26),
+        ('0', 32, 64),
+    ] {
+        for rotation in ['N', 'R', 'I', 'B'] {
+            let body =
+                format!("^BY2,2,60^FT200,200^A{font}N,{h},{w}^BC{rotation},60,Y,N,N,N^FDAb09");
+            let same = raster(&body, ZD621_203_DPI).pixels == raster(&body, unshifted).pixels;
+            assert_eq!(same, font == '0' || matches!(rotation, 'N' | 'R'), "{body}");
+        }
+    }
+}
+
+#[test]
+fn code128_bar_width_pivot_is_independent_of_caption_shift() {
+    // ^FO p. 201; wide-caption A/F controls in resident-f-zd621-v1.
+    let mut full_extent = ZD621_203_DPI;
+    full_extent.compatibility.code128_fo_uses_bar_width = false;
+    for rotation in ['N', 'R', 'I', 'B'] {
+        let body = format!("^BY2,2,60^FO100,100^AFN,78,39^BC{rotation},60,Y,N,N,N^FDAb09");
+        assert_eq!(
+            raster(&body, ZD621_203_DPI).pixels == raster(&body, full_extent).pixels,
+            matches!(rotation, 'N' | 'R')
+        );
+        let ft = body.replace("^FO100,100", "^FT200,200");
+        assert_eq!(
+            raster(&ft, ZD621_203_DPI).pixels,
+            raster(&ft, full_extent).pixels
+        );
+        let hidden = body.replace(",Y,N,N,N", ",N,N,N,N");
+        assert_eq!(
+            raster(&hidden, ZD621_203_DPI).pixels,
+            raster(&hidden, full_extent).pixels
         );
     }
 }

@@ -62,6 +62,7 @@ struct Field {
     multiple_paths: Option<Vec<(f64, f64, Path)>>,
     block: Option<(f64, usize, f64, u8, f64)>,
     barcode_split: Vec<barcode_edges::PartBoundary>,
+    barcode_width: f64,
     baseline_height: f64,
     inverted_margin: f64,
     text_size: Option<(f64, f64)>,
@@ -85,6 +86,7 @@ impl Default for Field {
             multiple_paths: None,
             block: None,
             barcode_split: Vec::new(),
+            barcode_width: 0.,
             baseline_height: 0.,
             inverted_margin: 0.,
             text_size: None,
@@ -427,6 +429,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                         "B" => 'B',
                         "C" => 'C',
                         "D" => 'D',
+                        "F" => 'F',
                         _ => return Err("unsupported resident font".into()),
                     };
                     default_font_id = font_id;
@@ -462,6 +465,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                         "AB" => 'B',
                         "AC" => 'C',
                         "AD" => 'D',
+                        "AF" => 'F',
                         _ => return Err("unsupported resident font".into()),
                     };
                     field.rotation = if p[0].is_empty() {
@@ -601,17 +605,19 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                                 );
                                 return Ok(Path::default());
                             }
-                            let (mut path, height, split) = b.render(
+                            let rendered = b.render(
                                 &bytes,
                                 field.explicit_font.then_some((font_id, font_w, font_h)),
                                 field.rotation,
                             )?;
+                            let mut path = rendered.path;
                             if !field.baseline {
                                 let offset = b.field_origin_y();
                                 path.transform(|p| Point::new(p.x, p.y + offset));
                             }
-                            field.barcode_split = split;
-                            field.baseline_height = height;
+                            field.barcode_split = rendered.split;
+                            field.barcode_width = rendered.width;
+                            field.baseline_height = rendered.baseline;
                             path
                         } else {
                             if font_w <= 0. || font_h <= 0. {
@@ -926,10 +932,9 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                                 } else {
                                     h
                                 };
-                                let w = field
-                                    .barcode
-                                    .as_ref()
-                                    .map_or(w, |barcode| barcode.field_origin_width(w));
+                                let w = field.barcode.as_ref().map_or(w, |barcode| {
+                                    barcode.field_origin_width(w, field.barcode_width)
+                                });
                                 match field.rotation {
                                     b'R' => (h, 0.),
                                     b'I' => (w, h),
@@ -1159,6 +1164,7 @@ fn font_dimensions(
         let (nh, nw) = match id {
             'A' => (9., 5.),
             'B' => (11., 7.),
+            'F' => (26., 13.),
             _ => (18., 10.),
         };
         // ^A p. 61 and ^CF p. 154: one supplied dimension determines

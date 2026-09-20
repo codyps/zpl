@@ -102,6 +102,13 @@ pub(super) fn supported(name: &str) -> bool {
             | "BZ"
     )
 }
+pub(super) struct Rendered {
+    pub path: Path,
+    pub width: f64,
+    pub baseline: f64,
+    pub split: Vec<PartBoundary>,
+}
+
 impl Barcode {
     fn uses_retail_caption(&self) -> bool {
         self.compatibility.retail_interpretation_printer_layout
@@ -111,7 +118,11 @@ impl Barcode {
             && matches!(self.name.as_str(), "B8" | "B9" | "BE" | "BU")
     }
 
-    pub fn field_origin_width(&self, width: f64) -> f64 {
+    pub fn field_origin_width(&self, width: f64, bar_width: f64) -> f64 {
+        if self.name == "BC" && self.compatibility.code128_fo_uses_bar_width {
+            // ^FO p. 201; resident-f-zd621-v1 includes captions wider than bars.
+            return bar_width;
+        }
         if self.uses_retail_caption() {
             // Outer interpretation digits do not move the ^FO rotation pivot.
             self.module
@@ -353,7 +364,7 @@ impl Barcode {
         bytes: &[u8],
         font: Option<(char, f64, f64)>,
         rotation: u8,
-    ) -> Result<(Path, f64, Vec<PartBoundary>), String> {
+    ) -> Result<Rendered, String> {
         if bytes.is_empty() && self.name != "B3" {
             return Err(format!("{}: empty barcode data", self.name));
         }
@@ -388,7 +399,7 @@ impl Barcode {
             "BZ" => postal::render(self, bytes),
             _ => unreachable!(),
         }?;
-        let (_, _, _, mut height) = super::bounds(&p);
+        let (_, _, width, mut height) = super::bounds(&p);
         if matches!(self.name.as_str(), "B8" | "B9" | "BE" | "BU") {
             // Guard extensions descend into the interpretation-line area.
             height = self.height;
@@ -528,13 +539,17 @@ impl Barcode {
                     width += self.postal_pitch() - self.module;
                 }
                 let advance = super::font::width_for(id, &value, fw, fh)?;
-                let mut x = ((width - advance) / 2.).floor();
-                if self.compatibility.barcode_reverse_interpretation_shift
-                    && matches!(rotation, b'I' | b'B')
-                {
-                    x -= 1.;
-                }
+                let x = ((width - advance) / 2.).floor();
                 t.transform(|p| Point::new(p.x + x, p.y));
+            }
+            if self.compatibility.barcode_reverse_interpretation_shift
+                && matches!(rotation, b'I' | b'B')
+                && (font.is_none()
+                    || (self.name == "BC" && matches!(id, 'A' | 'B' | 'C' | 'D' | 'F')))
+            {
+                // Captured resident-f-zd621-v1: explicit bitmap captions also
+                // use the final-dot boundary; proportional font 0 does not.
+                t.transform(|p| Point::new(p.x - 1., p.y));
             }
             let preserve_bar_origin = if self.name == "BC" {
                 self.compatibility.code128_above_text_keeps_bar_origin
@@ -551,7 +566,12 @@ impl Barcode {
             }
             p.segments.extend(t.segments);
         }
-        Ok((p, baseline, split))
+        Ok(Rendered {
+            path: p,
+            width,
+            baseline,
+            split,
+        })
     }
     fn interpretation(&self, bytes: &[u8]) -> Result<String, String> {
         if self.name == "B1" && self.compatibility.code11_interpretation_symbols {

@@ -474,3 +474,20 @@ CF request as documented. Run `cargo test -p zpl --test resident_bc_preview
 This establishes ASCII coverage for B/C, not arbitrary encodings or all
 remaining resident fonts. QR-mask differences and broader unverified text and
 command coverage still leave the overall accuracy goal open.
+
+## Resident F and explicit bitmap Code 128 captions
+
+[Forty-one additional frames](../zpl/tests/fixtures/resident-f-zd621-v1/README.md)
+require pixel-exact equality. They include all 95 printable ASCII F glyphs,
+an independent extraction verification, and 28 layout/caption holdouts.
+F now supports native and integer-magnified sizes, FO/FT, justification,
+wrapping, CF sizing and all orientations with the measured bitmap options.
+
+The caption controls also correct explicit A/B/C/D/F reverse interpretation
+placement and a Code 128 FO pivot error when captions extend outside the bars.
+`barcode_reverse_interpretation_shift` and `code128_fo_uses_bar_width` select
+these departures independently; the specification profile disables both.
+Run `cargo test -p zpl --test resident_f_preview --test profiles`.
+
+This does not close the overall accuracy goal. QR mask selection, remaining
+resident-font support and proportional-font rotated glyphs still need work.

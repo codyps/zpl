@@ -90,3 +90,11 @@ metadata, an independent composition verification and the asset hash are in
 [resident-bc-zd621-v1](../tests/fixtures/resident-bc-zd621-v1/README.md).
 Font C reuses the captured D matrix, as specified by the ZPL Programming Guide
 Table 31 (p. 1583) and verified by full-ASCII printer controls.
+
+`fontF-26-13.zbf` contains all 95 printable ASCII inputs for resident F,
+with 16-dot advance and zero-based native baseline 20. Raw extraction pages,
+metadata, an independent exact composition verification and the asset hash
+are preserved in
+[resident-f-zd621-v1](../tests/fixtures/resident-f-zd621-v1/README.md).
+Native dimensions, baseline and gap follow Tables 29/31 of the ZPL Guide
+(pp. 1582–1583); magnified placement is checked against independent previews.

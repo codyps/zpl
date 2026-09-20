@@ -32,6 +32,7 @@ fn strikes() -> &'static Vec<(Settings, Vec<Glyph>)> {
             include_bytes!("../../assets/fontA-9-5.zbf").as_slice(),
             include_bytes!("../../assets/fontB-11-7.zbf").as_slice(),
             include_bytes!("../../assets/fontD-18-10.zbf").as_slice(),
+            include_bytes!("../../assets/fontF-26-13.zbf").as_slice(),
             include_bytes!("../../assets/fontE-28-15-digits.zbf").as_slice(),
         ]
         .into_iter()
@@ -67,12 +68,13 @@ fn baseline(h: f64) -> f64 {
 }
 pub(super) fn baseline_for(id: char, h: f64) -> f64 {
     // Zebra guide p. 1582: one-based baselines 7 (A), 11 (B), 14 (C/D),
-    // 23 (E). These zero-based offsets locate native glyph ink in its cell.
+    // 23 (E), 21 (F). These zero-based offsets locate native glyph ink in its cell.
     h * match id {
         'A' => 6. / 9.,
         'B' => 10. / 11.,
         'C' | 'D' => 13. / 18.,
         'E' => 22. / 28.,
+        'F' => 20. / 26.,
         _ => 0.75,
     }
 }
@@ -92,6 +94,9 @@ pub(super) fn inverted_margin(id: char, value: &str, w: f64, h: f64) -> Result<f
     }
     if id == 'B' {
         return Ok(2. * w / 7. + 2.);
+    }
+    if id == 'F' {
+        return Ok(3. * w / 13. + 2.);
     }
     if matches!(id, 'C' | 'D') {
         return Ok(w / 5. + 2.);
@@ -231,6 +236,7 @@ pub(super) fn printer_ft_offset(id: char, height: f64, rotation: u8) -> (f64, f6
         'A' => 9.,
         'B' => 11.,
         'C' | 'D' => 18.,
+        'F' => 26.,
         _ => return (0., 0.),
     };
     let scale = height / native;

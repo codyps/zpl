@@ -13,11 +13,11 @@
 /// initial value: the renderer does not reapply it after you change an option.
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct Compatibility {
-    /// Selecting A/B/C/D with CF but no size resets to its native bitmap size,
+    /// Selecting A/B/C/D/F with CF but no size resets to its native bitmap size,
     /// as captured in resident-bc-zd621-v1. Disabled: retain the previous CF
     /// dimensions, as specified by ^CF p. 154. A commands still inherit CF.
     pub bitmap_cf_font_only_resets_size: bool,
-    /// Apply captured A/B/C/D bitmap-font FT dot offsets after scaling and
+    /// Apply captured A/B/C/D/F bitmap-font FT dot offsets after scaling and
     /// rotation. FO and proportional font 0 are unaffected. Disabled: use
     /// the scaled native baseline geometrically. ^FT p. 205 Table 7;
     /// resident-bc-zd621-v1 includes scales 1/2/3 and unequal-axis controls.
@@ -185,14 +185,19 @@ pub struct Compatibility {
     /// controls cover ^B2/^BC/^BE/^BU in all four orientations. The nominal
     /// ^FO upper-left field extent (p. 201) includes the complete drawing.
     pub barcode_fo_uses_bar_height: bool,
+    /// Anchor reversed ^FO Code 128 fields at the bar width, excluding explicit
+    /// captions that extend beyond either edge. The nominal ^FO field extent
+    /// (p. 201) includes the complete drawing. See resident-f-zd621-v1.
+    pub code128_fo_uses_bar_width: bool,
     /// Place above-bar interpretation above the bar origin, rather than
     /// pushing the bars down. Covers non-Code-128 barcodes; Code 128 retains
     /// its separately selectable `code128_above_text_keeps_bar_origin` flag.
     /// See the measured ^FO/^B2/^BE/^BU above-interpretation controls.
     pub barcode_above_text_keeps_bar_origin: bool,
-    /// Shift automatically centered barcode interpretation one dot along its
-    /// reversed reading direction for I/B orientations. Normal/R controls
-    /// use the ordinary center. Explicitly selected fonts are unaffected.
+    /// Shift automatic barcode interpretation and explicit ^BC A/B/C/D/F
+    /// bitmap captions one dot along the reversed I/B reading direction.
+    /// N/R and explicitly selected proportional font 0 are unaffected.
+    /// Raw explicit-font controls: resident-f-zd621-v1.
     pub barcode_reverse_interpretation_shift: bool,
     /// Ignore label-top adjustment in HTTP previews. Physical-print ^LT
     /// semantics remain the default (Zebra guide p. 294).
