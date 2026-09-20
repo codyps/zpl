@@ -881,6 +881,15 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                             bytes.retain(|&b| b != 1);
                         }
                     }
+                    if field.barcode.is_none()
+                        && field.block.is_none()
+                        && options.compatibility.text_esc_del_processing
+                        && !matches!(encoding, 0 | 13)
+                    {
+                        // CI33–36 preserve ESC as blank spacing; CI27/28/31
+                        // omit it. DEL is omitted in modern plain/TB text.
+                        bytes.retain(|b| *b != 0x7f && (*b != 0x1b || matches!(encoding, 33..=36)));
+                    }
                     let decoded;
                     let value = if field.barcode.is_some() || field.barcode_error.is_some() {
                         ""
@@ -992,6 +1001,13 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                                 encoding == 0
                                     || (encoding == 28
                                         && options.compatibility.utf8_uses_legacy_backslash),
+                            )
+                            .with_control_glyphs(
+                                options.compatibility.text_esc_del_processing
+                                    && matches!(encoding, 0 | 13),
+                                options.compatibility.text_esc_del_processing
+                                    && (field.block.is_some() || matches!(encoding, 33..=36))
+                                    && !matches!(encoding, 0 | 13),
                             )
                             .with_tab_stops(options.compatibility.text_tab_stops)
                             .with_default_glyph(advanced[0])

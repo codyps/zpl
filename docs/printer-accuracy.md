@@ -5,8 +5,9 @@ The complete 512-case conformance gate has 490 exact nonblank frames, twelve
 with text-only differences (minimum per-field IoU 93.33%), nine blank controls,
 and one rejected invalid barcode input. Every non-text comparison is exact.
 Run `cargo test -p zpl --test printer_accuracy --test conformance_preview`.
-Exploratory legacy ESC/DEL controls remain unfinished; this is not a claim that
-every possible ZPL input is covered. Later sections record current evidence.
+The exploratory TAB and legacy ESC/DEL gaps are also covered by native
+regressions. This meets the accuracy targets for the tested corpora, not every
+possible ZPL input. Later sections record the evidence and scope limits.
 
 Automatic QR masks match all 235 affected frames, including 32 fresh holdout
 symbols and extended Model 1 versions; see [the algorithm](qr-mask-selection.md).
@@ -1246,3 +1247,28 @@ and three character-flow directions. The option does not alter barcode bytes.
 See [the capture evidence](../zpl/tests/fixtures/tabs-zd621-v1/README.md).
 Legacy ESC/DEL glyph handling remains separate, with fresh native samples ready
 for the next fix; the broader task is not yet claimed complete.
+
+
+## Encoding-specific ESC and DEL controls
+
+`text_esc_del_processing` selects the measured ZD621 control behavior; it is
+explicitly disabled in SPECIFICATION. CI0/13 use resident glyphs. Modern FB
+layouts preserve space-width characters within words; plain/TB omit DEL and
+omit ESC except in CI33–36, where ESC retains space-width spacing. Font 0's
+missing legacy ESC also follows the independently selected PA default-glyph
+behavior. Barcode bytes and normal Unicode glyph lookup remain unchanged.
+
+`legacy_controls_preview` pins eight unmodified native frames with 176 source
+fields, including the formerly unsupported exploratory diagnostic. All eight
+are pixel-exact. Independent extraction tests reconstruct five packed glyph
+assets from isolated native samples and measured advances; composed text,
+rotations, origins and doubled bitmap A provide verification beyond extraction.
+See [the captures and scope](../zpl/tests/fixtures/legacy-controls-zd621-v1/README.md).
+
+The 164-case main and 512-case conformance gates pass after this change.
+Together with the TAB fix, this resolves the known exploratory control gaps
+recorded above. The tested non-text comparisons are exact and measured text
+regions satisfy the 80% foreground-IoU floor. Arbitrary unsampled glyphs/sizes
+and the deliberately deferred preview-width adjustment are not covered by
+that conclusion. Nondeterministic empty QR previews remain diagnostic captures,
+not deterministic accuracy targets.

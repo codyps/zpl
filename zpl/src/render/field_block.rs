@@ -303,7 +303,12 @@ pub(super) fn wrap(
         }
         // Native tabs-zd621-v1: FB preserves a tab as a space-width
         // character inside the word, including at the beginning of a line.
-        if c == '\t' && compatibility.text_tab_stops {
+        // Modern ESC/DEL follow the same rule in legacy-controls-zd621-v1.
+        if (c == '\t' && compatibility.text_tab_stops)
+            || (matches!(c, '\u{1b}' | '\u{7f}')
+                && compatibility.text_esc_del_processing
+                && !matches!(encoding, 0 | 13))
+        {
             word.text.push(' ');
             continue;
         }

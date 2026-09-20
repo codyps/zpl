@@ -36,6 +36,11 @@ pub struct Compatibility {
     /// Disabled: plain text rejects TAB and FB/TB retain ordinary whitespace
     /// handling. See tabs-zd621-v1 and ^FD/^FB/^TB guide pp. 190/187/356.
     pub text_tab_stops: bool,
+    /// Native ESC/DEL glyphs under CI0/13. Modern FB uses space-width
+    /// characters; modern plain/TB omits DEL and uses either spacing (CI33–36)
+    /// or omission (CI27/28/31) for ESC. Disabled: normal glyph lookup without
+    /// substitution. See legacy-controls-zd621-v1, ^CI/^PA pp. 156/315.
+    pub text_esc_del_processing: bool,
     /// Allow ^CI to remap the space image in legacy encodings. The guide
     /// p. 159 forbids this, but ZD621 Font 0 honors it (character-remap-zd621-v1).
     pub remap_space: bool,

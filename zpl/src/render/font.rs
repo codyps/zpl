@@ -16,6 +16,8 @@ pub(super) struct Font {
     character_map: Option<[u8; 256]>,
     block_flow: Option<BlockFlow>,
     tab_stops: bool,
+    legacy_controls: bool,
+    control_spaces: bool,
 }
 #[derive(Clone, Copy)]
 struct BlockFlow {
@@ -44,6 +46,8 @@ impl Font {
             character_map: None,
             block_flow: None,
             tab_stops: false,
+            legacy_controls: false,
+            control_spaces: false,
         }
     }
     pub(super) fn with_tab_stops(mut self, enabled: bool) -> Self {
@@ -57,22 +61,32 @@ impl Font {
         self.character_map = map;
         self
     }
+    pub(super) fn with_control_glyphs(mut self, legacy: bool, spaces: bool) -> Self {
+        self.legacy_controls = legacy;
+        self.control_spaces = spaces;
+        self
+    }
     fn map_char(self, c: char) -> Result<char, String> {
-        let Some(map) = self.character_map else {
-            return Ok(c);
+        let c = match self
+            .character_map
+            .and_then(|map| map.get(c as usize).copied())
+        {
+            Some(source) if u32::from(source) != c as u32 => match source {
+                // ^CI example, Programming Guide p. 158: legacy image 21 is euro.
+                21 => '€',
+                0..=127 => char::from(source),
+                _ => return Err("unsupported legacy remap source glyph".into()),
+            },
+            _ => c,
         };
-        let Some(&source) = map.get(c as usize) else {
-            return Ok(c);
-        };
-        if u32::from(source) == c as u32 {
-            return Ok(c);
-        }
-        // ^CI example, Programming Guide p. 158: legacy image 21 is euro.
-        match source {
-            21 => Ok('€'),
-            0..=127 => Ok(char::from(source)),
-            _ => Err("unsupported legacy remap source glyph".into()),
-        }
+        // Canonical keys identify private legacy-only strike entries. They do
+        // not add Unicode arrow/house support to the normal resident strikes.
+        Ok(match c {
+            '\u{1b}' | '\u{7f}' if self.control_spaces => ' ',
+            '\u{1b}' if self.legacy_controls => '\u{2190}',
+            '\u{7f}' if self.legacy_controls => '\u{2302}',
+            _ => c,
+        })
     }
     pub(super) fn with_default_glyph(mut self, enabled: bool) -> Self {
         self.default_glyph = enabled;
@@ -420,12 +434,68 @@ fn default_glyph_strikes(legacy: bool) -> &'static Vec<(Settings, Vec<Glyph>)> {
         faces
     })
 }
+// Native ESC/DEL samples and independent CI13 verification:
+// legacy-controls-zd621-v1. Keep these glyphs separate from Unicode faces and
+// from the independently selectable legacy-backslash and PA default glyphs.
+type ControlStrikes = Vec<(Settings, Vec<Glyph>)>;
+fn control_strikes(
+    legacy_backslash: bool,
+    default_glyph: bool,
+) -> &'static Vec<(Settings, Vec<Glyph>)> {
+    static FACES: [OnceLock<ControlStrikes>; 4] = [const { OnceLock::new() }; 4];
+    FACES[usize::from(legacy_backslash) + 2 * usize::from(default_glyph)].get_or_init(|| {
+        let mut faces = if default_glyph {
+            default_glyph_strikes(legacy_backslash).clone()
+        } else if legacy_backslash {
+            legacy_strikes().clone()
+        } else {
+            let mut faces = strikes().clone();
+            faces.push(strike().clone());
+            faces
+        };
+        for (settings, glyphs) in &mut faces {
+            let data: &[u8] = match (
+                settings.font,
+                settings.height,
+                settings.width,
+                default_glyph,
+            ) {
+                ('0', 32, 0, true) => {
+                    include_bytes!("../../assets/font0-32-0-legacy-controls-default.zbf")
+                }
+                ('0', 16, 0, true) => {
+                    include_bytes!("../../assets/font0-16-0-legacy-controls-default.zbf")
+                }
+                ('0', 32, 0, false) => {
+                    include_bytes!("../../assets/font0-32-0-legacy-controls.zbf")
+                }
+                ('0', 16, 0, false) => {
+                    include_bytes!("../../assets/font0-16-0-legacy-controls.zbf")
+                }
+                ('A', 9, 5, _) => include_bytes!("../../assets/fontA-9-5-legacy-controls.zbf"),
+                _ => continue,
+            };
+            for glyph in bitmap_font::unpack(data)
+                .expect("validated native control strike")
+                .1
+            {
+                match glyphs.binary_search_by_key(&glyph.codepoint, |g| g.codepoint) {
+                    Ok(i) => glyphs[i] = glyph,
+                    Err(i) => glyphs.insert(i, glyph),
+                }
+            }
+        }
+        faces
+    })
+}
 fn selected(id: impl Into<Font> + Copy, w: f64, h: f64) -> (&'static [Glyph], f64, f64) {
     // C and D share the 18x10 matrix (ZPL Programming Guide Table 31,
     // p. 1583); resident-bc-zd621-v1 verifies the alias across all ASCII.
     let font = id.into();
     let id = if font.id == 'C' { 'D' } else { font.id };
-    let faces = if font.default_glyph {
+    let faces = if font.legacy_controls {
+        control_strikes(font.legacy_backslash, font.default_glyph)
+    } else if font.default_glyph {
         default_glyph_strikes(font.legacy_backslash)
     } else if font.legacy_backslash {
         legacy_strikes()
@@ -454,7 +524,12 @@ fn selected(id: impl Into<Font> + Copy, w: f64, h: f64) -> (&'static [Glyph], f6
             .expect("embedded preset font");
         return (glyphs, w / s.width as f64, h / s.height as f64);
     }
-    let fallback = if font.default_glyph {
+    let fallback = if font.legacy_controls {
+        &control_strikes(font.legacy_backslash, font.default_glyph)
+            .last()
+            .unwrap()
+            .1
+    } else if font.default_glyph {
         &default_glyph_strikes(font.legacy_backslash)
             .last()
             .unwrap()
