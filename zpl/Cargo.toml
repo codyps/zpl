@@ -5,6 +5,7 @@ edition = "2021"
 license.workspace = true
 
 [dependencies]
+unicode-normalization = "0.1.25"
 unicode-bidi = "0.3.18"
 raster-diff = { version = "0.1.0", path = "../raster-diff" }
 

@@ -128,6 +128,8 @@ fn extend_unicode(settings: Settings, glyphs: &mut Vec<Glyph>) {
             include_bytes!("../../assets/font0-40-24-hebrew.zbf"),
             include_bytes!("../../assets/font0-40-24-extended.zbf"),
             include_bytes!("../../assets/font0-40-24-missing.zbf"),
+            include_bytes!("../../assets/font0-40-24-conformance.zbf"),
+            include_bytes!("../../assets/font0-40-24-controls.zbf"),
         ],
         _ => return,
     };
@@ -143,6 +145,10 @@ fn extend_unicode(settings: Settings, glyphs: &mut Vec<Glyph>) {
         );
     }
     glyphs.sort_by_key(|g| g.codepoint);
+    // Overlapping independent captures retain the existing encoding's glyph.
+    // In particular CI27 soft hyphen is visible; CI28 formatting is handled
+    // before layout, while FB may still generate its printable hyphen.
+    glyphs.dedup_by_key(|g| g.codepoint);
 }
 // CI27 cent character, measured independently at each embedded strike.
 // ^CI pp. 156–159; raw pages and advance checks: cent-glyph-zd621-v1.

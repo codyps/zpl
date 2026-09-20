@@ -42,7 +42,6 @@ pub fn validate_glyphs(glyphs: &[Glyph]) -> Result<(), String> {
             || g.width > 4096
             || g.height > 4096
             || g.advance > 4096
-            || g.advance == 0
             || g.left.unsigned_abs() > 4096
             || g.top.unsigned_abs() > 4096
             || g.bitmap.len() != g.height as usize

@@ -5,6 +5,7 @@ mod barcode_edges;
 pub mod compatibility;
 pub mod profiles;
 use raster_diff::compression;
+use unicode_normalization::UnicodeNormalization;
 mod bounded_text;
 mod concatenation;
 mod field_block;
@@ -833,6 +834,26 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                             );
                         }
                         std::str::from_utf8(&bytes).map_err(|_| "invalid UTF-8 text")?
+                    };
+                    // UAX #15 sections 1.1–1.2: canonically equivalent Unicode
+                    // text has the same appearance. Native decomposed-accent
+                    // controls in unicode-conformance-zd621-v1 verify NFC.
+                    // https://www.unicode.org/reports/tr15/
+                    let canonical;
+                    let value = if encoding == 28 {
+                        let block_formatting = field.block.is_some()
+                            && options.compatibility.block_utf8_formatting_visible;
+                        canonical = value
+                            .nfc()
+                            .filter_map(|c| match c {
+                                '\u{ad}' | '\u{200b}' if !block_formatting => None,
+                                '\u{200b}' => Some(' '),
+                                _ => Some(c),
+                            })
+                            .collect::<String>();
+                        canonical.as_str()
+                    } else {
+                        value
                     };
                     let visual;
                     let value = if advanced[1]

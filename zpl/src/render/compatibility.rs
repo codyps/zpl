@@ -43,6 +43,10 @@ pub struct Compatibility {
     /// Disabled: use nominal font height and the normal text baseline, per
     /// ^FB pp. 186–188. Uncaptured sizes scale the closest measured height.
     pub font_s_block_metrics: bool,
+    /// Render CI28 soft hyphen visibly and zero-width space as a space in FB.
+    /// Disabled: suppress these formatting controls as in plain text and TB.
+    /// Native controls: unicode-conformance-zd621-v1/formatting; ^FB p. 186.
+    pub block_utf8_formatting_visible: bool,
     /// Resolve unavailable resident IDs 1–9, I–O and W–Z using the current CF
     /// font for A fields, and font A for CF. Measured on ZD621 V93.21.33Z;
     /// the guide lists A–Z/0–9 (^A pp. 60–61) and invalid CF fallback (^CF

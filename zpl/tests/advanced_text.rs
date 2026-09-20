@@ -81,7 +81,9 @@ fn default_glyph_applies_only_to_captured_missing_characters() {
             pixels("^PA0^FDABC שלום", options)
         );
         assert_ne!(pixels("^PA1^FDA͸A", options), pixels("^PA0^FDA͸A", options));
-        let source = "^XA^CI28^PA1,1,1,1^A0N,40,24^FD😀^FS^XZ";
+        // The Unicode conformance capture now establishes the native blank
+        // fallback for U+1F600; U+1F642 remains outside the sampled repertoire.
+        let source = "^XA^CI28^PA1,1,1,1^A0N,40,24^FD🙂^FS^XZ";
         assert!(zpl::render(source.as_bytes(), options).is_err());
     }
 }

@@ -1,5 +1,6 @@
 //! Resident-font sampling, extraction, export, and verification without transport.
 use std::fmt::Write;
+use unicode_normalization::UnicodeNormalization;
 use zpl::{
     bitmap_font::{valid_codepoint, validate_glyphs, Glyph, Settings, GRAPHIC_SYMBOLS},
     output::raster::Raster,
@@ -201,10 +202,7 @@ pub fn extract_page(image: &Raster, page: &Page) -> Result<Vec<Glyph>, String> {
         let rows = crop(image, t.x, t.y, t.width, t.split - t.y)?;
         let bbox = bounds(&rows)?;
         let (measured, mb) = probe(image, t)?;
-        let advance =
-            mb.2.checked_sub(b.2)
-                .filter(|&n| n > 0)
-                .ok_or("invalid glyph advance")?;
+        let advance = mb.2.checked_sub(b.2).ok_or("invalid glyph advance")?;
         for (y, row) in reference.iter().enumerate() {
             for (x, &pixel) in row.iter().enumerate().take(b.2).skip(sentinel) {
                 if pixel != measured[y][x + advance] {
@@ -236,9 +234,9 @@ pub fn extract_page(image: &Raster, page: &Page) -> Result<Vec<Glyph>, String> {
                 g.bitmap.push(bits);
             }
         }
-        // A validated, positive advance can belong to a blank glyph: ZD621
-        // resident H lowercase is blank. The nonempty sentinel probes above
-        // still reject blank or invalid captures (tests/fixtures/font-h-blank).
+        // A validated advance may be zero (CI28 formatting characters),
+        // and blank glyphs may have positive advance (resident H lowercase).
+        // Nonempty sentinel probes still reject blank or invalid captures.
         glyphs.push(g);
     }
     Ok(glyphs)
@@ -297,7 +295,17 @@ pub fn verification_plan(
     if text.is_empty() || text.len() > 4096 {
         return Err("invalid verification text".into());
     }
-    let selected: Vec<_> = text
+    // UAX #15 canonical composition matches native CI28 composed accents.
+    // Keep the submitted ZPL text unchanged; only normalize expected glyphs.
+    // https://www.unicode.org/reports/tr15/#Norm_Forms
+    let canonical;
+    let expected_text = if encoding == 28 {
+        canonical = text.nfc().collect::<String>();
+        canonical.as_str()
+    } else {
+        text
+    };
+    let selected: Vec<_> = expected_text
         .chars()
         .map(|c| c as u32)
         .map(|c| {

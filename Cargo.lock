@@ -4029,6 +4029,7 @@ dependencies = [
  "tokio",
  "toml",
  "unicode-bidi",
+ "unicode-normalization",
 ]
 
 [[package]]
@@ -4036,6 +4037,7 @@ name = "zpl-font-extract"
 version = "0.1.0"
 dependencies = [
  "raster-diff",
+ "unicode-normalization",
  "zpl",
 ]
 

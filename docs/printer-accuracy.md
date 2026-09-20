@@ -1005,3 +1005,27 @@ The original S case, all 26 sampling/verification pages, and mixed AS/GS/CFS
 label are exact. All 72 origin/block/multiline fields exceed 97.10% foreground
 IoU with an enforced 80% floor. `font_s_block_metrics` selects the measured
 printer block ascents and pitches; specification behavior remains selectable.
+
+## Unicode conformance and zero-advance formatting
+
+`unicode_conformance_preview` pins 18 additional unmodified native frames at
+zero underpaint and zero overpaint. Seventeen contain ink; the blank CJK frame
+records missing-character behavior and does not count as CJK text coverage.
+The new Font 0 40x24 supplements cover the original Latin, Greek, Cyrillic,
+combining-accent, supplementary-character, and control-character cases.
+`zpl-font-extract` reproduces both assets from the native pages and independently
+composes the verification frames, including the decomposed-accent source.
+
+CI28 text uses canonical NFC composition; barcode bytes remain unchanged.
+Zero advances are accepted only after the existing sentinel probe validation.
+Plain text and bounded blocks suppress soft hyphen and zero-width space.
+The ZD621's field-block departure (visible soft hyphen, zero-width space treated
+as ordinary space) is controlled by `block_utf8_formatting_visible`, enabled
+only in the printer profile. See the
+[fixture evidence](../zpl/tests/fixtures/unicode-conformance-zd621-v1/README.md)
+for exact source/PNG hashes, standards, and the historical failed literal
+composition retained in capture metadata.
+
+The recovered resident TTF also provides a useful independent font reference.
+[Font 0 TTF comparison](font0-ttf.md) records the offline method and measured
+remaining differences; exact captured strikes remain the renderer's source.
