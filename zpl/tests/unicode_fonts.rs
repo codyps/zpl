@@ -21,16 +21,9 @@ fn captured_missing_characters_use_the_native_space_advance() {
     assert_eq!(pixels("^PA0^FDAمرحباA͸"), pixels("^FDA     A "));
 }
 #[test]
-fn advanced_features_and_uncaptured_glyphs_are_not_silently_ignored() {
+fn invalid_advanced_properties_and_uncaptured_glyphs_are_not_silently_ignored() {
     for options in [SPECIFICATION, ZD621_203_DPI] {
-        for command in [
-            "^PA1",
-            "^PA0,1",
-            "^PA0,0,1",
-            "^PA0,0,0,1",
-            "^PA2",
-            "^PA0,0,0,0,0",
-        ] {
+        for command in ["^PA2", "^PA0,2", "^PA0,0,2", "^PA0,0,0,2", "^PA0,0,0,0,0"] {
             let source = format!("^XA{command}^FO20,20^FDABC^FS^XZ");
             assert!(zpl::render(source.as_bytes(), options).is_err());
         }

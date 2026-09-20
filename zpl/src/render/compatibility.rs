@@ -13,6 +13,19 @@
 /// initial value: the renderer does not reapply it after you change an option.
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct Compatibility {
+    /// Preserve PA properties whose operands are omitted, as the ZD621 does.
+    /// Disabled: use the documented zero default for each missing operand
+    /// (Zebra Programming Guide ^PA, p. 315).
+    pub advanced_text_omitted_flags_persist: bool,
+    /// Treat Unicode 6.3 directional isolates U+2066–2069 as unassigned class-L
+    /// characters with the selected PA fallback, matching the captured printer.
+    /// Disabled: use their standard isolate semantics without visible glyphs.
+    pub bidi_isolates_as_missing_glyphs: bool,
+    /// Omit Unicode paired-bracket resolution (UAX #9 rule N0), matching the
+    /// measured ZD621 ordering around RTL text and following digits. Disabled:
+    /// resolve paired brackets using the standard Unicode bidirectional rules.
+    /// https://www.unicode.org/reports/tr9/#N0
+    pub bidi_skips_paired_bracket_resolution: bool,
     /// Retain SN values whose rightmost numeric run exceeds the documented
     /// twelve-digit limit (^SN pp. 341–342), without suppressing their zeros.
     /// Disabled: report unsupported input rather than silently skipping indexing.

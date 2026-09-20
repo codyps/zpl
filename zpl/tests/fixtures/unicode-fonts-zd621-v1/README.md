@@ -25,7 +25,8 @@ manifest.tsv pins source, raw PNG, local pixel hashes and directional paint
 counts; assets.tsv pins all six exported font strikes. The test requires
 exactness for sampling/verification/repeated/original-case frames and tests
 foreground IoU separately for all eight rotated holdout fields. Enabled PA
-features and unmeasured glyphs remain unsupported rather than silently ignored.
+features are covered separately by advanced-text-zd621-v1; unmeasured glyphs
+remain unsupported rather than silently ignored.
 
 References: Zebra ZPL II Programming Guide, CI pp. 156–159, FH p. 190,
 PA p. 315; https://www.zebra.com/content/dam/support-dam/en/documentation/unrestricted/guide/software/zpl-zbi2-pg-en.pdf

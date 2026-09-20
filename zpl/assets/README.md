@@ -146,3 +146,12 @@ benchmark under `^PA0`; its ASCII A is a verification anchor, not an override.
 The separate 40×24 legacy-backslash asset preserves native CI0/CI28 mapping.
 All six assets and their sampling, repeated-control and independent preview
 pages are pinned in `tests/fixtures/unicode-fonts-zd621-v1`.
+
+The PA1 captures `font0-32-0-default-glyph.zbf` and
+`font0-40-24-default-glyph.zbf` provide measured replacement boxes for U+0378
+and Arabic U+0627/U+0628/U+062D/U+0631/U+0645. The matching
+`font0-32-0-missing.zbf` records PA0 blank advances. ASCII A anchors their
+independent verification strings and is not used as an override. Capture
+with `extract-font --encoding 28 --default-glyph`; the selection is pinned in
+the resumable capture configuration. Sources, raw previews, repeated pages,
+verification strings and asset hashes are in `advanced-text-zd621-v1`.

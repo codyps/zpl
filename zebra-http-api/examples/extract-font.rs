@@ -31,6 +31,10 @@ struct Args {
     /// ZPL ^CI encoding: 28 accepts Unicode, 27 Latin-1, and 0/13 ASCII.
     #[arg(long, default_value_t = 27)]
     encoding: u8,
+    /// Use the resident font's default glyph for missing characters (^PA1).
+    /// Requires CI28; the default samples PA0's blank replacement instead.
+    #[arg(long)]
+    default_glyph: bool,
     #[arg(long, default_value_t = 8)]
     batch_size: usize,
     #[arg(long, default_value_t = 30.0)]
@@ -110,6 +114,15 @@ struct Capture<'a> {
 }
 impl Capture<'_> {
     async fn page(&self, name: &str, zpl: &str) -> Result<(Vec<u8>, Raster)> {
+        // ^PA p. 315 selects the font fallback before both metric sampling
+        // and independent verification. Capture configuration pins the choice.
+        let fallback_source;
+        let zpl = if self.args.default_glyph {
+            fallback_source = zpl.replacen("^PA0,0,0,0", "^PA1,0,0,0", 1);
+            fallback_source.as_str()
+        } else {
+            zpl
+        };
         let request = self.args.output.join(format!("{name}.zpl"));
         let png = self.args.output.join(format!("{name}.png"));
         if request.exists() {
@@ -148,6 +161,9 @@ fn capture_config(args: &Args, codes: &[u32]) -> Value {
     // Preserve existing CI27 capture manifests for offline/resume workflows.
     if args.encoding != 27 {
         config["encoding"] = json!(args.encoding);
+    }
+    if args.default_glyph {
+        config["default_glyph"] = json!(true);
     }
     config
 }
@@ -188,6 +204,10 @@ async fn run(args: Args) -> Result<()> {
         .unwrap_or_else(|| (32..=126).collect());
     codes.sort_unstable();
     codes.dedup();
+    ensure!(
+        !args.default_glyph || args.encoding == 28,
+        "default-glyph sampling requires encoding 28"
+    );
     ensure!(
         matches!(args.encoding, 0 | 13 | 27 | 28)
             && (args.encoding == 28
@@ -397,6 +417,30 @@ mod tests {
         }
         run(a).await.unwrap();
         assert!(run(args(&temp.0)).await.is_err());
+    }
+    #[tokio::test]
+    async fn default_glyph_mode_is_applied_and_pinned_on_resume() {
+        let temp = Temp::new();
+        saved_pages(&temp.0);
+        let mut a = args(&temp.0);
+        a.encoding = 28;
+        a.default_glyph = true;
+        json_write(&temp.0.join("capture.json"), &capture_config(&a, &[32, 65])).unwrap();
+        for name in ["page-000.zpl", "verification.zpl"] {
+            let path = temp.0.join(name);
+            let source = fs::read_to_string(&path)
+                .unwrap()
+                .replace("^CI27", "^CI28^PA1,0,0,0");
+            fs::write(path, source).unwrap();
+        }
+        run(a).await.unwrap();
+        let mut different = args(&temp.0);
+        different.encoding = 28;
+        assert!(run(different)
+            .await
+            .unwrap_err()
+            .to_string()
+            .contains("configuration differs"));
     }
     #[tokio::test]
     async fn offline_resume_and_failed_verification_preserve_exports() {

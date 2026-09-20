@@ -12,6 +12,9 @@ pub const SPECIFICATION: Options = Options {
     height: 1218,
     dpi: 203,
     compatibility: Compatibility {
+        advanced_text_omitted_flags_persist: false,
+        bidi_isolates_as_missing_glyphs: false,
+        bidi_skips_paired_bracket_resolution: false,
         serial_overlong_keeps_value: false,
         retail_non_digits_as_zero: false,
         retail_ignore_supplied_check_digit: false,
@@ -126,6 +129,9 @@ pub const ZD621_203_DPI: Options = Options {
     height: 1218,
     dpi: 203,
     compatibility: Compatibility {
+        advanced_text_omitted_flags_persist: true,
+        bidi_isolates_as_missing_glyphs: true,
+        bidi_skips_paired_bracket_resolution: true,
         serial_overlong_keeps_value: true,
         retail_non_digits_as_zero: true,
         retail_ignore_supplied_check_digit: true,

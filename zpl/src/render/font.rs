@@ -12,6 +12,7 @@ use std::{collections::BTreeMap, sync::OnceLock};
 pub(super) struct Font {
     id: char,
     legacy_backslash: bool,
+    default_glyph: bool,
     block_flow: Option<BlockFlow>,
 }
 #[derive(Clone, Copy)]
@@ -37,8 +38,13 @@ impl Font {
         Self {
             id,
             legacy_backslash,
+            default_glyph: false,
             block_flow: None,
         }
+    }
+    pub(super) fn with_default_glyph(mut self, enabled: bool) -> Self {
+        self.default_glyph = enabled;
+        self
     }
     pub(super) fn with_block_flow(
         mut self,
@@ -114,7 +120,10 @@ fn strike() -> &'static (Settings, Vec<Glyph>) {
 // in unicode-fonts-zd621-v1, including all five final forms.
 fn extend_unicode(settings: Settings, glyphs: &mut Vec<Glyph>) {
     let sources: &[&[u8]] = match (settings.font, settings.height, settings.width) {
-        ('0', 32, 0) => &[include_bytes!("../../assets/font0-32-0-hebrew.zbf")],
+        ('0', 32, 0) => &[
+            include_bytes!("../../assets/font0-32-0-hebrew.zbf"),
+            include_bytes!("../../assets/font0-32-0-missing.zbf"),
+        ],
         ('0', 40, 24) => &[
             include_bytes!("../../assets/font0-40-24-hebrew.zbf"),
             include_bytes!("../../assets/font0-40-24-extended.zbf"),
@@ -299,12 +308,48 @@ fn legacy_strikes() -> &'static Vec<(Settings, Vec<Glyph>)> {
         faces
     })
 }
+// ^PAa, Zebra guide p. 315: use the resident default glyph rather than a
+// space for measured missing characters. Native controls: advanced-text-zd621-v1.
+fn default_glyph_strikes(legacy: bool) -> &'static Vec<(Settings, Vec<Glyph>)> {
+    static NORMAL: OnceLock<Vec<(Settings, Vec<Glyph>)>> = OnceLock::new();
+    static LEGACY: OnceLock<Vec<(Settings, Vec<Glyph>)>> = OnceLock::new();
+    (if legacy { &LEGACY } else { &NORMAL }).get_or_init(|| {
+        let mut faces = if legacy {
+            legacy_strikes().clone()
+        } else {
+            let mut faces = strikes().clone();
+            faces.push(strike().clone());
+            faces
+        };
+        for (settings, glyphs) in &mut faces {
+            let data: &[u8] = match (settings.font, settings.height, settings.width) {
+                ('0', 32, 0) => include_bytes!("../../assets/font0-32-0-default-glyph.zbf"),
+                ('0', 40, 24) => include_bytes!("../../assets/font0-40-24-default-glyph.zbf"),
+                _ => continue,
+            };
+            for glyph in bitmap_font::unpack(data)
+                .expect("validated default glyph strike")
+                .1
+                .into_iter()
+                .filter(|g| g.codepoint > 126)
+            {
+                match glyphs.binary_search_by_key(&glyph.codepoint, |g| g.codepoint) {
+                    Ok(i) => glyphs[i] = glyph,
+                    Err(i) => glyphs.insert(i, glyph),
+                }
+            }
+        }
+        faces
+    })
+}
 fn selected(id: impl Into<Font> + Copy, w: f64, h: f64) -> (&'static [Glyph], f64, f64) {
     // C and D share the 18x10 matrix (ZPL Programming Guide Table 31,
     // p. 1583); resident-bc-zd621-v1 verifies the alias across all ASCII.
     let font = id.into();
     let id = if font.id == 'C' { 'D' } else { font.id };
-    let faces = if font.legacy_backslash {
+    let faces = if font.default_glyph {
+        default_glyph_strikes(font.legacy_backslash)
+    } else if font.legacy_backslash {
         legacy_strikes()
     } else {
         strikes()
@@ -315,7 +360,12 @@ fn selected(id: impl Into<Font> + Copy, w: f64, h: f64) -> (&'static [Glyph], f6
             return (glyphs, w / sw, h / s.height as f64);
         }
     }
-    let fallback = if font.legacy_backslash {
+    let fallback = if font.default_glyph {
+        &default_glyph_strikes(font.legacy_backslash)
+            .last()
+            .unwrap()
+            .1
+    } else if font.legacy_backslash {
         &legacy_strikes().last().unwrap().1
     } else {
         &strike().1
@@ -681,7 +731,9 @@ mod tests {
             g.iter().map(|g| g.codepoint).collect::<Vec<_>>(),
             (32..=126)
                 .chain([162, 173, 233, 240])
+                .chain([0x378])
                 .chain(0x5d0..=0x5ea)
+                .chain([0x627, 0x628, 0x62d, 0x631, 0x645])
                 .collect::<Vec<_>>()
         );
         assert!(DATA.len() < 4500);

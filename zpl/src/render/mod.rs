@@ -1,4 +1,5 @@
 //! Local, deterministic ZPL previews. Unsupported rendering semantics are errors.
+mod advanced_text;
 mod barcode;
 mod barcode_edges;
 pub mod compatibility;
@@ -193,8 +194,9 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
     let mut warnings = Vec::new();
     let (mut shift, mut top) = (0., 0.);
     let mut encoding = 0;
+    let mut advanced = [false; 4];
     let mut default_rotation = b'N';
-    let mut default_justification = 0;
+    let mut default_justification = 2;
     let mut reverse = false;
     let mut code_validation = false;
     let mut upside_down = false;
@@ -324,12 +326,20 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
             match name {
                 "CC" | "CT" | "CD" | "FX" => {}
                 "PA" => {
-                    // Zebra Programming Guide ^PA, p. 315: all four advanced
+                    // Zebra Programming Guide ^PA, p. 315 documents zero defaults.
+                    // The printer profile preserves omitted operands. The embedded repertoire has no extra
+                    // shaping/OpenType substitutions; native pair/ligature and
+                    // Hebrew controls pin their unchanged glyphs and advances.
                     // https://www.zebra.com/content/dam/support-dam/en/documentation/unrestricted/guide/software/zpl-zbi2-pg-en.pdf
-                    // Text features default to off. Enabled features still
-                    // require explicit implementation rather than being ignored.
-                    if p.iter().any(|v| !matches!(*v, "" | "0")) {
-                        return Err("enabled advanced text properties are unsupported".into());
+                    for (i, flag) in advanced.iter_mut().enumerate() {
+                        *flag = match p.get(i).copied().unwrap_or("") {
+                            "" if options.compatibility.advanced_text_omitted_flags_persist => {
+                                *flag
+                            }
+                            "" | "0" => false,
+                            "1" => true,
+                            _ => return Err("PA flags must be zero or one".into()),
+                        };
                     }
                 }
                 "CI" => {
@@ -424,7 +434,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                 "FW" => {
                     default_rotation = rotation(p[0])?;
                     field.rotation = default_rotation;
-                    default_justification = justification(&p, 1, 0)?;
+                    default_justification = justification(&p, 1, 2)?;
                     field.justification = default_justification;
                 }
                 "FP" => {
@@ -731,6 +741,21 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                         }
                         std::str::from_utf8(&bytes).map_err(|_| "invalid UTF-8 text")?
                     };
+                    let visual;
+                    let value = if advanced[1]
+                        && !value.is_empty()
+                        && field.block.is_none()
+                        && field.bounded.is_none()
+                    {
+                        visual = advanced_text::reorder(
+                            value,
+                            options.compatibility.bidi_skips_paired_bracket_resolution,
+                            options.compatibility.bidi_isolates_as_missing_glyphs,
+                        );
+                        &visual
+                    } else {
+                        value
+                    };
                     let rendered = (|| -> Result<Path, String> {
                         if let Some(error) = &field.barcode_error {
                             return Err(error.clone());
@@ -779,7 +804,8 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                                 encoding == 0
                                     || (encoding == 28
                                         && options.compatibility.utf8_uses_legacy_backslash),
-                            );
+                            )
+                            .with_default_glyph(advanced[0]);
                             // ^FB p. 186 permits negative line spacing. The
                             // printer clamps the resulting pitch at zero.
                             let block =
@@ -803,6 +829,13 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                                 if field.direction != (b'H', 0.) {
                                     return Err("field direction with TB is unsupported".into());
                                 }
+                                // ^TB defaults to script-dependent justification (guide p. 356).
+                                if field.justification == 2 {
+                                    field.justification = u8::from(
+                                        advanced_text::base_level(value)
+                                            .is_some_and(|level| level.is_rtl()),
+                                    );
+                                }
                                 bounded_text::layout(
                                     text_font,
                                     value,
@@ -820,8 +853,13 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                                     } else {
                                         bounds
                                     },
-                                    field.justification == 1,
-                                    options.compatibility.bounded_text_printer_pitch,
+                                    bounded_text::LayoutOptions {
+                                        right: field.justification == 1,
+                                        printer_pitch: options
+                                            .compatibility
+                                            .bounded_text_printer_pitch,
+                                        bidi: advanced[1].then_some(options.compatibility),
+                                    },
                                 )?
                             } else {
                                 text_block(
@@ -866,7 +904,8 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                             } else {
                                 baseline
                             };
-                            if field.block.is_none_or(|block| block.0 != 0.)
+                            if field.bounded.is_none()
+                                && field.block.is_none_or(|block| block.0 != 0.)
                                 && options
                                     .compatibility
                                     .right_justified_inverted_text_uses_ink_margin
@@ -883,15 +922,13 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                                     font::inverted_margin(text_font, value, font_w, font_h)?
                                 };
                             }
-                            field.text_size =
-                                Some(if let Some((width, lines, spacing, _, _)) = block {
-                                    (width, lines as f64 * font_h + (lines - 1) as f64 * spacing)
-                                } else {
-                                    (font::width_for(text_font, value, font_w, font_h)?, font_h)
-                                });
-                            if let Some(size) = field.bounded {
-                                field.text_size = Some(size);
-                            }
+                            field.text_size = Some(if let Some(size) = field.bounded {
+                                size
+                            } else if let Some((width, lines, spacing, _, _)) = block {
+                                (width, lines as f64 * font_h + (lines - 1) as f64 * spacing)
+                            } else {
+                                (font::width_for(text_font, value, font_w, font_h)?, font_h)
+                            });
                             if let Some(size) = direction_size {
                                 field.text_size = Some(size);
                             }

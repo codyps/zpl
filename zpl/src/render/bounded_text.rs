@@ -3,15 +3,25 @@
 use super::{font, TextLayout};
 use crate::output::{Path, Point};
 
+pub(super) struct LayoutOptions {
+    pub right: bool,
+    pub printer_pitch: bool,
+    pub bidi: Option<super::compatibility::Compatibility>,
+}
+
 pub(super) fn layout(
     font: font::Font,
     text: &str,
     size: (f64, f64),
     requested_height: f64,
     bounds: (f64, f64),
-    right: bool,
-    printer_pitch: bool,
+    options: LayoutOptions,
 ) -> Result<TextLayout, String> {
+    let LayoutOptions {
+        right,
+        printer_pitch,
+        bidi,
+    } = options;
     let (w, h) = size;
     let (width, height) = bounds;
     let mut decoded = String::new();
@@ -36,10 +46,22 @@ pub(super) fn layout(
                     decoded.push('<');
                 }
             }
+            c if c.is_whitespace() => decoded.push(' '),
             c => decoded.push(c),
         }
     }
-    let measure = |s: &str| font::width_for(font, s, w, h);
+    let measure = |s: &str| {
+        if let Some(compat) = bidi {
+            let visual = super::advanced_text::reorder(
+                s,
+                compat.bidi_skips_paired_bracket_resolution,
+                compat.bidi_isolates_as_missing_glyphs,
+            );
+            font::width_for(font, &visual, w, h)
+        } else {
+            font::width_for(font, s, w, h)
+        }
+    };
     let mut lines = Vec::new();
     let mut line = String::new();
     let chars: Vec<_> = decoded.chars().collect();
@@ -85,6 +107,7 @@ pub(super) fn layout(
     } else {
         h
     };
+    let mut cursor = 0;
     let mut path = Path::default();
     let mut parts = Vec::new();
     for (i, line) in lines.iter().enumerate() {
@@ -92,6 +115,23 @@ pub(super) fn layout(
         if y >= height {
             break;
         }
+        let visual;
+        let line = if let Some(compat) = bidi {
+            let start = cursor
+                + decoded[cursor..]
+                    .find(line)
+                    .ok_or("invalid TB wrap range")?;
+            cursor = start + line.len();
+            visual = super::advanced_text::reorder_range(
+                &decoded,
+                start..cursor,
+                compat.bidi_skips_paired_bracket_resolution,
+                compat.bidi_isolates_as_missing_glyphs,
+            );
+            &visual
+        } else {
+            line
+        };
         let x = if right { -measure(line)? } else { 0. };
         for mut part in font::text_parts_for(font, line, w, h)? {
             // Captured TB previews clip the bottom, retaining ascender ink

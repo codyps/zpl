@@ -118,7 +118,7 @@ as a rejection control. Its positive case now uses eleven uncompressed UPC-A
 digits and a fresh nonblank printer response; all four retail aliases match.
 
 A fresh audit of the completed 512-frame comparison conformance reference set
-also found unsupported text commands (`^PA`, numbered fields and
+also found unsupported text commands (numbered fields and
 print-quantity serialization), missing glyphs/encodings and unsampled font sizes below the
 80% target. These remain work beyond the original 133 cases. Capture context
 must be preserved: its reset uses `^BY2,3,100`, and some inputs still use PW812,
@@ -774,11 +774,32 @@ characters, and all 27 Hebrew letters/final forms at 40×24 and natural-width
 32 dots. The six sampled missing characters from `advanced-text-0000` have
 the native blank seven-dot advance at 40×24 with advanced features disabled.
 The unchanged original case was freshly captured and now matches every pixel.
-`^PA` with all features disabled is accepted; enabled fallback glyphs,
-bidirectional layout, shaping and OpenType processing remain explicit errors.
-This does not claim coverage of unmeasured glyphs or enabled advanced features.
+`^PA` defaults are accepted. Enabled advanced properties are covered by the
+additional controls below; unmeasured glyphs remain explicit errors.
 
 The sampler emits real UTF-8 byte escapes for `^CI28`. ZBF2 stores Unicode
 scalar values; the decoder still accepts ZBF1 and the exporter preserves
 byte-identical ZBF1 output for existing one-byte strikes. See the fixture
 README and the assets format documentation for provenance and limits.
+
+## Advanced text properties and bidirectional layout
+
+`advanced_text_preview` adds 49 complete native frames, 45 pixel-exact,
+including all six original `advanced-text-*` cases. All 58 separately checked
+rotated/wrapped text regions exceed 80% foreground IoU (minimum 93.2298%).
+The four non-exact frames retain 870 underpaint and 862 overpaint pixels;
+raw input, PNG, rendered-pixel and font hashes pin every accepted residual.
+
+PA selects measured default glyphs and Unicode bidirectional layout. FB
+ignores bidi as documented; TB wraps logical paragraphs before reordering
+lines, and supports automatic script-dependent or explicit justification.
+Native controls cover all 16 flag combinations, independent ligature/kerning
+strings, Hebrew final forms, bidi brackets, formatting controls, persistence,
+rotations and wrapped paragraphs. Shaping/OpenType toggles leave this embedded
+repertoire unchanged; broader shaping and unmeasured glyphs are not claimed.
+
+Three independently selectable compatibility options reproduce native PA
+operand persistence, omission of paired-bracket rule N0 and older treatment
+of isolates as class-L missing characters. All are disabled in SPECIFICATION
+and enabled in ZD621_203_DPI. See the advanced-text fixture README for provenance
+and the sequential-label context used by the persistence test.
