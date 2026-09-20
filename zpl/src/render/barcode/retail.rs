@@ -1,5 +1,56 @@
 use super::*;
 
+/// Normalize ZPL field data before symbology encoding and interpretation.
+/// Zebra Programming Guide ^B8 p. 83, ^BE p. 109, ^BU p. 142 specifies
+/// zero-padding or left truncation to 7/12/11 data digits respectively.
+/// Native departures are measured in retail-data-zd621-v1.
+/// https://www.zebra.com/content/dam/support-dam/en/documentation/unrestricted/guide/software/zpl-zbi2-pg-en.pdf
+pub(super) fn normalize(
+    data: &[u8],
+    n: usize,
+    compatibility: super::super::compatibility::Compatibility,
+) -> Result<Vec<u8>, String> {
+    let mut data = data.to_vec();
+    for byte in &mut data {
+        if !byte.is_ascii_digit() {
+            if compatibility.retail_non_digits_as_zero {
+                *byte = b'0';
+            } else {
+                return Err("barcode requires decimal digits".into());
+            }
+        }
+    }
+    if compatibility.retail_ignore_supplied_check_digit && data.len() == n {
+        data.pop();
+    }
+    if compatibility.retail_printer_overlong_data {
+        if n == 8 && data.len() > 8 {
+            // Native EAN-8 drops five leading characters from 9–12-byte
+            // input. With 13 bytes, it first discards the final check digit.
+            if data.len() == 13 {
+                data.pop();
+            }
+            if data.len() <= 12 {
+                data.drain(..5);
+            }
+        } else if n == 13 && data.len() > 13 {
+            let first = data[0];
+            data = data[data.len() - 11..].to_vec();
+            data.insert(0, first);
+        }
+    }
+    let width = n - 1;
+    if data.len() > width {
+        data.drain(..data.len() - width);
+    }
+    if data.len() < width {
+        let mut padded = vec![b'0'; width - data.len()];
+        padded.extend(data);
+        data = padded;
+    }
+    Ok(data)
+}
+
 /// Zebra ^B8/^B9/^BE/^BU interpretation, measured on ZD621 203 DPI.
 /// ^BU pp. 142–143 specifies resident A below module 3, OCR-B thereafter;
 /// font E's native 28x15 cell/20-dot advance is in Table 29, p. 1582.

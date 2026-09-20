@@ -732,3 +732,19 @@ Nondefault FP combined with TB remains explicitly unsupported; this suite does
 not establish accuracy for every text layout combination or font size.
 
 Run `cargo test -p zpl --test bounded_text --test bounded_text_preview`.
+
+### Retail field-data lengths and validation
+
+[Twelve exact retail-data frames](../zpl/tests/fixtures/retail-data-zd621-v1/README.md)
+cover EAN-8, EAN-13 and UPC-A padding, truncation, supplied checks, nondigit
+coercion and empty input. A 1–20-character sweep and independent CVN/CVY
+controls match every pixel, including captions and validation labels.
+
+Both profiles now implement the guide's short-data zero padding and left
+truncation. Separate printer options select recomputed supplied check digits,
+nondigit-to-zero conversion, and the measured overlong EAN data windows.
+CVY still validates the original data before normalization. UPC-A overlong
+validation now reports INVALID-L; the EAN-specific INVALID-S option no longer
+applies to UPC-A. UPC-E and DataBar input rules remain separate.
+
+Run `cargo test -p zpl --test retail_data --test retail_data_preview`.

@@ -13,6 +13,16 @@
 /// initial value: the renderer does not reapply it after you change an option.
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct Compatibility {
+    /// Replace nonnumeric EAN-8/EAN-13/UPC-A field bytes with zero on the ZD621.
+    /// Disabled: reject nonnumeric data (Zebra guide pp. 83, 109, 142).
+    pub retail_non_digits_as_zero: bool,
+    /// Discard a supplied retail check digit and recompute it on the ZD621.
+    /// Disabled: apply the documented left truncation to the data width.
+    pub retail_ignore_supplied_check_digit: bool,
+    /// Match the ZD621's overlong EAN data windows, including preservation of
+    /// EAN-13's first digit. Disabled: truncate data on the left as documented.
+    pub retail_printer_overlong_data: bool,
+
     /// Clamp FB line pitch to zero when negative spacing exceeds font height.
     /// Disabled: retain signed line pitch (^FB p. 186).
     pub block_negative_pitch_clamps_to_zero: bool,
@@ -316,8 +326,9 @@ pub struct Compatibility {
     /// row-address patterns from the origin adjustment. Captured ZD621 choice;
     /// default: the complete symbol extent required by ^FO (guide p. 201).
     pub macro_micropdf417_reverse_origin_omits_side_raps: bool,
-    /// Report an overlong UPC/EAN field as INVALID-S instead of the INVALID-L
-    /// specified by ^CV (p. 167), as seen in ZD621 EAN-8 previews.
+    /// Report an overlong EAN field as INVALID-S instead of the INVALID-L
+    /// specified by ^CV (p. 167). UPC-A retains INVALID-L. See the native
+    /// validation controls in retail-data-zd621-v1.
     pub validation_retail_long_is_short: bool,
     /// Report forced legacy Data Matrix capacity failures as INVALID-P instead
     /// of INVALID-L (^BX p. 144), as observed on the captured firmware.

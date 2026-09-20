@@ -712,6 +712,9 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                             return Err(error.clone());
                         }
                         let path = if let Some(b) = &field.barcode {
+                            if code_validation {
+                                b.validate_retail_data(&bytes)?;
+                            }
                             if let Some(origins) =
                                 field.origins.as_ref().filter(|_| b.uses_multiple_origins())
                             {
@@ -882,7 +885,11 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                                 validation::classify(&error).ok_or_else(|| error.clone())?;
                             if code == b'L'
                                 && ((options.compatibility.validation_retail_long_is_short
-                                    && error.starts_with("retail"))
+                                    && error.starts_with("retail")
+                                    && field
+                                        .barcode
+                                        .as_ref()
+                                        .is_some_and(|b| b.uses_ean_validation()))
                                     || (options.compatibility.validation_legacy_small_is_parameter
                                         && error.starts_with("legacy Data Matrix")
                                         && error.contains("does not fit")))

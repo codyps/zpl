@@ -359,12 +359,42 @@ impl Barcode {
         }
         Ok(p)
     }
+    pub fn uses_ean_validation(&self) -> bool {
+        matches!(self.name.as_str(), "B8" | "BE")
+    }
+    pub fn validate_retail_data(&self, bytes: &[u8]) -> Result<(), String> {
+        let n = match self.name.as_str() {
+            "B8" if self.compatibility.retail_printer_overlong_data && bytes.len() > 8 => 13,
+            "B8" => 8,
+            "BE" => 13,
+            "BU" => 12,
+            _ => return Ok(()),
+        };
+        // ^CV validates the original data before the ordinary retail input
+        // padding/coercion. Native paired CVN/CVY controls retain S/C/E/L labels.
+        if bytes.is_empty() {
+            return Err("empty barcode data".into());
+        }
+        retail::checked(bytes, n).map(|_| ())
+    }
     pub fn render(
         &self,
         bytes: &[u8],
         font: Option<(char, f64, f64)>,
         rotation: u8,
     ) -> Result<Rendered, String> {
+        let normalized;
+        let bytes = if let Some(n) = match self.name.as_str() {
+            "B8" => Some(8),
+            "BE" => Some(13),
+            "BU" => Some(12),
+            _ => None,
+        } {
+            normalized = retail::normalize(bytes, n, self.compatibility)?;
+            normalized.as_slice()
+        } else {
+            bytes
+        };
         if bytes.is_empty() && self.name != "B3" {
             return Err(format!("{}: empty barcode data", self.name));
         }

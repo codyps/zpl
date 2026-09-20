@@ -15,16 +15,20 @@ fn pixels(input: &str, options: Options) -> Vec<u8> {
 
 #[test]
 fn validation_state_and_failures() {
-    for (cmd, data) in [
-        ("B8N,60,N,N", "ABC"),
-        ("B8N,60,N,N", "12345671"),
-        ("B8N,60,N,N", "1"),
-        ("B8N,60,N,N", "1234567890"),
-        ("BXN,4,0,10", "ABC"),
-        ("BCN,60,Z,N", "ABC"),
+    for (cmd, data, rejects_without_cv) in [
+        ("B8N,60,N,N", "ABC", true),
+        // B8 p. 83 permits padding/truncation when validation is disabled.
+        ("B8N,60,N,N", "12345671", false),
+        ("B8N,60,N,N", "1", false),
+        ("B8N,60,N,N", "1234567890", false),
+        ("BXN,4,0,10", "ABC", true),
+        ("BCN,60,Z,N", "ABC", true),
     ] {
         let field = format!("^FO40,40^{cmd}^FD{data}^FS");
-        assert!(render(format!("^XA{field}^XZ").as_bytes(), SPECIFICATION).is_err());
+        assert_eq!(
+            render(format!("^XA{field}^XZ").as_bytes(), SPECIFICATION).is_err(),
+            rejects_without_cv
+        );
         let doc = render(
             format!("^XA^CVY{field}^XZ^XA{field}^XZ").as_bytes(),
             SPECIFICATION,
@@ -35,11 +39,14 @@ fn validation_state_and_failures() {
         let b = rasterize(&doc.labels[1]).unwrap();
         assert_eq!(a.pixels, b.pixels);
         assert!(a.pixels.contains(&0));
-        assert!(render(
-            format!("^XA^CVY{field}^CVN{field}^XZ").as_bytes(),
-            SPECIFICATION
-        )
-        .is_err());
+        assert_eq!(
+            render(
+                format!("^XA^CVY{field}^CVN{field}^XZ").as_bytes(),
+                SPECIFICATION
+            )
+            .is_err(),
+            rejects_without_cv
+        );
     }
     // Unsupported renderer semantics must never be disguised as invalid data.
     assert!(render(b"^XA^CVY^BQN,3^FDLA,ABC^FS^XZ", SPECIFICATION).is_err());
@@ -48,7 +55,7 @@ fn validation_state_and_failures() {
 #[test]
 fn validation_profile_codes_are_independent() {
     for (cmd, data, retail) in [
-        ("B8N,60,N,N", "1234567890", true),
+        ("BEN,60,N,N", "12345678901234567890", true),
         ("BXN,4,140,9", "ABC", false),
     ] {
         let input = format!("^XA^PW832^LL400^CVY^FO60,60^{cmd}^FD{data}^FS^XZ");

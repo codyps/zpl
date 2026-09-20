@@ -290,3 +290,13 @@ cover mixed-mode transitions, every byte value and numeric groups across the
 their local/diff baselines were reviewed and updated after this fix. They now
 match the symbol content, but still differ by the preview's 10-dot centering
 offset and 832-vs-812 canvas width.
+
+### Retail input normalization
+
+EAN-8, EAN-13 and UPC-A field data is padded on the left with zeros or truncated
+to 7, 12 and 11 data digits, as specified on Zebra guide pages 83, 109 and 142.
+The ZD621 profile additionally selects measured handling of supplied check
+digits, nondigit bytes and overlong EAN fields through separate compatibility
+options. CVY checks original input before those normalizations. See the
+[raw retail-data controls](../zpl/tests/fixtures/retail-data-zd621-v1/README.md)
+for exact full-frame comparisons and the observed validation distinctions.

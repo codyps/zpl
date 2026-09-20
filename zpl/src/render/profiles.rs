@@ -12,6 +12,9 @@ pub const SPECIFICATION: Options = Options {
     height: 1218,
     dpi: 203,
     compatibility: Compatibility {
+        retail_non_digits_as_zero: false,
+        retail_ignore_supplied_check_digit: false,
+        retail_printer_overlong_data: false,
         block_negative_pitch_clamps_to_zero: false,
         block_indent_printer_layout: false,
         block_center_overflow_clamps_to_origin: false,
@@ -122,6 +125,9 @@ pub const ZD621_203_DPI: Options = Options {
     height: 1218,
     dpi: 203,
     compatibility: Compatibility {
+        retail_non_digits_as_zero: true,
+        retail_ignore_supplied_check_digit: true,
+        retail_printer_overlong_data: true,
         block_negative_pitch_clamps_to_zero: true,
         block_indent_printer_layout: true,
         block_center_overflow_clamps_to_origin: true,
