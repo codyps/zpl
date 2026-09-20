@@ -29,7 +29,10 @@ impl Layout {
     }
     fn limit(&self) -> f64 {
         let width = self.width
-            - if self.lines.is_empty() {
+            - if self.lines.is_empty()
+                || (self.compatibility.block_hard_break_resets_indent
+                    && self.lines.last().is_some_and(|line| line.1))
+            {
                 0.
             } else {
                 self.indent

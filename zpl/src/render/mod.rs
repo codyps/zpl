@@ -1741,7 +1741,11 @@ fn text_block(
             };
         // Zebra ^FB pp. 185–187: indent subsequent lines, distribute
         // justification between words, and leave the final line left-aligned.
-        let inset = if i == 0 { 0. } else { indent };
+        let inset = if i == 0 || (compatibility.block_hard_break_resets_indent && lines[i - 1].1) {
+            0.
+        } else {
+            indent
+        };
         let slack = width - inset - font::width_for(font_id, line, w, h)?;
         let slack = if *forced_character {
             slack.max(0.)
@@ -1763,8 +1767,9 @@ fn text_block(
             {
                 let mut word_path = font::text_for(font_id, paint_word, w, h)?;
                 // ^FB p. 187 distributes slack between words. The ZD621
-                // rounds fractional positions upward; compute cumulative slack
-                // directly to avoid rounding an accumulated floating-point error.
+                // distributes whole extra dots to the earliest gaps. Four or
+                // more gaps distinguish this from ceiling cumulative positions;
+                // see the common-font paragraph/remainder native controls.
                 let position = if font_id.block_reverses() {
                     // Native ^FP R/^FB J distributes the integer quotient
                     // backwards, but the remainder forwards, one dot in
@@ -1782,7 +1787,13 @@ fn text_block(
                         extra.round()
                     }
                 } else if compatibility.block_justification_rounds_up {
-                    (x + slack * gap as f64 / gaps as f64).ceil()
+                    if slack >= 0. {
+                        let quotient = (slack / gaps as f64).floor();
+                        let remainder = slack - quotient * gaps as f64;
+                        (x + quotient * gap as f64 + (gap as f64).min(remainder)).ceil()
+                    } else {
+                        (x + slack * gap as f64 / gaps as f64).ceil()
+                    }
                 } else {
                     x.round()
                 };

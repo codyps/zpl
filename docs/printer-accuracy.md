@@ -573,7 +573,7 @@ commands and encodings still leave the overall accuracy goal open.
 [Six spacing atlases](../zpl/tests/fixtures/field-block-rounding-zd621-v1/README.md)
 contain 72 controls using fonts 0 and A, one to three word gaps, and widths
 that distribute fractional slack. Every full frame is pixel-exact. The new
-`block_justification_rounds_up` option selects the ZD621's upward dot rounding;
+`block_justification_rounds_up` option selects the ZD621's integer spacing distribution;
 SPECIFICATION keeps nearest-dot rounding. The remaining GS field-block residual
 improves from 55 underpaint/overpaint dots to zero. Other saved justified blocks
 retain their previous results. Run `cargo test -p zpl --test field_block_rounding_preview
@@ -905,3 +905,22 @@ instead of scaling another size; existing origin/rotation rules are retained.
 frames, all exact. An offline extraction test reproduces the 95-character
 asset byte-for-byte and verifies independent composition. Other unsampled
 sizes remain open; see the fixture README for provenance and guide references.
+
+## Common font-0 sizes and field-block paragraphs
+
+Native 24x12, 20x10, 32x20 and 26x16 strikes fix the text-content, repeated-field,
+equivalent-input and compact-baseline cases. Their accurate metrics also exposed
+two field-block layout errors: hard breaks restart hanging indentation, and
+horizontal justification assigns leftover dots to the earliest word gaps.
+`block_hard_break_resets_indent` controls the first behavior (off in SPECIFICATION,
+on in ZD621_203_DPI); the existing justification option now uses the measured
+quotient/remainder rule. Earlier one-to-three-gap controls could not distinguish
+it from cumulative ceiling. New four-to-six-gap controls do, and remain exact.
+
+`font0_common_preview` pins 77 raw frames: 76 exact and one dense geometry label
+with seven underpaint and seven overpaint dots, all in rotated text. All 36
+isolated text regions exceed 93.33% foreground IoU. A fresh shapes-only printer
+preview verifies every non-text pixel separately. All four compact wrapping
+alignments and the new paragraph controls now match every pixel. Offline tests
+reproduce all four 95-character assets from native sampling pages and verify
+independent compositions. Other sizes, presets S–V and encoding gaps remain open.

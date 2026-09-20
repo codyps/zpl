@@ -174,3 +174,8 @@ sources, capture settings and offline regeneration tests are documented in
 [font0-40-22-zd621-v1](../tests/fixtures/font0-40-22-zd621-v1/README.md)
 contains its 95-glyph source pages, independent verification and regression
 controls; offline tests reproduce the asset byte-for-byte.
+
+`font0-24-12.zbf`, `font0-20-10.zbf`, `font0-32-20.zbf` and `font0-26-16.zbf`
+cover common text/field-block cases with independently hinted 95-character
+ASCII strikes. Their raw sampling pages and offline regeneration tests are in
+[font0-common-zd621-v1](../tests/fixtures/font0-common-zd621-v1/README.md).

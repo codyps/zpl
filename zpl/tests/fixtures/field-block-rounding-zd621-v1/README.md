@@ -8,11 +8,13 @@ line stays left-aligned. Every complete canvas must match exactly, without
 alignment, cropping or scaling. Input, capture and rendered-pixel SHA-256 hashes
 and zero underpaint/overpaint are pinned in the manifest.
 
-The printer rounds each justified word position upward, rather than to the
-nearest dot. Two-gap half-dot positions distinguish flooring; three-gap thirds
-distinguish nearest rounding. Position calculations distribute cumulative slack
-directly, avoiding floating-point accumulation across gaps. This fixes the
-independent `GS-blocks` control from 55 underpaint/overpaint dots to zero.
+These one-to-three-gap controls distinguish the printer from nearest-dot
+rounding. They do not distinguish cumulative ceiling from assigning leftover
+dots to the earliest gaps: those algorithms agree for these gap counts.
+The later four-to-six-gap controls in font0-common-zd621-v1 resolve that
+ambiguity: horizontal justification uses an integer quotient and distributes
+the remainder to the earliest word gaps. All 72 original controls remain exact,
+including the independent GS-blocks case.
 
 `block_justification_rounds_up` is enabled in ZD621_203_DPI and disabled in
 SPECIFICATION. This is an observed printer dot-quantization choice; the guide

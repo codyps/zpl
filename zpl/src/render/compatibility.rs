@@ -13,6 +13,10 @@
 /// initial value: the renderer does not reapply it after you change an option.
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct Compatibility {
+    /// Restart hanging indentation after each explicit FB carriage return/line
+    /// feed. Disabled: indent every line after the first in the field, matching
+    /// the guide's second-and-remaining-lines wording (^FB pp. 186–187).
+    pub block_hard_break_resets_indent: bool,
     /// Pivot rotated preset-font FO fields at the final dot rather than the
     /// matrix boundary (^FO p. 201, Table 31 p. 1584). Captured P/Q controls
     /// use a height-scaled final row; R retains the vertical matrix boundary.
@@ -128,9 +132,11 @@ pub struct Compatibility {
     /// selected hyphen. Disabled: paint the selected hyphen normally. Literal
     /// soft hyphens and CI0/CI28 are unaffected; measured on ZD621 V93.21.33Z.
     pub block_hyphenation_ci27_uses_eth: bool,
-    /// Round fractional justified word positions upward (^FB p. 187).
-    /// Disabled: round to the nearest dot. Measured with resident 0 and A
-    /// across one, two and three gaps in field-block-rounding-zd621-v1.
+    /// Distribute integer justification remainders to the earliest word gaps
+    /// (^FB p. 187). Vertical overprint flow rounds its extra positions upward.
+    /// Disabled: round accumulated positions to the nearest dot. Native controls
+    /// cover one through six gaps; see field-block-rounding-zd621-v1 and
+    /// font0-common-zd621-v1.
     pub block_justification_rounds_up: bool,
     /// Ignore FO/FT right justification for GS symbol fields. Disabled: honor
     /// the requested field justification (^FO p. 201, ^FT p. 205).

@@ -1,0 +1,1 @@
+^XA^PW832^LL1218^LH0,0^LS0^LT0^PON^LRN^FWN^PMN^FPH,0^CI27^PA0,0,0,0^CF0,32,0^FO40,80^A0N,26,16^FB221,12,2,C,24^FDAlpha beta gamma delta epsilon zeta eta theta\&Alpha beta gamma delta epsilon zeta eta theta^FS^XZ
