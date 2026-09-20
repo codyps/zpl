@@ -202,6 +202,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
     let mut warnings = Vec::new();
     let (mut shift, mut top) = (0., 0.);
     let mut encoding = 0;
+    let mut character_maps: [Option<[u8; 256]>; 14] = [None; 14];
     let mut advanced = [false; 4];
     let mut default_rotation = b'N';
     let mut default_justification = 2;
@@ -335,13 +336,14 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
             }
             let max = match name {
                 "XA" | "XZ" | "FS" | "FR" => Some(0),
-                "CI" | "PW" | "LL" | "LS" | "LT" | "LR" | "PO" | "FH" => Some(1),
+                "PW" | "LL" | "LS" | "LT" | "LR" | "PO" | "FH" => Some(1),
                 "LH" | "FW" | "FP" | "SF" => Some(2),
                 "FO" | "FT" | "CF" | "BY" | "XG" | "TB" | "SN" => Some(3),
                 "GB" | "GD" | "B3" | "FB" => Some(5),
                 "BC" => Some(6),
                 "GE" | "PA" => Some(4),
                 "GC" => Some(3),
+                "CI" => Some(513),
                 n if n.starts_with('A') => Some(3),
                 _ => None,
             };
@@ -372,12 +374,31 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                 }
                 "CI" => {
                     if !matches!(
-                        s,
+                        p[0],
                         "0" | "13" | "27" | "28" | "31" | "33" | "34" | "35" | "36"
                     ) {
                         return Err("character encoding unsupported".into());
                     }
-                    encoding = s.parse::<u8>().unwrap();
+                    if p.len() % 2 != 1 {
+                        return Err("CI remapping requires source/destination pairs".into());
+                    }
+                    encoding = p[0].parse::<u8>().unwrap();
+                    // ^CI pp. 155–158: source is the output image, destination
+                    // is the input character. Only legacy encodings remap.
+                    // Independent native controls: character-remap-zd621-v1.
+                    for pair in p[1..].as_chunks::<2>().0 {
+                        let source = pair[0].parse::<u8>().map_err(|_| "invalid CI source")?;
+                        let destination = pair[1]
+                            .parse::<u8>()
+                            .map_err(|_| "invalid CI destination")?;
+                        if matches!(encoding, 0 | 13)
+                            && (destination != b' ' || options.compatibility.remap_space)
+                        {
+                            character_maps[encoding as usize]
+                                .get_or_insert_with(|| std::array::from_fn(|i| i as u8))
+                                [destination as usize] = source;
+                        }
+                    }
                 }
                 "XA" => {
                     if scene.is_some() {
@@ -909,6 +930,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                                 &bytes,
                                 field.explicit_font.then_some((font_id, font_w, font_h)),
                                 field.rotation,
+                                character_maps.get(encoding as usize).copied().flatten(),
                             )?;
                             let mut path = rendered.path;
                             if !field.baseline {
@@ -929,7 +951,10 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                                     || (encoding == 28
                                         && options.compatibility.utf8_uses_legacy_backslash),
                             )
-                            .with_default_glyph(advanced[0]);
+                            .with_default_glyph(advanced[0])
+                            .with_character_map(
+                                character_maps.get(encoding as usize).copied().flatten(),
+                            );
                             // ^FB p. 186 permits negative line spacing. The
                             // printer clamps the resulting pitch at zero.
                             let block =

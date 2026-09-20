@@ -56,7 +56,12 @@ pub(super) fn normalize(
 /// font E's native 28x15 cell/20-dot advance is in Table 29, p. 1582.
 /// Raw controls and the independently sampled OCR-B strike are preserved in
 /// tests/fixtures/retail-caption-zd621-v1 (see its README for source links).
-pub(super) fn caption(b: &Barcode, bytes: &[u8], rotation: u8) -> Result<Path, String> {
+pub(super) fn caption(
+    b: &Barcode,
+    bytes: &[u8],
+    rotation: u8,
+    character_map: Option<[u8; 256]>,
+) -> Result<Path, String> {
     let m = b.module;
     let (id, fw, fh) = if m < 3. {
         ('A', 5. * m, 9. * m)
@@ -64,6 +69,7 @@ pub(super) fn caption(b: &Barcode, bytes: &[u8], rotation: u8) -> Result<Path, S
         let scale = (m / 3.).floor();
         ('E', 15. * scale, 28. * scale)
     };
+    let id = super::super::font::Font::from(id).with_character_map(character_map);
     let advance = super::super::font::width_for(id, "0", fw, fh)?;
     let digits = match b.name.as_str() {
         "B8" => checked(bytes, 8)?,

@@ -382,6 +382,7 @@ impl Barcode {
         bytes: &[u8],
         font: Option<(char, f64, f64)>,
         rotation: u8,
+        character_map: Option<[u8; 256]>,
     ) -> Result<Rendered, String> {
         let normalized;
         let bytes = if let Some(n) = match self.name.as_str() {
@@ -458,7 +459,7 @@ impl Barcode {
         };
         if self.uses_retail_caption() {
             p.segments
-                .extend(retail::caption(self, bytes, rotation)?.segments);
+                .extend(retail::caption(self, bytes, rotation, character_map)?.segments);
         } else if self.show {
             let special = if self.name == "BA" {
                 code93::extended_caption(self, bytes)?
@@ -481,12 +482,13 @@ impl Barcode {
             // ^BC p. 94 permits an explicit preceding font command. Without
             // one, resident A scales with ^BY, independently of ^CF.
             let (id, fw, fh) = font.unwrap_or(('A', 5. * self.module, 9. * self.module));
+            let caption_font = super::font::Font::from(id).with_character_map(character_map);
             let mut t = if clamp {
                 let mut text = Path::default();
                 let mut x = 0.;
                 for c in value.chars() {
                     let value = c.to_string();
-                    let mut glyph = super::font::text_for(id, &value, fw, fh)?;
+                    let mut glyph = super::font::text_for(caption_font, &value, fw, fh)?;
                     let padding = if id == 'A' {
                         (7. * fh / 9. - super::bounds(&glyph).3).max(0.)
                     } else {
@@ -498,11 +500,11 @@ impl Barcode {
                         p.segments.len() + text.segments.len(),
                         padding,
                     ));
-                    x += super::font::width_for(id, &value, fw, fh)?;
+                    x += super::font::width_for(caption_font, &value, fw, fh)?;
                 }
                 text
             } else {
-                super::font::text_for(id, &value, fw, fh)?
+                super::font::text_for(caption_font, &value, fw, fh)?
             };
             // Captured ^B1/^BA interpretation uses dedicated start/stop
             // glyphs, not the resident font's printable asterisk. Reserve
@@ -515,8 +517,8 @@ impl Barcode {
                 _ => &[],
             };
             if !marker.is_empty() {
-                let right = super::font::width_for(id, &value, fw, fh)?
-                    - super::font::width_for(id, " ", fw, fh)?;
+                let right = super::font::width_for(caption_font, &value, fw, fh)?
+                    - super::font::width_for(caption_font, " ", fw, fh)?;
                 for x in [0., right] {
                     // The two-check Code 11 stop glyph is a taller triangle;
                     // its start glyph and the one-check stop stay four rows.
@@ -540,7 +542,7 @@ impl Barcode {
             }
             if let Some(caption) = special {
                 for (index, glyph) in caption.glyphs {
-                    let x = super::font::width_for(id, &value[..index], fw, fh)?;
+                    let x = super::font::width_for(caption_font, &value[..index], fw, fh)?;
                     caption_glyph(&mut t, x, fw, fh, glyph);
                     if clamp {
                         split.push(PartBoundary::new(
@@ -568,7 +570,7 @@ impl Barcode {
                 {
                     width += self.postal_pitch() - self.module;
                 }
-                let advance = super::font::width_for(id, &value, fw, fh)?;
+                let advance = super::font::width_for(caption_font, &value, fw, fh)?;
                 let x = ((width - advance) / 2.).floor();
                 t.transform(|p| Point::new(p.x + x, p.y));
             }

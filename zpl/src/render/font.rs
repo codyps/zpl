@@ -13,6 +13,7 @@ pub(super) struct Font {
     id: char,
     legacy_backslash: bool,
     default_glyph: bool,
+    character_map: Option<[u8; 256]>,
     block_flow: Option<BlockFlow>,
 }
 #[derive(Clone, Copy)]
@@ -39,7 +40,29 @@ impl Font {
             id,
             legacy_backslash,
             default_glyph: false,
+            character_map: None,
             block_flow: None,
+        }
+    }
+    pub(super) fn with_character_map(mut self, map: Option<[u8; 256]>) -> Self {
+        self.character_map = map;
+        self
+    }
+    fn map_char(self, c: char) -> Result<char, String> {
+        let Some(map) = self.character_map else {
+            return Ok(c);
+        };
+        let Some(&source) = map.get(c as usize) else {
+            return Ok(c);
+        };
+        if u32::from(source) == c as u32 {
+            return Ok(c);
+        }
+        // ^CI example, Programming Guide p. 158: legacy image 21 is euro.
+        match source {
+            21 => Ok('€'),
+            0..=127 => Ok(char::from(source)),
+            _ => Err("unsupported legacy remap source glyph".into()),
         }
     }
     pub(super) fn with_default_glyph(mut self, enabled: bool) -> Self {
@@ -479,7 +502,7 @@ pub(super) fn width_for(
     let (glyphs, sx, _) = selected(font, w, h);
     s.chars().try_fold(0., |sum, c| {
         let gap = font.block_flow.map_or(0., |flow| flow.gap_for(c));
-        Ok(sum + glyph_from(glyphs, c)?.advance as f64 * sx + gap)
+        Ok(sum + glyph_from(glyphs, font.map_char(c)?)?.advance as f64 * sx + gap)
     })
 }
 /// ZD621 font-0 FO/I/right anchor: measure ink with a backwards pen.
@@ -498,7 +521,7 @@ pub(super) fn inverted_text_margin(
     let mut right = 0_f64;
     let mut first_advance = 0.;
     for (i, c) in value.chars().enumerate() {
-        let g = glyph_from(glyphs, c)?;
+        let g = glyph_from(glyphs, font.map_char(c)?)?;
         if i == 0 {
             first_advance = g.advance as f64 * sx;
         }
@@ -516,8 +539,8 @@ pub(super) fn inverted_margin(
     w: f64,
     h: f64,
 ) -> Result<f64, String> {
-    let font = id;
-    let id = id.into().id;
+    let font = id.into();
+    let id = font.id;
     if id == 'A' {
         return Ok(w / 5. + 2.);
     }
@@ -545,7 +568,7 @@ pub(super) fn inverted_margin(
         return Ok(0.);
     };
     let (glyphs, sx, _) = selected(font, w, h);
-    let g = glyph_from(glyphs, c)?;
+    let g = glyph_from(glyphs, font.map_char(c)?)?;
     Ok(((g.advance as f64 - g.left as f64 - g.width as f64) * sx - 1.).max(0.))
 }
 #[cfg(test)]
@@ -623,7 +646,7 @@ pub(super) fn text_for(
     let mut rows: BTreeMap<i32, Vec<(f64, f64)>> = BTreeMap::new();
     let mut pen = 0.;
     for c in s.chars() {
-        let g = glyph_from(glyphs, c)?;
+        let g = glyph_from(glyphs, font.map_char(c)?)?;
         for (y, row) in g.bitmap.iter().enumerate() {
             let mut start = None;
             for x in 0..=g.width as usize {

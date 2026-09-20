@@ -1039,3 +1039,20 @@ Windows-1252 C1 mappings, including euro. Both profiles use these documented
 mappings. Barcode bytes remain unchanged and code-page changes between fields
 are tested. [Native evidence and limits](../zpl/tests/fixtures/code-pages-zd621-v1/README.md)
 include paired UTF-8 controls for Latin, Cyrillic, Greek, and Hebrew text.
+
+## Legacy character-image remapping
+
+`character_remap_preview` pins four pixel-exact native frames. CI0/CI13 mappings
+are retained separately across fields and encoding changes, apply once, and
+use the last pair for repeated destinations. CI27/CI28 ignore remapping pairs,
+as documented. Font lookup applies mappings to text and barcode captions;
+encoded bars retain their original data. Native Code 128 and UPC captions are
+covered, including both resident A and OCR-B retail sizes.
+
+The documented euro image and printer-only space remapping have independent
+controls. `remap_space` enables the ZD621 departure from the guide's space
+restriction; SPECIFICATION disables it. See the
+[capture evidence and limits](../zpl/tests/fixtures/character-remap-zd621-v1/README.md).
+The controls explicitly initialize and restore mappings because native preview
+requests retain these tables. A separate off-label UPC-caption placement gap
+was observed while testing and remains open.

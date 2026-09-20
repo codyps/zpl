@@ -13,6 +13,9 @@
 /// initial value: the renderer does not reapply it after you change an option.
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct Compatibility {
+    /// Allow ^CI to remap the space image in legacy encodings. The guide
+    /// p. 159 forbids this, but ZD621 Font 0 honors it (character-remap-zd621-v1).
+    pub remap_space: bool,
     /// Use a whole-dot baseline for normal horizontal font-0 FO text, including
     /// field blocks. Disabled: retain the fractional three-quarter-height
     /// baseline. FO/FT controls at heights 10..25 measure flooring (^FO p. 201).
