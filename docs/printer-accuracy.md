@@ -972,3 +972,13 @@ include four measurement atlases and 46 renderer comparisons. Forty-four
 renderer frames are exact; all 64 text fields in the two remaining holdouts
 exceed 90% IoU with an 80% floor and pinned underpaint/overpaint counts.
 Offline extraction reproduces the 10x10, 10x32 and 32x10 ASCII strikes.
+
+## Remaining sampled font-0 dimensions
+
+Nine dimension cases formerly below 80% now match exactly: square 15, 17, 31,
+33, 63 and 65 dots, plus 64x16, 16x64 and 96x96. Captured ASCII strikes replace
+scaled approximations. [127 native frames](../zpl/tests/fixtures/font0-dimensions-zd621-v1/README.md)
+include 126 exact sampling/verification/conformance comparisons and a 72-field
+origin/rotation atlas whose fields all exceed 97.1% IoU. Tests pin residuals
+and hashes and independently regenerate all nine assets. This does not close
+remaining QR, unsupported encoding/font, or preview-width coverage gaps.

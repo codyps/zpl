@@ -195,3 +195,9 @@ font's minimum dimensions. Each has 95 ASCII glyphs, raw sampling pages and an
 offline regeneration test. See
 [font0-minimum-zd621-v1](../tests/fixtures/font0-minimum-zd621-v1/README.md)
 for threshold, baseline and origin controls.
+
+Nine further font-0 ASCII strikes cover square requests at 15, 17, 31, 33, 63
+and 65 dots, plus 64x16, 16x64 and 96x96. Their raw pages, independent
+verification and regeneration tests are in
+[font0-dimensions-zd621-v1](../tests/fixtures/font0-dimensions-zd621-v1/README.md).
+Single-column pages keep the largest captures within the printer width.
