@@ -12,6 +12,9 @@ pub const SPECIFICATION: Options = Options {
     height: 1218,
     dpi: 203,
     compatibility: Compatibility {
+        block_negative_pitch_clamps_to_zero: false,
+        block_indent_printer_layout: false,
+        block_center_overflow_clamps_to_origin: false,
         block_soft_hyphen_printer_layout: false,
         utf8_uses_legacy_backslash: false,
         block_backslash_without_ci13: false,
@@ -110,6 +113,9 @@ pub const ZD621_203_DPI: Options = Options {
     height: 1218,
     dpi: 203,
     compatibility: Compatibility {
+        block_negative_pitch_clamps_to_zero: true,
+        block_indent_printer_layout: true,
+        block_center_overflow_clamps_to_origin: true,
         block_soft_hyphen_printer_layout: true,
         utf8_uses_legacy_backslash: true,
         block_backslash_without_ci13: true,

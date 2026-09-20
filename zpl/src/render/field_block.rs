@@ -28,12 +28,17 @@ impl Layout {
         font::width_for(self.font, text, self.w, self.h)
     }
     fn limit(&self) -> f64 {
-        self.width
+        let width = self.width
             - if self.lines.is_empty() {
                 0.
             } else {
                 self.indent
-            }
+            };
+        if width < 0. && self.compatibility.block_indent_printer_layout {
+            f64::INFINITY
+        } else {
+            width
+        }
     }
     fn prefix(&self) -> String {
         if self.line.is_empty() {
@@ -70,6 +75,12 @@ impl Layout {
                 let next = format!("{}{word}", self.prefix());
                 if !self.line.is_empty() && self.measure(&next)? > limit {
                     self.flush(false, false);
+                    // An intact word already fitted the old line width. The
+                    // printer keeps that decision after moving it past an indent.
+                    if self.compatibility.block_indent_printer_layout {
+                        self.line = word.to_string();
+                        break;
+                    }
                     continue;
                 }
                 self.line = next;

@@ -1284,3 +1284,85 @@ fn field_block_soft_markers_have_specification_and_printer_layouts() {
         raster(plain, ZD621_203_DPI).pixels
     );
 }
+
+#[test]
+fn zero_width_blocks_suppress_specification_text_without_glyph_lookup() {
+    // ^FB p. 186 defaults width to zero and specifies no printing below font width.
+    for block in ["^FB", "^FB0", "^FB,4,0,L,7", "^FB0,4,-3,R,9999"] {
+        let body = format!("^CI28^FO50,50^A0N,32,0{block}^FDΩ");
+        assert!(raster(&body, SPECIFICATION)
+            .pixels
+            .iter()
+            .all(|&p| p == 255));
+    }
+    let body = "^CI13^FO50,50^AAN,9,5^FB0^FDABC";
+    assert!(raster(body, ZD621_203_DPI).pixels.contains(&0));
+    let mut options = ZD621_203_DPI;
+    options.compatibility.block_narrow_printer_layout = false;
+    assert!(raster(body, options).pixels.iter().all(|&p| p == 255));
+}
+
+#[test]
+fn excessive_indent_continuation_is_optional_and_strict() {
+    // Captured hanging-indent boundary: field-block-limits-zd621-v1.
+    let body = "^CI13^FO50,50^AAN,9,5^FB1,2,0,L,2^FDABCDEF";
+    let mut options = ZD621_203_DPI;
+    options.compatibility.block_indent_printer_layout = false;
+    assert_ne!(
+        raster(body, options).pixels,
+        raster(body, ZD621_203_DPI).pixels
+    );
+    let equal = body.replace(",L,2", ",L,1");
+    assert_eq!(
+        raster(&equal, options).pixels,
+        raster(&equal, ZD621_203_DPI).pixels
+    );
+}
+
+#[test]
+fn negative_line_pitch_clamping_is_optional() {
+    // ^FB p. 186 allows negative spacing. The ZD621 clamps h+spacing at zero.
+    let body = r"^CI13^FO50,50^AAN,9,5^FB30,3,-12,L^FDAB\&CD\&EF";
+    assert_eq!(
+        raster(body, ZD621_203_DPI).pixels,
+        raster(&body.replace(",-12,", ",-9,"), ZD621_203_DPI).pixels
+    );
+    let mut options = ZD621_203_DPI;
+    options.compatibility.block_negative_pitch_clamps_to_zero = false;
+    assert_ne!(
+        raster(body, options).pixels,
+        raster(body, ZD621_203_DPI).pixels
+    );
+    let signed = "^CI13^FO50,50^AAN,9,5^FDAB^FS^FO50,47^AAN,9,5^FDCD^FS^FO50,44^AAN,9,5^FDEF";
+    assert_eq!(
+        raster(body, SPECIFICATION).pixels,
+        raster(signed, SPECIFICATION).pixels
+    );
+}
+
+#[test]
+fn centered_overflow_edge_placement_is_independent() {
+    // Raw controls: field-block-limits-zd621-v1, center-directions and center-edges.
+    let body = "^CI13^FO50,50^AAN,9,5^FB0,2,0,C,1^FDAB CD";
+    let mut options = ZD621_203_DPI;
+    let native = raster(body, options);
+    options.compatibility.block_center_overflow_clamps_to_origin = false;
+    assert_ne!(native.pixels, raster(body, options).pixels);
+    options = ZD621_203_DPI;
+    options.compatibility.text_clamps_negative_origins = false;
+    assert_eq!(native.pixels, raster(body, options).pixels);
+}
+
+#[test]
+fn off_canvas_text_culling_preserves_later_dimension_changes() {
+    let early = b"^XA^PW832^LL832^FO500,500^AAN,9,5^FDVISIBLE^FS^XZ";
+    let late = b"^XA^PW10^LL10^FO500,500^AAN,9,5^FDVISIBLE^FS^PW832^LL832^XZ";
+    for options in [SPECIFICATION, ZD621_203_DPI] {
+        let a = zpl::render(early, options).unwrap();
+        let b = zpl::render(late, options).unwrap();
+        assert_eq!(
+            zpl::output::raster::rasterize(&a.labels[0]).unwrap().pixels,
+            zpl::output::raster::rasterize(&b.labels[0]).unwrap().pixels
+        );
+    }
+}

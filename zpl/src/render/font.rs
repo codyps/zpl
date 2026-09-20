@@ -475,6 +475,30 @@ pub(super) fn printer_ft_offset(id: char, height: f64, rotation: u8) -> (f64, f6
     }
 }
 
+/// Discard wholly invisible text rectangles before applying the document path
+/// budget. Long hanging-indent continuations can extend far beyond the label;
+/// partially visible rectangles keep their original geometry and clipping.
+pub(super) fn cull_outside(path: &mut Path, width: u32, height: u32) {
+    use crate::output::Segment;
+    let mut visible = Vec::new();
+    for rect in path.segments.as_chunks::<5>().0 {
+        let [Segment::Move(a), Segment::Line(b), Segment::Line(c), Segment::Line(d), Segment::Close] =
+            rect
+        else {
+            unreachable!("font ink consists of rectangles")
+        };
+        let points = [a, b, c, d];
+        let left = points.iter().map(|p| p.x).fold(f64::INFINITY, f64::min);
+        let right = points.iter().map(|p| p.x).fold(f64::NEG_INFINITY, f64::max);
+        let top = points.iter().map(|p| p.y).fold(f64::INFINITY, f64::min);
+        let bottom = points.iter().map(|p| p.y).fold(f64::NEG_INFINITY, f64::max);
+        if right > 0. && bottom > 0. && left < width as f64 && top < height as f64 {
+            visible.extend_from_slice(rect);
+        }
+    }
+    path.segments = visible;
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

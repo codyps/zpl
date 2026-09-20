@@ -49,6 +49,7 @@ struct TextLayout {
     path: Path,
     baseline: f64,
     parts: Vec<Path>,
+    center_overflow: Vec<bool>,
 }
 #[derive(Clone)]
 struct Field {
@@ -73,6 +74,7 @@ struct Field {
     inverted_margin: f64,
     text_size: Option<(f64, f64)>,
     text_parts: Vec<Path>,
+    center_overflow: Vec<bool>,
     graphic_size: Option<(f64, f64)>,
     graphic_bitmap: bool,
 }
@@ -100,6 +102,7 @@ impl Default for Field {
             inverted_margin: 0.,
             text_size: None,
             text_parts: Vec::new(),
+            center_overflow: Vec::new(),
             graphic_size: None,
             graphic_bitmap: false,
         }
@@ -140,6 +143,25 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
             offset: 0,
             message: "input exceeds 1 MiB renderer limit".into(),
         });
+    }
+    // Dimensions can change after a field. Cull only beyond every declared
+    // canvas, so a later PW/LL cannot reveal text discarded at an earlier FS.
+    let (mut cull_width, mut cull_height) = (options.width, options.height);
+    for item in ParseContext::from_bytes(input).filter_map(Result::ok) {
+        let raw = item.as_bytes();
+        if matches!(raw.get(1..3), Some(b"PW" | b"LL")) {
+            if let Some(n) = std::str::from_utf8(&raw[3..])
+                .ok()
+                .and_then(|s| s.trim().parse::<f64>().ok())
+            {
+                let n = n as u32;
+                if raw.get(1..3) == Some(b"PW") {
+                    cull_width = cull_width.max(n);
+                } else {
+                    cull_height = cull_height.max(n);
+                }
+            }
+        }
     }
     let mut parser = ParseContext::from_bytes(input);
     let mut labels = Vec::new();
@@ -374,12 +396,13 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                     let width = number(&p, 0, 0.)?;
                     let lines = number(&p, 1, 1.)?;
                     let spacing = number(&p, 2, 0.)?;
+                    let indent = number(&p, 4, 0.)?;
                     let align = p.get(3).copied().unwrap_or("L");
-                    if width <= 0.
+                    if width < 0.
                         || !(1. ..=1000.).contains(&lines)
                         || lines.fract() != 0.
                         || !matches!(align, "" | "L" | "C" | "R" | "J")
-                        || !(0. ..width).contains(&number(&p, 4, 0.)?)
+                        || !(0. ..=9999.).contains(&indent)
                     {
                         return Err("unsupported or invalid field block parameters".into());
                     }
@@ -388,7 +411,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                         lines as usize,
                         spacing,
                         align.as_bytes().first().copied().unwrap_or(b'L'),
-                        number(&p, 4, 0.)?,
+                        indent,
                     ));
                 }
                 "LH" => {
@@ -667,20 +690,36 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                                     || (encoding == 28
                                         && options.compatibility.utf8_uses_legacy_backslash),
                             );
+                            // ^FB p. 186 permits negative line spacing. The
+                            // printer clamps the resulting pitch at zero.
+                            let block =
+                                field.block.map(|(width, lines, spacing, align, indent)| {
+                                    let spacing = if options
+                                        .compatibility
+                                        .block_negative_pitch_clamps_to_zero
+                                    {
+                                        spacing.max(-font_h)
+                                    } else {
+                                        spacing
+                                    };
+                                    (width, lines, spacing, align, indent)
+                                });
                             let TextLayout {
                                 path,
                                 baseline,
                                 parts,
+                                center_overflow,
                             } = text_block(
                                 text_font,
                                 value,
                                 font_w,
                                 font_h,
-                                field.block,
+                                block,
                                 options.compatibility,
                                 encoding,
                             )?;
                             field.text_parts = parts;
+                            field.center_overflow = center_overflow;
                             // Table 29 p. 1582 gives GS a 3/4-height baseline.
                             // Printer controls instead use native row 23 of 24.
                             field.baseline_height = if font_id == 'S'
@@ -690,15 +729,16 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                             } else {
                                 baseline
                             };
-                            if options
-                                .compatibility
-                                .right_justified_inverted_text_uses_ink_margin
+                            if field.block.is_none_or(|block| block.0 != 0.)
+                                && options
+                                    .compatibility
+                                    .right_justified_inverted_text_uses_ink_margin
                             {
                                 field.inverted_margin =
                                     font::inverted_margin(text_font, value, font_w, font_h)?;
                             }
                             field.text_size =
-                                Some(if let Some((width, lines, spacing, _, _)) = field.block {
+                                Some(if let Some((width, lines, spacing, _, _)) = block {
                                     (width, lines as f64 * font_h + (lines - 1) as f64 * spacing)
                                 } else {
                                     (font::width_for(text_font, value, font_w, font_h)?, font_h)
@@ -1016,7 +1056,14 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                                     .text_size
                                     .map(|(w, h)| {
                                         if font_id == '0' {
-                                            ((w - 1.).max(0.), (h - 1.).max(0.))
+                                            // A zero-width printer block still
+                                            // pivots at width minus one dot.
+                                            let w = if w == 0. && field.block.is_some() {
+                                                -1.
+                                            } else {
+                                                (w - 1.).max(0.)
+                                            };
+                                            (w, (h - 1.).max(0.))
                                         } else {
                                             (w, h)
                                         }
@@ -1111,13 +1158,15 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                                 Point::new(tx, ty)
                             }
                         };
-                        if options.compatibility.text_clamps_negative_origins
-                            && !field.text_parts.is_empty()
+                        if !field.text_parts.is_empty()
+                            && (options.compatibility.text_clamps_negative_origins
+                                || field.center_overflow.iter().any(|&v| v))
                         {
                             let shifts: Vec<_> = field
                                 .text_parts
                                 .iter()
-                                .map(|part| {
+                                .enumerate()
+                                .map(|(index, part)| {
                                     let (min_x, min_y) = part
                                         .segments
                                         .iter()
@@ -1131,12 +1180,40 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                                         .fold((f64::INFINITY, f64::INFINITY), |(x, y), p| {
                                             (x.min(p.x), y.min(p.y))
                                         });
-                                    ((-min_x).max(0.), (-min_y).max(0.))
+                                    let (mut dx, mut dy) =
+                                        if options.compatibility.text_clamps_negative_origins {
+                                            ((-min_x).max(0.), (-min_y).max(0.))
+                                        } else {
+                                            (0., 0.)
+                                        };
+                                    // ZD621 centered overflowing FB lines clamp each
+                                    // glyph to the absolute inline-axis origin, including
+                                    // inverted directions (field-block-limits fixtures).
+                                    let mut skip = false;
+                                    if field.center_overflow.get(index).copied().unwrap_or(false) {
+                                        skip = if matches!(field.rotation, b'R' | b'B') {
+                                            min_y < 0.
+                                        } else {
+                                            min_x < 0.
+                                        };
+                                        if matches!(field.rotation, b'R' | b'B') {
+                                            dy = -min_y;
+                                        } else {
+                                            dx = -min_x;
+                                        }
+                                    }
+                                    (dx, dy, skip)
                                 })
                                 .collect();
-                            if shifts.iter().any(|&(dx, dy)| dx > 0. || dy > 0.) {
+                            if shifts
+                                .iter()
+                                .any(|&(dx, dy, skip)| dx != 0. || dy != 0. || skip)
+                            {
                                 let mut shifted = Path::default();
-                                for (part, (dx, dy)) in field.text_parts.iter().zip(shifts) {
+                                for (part, (dx, dy, skip)) in field.text_parts.iter().zip(shifts) {
+                                    if skip {
+                                        continue;
+                                    }
                                     // Clamp glyph ink after anchoring the field. Move
                                     // back in unrotated coordinates so overlapping
                                     // glyphs can be unioned before the common transform.
@@ -1170,6 +1247,9 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                                 field.reverse || reverse,
                                 field.rotation,
                             )?;
+                        }
+                        if field.text_size.is_some() {
+                            font::cull_outside(&mut path, cull_width, cull_height);
                         }
                         total_segments += path.segments.len();
                         if total_segments > crate::output::MAX_SEGMENTS {
@@ -1255,9 +1335,11 @@ fn text_block(
     encoding: u8,
 ) -> Result<TextLayout, String> {
     let center_space = compatibility.block_center_includes_trailing_space;
+    let collect_parts = compatibility.text_clamps_negative_origins
+        || compatibility.block_center_overflow_clamps_to_origin;
     let Some((width, max_lines, spacing, align, indent)) = block else {
         let path = font::text_for(font_id, value, w, h)?;
-        let parts = if compatibility.text_clamps_negative_origins {
+        let parts = if collect_parts {
             font::text_parts_for(font_id, value, w, h)?
         } else {
             Vec::new()
@@ -1265,12 +1347,10 @@ fn text_block(
         return Ok(TextLayout {
             path,
             baseline: font::baseline_for(font_id, h),
+            center_overflow: vec![false; parts.len()],
             parts,
         });
     };
-    if spacing < 0. {
-        return Err("overlapping field block lines unsupported".into());
-    }
     // ^FB p. 186 specifies no printing below the selected font width.
     // Captured ZD621 previews instead emit individual characters.
     if !compatibility.block_narrow_printer_layout && width < w {
@@ -1278,6 +1358,7 @@ fn text_block(
             path: Path::default(),
             baseline: font::baseline_for(font_id, h),
             parts: Vec::new(),
+            center_overflow: Vec::new(),
         });
     }
     let lines = field_block::wrap(
@@ -1290,6 +1371,7 @@ fn text_block(
     )?;
     let mut path = Path::default();
     let mut text_parts = Vec::new();
+    let mut center_overflow = Vec::new();
     for (i, (line, hard_break, automatic_hyphen, forced_character)) in lines.iter().enumerate() {
         // CI27 incorrectly reinterprets the automatic soft-hyphen byte as eth.
         // Keep the selected hyphen for measurement and change only painted ink.
@@ -1318,7 +1400,7 @@ fn text_block(
             && !*hard_break
             && (lines.len() <= max_lines || i + 1 < max_lines)
             && (i + 1 < lines.len()
-                || (center_space && slack <= font::width_for(font_id, " ", w, h)?))
+                || (center_space && slack >= 0. && slack <= font::width_for(font_id, " ", w, h)?))
             && gaps > 0;
         let mut line_parts = Vec::new();
         let mut p = if justified {
@@ -1336,7 +1418,7 @@ fn text_block(
                     x.round()
                 };
                 word_path.transform(|p| Point::new(p.x + position, p.y));
-                if compatibility.text_clamps_negative_origins {
+                if collect_parts {
                     for mut part in font::text_parts_for(font_id, paint_word, w, h)? {
                         part.transform(|p| Point::new(p.x + position, p.y));
                         line_parts.push(part);
@@ -1353,7 +1435,7 @@ fn text_block(
             }
             p
         } else {
-            if compatibility.text_clamps_negative_origins {
+            if collect_parts {
                 line_parts = font::text_parts_for(font_id, paint_line, w, h)?;
             }
             font::text_for(font_id, paint_line, w, h)?
@@ -1365,7 +1447,9 @@ fn text_block(
                         - if center_space
                             && !*hard_break
                             && !*automatic_hyphen
-                            && slack > font::width_for(font_id, " ", w, h)?
+                            && (slack > font::width_for(font_id, " ", w, h)?
+                                || (slack < 0.
+                                    && compatibility.block_center_overflow_clamps_to_origin))
                         {
                             font::width_for(font_id, " ", w, h)?
                         } else {
@@ -1388,6 +1472,9 @@ fn text_block(
         for mut part in line_parts {
             part.transform(|p| Point::new(p.x + x, p.y + y));
             text_parts.push(part);
+            center_overflow.push(
+                align == b'C' && slack < 0. && compatibility.block_center_overflow_clamps_to_origin,
+            );
         }
         path.segments.extend(p.segments);
     }
@@ -1399,6 +1486,7 @@ fn text_block(
         },
         baseline: (max_lines - 1) as f64 * (h + spacing) + font::baseline_for(font_id, h),
         parts: text_parts,
+        center_overflow,
     })
 }
 fn font_dimensions(

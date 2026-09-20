@@ -13,6 +13,17 @@
 /// initial value: the renderer does not reapply it after you change an option.
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct Compatibility {
+    /// Clamp FB line pitch to zero when negative spacing exceeds font height.
+    /// Disabled: retain signed line pitch (^FB p. 186).
+    pub block_negative_pitch_clamps_to_zero: bool,
+    /// Center overflowing FB lines with trailing space, reject negative rotated
+    /// inline ink starts, then place each surviving glyph at the label edge.
+    /// Disabled: retain ordinary centered coordinates (^FB pp. 186–187).
+    pub block_center_overflow_clamps_to_origin: bool,
+    /// Keep an intact word's fit when moving it past a hanging indent; continue
+    /// text without wrapping when indent exceeds block width. Disabled: honor
+    /// the signed remaining width on every line (^FB p. 186).
+    pub block_indent_printer_layout: bool,
     /// Use captured FB soft-marker fitting, retained width decisions across
     /// indentation, and overflowing remainder lines. Also accept nonalphanumeric
     /// markers, including the silent `\(` break. Disabled: use documented
