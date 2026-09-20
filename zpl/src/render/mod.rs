@@ -4,6 +4,7 @@ mod barcode_edges;
 pub mod compatibility;
 pub mod profiles;
 use raster_diff::compression;
+mod field_block;
 mod font;
 mod graphics;
 mod printer_shapes;
@@ -1279,133 +1280,14 @@ fn text_block(
             parts: Vec::new(),
         });
     }
-    let mut lines = Vec::new();
-    // Explicit paragraph ends affect centering and terminate justification.
-    // Preserve them separately from automatic wraps (^FB pp. 185–187).
-    // ^FB p. 187 defines \\ as an escaped backslash. Consume pairs before
-    // recognizing \& so a literal backslash followed by '&' stays on its line.
-    // Keep other escapes intact here: soft-hyphen markers affect word wrapping.
-    let mut paragraphs = vec![String::new()];
-    let mut chars = value.chars().peekable();
-    while let Some(c) = chars.next() {
-        if c == '\\' {
-            match chars.peek() {
-                Some('\\') => {
-                    if encoding != 13 && !compatibility.block_backslash_without_ci13 {
-                        return Err("field-block backslash requires ^CI13".into());
-                    }
-                    chars.next();
-                    paragraphs.last_mut().unwrap().push('\\');
-                    continue;
-                }
-                Some('&') => {
-                    chars.next();
-                    paragraphs.push(String::new());
-                    continue;
-                }
-                _ => {}
-            }
-        }
-        paragraphs.last_mut().unwrap().push(c);
-    }
-    let mut paragraphs = paragraphs.iter().peekable();
-    while let Some(paragraph) = paragraphs.next() {
-        let mut line = String::new();
-        for (word_index, mut word) in paragraph.split_whitespace().enumerate() {
-            if compatibility.block_narrow_printer_layout
-                && word_index > 0
-                && line.is_empty()
-                && font::width_for(font_id, " ", w, h)?
-                    >= width - if lines.is_empty() { 0. } else { indent }
-            {
-                lines.push((String::new(), false, false, false));
-            }
-            let mut splitting = false;
-            while !word.is_empty() {
-                let limit = width - if lines.is_empty() { 0. } else { indent };
-                let word_width = font::width_for(font_id, word, w, h)?;
-                splitting |= word_width > limit;
-                if !splitting
-                    || (!compatibility.block_hyphenation_printer_layout && word_width <= limit)
-                {
-                    let next = if line.is_empty() {
-                        word.to_string()
-                    } else {
-                        format!("{line} {word}")
-                    };
-                    if !line.is_empty() && font::width_for(font_id, &next, w, h)? > limit {
-                        lines.push((std::mem::take(&mut line), false, false, false));
-                        continue;
-                    }
-                    line = next;
-                    break;
-                }
-                // ^FB p. 187: split an overlong word and continue on the next
-                // line. Printer captures reserve soft-hyphen space even for the
-                // final remainder, and require strictly less than the budget.
-                let hyphen = if compatibility.block_hyphenation_printer_layout {
-                    '\u{ad}'
-                } else {
-                    '-'
-                };
-                let prefix = if line.is_empty() {
-                    String::new()
-                } else {
-                    format!("{line} ")
-                };
-                let mut cut = 0;
-                for end in word.char_indices().map(|(i, c)| i + c.len_utf8()) {
-                    let trial = format!("{prefix}{}{hyphen}", &word[..end]);
-                    let advance = font::width_for(font_id, &trial, w, h)?;
-                    let fits = if compatibility.block_hyphenation_printer_layout {
-                        advance < limit
-                    } else {
-                        advance <= limit
-                    };
-                    if !fits {
-                        break;
-                    }
-                    cut = end;
-                }
-                if cut == 0 {
-                    if line.is_empty() {
-                        if compatibility.block_narrow_printer_layout {
-                            // Captured narrow-block fallback consumes one glyph
-                            // even when it exceeds the block width. At an exact
-                            // glyph+hyphen fit it also paints the final hyphen.
-                            let end = word.chars().next().unwrap().len_utf8();
-                            let mut chunk = word[..end].to_string();
-                            let with_hyphen = format!("{chunk}{hyphen}");
-                            let paint_hyphen =
-                                font::width_for(font_id, &with_hyphen, w, h)? <= limit;
-                            if paint_hyphen {
-                                chunk.push(hyphen);
-                            }
-                            lines.push((chunk, false, paint_hyphen, true));
-                            word = &word[end..];
-                            continue;
-                        }
-                        return Err("field block too narrow for a character and hyphen".into());
-                    }
-                    lines.push((std::mem::take(&mut line), false, false, false));
-                    continue;
-                }
-                if cut == word.len() {
-                    line = format!("{prefix}{word}");
-                    break;
-                }
-                lines.push((
-                    format!("{prefix}{}{hyphen}", &word[..cut]),
-                    false,
-                    true,
-                    false,
-                ));
-                word = &word[cut..];
-                line.clear();
-            }
-        }
-        lines.push((line, paragraphs.peek().is_some(), false, false));
-    }
+    let lines = field_block::wrap(
+        font_id,
+        value,
+        (w, h),
+        (width, indent),
+        compatibility,
+        encoding,
+    )?;
     let mut path = Path::default();
     let mut text_parts = Vec::new();
     for (i, (line, hard_break, automatic_hyphen, forced_character)) in lines.iter().enumerate() {

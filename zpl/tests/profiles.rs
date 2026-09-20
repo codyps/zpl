@@ -1252,3 +1252,35 @@ fn utf8_legacy_backslash_mapping_is_independent_of_block_escaping() {
         raster(&body.replace('\\', "¢"), options).pixels
     );
 }
+
+#[test]
+fn field_block_soft_markers_have_specification_and_printer_layouts() {
+    // ^FB p. 187: a backslash before an alphanumeric character selects a
+    // preferred hyphenation point. The marker itself is not printed.
+    let spec = r"^CI13^FO50,50^AAN,9,5^FB30,4,0,L^FDABC\DEFG";
+    assert_eq!(
+        raster(spec, SPECIFICATION).pixels,
+        raster(&spec.replace(r"ABC\DEFG", r"ABC-\&DEFG"), SPECIFICATION).pixels
+    );
+    let wide = spec.replace("FB30", "FB80");
+    assert_eq!(
+        raster(&wide, SPECIFICATION).pixels,
+        raster(&wide.replace(r"ABC\DEFG", "ABCDEFG"), SPECIFICATION).pixels
+    );
+    // Captured narrow indented marker handling can overflow the remainder
+    // onto a single line. Keep that departure independently selectable.
+    let body = r"^CI13^FO50,50^AAN,9,5^FB18,4,0,L,7^FDABC\DDEF";
+    let mut options = ZD621_203_DPI;
+    let native = raster(body, options);
+    options.compatibility.block_soft_hyphen_printer_layout = false;
+    let standard = raster(body, options);
+    assert_ne!(native.pixels, standard.pixels);
+    let b = bounds(&native);
+    assert!(b.2 - b.0 > 18);
+    // Plain fields keep their literal backslashes.
+    let plain = r"^CI13^FO50,50^AAN,9,5^FDABC\DDEF";
+    assert_eq!(
+        raster(plain, options).pixels,
+        raster(plain, ZD621_203_DPI).pixels
+    );
+}

@@ -570,7 +570,7 @@ SPECIFICATION keeps nearest-dot rounding. The remaining GS field-block residual
 improves from 55 underpaint/overpaint dots to zero. Other saved justified blocks
 retain their previous results. Run `cargo test -p zpl --test field_block_rounding_preview
 --test field_block_overflow_preview --test graphic_symbols_preview --test resident_fonts_preview
---test profiles`. Soft-hyphen escapes and broader command coverage remain open.
+--test profiles`. Soft-hyphen escapes are covered by the marker suite below; broader command coverage remains open.
 
 ## Automatic field-block hyphenation
 
@@ -587,7 +587,7 @@ retained hyphen space on the final chunk. `block_hyphenation_ci27_uses_eth`
 separately reproduces the printer's incorrect CI27 automatic-break glyph.
 SPECIFICATION disables both. Run `cargo test -p zpl --test field_block_hyphenation_preview
 --test profiles`; the full renderer suite checks shared wrapping and font behavior.
-Explicit soft-hyphen escape handling, extremely narrow blocks, unsampled sizes,
+The later marker and narrow-block suites cover those cases. Unsampled sizes,
 QR mask selection and broader command/encoding coverage remain open.
 
 ## Graphic dimensions and placement
@@ -654,8 +654,7 @@ newline, so an escaped backslash followed by `&` stays on its line.
 `block_backslash_without_ci13` enables the printer's CI0/27/28 departure from
 the ^FB p. 187 CI13 prerequisite. The specification profile disables it.
 ASCII CI13 is supported. CI0/28's native cent-glyph substitution is covered by
-the separate legacy-backslash suite below. Soft-hyphen escape markers and QR
-mask selection remain open; these results do not establish the overall goal.
+the separate legacy-backslash suite below. QR mask selection remains open; these results do not establish the overall goal.
 
 Run `cargo test -p zpl --test field_block_backslash_preview --test profiles`.
 
@@ -685,3 +684,19 @@ compatibility options. The FO/R controls also fix canceled line alignment in
 right-justified blocks, under `block_fo_right_justification_printer_layout`.
 
 Run `cargo test -p zpl --test legacy_backslash_preview --test profiles`.
+
+### Explicit field-block soft markers
+
+[Twenty-two marker frames](../zpl/tests/fixtures/field-block-markers-zd621-v1/README.md)
+cover 520 fields across widths, indentation, multiple markers, punctuation,
+rotations, alignment, and CI0/27. Eighteen frames are exact; four rotated font-0
+frames each retain 6 underpaint and 8 overpaint dots. Their 32 individually
+scored fields all exceed 99.89% foreground IoU with complete ink coverage.
+
+The specification profile recognizes documented alphanumeric markers.
+`block_soft_hyphen_printer_layout` independently enables the printer's extra
+marker syntax, blank-row and indentation behavior, and overflowing remainder
+lines. Automatic hyphen metrics and CI27's eth glyph retain their separate
+options. Existing ordinary wrapping and backslash regressions remain in place.
+
+Run `cargo test -p zpl --test field_block_markers_preview --test profiles`.

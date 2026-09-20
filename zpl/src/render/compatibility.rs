@@ -13,6 +13,11 @@
 /// initial value: the renderer does not reapply it after you change an option.
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct Compatibility {
+    /// Use captured FB soft-marker fitting, retained width decisions across
+    /// indentation, and overflowing remainder lines. Also accept nonalphanumeric
+    /// markers, including the silent `\(` break. Disabled: use documented
+    /// alphanumeric markers with normal width and indentation (^FB p. 187).
+    pub block_soft_hyphen_printer_layout: bool,
     /// Apply CI0's native backslash-to-cent glyph replacement in CI28 too.
     /// Disabled: CI28 backslashes retain their Unicode glyph (^CI p. 157).
     /// CI0 always uses its documented character mapping (^CI p. 159).
