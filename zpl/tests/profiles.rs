@@ -964,3 +964,22 @@ fn resident_g_font_only_cf_reset_is_optional() {
     );
     assert_ne!(raster(body, retained), raster(body, ZD621_203_DPI));
 }
+
+#[test]
+fn graphic_symbol_baseline_and_justification_are_independent_options() {
+    // ^GS p. 217, Table 29 p. 1582: specified baseline is 3/4 of 24 dots.
+    // Raw ZD621 controls use native row 23 and ignore FO/FT justification.
+    let ft = "^FT100,100^GSN,24,24^FDA";
+    assert_eq!(bounds(&raster(ft, SPECIFICATION)), (100, 82, 115, 97));
+    assert_eq!(bounds(&raster(ft, ZD621_203_DPI)), (100, 77, 115, 92));
+    let mut options = ZD621_203_DPI;
+    options.compatibility.graphic_symbol_last_row_baseline = false;
+    assert_eq!(bounds(&raster(ft, options)), (100, 82, 115, 97));
+    let fo = "^FO100,100,1^GSN,24,24^FDA";
+    assert_eq!(bounds(&raster(fo, ZD621_203_DPI)), (100, 100, 115, 115));
+    options = ZD621_203_DPI;
+    options.compatibility.graphic_symbol_ignores_justification = false;
+    assert_eq!(bounds(&raster(fo, options)), (74, 100, 89, 115));
+    assert_eq!(raster(ft, options).pixels, raster(ft, ZD621_203_DPI).pixels);
+    assert_eq!(raster(fo, SPECIFICATION).pixels, raster(fo, options).pixels);
+}

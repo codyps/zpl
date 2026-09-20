@@ -25,6 +25,7 @@ fn strikes() -> &'static Vec<(Settings, Vec<Glyph>)> {
         [
             include_bytes!("../../assets/font0-16-0.zbf").as_slice(),
             include_bytes!("../../assets/font0-20-0.zbf").as_slice(),
+            include_bytes!("../../assets/font0-24-24.zbf").as_slice(),
             include_bytes!("../../assets/font0-64-0.zbf").as_slice(),
             include_bytes!("../../assets/font0-32-16.zbf").as_slice(),
             include_bytes!("../../assets/font0-32-24.zbf").as_slice(),
@@ -35,6 +36,7 @@ fn strikes() -> &'static Vec<(Settings, Vec<Glyph>)> {
             include_bytes!("../../assets/fontF-26-13.zbf").as_slice(),
             include_bytes!("../../assets/fontG-60-40.zbf").as_slice(),
             include_bytes!("../../assets/fontH-21-13.zbf").as_slice(),
+            include_bytes!("../../assets/fontGS-24-24.zbf").as_slice(),
             include_bytes!("../../assets/fontE-28-15.zbf").as_slice(),
         ]
         .into_iter()
@@ -79,6 +81,9 @@ pub(super) fn baseline_for(id: char, h: f64) -> f64 {
         'F' => 20. / 26.,
         'G' => 47. / 60.,
         'H' => 20. / 21.,
+        // Captured GS metrics use baseline 23; the specification FT anchor
+        // is selected separately by graphic_symbol_last_row_baseline.
+        'S' => 23. / 24.,
         _ => 0.75,
     }
 }
@@ -257,6 +262,7 @@ pub(super) fn printer_ft_offset(id: char, height: f64, rotation: u8) -> (f64, f6
         'F' => 26.,
         'G' => 60.,
         'H' => 21.,
+        'S' => 24.,
         _ => return (0., 0.),
     };
     let scale = height / native;

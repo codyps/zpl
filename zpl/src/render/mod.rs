@@ -352,6 +352,11 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                     field.justification = default_justification;
                 }
                 "FB" => {
+                    // ^FB selects text layout, replacing a preceding ^GS symbol field.
+                    // ZD621 controls in graphic-symbols-zd621-v1 retain GS dimensions.
+                    if font_id == 'S' {
+                        font_id = default_font_id;
+                    }
                     let width = number(&p, 0, 0.)?;
                     let lines = number(&p, 1, 1.)?;
                     let spacing = number(&p, 2, 0.)?;
@@ -485,6 +490,19 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                         (default_requested_w, default_requested_h)
                     };
                     (font_w, font_h) = font_dimensions(&p, dw, dh, font_id)?;
+                }
+                "GS" => {
+                    // ^GS p. 217 selects a separate symbol face, not ^AS.
+                    font_id = 'S';
+                    field.barcode = None;
+                    field.explicit_font = false;
+                    field.rotation = if p[0].is_empty() {
+                        default_rotation
+                    } else {
+                        rotation(p[0])?
+                    };
+                    (font_w, font_h) =
+                        font_dimensions(&p, default_requested_w, default_requested_h, font_id)?;
                 }
                 "FH" => {
                     if s.len() > 1 {
@@ -637,7 +655,15 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                                 field.block,
                                 options.compatibility.block_center_includes_trailing_space,
                             )?;
-                            field.baseline_height = baseline;
+                            // Table 29 p. 1582 gives GS a 3/4-height baseline.
+                            // Printer controls instead use native row 23 of 24.
+                            field.baseline_height = if font_id == 'S'
+                                && !options.compatibility.graphic_symbol_last_row_baseline
+                            {
+                                baseline - font_h * 5. / 24.
+                            } else {
+                                baseline
+                            };
                             if options
                                 .compatibility
                                 .right_justified_inverted_text_uses_ink_margin
@@ -896,13 +922,21 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                         } else {
                             (0., 0.)
                         };
+                        let field_justification = if font_id == 'S'
+                            && field.text_size.is_some()
+                            && options.compatibility.graphic_symbol_ignores_justification
+                        {
+                            0
+                        } else {
+                            field.justification
+                        };
                         path.transform(|p| {
                             // ^FO/^FT pp. 201/205: right justification changes
                             // the origin, not the character order. Auto (2) is
                             // left for the supported Latin scripts.
                             let advance = field.text_size.map_or(w, |s| s.0);
                             let xp = p.x
-                                - if field.baseline && field.justification == 1 {
+                                - if field.baseline && field_justification == 1 {
                                     advance
                                 } else {
                                     0.
@@ -948,7 +982,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                                     _ => (0., 0.),
                                 }
                             };
-                            let (jx, jy) = if !field.baseline && field.justification == 1 {
+                            let (jx, jy) = if !field.baseline && field_justification == 1 {
                                 if let Some((tw, th)) = field.text_size {
                                     match field.rotation {
                                         b'R' => (-th, -left),
@@ -1181,6 +1215,7 @@ fn font_dimensions(
             'F' => (26., 13.),
             'G' => (60., 40.),
             'H' => (21., 13.),
+            'S' => (24., 24.),
             _ => (18., 10.),
         };
         // ^A p. 61 and ^CF p. 154: one supplied dimension determines

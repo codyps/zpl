@@ -13,6 +13,13 @@
 /// initial value: the renderer does not reapply it after you change an option.
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct Compatibility {
+    /// Ignore FO/FT right justification for GS symbol fields. Disabled: honor
+    /// the requested field justification (^FO p. 201, ^FT p. 205).
+    pub graphic_symbol_ignores_justification: bool,
+    /// Use the captured native GS baseline (row 23 of 24), rather than the
+    /// 3/4-height baseline in Table 29, p. 1582. Scaled/rotated dot placement
+    /// is independently selected by bitmap_font_ft_dot_origin. FO is unaffected.
+    pub graphic_symbol_last_row_baseline: bool,
     /// Selecting bitmap fonts A through H with CF but no size resets to the
     /// native size. See resident-h-zd621-v1 and the earlier resident-font suites.
     /// Disabled: retain previous CF dimensions (^CF p. 154). A commands inherit CF.

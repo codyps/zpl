@@ -542,3 +542,21 @@ wrapping, margins and wide Code 128 captions. Run `cargo test -p zpl
 The existing printer options cover H. QR mask selection, unsampled font-0
 sizes and broader unverified command/encoding coverage still leave the overall
 accuracy goal open.
+
+## Graphic symbols and 24-dot text
+
+[Sixty graphic-symbol controls](../zpl/tests/fixtures/graphic-symbols-zd621-v1/README.md)
+add `^GS` rendering, its 95-entry ASCII strike, and font 0 at 24 by 24 dots.
+Fifty-nine frames are exact. The remaining field-block frame switches to ordinary
+text and has a pinned 55-dot underpaint/overpaint residual in justified text
+(97.65% foreground IoU); all symbol-only fields and the other alignments match.
+The capture includes independent composed verification for both new strikes.
+
+The ZD621 profile enables two new options: `graphic_symbol_last_row_baseline`
+and `graphic_symbol_ignores_justification`. SPECIFICATION disables both,
+using Table 29's three-quarter-height baseline and honoring FO/FT justification.
+Tests cover the options independently, GS/barcode command ordering, dimensions,
+all rotations/origins, reverse fields and label reversal. Run `cargo test -p zpl
+--test graphic_symbols_preview --test profiles` and `cargo test -p zpl-font-extract`.
+QR mask selection, justified-text spacing and broader unverified sizes,
+commands and encodings still leave the overall accuracy goal open.
