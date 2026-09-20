@@ -828,6 +828,7 @@ fn bitmap_ft_dot_origin_is_optional_and_leaves_fo_unchanged() {
         ('E', 56, 30),
         ('F', 52, 26),
         ('G', 120, 80),
+        ('H', 42, 26),
     ] {
         let body = format!("^FT100,100^A{font}N,{h},{w}^FDAb09");
         let mut geometric = ZD621_203_DPI;
@@ -897,6 +898,7 @@ fn explicit_bitmap_code128_caption_shift_is_optional() {
         ('E', 56, 30),
         ('F', 52, 26),
         ('G', 120, 80),
+        ('H', 42, 26),
         ('0', 32, 64),
     ] {
         for rotation in ['N', 'R', 'I', 'B'] {

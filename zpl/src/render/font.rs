@@ -34,6 +34,7 @@ fn strikes() -> &'static Vec<(Settings, Vec<Glyph>)> {
             include_bytes!("../../assets/fontD-18-10.zbf").as_slice(),
             include_bytes!("../../assets/fontF-26-13.zbf").as_slice(),
             include_bytes!("../../assets/fontG-60-40.zbf").as_slice(),
+            include_bytes!("../../assets/fontH-21-13.zbf").as_slice(),
             include_bytes!("../../assets/fontE-28-15.zbf").as_slice(),
         ]
         .into_iter()
@@ -69,7 +70,7 @@ fn baseline(h: f64) -> f64 {
 }
 pub(super) fn baseline_for(id: char, h: f64) -> f64 {
     // Zebra guide p. 1582: one-based baselines 7 (A), 11 (B), 14 (C/D),
-    // 23 (E), 21 (F), 48 (G). These zero-based offsets locate native glyph ink in its cell.
+    // 23 (E), 21 (F), 48 (G), 21 (H). These zero-based offsets locate native glyph ink in its cell.
     h * match id {
         'A' => 6. / 9.,
         'B' => 10. / 11.,
@@ -77,6 +78,7 @@ pub(super) fn baseline_for(id: char, h: f64) -> f64 {
         'E' => 22. / 28.,
         'F' => 20. / 26.,
         'G' => 47. / 60.,
+        'H' => 20. / 21.,
         _ => 0.75,
     }
 }
@@ -101,6 +103,9 @@ pub(super) fn inverted_margin(id: char, value: &str, w: f64, h: f64) -> Result<f
         // resident-e-zd621-v1: OCR-B's inverted margin is six native dots,
         // although its ordinary advance includes only five gap dots.
         return Ok(6. * w / 15. + 2.);
+    }
+    if id == 'H' {
+        return Ok(6. * w / 13. + 2.);
     }
     if id == 'G' {
         return Ok(8. * w / 40. + 2.);
@@ -240,7 +245,8 @@ pub(super) fn union_lines(path: Path) -> Path {
 
 /// Captured bitmap-font FT dot placement. Native glyph metrics describe the
 /// cell; rotated FT anchors include a final dot boundary. See resident-bc-zd621-v1
-/// and resident-e/f/g-zd621-v1 scale/orientation controls, and ^FT p. 205
+/// and the subsequent resident-font suites (through resident-h-zd621-v1),
+/// with ^FT p. 205
 /// Table 7 in the Programming Guide.
 pub(super) fn printer_ft_offset(id: char, height: f64, rotation: u8) -> (f64, f64) {
     let native = match id {
@@ -250,6 +256,7 @@ pub(super) fn printer_ft_offset(id: char, height: f64, rotation: u8) -> (f64, f6
         'E' => 28.,
         'F' => 26.,
         'G' => 60.,
+        'H' => 21.,
         _ => return (0., 0.),
     };
     let scale = height / native;

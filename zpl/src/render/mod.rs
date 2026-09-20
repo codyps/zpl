@@ -432,6 +432,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                         "E" => 'E',
                         "F" => 'F',
                         "G" => 'G',
+                        "H" => 'H',
                         _ => return Err("unsupported resident font".into()),
                     };
                     default_font_id = font_id;
@@ -470,6 +471,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                         "AE" => 'E',
                         "AF" => 'F',
                         "AG" => 'G',
+                        "AH" => 'H',
                         _ => return Err("unsupported resident font".into()),
                     };
                     field.rotation = if p[0].is_empty() {
@@ -1178,6 +1180,7 @@ fn font_dimensions(
             'E' => (28., 15.),
             'F' => (26., 13.),
             'G' => (60., 40.),
+            'H' => (21., 13.),
             _ => (18., 10.),
         };
         // ^A p. 61 and ^CF p. 154: one supplied dimension determines

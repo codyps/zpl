@@ -109,3 +109,10 @@ asset hash are in
 [resident-g-zd621-v1](../tests/fixtures/resident-g-zd621-v1/README.md).
 Dimensions, gap and baseline follow Tables 29/31 of the ZPL Guide
 (pp. 1582–1583); independent printer controls verify magnification and placement.
+
+`fontH-21-13.zbf` contains all 95 printable ASCII inputs for resident H (OCR-A),
+with 19-dot advance and zero-based native baseline 20. Space and lowercase
+letters have empty bitmaps with their full advance, as measured on the printer.
+Extraction, independent verification, asset hash and blank-versus-space controls
+are in [resident-h-zd621-v1](../tests/fixtures/resident-h-zd621-v1/README.md).
+Dimensions, gap and baseline follow Tables 29/31 of the ZPL Guide (pp. 1582–1583).

@@ -525,3 +525,20 @@ match G without an additional departure.
 Run `cargo test -p zpl --test resident_g_preview --test profiles`. QR masks,
 resident H and wider unverified text/command coverage still leave the overall
 accuracy goal open.
+
+## Resident H and valid blank glyphs
+
+[Forty-one resident H frames](../zpl/tests/fixtures/resident-h-zd621-v1/README.md)
+are pixel-exact. Native OCR-A uses a 21 × 13 matrix, 19-dot advance and zero-based
+baseline 20. Lowercase a–z are advancing blanks, confirmed by individual
+sentinel probes and independent native/doubled printer comparisons to spaces.
+The extractor now accepts blank glyphs with validated positive advances while
+retaining its nonempty-probe and preview checks. The renderer supports all 95
+ASCII inputs, including the 27 blanks (space and lowercase).
+
+Controls cover sizing, scaling, all origins/orientations/justifications,
+wrapping, margins and wide Code 128 captions. Run `cargo test -p zpl
+--test resident_h_preview --test profiles` and `cargo test -p zpl-font-extract`.
+The existing printer options cover H. QR mask selection, unsampled font-0
+sizes and broader unverified command/encoding coverage still leave the overall
+accuracy goal open.

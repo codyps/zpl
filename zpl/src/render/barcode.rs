@@ -545,9 +545,10 @@ impl Barcode {
             if self.compatibility.barcode_reverse_interpretation_shift
                 && matches!(rotation, b'I' | b'B')
                 && (font.is_none()
-                    || (self.name == "BC" && matches!(id, 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G')))
+                    || (self.name == "BC"
+                        && matches!(id, 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'H')))
             {
-                // resident-e/f/g-zd621-v1 controls: bitmap captions also
+                // Resident-font controls through resident-h-zd621-v1: bitmap captions
                 // use the final-dot boundary; proportional font 0 does not.
                 t.transform(|p| Point::new(p.x - 1., p.y));
             }
