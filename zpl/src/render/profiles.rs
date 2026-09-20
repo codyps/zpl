@@ -12,6 +12,8 @@ pub const SPECIFICATION: Options = Options {
     height: 1218,
     dpi: 203,
     compatibility: Compatibility {
+        retail_interpretation_printer_layout: false,
+        retail_ft_uses_last_bar_row: false,
         code39_floor_wide_elements: false,
         code39_interpretation_symbols: false,
         code39_interpretation_ignores_font: false,
@@ -83,6 +85,8 @@ pub const ZD621_203_DPI: Options = Options {
     height: 1218,
     dpi: 203,
     compatibility: Compatibility {
+        retail_interpretation_printer_layout: true,
+        retail_ft_uses_last_bar_row: true,
         code39_floor_wide_elements: true,
         code39_interpretation_symbols: true,
         code39_interpretation_ignores_font: true,

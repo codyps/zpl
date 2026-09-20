@@ -1,5 +1,67 @@
 use super::*;
 
+/// Zebra ^B8/^B9/^BE/^BU interpretation, measured on ZD621 203 DPI.
+/// ^BU pp. 142–143 specifies resident A below module 3, OCR-B thereafter;
+/// font E's native 28x15 cell/20-dot advance is in Table 29, p. 1582.
+/// Raw controls and the independently sampled OCR-B strike are preserved in
+/// tests/fixtures/retail-caption-zd621-v1 (see its README for source links).
+pub(super) fn caption(b: &Barcode, bytes: &[u8], rotation: u8) -> Result<Path, String> {
+    let m = b.module;
+    let (id, fw, fh) = if m < 3. {
+        ('A', 5. * m, 9. * m)
+    } else {
+        let scale = (m / 3.).floor();
+        ('E', 15. * scale, 28. * scale)
+    };
+    let advance = super::super::font::width_for(id, "0", fw, fh)?;
+    let digits = match b.name.as_str() {
+        "B8" => checked(bytes, 8)?,
+        "B9" => upce::canonical(bytes)?,
+        "BE" => checked(bytes, 13)?,
+        _ => checked(bytes, 12)?,
+    };
+    let half = (m / 2.).floor();
+    let mut path = Path::default();
+    let mut group = |digits: &[u8], x: f64| -> Result<(), String> {
+        let value: String = digits.iter().map(|v| (v + b'0') as char).collect();
+        let mut text = super::super::font::text_for(id, &value, fw, fh)?;
+        let reverse =
+            b.compatibility.barcode_reverse_interpretation_shift && matches!(rotation, b'I' | b'B');
+        text.transform(|p| {
+            Point::new(p.x + x - if reverse { 1. } else { 0. }, p.y + b.height + 4.)
+        });
+        path.segments.extend(text.segments);
+        Ok(())
+    };
+    match b.name.as_str() {
+        "B8" => {
+            group(&digits[..4], 31. * m - 4. * advance + half)?;
+            group(&digits[4..], 36. * m + half)?;
+        }
+        "B9" => {
+            group(&digits[..1], -9. * m)?;
+            group(&digits[1..7], ((51. * m - 6. * advance) / 2.).floor())?;
+            if b.flag(4, true)? {
+                group(&digits[7..], 53. * m)?;
+            }
+        }
+        "BE" => {
+            group(&digits[..1], -9. * m)?;
+            group(&digits[1..7], 45. * m - 6. * advance + half)?;
+            group(&digits[7..], 50. * m + half)?;
+        }
+        _ => {
+            group(&digits[..1], -9. * m)?;
+            group(&digits[1..6], 45. * m - 5. * advance + half)?;
+            group(&digits[6..11], 50. * m + half)?;
+            if b.flag(4, true)? {
+                group(&digits[11..], 97. * m)?;
+            }
+        }
+    }
+    Ok(path)
+}
+
 /// UPC/EAN guard extensions. ZD621 203-DPI captures extend 13 dots below
 /// the nominal bar height, even when the interpretation line is disabled.
 /// Module-width 1/2/3 and font-height 10/20/40 controls: docs/printer-accuracy.md.

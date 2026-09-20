@@ -331,3 +331,24 @@ Run `cargo test -p zpl --test code39_caption_preview --test profiles`.
 Below-bar UPC/EAN layout and QR automatic mask selection remain unresolved.
 Broader conformance coverage still needs hardware verification; this is not
 a claim that the overall accuracy goal has been achieved.
+
+## UPC/EAN interpretation and baseline boundaries
+
+Seventy-four [retail barcode controls](../zpl/tests/fixtures/retail-caption-zd621-v1/README.md)
+now require full-canvas equality, including every digit pixel. The renderer
+previously centered one font-A string across the bars; the printer divides
+EAN-8, UPC-E, EAN-13 and UPC-A captions into groups around the guards and
+uses OCR-B for wider modules. The new decimal OCR-B strike was independently
+sampled and verified against a separate composed-text preview.
+
+`retail_interpretation_printer_layout` selects the captured 203-DPI below-bar
+layout, including integer OCR-B scaling, fixed four-dot gap, and rotation
+about the bar width. `retail_ft_uses_last_bar_row` independently selects the
+normal/bottom-up inclusive baseline, verified with captions above, below and
+hidden. The controls also cover alternate payloads, check-digit suppression,
+explicit fonts, all orientations, and module widths 1–7/9. Run
+`cargo test -p zpl --test retail_caption_preview --test profiles`.
+
+QR automatic mask selection remains unresolved. Broader conformance and
+resident-font coverage still need hardware verification; the overall accuracy
+goal remains open.

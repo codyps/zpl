@@ -29,6 +29,7 @@ fn strikes() -> &'static Vec<(Settings, Vec<Glyph>)> {
             include_bytes!("../../assets/font0-32-64.zbf").as_slice(),
             include_bytes!("../../assets/fontA-9-5.zbf").as_slice(),
             include_bytes!("../../assets/fontD-18-10.zbf").as_slice(),
+            include_bytes!("../../assets/fontE-28-15-digits.zbf").as_slice(),
         ]
         .into_iter()
         .map(|data| bitmap_font::unpack(data).expect("validated resident strike"))
@@ -59,11 +60,12 @@ fn baseline(h: f64) -> f64 {
     baseline_for('0', h)
 }
 pub(super) fn baseline_for(id: char, h: f64) -> f64 {
-    // Zebra guide p. 1582 gives one-based baselines 7 (A) and 14 (D).
-    // Captured ^FT bitmap offsets use their zero-based rows 6 and 13.
+    // Zebra guide p. 1582 gives one-based baselines 7 (A), 14 (D), 23 (E).
+    // Captured ^FT bitmap offsets use their zero-based rows 6, 13, 22.
     h * match id {
         'A' => 6. / 9.,
         'D' => 13. / 18.,
+        'E' => 22. / 28.,
         _ => 0.75,
     }
 }

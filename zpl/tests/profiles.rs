@@ -31,6 +31,31 @@ fn bounds(r: &Raster) -> (u32, u32, u32, u32) {
 }
 
 #[test]
+fn retail_caption_and_baseline_overrides_are_independent() {
+    // ^BU pp. 142–143, ^FT p. 205; raw controls in retail-caption-zd621-v1.
+    let body = "^BY2,3,60^FO80,80^BUN,70,Y,N^FD01234567890";
+    let printer = raster(body, ZD621_203_DPI);
+    let mut options = ZD621_203_DPI;
+    options.compatibility.retail_interpretation_printer_layout = false;
+    let generic = raster(body, options);
+    assert_ne!(printer.pixels, generic.pixels);
+    assert_eq!(
+        &printer.pixels[..150 * 400],
+        &generic.pixels[..150 * 400],
+        "caption layout must preserve the bars"
+    );
+    assert_eq!(
+        printer.pixels,
+        raster(&body.replace("^BUN", "^A0N,32,32^BUN"), ZD621_203_DPI).pixels
+    );
+    let body = "^BY2,3,60^FT80,80^B8N,1,N,N^FD1234567";
+    options = ZD621_203_DPI;
+    options.compatibility.retail_ft_uses_last_bar_row = false;
+    assert_eq!(bounds(&raster(body, ZD621_203_DPI)).1, 80);
+    assert_eq!(bounds(&raster(body, options)).1, 79);
+}
+
+#[test]
 fn profile_is_an_overridable_initial_value() {
     assert_eq!(Options::default(), ZD621_203_DPI);
     assert_eq!(SPECIFICATION.compatibility, Compatibility::default());

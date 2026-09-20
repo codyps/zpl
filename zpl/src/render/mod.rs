@@ -882,6 +882,10 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                                 } else {
                                     h
                                 };
+                                let w = field
+                                    .barcode
+                                    .as_ref()
+                                    .map_or(w, |barcode| barcode.field_origin_width(w));
                                 match field.rotation {
                                     b'R' => (h, 0.),
                                     b'I' => (w, h),

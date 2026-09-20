@@ -13,6 +13,14 @@
 /// initial value: the renderer does not reapply it after you change an option.
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct Compatibility {
+    /// Captured ZD621 203-DPI below-bar UPC/EAN digit groups, font selection,
+    /// four-dot gap, and bar-width rotation pivot. ^BU pp. 142–143 describes
+    /// the A/OCR-B switch; exact placement is pinned by retail-caption-zd621-v1.
+    /// Other resolutions and above-bar captions retain their general layout.
+    pub retail_interpretation_printer_layout: bool,
+    /// ZD621 normal/bottom-up UPC/EAN ^FT origins include the last bar row.
+    /// Independent of caption visibility and the below-bar digit layout.
+    pub retail_ft_uses_last_bar_row: bool,
     /// Truncate standalone Code 39 wide elements to whole dots. The ZD621
     /// captures in code39-ratios-zd621-v1 use floor(module * ratio), including
     /// 9 * 2.4 = 21 dots. The ^BY example (p. 148) instead rounds that width

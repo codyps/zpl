@@ -102,6 +102,27 @@ pub(super) fn supported(name: &str) -> bool {
     )
 }
 impl Barcode {
+    fn uses_retail_caption(&self) -> bool {
+        self.compatibility.retail_interpretation_printer_layout
+            && self.dpi == 203
+            && self.show
+            && !self.above
+            && matches!(self.name.as_str(), "B8" | "B9" | "BE" | "BU")
+    }
+
+    pub fn field_origin_width(&self, width: f64) -> f64 {
+        if self.uses_retail_caption() {
+            // Outer interpretation digits do not move the ^FO rotation pivot.
+            self.module
+                * match self.name.as_str() {
+                    "B8" => 67.,
+                    "B9" => 51.,
+                    _ => 95.,
+                }
+        } else {
+            width
+        }
+    }
     fn postal_pitch(&self) -> f64 {
         if self.compatibility.postal_fixed_pitch {
             (self.module * 2.5).floor()
@@ -141,10 +162,11 @@ impl Barcode {
         }
     }
     pub fn field_baseline_height(&self, height: f64, rotation: u8) -> f64 {
-        // ^FT p. 205, Table 7; Code 39 FT captures include the last bar row
-        // on the baseline. Keep the full bar height for ^FO rotation anchors.
-        if self.name == "B3"
-            && self.compatibility.code39_ft_uses_last_bar_row
+        // ^FT p. 205, Table 7; Code 39 and UPC/EAN N/B captures include the
+        // last bar row on the baseline. Keep full bar height for ^FO pivots.
+        if ((self.name == "B3" && self.compatibility.code39_ft_uses_last_bar_row)
+            || (matches!(self.name.as_str(), "B8" | "B9" | "BE" | "BU")
+                && self.compatibility.retail_ft_uses_last_bar_row))
             && matches!(rotation, b'N' | b'B')
         {
             (height - 1.).max(0.)
@@ -361,7 +383,10 @@ impl Barcode {
             // this anchor is independent of the default linear barcode height.
             baseline += 3. * self.num(2, self.scale(), 1., 100.)? - 1.;
         }
-        if self.show {
+        if self.uses_retail_caption() {
+            p.segments
+                .extend(retail::caption(self, bytes, rotation)?.segments);
+        } else if self.show {
             let value = self.interpretation(bytes)?;
             let font = if self.name == "B3" && self.compatibility.code39_interpretation_ignores_font
             {
