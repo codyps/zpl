@@ -1165,3 +1165,19 @@ one rejected invalid UPC-E request. The shipping label is 99.9898% foreground
 IoU, with separate text-field and non-text gates as described above. The
 exploratory empty-field and large-caption cases remain outside that audit and
 still require fixes; these aggregate counts do not close the overall goal.
+
+## Bitmap maximum dimensions and large barcode captions
+
+`bitmap_maximum_preview` pins 19 native frames containing 63 fields, all
+pixel-exact. Resident fonts A–H and GS cap enlargement at ten times the native
+matrix. Explicit fonts use the capped dimensions throughout layout. Implicit
+barcode captions cap glyph sizes and advances but preserve the requested
+centering width and ink bottom. Independent controls cover asymmetric axes,
+CF inheritance, FO/FT, four rotations, above/below captions and edge clamping.
+
+`bitmap_font_maximum_dimensions` selects this behavior in ZD621_203_DPI.
+SPECIFICATION rejects oversized A–H dimensions under ^A's documented 10×
+limit, while allowing the larger GS dimensions documented by that command.
+See [the raw printer evidence](../zpl/tests/fixtures/bitmap-maximum-zd621-v1/README.md).
+The exploratory QR-to-Code-128 magnification-12 caption gap is now fixed;
+the separate unexpected QR ink from an empty field remains open.

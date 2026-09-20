@@ -195,6 +195,12 @@ pub struct Compatibility {
     /// native size. See resident-h-zd621-v1 and the earlier resident-font suites.
     /// Disabled: retain previous CF dimensions (^CF p. 154). A commands inherit CF.
     pub bitmap_cf_font_only_resets_size: bool,
+    /// Clamp resident bitmap fonts A–H and GS symbols to ten times their native dimensions.
+    /// Disabled: reject A–H dimensions beyond the documented maximum (^A p. 60),
+    /// and allow larger GS symbols (^GS p. 217 permits up to 32000 dots).
+    /// Native controls: bitmap-maximum-zd621-v1. Automatic barcode captions
+    /// retain their requested centering width and bottom while capping glyph size.
+    pub bitmap_font_maximum_dimensions: bool,
     /// Apply captured bitmap-font FT dot offsets after scaling and rotation.
     /// FO and proportional font 0 are unaffected. Disabled: use the scaled
     /// native baseline geometrically (^FT p. 205 Table 7). The resident-font

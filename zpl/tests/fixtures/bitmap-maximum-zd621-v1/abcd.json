@@ -1,0 +1,7 @@
+{
+  "status": "complete",
+  "printer_url": "http://printer.local/",
+  "source_sha256": "1911ab5380c485c626176ff65acc0c72887fd9629cedf70f010546374df35c98",
+  "printer_sha256": "71e5c72ea6c74e572636ee0c2349110cc47ee52fe96314c75fb25b0af903892e",
+  "attempts": 1
+}

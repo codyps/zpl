@@ -507,14 +507,18 @@ impl Barcode {
             // one, resident A scales with ^BY, independently of ^CF.
             let (id, fw, fh) = font.unwrap_or(('A', 5. * self.module, 9. * self.module));
             let caption_font = super::font::Font::from(id).with_character_map(character_map);
+            let cap_caption = font.is_none()
+                && self.compatibility.bitmap_font_maximum_dimensions
+                && self.module > 10.;
+            let (ink_w, ink_h) = if cap_caption { (50., 90.) } else { (fw, fh) };
             let mut t = if clamp {
                 let mut text = Path::default();
                 let mut x = 0.;
                 for c in value.chars() {
                     let value = c.to_string();
-                    let mut glyph = super::font::text_for(caption_font, &value, fw, fh)?;
+                    let mut glyph = super::font::text_for(caption_font, &value, ink_w, ink_h)?;
                     let padding = if id == 'A' {
-                        (7. * fh / 9. - super::bounds(&glyph).3).max(0.)
+                        (7. * ink_h / 9. - super::bounds(&glyph).3).max(0.)
                     } else {
                         0.
                     };
@@ -524,11 +528,11 @@ impl Barcode {
                         p.segments.len() + text.segments.len(),
                         padding,
                     ));
-                    x += super::font::width_for(caption_font, &value, fw, fh)?;
+                    x += super::font::width_for(caption_font, &value, ink_w, ink_h)?;
                 }
                 text
             } else {
-                super::font::text_for(caption_font, &value, fw, fh)?
+                super::font::text_for(caption_font, &value, ink_w, ink_h)?
             };
             // Captured ^B1/^BA interpretation uses dedicated start/stop
             // glyphs, not the resident font's printable asterisk. Reserve
@@ -541,8 +545,8 @@ impl Barcode {
                 _ => &[],
             };
             if !marker.is_empty() {
-                let right = super::font::width_for(caption_font, &value, fw, fh)?
-                    - super::font::width_for(caption_font, " ", fw, fh)?;
+                let right = super::font::width_for(caption_font, &value, ink_w, ink_h)?
+                    - super::font::width_for(caption_font, " ", ink_w, ink_h)?;
                 for x in [0., right] {
                     // The two-check Code 11 stop glyph is a taller triangle;
                     // its start glyph and the one-check stop stay four rows.
@@ -551,12 +555,12 @@ impl Barcode {
                     } else {
                         marker
                     };
-                    caption_glyph(&mut t, x, fw, fh, marker);
+                    caption_glyph(&mut t, x, ink_w, ink_h, marker);
                     if clamp {
                         split.push(PartBoundary::new(
                             p.segments.len() + t.segments.len(),
                             if id == 'A' {
-                                7_usize.saturating_sub(marker.len()) as f64 * fh / 9.
+                                7_usize.saturating_sub(marker.len()) as f64 * ink_h / 9.
                             } else {
                                 0.
                             },
@@ -566,19 +570,25 @@ impl Barcode {
             }
             if let Some(caption) = special {
                 for (index, glyph) in caption.glyphs {
-                    let x = super::font::width_for(caption_font, &value[..index], fw, fh)?;
-                    caption_glyph(&mut t, x, fw, fh, glyph);
+                    let x = super::font::width_for(caption_font, &value[..index], ink_w, ink_h)?;
+                    caption_glyph(&mut t, x, ink_w, ink_h, glyph);
                     if clamp {
                         split.push(PartBoundary::new(
                             p.segments.len() + t.segments.len(),
                             if id == 'A' {
-                                7_usize.saturating_sub(glyph.len()) as f64 * fh / 9.
+                                7_usize.saturating_sub(glyph.len()) as f64 * ink_h / 9.
                             } else {
                                 0.
                             },
                         ));
                     }
                 }
+            }
+            if cap_caption {
+                // Native implicit captions cap ink, but retain the requested
+                // seven-row ink bottom and centering width; explicit ^A is capped
+                // before layout. See bitmap-maximum-zd621-v1.
+                t.transform(|p| Point::new(p.x, p.y + 7. * (self.module - 10.)));
             }
             let printer = self.compatibility.barcode_interpretation_printer_layout;
             let gap_below = if printer { 6. } else { 3. };

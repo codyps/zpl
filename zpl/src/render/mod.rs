@@ -651,6 +651,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                         dh,
                         font_id,
                         options.compatibility.font0_minimum_dimensions,
+                        options.compatibility.bitmap_font_maximum_dimensions,
                     )?;
                     field.requested_text_height = Some(number(&p, 1, dh)?);
                     default_w = font_w;
@@ -704,6 +705,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                         dh,
                         font_id,
                         options.compatibility.font0_minimum_dimensions,
+                        options.compatibility.bitmap_font_maximum_dimensions,
                     )?;
                     field.requested_text_height = Some(number(&p, 1, dh)?);
                 }
@@ -723,6 +725,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                         default_requested_h,
                         font_id,
                         options.compatibility.font0_minimum_dimensions,
+                        options.compatibility.bitmap_font_maximum_dimensions,
                     )?;
                 }
                 "FH" => {
@@ -2110,6 +2113,7 @@ fn font_dimensions(
     default_h: f64,
     id: char,
     clamp_minimum: bool,
+    clamp_maximum: bool,
 ) -> Result<(f64, f64), String> {
     let h = number(p, 1, 0.)?;
     let w = number(p, 2, 0.)?;
@@ -2149,6 +2153,18 @@ fn font_dimensions(
         } else {
             (w / nw).round().max(1.)
         };
+        // ^A p. 60 limits resident bitmap matrices to tenfold enlargement.
+        // bitmap-maximum-zd621-v1 verifies independent native axis clamping.
+        if (matches!(id, 'A'..='H') || (id == GRAPHIC_SYMBOLS && clamp_maximum))
+            && (ws > 10. || hs > 10.)
+        {
+            if !clamp_maximum {
+                return Err(
+                    "bitmap font dimensions must not exceed ten times the native matrix".into(),
+                );
+            }
+            return Ok((nw * ws.min(10.), nh * hs.min(10.)));
+        }
         return Ok((nw * ws, nh * hs));
     }
     let (w, h) = match (w, h) {
