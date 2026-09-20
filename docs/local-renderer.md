@@ -94,7 +94,7 @@ parity. Preview width adjustment remains unimplemented.
 | --- | --- |
 | Framing | `XA`, `XZ`, `FS`, single-byte equivalents, `CC`, `CT`, `CD`, comments `FX`; ASCII parameter delimiter |
 | Layout | `PW`, `LL`, `LH`, `LS`, `LT`, `FO`, explicit-coordinate `FT`, `FW`, `PO`, `FR`, `LR`; left/right/Latin-auto field justification |
-| Text | `CF`, `A0`, `AA`, `AB`, `AC`, `AD`, `AE`, `AF`, `AG`, `AH`, `FD`, `FV`, `FH`; printable ASCII in fonts 0/A/B/C/D/E/F/G/H and captured font-0 é; `CI27` Latin-1 subset and `CI28` UTF-8 |
+| Text | `CF`, `A0`, `AA`, `AB`, `AC`, `AD`, `AE`, `AF`, `AG`, `AH`, `FD`, `FV`, `FH`; printable ASCII in fonts 0/A/B/C/D/E/F/G/H and captured font-0 é; `CI13` ASCII, `CI27` Latin-1 subset and `CI28` UTF-8 |
 | Blocks | `FB`: left/center/right/justified alignment, hanging indent, wrapping, explicit `\&` breaks and last-row overflow; word hyphenation and negative line spacing return errors |
 | Shapes | `GB` including rounded corners, `GC`, `GE`, `GD`; black or white outlines/fills |
 | Graphics | `~DG`, `XG`, `GFA`, `GFB`: raw hex, Zebra ASCII run lengths/row shortcuts, B64, Z64; CRC16 and zlib checksums checked |

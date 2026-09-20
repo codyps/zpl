@@ -12,6 +12,7 @@ pub const SPECIFICATION: Options = Options {
     height: 1218,
     dpi: 203,
     compatibility: Compatibility {
+        utf8_uses_legacy_backslash: false,
         block_backslash_without_ci13: false,
         block_fo_right_justification_printer_layout: false,
         text_clamps_negative_origins: false,
@@ -108,6 +109,7 @@ pub const ZD621_203_DPI: Options = Options {
     height: 1218,
     dpi: 203,
     compatibility: Compatibility {
+        utf8_uses_legacy_backslash: true,
         block_backslash_without_ci13: true,
         block_fo_right_justification_printer_layout: true,
         text_clamps_negative_origins: true,

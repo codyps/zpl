@@ -1,0 +1,14 @@
+{
+  "batch_size": 8,
+  "codepoints": [
+    92
+  ],
+  "coordinates": "printer dots; left/top relative to FT baseline; rows top-to-bottom, MSB-first",
+  "dpi": 203,
+  "encoding": 0,
+  "font": "F",
+  "requested_height": 26,
+  "requested_width": 13,
+  "schema": "zpl-preview-bitmap-font-v1",
+  "source": "http://printer.local/"
+}

@@ -15,7 +15,6 @@ underpaint and overpaint.
 ^FB p. 187 specifies double-backslash escaping and requires CI13 (Item 1).
 The printer also prints backslashes under CI27; the independently selectable
 `block_backslash_without_ci13` compatibility option enables this departure.
-The specification profile rejects the escape outside CI13. CI13 itself remains
-unsupported. CI0/28 print a cent glyph in fresh controls and are explicitly
-rejected until that mapping has regression coverage. Soft-hyphen escape
+The specification profile rejects the escape outside CI13. ASCII CI13 is now
+supported; CI0/28 native cent glyphs are covered by legacy-backslash-zd621-v1. Soft-hyphen escape
 markers are separate unfinished work.

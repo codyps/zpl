@@ -6,6 +6,26 @@ use crate::{
     output::Path,
 };
 use std::{collections::BTreeMap, sync::OnceLock};
+/// Resident face plus the legacy ASCII backslash replacement. Keep this
+/// separate from U+00A2: bitmap faces have distinct native cent designs.
+#[derive(Clone, Copy)]
+pub(super) struct Font {
+    id: char,
+    legacy_backslash: bool,
+}
+impl Font {
+    pub(super) fn new(id: char, legacy_backslash: bool) -> Self {
+        Self {
+            id,
+            legacy_backslash,
+        }
+    }
+}
+impl From<char> for Font {
+    fn from(id: char) -> Self {
+        Self::new(id, false)
+    }
+}
 const DATA: &[u8] = include_bytes!("../../assets/font0-32.zbf");
 fn strike() -> &'static (Settings, Vec<Glyph>) {
     static FONT: OnceLock<(Settings, Vec<Glyph>)> = OnceLock::new();
@@ -108,17 +128,96 @@ fn strikes() -> &'static Vec<(Settings, Vec<Glyph>)> {
         .collect()
     })
 }
-fn selected(id: char, w: f64, h: f64) -> (&'static [Glyph], f64, f64) {
+// Native CI0 byte 0x5C, sampled separately from Unicode U+00A2.
+// ^CI p. 159; independent advance controls in legacy-backslash-zd621-v1.
+fn legacy_strikes() -> &'static Vec<(Settings, Vec<Glyph>)> {
+    static FONTS: OnceLock<Vec<(Settings, Vec<Glyph>)>> = OnceLock::new();
+    FONTS.get_or_init(|| {
+        let mut faces = strikes().clone();
+        faces.push(strike().clone());
+        for (settings, glyphs) in &mut faces {
+            let data: Option<&[u8]> = match (settings.font, settings.height, settings.width) {
+                ('0', 16, 0) => Some(include_bytes!(
+                    "../../assets/font0-16-0-legacy-backslash.zbf"
+                )),
+                ('0', 20, 0) => Some(include_bytes!(
+                    "../../assets/font0-20-0-legacy-backslash.zbf"
+                )),
+                ('0', 24, 24) => Some(include_bytes!(
+                    "../../assets/font0-24-24-legacy-backslash.zbf"
+                )),
+                ('0', 32, 0) => Some(include_bytes!(
+                    "../../assets/font0-32-0-legacy-backslash.zbf"
+                )),
+                ('0', 32, 16) => Some(include_bytes!(
+                    "../../assets/font0-32-16-legacy-backslash.zbf"
+                )),
+                ('0', 32, 24) => Some(include_bytes!(
+                    "../../assets/font0-32-24-legacy-backslash.zbf"
+                )),
+                ('0', 32, 64) => Some(include_bytes!(
+                    "../../assets/font0-32-64-legacy-backslash.zbf"
+                )),
+                ('0', 64, 0) => Some(include_bytes!(
+                    "../../assets/font0-64-0-legacy-backslash.zbf"
+                )),
+                ('A', 9, 5) => Some(include_bytes!(
+                    "../../assets/fontA-9-5-legacy-backslash.zbf"
+                )),
+                ('B', 11, 7) => Some(include_bytes!(
+                    "../../assets/fontB-11-7-legacy-backslash.zbf"
+                )),
+                ('D', 18, 10) => Some(include_bytes!(
+                    "../../assets/fontD-18-10-legacy-backslash.zbf"
+                )),
+                ('E', 28, 15) => Some(include_bytes!(
+                    "../../assets/fontE-28-15-legacy-backslash.zbf"
+                )),
+                ('F', 26, 13) => Some(include_bytes!(
+                    "../../assets/fontF-26-13-legacy-backslash.zbf"
+                )),
+                ('G', 60, 40) => Some(include_bytes!(
+                    "../../assets/fontG-60-40-legacy-backslash.zbf"
+                )),
+                ('H', 21, 13) => Some(include_bytes!(
+                    "../../assets/fontH-21-13-legacy-backslash.zbf"
+                )),
+                _ => None,
+            };
+            if let Some(data) = data {
+                let (_, replacement) =
+                    bitmap_font::unpack(data).expect("validated legacy backslash");
+                let index = glyphs
+                    .binary_search_by_key(&b'\\', |g| g.codepoint)
+                    .expect("ASCII backslash");
+                glyphs[index] = replacement[0].clone();
+            }
+        }
+        faces
+    })
+}
+fn selected(id: impl Into<Font> + Copy, w: f64, h: f64) -> (&'static [Glyph], f64, f64) {
     // C and D share the 18x10 matrix (ZPL Programming Guide Table 31,
     // p. 1583); resident-bc-zd621-v1 verifies the alias across all ASCII.
-    let id = if id == 'C' { 'D' } else { id };
-    for (s, glyphs) in strikes() {
+    let font = id.into();
+    let id = if font.id == 'C' { 'D' } else { font.id };
+    let faces = if font.legacy_backslash {
+        legacy_strikes()
+    } else {
+        strikes()
+    };
+    for (s, glyphs) in faces {
         let sw = if s.width == 0 { s.height } else { s.width } as f64;
         if s.font == id && (id != '0' || (s.height as f64 == h && sw == w)) {
             return (glyphs, w / sw, h / s.height as f64);
         }
     }
-    (&strike().1, w / 32., h / 32.)
+    let fallback = if font.legacy_backslash {
+        &legacy_strikes().last().unwrap().1
+    } else {
+        &strike().1
+    };
+    (fallback, w / 32., h / 32.)
 }
 fn glyph_from(glyphs: &'static [Glyph], c: char) -> Result<&'static Glyph, String> {
     let index = glyphs
@@ -134,10 +233,10 @@ fn glyph(c: char) -> Result<&'static Glyph, String> {
 fn baseline(h: f64) -> f64 {
     baseline_for('0', h)
 }
-pub(super) fn baseline_for(id: char, h: f64) -> f64 {
+pub(super) fn baseline_for(id: impl Into<Font> + Copy, h: f64) -> f64 {
     // Zebra guide p. 1582: one-based baselines 7 (A), 11 (B), 14 (C/D),
     // 23 (E), 21 (F), 48 (G), 21 (H). These zero-based offsets locate native glyph ink in its cell.
-    h * match id {
+    h * match id.into().id {
         'A' => 6. / 9.,
         'B' => 10. / 11.,
         'C' | 'D' => 13. / 18.,
@@ -155,13 +254,25 @@ pub(super) fn baseline_for(id: char, h: f64) -> f64 {
 fn width(s: &str, w: f64) -> Result<f64, String> {
     width_for('0', s, w, 32.)
 }
-pub(super) fn width_for(id: char, s: &str, w: f64, h: f64) -> Result<f64, String> {
+pub(super) fn width_for(
+    id: impl Into<Font> + Copy,
+    s: &str,
+    w: f64,
+    h: f64,
+) -> Result<f64, String> {
     let (glyphs, sx, _) = selected(id, w, h);
     s.chars().try_fold(0., |sum, c| {
         Ok(sum + glyph_from(glyphs, c)?.advance as f64 * sx)
     })
 }
-pub(super) fn inverted_margin(id: char, value: &str, w: f64, h: f64) -> Result<f64, String> {
+pub(super) fn inverted_margin(
+    id: impl Into<Font> + Copy,
+    value: &str,
+    w: f64,
+    h: f64,
+) -> Result<f64, String> {
+    let font = id;
+    let id = id.into().id;
     if id == 'A' {
         return Ok(w / 5. + 2.);
     }
@@ -188,7 +299,7 @@ pub(super) fn inverted_margin(id: char, value: &str, w: f64, h: f64) -> Result<f
     let Some(c) = value.chars().last() else {
         return Ok(0.);
     };
-    let (glyphs, sx, _) = selected(id, w, h);
+    let (glyphs, sx, _) = selected(font, w, h);
     let g = glyph_from(glyphs, c)?;
     Ok(((g.advance as f64 - g.left as f64 - g.width as f64) * sx - 1.).max(0.))
 }
@@ -198,7 +309,12 @@ fn text(s: &str, w: f64, h: f64) -> Result<Path, String> {
 }
 // Preserve individual glyph ink for printer edge placement. The regular
 // text path remains merged, so unclamped output does not change.
-pub(super) fn text_parts_for(id: char, s: &str, w: f64, h: f64) -> Result<Vec<Path>, String> {
+pub(super) fn text_parts_for(
+    id: impl Into<Font> + Copy,
+    s: &str,
+    w: f64,
+    h: f64,
+) -> Result<Vec<Path>, String> {
     let mut parts = Vec::new();
     let mut pen = 0.;
     for c in s.chars() {
@@ -212,7 +328,12 @@ pub(super) fn text_parts_for(id: char, s: &str, w: f64, h: f64) -> Result<Vec<Pa
     }
     Ok(parts)
 }
-pub(super) fn text_for(id: char, s: &str, w: f64, h: f64) -> Result<Path, String> {
+pub(super) fn text_for(
+    id: impl Into<Font> + Copy,
+    s: &str,
+    w: f64,
+    h: f64,
+) -> Result<Path, String> {
     let (glyphs, sx, sy) = selected(id, w, h);
     // Merge ink spans before emitting even-odd subpaths. Proportional glyphs can
     // overhang their advance; overlapping strokes must remain black, not XOR.

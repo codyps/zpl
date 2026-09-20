@@ -1218,10 +1218,37 @@ fn field_block_backslash_encoding_departure_is_optional() {
     let mut options = SPECIFICATION;
     options.compatibility.block_backslash_without_ci13 = true;
     assert!(render(input, options).is_ok());
+    let ci13 = String::from_utf8(input.to_vec())
+        .unwrap()
+        .replace("CI27", "CI13");
+    assert!(render(ci13.as_bytes(), SPECIFICATION).is_ok());
     for ci in [0, 28] {
         let source = String::from_utf8(input.to_vec())
             .unwrap()
             .replace("CI27", &format!("CI{ci}"));
-        assert!(render(source.as_bytes(), ZD621_203_DPI).is_err());
+        assert!(render(source.as_bytes(), ZD621_203_DPI).is_ok());
     }
+}
+
+#[test]
+fn utf8_legacy_backslash_mapping_is_independent_of_block_escaping() {
+    // ^CI p. 159 defines CI0's mapping; CI28 is Unicode (p. 157).
+    // Native printer samples in legacy-backslash-zd621-v1 cover both.
+    let body = r"^CI28^FO50,50^A0N,32,0^FDA\B";
+    let mut options = ZD621_203_DPI;
+    let native = raster(body, options);
+    options.compatibility.utf8_uses_legacy_backslash = false;
+    assert_ne!(native.pixels, raster(body, options).pixels);
+    assert_eq!(
+        native.pixels,
+        raster(&body.replace("CI28", "CI0"), options).pixels
+    );
+    assert_eq!(
+        raster(body, options).pixels,
+        raster(&body.replace("CI28", "CI27"), options).pixels
+    );
+    assert_eq!(
+        native.pixels,
+        raster(&body.replace('\\', "¢"), options).pixels
+    );
 }

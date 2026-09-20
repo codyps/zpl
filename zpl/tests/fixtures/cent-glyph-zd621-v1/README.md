@@ -17,5 +17,6 @@ metrics, and packed asset hashes are pinned. No image registration is used.
 ^CI pp. 156–159 and font metrics Tables 29/31 pp. 1582–1583.
 Capture uses the repository extract-font example with --characters ¢,
 --verify-text ¢¢¢ and --delay 5. These encoded cent glyphs are distinct from
-some bitmap fonts' native CI0 backslash replacement. That mapping remains
-unfinished; the glyphs here do not substitute for those separate samples.
+some bitmap fonts' native CI0 backslash replacement. The separate
+legacy-backslash-zd621-v1 suite covers that mapping; the glyphs here do not
+substitute for those native samples.

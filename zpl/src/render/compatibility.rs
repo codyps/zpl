@@ -13,11 +13,16 @@
 /// initial value: the renderer does not reapply it after you change an option.
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct Compatibility {
-    /// Allow escaped FB backslashes in CI27. The guide (^FB p. 187,
-    /// Item 1) requires CI13, which is not yet supported by this renderer.
+    /// Apply CI0's native backslash-to-cent glyph replacement in CI28 too.
+    /// Disabled: CI28 backslashes retain their Unicode glyph (^CI p. 157).
+    /// CI0 always uses its documented character mapping (^CI p. 159).
+    pub utf8_uses_legacy_backslash: bool,
+    /// Allow escaped FB backslashes in CI0/27/28. The guide (^FB p. 187,
+    /// Item 1) requires CI13.
     /// Disabled: reject escaped backslashes in other encodings.
     pub block_backslash_without_ci13: bool,
-    /// Use the measured right-justified FO block anchors: B omits the final
+    /// Use the measured right-justified FO block anchors: R preserves line
+    /// alignment within the block; B omits the final
     /// line height from its shift; I uses one dot minus block width.
     /// Disabled: use ordinary text-field justification (^FO p. 201, ^FB p. 187).
     pub block_fo_right_justification_printer_layout: bool,

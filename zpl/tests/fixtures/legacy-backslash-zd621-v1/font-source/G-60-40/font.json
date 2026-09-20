@@ -1,0 +1,80 @@
+{
+  "batch_size": 8,
+  "captures": [
+    {
+      "page": 0,
+      "sha256": "346fc66b296d45080bdff478c88ab6938a31fa96a0d16f62c933570374c640c1"
+    }
+  ],
+  "codepoints": [
+    92
+  ],
+  "coordinates": "printer dots; left/top relative to FT baseline; rows top-to-bottom, MSB-first",
+  "dpi": 203,
+  "encoding": 0,
+  "font": "G",
+  "glyphs": [
+    {
+      "advance": 48,
+      "bitmap": [
+        "0000F00000",
+        "0000F00000",
+        "0000F00000",
+        "000FFF0000",
+        "007FFFE000",
+        "01FFFFF800",
+        "07FFFFFE00",
+        "0FFFFFFF00",
+        "1FFCF3FFC0",
+        "1FF0F0FFC0",
+        "3FE0F07FE0",
+        "3FC0F03FE0",
+        "3F80F01FE0",
+        "7F80F01FF0",
+        "7F00F00FF0",
+        "7F00F00FF0",
+        "FE00F00000",
+        "FE00F00000",
+        "FE00F00000",
+        "FC00F00000",
+        "FC00F00000",
+        "FC00F00000",
+        "FC00F00000",
+        "FE00F00000",
+        "FE00F00000",
+        "FE00F00000",
+        "7F00F00FE0",
+        "7F00F00FE0",
+        "7F80F01FE0",
+        "3F80F01FC0",
+        "3FC0F03FC0",
+        "3FE0F07FC0",
+        "1FF0F0FF80",
+        "1FFCF3FF80",
+        "0FFFFFFF00",
+        "07FFFFFE00",
+        "01FFFFF800",
+        "003FFFE000",
+        "000FFF0000",
+        "0000F00000",
+        "0000F00000",
+        "0000F00000"
+      ],
+      "character": "\\",
+      "codepoint": 92,
+      "height": 42,
+      "left": 0,
+      "top": -41,
+      "width": 36
+    }
+  ],
+  "requested_height": 60,
+  "requested_width": 40,
+  "schema": "zpl-preview-bitmap-font-v1",
+  "source": "http://printer.local/",
+  "verification": {
+    "different_pixels": 0,
+    "sha256": "e4840694571be064135f592cabc2a9c9ae60829a7a67ba48d9d731e3eba0237a",
+    "text": "\\\\\\"
+  }
+}

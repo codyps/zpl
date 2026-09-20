@@ -651,12 +651,11 @@ backslashes, and adjacent explicit newline escapes. Every full canvas is
 pixel-exact. Escape decoding consumes a backslash pair before recognizing a
 newline, so an escaped backslash followed by `&` stays on its line.
 
-`block_backslash_without_ci13` enables the printer's CI27 departure from the
-^FB p. 187 CI13 prerequisite. The specification profile disables it. CI13
-remains unsupported, and CI0/28's captured cent-glyph substitution remains
-unimplemented and returns an explicit error. Soft-hyphen escape markers and
-QR mask selection also remain open; these results do not establish the overall
-accuracy goal.
+`block_backslash_without_ci13` enables the printer's CI0/27/28 departure from
+the ^FB p. 187 CI13 prerequisite. The specification profile disables it.
+ASCII CI13 is supported. CI0/28's native cent-glyph substitution is covered by
+the separate legacy-backslash suite below. Soft-hyphen escape markers and QR
+mask selection remain open; these results do not establish the overall goal.
 
 Run `cargo test -p zpl --test field_block_backslash_preview --test profiles`.
 
@@ -668,6 +667,21 @@ composition frames pin glyph metrics, assets, and zero underpaint/overpaint;
 60 held-out CI27/CI28 fields verify ordinary text and centered field blocks.
 All frames are pixel-exact. E/H retain the printer's blank, advancing glyphs.
 The legacy CI0 backslash substitution uses a different cent design in some
-bitmap fonts and remains a separate open item.
+bitmap fonts; the separate legacy-backslash suite covers those glyphs.
 
 Run `cargo test -p zpl --test cent_glyph_preview`.
+
+### Legacy backslash mappings and rotated block alignment
+
+[50 native-backslash frames](../zpl/tests/fixtures/legacy-backslash-zd621-v1/README.md)
+cover fifteen font settings, encodings CI0/13/28, escapes, rotations, origins,
+and alignment. 43 frames are exact; seven have 6–14 font-0 overpaint dots and
+no missing ink. All 82 individually scored fields in those seven frames
+exceed 99.63% foreground IoU, with complete, disjoint ink coverage required.
+
+CI0 uses its documented native glyph; `utf8_uses_legacy_backslash` independently
+selects the printer's CI28 departure. ASCII CI13 is supported without
+compatibility options. The FO/R controls also fix canceled line alignment in
+right-justified blocks, under `block_fo_right_justification_printer_layout`.
+
+Run `cargo test -p zpl --test legacy_backslash_preview --test profiles`.

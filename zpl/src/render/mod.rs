@@ -289,7 +289,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
             match name {
                 "CC" | "CT" | "CD" | "FX" => {}
                 "CI" => {
-                    if s != "0" && s != "27" && s != "28" {
+                    if s != "0" && s != "13" && s != "27" && s != "28" {
                         return Err("character encoding unsupported".into());
                     }
                     encoding = s.parse::<u8>().unwrap();
@@ -613,7 +613,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                         decoded = bytes.iter().map(|&b| char::from(b)).collect::<String>();
                         &decoded
                     } else {
-                        if encoding == 0 && !bytes.is_ascii() {
+                        if matches!(encoding, 0 | 13) && !bytes.is_ascii() {
                             return Err(
                                 "unsupported legacy text byte; select ^CI28 for UTF-8".into()
                             );
@@ -660,12 +660,18 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                             if font_w <= 0. || font_h <= 0. {
                                 return Err("font dimensions must be positive".into());
                             }
+                            let text_font = font::Font::new(
+                                font_id,
+                                encoding == 0
+                                    || (encoding == 28
+                                        && options.compatibility.utf8_uses_legacy_backslash),
+                            );
                             let TextLayout {
                                 path,
                                 baseline,
                                 parts,
                             } = text_block(
-                                font_id,
+                                text_font,
                                 value,
                                 font_w,
                                 font_h,
@@ -688,13 +694,13 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                                 .right_justified_inverted_text_uses_ink_margin
                             {
                                 field.inverted_margin =
-                                    font::inverted_margin(font_id, value, font_w, font_h)?;
+                                    font::inverted_margin(text_font, value, font_w, font_h)?;
                             }
                             field.text_size =
                                 Some(if let Some((width, lines, spacing, _, _)) = field.block {
                                     (width, lines as f64 * font_h + (lines - 1) as f64 * spacing)
                                 } else {
-                                    (font::width_for(font_id, value, font_w, font_h)?, font_h)
+                                    (font::width_for(text_font, value, font_w, font_h)?, font_h)
                                 });
                             path
                         };
@@ -1039,6 +1045,13 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                             let (jx, jy) = if !field.baseline && field_justification == 1 {
                                 if let Some((tw, th)) = field.text_size {
                                     match field.rotation {
+                                        b'R' if field.block.is_some()
+                                            && options
+                                                .compatibility
+                                                .block_fo_right_justification_printer_layout =>
+                                        {
+                                            (-th, 0.)
+                                        }
                                         b'B' if field.block.is_some()
                                             && options
                                                 .compatibility
@@ -1232,7 +1245,7 @@ fn bounds(path: &Path) -> (f64, f64, f64, f64) {
     (x, y, right - x, bottom - y)
 }
 fn text_block(
-    font_id: char,
+    font_id: font::Font,
     value: &str,
     w: f64,
     h: f64,
@@ -1280,11 +1293,6 @@ fn text_block(
                 Some('\\') => {
                     if encoding != 13 && !compatibility.block_backslash_without_ci13 {
                         return Err("field-block backslash requires ^CI13".into());
-                    }
-                    if encoding != 13 && encoding != 27 {
-                        return Err(
-                            "field-block backslash glyph unsupported for this encoding".into()
-                        );
                     }
                     chars.next();
                     paragraphs.last_mut().unwrap().push('\\');
