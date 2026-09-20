@@ -117,6 +117,15 @@ The invalid six-digit DataBar UPC-E input and blank printer response are preserv
 as a rejection control. Its positive case now uses eleven uncompressed UPC-A
 digits and a fresh nonblank printer response; all four retail aliases match.
 
+A fresh audit of the completed 512-frame comparison conformance reference set
+also found unsupported text commands (`^FP`, `^TB`, `^PA`, numbered fields and
+serialization), missing glyphs/encodings and unsampled font sizes below the
+80% target. These remain work beyond the original 133 cases. Capture context
+must be preserved: its reset uses `^BY2,3,100`, and some inputs still use PW812,
+whose printer preview width adjustment remains outside this work. Those cases
+need correctly contextualized comparisons or new PW832 captures, not padding.
+`^PM` is now covered by [13 exact page-mirror controls](../zpl/tests/fixtures/page-mirror-zd621-v1/README.md).
+
 Independent barcode decoder tests remain necessary: different valid encodings
 can decode to the same content without matching printer pixels. Captured cases
 are development fixtures, not a holdout or proof for every parameter/payload.

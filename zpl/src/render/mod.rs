@@ -188,6 +188,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
     let mut reverse = false;
     let mut code_validation = false;
     let mut upside_down = false;
+    let mut mirror = false;
     loop {
         let syntax = parser.syntax();
         let offset = parser.position();
@@ -247,6 +248,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                         | "LT"
                         | "LR"
                         | "PO"
+                        | "PM"
                         | "FW"
                         | "BY"
                         | "CI"
@@ -337,10 +339,20 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                         return Err("field must end with FS".into());
                     }
                     let mut sc = scene.take().ok_or("XZ without XA")?;
-                    if upside_down && !options.compatibility.preview_ignores_print_orientation {
+                    let invert =
+                        upside_down && !options.compatibility.preview_ignores_print_orientation;
+                    let mirrored = mirror && !options.compatibility.preview_ignores_print_mirror;
+                    if invert || mirrored {
                         let (w, h) = (sc.width as f64, sc.height as f64);
                         for d in &mut sc.draws {
-                            d.path.transform(|p| Point::new(w - p.x, h - p.y));
+                            // ^PM p. 319 mirrors the whole printable area; ^PO
+                            // p. 322 rotates it. Apply final settings to every field.
+                            d.path.transform(|p| {
+                                Point::new(
+                                    if invert ^ mirrored { w - p.x } else { p.x },
+                                    if invert { h - p.y } else { p.y },
+                                )
+                            });
                         }
                     }
                     labels.push(sc);
@@ -372,6 +384,15 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                         "Y" => true,
                         "N" | "" => false,
                         _ => return Err("invalid reverse setting".into()),
+                    }
+                }
+                "PM" => {
+                    // ^PM p. 319: missing/invalid values are ignored and the
+                    // setting persists across labels until an explicit PMN.
+                    match s {
+                        "Y" => mirror = true,
+                        "N" => mirror = false,
+                        _ => {}
                     }
                 }
                 "PO" => {

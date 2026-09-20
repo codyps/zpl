@@ -275,6 +275,9 @@ pub struct Compatibility {
     /// Ignore inverted print orientation in HTTP previews. Default: honor
     /// ^PO (Zebra guide p. 315); this option describes previews only.
     pub preview_ignores_print_orientation: bool,
+    /// Ignore label mirroring in ZD621 HTTP previews. Disabled: mirror the
+    /// entire printable area horizontally for ^PMY (Zebra guide p. 319).
+    pub preview_ignores_print_mirror: bool,
     /// With explicit CODABLOCK F/E columns, fit the actual data instead of
     /// padding to the requested row count. Captured ZD621 sizing choice.
     pub codablock_f_fit_rows: bool,

@@ -209,3 +209,8 @@ counted byte payloads containing commas. Printer mask selection remains an expli
 [Extended Model 1 controls](../zpl/tests/fixtures/qr-model1-extended-zd621-v1/README.md)
 verify the ZD621 versions 15–40 behind `qr_model1_extended_versions`; the
 specification profile retains the standard version-14 limit.
+
+[Page-mirror controls](../zpl/tests/fixtures/page-mirror-zd621-v1/README.md) verify
+13 exact previews. `preview_ignores_print_mirror` independently selects the
+printer preview's omission of `^PM`; SPECIFICATION mirrors the whole label,
+retains the setting across labels, and combines it with `^PO` inversion.
