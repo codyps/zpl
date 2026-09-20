@@ -12,6 +12,7 @@ pub const SPECIFICATION: Options = Options {
     height: 1218,
     dpi: 203,
     compatibility: Compatibility {
+        code93_extended_checksum_preview: false,
         code11_printer_element_widths: false,
         code11_interpretation_symbols: false,
         code93_interpretation_symbols: false,
@@ -90,6 +91,7 @@ pub const ZD621_203_DPI: Options = Options {
     height: 1218,
     dpi: 203,
     compatibility: Compatibility {
+        code93_extended_checksum_preview: true,
         code11_printer_element_widths: true,
         code11_interpretation_symbols: true,
         code93_interpretation_symbols: true,

@@ -383,3 +383,20 @@ Run `cargo test -p zpl --test linear_caption_preview --test code11_widths_previe
 caption gap (1146 underpaint/207 overpaint); the inset counterpart is exact.
 Code 93 optional checksum interpretation remains unsupported. Those gaps,
 QR mask selection, and broader unverified coverage keep the overall goal open.
+
+## Code 93 checksum interpretation
+
+[Twenty-three checksum frames](../zpl/tests/fixtures/code93-checks-zd621-v1/README.md)
+now match exactly for 336 symbols. ^BA e=Y previously rejected rendering,
+including fields with hidden interpretation. C/K encoding is now shared with
+the caption formatter, and hidden captions leave the bars unchanged.
+
+The controls cover every C and K value, every extended C/K pair, and separate
+payload, size, rotation, font and full-ASCII holdouts. The printer's malformed
+extended-check formatting is isolated behind `code93_extended_checksum_preview`;
+the specification profile displays documented ZPL substitutes. Run
+`cargo test -p zpl --test code93_checks_preview --test profiles`.
+
+Code 93 checksum interpretation is resolved for these controls. Left-edge
+caption placement, QR mask selection and broader unverified coverage remain
+open; the overall accuracy goal has not been achieved.

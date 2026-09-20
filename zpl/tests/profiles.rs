@@ -104,6 +104,29 @@ fn linear_caption_overrides_preserve_bar_geometry() {
 }
 
 #[test]
+fn code93_extended_checksum_preview_is_independent_of_encoding() {
+    // ^BA e (p. 88), code93-checks-zd621-v1: extended C values enter
+    // the ZD621 shift formatter; the encoded C/K bars remain unchanged.
+    let body = "^BY2,2,40^FO40,80^BAN,40,Y,N,Y^FDAN";
+    let printer = raster(body, ZD621_203_DPI);
+    let mut options = ZD621_203_DPI;
+    options.compatibility.code93_extended_checksum_preview = false;
+    let literal = raster(body, options);
+    assert_ne!(printer.pixels, literal.pixels);
+    assert_eq!(&printer.pixels[..120 * 400], &literal.pixels[..120 * 400]);
+    for options in [SPECIFICATION, ZD621_203_DPI] {
+        for data in ["ABC123", "AN", "AO", "AP", "AQ"] {
+            let hidden = format!("^BY2,2,40^FO40,80^BAN,40,N,N,Y^FD{data}");
+            assert_eq!(
+                raster(&hidden, options).pixels,
+                raster(&hidden.replace(",N,N,Y^FD", ",N,N,N^FD"), options).pixels,
+                "checksum interpretation must not change bars when hidden"
+            );
+        }
+    }
+}
+
+#[test]
 fn profile_is_an_overridable_initial_value() {
     assert_eq!(Options::default(), ZD621_203_DPI);
     assert_eq!(SPECIFICATION.compatibility, Compatibility::default());

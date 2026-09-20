@@ -13,6 +13,11 @@
 /// initial value: the renderer does not reapply it after you change an option.
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct Compatibility {
+    /// Reproduce ZD621 Code 93 extended C-check interpretation, including
+    /// shift lookahead, resident control glyphs and malformed repeated tails.
+    /// Disabled: print the documented ZPL substitutes for checksum values
+    /// 43–46. Raw exhaustive controls: code93-checks-zd621-v1; ^BA pp. 87–89.
+    pub code93_extended_checksum_preview: bool,
     /// Quantize Code 11 wide elements to floor(module * ratio), and extra-wide
     /// elements to floor(module * ratio * 5/3), as captured in code11-widths-zd621-v1.
     /// Disabled: retain the nominal 2W-X extra-wide geometry.

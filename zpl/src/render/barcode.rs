@@ -406,7 +406,15 @@ impl Barcode {
             p.segments
                 .extend(retail::caption(self, bytes, rotation)?.segments);
         } else if self.show {
-            let value = self.interpretation(bytes)?;
+            let special = if self.name == "BA" {
+                code93::extended_caption(self, bytes)?
+            } else {
+                None
+            };
+            let value = special.as_ref().map_or_else(
+                || self.interpretation(bytes),
+                |caption| Ok(caption.text.clone()),
+            )?;
             let font = if (self.name == "B3"
                 && self.compatibility.code39_interpretation_ignores_font)
                 || (matches!(self.name.as_str(), "B1" | "B2" | "B5" | "BA" | "BK")
@@ -425,7 +433,7 @@ impl Barcode {
             // their cells with spaces, then draw the measured native masks.
             let marker: &[u8] = match self.name.as_str() {
                 "B1" if self.compatibility.code11_interpretation_symbols => &[4, 10, 17, 31],
-                "BA" if self.compatibility.code93_interpretation_symbols => {
+                "BA" if self.compatibility.code93_interpretation_symbols && special.is_none() => {
                     &[31, 17, 17, 17, 17, 17, 31]
                 }
                 _ => &[],
@@ -441,18 +449,13 @@ impl Barcode {
                     } else {
                         marker
                     };
-                    for (row, bits) in marker.iter().enumerate() {
-                        for col in 0..5 {
-                            if bits & (16 >> col) != 0 {
-                                t.rect(
-                                    x + col as f64 * fw / 5.,
-                                    row as f64 * fh / 9.,
-                                    fw / 5.,
-                                    fh / 9.,
-                                );
-                            }
-                        }
-                    }
+                    caption_glyph(&mut t, x, fw, fh, marker);
+                }
+            }
+            if let Some(caption) = special {
+                for (index, glyph) in caption.glyphs {
+                    let x = super::font::width_for(id, &value[..index], fw, fh)?;
+                    caption_glyph(&mut t, x, fw, fh, glyph);
                 }
             }
             let printer = self.compatibility.barcode_interpretation_printer_layout;
@@ -543,7 +546,11 @@ impl Barcode {
             return plessey::interpretation(self, bytes);
         }
         if self.name == "BA" {
-            let value = code93::interpretation(bytes, self.compatibility.code93_normalize_input)?;
+            let value = code93::interpretation(
+                bytes,
+                self.compatibility.code93_normalize_input,
+                self.flag(4, false)?,
+            )?;
             return Ok(if self.compatibility.code93_interpretation_symbols {
                 format!(" {value} ")
             } else {
@@ -565,6 +572,20 @@ impl Barcode {
             return Ok(digits.iter().map(|v| (v + b'0') as char).collect());
         }
         Ok(ascii(bytes)?.to_string())
+    }
+}
+fn caption_glyph(path: &mut Path, x: f64, width: f64, height: f64, rows: &[u8]) {
+    for (row, bits) in rows.iter().enumerate() {
+        for col in 0..5 {
+            if bits & (16 >> col) != 0 {
+                path.rect(
+                    x + col as f64 * width / 5.,
+                    row as f64 * height / 9.,
+                    width / 5.,
+                    height / 9.,
+                );
+            }
+        }
     }
 }
 fn ascii(bytes: &[u8]) -> Result<&str, String> {

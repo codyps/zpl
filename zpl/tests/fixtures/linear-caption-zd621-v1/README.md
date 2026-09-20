@@ -21,8 +21,8 @@ Captured behavior, each selectable through a separate compatibility option:
 - Code 11 interpretation includes checksum digits and triangular delimiters.
   The start and one-check stop use four native rows; the two-check stop uses
   a taller seven-row triangle.
-- Code 93 uses hollow-box delimiters. Its optional checksum interpretation
-  remains unsupported and is not part of these passing controls.
+- Code 93 uses hollow-box delimiters. Optional checksum interpretation is covered separately by
+  `code93-checks-zd621-v1`.
 - Codabar includes its selected start/stop letters.
 - POSTNET/PLANET captions center over full bar pitches including the last gap.
 - ^B1/^B2/^B5/^BA/^BK ignore an explicit font command and use module-scaled A.

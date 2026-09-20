@@ -82,11 +82,14 @@ The supplied PDFs remain outside the repository and are not redistributed here.
 - Linear: Code 11 C/K, three 2-of-5 forms, LOGMARS, Codabar delimiters, full-ASCII
   Code 93, MSI check modes A–D, Plessey CRC, EAN/UPC checks and supplements.
   Invalid supplied retail checks are rejected, not silently replaced. Optional
-  Codabar check modes and Code 93 check-character interpretation
-  text are not implemented. Plessey always encodes its CRC; `BP`'s `e` flag
+  Codabar check modes are not implemented. Code 93 supports optional C/K
+  interpretation, with printer-specific extended-check formatting controlled
+  by `code93_extended_checksum_preview`. Plessey always encodes its CRC; `BP`'s `e` flag
   only controls displaying its two hexadecimal check digits. Plessey honors the
-  `BY` ratio and uses a wide-plus-narrow termination bar. Code 11 preserves
-  the extra-wide `(2r−1)X` elements in 0, 9 and dash. Code 93 interprets Zebra's
+  `BY` ratio and uses a wide-plus-narrow termination bar. Code 11 uses
+  nominal extra-wide `(2r−1)X` elements in the specification profile; the
+  printer profile independently truncates wide `rX` and extra-wide `5rX/3`
+  elements in 0, 9 and dash. Code 93 interprets Zebra's
   `&`, `'`, `(` and `)` shift substitutes after `FH`. With the specification profile, unsupported raw bytes are errors. The ZD621 profile
   uppercases raw lowercase and skips unsupported bytes. Literal full
   ASCII must be expressed through the documented substitute pairs.
