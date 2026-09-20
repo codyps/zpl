@@ -13,6 +13,10 @@
 /// initial value: the renderer does not reapply it after you change an option.
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct Compatibility {
+    /// Display Code 93 payload controls as a solid cell plus a printable tail,
+    /// rather than interpreting the decoded ASCII control as a font glyph.
+    /// Native exhaustive controls: code93-controls-zd621-v1; ^BA pp. 87–89.
+    pub code93_control_interpretation: bool,
     /// End plain/TB text at NUL and remove NUL within FB. See
     /// nul-text-zd621-v1; ^FD/^FH do not specify this termination behavior.
     pub text_nul_processing: bool,

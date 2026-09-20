@@ -1,0 +1,47 @@
+{
+  "status": "complete",
+  "source_sha256": "4ff50d9bf6cb4c9d99a72cf537a0358789251bd6f26bfb1a0f1d8c9b2902d976",
+  "pairs": [
+    [
+      "X&AZBR",
+      43,
+      10
+    ],
+    [
+      "X&AZEM",
+      44,
+      10
+    ],
+    [
+      "X&AZ4%",
+      44,
+      20
+    ],
+    [
+      "X&AZ+F",
+      44,
+      30
+    ],
+    [
+      "X&AZ/H",
+      44,
+      31
+    ],
+    [
+      "X&AZ$J",
+      44,
+      32
+    ],
+    [
+      "X&AZFL",
+      45,
+      12
+    ],
+    [
+      "X&AZIG",
+      46,
+      12
+    ]
+  ],
+  "printer_sha256": "4f6868b4a8f7301160c0d142aa589515619d46e985e4dd561ee1eba2c6a9cab1"
+}

@@ -1070,3 +1070,13 @@ and one overpaint pixel in a resident glyph; exact counts, raster hashes, and
 an 80% foreground-IoU floor are enforced. See the
 [native evidence](../zpl/tests/fixtures/nul-text-zd621-v1/README.md). Other control
 bytes, including Code 93 interpretation controls, remain distinct work.
+
+## Code 93 payload-control captions
+
+`code93_controls_preview` pins four pixel-exact native frames containing 55
+barcode fields. The formerly failing full-ASCII substitute case now renders;
+independent controls cover every decoded control byte, the grave-accent glyph,
+module widths 1–3, optional checks, and four orientations. Both bars and text
+are exact. `code93_control_interpretation` selects the printer's solid-cell and
+printable-tail caption rules without changing encoded data or checksums. See
+[the native evidence](../zpl/tests/fixtures/code93-controls-zd621-v1/README.md).

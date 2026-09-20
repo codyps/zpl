@@ -128,6 +128,9 @@ impl Caption {
         }
     }
 }
+/// Native extended-ASCII payload and optional C/K caption formatting.
+/// Payload controls use an error cell plus a printable tail; grave accent
+/// uses the apostrophe image. code93-controls-zd621-v1 pins all control pairs.
 /// ^BA e (p. 88) requests C/K interpretation. Extended C values enter the
 /// printer's shift formatter with K as lookahead, but still print K again.
 /// Control/error paths instead emit a solid cell and three tail cells without
@@ -135,14 +138,16 @@ impl Caption {
 /// This finite symbol-domain behavior is covered for every extended C/K pair,
 /// with separate payload/size/orientation controls (code93-checks-zd621-v1).
 pub(super) fn extended_caption(b: &Barcode, data: &[u8]) -> Result<Option<Caption>, String> {
-    if !b.compatibility.code93_extended_checksum_preview || !b.flag(4, false)? {
-        return Ok(None);
-    }
+    let payload = interpretation(data, b.compatibility.code93_normalize_input, false)?;
+    let controls = b.compatibility.code93_control_interpretation
+        && payload.bytes().any(|c| c < 32 || c == 127 || c == b'`');
+    let checks = b.flag(4, false)?;
     let mut values = field_values(data, b.compatibility.code93_normalize_input)?;
     append_checks(&mut values);
     let c = values[values.len() - 2];
     let k = values[values.len() - 1];
-    if c < 43 {
+    let extended = b.compatibility.code93_extended_checksum_preview && checks && c >= 43;
+    if !extended && !controls {
         return Ok(None);
     }
     let k_char = if k < 43 { ALPHABET[k] } else { b"&'()"[k - 43] };
@@ -154,11 +159,39 @@ pub(super) fn extended_caption(b: &Barcode, data: &[u8]) -> Result<Option<Captio
     if symbols {
         caption.push(24);
     }
-    caption.text.push_str(&interpretation(
-        data,
-        b.compatibility.code93_normalize_input,
-        false,
-    )?);
+    // Native payload controls produce an error cell and printable tail,
+    // unlike ASCII control glyph lookup. ^BA pp. 87–89 and independent
+    // Code 93 controls in code93-controls-zd621-v1 cover every control pair.
+    for byte in payload.bytes() {
+        if controls && (byte < 32 || byte == 127) {
+            caption.push(25);
+            caption.push(match byte {
+                1..=26 => b'A' + byte - 1,
+                27..=31 => byte + 64,
+                0 => b'@',
+                _ => b' ',
+            });
+        } else if controls && byte == b'`' {
+            caption.push(byte);
+        } else {
+            caption.text.push(char::from(byte));
+        }
+    }
+    if !extended {
+        if checks {
+            for &value in &values[values.len() - 2..] {
+                caption.text.push(char::from(if value < 43 {
+                    ALPHABET[value]
+                } else {
+                    b"&'()"[value - 43]
+                }));
+            }
+        }
+        if symbols {
+            caption.push(24);
+        }
+        return Ok(Some(caption));
+    }
     let (first, tail, repeat) = match c {
         43 => (25, k_char, true),
         44 => match k {
