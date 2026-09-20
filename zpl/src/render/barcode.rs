@@ -73,6 +73,7 @@ pub(super) fn supported(name: &str) -> bool {
         name,
         "B0" | "B1"
             | "B2"
+            | "B3"
             | "B4"
             | "B5"
             | "B7"
@@ -139,6 +140,19 @@ impl Barcode {
             0.
         }
     }
+    pub fn field_baseline_height(&self, height: f64, rotation: u8) -> f64 {
+        // ^FT p. 205, Table 7; Code 39 FT captures include the last bar row
+        // on the baseline. Keep the full bar height for ^FO rotation anchors.
+        if self.name == "B3"
+            && self.compatibility.code39_ft_uses_last_bar_row
+            && matches!(rotation, b'N' | b'B')
+        {
+            (height - 1.).max(0.)
+        } else {
+            height
+        }
+    }
+
     pub fn new(
         name: &str,
         p: &[&str],
@@ -151,7 +165,7 @@ impl Barcode {
         let max = match name {
             "BD" | "BF" | "BL" => 3,
             "B5" | "B8" | "BE" | "BI" | "BJ" | "BS" | "B4" => 4,
-            "B1" | "B9" | "BA" | "BP" | "BQ" | "BU" | "BZ" => 5,
+            "B1" | "B3" | "B9" | "BA" | "BP" | "BQ" | "BU" | "BZ" => 5,
             "B2" | "B7" | "BB" | "BC" | "BM" | "BR" | "BT" => 6,
             "BK" | "BO" | "B0" => 7,
             "BX" => 8,
@@ -172,7 +186,7 @@ impl Barcode {
             compatibility,
         };
         let layout = match name {
-            "B1" | "BK" | "BM" | "BP" => Some((2, 3, 4)),
+            "B1" | "B3" | "BK" | "BM" | "BP" => Some((2, 3, 4)),
             "BC" | "B2" | "B5" | "B8" | "B9" | "BA" | "BE" | "BI" | "BJ" | "BS" | "BU" | "BZ" => {
                 Some((1, 2, 3))
             }
@@ -182,6 +196,9 @@ impl Barcode {
             b.height = b.num(h, height, 1., 32000.)?;
             b.show = b.flag(f, name != "BZ")?;
             b.above = b.flag(g, false)?;
+        }
+        if name == "B3" {
+            b.flag(1, false)?;
         }
         if name == "BL" {
             b.height = b.num(1, height, 1., 32000.)?;
@@ -295,13 +312,14 @@ impl Barcode {
         font: Option<(char, f64, f64)>,
         rotation: u8,
     ) -> Result<(Path, f64), String> {
-        if bytes.is_empty() {
+        if bytes.is_empty() && self.name != "B3" {
             return Err(format!("{}: empty barcode data", self.name));
         }
         let mut p = match self.name.as_str() {
             "B0" | "BO" => aztec::render(self, bytes),
             "B1" => code11::render(self, bytes),
             "B2" => interleaved2of5::render(self, bytes),
+            "B3" => code39::standalone(self, bytes),
             "B4" => code49::render(self, bytes),
             "B5" => planet::render(self, bytes),
             "B7" => pdf417::render(self, bytes),
@@ -345,6 +363,12 @@ impl Barcode {
         }
         if self.show {
             let value = self.interpretation(bytes)?;
+            let font = if self.name == "B3" && self.compatibility.code39_interpretation_ignores_font
+            {
+                None
+            } else {
+                font
+            };
             // ^BC p. 94 permits an explicit preceding font command. Without
             // one, resident A scales with ^BY, independently of ^CF.
             let (id, fw, fh) = font.unwrap_or(('A', 5. * self.module, 9. * self.module));
@@ -381,6 +405,15 @@ impl Barcode {
         Ok((p, baseline))
     }
     fn interpretation(&self, bytes: &[u8]) -> Result<String, String> {
+        if self.name == "B3" && self.compatibility.code39_interpretation_symbols {
+            let value = ascii(bytes)?;
+            let value = if self.flag(1, false)? {
+                code39::with_checksum(value)?
+            } else {
+                value.to_owned()
+            };
+            return Ok(format!("*{value}*"));
+        }
         if self.name == "BC" {
             return code128::interpretation(self, bytes);
         }

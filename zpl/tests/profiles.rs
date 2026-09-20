@@ -104,6 +104,33 @@ fn barcode_interpretation_origin_overrides_are_independent() {
 }
 
 #[test]
+fn code39_caption_and_baseline_overrides_are_independent() {
+    // Raw Code 39 caption controls: checksum, explicit fonts, and ^FT's
+    // one-dot-high boundary. ^B3 pp. 70–72 and ^FT p. 205, Table 7.
+    let body = "^BY2,3,60^FO80,80^B3N,Y,70,Y,Y^FDABC123";
+    let printer = raster(body, ZD621_203_DPI);
+    let mut options = ZD621_203_DPI;
+    options.compatibility.code39_interpretation_symbols = false;
+    let data_only = raster(body, options);
+    assert_ne!(printer.pixels, data_only.pixels);
+    // The caption override cannot alter the encoded bar rows.
+    assert_eq!(
+        printer.pixels[80 * 400..150 * 400],
+        data_only.pixels[80 * 400..150 * 400]
+    );
+    let explicit = "^BY2,3,60^FO80,80^A0N,32,32^B3N,Y,70,Y,Y^FDABC123";
+    assert_eq!(raster(explicit, ZD621_203_DPI).pixels, printer.pixels);
+    options = ZD621_203_DPI;
+    options.compatibility.code39_interpretation_ignores_font = false;
+    assert_ne!(raster(explicit, options).pixels, printer.pixels);
+    let one_row = "^BY2,3,60^FT80,80^B3N,N,1,N,N^FDABC123";
+    assert_eq!(bounds(&raster(one_row, ZD621_203_DPI)).1, 80);
+    options = ZD621_203_DPI;
+    options.compatibility.code39_ft_uses_last_bar_row = false;
+    assert_eq!(bounds(&raster(one_row, options)).1, 79);
+}
+
+#[test]
 fn qr_origins_have_independent_overrides() {
     for height in [40, 60, 100] {
         let fo = format!("^BY2,3,{height}^FO80,60^BQN,2,3,L,0^FDLA,HELLO123");

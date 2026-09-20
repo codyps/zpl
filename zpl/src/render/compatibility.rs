@@ -18,6 +18,18 @@ pub struct Compatibility {
     /// 9 * 2.4 = 21 dots. The ^BY example (p. 148) instead rounds that width
     /// to 22 dots; with this override disabled, use nearest-dot rounding.
     pub code39_floor_wide_elements: bool,
+    /// Include start/stop asterisks and the enabled Mod-43 check digit in
+    /// Code 39 interpretation, as in captured ZD621 ^B3 captions. This does
+    /// not alter encoded bars. Default: display the field data alone.
+    pub code39_interpretation_symbols: bool,
+    /// Use Code 39's module-scaled resident-A interpretation despite a
+    /// preceding explicit ^A font selection, matching captured ZD621 previews.
+    /// Default: honor the explicit font, as for the other linear barcodes.
+    pub code39_interpretation_ignores_font: bool,
+    /// Use the captured inclusive Code 39 ^FT baseline in N/B orientations.
+    /// R/I retain the opposite pixel boundary. The one-dot adjustment is
+    /// applied before rotation; ^FO is unaffected.
+    pub code39_ft_uses_last_bar_row: bool,
     /// Use measured ZD621 rounded-box geometry: a minimum two-dot border,
     /// dimensions no smaller than that border, and an independent inner
     /// rounding percentage. With the integer curve enabled, both corner radii

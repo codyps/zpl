@@ -13,6 +13,9 @@ pub const SPECIFICATION: Options = Options {
     dpi: 203,
     compatibility: Compatibility {
         code39_floor_wide_elements: false,
+        code39_interpretation_symbols: false,
+        code39_interpretation_ignores_font: false,
+        code39_ft_uses_last_bar_row: false,
         rounded_box_printer_geometry: false,
         rounded_box_printer_curve: false,
         circle_printer_curve: false,
@@ -81,6 +84,9 @@ pub const ZD621_203_DPI: Options = Options {
     dpi: 203,
     compatibility: Compatibility {
         code39_floor_wide_elements: true,
+        code39_interpretation_symbols: true,
+        code39_interpretation_ignores_font: true,
+        code39_ft_uses_last_bar_row: true,
         rounded_box_printer_geometry: true,
         rounded_box_printer_curve: true,
         circle_printer_curve: true,

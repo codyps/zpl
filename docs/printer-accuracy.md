@@ -316,3 +316,18 @@ previous reversed-text IoU of roughly 52–54% is now 100% in these controls.
 
 Code 39 interpretation and below-bar UPC/EAN layout remain unresolved, as does
 QR automatic mask selection. The goal is not complete.
+
+## Code 39 interpretation
+
+Twenty-three [Code 39 caption controls](../zpl/tests/fixtures/code39-caption-zd621-v1/README.md)
+now match the printer exactly, including every text pixel. They cover all
+orientations, above/below captions, checksum, empty input, explicit fonts,
+inherited orientation, and ^FT boundaries. Code 39 now shares the barcode
+interpretation pipeline instead of its former separate caption placement.
+Independent options control start/stop/checksum caption characters, ignored
+explicit caption fonts, and the normal/bottom-up ^FT last-row anchor.
+Run `cargo test -p zpl --test code39_caption_preview --test profiles`.
+
+Below-bar UPC/EAN layout and QR automatic mask selection remain unresolved.
+Broader conformance coverage still needs hardware verification; this is not
+a claim that the overall accuracy goal has been achieved.

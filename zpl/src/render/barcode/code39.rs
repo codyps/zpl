@@ -3,6 +3,31 @@
 use crate::output::Path;
 const CHECK_CHARS: &str = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ-. $/+%";
 
+pub(super) fn standalone(b: &super::Barcode, bytes: &[u8]) -> Result<Path, String> {
+    // Zebra ^B3 pp. 70–72: optional Mod-43 checksum precedes the stop
+    // character. Interpretation formatting is handled by the shared renderer.
+    let value = super::ascii(bytes)?;
+    if value.contains('*') {
+        return Err("unsupported Code 39 character".into());
+    }
+    let checked;
+    let encoded = if b.flag(1, false)? {
+        checked = with_checksum(value)?;
+        &checked
+    } else {
+        value
+    };
+    // ^BY p. 148: nearest-dot worked example versus measured ZD621
+    // truncation. Quantize before accumulating element positions.
+    let wide = b.module * b.ratio;
+    let wide = if b.compatibility.code39_floor_wide_elements {
+        wide.floor()
+    } else {
+        wide.round()
+    };
+    render(encoded, b.module, wide / b.module, b.height)
+}
+
 pub(in crate::render) fn with_checksum(s: &str) -> Result<String, String> {
     let sum = s.chars().try_fold(0, |sum, c| {
         CHECK_CHARS

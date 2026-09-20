@@ -53,11 +53,8 @@ struct Field {
     reverse: bool,
     white: bool,
     explicit_font: bool,
-    code39_check: bool,
-    code39_above: bool,
     hex: Option<u8>,
-    barcode: Option<(f64, bool)>,
-    other_barcode: Option<barcode::Barcode>,
+    barcode: Option<barcode::Barcode>,
     barcode_error: Option<String>,
     path: Option<Path>,
     origins: Option<Vec<Option<(f64, f64)>>>,
@@ -78,11 +75,8 @@ impl Default for Field {
             reverse: false,
             white: false,
             explicit_font: false,
-            code39_check: false,
-            code39_above: false,
             hex: None,
             barcode: None,
-            other_barcode: None,
             barcode_error: None,
             path: None,
             origins: None,
@@ -463,25 +457,6 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                         return Err("invalid barcode dimensions".into());
                     }
                 }
-                "B3" => {
-                    field.barcode_error = None;
-                    field.other_barcode = None;
-                    field.rotation = rotation(p[0])?;
-                    if p.get(1).is_some_and(|v| !matches!(*v, "" | "N" | "Y")) {
-                        return Err("invalid Code 39 checksum flag".into());
-                    }
-                    field.code39_check = p.get(1) == Some(&"Y");
-                    let h = number(&p, 2, bar_h)?;
-                    if p.get(3).is_some_and(|v| !matches!(*v, "" | "Y" | "N")) {
-                        return Err("invalid barcode text flag".into());
-                    }
-                    let show = p.get(3).is_none_or(|v| matches!(*v, "" | "Y"));
-                    if p.get(4).is_some_and(|v| !matches!(*v, "" | "N" | "Y")) {
-                        return Err("invalid barcode text above flag".into());
-                    }
-                    field.code39_above = p.get(4) == Some(&"Y");
-                    field.barcode = Some((h, show));
-                }
                 n if barcode::supported(n) => {
                     field.rotation = if n == "BD" || n == "BQ" {
                         b'N'
@@ -496,7 +471,6 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                     } else {
                         rotation(p[0])?
                     };
-                    field.barcode = None;
                     let barcode = barcode::Barcode::new(
                         n,
                         &p,
@@ -508,11 +482,11 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                     );
                     match barcode {
                         Ok(barcode) => {
-                            field.other_barcode = Some(barcode);
+                            field.barcode = Some(barcode);
                             field.barcode_error = None;
                         }
                         Err(error) if code_validation && validation::classify(&error).is_some() => {
-                            field.other_barcode = None;
+                            field.barcode = None;
                             field.barcode_error = Some(error);
                         }
                         Err(error) => return Err(error),
@@ -539,10 +513,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                             i += 1;
                         }
                     }
-                    if field
-                        .other_barcode
-                        .as_ref()
-                        .map_or_else(|| field.barcode.is_none_or(|(_, show)| show), |b| b.show)
+                    if field.barcode.as_ref().is_none_or(|b| b.show)
                         && (font_w != 32.
                             || font_h != 32.
                             || options.dpi != 203
@@ -555,7 +526,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                         return Err("field data exceeds 4096-byte renderer limit".into());
                     }
                     let decoded;
-                    let value = if field.other_barcode.is_some() || field.barcode_error.is_some() {
+                    let value = if field.barcode.is_some() || field.barcode_error.is_some() {
                         ""
                     } else if encoding == 27 {
                         // ^CI27 uses Windows-1252. ASCII and U+00A0–00FF map
@@ -577,7 +548,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                         if let Some(error) = &field.barcode_error {
                             return Err(error.clone());
                         }
-                        let path = if let Some(b) = &field.other_barcode {
+                        let path = if let Some(b) = &field.barcode {
                             if let Some(origins) =
                                 field.origins.as_ref().filter(|_| b.uses_multiple_origins())
                             {
@@ -606,44 +577,6 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                             }
                             field.baseline_height = height;
                             path
-                        } else if let Some((h, show)) = field.barcode {
-                            if h <= 0. {
-                                return Err("invalid Code 39 height".into());
-                            }
-                            if value.contains('*') {
-                                return Err("unsupported Code 39 character".into());
-                            }
-                            field.baseline_height = h;
-                            // Zebra Programming Guide, ^B3 (p. 70): optional Mod-43
-                            // checksum is encoded before the stop character.
-                            let checked;
-                            let encoded = if field.code39_check {
-                                checked = barcode::code39::with_checksum(value)?;
-                                &checked
-                            } else {
-                                value
-                            };
-                            // ^BY p. 148: only whole dots can be printed. Its
-                            // worked example rounds to nearest; ZD621 captures
-                            // instead truncate each wide element independently.
-                            let wide = module * ratio;
-                            let wide = if options.compatibility.code39_floor_wide_elements {
-                                wide.floor()
-                            } else {
-                                wide.round()
-                            };
-                            let mut b = barcode::code39::render(encoded, module, wide / module, h)?;
-                            if show {
-                                let mut t = font::text_for(font_id, value, font_w, font_h)?;
-                                if field.code39_above {
-                                    b.transform(|p| Point::new(p.x, p.y + font_h + 3.));
-                                    field.baseline_height += font_h + 3.;
-                                } else {
-                                    t.transform(|p| Point::new(p.x, p.y + h + 3.));
-                                }
-                                b.segments.extend(t.segments);
-                            }
-                            b
                         } else {
                             if font_w <= 0. || font_h <= 0. {
                                 return Err("font dimensions must be positive".into());
@@ -678,9 +611,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                         Ok(path) => path,
                         Err(error)
                             if code_validation
-                                && (field.barcode.is_some()
-                                    || field.other_barcode.is_some()
-                                    || field.barcode_error.is_some()) =>
+                                && (field.barcode.is_some() || field.barcode_error.is_some()) =>
                         {
                             let mut code =
                                 validation::classify(&error).ok_or_else(|| error.clone())?;
@@ -902,6 +833,13 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                         } else {
                             0.
                         };
+                        let base = if field.baseline {
+                            field.barcode.as_ref().map_or(base, |barcode| {
+                                barcode.field_baseline_height(base, field.rotation)
+                            })
+                        } else {
+                            base
+                        };
                         path.transform(|p| {
                             // ^FO/^FT pp. 201/205: right justification changes
                             // the origin, not the character order. Auto (2) is
@@ -937,7 +875,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                                 // not the combined bars/interpretation extent.
                                 // ^FM places its component paths separately.
                                 let h = if options.compatibility.barcode_fo_uses_bar_height
-                                    && field.other_barcode.is_some()
+                                    && field.barcode.is_some()
                                     && field.origins.is_none()
                                 {
                                     field.baseline_height
