@@ -4021,6 +4021,7 @@ name = "zpl"
 version = "0.1.0"
 dependencies = [
  "anyd",
+ "encoding_rs",
  "lopdf",
  "raster-diff",
  "reqwest",

@@ -371,7 +371,10 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                     }
                 }
                 "CI" => {
-                    if s != "0" && s != "13" && s != "27" && s != "28" {
+                    if !matches!(
+                        s,
+                        "0" | "13" | "27" | "28" | "31" | "33" | "34" | "35" | "36"
+                    ) {
                         return Err("character encoding unsupported".into());
                     }
                     encoding = s.parse::<u8>().unwrap();
@@ -819,13 +822,20 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                     let decoded;
                     let value = if field.barcode.is_some() || field.barcode_error.is_some() {
                         ""
-                    } else if encoding == 27 {
-                        // ^CI27 uses Windows-1252. ASCII and U+00A0–00FF map
-                        // directly; C1 mappings are rejected until glyphs exist.
-                        if bytes.iter().any(|b| (128..160).contains(b)) {
-                            return Err("unsupported Windows-1252 glyph".into());
-                        }
-                        decoded = bytes.iter().map(|&b| char::from(b)).collect::<String>();
+                    } else if let Some(code_page) = match encoding {
+                        // Zebra Programming Guide ^CI, pp. 156–159:
+                        // https://www.zebra.com/content/dam/support-dam/en/documentation/unrestricted/guide/software/zpl-zbi2-pg-en.pdf
+                        27 => Some(encoding_rs::WINDOWS_1252),
+                        31 => Some(encoding_rs::WINDOWS_1250),
+                        33 => Some(encoding_rs::WINDOWS_1251),
+                        34 => Some(encoding_rs::WINDOWS_1253),
+                        35 => Some(encoding_rs::WINDOWS_1254),
+                        36 => Some(encoding_rs::WINDOWS_1255),
+                        _ => None,
+                    } {
+                        decoded = code_page
+                            .decode_without_bom_handling_and_without_replacement(&bytes)
+                            .ok_or("undefined code page byte")?;
                         &decoded
                     } else {
                         if matches!(encoding, 0 | 13) && !bytes.is_ascii() {

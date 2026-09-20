@@ -1029,3 +1029,13 @@ composition retained in capture metadata.
 The recovered resident TTF also provides a useful independent font reference.
 [Font 0 TTF comparison](font0-ttf.md) records the offline method and measured
 remaining differences; exact captured strikes remain the renderer's source.
+
+## Single-byte code pages
+
+`code_pages_preview` pins seven native frames at zero underpaint/overpaint:
+six original ASCII cases and a new twelve-field non-ASCII comparison. CI31 and
+CI33–CI36 now decode Windows-1250/1251/1253/1254/1255; CI27 also decodes its
+Windows-1252 C1 mappings, including euro. Both profiles use these documented
+mappings. Barcode bytes remain unchanged and code-page changes between fields
+are tested. [Native evidence and limits](../zpl/tests/fixtures/code-pages-zd621-v1/README.md)
+include paired UTF-8 controls for Latin, Cyrillic, Greek, and Hebrew text.
