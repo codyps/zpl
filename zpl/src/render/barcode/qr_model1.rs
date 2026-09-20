@@ -24,17 +24,12 @@ const TOTAL: [usize; 14] = [
     26, 46, 72, 100, 134, 170, 212, 256, 306, 358, 416, 476, 542, 610,
 ];
 
-pub(super) fn encode(
-    data: &[u8],
-    mode: usize,
-    level: usize,
-    mask: usize,
-) -> Result<Matrix, String> {
+pub(super) fn encode(input: &qr::Input<'_>, level: usize, mask: usize) -> Result<Matrix, String> {
     let mut chosen = None;
     let mut msg = Vec::new();
     for v in 1..=14 {
         if matches!(v, 1 | 10) {
-            msg = qr::message(data, mode, v)?;
+            msg = input.message(v)?;
         }
         let (n, k, _) = BLOCKS[v - 1][level];
         if msg.len() <= n * k * 8 - 4 {
@@ -183,7 +178,10 @@ mod tests {
         for (level, _) in BLOCKS[0].iter().enumerate() {
             for len in [1, 20, 40, 80, 120, 160, 200] {
                 let data = vec![b'a'; len];
-                let m = encode(&data, 4, level, 3).unwrap();
+                let mut source = format!("LM,B{len:04}").into_bytes();
+                source.extend_from_slice(&data);
+                let (_, input) = qr::Input::parse(&source).unwrap();
+                let m = encode(&input, level, 3).unwrap();
                 // rxing 0.9.3's generic DataBlock deinterleaver does not handle
                 // Model 1 multi-block symbols. Those are checked against printer
                 // modules in barcode_modes_preview instead (ISO Annex M.6).

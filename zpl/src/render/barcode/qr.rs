@@ -7,42 +7,123 @@ pub(super) fn render(b: &Barcode, data: &[u8]) -> Result<Path, String> {
     b.require(3, "Q", &["L", "M", "Q", "H"])?;
     let scale = b.num(2, b.scale(), 1., 100.)?;
     let mask = b.integer(4, 7, 0, 7)?;
-    let level = match data.first() {
-        Some(b'L') => 0,
-        Some(b'M') => 1,
-        Some(b'Q') => 2,
-        Some(b'H') => 3,
-        _ => return Err("QR field requires LA, MA, QA, HA, or manual-mode switches".into()),
-    };
-    if data.get(2) != Some(&b',') {
-        return Err("invalid QR field switches".into());
-    }
-    let (mode, payload) = match data.get(1) {
-        Some(b'A') => (0, &data[3..]),
-        Some(b'M') => match data.get(3) {
-            Some(b'N') => (1, &data[4..]),
-            Some(b'A') => (2, &data[4..]),
-            Some(b'K') => (8, &data[4..]),
-            Some(b'B') if data.len() >= 8 => {
-                let n = ascii(&data[4..8])?
-                    .parse::<usize>()
-                    .map_err(|_| "invalid QR byte count")?;
-                if n != data.len() - 8 {
-                    return Err("QR byte count mismatch".into());
-                }
-                (4, &data[8..])
-            }
-            _ => return Err("unsupported QR manual character mode".into()),
-        },
-        _ => return Err("unsupported QR input mode".into()),
-    };
+    let (level, input) = Input::parse(data)?;
     let matrix = if b.param(1, "2") == "1" {
-        super::qr_model1::encode(payload, mode, level, mask)?
+        super::qr_model1::encode(&input, level, mask)?
     } else {
-        encode(payload, mode, level, mask)?
+        encode(&input, level, mask)?
     };
     b.matrix(&matrix, scale, scale)
 }
+/// ZPL ^BQ switches, including the D structured-append envelope and up to
+/// 200 manual segments (Zebra Programming Guide, pp. 129–134).
+pub(super) struct Input<'a> {
+    append: Option<[usize; 3]>,
+    segments: Vec<(usize, &'a [u8])>,
+}
+impl<'a> Input<'a> {
+    pub(super) fn parse(mut data: &'a [u8]) -> Result<(usize, Self), String> {
+        let append = if data.first() == Some(&b'D') {
+            if data.len() < 8 || data[7] != b',' || !data[1..5].iter().all(u8::is_ascii_digit) {
+                return Err("invalid QR structured-append header".into());
+            }
+            let decimal = |bytes: &[u8]| bytes.iter().fold(0, |n, &c| n * 10 + (c - b'0') as usize);
+            let index = decimal(&data[1..3]);
+            let total = decimal(&data[3..5]);
+            if !(2..=16).contains(&total) || !(1..=total).contains(&index) {
+                return Err("invalid QR structured-append sequence".into());
+            }
+            if !data[5..7].iter().all(u8::is_ascii_hexdigit) {
+                return Err("invalid QR structured-append parity".into());
+            }
+            let parity = usize::from_str_radix(ascii(&data[5..7])?, 16)
+                .map_err(|_| "invalid QR structured-append parity")?;
+            data = &data[8..];
+            Some([index - 1, total - 1, parity])
+        } else {
+            None
+        };
+        let level = match data.first() {
+            Some(b'L') => 0,
+            Some(b'M') => 1,
+            Some(b'Q') => 2,
+            Some(b'H') => 3,
+            _ => return Err("QR field requires an error-correction switch".into()),
+        };
+        if data.get(2) != Some(&b',') {
+            return Err("invalid QR field switches".into());
+        }
+        let mut input = Self {
+            append,
+            segments: Vec::new(),
+        };
+        match data[1] {
+            b'A' => input.segments.push((0, &data[3..])),
+            b'M' => {
+                let mut remaining = &data[3..];
+                loop {
+                    if input.segments.len() == 200 {
+                        return Err("too many QR manual segments".into());
+                    }
+                    let mode = match remaining.first() {
+                        Some(b'N') => 1,
+                        Some(b'A') => 2,
+                        Some(b'B') => 4,
+                        Some(b'K') => 8,
+                        _ => return Err("unsupported QR manual character mode".into()),
+                    };
+                    let (payload, rest) = if mode == 4 {
+                        if remaining.len() < 5 || !remaining[1..5].iter().all(u8::is_ascii_digit) {
+                            return Err("invalid QR byte count".into());
+                        }
+                        let n = ascii(&remaining[1..5])?
+                            .parse::<usize>()
+                            .map_err(|_| "invalid QR byte count")?;
+                        if n > remaining.len() - 5 {
+                            return Err("QR byte count mismatch".into());
+                        }
+                        (&remaining[5..5 + n], &remaining[5 + n..])
+                    } else if append.is_some() {
+                        let end = remaining
+                            .iter()
+                            .position(|&c| c == b',')
+                            .unwrap_or(remaining.len());
+                        (&remaining[1..end], &remaining[end..])
+                    } else {
+                        (&remaining[1..], &[][..])
+                    };
+                    input.segments.push((mode, payload));
+                    if rest.is_empty() {
+                        break;
+                    }
+                    if append.is_none() || rest[0] != b',' {
+                        return Err("QR byte count mismatch".into());
+                    }
+                    remaining = &rest[1..];
+                }
+            }
+            _ => return Err("unsupported QR input mode".into()),
+        }
+        Ok((level, input))
+    }
+    pub(super) fn message(&self, version: usize) -> Result<Vec<bool>, String> {
+        let mut out = Vec::new();
+        // ISO/IEC 18004:2000 §9 pp. 55–56: mode 0011, zero-based sequence
+        // and total nibbles, then caller-supplied XOR parity of the whole set.
+        // https://qr.redelmann.ch/media/standard_qr.pdf
+        if let Some([index, total, parity]) = self.append {
+            bits::push(&mut out, 3, 4);
+            bits::push(&mut out, index, 4);
+            bits::push(&mut out, total, 4);
+            bits::push(&mut out, parity, 8);
+        }
+        for &(mode, data) in &self.segments {
+            out.extend(message(data, mode, version)?);
+        }
+        Ok(out)
+    }
+}
+
 const ALPHABET: &[u8] = b"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:";
 // ISO/IEC 18004 tables, cross-checked against Thonky error-correction tables.
 const EC: [[usize; 40]; 4] = [
@@ -247,12 +328,12 @@ pub(super) fn message(data: &[u8], mode: usize, v: usize) -> Result<Vec<bool>, S
     }
     Ok(out)
 }
-fn encode(data: &[u8], mode: usize, level: usize, mask: usize) -> Result<Matrix, String> {
+fn encode(input: &Input<'_>, level: usize, mask: usize) -> Result<Matrix, String> {
     let mut chosen = None;
     let mut msg = Vec::new();
     for v in 1..=40 {
         if matches!(v, 1 | 10 | 27) {
-            msg = message(data, mode, v)?;
+            msg = input.message(v)?;
         }
         let capacity = raw_modules(v) / 8 - EC[level][v - 1] * BLOCKS[level][v - 1];
         if msg.len() <= capacity * 8 {
@@ -440,6 +521,42 @@ pub(super) fn mask_bit(mask: usize, x: usize, y: usize) -> bool {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn structured_append_header_and_manual_segments() {
+        // ISO/IEC 18004:2000 §9.2 example: symbol 3 of 7 has sequence 0x26.
+        let (level, input) = Input::parse(b"D03070C,LM,N0123,AAB,B0005ab,cd").unwrap();
+        assert_eq!(level, 0);
+        let bits = input.message(1).unwrap();
+        assert_eq!(bits::value(&bits[..20]), 0x3260c);
+        let expected: Vec<_> = [(1, &b"0123"[..]), (2, &b"AB"[..]), (4, &b"ab,cd"[..])]
+            .into_iter()
+            .flat_map(|(mode, data)| message(data, mode, 1).unwrap())
+            .collect();
+        assert_eq!(&bits[20..], expected);
+    }
+
+    #[test]
+    fn structured_append_rejects_invalid_envelopes_and_segments() {
+        for source in [
+            "D000200,LA,A",
+            "D030200,LA,A",
+            "D010100,LA,A",
+            "D1717FF,LA,A",
+            "D0102+F,LA,A",
+            "D0102GG,LA,A",
+            "D0102FFLA,A",
+            "D0102FF,LM,B0003ab",
+            "D0102FF,LM,B0001ab",
+            "D0102FF,LM,N12,",
+            "LM,B0001ab",
+        ] {
+            assert!(Input::parse(source.as_bytes()).is_err(), "{source}");
+        }
+        let valid = format!("D0102FF,LM,{}", ["N1"; 200].join(","));
+        assert!(Input::parse(valid.as_bytes()).is_ok());
+        assert!(Input::parse(format!("{valid},N1").as_bytes()).is_err());
+    }
 
     #[test]
     fn kanji_normative_values_and_version_count_widths() {

@@ -202,3 +202,8 @@ manual Shift JIS input for both QR models and all error-correction levels.
 Encoding matches the printer with its captured mask; automatic mask selection
 remains a separate, pinned accuracy gap. Unicode-to-Shift-JIS conversion is not
 part of this manual byte-input support.
+
+[QR structured-append controls](../zpl/tests/fixtures/qr-append-zd621-v1/README.md)
+verify the `D` sequence/parity envelope and mixed manual segments, including
+counted byte payloads containing commas. Printer mask selection and oversized
+Model 1 requests remain explicit known gaps.

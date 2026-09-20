@@ -1,0 +1,33 @@
+# QR structured append and mixed manual input
+
+Eighteen unmodified ZD621 203 DPI HTTP preview responses, firmware V93.21.33Z,
+captured 2026-09-20. All requests completed sequentially with five-second pacing.
+PW832 avoids preview-width adjustment; CI13/FH preserves input bytes.
+
+[Zebra Programming Guide](https://www.zebra.com/content/dam/support-dam/en/documentation/unrestricted/guide/software/zpl-zbi2-pg-en.pdf),
+^BQ pp. 129–134 defines the optional `Diijjxx,` envelope and up to 200 manual
+segments. ISO/IEC 18004:2000 §9 pp. 55–56 defines the structured-append header:
+mode 0011, zero-based symbol index and total, followed by eight-bit parity.
+The caller supplies parity for the entire message; one field cannot recompute
+it from only its own portion. No automatic division into multiple symbols is
+performed.
+
+The controls cover Models 1/2, automatic input, mixed numeric/alphanumeric/byte/
+Kanji segments, adjacent segments of the same mode, literal commas in automatic
+input, counted byte data containing commas, sequence endpoints, and 180/200
+segments. Byte counts delimit payloads before comma separators are interpreted.
+The 180-segment Model 1 control reaches version 14 and matches the printer.
+
+Seventeen renderable frames have raw source/PNG hashes, unchanged-input
+underpaint/overpaint counts and local pixel hashes pinned in `manifest.tsv`.
+Every one matches every printer pixel when only the mask operand is replaced
+by the BCH-validated mask decoded from the capture. Automatic mask selection
+remains an open gap; the unchanged-input comparisons keep it visible.
+
+The eighteenth frame, `m1-segments-200`, is retained in `known-gaps.tsv`.
+The printer accepts the Model 1 request and emits a 77-module symbol, beyond
+the specification's maximum Model 1 version 14. Our encoder still rejects it
+at that capacity boundary. Its source and printer response are preserved and
+its current error is pinned separately. This is unresolved behavior, not a
+successful rendering comparison or evidence that the global accuracy goal
+has been met.
