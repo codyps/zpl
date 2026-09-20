@@ -9,6 +9,7 @@ This Rust 2021 Cargo workspace contains these crates:
 - `zpl-wasm/`: Browser rendering bindings.
 - `zpl/`: ZPL parsing and command/format types. Parser unit tests live in `src/parse/test.rs`; integration tests live in `tests/`.
 - `zebra-http-api/`: Zebra printer HTTP rendering client, with a `zebra-render` example.
+- `zebra-firmware/`: Raw TCP firmware update CLI with printer identity checks and loopback simulator tests.
 - `zpl-proxy-api/`: Axum proxy, SQLite render cache and request history, Diesel models and migrations, and browser assets in `assets/`.
 
 Shared ZPL fixtures and optional TOML metadata live in `test-data/`. The `zpl-to-svg` example is unfinished.

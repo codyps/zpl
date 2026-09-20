@@ -3909,6 +3909,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "zebra-firmware"
+version = "0.1.0"
+dependencies = [
+ "clap",
+ "eyre",
+ "sha2",
+]
+
+[[package]]
 name = "zebra-http-api"
 version = "0.1.0"
 dependencies = [

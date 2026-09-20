@@ -6,6 +6,9 @@ Rust tools for parsing Zebra Programming Language (ZPL), rendering labels locall
 to PNG and SVG, and comparing previews from Zebra printers. The workspace also
 includes a browser editor, a printer-backed HTTP proxy, and font extraction tools.
 
+Use the [firmware update CLI](docs/firmware-updates.md) to inspect network Zebra
+printers and apply local firmware files with model and serial checks.
+
 The parser preserves command bytes, including binary payloads and unknown commands.
 The local renderer supports a practical subset of ZPL; unsupported commands return
 errors, and approximate font rendering produces warnings. See
