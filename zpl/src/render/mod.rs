@@ -852,6 +852,25 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                             bytes.truncate(end);
                         }
                     }
+                    // ^FD/^FH (guide pp. 190/193) do not define these layout-
+                    // dependent controls; text-controls-zd621-v1 pins native output.
+                    if field.barcode.is_none() && options.compatibility.text_control_processing {
+                        if field.bounded.is_none() {
+                            if let Some(end) = bytes.iter().position(|&b| b == b'\r' || b == b'\n')
+                            {
+                                bytes.truncate(end);
+                            }
+                        }
+                        if field.block.is_some() {
+                            for byte in &mut bytes {
+                                if *byte == 1 {
+                                    *byte = b' ';
+                                }
+                            }
+                        } else {
+                            bytes.retain(|&b| b != 1);
+                        }
+                    }
                     let decoded;
                     let value = if field.barcode.is_some() || field.barcode_error.is_some() {
                         ""
@@ -1023,6 +1042,9 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                                         bounds
                                     },
                                     bounded_text::LayoutOptions {
+                                        control_processing: options
+                                            .compatibility
+                                            .text_control_processing,
                                         right: field.justification == 1,
                                         printer_pitch: options
                                             .compatibility

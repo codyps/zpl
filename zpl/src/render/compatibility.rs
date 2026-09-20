@@ -23,6 +23,9 @@ pub struct Compatibility {
     /// End plain/TB text at NUL and remove NUL within FB. See
     /// nul-text-zd621-v1; ^FD/^FH do not specify this termination behavior.
     pub text_nul_processing: bool,
+    /// End plain/FB text at CR/LF, break TB lines, and process SOH by layout.
+    /// Native controls: text-controls-zd621-v1; ^FD/^FH pp. 190/193.
+    pub text_control_processing: bool,
     /// Allow ^CI to remap the space image in legacy encodings. The guide
     /// p. 159 forbids this, but ZD621 Font 0 honors it (character-remap-zd621-v1).
     pub remap_space: bool,

@@ -4,6 +4,7 @@ use super::{font, TextLayout};
 use crate::output::{Path, Point};
 
 pub(super) struct LayoutOptions {
+    pub control_processing: bool,
     pub right: bool,
     pub printer_pitch: bool,
     pub bidi: Option<super::compatibility::Compatibility>,
@@ -18,6 +19,7 @@ pub(super) fn layout(
     options: LayoutOptions,
 ) -> Result<TextLayout, String> {
     let LayoutOptions {
+        control_processing,
         right,
         printer_pitch,
         bidi,
@@ -25,7 +27,7 @@ pub(super) fn layout(
     let (w, h) = size;
     let (width, height) = bounds;
     let mut decoded = String::new();
-    let mut chars = text.chars();
+    let mut chars = text.chars().peekable();
     while let Some(c) = chars.next() {
         match c {
             '\u{ad}' => {} // ^TB explicitly ignores soft hyphens.
@@ -45,6 +47,14 @@ pub(super) fn layout(
                 if escape.trim_end() == "<" {
                     decoded.push('<');
                 }
+            }
+            '\r' | '\n' if control_processing => {
+                // Native CRLF is one break; consecutive LF retain blank lines.
+                // text-controls-zd621-v1 sequences frame, ^TB guide p. 356.
+                if c == '\r' && chars.peek() == Some(&'\n') {
+                    chars.next();
+                }
+                decoded.push('\n');
             }
             c if c.is_whitespace() => decoded.push(' '),
             c => decoded.push(c),
@@ -67,6 +77,11 @@ pub(super) fn layout(
     let chars: Vec<_> = decoded.chars().collect();
     let mut i = 0;
     while i < chars.len() {
+        if chars[i] == '\n' && control_processing {
+            lines.push(std::mem::take(&mut line));
+            i += 1;
+            continue;
+        }
         if chars[i].is_whitespace() {
             let next = format!("{line} ");
             if !line.is_empty() && measure(&next)? > width {

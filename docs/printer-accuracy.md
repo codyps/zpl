@@ -1090,3 +1090,17 @@ previously clipped OCR-B number-system digit now matches the native preview.
 `retail_caption_clamps_negative_inline_origin` independently refines printer
 retail-caption layout; barcode bars and interior captions remain in place.
 See [the native evidence](../zpl/tests/fixtures/retail-caption-edges-zd621-v1/README.md).
+
+## Text CR, LF, and SOH controls
+
+`text_controls_preview` pins five raw native frames with 66 fields. The 36
+basic controls are exact; the two sequence frames retain one-dot third-line
+glyph offsets at 98.04% and 97.77% foreground IoU, with exact paint-count and
+raster-hash gates. `text_control_processing` enables layout-dependent CR/LF
+and SOH rules independently of NUL handling and preserves barcode payloads.
+See [native controls and specification references](../zpl/tests/fixtures/text-controls-zd621-v1/README.md).
+
+The full 512-case audit at f377cd4, using current aligned barcode references,
+found 475 exact, 27 differing, nine blank, and one rejected invalid UPC-E
+input. QR automatic mask selection remains the substantial non-text gap;
+this audit and the additional controls do not establish complete coverage.
