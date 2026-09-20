@@ -604,3 +604,14 @@ width. The independently selectable `graphic_ft_last_row_baseline` and
 `graphic_clamps_negative_origin` options reproduce ZD621 dot placement;
 SPECIFICATION disables both. Run `cargo test -p zpl --test box_minimum_preview
 --test graphic_placement_preview --test profiles`.
+
+## Narrow field blocks
+
+[Eight narrow-block atlases](../zpl/tests/fixtures/field-block-narrow-zd621-v1/README.md)
+cover 216 controls across font 0 and resident A/B/D/E/F/G/H settings. All frames
+are pixel-exact. The new `block_narrow_printer_layout` option emits a character
+when a block cannot fit a character plus hyphen, retains the measured exact-fit
+hyphen and separator behavior, and clamps negative alignment slack.
+SPECIFICATION instead suppresses text below the documented font-width minimum.
+Run `cargo test -p zpl --test field_block_narrow_preview --test profiles`.
+Explicit escapes and fractional centering under rotation remain open.

@@ -1174,13 +1174,26 @@ fn text_block(
     if spacing < 0. {
         return Err("overlapping field block lines unsupported".into());
     }
+    // ^FB p. 186 specifies no printing below the selected font width.
+    // Captured ZD621 previews instead emit individual characters.
+    if !compatibility.block_narrow_printer_layout && width < w {
+        return Ok((Path::default(), font::baseline_for(font_id, h)));
+    }
     let mut lines = Vec::new();
     // Explicit paragraph ends affect centering and terminate justification.
     // Preserve them separately from automatic wraps (^FB pp. 185–187).
     let mut paragraphs = value.split("\\&").peekable();
     while let Some(paragraph) = paragraphs.next() {
         let mut line = String::new();
-        for mut word in paragraph.split_whitespace() {
+        for (word_index, mut word) in paragraph.split_whitespace().enumerate() {
+            if compatibility.block_narrow_printer_layout
+                && word_index > 0
+                && line.is_empty()
+                && font::width_for(font_id, " ", w, h)?
+                    >= width - if lines.is_empty() { 0. } else { indent }
+            {
+                lines.push((String::new(), false, false, false));
+            }
             let mut splitting = false;
             while !word.is_empty() {
                 let limit = width - if lines.is_empty() { 0. } else { indent };
@@ -1195,7 +1208,7 @@ fn text_block(
                         format!("{line} {word}")
                     };
                     if !line.is_empty() && font::width_for(font_id, &next, w, h)? > limit {
-                        lines.push((std::mem::take(&mut line), false, false));
+                        lines.push((std::mem::take(&mut line), false, false, false));
                         continue;
                     }
                     line = next;
@@ -1230,24 +1243,45 @@ fn text_block(
                 }
                 if cut == 0 {
                     if line.is_empty() {
+                        if compatibility.block_narrow_printer_layout {
+                            // Captured narrow-block fallback consumes one glyph
+                            // even when it exceeds the block width. At an exact
+                            // glyph+hyphen fit it also paints the final hyphen.
+                            let end = word.chars().next().unwrap().len_utf8();
+                            let mut chunk = word[..end].to_string();
+                            let with_hyphen = format!("{chunk}{hyphen}");
+                            let paint_hyphen =
+                                font::width_for(font_id, &with_hyphen, w, h)? <= limit;
+                            if paint_hyphen {
+                                chunk.push(hyphen);
+                            }
+                            lines.push((chunk, false, paint_hyphen, true));
+                            word = &word[end..];
+                            continue;
+                        }
                         return Err("field block too narrow for a character and hyphen".into());
                     }
-                    lines.push((std::mem::take(&mut line), false, false));
+                    lines.push((std::mem::take(&mut line), false, false, false));
                     continue;
                 }
                 if cut == word.len() {
                     line = format!("{prefix}{word}");
                     break;
                 }
-                lines.push((format!("{prefix}{}{hyphen}", &word[..cut]), false, true));
+                lines.push((
+                    format!("{prefix}{}{hyphen}", &word[..cut]),
+                    false,
+                    true,
+                    false,
+                ));
                 word = &word[cut..];
                 line.clear();
             }
         }
-        lines.push((line, paragraphs.peek().is_some(), false));
+        lines.push((line, paragraphs.peek().is_some(), false, false));
     }
     let mut path = Path::default();
-    for (i, (line, hard_break, automatic_hyphen)) in lines.iter().enumerate() {
+    for (i, (line, hard_break, automatic_hyphen, forced_character)) in lines.iter().enumerate() {
         // CI27 incorrectly reinterprets the automatic soft-hyphen byte as eth.
         // Keep the selected hyphen for measurement and change only painted ink.
         let painted;
@@ -1265,6 +1299,11 @@ fn text_block(
         // justification between words, and leave the final line left-aligned.
         let inset = if i == 0 { 0. } else { indent };
         let slack = width - inset - font::width_for(font_id, line, w, h)?;
+        let slack = if *forced_character {
+            slack.max(0.)
+        } else {
+            slack
+        };
         let gaps = line.bytes().filter(|&c| c == b' ').count();
         let mut p = if align == b'J'
             && !*hard_break

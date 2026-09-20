@@ -13,6 +13,11 @@
 /// initial value: the renderer does not reapply it after you change an option.
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct Compatibility {
+    /// Emit one character when a block cannot fit a character plus hyphen,
+    /// adding a hyphen only if both fit. Separators can consume blank rows.
+    /// Disabled: suppress blocks narrower than the font (^FB p. 186) and
+    /// reject remaining unrepresentable hyphenation. Measured on ZD621.
+    pub block_narrow_printer_layout: bool,
     /// Clamp a graphic's top-left origin after home, shift and FT placement.
     /// FO bitmaps apply justification after clamping. With the last-row
     /// baseline enabled, FT y <= graphic height starts at row zero.

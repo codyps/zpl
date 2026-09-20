@@ -1105,3 +1105,28 @@ fn graphic_baseline_and_origin_clamping_are_independent() {
     assert_eq!(bounds(&raster(body, ZD621_203_DPI)), (40, 0, 60, 10));
     assert_eq!(bounds(&raster(body, options)), (40, 1, 60, 11));
 }
+
+#[test]
+fn narrow_field_block_preview_behavior_is_optional() {
+    // ^FB p. 186 says text does not print below font width. ZD621 controls
+    // in field-block-narrow-zd621-v1 instead force individual characters.
+    let body = "^CI27^FO50,50^AAN,9,5^FB1,4,0,L^FDABC";
+    assert!(raster(body, SPECIFICATION).pixels.iter().all(|&p| p == 255));
+    let mut options = ZD621_203_DPI;
+    options.compatibility.block_narrow_printer_layout = false;
+    assert!(raster(body, options).pixels.iter().all(|&p| p == 255));
+    assert!(raster(body, ZD621_203_DPI).pixels.contains(&0));
+    let mut options = SPECIFICATION;
+    options.compatibility.block_narrow_printer_layout = true;
+    assert_eq!(
+        raster(body, options).pixels,
+        raster(body, ZD621_203_DPI).pixels
+    );
+    // Negative center/right slack is clamped for a forced glyph.
+    for align in ["C", "R", "J"] {
+        assert_eq!(
+            raster(body, ZD621_203_DPI).pixels,
+            raster(&body.replace(",0,L", &format!(",0,{align}")), ZD621_203_DPI).pixels
+        );
+    }
+}
