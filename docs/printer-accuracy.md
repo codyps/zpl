@@ -119,7 +119,7 @@ digits and a fresh nonblank printer response; all four retail aliases match.
 
 A fresh audit of the completed 512-frame comparison conformance reference set
 also found unsupported text commands (`^PA`, numbered fields and
-serialization), missing glyphs/encodings and unsampled font sizes below the
+print-quantity serialization), missing glyphs/encodings and unsampled font sizes below the
 80% target. These remain work beyond the original 133 cases. Capture context
 must be preserved: its reset uses `^BY2,3,100`, and some inputs still use PW812,
 whose printer preview width adjustment remains outside this work. Those cases
@@ -748,3 +748,15 @@ validation now reports INVALID-L; the EAN-specific INVALID-S option no longer
 applies to UPC-A. UPC-E and DataBar input rules remain separate.
 
 Run `cargo test -p zpl --test retail_data --test retail_data_preview`.
+
+## Initial serial fields
+
+`serial_preview` compares eight complete raw ZD621 frames with zero underpaint
+and overpaint. Text, Code 128 and EAN-13 share `^SN` initial-value handling,
+including default values, Y/N zero suppression, embedded numbers and hex escapes.
+An independent holdout verifies that field-width-preserving suppression occurs
+after `^FH` decoding. The documented twelve-digit indexing limit is enforced in
+`SPECIFICATION`; `serial_overlong_keeps_value` selects the measured printer
+behavior of retaining longer numeric runs unchanged. `^PQ` iteration remains an
+explicit unsupported-command error. See the fixture README and Zebra guide
+`^SN`, pp. 341–342, for capture provenance and command semantics.

@@ -9,6 +9,7 @@ mod field_block;
 mod font;
 mod graphics;
 mod printer_shapes;
+mod serial;
 mod validation;
 use crate::{
     output::{Draw, Paint, Path, Point, Scene},
@@ -308,7 +309,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                 "XA" | "XZ" | "FS" | "FR" => Some(0),
                 "CI" | "PW" | "LL" | "LS" | "LT" | "LR" | "PO" | "FH" => Some(1),
                 "LH" | "FW" | "FP" => Some(2),
-                "FO" | "FT" | "CF" | "BY" | "XG" | "TB" => Some(3),
+                "FO" | "FT" | "CF" | "BY" | "XG" | "TB" | "SN" => Some(3),
                 "GB" | "GD" | "B3" | "FB" => Some(5),
                 "BC" => Some(6),
                 "GE" => Some(4),
@@ -655,10 +656,17 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                         Err(error) => return Err(error),
                     }
                 }
-                "FD" | "FV" => {
+                "FD" | "FV" | "SN" => {
                     if field.path.is_some() {
                         return Err("multiple drawing commands in one field".into());
                     }
+                    let serial_data;
+                    let data = if name == "SN" {
+                        serial_data = serial::initial_value(&p)?;
+                        serial_data.as_slice()
+                    } else {
+                        data
+                    };
                     let mut bytes = Vec::new();
                     let mut i = 0;
                     while i < data.len() {
@@ -675,6 +683,13 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                             bytes.push(data[i]);
                             i += 1;
                         }
+                    }
+                    if name == "SN" {
+                        serial::suppress_zeros(
+                            &mut bytes,
+                            &p,
+                            options.compatibility.serial_overlong_keeps_value,
+                        )?;
                     }
                     if field.barcode.as_ref().is_none_or(|b| b.show)
                         && (font_w != 32.

@@ -12,6 +12,7 @@ pub const SPECIFICATION: Options = Options {
     height: 1218,
     dpi: 203,
     compatibility: Compatibility {
+        serial_overlong_keeps_value: false,
         retail_non_digits_as_zero: false,
         retail_ignore_supplied_check_digit: false,
         retail_printer_overlong_data: false,
@@ -125,6 +126,7 @@ pub const ZD621_203_DPI: Options = Options {
     height: 1218,
     dpi: 203,
     compatibility: Compatibility {
+        serial_overlong_keeps_value: true,
         retail_non_digits_as_zero: true,
         retail_ignore_supplied_check_digit: true,
         retail_printer_overlong_data: true,
