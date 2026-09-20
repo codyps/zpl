@@ -13,6 +13,9 @@
 /// initial value: the renderer does not reapply it after you change an option.
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct Compatibility {
+    /// Ignore the requested QR mask and select using the printer's staged
+    /// penalty evaluation. See docs/qr-mask-selection.md and native holdouts.
+    pub qr_printer_mask_selection: bool,
     /// Clamp off-label retail caption groups along the reading axis. N/R use
     /// nominal origins, I/B visible edges; retail-caption-edges-zd621-v1.
     pub retail_caption_clamps_negative_inline_origin: bool,

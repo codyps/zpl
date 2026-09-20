@@ -32,13 +32,12 @@ Only one layout matches each capture. `parameters.tsv` records the recovered
 block counts, data/parity words and total placement words. These encoding
 parameters are independent of the payload; the additional modes test that.
 
-The regression test compares every original pixel. Unchanged requests retain
-pinned directional errors and local pixel hashes for the unresolved automatic
-mask-selection gap. A separate comparison changes only the mask operand to
-the BCH-validated mask recovered from the printer and requires full-canvas
-pixel equality. Raw ZPL/PNG hashes are pinned in `manifest.tsv`.
+The regression test requires exact whole-frame equality for every unchanged
+request under automatic mask selection. A separate explicit-mask comparison
+disables automatic selection and changes only the mask operand to the
+BCH-validated value recovered from the printer. Raw ZPL/PNG hashes and zero
+paint-error baselines are pinned in `manifest.tsv`.
 
 The formerly unsupported structured-append version-15 capture remains in
-`qr-append-zd621-v1` and is now covered by its successful encoding comparison.
-These controls do not claim to resolve automatic mask selection or establish
-that the global non-text accuracy goal has been met.
+`qr-append-zd621-v1` and also matches exactly. See
+[mask selection evidence](../../../../docs/qr-mask-selection.md).

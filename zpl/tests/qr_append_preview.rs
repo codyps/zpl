@@ -4,7 +4,7 @@ use std::{fs, path::Path};
 mod digest;
 
 #[test]
-fn structured_append_matches_printer_and_pins_mask_gaps() {
+fn structured_append_matches_printer_and_selects_native_masks() {
     let root = Path::new(env!("CARGO_MANIFEST_DIR")).join("tests/fixtures/qr-append-zd621-v1");
     let mut count = 0;
     for row in include_str!("fixtures/qr-append-zd621-v1/manifest.tsv")
@@ -17,12 +17,15 @@ fn structured_append_matches_printer_and_pins_mask_gaps() {
         assert_eq!(digest::sha256(input.as_bytes()), c[1]);
         assert_eq!(digest::sha256(&png), c[2]);
         let reference = raster_diff::Raster::decode_png(&png).unwrap();
-        let render = |source: &str| {
-            let doc = zpl::render(source.as_bytes(), zpl::render::profiles::ZD621_203_DPI).unwrap();
+        let render = |source: &str, automatic| {
+            let mut options = zpl::render::profiles::ZD621_203_DPI;
+            options.compatibility.qr_printer_mask_selection = automatic;
+            let doc = zpl::render(source.as_bytes(), options).unwrap();
             zpl::output::raster::rasterize(&doc.labels[0]).unwrap()
         };
-        let actual = render(&input);
+        let actual = render(&input, true);
         let diff = raster_diff::compare(&reference, &actual, false).unwrap();
+        assert!(diff.matches(), "{} automatic mask", c[0]);
         assert_eq!(
             (diff.reference_only, diff.candidate_only),
             (
@@ -74,7 +77,7 @@ fn structured_append_matches_printer_and_pins_mask_gaps() {
         let mask = (format >> 10) & 7;
         assert_eq!(input.matches(",7^FH").count(), 1);
         let diagnostic = input.replace(",7^FH", &format!(",{mask}^FH"));
-        let diff = raster_diff::compare(&reference, &render(&diagnostic), false).unwrap();
+        let diff = raster_diff::compare(&reference, &render(&diagnostic, false), false).unwrap();
         assert!(
             diff.matches(),
             "{} structured append with captured mask",

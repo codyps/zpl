@@ -1,5 +1,10 @@
 # Printer accuracy regressions
 
+Current QR status: automatic mask selection now matches all 235 affected
+frames, including 32 fresh holdout symbols and extended Model 1 versions.
+See [the algorithm and evidence](qr-mask-selection.md). Earlier entries below
+record gaps at the time of those fixes; their QR-mask caveats are superseded.
+
 Run `cargo test -p zpl --test printer_accuracy -- --nocapture` for the offline
 accuracy gate, or `cargo test --workspace` to include it with all existing tests.
 No printer or external renderer is contacted by these tests.
@@ -1104,3 +1109,23 @@ The full 512-case audit at f377cd4, using current aligned barcode references,
 found 475 exact, 27 differing, nine blank, and one rejected invalid UPC-E
 input. QR automatic mask selection remains the substantial non-text gap;
 this audit and the additional controls do not establish complete coverage.
+
+## Automatic QR masks
+
+`qr_printer_mask_selection` selects the native staged scoring rule in the
+ZD621 profile; SPECIFICATION continues honoring the requested mask operand.
+The existing QR, append, Kanji, extended Model 1, barcode and main accuracy
+suites plus eight fresh holdout frames were replayed together: all 235
+affected frames are pixel-exact. Baselines now pin
+zero directional paint errors. The eight new frames contain 32 symbols.
+Explicit-mask tests remain independent with automatic selection disabled.
+
+See [offline firmware evidence and arithmetic details](qr-mask-selection.md).
+No payload-specific lookup or reference-image rewriting is used.
+
+The refreshed 512-case conformance audit now has 488 exact frames, 14 differing,
+nine blank, and one rejected invalid UPC-E request. The remaining compact
+QR-to-Code-128 state case is a module-width side effect, not mask selection.
+The shipping label's non-text fields are exact, but several text regions are
+below 80% IoU despite its 95.93% whole-label score; the overall goal remains
+open pending those field-level improvements and verification.

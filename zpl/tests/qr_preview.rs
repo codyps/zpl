@@ -19,6 +19,7 @@ fn printer_controls_pin_every_painted_pixel() {
         let doc = zpl::render(&input, zpl::render::profiles::ZD621_203_DPI).unwrap();
         let actual = zpl::output::raster::rasterize(&doc.labels[0]).unwrap();
         let diff = raster_diff::compare(&reference, &actual, false).unwrap();
+        assert!(diff.matches(), "{} automatic mask", c[0]);
         assert_eq!(
             diff.reference_only,
             c[3].parse::<usize>().unwrap(),
@@ -50,7 +51,7 @@ fn printer_controls_pin_every_painted_pixel() {
 #[test]
 fn encoding_matches_every_printer_module_with_the_captured_mask() {
     // Isolate encoding and placement from automatic mask selection. The test
-    // above still renders the unchanged requests and pins their known gaps.
+    // above renders unchanged requests using automatic printer mask selection.
     // Format-bit placement: ISO/IEC 18004:2000 §8.9; BCH and format XOR masks:
     // Annex C.1 (Model 2) and Annex M.9 (Model 1).
     let root = Path::new(env!("CARGO_MANIFEST_DIR")).join("tests/fixtures/qr-zd621-v1");
@@ -136,7 +137,9 @@ fn encoding_matches_every_printer_module_with_the_captured_mask() {
             diagnostic.replace_range(start..end, &operands.join(","));
             symbol_count += 1;
         }
-        let doc = zpl::render(diagnostic.as_bytes(), zpl::render::profiles::ZD621_203_DPI).unwrap();
+        let mut explicit_mask = zpl::render::profiles::ZD621_203_DPI;
+        explicit_mask.compatibility.qr_printer_mask_selection = false;
+        let doc = zpl::render(diagnostic.as_bytes(), explicit_mask).unwrap();
         let actual = zpl::output::raster::rasterize(&doc.labels[0]).unwrap();
         let diff = raster_diff::compare(&reference, &actual, false).unwrap();
         assert_eq!(diff.reference_only, 0, "{name}: encoding underpaint");

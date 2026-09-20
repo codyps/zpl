@@ -1,14 +1,20 @@
 use std::{env, fs};
 use zpl::{
     output::{Adapter, Png, Svg},
-    render, Options,
+    render,
 };
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args: Vec<_> = env::args().collect();
-    if args.len() != 3 {
-        return Err("usage: zpl-to-svg INPUT.zpl OUTPUT.svg|OUTPUT.png".into());
+    if args.len() != 3 && !(args.len() == 4 && args[3] == "--explicit-qr-mask") {
+        return Err(
+            "usage: zpl-to-svg INPUT.zpl OUTPUT.svg|OUTPUT.png [--explicit-qr-mask]".into(),
+        );
     }
-    let doc = render(&fs::read(&args[1])?, Options::default())?;
+    let mut options = zpl::render::profiles::ZD621_203_DPI;
+    if args.len() == 4 {
+        options.compatibility.qr_printer_mask_selection = false;
+    }
+    let doc = render(&fs::read(&args[1])?, options)?;
     if doc.labels.len() != 1 {
         return Err(
             "this CLI requires exactly one label; use the library for multiple labels".into(),

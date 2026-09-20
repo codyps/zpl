@@ -13,8 +13,8 @@ conversion. Source ZPL and printer PNG hashes are pinned in the manifest.
 Table 3 define 13-bit compaction and character-count widths. Unit tests use the
 standard's two worked Shift JIS examples and reject malformed pairs.
 
-Every frame matches every printer pixel when the requested mask is replaced
-with the BCH-validated mask decoded from the captured format information.
-The test also renders the unchanged input and pins all remaining directional
-errors and the local pixel hash. Automatic printer mask selection is still an
-open accuracy gap; the captured-mask diagnostic does not claim to resolve it.
+Every unchanged frame now matches every printer pixel with automatic mask
+selection. The second check explicitly disables automatic selection and uses
+the BCH-validated captured mask to retain independent encoding coverage.
+Raw hashes and zero paint-error baselines are pinned in the manifest. See
+[mask selection evidence](../../../../docs/qr-mask-selection.md).

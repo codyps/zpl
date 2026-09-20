@@ -45,6 +45,7 @@ mod plessey;
 mod postal;
 mod postnet;
 mod qr;
+mod qr_mask;
 mod qr_model1;
 mod reed_solomon;
 mod retail;

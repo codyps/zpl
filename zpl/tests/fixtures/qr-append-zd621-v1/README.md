@@ -21,8 +21,9 @@ The 180-segment Model 1 control reaches version 14 and matches the printer.
 All eighteen frames have raw source/PNG hashes, unchanged-input
 underpaint/overpaint counts and local pixel hashes pinned in `manifest.tsv`.
 Every one matches every printer pixel when only the mask operand is replaced
-by the BCH-validated mask decoded from the capture. Automatic mask selection
-remains an open gap; the unchanged-input comparisons keep it visible.
+by the BCH-validated mask decoded from the capture. Automatic mask selection now also matches every unchanged input exactly.
+The captured-mask check disables automatic selection to retain independent
+encoding coverage. See [the algorithm](../../../../docs/qr-mask-selection.md).
 
 The `m1-segments-200` frame originally exceeded the supported Model 1 limit.
 The ZD621 emits a version-15 symbol for it. The independent

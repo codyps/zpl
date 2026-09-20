@@ -9,8 +9,9 @@ and four payload classes: one letter, fifteen digits, eight uppercase letters,
 and mixed-case text containing digits. The printer chooses several different
 masks despite the same requested mask. The encoded modules match the renderer
 when the printer's mask is forced during diagnosis, but the regression test
-renders the original input unchanged. Mask selection remains an accuracy gap.
-Do not replace the general selection algorithm with a payload-specific lookup.
+renders the original input unchanged. Automatic selection now matches every whole frame, with zero paint-error
+baselines. Explicit-mask comparisons disable automatic selection to retain
+an independent encoder check. See [the algorithm](../../../../docs/qr-mask-selection.md).
 
 Eight byte-mode atlases add 96 symbols: both models and all correction levels,
 with six payloads each encoded automatically and explicitly as bytes. Payloads

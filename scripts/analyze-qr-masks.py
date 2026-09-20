@@ -101,7 +101,7 @@ def export(renderer):
             for mask in range(8):
                 changed = COMMAND.sub(lambda m: m[0][:-1] + str(mask), source)
                 request.write_text(changed)
-                subprocess.run([str(renderer), str(request), str(response)], check=True,
+                subprocess.run([str(renderer), str(request), str(response), "--explicit-qr-mask"], check=True,
                                capture_output=True, timeout=30)
                 with Image.open(response) as image:
                     local = image.convert("L")
@@ -118,7 +118,7 @@ def export(renderer):
             # Also verify all fields together at their original positions.
             selected = iter(record["mask"] for record in batch)
             request.write_text(COMMAND.sub(lambda m: m[0][:-1] + str(next(selected)), source))
-            subprocess.run([str(renderer), str(request), str(response)], check=True,
+            subprocess.run([str(renderer), str(request), str(response), "--explicit-qr-mask"], check=True,
                            capture_output=True, timeout=30)
             with Image.open(response) as image:
                 local = image.convert("L")

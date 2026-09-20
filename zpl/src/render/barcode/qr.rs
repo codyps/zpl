@@ -8,15 +8,23 @@ pub(super) fn render(b: &Barcode, data: &[u8]) -> Result<Path, String> {
     let scale = b.num(2, b.scale(), 1., 100.)?;
     let mask = b.integer(4, 7, 0, 7)?;
     let (level, input) = Input::parse(data)?;
-    let matrix = if b.param(1, "2") == "1" {
-        super::qr_model1::encode(
-            &input,
-            level,
-            mask,
-            b.compatibility.qr_model1_extended_versions,
-        )?
+    let encode_mask = |mask| {
+        if b.param(1, "2") == "1" {
+            super::qr_model1::encode(
+                &input,
+                level,
+                mask,
+                b.compatibility.qr_model1_extended_versions,
+            )
+        } else {
+            encode(&input, level, mask)
+        }
+    };
+    let matrix = if b.compatibility.qr_printer_mask_selection {
+        let candidates = (0..8).map(encode_mask).collect::<Result<Vec<_>, _>>()?;
+        super::qr_mask::select(candidates)
     } else {
-        encode(&input, level, mask)?
+        encode_mask(mask)?
     };
     b.matrix(&matrix, scale, scale)
 }
