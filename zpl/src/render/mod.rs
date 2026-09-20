@@ -580,6 +580,8 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                         "G" => 'G',
                         "H" => 'H',
                         "P" => 'P',
+                        "Q" => 'Q',
+                        "R" => 'R',
                         value
                             if matches!(
                                 value.as_bytes(),
@@ -632,6 +634,8 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                         "AG" => 'G',
                         "AH" => 'H',
                         "AP" => 'P',
+                        "AQ" => 'Q',
+                        "AR" => 'R',
                         value
                             if matches!(
                                 value.as_bytes(),
@@ -1343,7 +1347,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                                     .text_size
                                     .map(|(w, h)| {
                                         if font_id == '0'
-                                            || (font_id == 'P'
+                                            || (matches!(font_id, 'P' | 'Q' | 'R')
                                                 && options.compatibility.preset_font_fo_last_dot)
                                         {
                                             // A zero-width printer block still
@@ -1353,10 +1357,15 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                                             } else {
                                                 (w - 1.).max(0.)
                                             };
-                                            // P quantizes the height pivot in native 20-dot cells;
+                                            // P/Q quantize the height pivot in native cells;
+                                            // R retains the matrix boundary in native controls.
                                             // its proportional horizontal advance loses one dot.
-                                            let last_row =
-                                                if font_id == 'P' { font_h / 20. } else { 1. };
+                                            let last_row = match font_id {
+                                                'P' => font_h / 20.,
+                                                'Q' => font_h / 28.,
+                                                'R' => 0.,
+                                                _ => 1.,
+                                            };
                                             (w, (h - last_row).max(0.))
                                         } else {
                                             (w, h)
@@ -1868,6 +1877,8 @@ fn font_dimensions(
             'G' => (60., 40.),
             'H' => (21., 13.),
             'P' => (20., 18.),
+            'Q' => (28., 24.),
+            'R' => (35., 31.),
             'S' => (24., 24.),
             _ => (18., 10.),
         };

@@ -881,4 +881,17 @@ underpaint and 16 overpaint dots. All 24 separate rotated text regions exceed
 80% foreground IoU (minimum 99.6610%). Offline extraction tests reproduce all
 four 95-character assets from their raw native pages and verify independent
 composition. See the fixture README for provenance and specification links.
-Uncaptured sizes remain approximations; Q–V and extended encodings remain open.
+Uncaptured sizes remain approximations; S–V and extended encodings remain open.
+
+## Preset fonts Q and R
+
+Both original font-id-Q/R conformance cases now match exactly, using native
+28x24 and 35x31 proportional strikes and measured face baselines. The existing
+preset FO compatibility option covers their different vertical pivots; FT
+keeps its baseline anchor. SPECIFICATION disables that placement option.
+
+`resident_qr_preview` pins 33 native frames: 31 exact, with eight underpaint
+and ten overpaint dots in rotated controls. All 16 isolated text regions exceed
+99.75% foreground IoU. Offline extraction tests reproduce both 95-character
+assets from raw sampling pages and independently verify composition. See the
+fixture README for provenance, specification references and scope limits.

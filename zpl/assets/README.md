@@ -163,3 +163,9 @@ characters each from the ZD621 preset P. `font0-20-18.zbf` fixes the mixed-font
 control's comparison row. Raw requests, previews, capture metadata and exact
 regeneration tests are documented in
 [resident-p-zd621-v1](../tests/fixtures/resident-p-zd621-v1/README.md).
+
+
+`fontQ-28-24.zbf` and `fontR-35-31.zbf` add the Q/R proportional presets,
+with 95 ASCII glyphs each and measured baselines of 22 and 28. Raw native
+sources, capture settings and offline regeneration tests are documented in
+[resident-qr-zd621-v1](../tests/fixtures/resident-qr-zd621-v1/README.md).

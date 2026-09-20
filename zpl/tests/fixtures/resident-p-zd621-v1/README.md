@@ -19,7 +19,7 @@ quantizes to 40x18. Independently hinted 20x18, 40x18 and 40x36 strikes are
 embedded, each with 95 printable ASCII characters. Other dimensions use the
 closest strike and remain approximate. The mixed-font control also exposed a
 font-0 20x18 gap (69.0% foreground IoU); a new complete strike makes it exact.
-Q–V remain unsupported, and extended encodings still need investigation.
+S–V remain unsupported, and extended encodings still need investigation.
 
 The preset_font_fo_last_dot option selects the measured rotated FO pivot:
 subtract the height magnification from the vertical matrix boundary and one

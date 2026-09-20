@@ -225,6 +225,8 @@ fn strikes() -> &'static Vec<(Settings, Vec<Glyph>)> {
             include_bytes!("../../assets/fontP-20-18.zbf").as_slice(),
             include_bytes!("../../assets/fontP-40-18.zbf").as_slice(),
             include_bytes!("../../assets/fontP-40-36.zbf").as_slice(),
+            include_bytes!("../../assets/fontQ-28-24.zbf").as_slice(),
+            include_bytes!("../../assets/fontR-35-31.zbf").as_slice(),
         ]
         .into_iter()
         .map(|data| {
@@ -360,14 +362,16 @@ fn selected(id: impl Into<Font> + Copy, w: f64, h: f64) -> (&'static [Glyph], f6
     };
     for (s, glyphs) in faces {
         let sw = if s.width == 0 { s.height } else { s.width } as f64;
-        if s.font == id && (!matches!(id, '0' | 'P') || (s.height as f64 == h && sw == w)) {
+        if s.font == id
+            && (!matches!(id, '0' | 'P' | 'Q' | 'R') || (s.height as f64 == h && sw == w))
+        {
             return (glyphs, w / sw, h / s.height as f64);
         }
     }
-    if id == 'P' {
+    if matches!(id, 'P' | 'Q' | 'R') {
         // Preset strikes are hinted independently at each size. Use an exact
         // captured size above, otherwise scale the closest sampled strike.
-        // Table 31 p. 1584 gives P's native 20x18 matrix.
+        // Table 31 p. 1584 gives each preset's native matrix.
         let distance =
             |s: &Settings| (w / s.width as f64).ln().abs() + (h / s.height as f64).ln().abs();
         let (s, glyphs) = faces
@@ -414,6 +418,10 @@ pub(super) fn baseline_for(id: impl Into<Font> + Copy, h: f64) -> f64 {
         'F' => 20. / 26.,
         'G' => 47. / 60.,
         'H' => 20. / 21.,
+        // Native Q/R FO-to-FT controls locate these face baselines; Table 29
+        // omits the presets (their matrices are in Table 31, p. 1584).
+        'Q' => 22. / 28.,
+        'R' => 28. / 35.,
         // Captured GS metrics use baseline 23; the specification FT anchor
         // is selected separately by graphic_symbol_last_row_baseline.
         'S' => 23. / 24.,
