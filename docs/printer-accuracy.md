@@ -5,7 +5,7 @@ The complete 512-case conformance gate has 490 exact nonblank frames, twelve
 with text-only differences (minimum per-field IoU 93.33%), nine blank controls,
 and one rejected invalid barcode input. Every non-text comparison is exact.
 Run `cargo test -p zpl --test printer_accuracy --test conformance_preview`.
-Exploratory TAB/ESC/DEL controls remain unfinished; this is not a claim that
+Exploratory legacy ESC/DEL controls remain unfinished; this is not a claim that
 every possible ZPL input is covered. Later sections record current evidence.
 
 Automatic QR masks match all 235 affected frames, including 32 fresh holdout
@@ -1226,3 +1226,23 @@ This closes the exact-source coverage gap in the comparison corpus, but does
 not establish parity for all possible ZPL. An earlier exploratory control
 still exposes unsupported TAB and encoding-specific ESC/DEL behavior; it
 remains separate work before concluding the current accuracy investigation.
+
+
+## Tab stops and field-block tab spacing
+
+`text_tab_stops` reproduces native tab behavior in ZD621_203_DPI while keeping
+SPECIFICATION unchanged. Plain text and TB use 80-dot stops relative to the
+field or line origin. FB inserts a space-width character inside the word,
+preserving leading tabs and the printer's narrow-block wrapping. FO/R/right
+justification retains leading tab indentation. Explicit horizontal and reverse
+FP flow uses the accumulated character advances and gaps to locate stops.
+
+`tabs_preview` pins eleven raw printer frames containing 120 fields. Seven
+frames are exact; the remaining four have small rasterization differences,
+with every measured region above 95.9% foreground IoU. The gate pins exact
+paint counts and raster hashes as well as its 80% region floor. Controls cover
+both fonts, wrapping, CR/LF interaction, origins, all rotations, justification
+and three character-flow directions. The option does not alter barcode bytes.
+See [the capture evidence](../zpl/tests/fixtures/tabs-zd621-v1/README.md).
+Legacy ESC/DEL glyph handling remains separate, with fresh native samples ready
+for the next fix; the broader task is not yet claimed complete.

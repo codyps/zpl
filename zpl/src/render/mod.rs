@@ -83,6 +83,7 @@ struct Field {
     barcode_width: f64,
     baseline_height: f64,
     inverted_margin: f64,
+    leading_tab_advance: f64,
     text_size: Option<(f64, f64)>,
     text_parts: Vec<Path>,
     center_overflow: Vec<bool>,
@@ -117,6 +118,7 @@ impl Default for Field {
             barcode_width: 0.,
             baseline_height: 0.,
             inverted_margin: 0.,
+            leading_tab_advance: 0.,
             text_size: None,
             text_parts: Vec::new(),
             center_overflow: Vec::new(),
@@ -991,6 +993,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                                     || (encoding == 28
                                         && options.compatibility.utf8_uses_legacy_backslash),
                             )
+                            .with_tab_stops(options.compatibility.text_tab_stops)
                             .with_default_glyph(advanced[0])
                             .with_character_map(
                                 character_maps.get(encoding as usize).copied().flatten(),
@@ -1092,6 +1095,18 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                                 } else {
                                     (path, parts, None)
                                 };
+                            if options.compatibility.text_tab_stops && field.block.is_none() {
+                                let leading: String = value
+                                    .chars()
+                                    .take_while(|c| c.is_ascii_whitespace())
+                                    .collect();
+                                if leading.contains('\t') {
+                                    // FO/R/right retains tab indentation; independent
+                                    // paired font controls are in tabs-zd621-v1.
+                                    field.leading_tab_advance =
+                                        font::width_for(text_font, &leading, font_w, font_h)?;
+                                }
+                            }
                             field.text_parts = parts;
                             field.center_overflow = center_overflow;
                             // Table 29 p. 1582 gives GS a 3/4-height baseline.
@@ -1579,7 +1594,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                                         {
                                             (1. - tw, 0.)
                                         }
-                                        b'R' => (-th, -left),
+                                        b'R' => (-th, -left + field.leading_tab_advance),
                                         b'I' => (field.inverted_margin - dx + if font_id == '0'
                                             && field.block.is_none()
                                             && options.compatibility.right_justified_inverted_text_uses_ink_margin

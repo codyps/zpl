@@ -301,6 +301,12 @@ pub(super) fn wrap(
                 _ => {}
             }
         }
+        // Native tabs-zd621-v1: FB preserves a tab as a space-width
+        // character inside the word, including at the beginning of a line.
+        if c == '\t' && compatibility.text_tab_stops {
+            word.text.push(' ');
+            continue;
+        }
         if c == ' '
             && word.text.is_empty()
             && word.markers.is_empty()

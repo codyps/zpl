@@ -56,6 +56,7 @@ pub(super) fn layout(
                 }
                 decoded.push('\n');
             }
+            c if font.is_tab(c) => decoded.push(c),
             c if c.is_whitespace() => decoded.push(' '),
             c => decoded.push(c),
         }
@@ -83,15 +84,16 @@ pub(super) fn layout(
             continue;
         }
         if chars[i].is_whitespace() {
-            let next = format!("{line} ");
+            let space = if font.is_tab(chars[i]) { '\t' } else { ' ' };
+            let next = format!("{line}{space}");
             if !line.is_empty() && measure(&next)? > width {
                 let overflow = measure(&line)? > width;
                 lines.push(std::mem::take(&mut line));
                 if overflow {
-                    line.push(' ');
+                    line.push(space);
                 }
             } else {
-                line.push(' ');
+                line.push(space);
             }
             i += 1;
             continue;

@@ -32,6 +32,10 @@ pub struct Compatibility {
     /// End plain/FB text at CR/LF, break TB lines, and process SOH by layout.
     /// Native controls: text-controls-zd621-v1; ^FD/^FH pp. 190/193.
     pub text_control_processing: bool,
+    /// Use native 80-dot TAB stops in plain/TB text and spaces in FB.
+    /// Disabled: plain text rejects TAB and FB/TB retain ordinary whitespace
+    /// handling. See tabs-zd621-v1 and ^FD/^FB/^TB guide pp. 190/187/356.
+    pub text_tab_stops: bool,
     /// Allow ^CI to remap the space image in legacy encodings. The guide
     /// p. 159 forbids this, but ZD621 Font 0 honors it (character-remap-zd621-v1).
     pub remap_space: bool,

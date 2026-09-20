@@ -15,6 +15,7 @@ pub(super) struct Font {
     default_glyph: bool,
     character_map: Option<[u8; 256]>,
     block_flow: Option<BlockFlow>,
+    tab_stops: bool,
 }
 #[derive(Clone, Copy)]
 struct BlockFlow {
@@ -42,7 +43,15 @@ impl Font {
             default_glyph: false,
             character_map: None,
             block_flow: None,
+            tab_stops: false,
         }
+    }
+    pub(super) fn with_tab_stops(mut self, enabled: bool) -> Self {
+        self.tab_stops = enabled;
+        self
+    }
+    pub(super) fn is_tab(self, c: char) -> bool {
+        self.tab_stops && c == '\t'
     }
     pub(super) fn with_character_map(mut self, map: Option<[u8; 256]>) -> Self {
         self.character_map = map;
@@ -500,6 +509,11 @@ pub(super) fn baseline_for(id: impl Into<Font> + Copy, h: f64) -> f64 {
 fn width(s: &str, w: f64) -> Result<f64, String> {
     width_for('0', s, w, 32.)
 }
+// tabs-zd621-v1: TAB advances to the next 80-dot stop relative
+// to the field or line origin, independently of the selected font matrix.
+fn next_tab(pen: f64) -> f64 {
+    (pen / 80.).floor().mul_add(80., 80.)
+}
 pub(super) fn width_for(
     id: impl Into<Font> + Copy,
     s: &str,
@@ -509,6 +523,9 @@ pub(super) fn width_for(
     let font = id.into();
     let (glyphs, sx, _) = selected(font, w, h);
     s.chars().try_fold(0., |sum, c| {
+        if font.is_tab(c) {
+            return Ok(next_tab(sum));
+        }
         let gap = font.block_flow.map_or(0., |flow| flow.gap_for(c));
         Ok(sum + glyph_from(glyphs, font.map_char(c)?)?.advance as f64 * sx + gap)
     })
@@ -529,6 +546,14 @@ pub(super) fn inverted_text_margin(
     let mut right = 0_f64;
     let mut first_advance = 0.;
     for (i, c) in value.chars().enumerate() {
+        if font.is_tab(c) {
+            let next = next_tab(pen);
+            if i == 0 {
+                first_advance = next;
+            }
+            pen = next;
+            continue;
+        }
         let g = glyph_from(glyphs, font.map_char(c)?)?;
         if i == 0 {
             first_advance = g.advance as f64 * sx;
@@ -575,6 +600,9 @@ pub(super) fn inverted_margin(
     let Some(c) = value.chars().last() else {
         return Ok(0.);
     };
+    if font.is_tab(c) {
+        return Ok(0.);
+    }
     let (glyphs, sx, _) = selected(font, w, h);
     let g = glyph_from(glyphs, font.map_char(c)?)?;
     Ok(((g.advance as f64 - g.left as f64 - g.width as f64) * sx - 1.).max(0.))
@@ -621,6 +649,10 @@ pub(super) fn text_parts_for(
     let mut parts = Vec::new();
     let mut pen = 0.;
     for c in s.chars() {
+        if font.is_tab(c) {
+            pen = next_tab(pen);
+            continue;
+        }
         let value = c.to_string();
         let mut path = text_for(id, &value, w, h)?;
         path.transform(|p| crate::output::Point::new(p.x + pen, p.y));
@@ -654,6 +686,10 @@ pub(super) fn text_for(
     let mut rows: BTreeMap<i32, Vec<(f64, f64)>> = BTreeMap::new();
     let mut pen = 0.;
     for c in s.chars() {
+        if font.is_tab(c) {
+            pen = next_tab(pen * sx) / sx;
+            continue;
+        }
         let g = glyph_from(glyphs, font.map_char(c)?)?;
         for (y, row) in g.bitmap.iter().enumerate() {
             let mut start = None;
@@ -878,6 +914,7 @@ pub(super) fn directed_text(
     let mut path = Path::default();
     let (mut x, mut y) = (0., 0.);
     let mut width = 0_f64;
+    let mut tab_pen = 0.;
     let mut end_left = 0_f64;
     let mut first_advance = 0_f64;
     let mut first_ink = (0_f64, 0_f64);
@@ -895,7 +932,12 @@ pub(super) fn directed_text(
         + gap;
     for (index, c) in value.chars().enumerate() {
         let text = c.to_string();
-        let advance = width_for(font, &text, w, h)? + gap;
+        let advance = if font.is_tab(c) && d != b'V' {
+            next_tab(tab_pen) - tab_pen
+        } else {
+            width_for(font, &text, w, h)? + gap
+        };
+        tab_pen += advance;
         max_advance = max_advance.max(advance);
         let mut part = text_for(font, &text, w, h)?;
         if d == b'R' && index != 0 {
