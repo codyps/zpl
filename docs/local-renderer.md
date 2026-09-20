@@ -214,3 +214,8 @@ specification profile retains the standard version-14 limit.
 13 exact previews. `preview_ignores_print_mirror` independently selects the
 printer preview's omission of `^PM`; SPECIFICATION mirrors the whole label,
 retains the setting across labels, and combines it with `^PO` inversion.
+
+[`^FP` direction controls](../zpl/tests/fixtures/field-direction-zd621-v1/README.md)
+cover horizontal gaps, vertical columns and reverse character order independently
+of glyph rotation. The printer profile selects vertical-gap and anchor departures
+through separate options. FP with FB remains an explicit unsupported combination.

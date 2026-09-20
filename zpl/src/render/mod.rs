@@ -77,6 +77,8 @@ struct Field {
     center_overflow: Vec<bool>,
     graphic_size: Option<(f64, f64)>,
     graphic_bitmap: bool,
+    direction: (u8, f64),
+    direction_metrics: font::DirectionMetrics,
 }
 impl Default for Field {
     fn default() -> Self {
@@ -105,6 +107,8 @@ impl Default for Field {
             center_overflow: Vec::new(),
             graphic_size: None,
             graphic_bitmap: false,
+            direction: (b'H', 0.),
+            direction_metrics: font::DirectionMetrics::default(),
         }
     }
 }
@@ -298,7 +302,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
             let max = match name {
                 "XA" | "XZ" | "FS" | "FR" => Some(0),
                 "CI" | "PW" | "LL" | "LS" | "LT" | "LR" | "PO" | "FH" => Some(1),
-                "LH" | "FW" => Some(2),
+                "LH" | "FW" | "FP" => Some(2),
                 "FO" | "FT" | "CF" | "BY" | "XG" => Some(3),
                 "GB" | "GD" | "B3" | "FB" => Some(5),
                 "BC" => Some(6),
@@ -407,6 +411,21 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                     field.rotation = default_rotation;
                     default_justification = justification(&p, 1, 0)?;
                     field.justification = default_justification;
+                }
+                "FP" => {
+                    // Zebra Programming Guide ^FP p. 202: field-local direction
+                    // and additional character spacing, independent of rotation.
+                    let direction = match p[0] {
+                        "" | "H" => b'H',
+                        "V" => b'V',
+                        "R" => b'R',
+                        _ => return Err("invalid field direction".into()),
+                    };
+                    let gap = number(&p, 1, 0.)?;
+                    if !(0. ..=9999.).contains(&gap) || gap.fract() != 0. {
+                        return Err("invalid field character gap".into());
+                    }
+                    field.direction = (direction, gap);
                 }
                 "FB" => {
                     // ^FB selects text layout, replacing a preceding ^GS symbol field.
@@ -739,6 +758,24 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                                 options.compatibility,
                                 encoding,
                             )?;
+                            let (path, parts, direction_size) = if field.direction != (b'H', 0.) {
+                                if block.is_some() {
+                                    return Err("field direction with FB is unsupported".into());
+                                }
+                                let layout = font::directed_text(
+                                    text_font,
+                                    value,
+                                    font_w,
+                                    font_h,
+                                    field.direction,
+                                    options.compatibility,
+                                    field.justification == 1,
+                                )?;
+                                field.direction_metrics = layout.metrics;
+                                (layout.path, layout.parts, Some(layout.size))
+                            } else {
+                                (path, parts, None)
+                            };
                             field.text_parts = parts;
                             field.center_overflow = center_overflow;
                             // Table 29 p. 1582 gives GS a 3/4-height baseline.
@@ -755,8 +792,17 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                                     .compatibility
                                     .right_justified_inverted_text_uses_ink_margin
                             {
-                                field.inverted_margin =
-                                    font::inverted_margin(text_font, value, font_w, font_h)?;
+                                field.inverted_margin = if font_id == '0' && field.block.is_none() {
+                                    font::inverted_text_margin(
+                                        text_font,
+                                        value,
+                                        font_w,
+                                        font_h,
+                                        field.direction.1,
+                                    )?
+                                } else {
+                                    font::inverted_margin(text_font, value, font_w, font_h)?
+                                };
                             }
                             field.text_size =
                                 Some(if let Some((width, lines, spacing, _, _)) = block {
@@ -764,6 +810,9 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                                 } else {
                                     (font::width_for(text_font, value, font_w, font_h)?, font_h)
                                 });
+                            if let Some(size) = direction_size {
+                                field.text_size = Some(size);
+                            }
                             path
                         };
                         Ok(path)
@@ -1056,7 +1105,24 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                             // ^FO/^FT pp. 201/205: right justification changes
                             // the origin, not the character order. Auto (2) is
                             // left for the supported Latin scripts.
-                            let advance = field.text_size.or(field.graphic_size).map_or(w, |s| s.0);
+                            let mut advance =
+                                field.text_size.or(field.graphic_size).map_or(w, |s| s.0);
+                            if options.compatibility.field_direction_printer_anchors
+                                && field.text_size.is_some()
+                                && field.direction.0 == b'R'
+                                && matches!(field.rotation, b'I' | b'B')
+                            {
+                                advance += field.direction_metrics.end_margin
+                                    + field.direction_metrics.first_delta
+                                    + if font_id == '0' { 1. } else { 0. };
+                            }
+                            if options.compatibility.field_direction_printer_anchors
+                                && field.text_size.is_some()
+                                && field.direction.0 == b'R'
+                                && matches!(field.rotation, b'N' | b'R')
+                            {
+                                advance += field.direction_metrics.end_left;
+                            }
                             let xp = p.x
                                 - if field.baseline && field_justification == 1 {
                                     advance
@@ -1104,6 +1170,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                                 let w = field.barcode.as_ref().map_or(w, |barcode| {
                                     barcode.field_origin_width(w, field.barcode_width)
                                 });
+                                let w = field.direction_metrics.pivot.unwrap_or(w);
                                 match field.rotation {
                                     b'R' => (h, 0.),
                                     b'I' => (w, h),
@@ -1111,7 +1178,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                                     _ => (0., 0.),
                                 }
                             };
-                            let (jx, jy) = if !field.baseline && field_justification == 1 {
+                            let (mut jx, mut jy) = if !field.baseline && field_justification == 1 {
                                 if let Some((tw, th)) = field.text_size {
                                     match field.rotation {
                                         b'R' if field.block.is_some()
@@ -1136,7 +1203,10 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                                             (1. - tw, 0.)
                                         }
                                         b'R' => (-th, -left),
-                                        b'I' => (field.inverted_margin - dx + left, 0.),
+                                        b'I' => (field.inverted_margin - dx + if font_id == '0'
+                                            && field.block.is_none()
+                                            && options.compatibility.right_justified_inverted_text_uses_ink_margin
+                                            { 0. } else { left }, 0.),
                                         b'B' => (-th, 0.),
                                         _ => (-tw, 0.),
                                     }
@@ -1153,6 +1223,52 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                             } else {
                                 (0., 0.)
                             };
+                            if options.compatibility.field_direction_printer_anchors
+                                && field.text_size.is_some()
+                                && !field.baseline
+                                && field_justification == 1
+                                && field.block.is_none()
+                            {
+                                let dot = if font_id == '0' { 0. } else { 1. };
+                                match (field.direction.0, field.rotation) {
+                                    (b'H', b'I') => {
+                                        jx += field.direction.1;
+                                    }
+                                    (b'R', b'R') => jy = 0.,
+                                    (b'R', b'N') => jx -= field.direction_metrics.end_left,
+                                    (b'R', b'I') => jx = dot - dx,
+                                    (b'R', b'B') => jy = advance - dy + dot,
+                                    (b'V', b'I') => {
+                                        jx = if field.direction_metrics.count == 1 {
+                                            field.direction_metrics.end_left
+                                                + field.direction_metrics.end_margin
+                                                + dot
+                                                - dx
+                                        } else {
+                                            -field.direction_metrics.vertical_extent.0
+                                                - field.direction_metrics.vertical_extent.1
+                                                + 2. * dot
+                                                - dx
+                                        };
+                                    }
+                                    // The right anchor uses the capital row; B also
+                                    // restores the leading glyph's crop and descent.
+                                    // See descender/ascender controls in the FP fixture.
+                                    (b'V', b'R') => {
+                                        jx = field.direction_metrics.first_ink.1
+                                            - field.direction_metrics.leading_descent
+                                            - font_h
+                                            - dx
+                                    }
+                                    (b'V', b'B') => {
+                                        jx += field.direction_metrics.bottom_margin
+                                            + 2. * field.direction_metrics.leading_descent
+                                            + field.direction_metrics.leading_top;
+                                        jy = advance - dy + dot;
+                                    }
+                                    _ => {}
+                                }
+                            }
                             let (tx, ty) = (x + a + dx + jx + ft_dx, y + b + dy + jy + ft_dy);
                             if field.graphic_size.is_some()
                                 && options.compatibility.graphic_clamps_negative_origin

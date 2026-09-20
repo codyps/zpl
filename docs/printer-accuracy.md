@@ -118,7 +118,7 @@ as a rejection control. Its positive case now uses eleven uncompressed UPC-A
 digits and a fresh nonblank printer response; all four retail aliases match.
 
 A fresh audit of the completed 512-frame comparison conformance reference set
-also found unsupported text commands (`^FP`, `^TB`, `^PA`, numbered fields and
+also found unsupported text commands (`^TB`, `^PA`, numbered fields and
 serialization), missing glyphs/encodings and unsampled font sizes below the
 80% target. These remain work beyond the original 133 cases. Capture context
 must be preserved: its reset uses `^BY2,3,100`, and some inputs still use PW812,
@@ -709,3 +709,7 @@ lines. Automatic hyphen metrics and CI27's eth glyph retain their separate
 options. Existing ordinary wrapping and backslash regressions remain in place.
 
 Run `cargo test -p zpl --test field_block_markers_preview --test profiles`.
+
+Field direction now has [100 passing printer comparisons](../zpl/tests/fixtures/field-direction-zd621-v1/README.md),
+with 685 text regions at 98.9474% foreground IoU or better. Two FP+FB
+wrapping cases remain explicitly unsupported and are excluded from that count.

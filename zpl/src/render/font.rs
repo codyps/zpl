@@ -265,6 +265,34 @@ pub(super) fn width_for(
         Ok(sum + glyph_from(glyphs, c)?.advance as f64 * sx)
     })
 }
+/// ZD621 font-0 FO/I/right anchor: measure ink with a backwards pen.
+/// The glyphs themselves are still printed in their normal field order.
+/// See field-direction-zd621-v1 pair controls (notably jW versus Wj),
+/// and Zebra Programming Guide ^FO p. 201 / Field Interactions pp. 1606–1611.
+pub(super) fn inverted_text_margin(
+    font: Font,
+    value: &str,
+    w: f64,
+    h: f64,
+    gap: f64,
+) -> Result<f64, String> {
+    let (glyphs, sx, _) = selected(font, w, h);
+    let mut pen = 0.;
+    let mut right = 0_f64;
+    let mut first_advance = 0.;
+    for (i, c) in value.chars().enumerate() {
+        let g = glyph_from(glyphs, c)?;
+        if i == 0 {
+            first_advance = g.advance as f64 * sx;
+        }
+        if g.width != 0 && g.height != 0 {
+            right = right.max((g.left as f64 + g.width as f64) * sx - pen);
+        }
+        pen += g.advance as f64 * sx + gap;
+    }
+    Ok(first_advance - right)
+}
+
 pub(super) fn inverted_margin(
     id: impl Into<Font> + Copy,
     value: &str,
@@ -523,4 +551,135 @@ mod tests {
         );
         assert_eq!(baseline(32.), 24.);
     }
+}
+
+#[derive(Clone, Default)]
+pub(super) struct DirectionMetrics {
+    pub pivot: Option<f64>,
+    pub end_margin: f64,
+    pub bottom_margin: f64,
+    pub end_left: f64,
+    pub first_delta: f64,
+    pub first_ink: (f64, f64),
+    pub count: usize,
+    pub vertical_extent: (f64, f64),
+    pub leading_descent: f64,
+    pub leading_top: f64,
+}
+pub(super) struct DirectedText {
+    pub path: Path,
+    pub parts: Vec<Path>,
+    pub size: (f64, f64),
+    pub metrics: DirectionMetrics,
+}
+/// ^FP, Zebra Programming Guide p. 202 and Field Interactions pp. 1606–1611.
+pub(super) fn directed_text(
+    font: Font,
+    value: &str,
+    w: f64,
+    h: f64,
+    direction: (u8, f64),
+    compatibility: super::compatibility::Compatibility,
+    right_justified: bool,
+) -> Result<DirectedText, String> {
+    let (d, gap) = direction;
+    let mut parts = Vec::new();
+    let mut path = Path::default();
+    let (mut x, mut y) = (0., 0.);
+    let mut width = 0_f64;
+    let mut end_left = 0_f64;
+    let mut first_advance = 0_f64;
+    let mut first_ink = (0_f64, 0_f64);
+    let mut leading_top = f64::INFINITY;
+    let mut leading_descent = 0.;
+    let mut max_advance = 0_f64;
+    let mut max_right = 0_f64;
+    let (mut end_margin, mut bottom) = (0_f64, 0_f64);
+    let last_advance = value
+        .chars()
+        .last()
+        .map(|c| width_for(font, &c.to_string(), w, h))
+        .transpose()?
+        .unwrap_or(0.)
+        + gap;
+    for (index, c) in value.chars().enumerate() {
+        let text = c.to_string();
+        let advance = width_for(font, &text, w, h)? + gap;
+        max_advance = max_advance.max(advance);
+        let mut part = text_for(font, &text, w, h)?;
+        if d == b'R' && index != 0 {
+            x -= advance;
+        }
+        if d == b'V' && right_justified {
+            x = last_advance - advance;
+        }
+        let mut right = 0_f64;
+        let mut left = f64::INFINITY;
+        if index == 0 {
+            first_advance = advance;
+        }
+        for segment in &part.segments {
+            if let crate::output::Segment::Move(p) | crate::output::Segment::Line(p) = segment {
+                left = left.min(p.x);
+                right = right.max(p.x);
+                bottom = bottom.max(p.y);
+                if index == 0 {
+                    leading_top = leading_top.min(p.y);
+                    first_ink.0 = first_ink.0.max(p.x);
+                    first_ink.1 = first_ink.1.max(p.y);
+                }
+            }
+        }
+        max_right = max_right.max(right);
+        end_margin = advance - right;
+        end_left = if left.is_finite() { left } else { 0. };
+        part.transform(|p| crate::output::Point::new(p.x + x, p.y + y));
+        path.segments.extend(part.segments.iter().cloned());
+        parts.push(part);
+        width = if d == b'V' { last_advance } else { x + advance };
+        if d == b'H' {
+            x += advance;
+        }
+        if d == b'V' {
+            y += h + if compatibility.field_vertical_ignores_gap {
+                0.
+            } else {
+                gap
+            };
+        }
+    }
+    if d == b'V' && compatibility.field_direction_printer_anchors {
+        let capital = text_for(font, "H", w, h)?;
+        let capital_bottom = capital
+            .segments
+            .iter()
+            .filter_map(|s| match s {
+                crate::output::Segment::Move(p) | crate::output::Segment::Line(p) => Some(p.y),
+                _ => None,
+            })
+            .fold(0_f64, f64::max);
+        leading_descent = (first_ink.1 - capital_bottom).max(0.);
+        y += leading_descent;
+    }
+    Ok(DirectedText {
+        path: union_lines(path),
+        parts,
+        size: (width, if d == b'V' { y } else { h }),
+        metrics: DirectionMetrics {
+            pivot: (d != b'H').then_some(w - if font.id == '0' { 1. } else { 0. }),
+            end_left,
+            first_ink,
+            count: value.chars().count(),
+            vertical_extent: (max_right, max_advance - last_advance),
+            leading_descent,
+            leading_top: if leading_top.is_finite() {
+                leading_top
+            } else {
+                0.
+            },
+            first_delta: first_advance - last_advance,
+            end_margin,
+            bottom_margin: h - bottom,
+        },
+    })
 }
