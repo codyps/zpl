@@ -560,7 +560,6 @@ all rotations/origins, reverse fields and label reversal. Run `cargo test -p zpl
 QR mask selection, justified-text spacing and broader unverified sizes,
 commands and encodings still leave the overall accuracy goal open.
 
-
 ## Justified word-position rounding
 
 [Six spacing atlases](../zpl/tests/fixtures/field-block-rounding-zd621-v1/README.md)
@@ -571,4 +570,22 @@ SPECIFICATION keeps nearest-dot rounding. The remaining GS field-block residual
 improves from 55 underpaint/overpaint dots to zero. Other saved justified blocks
 retain their previous results. Run `cargo test -p zpl --test field_block_rounding_preview
 --test field_block_overflow_preview --test graphic_symbols_preview --test resident_fonts_preview
---test profiles`. Automatic word hyphenation and broader command coverage remain open.
+--test profiles`. Soft-hyphen escapes and broader command coverage remain open.
+
+## Automatic field-block hyphenation
+
+[Sixty-one hyphenation frames](../zpl/tests/fixtures/field-block-hyphenation-zd621-v1/README.md)
+replace the previous overlong-word error with measured wrapping. Fifty-three
+frames are exact; eight inverted/rotated text layouts retain pinned residuals
+at 95.09–96.05% foreground IoU. Controls cover width boundaries, existing text
+prefixes, hanging indents, final-row overflow, all alignments and rotations,
+FO/FT and CI0/27/28. Sixteen independently verified font captures supply native
+soft-hyphen/eth glyphs without modifying the previous ASCII assets.
+
+`block_hyphenation_printer_layout` controls soft-hyphen sizing, strict fit and
+retained hyphen space on the final chunk. `block_hyphenation_ci27_uses_eth`
+separately reproduces the printer's incorrect CI27 automatic-break glyph.
+SPECIFICATION disables both. Run `cargo test -p zpl --test field_block_hyphenation_preview
+--test profiles`; the full renderer suite checks shared wrapping and font behavior.
+Explicit soft-hyphen escape handling, extremely narrow blocks, unsampled sizes,
+QR mask selection and broader command/encoding coverage remain open.

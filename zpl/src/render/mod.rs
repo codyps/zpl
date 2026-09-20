@@ -654,6 +654,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                                 font_h,
                                 field.block,
                                 options.compatibility,
+                                encoding,
                             )?;
                             // Table 29 p. 1582 gives GS a 3/4-height baseline.
                             // Printer controls instead use native row 23 of 24.
@@ -1100,6 +1101,7 @@ fn text_block(
     h: f64,
     block: Option<(f64, usize, f64, u8, f64)>,
     compatibility: compatibility::Compatibility,
+    encoding: u8,
 ) -> Result<(Path, f64), String> {
     let center_space = compatibility.block_center_includes_trailing_space;
     let Some((width, max_lines, spacing, align, indent)) = block else {
@@ -1117,31 +1119,87 @@ fn text_block(
     let mut paragraphs = value.split("\\&").peekable();
     while let Some(paragraph) = paragraphs.next() {
         let mut line = String::new();
-        for word in paragraph.split_whitespace() {
-            if font::width_for(font_id, word, w, h)?
-                > width - if lines.is_empty() { 0. } else { indent }
-            {
-                return Err("field block word hyphenation unsupported".into());
-            }
-            let next = if line.is_empty() {
-                word.to_string()
-            } else {
-                format!("{line} {word}")
-            };
-            if !line.is_empty()
-                && font::width_for(font_id, &next, w, h)?
-                    > width - if lines.is_empty() { 0. } else { indent }
-            {
-                lines.push((std::mem::take(&mut line), false));
-                line = word.to_string();
-            } else {
-                line = next;
+        for mut word in paragraph.split_whitespace() {
+            let mut splitting = false;
+            while !word.is_empty() {
+                let limit = width - if lines.is_empty() { 0. } else { indent };
+                let word_width = font::width_for(font_id, word, w, h)?;
+                splitting |= word_width > limit;
+                if !splitting
+                    || (!compatibility.block_hyphenation_printer_layout && word_width <= limit)
+                {
+                    let next = if line.is_empty() {
+                        word.to_string()
+                    } else {
+                        format!("{line} {word}")
+                    };
+                    if !line.is_empty() && font::width_for(font_id, &next, w, h)? > limit {
+                        lines.push((std::mem::take(&mut line), false, false));
+                        continue;
+                    }
+                    line = next;
+                    break;
+                }
+                // ^FB p. 187: split an overlong word and continue on the next
+                // line. Printer captures reserve soft-hyphen space even for the
+                // final remainder, and require strictly less than the budget.
+                let hyphen = if compatibility.block_hyphenation_printer_layout {
+                    '\u{ad}'
+                } else {
+                    '-'
+                };
+                let prefix = if line.is_empty() {
+                    String::new()
+                } else {
+                    format!("{line} ")
+                };
+                let mut cut = 0;
+                for end in word.char_indices().map(|(i, c)| i + c.len_utf8()) {
+                    let trial = format!("{prefix}{}{hyphen}", &word[..end]);
+                    let advance = font::width_for(font_id, &trial, w, h)?;
+                    let fits = if compatibility.block_hyphenation_printer_layout {
+                        advance < limit
+                    } else {
+                        advance <= limit
+                    };
+                    if !fits {
+                        break;
+                    }
+                    cut = end;
+                }
+                if cut == 0 {
+                    if line.is_empty() {
+                        return Err("field block too narrow for a character and hyphen".into());
+                    }
+                    lines.push((std::mem::take(&mut line), false, false));
+                    continue;
+                }
+                if cut == word.len() {
+                    line = format!("{prefix}{word}");
+                    break;
+                }
+                lines.push((format!("{prefix}{}{hyphen}", &word[..cut]), false, true));
+                word = &word[cut..];
+                line.clear();
             }
         }
-        lines.push((line, paragraphs.peek().is_some()));
+        lines.push((line, paragraphs.peek().is_some(), false));
     }
     let mut path = Path::default();
-    for (i, (line, hard_break)) in lines.iter().enumerate() {
+    for (i, (line, hard_break, automatic_hyphen)) in lines.iter().enumerate() {
+        // CI27 incorrectly reinterprets the automatic soft-hyphen byte as eth.
+        // Keep the selected hyphen for measurement and change only painted ink.
+        let painted;
+        let paint_line =
+            if *automatic_hyphen && encoding == 27 && compatibility.block_hyphenation_ci27_uses_eth
+            {
+                let mut chars = line.chars();
+                chars.next_back();
+                painted = format!("{}\u{f0}", chars.as_str());
+                painted.as_str()
+            } else {
+                line.as_str()
+            };
         // Zebra ^FB pp. 185–187: indent subsequent lines, distribute
         // justification between words, and leave the final line left-aligned.
         let inset = if i == 0 { 0. } else { indent };
@@ -1156,8 +1214,9 @@ fn text_block(
         {
             let mut p = Path::default();
             let mut x: f64 = 0.;
-            for (gap, word) in line.split(' ').enumerate() {
-                let mut word_path = font::text_for(font_id, word, w, h)?;
+            for (gap, (word, paint_word)) in line.split(' ').zip(paint_line.split(' ')).enumerate()
+            {
+                let mut word_path = font::text_for(font_id, paint_word, w, h)?;
                 // ^FB p. 187 distributes slack between words. The ZD621
                 // rounds fractional positions upward; compute cumulative slack
                 // directly to avoid rounding an accumulated floating-point error.
@@ -1178,7 +1237,7 @@ fn text_block(
             }
             p
         } else {
-            font::text_for(font_id, line, w, h)?
+            font::text_for(font_id, paint_line, w, h)?
         };
         let x = inset
             + match align {
@@ -1186,6 +1245,7 @@ fn text_block(
                     (slack
                         - if center_space
                             && !*hard_break
+                            && !*automatic_hyphen
                             && slack > font::width_for(font_id, " ", w, h)?
                         {
                             font::width_for(font_id, " ", w, h)?

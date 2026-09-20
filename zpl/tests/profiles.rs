@@ -1005,3 +1005,32 @@ fn justified_word_rounding_is_an_independent_printer_option() {
         110
     );
 }
+
+#[test]
+fn automatic_hyphen_layout_and_ci27_glyph_are_independent() {
+    // ^FB p. 187 requires automatic hyphenation of overlong words. Raw
+    // field-block-hyphenation-zd621-v1 controls distinguish soft-hyphen width,
+    // strict fits, retained final-chunk space and CI27's incorrect eth glyph.
+    let body = "^CI27^FO50,50^AAN,9,5^FB30,6,2,L^FDABCDEFGHIJKLMNOP";
+    let printer = raster(body, ZD621_203_DPI);
+    let mut corrected = ZD621_203_DPI;
+    corrected.compatibility.block_hyphenation_ci27_uses_eth = false;
+    let hyphen = raster(body, corrected);
+    assert_ne!(printer.pixels, hyphen.pixels);
+    assert_eq!(
+        hyphen.pixels,
+        raster(&body.replace("CI27", "CI28"), ZD621_203_DPI).pixels
+    );
+    let literal = "^CI27^FO50,50^AAN,9,5^FH^FD_AD_F0";
+    assert_eq!(
+        raster(literal, corrected).pixels,
+        raster(literal, ZD621_203_DPI).pixels
+    );
+
+    corrected.compatibility.block_hyphenation_printer_layout = false;
+    let generic = raster(body, corrected);
+    assert_eq!(generic.pixels, raster(body, SPECIFICATION).pixels);
+    let explicit = "^FO50,50^AAN,9,5^FDABCD-^FS^FO50,61^AAN,9,5^FDEFGH-^FS^FO50,72^AAN,9,5^FDIJKL-^FS^FO50,83^AAN,9,5^FDMNOP";
+    assert_eq!(generic.pixels, raster(explicit, SPECIFICATION).pixels);
+    assert_ne!(generic.pixels, hyphen.pixels);
+}

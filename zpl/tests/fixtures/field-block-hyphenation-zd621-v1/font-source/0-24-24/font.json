@@ -1,0 +1,70 @@
+{
+  "batch_size": 8,
+  "captures": [
+    {
+      "page": 0,
+      "sha256": "a49b18a532612285a6e9a90fa720d338b0788f35b2c7fc7ce421170555a8b6ba"
+    }
+  ],
+  "codepoints": [
+    173,
+    240
+  ],
+  "coordinates": "printer dots; left/top relative to FT baseline; rows top-to-bottom, MSB-first",
+  "dpi": 203,
+  "font": "0",
+  "glyphs": [
+    {
+      "advance": 7,
+      "bitmap": [
+        "F8",
+        "F8",
+        "F8"
+      ],
+      "character": "­",
+      "codepoint": 173,
+      "height": 3,
+      "left": 1,
+      "top": -8,
+      "width": 5
+    },
+    {
+      "advance": 12,
+      "bitmap": [
+        "3A00",
+        "1C00",
+        "1E00",
+        "3E00",
+        "4700",
+        "3F00",
+        "7F80",
+        "F780",
+        "E380",
+        "E380",
+        "E380",
+        "E380",
+        "E380",
+        "E380",
+        "E380",
+        "F700",
+        "7F00",
+        "3E00"
+      ],
+      "character": "ð",
+      "codepoint": 240,
+      "height": 18,
+      "left": 1,
+      "top": -18,
+      "width": 9
+    }
+  ],
+  "requested_height": 24,
+  "requested_width": 24,
+  "schema": "zpl-preview-bitmap-font-v1",
+  "source": "http://printer.local/",
+  "verification": {
+    "different_pixels": 0,
+    "sha256": "c7cb3498a4366bedf8dc88e9cf42b4717b6e817ccb76ebedd1d17b99307aada5",
+    "text": "­ð­ð"
+  }
+}

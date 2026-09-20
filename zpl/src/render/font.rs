@@ -16,8 +16,37 @@ fn strike() -> &'static (Settings, Vec<Glyph>) {
                 .expect("validated Latin-1 supplement")
                 .1,
         );
+        extend_hyphens(settings, &mut glyphs);
         (settings, glyphs)
     })
+}
+// Independently captured soft-hyphen and eth supplements. ^FB p. 187;
+// see field-block-hyphenation-zd621-v1 for the CI27 automatic-break departure.
+fn extend_hyphens(settings: Settings, glyphs: &mut Vec<Glyph>) {
+    let data: &[u8] = match (settings.font, settings.height, settings.width) {
+        ('0', 24, 24) => include_bytes!("../../assets/font0-24-24-hyphen.zbf"),
+        ('A', 9, 5) => include_bytes!("../../assets/fontA-9-5-hyphen.zbf"),
+        ('0', 32, 0) => include_bytes!("../../assets/font0-32-0-hyphen.zbf"),
+        ('0', 16, 0) => include_bytes!("../../assets/font0-16-0-hyphen.zbf"),
+        ('0', 20, 0) => include_bytes!("../../assets/font0-20-0-hyphen.zbf"),
+        ('0', 64, 0) => include_bytes!("../../assets/font0-64-0-hyphen.zbf"),
+        ('0', 32, 16) => include_bytes!("../../assets/font0-32-16-hyphen.zbf"),
+        ('0', 32, 24) => include_bytes!("../../assets/font0-32-24-hyphen.zbf"),
+        ('0', 32, 64) => include_bytes!("../../assets/font0-32-64-hyphen.zbf"),
+        ('B', 11, 7) => include_bytes!("../../assets/fontB-11-7-hyphen.zbf"),
+        ('D', 18, 10) => include_bytes!("../../assets/fontD-18-10-hyphen.zbf"),
+        ('E', 28, 15) => include_bytes!("../../assets/fontE-28-15-hyphen.zbf"),
+        ('F', 26, 13) => include_bytes!("../../assets/fontF-26-13-hyphen.zbf"),
+        ('G', 60, 40) => include_bytes!("../../assets/fontG-60-40-hyphen.zbf"),
+        ('H', 21, 13) => include_bytes!("../../assets/fontH-21-13-hyphen.zbf"),
+        _ => return,
+    };
+    glyphs.extend(
+        bitmap_font::unpack(data)
+            .expect("validated hyphen supplement")
+            .1,
+    );
+    glyphs.sort_by_key(|g| g.codepoint);
 }
 fn strikes() -> &'static Vec<(Settings, Vec<Glyph>)> {
     static STRIKES: OnceLock<Vec<(Settings, Vec<Glyph>)>> = OnceLock::new();
@@ -40,7 +69,12 @@ fn strikes() -> &'static Vec<(Settings, Vec<Glyph>)> {
             include_bytes!("../../assets/fontE-28-15.zbf").as_slice(),
         ]
         .into_iter()
-        .map(|data| bitmap_font::unpack(data).expect("validated resident strike"))
+        .map(|data| {
+            let (settings, mut glyphs) =
+                bitmap_font::unpack(data).expect("validated resident strike");
+            extend_hyphens(settings, &mut glyphs);
+            (settings, glyphs)
+        })
         .collect()
     })
 }
@@ -281,10 +315,10 @@ mod tests {
     fn embedded_strike_is_complete_and_compact() {
         let (s, g) = strike();
         assert_eq!((s.font, s.height, s.width, s.dpi), ('0', 32, 0, 203));
-        assert_eq!(g.len(), 96);
-        for (i, g) in g.iter().take(95).enumerate() {
-            assert_eq!(g.codepoint, i as u8 + 32)
-        }
+        assert_eq!(
+            g.iter().map(|g| g.codepoint).collect::<Vec<_>>(),
+            (32..=126).chain([173, 233, 240]).collect::<Vec<_>>()
+        );
         assert!(DATA.len() < 4500);
         assert_eq!(width("Wi i", 32.).unwrap(), 51.);
         assert_eq!(glyph('é').unwrap().codepoint, 233);

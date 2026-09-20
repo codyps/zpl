@@ -13,6 +13,14 @@
 /// initial value: the renderer does not reapply it after you change an option.
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct Compatibility {
+    /// Use soft-hyphen advance, strict fit, and retained hyphen space for every
+    /// chunk of an automatically split word (^FB p. 187). Disabled: use a
+    /// normal hyphen, permit exact fits and keep a fitting remainder whole.
+    pub block_hyphenation_printer_layout: bool,
+    /// Paint eth (U+00F0) for automatic hyphens under CI27 while measuring the
+    /// selected hyphen. Disabled: paint the selected hyphen normally. Literal
+    /// soft hyphens and CI0/CI28 are unaffected; measured on ZD621 V93.21.33Z.
+    pub block_hyphenation_ci27_uses_eth: bool,
     /// Round fractional justified word positions upward (^FB p. 187).
     /// Disabled: round to the nearest dot. Measured with resident 0 and A
     /// across one, two and three gaps in field-block-rounding-zd621-v1.
