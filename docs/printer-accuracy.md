@@ -659,3 +659,15 @@ QR mask selection also remain open; these results do not establish the overall
 accuracy goal.
 
 Run `cargo test -p zpl --test field_block_backslash_preview --test profiles`.
+
+### Encoded cent characters
+
+[Thirty-two cent-glyph frames](../zpl/tests/fixtures/cent-glyph-zd621-v1/README.md)
+verify U+00A2 across fifteen embedded font settings. Separate extraction and
+composition frames pin glyph metrics, assets, and zero underpaint/overpaint;
+60 held-out CI27/CI28 fields verify ordinary text and centered field blocks.
+All frames are pixel-exact. E/H retain the printer's blank, advancing glyphs.
+The legacy CI0 backslash substitution uses a different cent design in some
+bitmap fonts and remains a separate open item.
+
+Run `cargo test -p zpl --test cent_glyph_preview`.

@@ -17,8 +17,37 @@ fn strike() -> &'static (Settings, Vec<Glyph>) {
                 .1,
         );
         extend_hyphens(settings, &mut glyphs);
+        extend_cent(settings, &mut glyphs);
         (settings, glyphs)
     })
+}
+// CI27 cent character, measured independently at each embedded strike.
+// ^CI pp. 156–159; raw pages and advance checks: cent-glyph-zd621-v1.
+fn extend_cent(settings: Settings, glyphs: &mut Vec<Glyph>) {
+    let data: &[u8] = match (settings.font, settings.height, settings.width) {
+        ('0', 16, 0) => include_bytes!("../../assets/font0-16-0-cent.zbf"),
+        ('0', 20, 0) => include_bytes!("../../assets/font0-20-0-cent.zbf"),
+        ('0', 24, 24) => include_bytes!("../../assets/font0-24-24-cent.zbf"),
+        ('0', 32, 0) => include_bytes!("../../assets/font0-32-0-cent.zbf"),
+        ('0', 32, 16) => include_bytes!("../../assets/font0-32-16-cent.zbf"),
+        ('0', 32, 24) => include_bytes!("../../assets/font0-32-24-cent.zbf"),
+        ('0', 32, 64) => include_bytes!("../../assets/font0-32-64-cent.zbf"),
+        ('0', 64, 0) => include_bytes!("../../assets/font0-64-0-cent.zbf"),
+        ('A', 9, 5) => include_bytes!("../../assets/fontA-9-5-cent.zbf"),
+        ('B', 11, 7) => include_bytes!("../../assets/fontB-11-7-cent.zbf"),
+        ('D', 18, 10) => include_bytes!("../../assets/fontD-18-10-cent.zbf"),
+        ('E', 28, 15) => include_bytes!("../../assets/fontE-28-15-cent.zbf"),
+        ('F', 26, 13) => include_bytes!("../../assets/fontF-26-13-cent.zbf"),
+        ('G', 60, 40) => include_bytes!("../../assets/fontG-60-40-cent.zbf"),
+        ('H', 21, 13) => include_bytes!("../../assets/fontH-21-13-cent.zbf"),
+        _ => return,
+    };
+    glyphs.extend(
+        bitmap_font::unpack(data)
+            .expect("validated cent supplement")
+            .1,
+    );
+    glyphs.sort_by_key(|g| g.codepoint);
 }
 // Independently captured soft-hyphen and eth supplements. ^FB p. 187;
 // see field-block-hyphenation-zd621-v1 for the CI27 automatic-break departure.
@@ -73,6 +102,7 @@ fn strikes() -> &'static Vec<(Settings, Vec<Glyph>)> {
             let (settings, mut glyphs) =
                 bitmap_font::unpack(data).expect("validated resident strike");
             extend_hyphens(settings, &mut glyphs);
+            extend_cent(settings, &mut glyphs);
             (settings, glyphs)
         })
         .collect()
@@ -333,7 +363,7 @@ mod tests {
         assert_eq!((s.font, s.height, s.width, s.dpi), ('0', 32, 0, 203));
         assert_eq!(
             g.iter().map(|g| g.codepoint).collect::<Vec<_>>(),
-            (32..=126).chain([173, 233, 240]).collect::<Vec<_>>()
+            (32..=126).chain([162, 173, 233, 240]).collect::<Vec<_>>()
         );
         assert!(DATA.len() < 4500);
         assert_eq!(width("Wi i", 32.).unwrap(), 51.);

@@ -1,0 +1,36 @@
+{
+  "batch_size": 8,
+  "captures": [
+    {
+      "page": 0,
+      "sha256": "8946ad08198d71abbf49debeb0a5a1448ce50ffbc9433d1f1ebf0a6a5ee9317b"
+    }
+  ],
+  "codepoints": [
+    162
+  ],
+  "coordinates": "printer dots; left/top relative to FT baseline; rows top-to-bottom, MSB-first",
+  "dpi": 203,
+  "font": "E",
+  "glyphs": [
+    {
+      "advance": 20,
+      "bitmap": [],
+      "character": "¢",
+      "codepoint": 162,
+      "height": 0,
+      "left": 0,
+      "top": 0,
+      "width": 0
+    }
+  ],
+  "requested_height": 28,
+  "requested_width": 15,
+  "schema": "zpl-preview-bitmap-font-v1",
+  "source": "http://printer.local/",
+  "verification": {
+    "different_pixels": 0,
+    "sha256": "d37fc4640e1e5110514c67e1c887c66eda9a9ba9add3028472f739187a6d3b1d",
+    "text": "¢¢¢"
+  }
+}
