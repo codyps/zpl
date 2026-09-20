@@ -206,6 +206,7 @@ fn strikes() -> &'static Vec<(Settings, Vec<Glyph>)> {
         [
             include_bytes!("../../assets/font0-16-0.zbf").as_slice(),
             include_bytes!("../../assets/font0-20-0.zbf").as_slice(),
+            include_bytes!("../../assets/font0-20-18.zbf").as_slice(),
             include_bytes!("../../assets/font0-24-24.zbf").as_slice(),
             include_bytes!("../../assets/font0-28-14.zbf").as_slice(),
             include_bytes!("../../assets/font0-40-24.zbf").as_slice(),
@@ -221,6 +222,9 @@ fn strikes() -> &'static Vec<(Settings, Vec<Glyph>)> {
             include_bytes!("../../assets/fontH-21-13.zbf").as_slice(),
             include_bytes!("../../assets/fontGS-24-24.zbf").as_slice(),
             include_bytes!("../../assets/fontE-28-15.zbf").as_slice(),
+            include_bytes!("../../assets/fontP-20-18.zbf").as_slice(),
+            include_bytes!("../../assets/fontP-40-18.zbf").as_slice(),
+            include_bytes!("../../assets/fontP-40-36.zbf").as_slice(),
         ]
         .into_iter()
         .map(|data| {
@@ -356,9 +360,22 @@ fn selected(id: impl Into<Font> + Copy, w: f64, h: f64) -> (&'static [Glyph], f6
     };
     for (s, glyphs) in faces {
         let sw = if s.width == 0 { s.height } else { s.width } as f64;
-        if s.font == id && (id != '0' || (s.height as f64 == h && sw == w)) {
+        if s.font == id && (!matches!(id, '0' | 'P') || (s.height as f64 == h && sw == w)) {
             return (glyphs, w / sw, h / s.height as f64);
         }
+    }
+    if id == 'P' {
+        // Preset strikes are hinted independently at each size. Use an exact
+        // captured size above, otherwise scale the closest sampled strike.
+        // Table 31 p. 1584 gives P's native 20x18 matrix.
+        let distance =
+            |s: &Settings| (w / s.width as f64).ln().abs() + (h / s.height as f64).ln().abs();
+        let (s, glyphs) = faces
+            .iter()
+            .filter(|(s, _)| s.font == id)
+            .min_by(|(a, _), (b, _)| distance(a).total_cmp(&distance(b)))
+            .expect("embedded preset font");
+        return (glyphs, w / s.width as f64, h / s.height as f64);
     }
     let fallback = if font.default_glyph {
         &default_glyph_strikes(font.legacy_backslash)

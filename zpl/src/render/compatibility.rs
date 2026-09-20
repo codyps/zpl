@@ -13,6 +13,11 @@
 /// initial value: the renderer does not reapply it after you change an option.
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct Compatibility {
+    /// Pivot rotated preset-font FO fields at the final dot rather than the
+    /// matrix boundary (^FO p. 201, Table 31 p. 1584). Captured font-P controls
+    /// show a height-scaled final row and one-dot horizontal advance
+    /// difference for R/I/B; FT retains its baseline origin.
+    pub preset_font_fo_last_dot: bool,
     /// Resolve unavailable resident IDs 1–9, I–O and W–Z using the current CF
     /// font for A fields, and font A for CF. Measured on ZD621 V93.21.33Z;
     /// the guide lists A–Z/0–9 (^A pp. 60–61) and invalid CF fallback (^CF

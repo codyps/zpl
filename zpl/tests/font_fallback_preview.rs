@@ -68,7 +68,7 @@ fn fallback_is_optional_and_excludes_real_preset_fonts() {
             assert!(zpl::render(source.as_bytes(), options).is_err());
         }
     }
-    for id in "PQRSTUV?".chars() {
+    for id in "QRSTUV?".chars() {
         let source = format!("^XA^FO80,80^A{id}N,32,24^FDAB12^FS^XZ");
         assert!(zpl::render(source.as_bytes(), ZD621_203_DPI).is_err());
     }

@@ -155,3 +155,11 @@ independent verification strings and is not used as an override. Capture
 with `extract-font --encoding 28 --default-glyph`; the selection is pinned in
 the resumable capture configuration. Sources, raw previews, repeated pages,
 verification strings and asset hashes are in `advanced-text-zd621-v1`.
+
+## Preset P and font-0 comparison strike
+
+`fontP-20-18.zbf`, `fontP-40-18.zbf`, and `fontP-40-36.zbf` contain 95 ASCII
+characters each from the ZD621 preset P. `font0-20-18.zbf` fixes the mixed-font
+control's comparison row. Raw requests, previews, capture metadata and exact
+regeneration tests are documented in
+[resident-p-zd621-v1](../tests/fixtures/resident-p-zd621-v1/README.md).

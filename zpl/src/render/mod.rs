@@ -579,6 +579,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                         "F" => 'F',
                         "G" => 'G',
                         "H" => 'H',
+                        "P" => 'P',
                         value
                             if matches!(
                                 value.as_bytes(),
@@ -630,6 +631,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                         "AF" => 'F',
                         "AG" => 'G',
                         "AH" => 'H',
+                        "AP" => 'P',
                         value
                             if matches!(
                                 value.as_bytes(),
@@ -1340,7 +1342,10 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                                 let (w, h) = field
                                     .text_size
                                     .map(|(w, h)| {
-                                        if font_id == '0' {
+                                        if font_id == '0'
+                                            || (font_id == 'P'
+                                                && options.compatibility.preset_font_fo_last_dot)
+                                        {
                                             // A zero-width printer block still
                                             // pivots at width minus one dot.
                                             let w = if w == 0. && field.block.is_some() {
@@ -1348,7 +1353,11 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                                             } else {
                                                 (w - 1.).max(0.)
                                             };
-                                            (w, (h - 1.).max(0.))
+                                            // P quantizes the height pivot in native 20-dot cells;
+                                            // its proportional horizontal advance loses one dot.
+                                            let last_row =
+                                                if font_id == 'P' { font_h / 20. } else { 1. };
+                                            (w, (h - last_row).max(0.))
                                         } else {
                                             (w, h)
                                         }
@@ -1850,7 +1859,7 @@ fn font_dimensions(
     let h = number(p, 1, 0.)?;
     let w = number(p, 2, 0.)?;
     if id != '0' {
-        // ZPL Programming Guide Table 31, p. 1583: native bitmap matrices.
+        // ZPL Programming Guide Table 31, pp. 1583–1584: native bitmap matrices.
         let (nh, nw) = match id {
             'A' => (9., 5.),
             'B' => (11., 7.),
@@ -1858,6 +1867,7 @@ fn font_dimensions(
             'F' => (26., 13.),
             'G' => (60., 40.),
             'H' => (21., 13.),
+            'P' => (20., 18.),
             'S' => (24., 24.),
             _ => (18., 10.),
         };

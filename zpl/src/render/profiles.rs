@@ -12,6 +12,7 @@ pub const SPECIFICATION: Options = Options {
     height: 1218,
     dpi: 203,
     compatibility: Compatibility {
+        preset_font_fo_last_dot: false,
         unavailable_fonts_use_default: false,
         concatenation_printer_syntax: false,
         concatenation_retains_delimiter: false,
@@ -134,6 +135,7 @@ pub const ZD621_203_DPI: Options = Options {
     height: 1218,
     dpi: 203,
     compatibility: Compatibility {
+        preset_font_fo_last_dot: true,
         unavailable_fonts_use_default: true,
         concatenation_printer_syntax: true,
         concatenation_retains_delimiter: true,

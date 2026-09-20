@@ -868,3 +868,17 @@ with each text field independently required to exceed 80% foreground IoU.
 Thirteen fresh controls cover default families 0/A/B, sizing, field history,
 rotations and repeatability. See the fixture README for capture provenance
 and the relevant ^A/^CF programming-guide sections.
+
+## Preset font P
+
+Font P now renders using its native proportional glyphs, its documented 20x18
+matrix and separately captured hinted sizes. The original `font-id-P` case
+is exact. A profile option controls its measured rotated FO pivot; FT keeps
+its baseline origin. The mixed-font control also fixes font 0 at 20x18.
+
+`resident_p_preview` pins 59 native frames: 57 exact, two with 10 total
+underpaint and 16 overpaint dots. All 24 separate rotated text regions exceed
+80% foreground IoU (minimum 99.6610%). Offline extraction tests reproduce all
+four 95-character assets from their raw native pages and verify independent
+composition. See the fixture README for provenance and specification links.
+Uncaptured sizes remain approximations; Q–V and extended encodings remain open.
