@@ -613,7 +613,13 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                     } else {
                         (default_requested_w, default_requested_h)
                     };
-                    (font_w, font_h) = font_dimensions(&p, dw, dh, font_id)?;
+                    (font_w, font_h) = font_dimensions(
+                        &p,
+                        dw,
+                        dh,
+                        font_id,
+                        options.compatibility.font0_minimum_dimensions,
+                    )?;
                     field.requested_text_height = Some(number(&p, 1, dh)?);
                     default_w = font_w;
                     default_h = font_h;
@@ -656,7 +662,13 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                     } else {
                         (default_requested_w, default_requested_h)
                     };
-                    (font_w, font_h) = font_dimensions(&p, dw, dh, font_id)?;
+                    (font_w, font_h) = font_dimensions(
+                        &p,
+                        dw,
+                        dh,
+                        font_id,
+                        options.compatibility.font0_minimum_dimensions,
+                    )?;
                     field.requested_text_height = Some(number(&p, 1, dh)?);
                 }
                 "GS" => {
@@ -669,8 +681,13 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                     } else {
                         rotation(p[0])?
                     };
-                    (font_w, font_h) =
-                        font_dimensions(&p, default_requested_w, default_requested_h, font_id)?;
+                    (font_w, font_h) = font_dimensions(
+                        &p,
+                        default_requested_w,
+                        default_requested_h,
+                        font_id,
+                        options.compatibility.font0_minimum_dimensions,
+                    )?;
                 }
                 "FH" => {
                     if s.len() > 1 {
@@ -1292,6 +1309,20 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                             field.justification
                         };
                         let transform = |p: Point| {
+                            // ^FO p. 201 does not prescribe fractional baseline
+                            // rounding. Native FO/FT pairs at heights 10..25
+                            // place the normal horizontal baseline at floor(3h/4).
+                            let p = if options.compatibility.font0_fo_floor_baseline
+                                && font_id == '0'
+                                && field.text_size.is_some()
+                                && !field.baseline
+                                && field.bounded.is_none()
+                                && field.direction.0 == b'H'
+                            {
+                                Point::new(p.x, p.y - font::baseline_for(font_id, font_h).fract())
+                            } else {
+                                p
+                            };
                             if let Some(bounds) = field.bounded {
                                 let p = bounded_text::position(
                                     p,
@@ -1886,6 +1917,7 @@ fn font_dimensions(
     default_w: f64,
     default_h: f64,
     id: char,
+    clamp_minimum: bool,
 ) -> Result<(f64, f64), String> {
     let h = number(p, 1, 0.)?;
     let w = number(p, 2, 0.)?;
@@ -1931,6 +1963,15 @@ fn font_dimensions(
     };
     if w <= 0. || h <= 0. {
         return Err("font dimensions must be positive".into());
+    }
+    // ^A p. 60 specifies 10 dots as the scalable minimum. Native controls
+    // map requests 1..9 to 10 independently in each dimension, after zero
+    // inference. Keep the documented range strict without the printer option.
+    if clamp_minimum {
+        return Ok((w.max(10.), h.max(10.)));
+    }
+    if w < 10. || h < 10. {
+        return Err("scalable font dimensions must be at least 10 dots".into());
     }
     Ok((w, h))
 }

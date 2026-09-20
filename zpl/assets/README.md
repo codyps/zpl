@@ -189,3 +189,9 @@ font defaults and per-field overrides. Raw sampling pages, independent
 composition and rotated FO/FT controls are documented in
 [font0-defaults-zd621-v1](../tests/fixtures/font0-defaults-zd621-v1/README.md).
 Offline extraction tests reproduce both assets byte-for-byte.
+
+`font0-10-0.zbf`, `font0-10-32.zbf` and `font0-32-10.zbf` capture the scalable
+font's minimum dimensions. Each has 95 ASCII glyphs, raw sampling pages and an
+offline regeneration test. See
+[font0-minimum-zd621-v1](../tests/fixtures/font0-minimum-zd621-v1/README.md)
+for threshold, baseline and origin controls.

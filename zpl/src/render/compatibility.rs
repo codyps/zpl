@@ -13,6 +13,15 @@
 /// initial value: the renderer does not reapply it after you change an option.
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct Compatibility {
+    /// Use a whole-dot baseline for normal horizontal font-0 FO text, including
+    /// field blocks. Disabled: retain the fractional three-quarter-height
+    /// baseline. FO/FT controls at heights 10..25 measure flooring (^FO p. 201).
+    /// FT and bounded-text placement retain their separate rules.
+    pub font0_fo_floor_baseline: bool,
+    /// Clamp resolved font-0 dimensions below 10 dots to the scalable minimum.
+    /// Disabled: reject dimensions below the ^A p. 60 documented range.
+    /// Zero dimensions still infer an aspect ratio or inherit the CF pair.
+    pub font0_minimum_dimensions: bool,
     /// Preserve additional ASCII space delimiters inside and after FB words,
     /// while discarding leading space glyphs. Oversized leading/internal runs
     /// retain the measured blank row. Disabled: normalize whitespace runs.

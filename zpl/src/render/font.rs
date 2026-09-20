@@ -205,6 +205,9 @@ fn strikes() -> &'static Vec<(Settings, Vec<Glyph>)> {
     static STRIKES: OnceLock<Vec<(Settings, Vec<Glyph>)>> = OnceLock::new();
     STRIKES.get_or_init(|| {
         [
+            include_bytes!("../../assets/font0-10-0.zbf").as_slice(),
+            include_bytes!("../../assets/font0-10-32.zbf").as_slice(),
+            include_bytes!("../../assets/font0-32-10.zbf").as_slice(),
             include_bytes!("../../assets/font0-16-0.zbf").as_slice(),
             include_bytes!("../../assets/font0-20-0.zbf").as_slice(),
             include_bytes!("../../assets/font0-20-18.zbf").as_slice(),

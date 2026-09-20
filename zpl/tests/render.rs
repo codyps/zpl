@@ -203,8 +203,8 @@ fn practical_label_fixture() {
 
 #[test]
 fn font_override_is_field_local_and_zero_width_is_inferred() {
-    let a = scene(b"^XA^CF0,7,6^FO0,0^A0N,14,0^FDA^FS^FO20,0^FDA^FS^XZ");
-    let b = scene(b"^XA^CF0,7,6^FO0,0^A0N,14,14^FDA^FS^FO20,0^A0N,7,6^FDA^FS^XZ");
+    let a = scene(b"^XA^CF0,12,10^FO0,0^A0N,14,0^FDA^FS^FO20,0^FDA^FS^XZ");
+    let b = scene(b"^XA^CF0,12,10^FO0,0^A0N,14,14^FDA^FS^FO20,0^A0N,12,10^FDA^FS^XZ");
     assert_eq!(a, b);
     for z in [b"^FDLOST^XA^XZ".as_slice(), b"^GFB,1,1,1,\xff^XA^XZ"] {
         assert!(render(z, SPECIFICATION).is_err())

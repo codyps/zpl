@@ -957,3 +957,18 @@ approximations. [31 raw frames](../zpl/tests/fixtures/font0-defaults-zd621-v1/RE
 pin this improvement: 27 are exact, and the 48 fields in four rotated FO/FT
 holdouts each exceed 98.5% IoU with an 80% regression floor. Exact residuals
 and hashes are pinned; offline extraction reproduces both font assets.
+
+## Minimum scalable size and fractional FO baselines
+
+The five original font-0 cases requesting 1x1, 2x2, 7x0, 32x1 and 1x32 now
+match exactly. `font0_minimum_dimensions` reproduces the printer's independent
+10-dot minimum after default/zero resolution; SPECIFICATION rejects values
+below the documented scalable range. `font0_fo_floor_baseline` independently
+selects the measured whole-dot baseline for normal horizontal font-0 FO text.
+The latter fixes one-dot R/I offsets at fractional baseline heights.
+
+[50 raw native frames](../zpl/tests/fixtures/font0-minimum-zd621-v1/README.md)
+include four measurement atlases and 46 renderer comparisons. Forty-four
+renderer frames are exact; all 64 text fields in the two remaining holdouts
+exceed 90% IoU with an 80% floor and pinned underpaint/overpaint counts.
+Offline extraction reproduces the 10x10, 10x32 and 32x10 ASCII strikes.

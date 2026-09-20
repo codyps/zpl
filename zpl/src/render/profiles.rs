@@ -12,6 +12,8 @@ pub const SPECIFICATION: Options = Options {
     height: 1218,
     dpi: 203,
     compatibility: Compatibility {
+        font0_fo_floor_baseline: false,
+        font0_minimum_dimensions: false,
         block_preserves_extra_spaces: false,
         block_hard_break_resets_indent: false,
         preset_font_fo_last_dot: false,
@@ -137,6 +139,8 @@ pub const ZD621_203_DPI: Options = Options {
     height: 1218,
     dpi: 203,
     compatibility: Compatibility {
+        font0_fo_floor_baseline: true,
+        font0_minimum_dimensions: true,
         block_preserves_extra_spaces: true,
         block_hard_break_resets_indent: true,
         preset_font_fo_last_dot: true,
