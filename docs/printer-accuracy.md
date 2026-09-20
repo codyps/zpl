@@ -948,3 +948,12 @@ indentation, paragraph breaks, all alignments and all rotations.
 SPECIFICATION keeps normalized whitespace; `block_preserves_extra_spaces`
 independently selects the native behavior. The original conformance case and
 all formerly diagnostic narrow-block frames now match without allowances.
+
+## Default font and per-field size override
+
+The `field-defaults` case now matches the printer exactly, improving from
+76.5% foreground IoU. Native font-0 strikes at 24x16 and 48x32 replace scaled
+approximations. [31 raw frames](../zpl/tests/fixtures/font0-defaults-zd621-v1/README.md)
+pin this improvement: 27 are exact, and the 48 fields in four rotated FO/FT
+holdouts each exceed 98.5% IoU with an 80% regression floor. Exact residuals
+and hashes are pinned; offline extraction reproduces both font assets.

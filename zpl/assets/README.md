@@ -183,3 +183,9 @@ ASCII strikes. Their raw sampling pages and offline regeneration tests are in
 `font0-28-14-hyphen.zbf` adds the two native automatic-hyphenation glyphs at
 28x14. Raw sampling, independent verification and thirteen exact field-block
 controls are in [font0-28-14-hyphen-zd621-v1](../tests/fixtures/font0-28-14-hyphen-zd621-v1/README.md).
+
+`font0-24-16.zbf` and `font0-48-32.zbf` add 95-character ASCII strikes for
+font defaults and per-field overrides. Raw sampling pages, independent
+composition and rotated FO/FT controls are documented in
+[font0-defaults-zd621-v1](../tests/fixtures/font0-defaults-zd621-v1/README.md).
+Offline extraction tests reproduce both assets byte-for-byte.
