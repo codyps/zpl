@@ -176,6 +176,7 @@ fn extend_cent(settings: Settings, glyphs: &mut Vec<Glyph>) {
 // see field-block-hyphenation-zd621-v1 for the CI27 automatic-break departure.
 fn extend_hyphens(settings: Settings, glyphs: &mut Vec<Glyph>) {
     let data: &[u8] = match (settings.font, settings.height, settings.width) {
+        ('0', 28, 14) => include_bytes!("../../assets/font0-28-14-hyphen.zbf"),
         ('0', 24, 24) => include_bytes!("../../assets/font0-24-24-hyphen.zbf"),
         ('A', 9, 5) => include_bytes!("../../assets/fontA-9-5-hyphen.zbf"),
         ('0', 32, 0) => include_bytes!("../../assets/font0-32-0-hyphen.zbf"),

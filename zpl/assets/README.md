@@ -179,3 +179,7 @@ controls; offline tests reproduce the asset byte-for-byte.
 cover common text/field-block cases with independently hinted 95-character
 ASCII strikes. Their raw sampling pages and offline regeneration tests are in
 [font0-common-zd621-v1](../tests/fixtures/font0-common-zd621-v1/README.md).
+
+`font0-28-14-hyphen.zbf` adds the two native automatic-hyphenation glyphs at
+28x14. Raw sampling, independent verification and thirteen exact field-block
+controls are in [font0-28-14-hyphen-zd621-v1](../tests/fixtures/font0-28-14-hyphen-zd621-v1/README.md).

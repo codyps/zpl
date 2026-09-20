@@ -924,3 +924,12 @@ preview verifies every non-text pixel separately. All four compact wrapping
 alignments and the new paragraph controls now match every pixel. Offline tests
 reproduce all four 95-character assets from native sampling pages and verify
 independent compositions. Other sizes, presets S–V and encoding gaps remain open.
+
+## Font-0 28x14 hyphenation coverage
+
+Thirteen field-block cases that failed on a missing soft-hyphen glyph now match
+exactly. A two-glyph supplement supplies the measured soft hyphen and eth at
+28x14, preserving the existing profile-controlled CI27 painting behavior.
+`font0_28_14_hyphen_preview` pins all thirteen cases plus the raw sampling and
+independent verification frames, all with zero underpaint and overpaint. An
+offline extraction test reproduces the asset; no layout rules change here.
