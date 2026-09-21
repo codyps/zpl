@@ -2,6 +2,7 @@
 name = "zpl"
 version = "0.1.0"
 edition = "2021"
+description = "A high accuracy ZPL renderer"
 license.workspace = true
 
 [dependencies]
