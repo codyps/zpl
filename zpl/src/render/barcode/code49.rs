@@ -245,18 +245,9 @@ mod tests {
                     }
                 }
                 let decoded = anyd::codes::code49::Code49Decoder::new().decode_matrix(&other);
-                if length >= 5 {
-                    // anyd checks the symbol but cannot reconstruct numeric
-                    // payloads. Specification vectors and exact printer images
-                    // cover compaction; do not call this a decoder round trip.
-                    let error = decoded.unwrap_err().to_string();
-                    assert!(
-                        error.contains("numeric-mode payload reconstruction is not implemented"),
-                        "{data}: {error}"
-                    );
-                } else {
-                    assert_eq!(decoded.unwrap().payload_bytes(), data.as_bytes(), "{data}");
-                }
+                // anyd 0.2 reconstructs numeric payloads as well as validating the symbol.
+                // https://docs.rs/anyd/0.2.0/anyd/codes/code49/struct.Code49Decoder.html
+                assert_eq!(decoded.unwrap().payload_bytes(), data.as_bytes(), "{data}");
             }
         }
     }
@@ -274,8 +265,8 @@ mod tests {
         .unwrap();
         for first in (0u8..128).step_by(16) {
             let data: Vec<_> = (first..first + 16).collect();
-            // Manual alphanumeric input avoids numeric-mode reconstruction,
-            // which the independent decoder does not implement.
+            // Manual alphanumeric input exercises the full ASCII shift mapping
+            // independently of the numeric compaction covered above.
             let internal: Vec<_> = message(&data, true)
                 .unwrap()
                 .into_iter()

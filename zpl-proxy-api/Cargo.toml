@@ -29,6 +29,8 @@ logforth = { version = "0.30.1", features = [
     "diagnostic-fastrace",
     "starter-log",
 ] }
+# Keep the OTLP stack aligned with the types accepted by fastrace-opentelemetry.
+# https://docs.rs/crate/fastrace-opentelemetry/0.18.1/source/Cargo.toml
 opentelemetry = { version = "0.32.0", default-features = false, features = [
     "trace",
 ] }

@@ -5,7 +5,7 @@ edition = "2021"
 license.workspace = true
 
 [dependencies]
-encoding_rs = "0.8.35"
+encoding_rs = "0.8.41"
 unicode-normalization = "0.1.25"
 unicode-bidi = "0.3.18"
 raster-diff = { version = "0.1.0", path = "../raster-diff" }
@@ -17,7 +17,7 @@ rxing = { version = "0.9.3", default-features = false, features = [
     "multi_barcode_readers",
     "encoding_rs",
 ] }
-anyd = { version = "0.1.4", default-features = false, features = [
+anyd = { version = "0.2.0", default-features = false, features = [
     "std",
     "decode",
     "pdf417",
