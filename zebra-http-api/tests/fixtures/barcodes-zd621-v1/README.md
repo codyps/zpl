@@ -13,6 +13,12 @@ See [the accuracy contract](../../../../docs/printer-accuracy.md) for baseline
 review requirements and remaining gaps. Both directional differences and pixel
 hashes are pinned; improvements also require deliberate baseline updates.
 
+The QR observation was reviewed after the automatic-mask fix in `da9828b`:
+the native 832×1218 canvas now matches all 3,680 printer ink pixels, with zero
+printer-only or local-only pixels (previously 464 and 496). The saved request,
+printer PNG, and capture provenance are unchanged. See
+[QR mask selection](../../../../docs/qr-mask-selection.md).
+
 For render/diff artifacts:
 
 ```sh
