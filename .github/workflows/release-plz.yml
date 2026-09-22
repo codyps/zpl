@@ -37,4 +37,4 @@ jobs:
           command: release-pr
           version: 0.3.169
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.RELEASE_PLZ_TOKEN }}

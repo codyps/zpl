@@ -25,10 +25,10 @@ before `zpl`.
    is configured.
 3. Run **Release PR** manually or push a commit to `main`.
 
-The default `GITHUB_TOKEN` is sufficient to create the PR. GitHub does not trigger
-ordinary PR CI from PRs created with that token. If release PRs must trigger CI,
-use a dedicated GitHub App token or appropriately scoped PAT for the release-plz
-step, following the [token documentation](https://release-plz.dev/docs/github/token).
+The release-plz step uses the `RELEASE_PLZ_TOKEN` repository secret rather than
+the default `GITHUB_TOKEN`, allowing its PR creation and updates to trigger
+ordinary PR CI. Store an appropriately scoped PAT or GitHub App token in that
+secret, following the [token documentation](https://release-plz.dev/docs/github/token).
 Do not put tokens in repository files.
 
 ## Publishing later
