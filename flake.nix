@@ -47,9 +47,9 @@
             cargo-udeps
             cargo-audit
             diesel-cli
-            xcbuild.xcrun
-
             sqlite
+          ] ++ lib.optionals stdenv.hostPlatform.isDarwin [
+            xcbuild.xcrun
           ];
 
           RUST_SRC_PATH = "${pkgs.rust.packages.stable.rustPlatform.rustLibSrc}";
@@ -57,7 +57,7 @@
           shellHook = ''
             # Nix prepends Cargo to PATH; keep the installed mbx shim in front.
             # mbx removes its own directory when resolving the underlying Cargo.
-            ${if pkgs.stdenv.isDarwin then ''
+            ${if stdenv.hostPlatform.isDarwin then ''
               mbx_shim_dir="$HOME/Library/Application Support/mbx/bin"
             '' else ''
               mbx_shim_dir="''${XDG_DATA_HOME:-$HOME/.local/share}/mbx/bin"
