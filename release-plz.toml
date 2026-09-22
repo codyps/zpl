@@ -1,6 +1,8 @@
 # https://release-plz.dev/docs/config
 [workspace]
 repo_url = "https://github.com/codyps/zpl"
+# Only the renderer and its runtime dependency are public crates.
+release = false
 # Track published crates.io versions; the workflow runs release-pr only.
 git_only = false
 # If a release job is added later, require a merged release PR first.
@@ -8,3 +10,11 @@ release_always = false
 # Release preparation must not also perform unrelated dependency upgrades.
 dependencies_update = false
 pr_name = "chore: prepare release"
+
+[[package]]
+name = "raster-diff"
+release = true
+
+[[package]]
+name = "zpl"
+release = true

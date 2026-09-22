@@ -4,6 +4,7 @@ version = "0.1.0"
 edition = "2021"
 license.workspace = true
 description = "Dependency-free binary raster comparison and PNG diagnostics"
+publish = ["crates-io"]
 
 [[bin]]
 name = "png-diff"

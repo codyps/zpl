@@ -5,6 +5,7 @@ edition = "2021"
 description = "A high accuracy ZPL renderer"
 license.workspace = true
 include = ["src/**", "assets/*.zbf", "LICENSE"]
+publish = ["crates-io"]
 
 [dependencies]
 encoding_rs = "0.8.41"

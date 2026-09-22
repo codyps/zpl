@@ -10,6 +10,11 @@ tags, or create a GitHub release. No crates.io token is needed for this workflow
 The action and Rust/checkout actions are pinned to commit SHAs; the release-plz
 binary is pinned separately. Concurrent release-PR jobs are serialized.
 
+Only `raster-diff` and `zpl` are publishable and managed by release-plz. The
+remaining workspace packages set `publish = false`. When publishing is enabled,
+release-plz derives the workspace dependency order and publishes `raster-diff`
+before `zpl`.
+
 ## Repository setup
 
 1. Merge the workflow and configuration into `main`.

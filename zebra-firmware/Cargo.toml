@@ -4,6 +4,7 @@ version = "0.1.0"
 edition = "2021"
 license.workspace = true
 description = "Apply local Zebra firmware files over raw TCP with identity checks"
+publish = false
 
 [dependencies]
 clap = { version = "4.6.7", features = ["derive"] }
