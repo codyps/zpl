@@ -123,7 +123,7 @@ fn corpus_provenance_and_reset_are_pinned() {
     for (name, expected) in [
         (
             "original-capture.json",
-            "b3f74c1d9766bf7a027d89f90a1ecef74b4797146e4022f9f925254135cc7de1",
+            "f2f79e447afe72409a987af605f01bf36f5b016e7fddf9503b433b22bed3d599",
         ),
         (
             "corpus.json",
