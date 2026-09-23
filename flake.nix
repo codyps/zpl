@@ -19,6 +19,11 @@
         });
         lib = pkgs.lib;
         stdenv = pkgs.stdenv;
+        # Use unstable's release-plz recipe with the supported Intel macOS toolchain.
+        releasePlz = if system == "x86_64-darwin" then
+          pkgs.callPackage "${nixpkgs}/pkgs/by-name/re/release-plz/package.nix" { }
+        else
+          pkgs.release-plz;
       in
       {
         formatter = pkgs.nixpkgs-fmt;
@@ -42,7 +47,7 @@
             rust-analyzer
             bacon
 
-
+            releasePlz
             cargo-outdated
             cargo-udeps
             cargo-audit
