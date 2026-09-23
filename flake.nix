@@ -19,9 +19,12 @@
         });
         lib = pkgs.lib;
         stdenv = pkgs.stdenv;
-        # Use unstable's release-plz recipe with the supported Intel macOS toolchain.
+        # Unstable's release-plz requires Rust >= 1.96; Intel macOS defaults to
+        # 1.95. Use its newer packaged toolchain only for building release-plz.
         releasePlz = if system == "x86_64-darwin" then
-          pkgs.callPackage "${nixpkgs}/pkgs/by-name/re/release-plz/package.nix" { }
+          pkgs.callPackage "${nixpkgs}/pkgs/by-name/re/release-plz/package.nix" {
+            rustPlatform = pkgs.rustPackages_1_97.rustPlatform;
+          }
         else
           pkgs.release-plz;
       in
