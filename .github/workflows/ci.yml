@@ -24,6 +24,10 @@ jobs:
     runs-on: warbler-linux
     timeout-minutes: 5
     steps:
+      - name: Install checkout dependencies
+        run: |
+          sudo apt-get -o Acquire::Retries=3 update
+          sudo apt-get -o Acquire::Retries=3 install -y --no-install-recommends git
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
@@ -45,6 +49,10 @@ jobs:
     runs-on: warbler-linux
     timeout-minutes: 5
     steps:
+      - name: Install checkout dependencies
+        run: |
+          sudo apt-get -o Acquire::Retries=3 update
+          sudo apt-get -o Acquire::Retries=3 install -y --no-install-recommends git
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
@@ -58,6 +66,10 @@ jobs:
     runs-on: warbler-linux
     timeout-minutes: 30
     steps:
+      - name: Install checkout dependencies
+        run: |
+          sudo apt-get -o Acquire::Retries=3 update
+          sudo apt-get -o Acquire::Retries=3 install -y --no-install-recommends git
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
@@ -67,7 +79,7 @@ jobs:
       - name: Install native build dependencies
         run: |
           sudo apt-get -o Acquire::Retries=3 update
-          sudo apt-get -o Acquire::Retries=3 install -y --no-install-recommends build-essential pkg-config libssl-dev libsqlite3-dev
+          sudo apt-get -o Acquire::Retries=3 install -y --no-install-recommends build-essential cmake pkg-config libssl-dev libsqlite3-dev
       - run: cargo clippy --locked --workspace --all-targets
 
   test:
@@ -75,6 +87,10 @@ jobs:
     runs-on: warbler-linux
     timeout-minutes: 30
     steps:
+      - name: Install checkout dependencies
+        run: |
+          sudo apt-get -o Acquire::Retries=3 update
+          sudo apt-get -o Acquire::Retries=3 install -y --no-install-recommends git
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
@@ -82,5 +98,5 @@ jobs:
       - name: Install native build dependencies
         run: |
           sudo apt-get -o Acquire::Retries=3 update
-          sudo apt-get -o Acquire::Retries=3 install -y --no-install-recommends build-essential pkg-config libssl-dev libsqlite3-dev
+          sudo apt-get -o Acquire::Retries=3 install -y --no-install-recommends build-essential cmake pkg-config libssl-dev libsqlite3-dev
       - run: cargo test --locked --workspace
