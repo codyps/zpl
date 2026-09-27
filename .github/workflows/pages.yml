@@ -14,15 +14,27 @@ env:
   npm_config_fetch_timeout: 30000
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: warbler-linux
     timeout-minutes: 30
     concurrency:
       group: pages-build-${{ github.ref }}
       cancel-in-progress: true
     steps:
+      - name: Install checkout dependencies
+        run: |
+          sudo apt-get -o Acquire::Retries=3 update
+          sudo apt-get -o Acquire::Retries=3 install -y --no-install-recommends git
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+      # Warbler creates a fresh Ubuntu cloud VM for every job.
+      - name: Install native build dependencies
+        run: |
+          sudo apt-get -o Acquire::Retries=3 update
+          sudo apt-get -o Acquire::Retries=3 install -y --no-install-recommends build-essential cmake pkg-config libssl-dev
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24'
       - uses: dtolnay/rust-toolchain@6bed0761d98439e5a578e2877258200ad565ba87 # stable
         with:
           targets: wasm32-unknown-unknown
@@ -52,7 +64,7 @@ jobs:
   deploy:
     if: github.repository == 'codyps/zpl' && github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: warbler-linux
     timeout-minutes: 10
     permissions:
       pages: write
