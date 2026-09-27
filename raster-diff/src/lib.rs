@@ -1,4 +1,24 @@
-#![doc = include_str!("../README.md")]
+//! Pixel-exact binary raster comparison and bounded PNG I/O.
+//!
+//! [`Raster`] stores one grayscale byte per pixel, in row-major order.
+//! [`compare`] requires binary pixels (0 or 255) and compares the reference and
+//! candidate at a common top-left origin without alignment or resizing.
+//! Optional white padding permits unequal dimensions, but [`Diff::matches`]
+//! still requires equal dimensions.
+//!
+//! [`Diff`] exposes directional mismatch counts, mismatch bounds, and black-pixel
+//! intersection over union via [`Diff::ink_iou`]. [`Diff::png`] encodes a colored
+//! diagnostic image with optional nearest-neighbor magnification.
+//!
+//! Use [`Raster::decode_png_with_threshold`] with `None` for strict binary PNG
+//! decoding or `Some(threshold)` for explicit binarization. [`Raster::decode_png`]
+//! uses a threshold of 128. Alpha is composited on white before binarization.
+//! [`Png`] provides grayscale and RGB PNG encoding, and [`compression`] exposes
+//! the bounded zlib decoder.
+
+#[cfg(doctest)]
+#[doc = include_str!("../README.md")]
+mod readme {}
 
 /// Bounded zlib decoding, also shared by the ZPL Z64 graphics decoder.
 pub mod compression;
