@@ -99,6 +99,11 @@ browser tests and GitHub Pages deployment.
 
 ## Printer-backed previews
 
+To inventory and recapture the saved `zpl` and `zpl-comparison` previews at the
+ZQ610 Plus's 384-dot width, see [printer recapture](docs/printer-recapture.md).
+The tool saves source/submission bytes, printer identity, timestamps and SHA-256
+provenance separately from the existing test baselines.
+
 To request a PNG from a Zebra printer's HTTP preview API, replace `printer.local`
 with your printer's address:
 

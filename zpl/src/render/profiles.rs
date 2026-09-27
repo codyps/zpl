@@ -12,6 +12,10 @@ pub const SPECIFICATION: Options = Options {
     height: 1218,
     dpi: 203,
     compatibility: Compatibility {
+        preview_width_quantum: None,
+        preview_max_width: None,
+        preview_width_latched_at_first_draw: false,
+        preview_ignores_label_length: false,
         qr_printer_mask_selection: false,
         qr_updates_barcode_module_width: false,
         font0_fo_floor_baseline: false,
@@ -151,6 +155,10 @@ pub const ZD621_203_DPI: Options = Options {
     height: 1218,
     dpi: 203,
     compatibility: Compatibility {
+        preview_width_quantum: None,
+        preview_max_width: None,
+        preview_width_latched_at_first_draw: false,
+        preview_ignores_label_length: false,
         qr_printer_mask_selection: true,
         qr_updates_barcode_module_width: true,
         font0_fo_floor_baseline: true,
@@ -271,4 +279,26 @@ pub const ZD621_203_DPI: Options = Options {
         codablock_a_wrapping_checks: true,
         code128_above_text_keeps_bar_origin: true,
     },
+};
+
+/// Zebra ZQ610 Plus, 203 DPI, V100.21.21Z HTTP Preview Label baseline.
+///
+/// The captured device returned 384 × 2030 previews, retaining its configured
+/// height despite ^LL. Set `height` to match a differently configured device.
+/// Shared ZD621 behavior is verified by the focused paired barcode captures in
+/// `tests/fixtures/zq610-plus-v1`, not by the full ZD621 corpus. Width rounds up
+/// to 64-dot boundaries, centers by whole dots, and caps at 384 dots. Its width
+/// is latched after the first draw. Other fonts, firmware and physical printing
+/// are not established by this focused preview corpus.
+pub const ZQ610_PLUS_203_DPI: Options = Options {
+    width: 384,
+    height: 2030,
+    compatibility: Compatibility {
+        preview_width_quantum: Some(64),
+        preview_max_width: Some(384),
+        preview_width_latched_at_first_draw: true,
+        preview_ignores_label_length: true,
+        ..ZD621_203_DPI.compatibility
+    },
+    ..ZD621_203_DPI
 };

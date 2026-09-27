@@ -159,6 +159,20 @@ fn rotation(s: &str) -> Result<u8, String> {
 }
 /// Convert a command stream to printer-dot paths. No printer or network access occurs.
 pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
+    for dimension in [
+        options.compatibility.preview_width_quantum,
+        options.compatibility.preview_max_width,
+    ]
+    .into_iter()
+    .flatten()
+    {
+        if dimension == 0 || dimension > 4096 {
+            return Err(RenderError {
+                offset: 0,
+                message: "preview width settings must be in 1..=4096".into(),
+            });
+        }
+    }
     if input.len() > 1_048_576 {
         return Err(RenderError {
             offset: 0,
@@ -186,12 +200,20 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
             }
         }
     }
+    if let Some(quantum) = options.compatibility.preview_width_quantum {
+        cull_width = cull_width.saturating_add(quantum - 1);
+    }
     let mut parser = ParseContext::from_bytes(input);
     let mut labels = Vec::new();
     let mut total_segments = 0usize;
     let mut scene = None;
     let mut field = Field::default();
-    let (mut width, mut height) = (options.width, options.height);
+    let (mut width, mut height) = (
+        options
+            .width
+            .min(options.compatibility.preview_max_width.unwrap_or(u32::MAX)),
+        options.height,
+    );
     let (mut home_x, mut home_y) = (0., 0.);
     let (mut font_id, mut default_font_id) = ('0', '0');
     let (mut font_w, mut font_h) = (20., 20.);
@@ -440,6 +462,21 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                             });
                         }
                     }
+                    if let Some(quantum) = options.compatibility.preview_width_quantum {
+                        let logical_width = sc.width;
+                        let rounded_width = logical_width.div_ceil(quantum) * quantum;
+                        let offset = (rounded_width - logical_width) / 2;
+                        Scene::new(rounded_width, sc.height, options.dpi)
+                            .map_err(|e| e.to_string())?;
+                        sc.width = rounded_width;
+                        for draw in &mut sc.draws {
+                            draw.path
+                                .transform(|p| Point::new(p.x + offset as f64, p.y));
+                        }
+                        // The firmware clips against the rounded canvas, not
+                        // the requested PW: width-boundary-1/65 retain ink in
+                        // the added right-hand area. Do not erase that margin.
+                    }
                     labels.push(sc);
                     if labels.len() > 64 {
                         return Err("too many labels (maximum 64)".into());
@@ -451,14 +488,19 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                         return Err("label dimension must be a positive integer".into());
                     }
                     if name == "PW" {
-                        width = n as u32
-                    } else {
+                        width = (n as u32)
+                            .min(options.compatibility.preview_max_width.unwrap_or(u32::MAX))
+                    } else if !options.compatibility.preview_ignores_label_length {
                         height = n as u32
                     }
                     let fresh =
                         Scene::new(width, height, options.dpi).map_err(|e| e.to_string())?;
                     if let Some(sc) = scene.as_mut() {
-                        sc.width = fresh.width;
+                        if !options.compatibility.preview_width_latched_at_first_draw
+                            || sc.draws.is_empty()
+                        {
+                            sc.width = fresh.width;
+                        }
                         sc.height = fresh.height;
                     }
                 }

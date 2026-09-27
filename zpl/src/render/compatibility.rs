@@ -13,6 +13,22 @@
 /// initial value: the renderer does not reapply it after you change an option.
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct Compatibility {
+    /// Round the preview canvas width up to this dot quantum and center its
+    /// printable content. Native ZQ610/ZD621 controls use 64 dots. None keeps
+    /// exact requested widths. See tests/fixtures/zq610-plus-v1.
+    pub preview_width_quantum: Option<u32>,
+    /// Cap the logical preview width before rounding. ZQ610 Plus's 203-DPI
+    /// printhead is 384 dots; None preserves the requested width.
+    pub preview_max_width: Option<u32>,
+    /// Preserve the current canvas width once a field has added drawing paths.
+    /// Later PW still sets the next label's initial width. Measured ZQ610 Plus
+    /// width-late-grow/shrink previews retain the width used by the first field.
+    pub preview_width_latched_at_first_draw: bool,
+    /// Keep the caller's canvas height when ^LL is encountered. ZQ610 Plus
+    /// V100.21.21Z HTTP previews retained 2030 rows for LL200/LL1218; this is
+    /// preview behavior, not a statement about physical label length.
+    /// See tests/fixtures/zq610-plus-v1 and docs/printer-recapture.md.
+    pub preview_ignores_label_length: bool,
     /// Ignore the requested QR mask and select using the printer's staged
     /// penalty evaluation. See docs/qr-mask-selection.md and native holdouts.
     pub qr_printer_mask_selection: bool,

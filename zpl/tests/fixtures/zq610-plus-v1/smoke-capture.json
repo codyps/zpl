@@ -1,0 +1,149 @@
+{
+  "cases": {
+    "zpl/zebra-http-api/tests/fixtures/barcodes-zd621-v1/aztec": {
+      "dimensions": [
+        384,
+        2030
+      ],
+      "finished_utc": "2026-09-27T02:22:43.302122+00:00",
+      "image_url": "png?prev=Y&dev=R&oname=__TMP003&otype=PNG",
+      "started_utc": "2026-09-27T02:22:40.768544+00:00",
+      "status": "captured",
+      "submitted_sha256": "81ed02e7e775d69073a83d2d091a6a4709798a66592b578eca80ab7e80f879c4"
+    },
+    "zpl/zebra-http-api/tests/fixtures/barcodes-zd621-v1/aztec_alias": {
+      "dimensions": [
+        384,
+        2030
+      ],
+      "finished_utc": "2026-09-27T02:22:45.670245+00:00",
+      "image_url": "png?prev=Y&dev=R&oname=__TMP004&otype=PNG",
+      "started_utc": "2026-09-27T02:22:43.302685+00:00",
+      "status": "captured",
+      "submitted_sha256": "367ec2addf6dc588405bcd03bcb5d0e68696dff72ba4783969363b9cc019d63d"
+    },
+    "zpl/zebra-http-api/tests/fixtures/barcodes-zd621-v1/aztec_rune": {
+      "dimensions": [
+        384,
+        2030
+      ],
+      "finished_utc": "2026-09-27T02:22:48.123857+00:00",
+      "image_url": "png?prev=Y&dev=R&oname=__TMP005&otype=PNG",
+      "started_utc": "2026-09-27T02:22:45.670784+00:00",
+      "status": "captured",
+      "submitted_sha256": "7069ef01dfc86fdd5467150d9041ac945476bffba2c62d1651e8558182e3088c"
+    },
+    "zpl/zebra-http-api/tests/fixtures/barcodes-zd621-v1/codabar": {
+      "canvas_matches_requested": false,
+      "dimensions": [
+        384,
+        2030
+      ],
+      "finished_utc": "2026-09-27T02:25:07.385894+00:00",
+      "image_url": "png?prev=Y&dev=R&oname=__TMP008&otype=PNG",
+      "started_utc": "2026-09-27T02:25:05.003473+00:00",
+      "status": "captured",
+      "submitted_sha256": "852f065d29e73ff2c7e5ac1bc6add655263bdc6c595c30325d779acac4b6e6cf"
+    }
+  },
+  "files": {
+    "captures/zpl/zebra-http-api/tests/fixtures/barcodes-zd621-v1/aztec.html": "f9457f0fe8297fa368c9a4f627bd0340e32ef67e638c9afa428b56b86c842270",
+    "captures/zpl/zebra-http-api/tests/fixtures/barcodes-zd621-v1/aztec.png": "594dd628d89ef688dfeaf2489cfc13f16799eb534745cc446046963148ebc703",
+    "captures/zpl/zebra-http-api/tests/fixtures/barcodes-zd621-v1/aztec.source.zpl": "227c0bae856655b365bb774bec7d83fefa16f19bf573fc32756b9afb3d995993",
+    "captures/zpl/zebra-http-api/tests/fixtures/barcodes-zd621-v1/aztec.submitted.zpl": "81ed02e7e775d69073a83d2d091a6a4709798a66592b578eca80ab7e80f879c4",
+    "captures/zpl/zebra-http-api/tests/fixtures/barcodes-zd621-v1/aztec_alias.html": "6ef8c8aa264417933a8ab7e9e3b12b99497fdc8ac9aea9731191a1a17c2c6e67",
+    "captures/zpl/zebra-http-api/tests/fixtures/barcodes-zd621-v1/aztec_alias.png": "594dd628d89ef688dfeaf2489cfc13f16799eb534745cc446046963148ebc703",
+    "captures/zpl/zebra-http-api/tests/fixtures/barcodes-zd621-v1/aztec_alias.source.zpl": "e85ea234afef130997c4e52816670545b876ca8683495dae4d84efd1621b03af",
+    "captures/zpl/zebra-http-api/tests/fixtures/barcodes-zd621-v1/aztec_alias.submitted.zpl": "367ec2addf6dc588405bcd03bcb5d0e68696dff72ba4783969363b9cc019d63d",
+    "captures/zpl/zebra-http-api/tests/fixtures/barcodes-zd621-v1/aztec_rune.html": "935486573ce373352ca036fe22f577da7908c8fe0a99b29c40e7ed21941b3e78",
+    "captures/zpl/zebra-http-api/tests/fixtures/barcodes-zd621-v1/aztec_rune.png": "e179cacd88ed4014125525e2c28bb69a0ec610efc33e239b28797f119b994fb6",
+    "captures/zpl/zebra-http-api/tests/fixtures/barcodes-zd621-v1/aztec_rune.source.zpl": "125de589369cf0c7c0bbc83e70c4030409ce7365d5f5f19901b10a14e570d273",
+    "captures/zpl/zebra-http-api/tests/fixtures/barcodes-zd621-v1/aztec_rune.submitted.zpl": "7069ef01dfc86fdd5467150d9041ac945476bffba2c62d1651e8558182e3088c",
+    "captures/zpl/zebra-http-api/tests/fixtures/barcodes-zd621-v1/codabar.html": "a96da0967f2f34d3a2c22722c3f5d770e0298e6172a657828405172b971c2846",
+    "captures/zpl/zebra-http-api/tests/fixtures/barcodes-zd621-v1/codabar.png": "c0026f309b34987e76d228c4f707b293b83e1ef2d531903a2750257d3c5e77dc",
+    "captures/zpl/zebra-http-api/tests/fixtures/barcodes-zd621-v1/codabar.source.zpl": "0a40058c769ec1e24fb5a973910cc906b4d882ffd321e0b234c2980a3e701958",
+    "captures/zpl/zebra-http-api/tests/fixtures/barcodes-zd621-v1/codabar.submitted.zpl": "852f065d29e73ff2c7e5ac1bc6add655263bdc6c595c30325d779acac4b6e6cf",
+    "controls/session-1-end.html": "b64906a4c8157acfc9434c4b4c6b58a06afd82f95e1cbc175b07aaa7d2a7a6a4",
+    "controls/session-1-end.png": "fcc947f808b6d642b19b5b8abe4a87822d998b1bbc614fdf0ef76fb01203c43e",
+    "controls/session-1-end.submitted.zpl": "ca8399a110e228e4d70505c7977e12c4ee9f0f351fdcae184e91acc2f73aa999",
+    "controls/session-1-start.html": "bf17df1bcbe90ec55d1e57a02ce05b42054199d493f56111391563a01f530911",
+    "controls/session-1-start.png": "fcc947f808b6d642b19b5b8abe4a87822d998b1bbc614fdf0ef76fb01203c43e",
+    "controls/session-1-start.submitted.zpl": "ca8399a110e228e4d70505c7977e12c4ee9f0f351fdcae184e91acc2f73aa999",
+    "controls/session-2-end.html": "e57942872c93eb5c78109982fc7413b729172b8e1cd6717e827d1e5fa57466bc",
+    "controls/session-2-end.png": "fcc947f808b6d642b19b5b8abe4a87822d998b1bbc614fdf0ef76fb01203c43e",
+    "controls/session-2-end.submitted.zpl": "ca8399a110e228e4d70505c7977e12c4ee9f0f351fdcae184e91acc2f73aa999",
+    "controls/session-2-start.html": "e67a50b9600bea838fca8042bea265ef9c67cd14c574dd681b6e8da3d033cc36",
+    "controls/session-2-start.png": "fcc947f808b6d642b19b5b8abe4a87822d998b1bbc614fdf0ef76fb01203c43e",
+    "controls/session-2-start.submitted.zpl": "ca8399a110e228e4d70505c7977e12c4ee9f0f351fdcae184e91acc2f73aa999",
+    "reset.zpl": "7fe2624857808765801a4449fdfb96ad97aa493839b041896e708ae5c3c9d482",
+    "status-1.html": "79b24bddeda6398f9b066fc6442aa45fcfba4b728c47c07d6b66ba8de1352c1b",
+    "status-2.html": "79b24bddeda6398f9b066fc6442aa45fcfba4b728c47c07d6b66ba8de1352c1b"
+  },
+  "host": "http://xxzmj230802993.bed.einic.org/",
+  "method": "HTTP Preview Label; no physical print",
+  "plan_sha256": "d48e4f3c832e2a28b9e06d75a1506a0b1c830d987708bb9821f06e3efdc0f9d2",
+  "printer": {
+    "dpi": 203,
+    "firmware": "V100.21.21Z",
+    "model": "ZTC ZQ610 Plus-203dpi ZPL",
+    "serial": "XXZMJ230802993"
+  },
+  "schema": 1,
+  "sessions": [
+    {
+      "end": {
+        "dimensions": [
+          384,
+          2030
+        ],
+        "finished_utc": "2026-09-27T02:22:50.425083+00:00",
+        "image_url": "png?prev=Y&dev=R&oname=__TMP006&otype=PNG",
+        "png_sha256": "fcc947f808b6d642b19b5b8abe4a87822d998b1bbc614fdf0ef76fb01203c43e"
+      },
+      "end_started_utc": "2026-09-27T02:22:50.126964+00:00",
+      "finished_utc": "2026-09-27T02:22:50.425660+00:00",
+      "repeat_png_bytes_equal": true,
+      "start": {
+        "dimensions": [
+          384,
+          2030
+        ],
+        "finished_utc": "2026-09-27T02:22:40.767948+00:00",
+        "image_url": "png?prev=Y&dev=R&oname=__TMP002&otype=PNG",
+        "png_sha256": "fcc947f808b6d642b19b5b8abe4a87822d998b1bbc614fdf0ef76fb01203c43e"
+      },
+      "start_started_utc": "2026-09-27T02:22:40.482915+00:00",
+      "started_utc": "2026-09-27T02:22:40.482192+00:00",
+      "tool_sha256": "a06fcb899cd001acf14dc47950d4bacee68d806c223ef4cc7857665444ada47a"
+    },
+    {
+      "end": {
+        "dimensions": [
+          384,
+          2030
+        ],
+        "finished_utc": "2026-09-27T02:25:09.672485+00:00",
+        "image_url": "png?prev=Y&dev=R&oname=__TMP009&otype=PNG",
+        "png_sha256": "fcc947f808b6d642b19b5b8abe4a87822d998b1bbc614fdf0ef76fb01203c43e"
+      },
+      "end_started_utc": "2026-09-27T02:25:09.388570+00:00",
+      "finished_utc": "2026-09-27T02:25:09.673092+00:00",
+      "repeat_png_bytes_equal": true,
+      "start": {
+        "dimensions": [
+          384,
+          2030
+        ],
+        "finished_utc": "2026-09-27T02:25:05.002545+00:00",
+        "image_url": "png?prev=Y&dev=R&oname=__TMP007&otype=PNG",
+        "png_sha256": "fcc947f808b6d642b19b5b8abe4a87822d998b1bbc614fdf0ef76fb01203c43e"
+      },
+      "start_started_utc": "2026-09-27T02:25:04.716027+00:00",
+      "started_utc": "2026-09-27T02:25:04.715078+00:00",
+      "tool_sha256": "d7e0e7587b70adf79ca1b14cd568d8053b5a43d266c8a658f184463d3cc8bdd7"
+    }
+  ],
+  "started_utc": "2026-09-27T02:22:40.478259+00:00",
+  "status": "incomplete",
+  "updated_utc": "2026-09-27T02:25:09.673100+00:00"
+}

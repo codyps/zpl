@@ -47,6 +47,15 @@ direnv exec . cargo run -p zpl --example zpl-to-svg -- docs/examples/local-label
 
 ## Printer profiles
 
+`ZQ610_PLUS_203_DPI` targets the captured ZQ610 Plus V100.21.21Z HTTP preview:
+384 × 2030 initial dots, a 384-dot width cap, 64-dot width rounding with a
+centered origin, width fixed at the first draw, and ignored `^LL`. These four
+preview compatibility settings are independently selectable and disabled in
+the existing ZD621 and specification profiles. The CLI accepts
+`--profile zq610-plus`; `zd621-preview` enables only the two measured width
+rounding/latching behaviors on the ZD621 base. See
+[capture evidence and limits](printer-recapture.md).
+
 `zpl::render::profiles::SPECIFICATION` explicitly disables every printer
 compatibility override and is used by specification-based tests.
 `Options::default()` returns `ZD621_203_DPI`, including its compatibility

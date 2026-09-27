@@ -5,13 +5,35 @@ use zpl::{
 };
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args: Vec<_> = env::args().collect();
-    if args.len() != 3 && !(args.len() == 4 && args[3] == "--explicit-qr-mask") {
+    if args.len() < 3 {
         return Err(
-            "usage: zpl-to-svg INPUT.zpl OUTPUT.svg|OUTPUT.png [--explicit-qr-mask]".into(),
+            "usage: zpl-to-svg INPUT.zpl OUTPUT.svg|OUTPUT.png [--explicit-qr-mask] [--profile zd621|zd621-preview|zq610-plus|specification]".into(),
         );
     }
     let mut options = zpl::render::profiles::ZD621_203_DPI;
-    if args.len() == 4 {
+    let mut explicit_mask = false;
+    let mut extra = args[3..].iter();
+    while let Some(arg) = extra.next() {
+        match arg.as_str() {
+            "--explicit-qr-mask" => explicit_mask = true,
+            "--profile" => {
+                options = match extra.next().map(String::as_str) {
+                    Some("zd621") => zpl::render::profiles::ZD621_203_DPI,
+                    Some("zd621-preview") => {
+                        let mut preview = zpl::render::profiles::ZD621_203_DPI;
+                        preview.compatibility.preview_width_quantum = Some(64);
+                        preview.compatibility.preview_width_latched_at_first_draw = true;
+                        preview
+                    }
+                    Some("zq610-plus") => zpl::render::profiles::ZQ610_PLUS_203_DPI,
+                    Some("specification") => zpl::render::profiles::SPECIFICATION,
+                    _ => return Err("unknown or missing printer profile".into()),
+                };
+            }
+            _ => return Err(format!("unknown option: {arg}").into()),
+        }
+    }
+    if explicit_mask {
         options.compatibility.qr_printer_mask_selection = false;
     }
     let doc = render(&fs::read(&args[1])?, options)?;
