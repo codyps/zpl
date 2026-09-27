@@ -4,7 +4,8 @@ version = "0.1.0"
 edition = "2021"
 description = "A high accuracy ZPL renderer"
 license.workspace = true
-include = ["src/**", "assets/*.zbf", "LICENSE"]
+readme = "README.md"
+include = ["src/**", "assets/*.zbf", "LICENSE", "README.md"]
 publish = ["crates-io"]
 
 [dependencies]

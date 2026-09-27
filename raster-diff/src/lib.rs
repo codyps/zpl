@@ -1,4 +1,5 @@
-//! Binary raster comparison and bounded PNG I/O, independent of any label format.
+#![doc = include_str!("../README.md")]
+
 /// Bounded zlib decoding, also shared by the ZPL Z64 graphics decoder.
 pub mod compression;
 mod decode_png;
