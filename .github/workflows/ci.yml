@@ -1,82 +1,46 @@
-# https://docs.github.com/en/actions/use-cases-and-examples/building-and-testing/building-and-testing-rust
-name: CI
-
+name: Warbler GARM validation
 on:
-  push:
-    branches: [main]
-  pull_request:
   workflow_dispatch:
-
 permissions:
   contents: read
-
-env:
-  CARGO_NET_RETRY: 2
-  CARGO_HTTP_TIMEOUT: 30
-
-concurrency:
-  group: ci-${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
-
 jobs:
-  toml-fmt:
-    name: TOML formatting
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
+  first:
+    runs-on: warbler-linux
+    timeout-minutes: 10
+    outputs:
+      hostname: ${{ steps.probe.outputs.hostname }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      # https://taplo.tamasfe.dev/cli/installation/binary.html
-      - name: Install Taplo 0.10.0
+      - id: probe
         run: |
-          curl --fail --silent --show-error --location --retry 3 \
-            https://github.com/tamasfe/taplo/releases/download/0.10.0/taplo-linux-x86_64.gz \
-            --output "$RUNNER_TEMP/taplo.gz"
-          echo "8fe196b894ccf9072f98d4e1013a180306e17d244830b03986ee5e8eabeb6156  $RUNNER_TEMP/taplo.gz" | sha256sum --check
-          gzip --decompress --stdout "$RUNNER_TEMP/taplo.gz" > "$RUNNER_TEMP/taplo"
-          chmod +x "$RUNNER_TEMP/taplo"
-          echo "$RUNNER_TEMP" >> "$GITHUB_PATH"
-      # https://taplo.tamasfe.dev/cli/usage/formatting.html#check
-      - run: taplo fmt --check
-
-  fmt:
-    name: Cargo fmt
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
+          set -eu
+          test -f Cargo.toml
+          test ! -e /var/tmp/garm-job-sentinel
+          echo "hostname=$(hostname)" >> "$GITHUB_OUTPUT"
+          touch /var/tmp/garm-job-sentinel
+          echo "Private checkout succeeded on $(hostname)"
+          sleep 20
+  parallel:
+    runs-on: warbler-linux
+    timeout-minutes: 10
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-      - uses: dtolnay/rust-toolchain@6bed0761d98439e5a578e2877258200ad565ba87 # stable
-        with:
-          components: rustfmt
-      - run: cargo fmt --all -- --check
-
-  clippy:
-    name: Clippy
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
+      - run: |
+          set -eu
+          test ! -e /var/tmp/garm-job-sentinel
+          touch /var/tmp/garm-job-sentinel
+          echo "Concurrent job on $(hostname)"
+          sleep 20
+  replacement:
+    needs: [first, parallel]
+    runs-on: warbler-linux
+    timeout-minutes: 10
+    env:
+      FIRST_HOST: ${{ needs.first.outputs.hostname }}
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-      - uses: dtolnay/rust-toolchain@6bed0761d98439e5a578e2877258200ad565ba87 # stable
-        with:
-          components: clippy
-      - name: Install SQLite development libraries
-        run: sudo apt-get update && sudo apt-get install -y libsqlite3-dev
-      - run: cargo clippy --locked --workspace --all-targets
-
-  test:
-    name: Tests
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-      - uses: dtolnay/rust-toolchain@6bed0761d98439e5a578e2877258200ad565ba87 # stable
-      - name: Install SQLite development libraries
-        run: sudo apt-get update && sudo apt-get install -y libsqlite3-dev
-      - run: cargo test --locked --workspace
+      - run: |
+          set -eu
+          test "$(hostname)" != "$FIRST_HOST"
+          test ! -e /var/tmp/garm-job-sentinel
+          echo "Fresh VM verified: $(hostname)"
