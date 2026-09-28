@@ -6,7 +6,6 @@ description = "A high accuracy ZPL renderer"
 license.workspace = true
 readme = "README.md"
 include = ["src/**", "assets/*.zbf", "LICENSE", "README.md"]
-publish = ["crates-io"]
 
 [dependencies]
 encoding_rs = "0.8.41"
