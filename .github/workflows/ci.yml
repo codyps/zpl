@@ -65,6 +65,9 @@ jobs:
     name: Clippy
     runs-on: warbler-linux
     timeout-minutes: 30
+    environment: ${{ github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && 'warbler-cache-main' || 'warbler-cache-read' }}
+    env:
+      WARBLER_CACHE_CREDENTIAL: ${{ secrets.WARBLER_CACHE_WRITE || secrets.WARBLER_CACHE_READ }}
     steps:
       - name: Install checkout dependencies
         run: |
@@ -80,12 +83,27 @@ jobs:
         run: |
           sudo apt-get -o Acquire::Retries=3 update
           sudo apt-get -o Acquire::Retries=3 install -y --no-install-recommends build-essential cmake pkg-config libssl-dev libsqlite3-dev
+      - name: Configure Warbler compiler cache
+        run: |
+          curl --fail --silent --show-error --location --retry 3 \
+            https://github.com/mozilla/sccache/releases/download/v0.18.0/sccache-v0.18.0-x86_64-unknown-linux-musl.tar.gz \
+            --output "$RUNNER_TEMP/sccache.tar.gz"
+          echo "45f1447fbe231e3037bde351ef70677dd212216c8d62ae7ca409fecc4d6acc89  $RUNNER_TEMP/sccache.tar.gz" | sha256sum --check
+          tar -xzf "$RUNNER_TEMP/sccache.tar.gz" -C "$RUNNER_TEMP"
+          echo "$RUNNER_TEMP/sccache-v0.18.0-x86_64-unknown-linux-musl" >> "$GITHUB_PATH"
+          python3 .github/scripts/warbler_cache.py
       - run: cargo clippy --locked --workspace --all-targets
+      - name: Compiler cache statistics
+        if: always() && env.RUSTC_WRAPPER == 'sccache'
+        run: sccache --show-stats | tee -a "$GITHUB_STEP_SUMMARY"
 
   test:
     name: Tests
     runs-on: warbler-linux
     timeout-minutes: 30
+    environment: ${{ github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && 'warbler-cache-main' || 'warbler-cache-read' }}
+    env:
+      WARBLER_CACHE_CREDENTIAL: ${{ secrets.WARBLER_CACHE_WRITE || secrets.WARBLER_CACHE_READ }}
     steps:
       - name: Install checkout dependencies
         run: |
@@ -99,4 +117,16 @@ jobs:
         run: |
           sudo apt-get -o Acquire::Retries=3 update
           sudo apt-get -o Acquire::Retries=3 install -y --no-install-recommends build-essential cmake pkg-config libssl-dev libsqlite3-dev
+      - name: Configure Warbler compiler cache
+        run: |
+          curl --fail --silent --show-error --location --retry 3 \
+            https://github.com/mozilla/sccache/releases/download/v0.18.0/sccache-v0.18.0-x86_64-unknown-linux-musl.tar.gz \
+            --output "$RUNNER_TEMP/sccache.tar.gz"
+          echo "45f1447fbe231e3037bde351ef70677dd212216c8d62ae7ca409fecc4d6acc89  $RUNNER_TEMP/sccache.tar.gz" | sha256sum --check
+          tar -xzf "$RUNNER_TEMP/sccache.tar.gz" -C "$RUNNER_TEMP"
+          echo "$RUNNER_TEMP/sccache-v0.18.0-x86_64-unknown-linux-musl" >> "$GITHUB_PATH"
+          python3 .github/scripts/warbler_cache.py
       - run: cargo test --locked --workspace
+      - name: Compiler cache statistics
+        if: always() && env.RUSTC_WRAPPER == 'sccache'
+        run: sccache --show-stats | tee -a "$GITHUB_STEP_SUMMARY"
