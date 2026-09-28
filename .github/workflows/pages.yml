@@ -16,6 +16,9 @@ jobs:
   build:
     runs-on: warbler-linux
     timeout-minutes: 30
+    environment: ${{ github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && 'warbler-cache-main' || 'warbler-cache-read' }}
+    env:
+      WARBLER_CACHE_CREDENTIAL: ${{ secrets.WARBLER_CACHE_WRITE || secrets.WARBLER_CACHE_READ }}
     concurrency:
       group: pages-build-${{ github.ref }}
       cancel-in-progress: true
@@ -38,6 +41,16 @@ jobs:
       - uses: dtolnay/rust-toolchain@6bed0761d98439e5a578e2877258200ad565ba87 # stable
         with:
           targets: wasm32-unknown-unknown
+      - name: Configure Warbler compiler cache
+        run: |
+          curl --fail --silent --show-error --location --retry 3 \
+            https://github.com/mozilla/sccache/releases/download/v0.18.0/sccache-v0.18.0-x86_64-unknown-linux-musl.tar.gz \
+            --output "$RUNNER_TEMP/sccache.tar.gz"
+          echo "45f1447fbe231e3037bde351ef70677dd212216c8d62ae7ca409fecc4d6acc89  $RUNNER_TEMP/sccache.tar.gz" | sha256sum --check
+          tar -xzf "$RUNNER_TEMP/sccache.tar.gz" -C "$RUNNER_TEMP"
+          echo "$RUNNER_TEMP/sccache-v0.18.0-x86_64-unknown-linux-musl" >> "$GITHUB_PATH"
+          python3 -m unittest discover -s .github/scripts -p 'test_*.py'
+          python3 .github/scripts/warbler_cache.py
       - name: Install WebAssembly bindings CLI
         timeout-minutes: 15
         run: cargo install wasm-bindgen-cli --version 0.2.128 --locked
@@ -61,6 +74,9 @@ jobs:
         if: github.event_name != 'pull_request'
         with:
           path: _site
+      - name: Compiler cache statistics
+        if: always() && env.RUSTC_WRAPPER == 'sccache'
+        run: sccache --show-stats | tee -a "$GITHUB_STEP_SUMMARY"
   deploy:
     if: github.repository == 'codyps/zpl' && github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
     needs: build
