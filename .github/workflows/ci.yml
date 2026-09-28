@@ -91,6 +91,7 @@ jobs:
           echo "45f1447fbe231e3037bde351ef70677dd212216c8d62ae7ca409fecc4d6acc89  $RUNNER_TEMP/sccache.tar.gz" | sha256sum --check
           tar -xzf "$RUNNER_TEMP/sccache.tar.gz" -C "$RUNNER_TEMP"
           echo "$RUNNER_TEMP/sccache-v0.18.0-x86_64-unknown-linux-musl" >> "$GITHUB_PATH"
+          python3 -m unittest discover -s .github/scripts -p 'test_*.py'
           python3 .github/scripts/warbler_cache.py
       - run: cargo clippy --locked --workspace --all-targets
       - name: Compiler cache statistics
@@ -125,6 +126,7 @@ jobs:
           echo "45f1447fbe231e3037bde351ef70677dd212216c8d62ae7ca409fecc4d6acc89  $RUNNER_TEMP/sccache.tar.gz" | sha256sum --check
           tar -xzf "$RUNNER_TEMP/sccache.tar.gz" -C "$RUNNER_TEMP"
           echo "$RUNNER_TEMP/sccache-v0.18.0-x86_64-unknown-linux-musl" >> "$GITHUB_PATH"
+          python3 -m unittest discover -s .github/scripts -p 'test_*.py'
           python3 .github/scripts/warbler_cache.py
       - run: cargo test --locked --workspace
       - name: Compiler cache statistics
