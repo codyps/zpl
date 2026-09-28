@@ -62,6 +62,9 @@ def configure():
     values = {
         'RUSTC_WRAPPER': 'sccache',
         'CARGO_INCREMENTAL': '0',
+        # Tests can outlast the default idle timeout and erase daemon statistics.
+        # The disposable VM and runner process cleanup bound its lifetime.
+        'SCCACHE_IDLE_TIMEOUT': '0',
         'SCCACHE_WEBDAV_ENDPOINT': 'https://10.77.0.1:9443',
         'SCCACHE_WEBDAV_KEY_PREFIX': 'zpl/sccache/',
         'SCCACHE_WEBDAV_USERNAME': username,
