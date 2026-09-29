@@ -18,7 +18,7 @@ fn printer_controls_pin_every_painted_pixel() {
         let reference = raster_diff::Raster::decode_png(&png).unwrap();
         let doc = zpl::render(&input, zpl::render::profiles::ZD621_203_DPI).unwrap();
         let actual = zpl::output::raster::rasterize(&doc.labels[0]).unwrap();
-        let diff = raster_diff::compare(&reference, &actual, false).unwrap();
+        let diff = raster_diff::compare_stats(&reference, &actual, false).unwrap();
         assert_eq!(diff.reference_only + diff.candidate_only, 0, "{}", c[0]);
         assert_eq!(
             diff.reference_only,

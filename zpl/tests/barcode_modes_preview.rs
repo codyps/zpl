@@ -24,7 +24,7 @@ fn captured_barcode_modes_pin_ink_and_pixels() {
             raster_diff::Raster::decode_png(&png).unwrap_or_else(|e| panic!("{}: {e}", c[0]));
         let doc = render(&input, ZD621_203_DPI).unwrap();
         let actual = rasterize(&doc.labels[0]).unwrap();
-        let diff = raster_diff::compare(&reference, &actual, false).unwrap();
+        let diff = raster_diff::compare_stats(&reference, &actual, false).unwrap();
         assert_eq!(
             (diff.reference_only, diff.candidate_only),
             (c[4].parse().unwrap(), c[5].parse().unwrap()),
@@ -100,7 +100,7 @@ fn model1_all_versions_match_printer_with_the_captured_mask() {
         let doc = render(controlled.as_bytes(), ZD621_203_DPI).unwrap();
         let actual = rasterize(&doc.labels[0]).unwrap();
         assert!(
-            raster_diff::compare(&reference, &actual, false)
+            raster_diff::compare_stats(&reference, &actual, false)
                 .unwrap()
                 .matches(),
             "{} mask {mask}",
@@ -122,7 +122,7 @@ fn model2_mixed_segments_match_printer_with_the_captured_mask() {
     assert_ne!(controlled, input);
     let doc = render(controlled.as_bytes(), ZD621_203_DPI).unwrap();
     let actual = rasterize(&doc.labels[0]).unwrap();
-    assert!(raster_diff::compare(&reference, &actual, false)
+    assert!(raster_diff::compare_stats(&reference, &actual, false)
         .unwrap()
         .matches());
 }

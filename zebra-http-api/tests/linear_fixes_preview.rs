@@ -1,7 +1,7 @@
 //! Fixed, original printer captures; no network calls during tests.
 #[path = "../examples/font_support/mod.rs"]
 mod digest;
-use raster_diff::{compare, Raster};
+use raster_diff::{compare_stats, Raster};
 
 #[test]
 fn four_barcode_printer_probes() {
@@ -25,7 +25,7 @@ fn four_barcode_printer_probes() {
         );
         let doc = zpl::render(&source, zpl::render::profiles::ZD621_203_DPI).unwrap();
         let local = zpl::output::raster::rasterize(&doc.labels[0]).unwrap();
-        let diff = compare(&printer, &local, false).unwrap();
+        let diff = compare_stats(&printer, &local, false).unwrap();
         if !diff.matches() {
             failures.push(format!("{name}: {} pixels", diff.different_pixels()));
         }
@@ -47,7 +47,7 @@ fn recaptured_four_barcode_previews_match() {
         let local = zpl::output::raster::rasterize(&doc.labels[0]).unwrap();
         assert_eq!((local.width, local.height), (832, 1218));
         assert!(
-            compare(&printer, &local, false).unwrap().matches(),
+            compare_stats(&printer, &local, false).unwrap().matches(),
             "{name}"
         );
     }

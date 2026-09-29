@@ -24,7 +24,7 @@ fn native_tab_frames_pin_paint_and_foreground_accuracy() {
         let doc = zpl::render(&source, ZD621_203_DPI).unwrap();
         assert_eq!(doc.labels.len(), 1);
         let actual = rasterize(&doc.labels[0]).unwrap();
-        let diff = raster_diff::compare(&reference, &actual, false).unwrap();
+        let diff = raster_diff::compare_stats(&reference, &actual, false).unwrap();
         assert_eq!(
             (diff.reference_only, diff.candidate_only),
             (n(3), n(4)),

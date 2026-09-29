@@ -19,7 +19,7 @@ fn raw_serial_mask_frames_pin_every_pixel_and_meet_text_goal() {
         let doc = zpl::render(&source, zpl::render::profiles::ZD621_203_DPI).unwrap();
         assert_eq!(doc.labels.len(), 1);
         let actual = zpl::output::raster::rasterize(&doc.labels[0]).unwrap();
-        let diff = raster_diff::compare(&reference, &actual, false).unwrap();
+        let diff = raster_diff::compare_stats(&reference, &actual, false).unwrap();
         if c[0] == "controls-barcode" {
             assert_eq!((diff.reference_only, diff.candidate_only), (0, 0));
         }

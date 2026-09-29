@@ -18,7 +18,7 @@ fn minimum_font_strikes_and_origins_pin_every_pixel() {
         let reference = raster_diff::Raster::decode_png(&png).unwrap();
         let doc = zpl::render(&input, zpl::render::profiles::ZD621_203_DPI).unwrap();
         let actual = zpl::output::raster::rasterize(&doc.labels[0]).unwrap();
-        let diff = raster_diff::compare(&reference, &actual, false).unwrap();
+        let diff = raster_diff::compare_stats(&reference, &actual, false).unwrap();
         if !c[0].starts_with("holdout-") {
             assert!(diff.matches(), "{} must match the printer exactly", c[0]);
         } else {

@@ -7,7 +7,7 @@ fn captured_font_overlapping_ink_matches_verification() {
     let (input, reference) = zpl_font_extract::verification_plan(&g, s, "WWW__|||~~", 27).unwrap();
     let doc = render(input.as_bytes(), SPECIFICATION).unwrap();
     let actual = zpl::output::raster::rasterize(&doc.labels[0]).unwrap();
-    assert!(raster_diff::compare(&reference, &actual, false)
+    assert!(raster_diff::compare_stats(&reference, &actual, false)
         .unwrap()
         .matches());
 }

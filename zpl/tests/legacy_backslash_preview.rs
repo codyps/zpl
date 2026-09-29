@@ -27,7 +27,7 @@ fn printer_controls_pin_every_painted_pixel() {
             let spec = zpl::render(&input, zpl::render::profiles::SPECIFICATION).unwrap();
             let spec = zpl::output::raster::rasterize(&spec.labels[0]).unwrap();
             assert!(
-                raster_diff::compare(&reference, &spec, false)
+                raster_diff::compare_stats(&reference, &spec, false)
                     .unwrap()
                     .matches(),
                 "{} documented CI13 escapes",
@@ -36,7 +36,7 @@ fn printer_controls_pin_every_painted_pixel() {
         }
         let doc = zpl::render(&input, zpl::render::profiles::ZD621_203_DPI).unwrap();
         let actual = zpl::output::raster::rasterize(&doc.labels[0]).unwrap();
-        let diff = raster_diff::compare(&reference, &actual, false).unwrap();
+        let diff = raster_diff::compare_stats(&reference, &actual, false).unwrap();
         assert!(diff.ink_iou() >= 0.8, "{} full-frame text IoU", c[0]);
         let width = reference.width as usize;
         let mut coverage = vec![0u8; reference.pixels.len()];

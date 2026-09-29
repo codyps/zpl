@@ -239,7 +239,7 @@ fn captured_font_matches_every_printer_atlas_and_held_out_text() {
         let doc = render(&zpl, zpl::render::profiles::ZD621_203_DPI).unwrap();
         assert!(doc.warnings.is_empty(), "{name}");
         let actual = zpl::output::raster::rasterize(&doc.labels[0]).unwrap();
-        let diff = raster_diff::compare(&reference, &actual, false).unwrap();
+        let diff = raster_diff::compare_stats(&reference, &actual, false).unwrap();
         assert!(
             diff.matches(),
             "{name}: {} differing pixels",
@@ -271,7 +271,7 @@ fn captured_font_layout_baselines_blocks_and_rotations() {
     let reference = Raster::decode_png(include_bytes!("fixtures/font0-32/layout.png")).unwrap();
     let doc = render(input, zpl::render::profiles::ZD621_203_DPI).unwrap();
     let actual = zpl::output::raster::rasterize(&doc.labels[0]).unwrap();
-    assert!(raster_diff::compare(&reference, &actual, false)
+    assert!(raster_diff::compare_stats(&reference, &actual, false)
         .unwrap()
         .matches());
     let input = include_bytes!("fixtures/font0-32/rotations.zpl");
@@ -281,7 +281,7 @@ fn captured_font_layout_baselines_blocks_and_rotations() {
     let actual = zpl::output::raster::rasterize(&doc.labels[0]).unwrap();
     // Zebra rasterizes rotated outlines slightly differently: three edge pixels
     // in this sample cannot be reproduced by rotating the captured normal strike.
-    let d = raster_diff::compare(&reference, &actual, false).unwrap();
+    let d = raster_diff::compare_stats(&reference, &actual, false).unwrap();
     assert!(d.different_pixels() <= 3);
 }
 #[test]

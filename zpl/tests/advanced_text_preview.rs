@@ -28,7 +28,7 @@ fn raw_advanced_text_frames_pin_every_pixel_and_meet_text_goal() {
         let doc = zpl::render(&source, zpl::render::profiles::ZD621_203_DPI).unwrap();
         assert_eq!(doc.labels.len(), index + 1);
         let actual = zpl::output::raster::rasterize(&doc.labels[index]).unwrap();
-        let diff = raster_diff::compare(&reference, &actual, false).unwrap();
+        let diff = raster_diff::compare_stats(&reference, &actual, false).unwrap();
         assert_eq!(
             (diff.reference_only, diff.candidate_only),
             (

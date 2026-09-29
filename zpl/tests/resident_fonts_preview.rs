@@ -21,7 +21,7 @@ fn captured_strikes_and_interpretation_match_printer_pixels() {
         let reference = raster_diff::Raster::decode_png(&png).unwrap();
         let doc = zpl::render(&input, zpl::render::profiles::ZD621_203_DPI).unwrap();
         let actual = zpl::output::raster::rasterize(&doc.labels[0]).unwrap();
-        let diff = raster_diff::compare(&reference, &actual, false).unwrap();
+        let diff = raster_diff::compare_stats(&reference, &actual, false).unwrap();
         if !diff.matches() {
             failures.push(format!(
                 "{}: under {} over {}",
@@ -51,7 +51,7 @@ fn justified_rotations_pin_residuals_and_exceed_text_accuracy_floor() {
         let reference = raster_diff::Raster::decode_png(&png).unwrap();
         let doc = zpl::render(&input, zpl::render::profiles::ZD621_203_DPI).unwrap();
         let actual = zpl::output::raster::rasterize(&doc.labels[0]).unwrap();
-        let diff = raster_diff::compare(&reference, &actual, false).unwrap();
+        let diff = raster_diff::compare_stats(&reference, &actual, false).unwrap();
         assert_eq!(
             (diff.reference_only, diff.candidate_only),
             (c[3].parse().unwrap(), c[4].parse().unwrap()),

@@ -1272,3 +1272,55 @@ regions satisfy the 80% foreground-IoU floor. Arbitrary unsampled glyphs/sizes
 and the deliberately deferred preview-width adjustment are not covered by
 that conclusion. Nondeterministic empty QR previews remain diagnostic captures,
 not deterministic accuracy targets.
+
+## Raster test performance
+
+The workspace test profile uses optimization level 1 with debug assertions and
+integer overflow checks enabled. Changing this profile requires a dependency
+rebuild; measure build time separately from test execution time. See
+[Cargo profiles](https://doc.rust-lang.org/cargo/reference/profiles.html#test).
+
+Image-free checks use `raster_diff::compare_stats`, which preserves binary input
+validation, native dimensions, directional counts, bounds and foreground IoU
+without allocating an RGB difference image. Identical canvases take a validated
+equality shortcut. Diagnostic images are generated only when requested.
+
+The shared test/capture-tool SHA-256 helper uses RustCrypto `sha2` as a
+**development dependency**, preserving the existing lowercase SHA-256 strings.
+Its default backend detects x86 SHA-NI or ARM SHA-2 instructions at runtime
+and otherwise uses optimized portable code; see [backend selection](https://docs.rs/sha2/0.11.0/sha2/#backends).
+The core renderer gains no hashing dependency. Standard vectors and every
+existing source, capture and raster digest remain correctness gates.
+
+`barcode_accuracy`, `printer_accuracy` and `conformance_preview` replay
+independent frames on a bounded worker pool (available CPUs, capped at eight).
+Only summaries survive each job; workers do not share renderer state or contact
+printers. Results and reports retain input order, and worker panics fail the
+calling test. Set `ZPL_RASTER_THREADS=1` for serial profiling, or choose 2–8
+workers explicitly. Pixel counts, per-field gates, diagnostic classifications
+and complete corpus counts are identical in either mode.
+
+For a small, opt-in stage benchmark covering exact, differing and rejected
+native controls, run:
+
+```sh
+cargo test --locked -p zpl --test raster_performance -- --ignored --nocapture
+```
+
+It reports PNG decoding, rendering/rasterization, comparison and SHA-256 times
+separately. It never rewrites baselines. Compare serial and parallel full-corpus
+runs with `ZPL_BARCODE_REPORT` paths when validating scheduling changes; the
+reports must be byte-identical.
+
+On an Intel Core i9-9880H (no SHA instruction support), the representative
+benchmark decreased from 7.02 s to 0.49 s after the combined changes. Its
+SHA-256 stage decreased from 1.218 s to 0.067 s using the software backend;
+this measures the library and profile changes together, not hardware acceleration.
+Single-worker full checks decreased from 309.35 s to 35.01 s for the 1,614-frame
+barcode audit, 181.84 s to 15.23 s for conformance, and 35.17 s to 2.76 s for
+printer accuracy. With eight workers, the barcode audit took 6.06 s, including
+requested diagnostic PNG output; conformance took 1.74 s and printer accuracy
+0.40 s. Both serial and parallel barcode reports and
+all 14 diagnostic PNGs were byte-identical to the previous run. These are
+individual local measurements, exclude compilation and process startup, and
+are not performance thresholds.

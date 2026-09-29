@@ -25,7 +25,7 @@ fn native_legacy_control_frames_are_pixel_exact() {
         let doc = zpl::render(&source, ZD621_203_DPI).unwrap();
         assert_eq!(doc.labels.len(), 1);
         let actual = rasterize(&doc.labels[0]).unwrap();
-        let diff = raster_diff::compare(&reference, &actual, false).unwrap();
+        let diff = raster_diff::compare_stats(&reference, &actual, false).unwrap();
         assert_eq!(
             (diff.reference_only, diff.candidate_only),
             (0, 0),

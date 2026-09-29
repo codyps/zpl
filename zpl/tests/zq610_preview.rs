@@ -24,7 +24,7 @@ fn zq610_native_captures_pin_full_canvas_pixels_at_original_origin() {
         let reference = raster_diff::Raster::decode_png(&png).unwrap();
         let document = zpl::render(&source, ZQ610_PLUS_203_DPI).unwrap();
         let actual = zpl::output::raster::rasterize(&document.labels[0]).unwrap();
-        let comparison = raster_diff::compare(&reference, &actual, false).unwrap();
+        let comparison = raster_diff::compare_stats(&reference, &actual, false).unwrap();
         if matches!(columns[0], "text-0-B" | "text-0-I" | "text-0-R") {
             // Each image contains exactly one text field; foreground IoU is
             // independent of the large white canvas. Both physical printers

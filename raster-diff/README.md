@@ -55,6 +55,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 | Dark gray | Black in both images |
 | White | White in both images |
 
+## Compare without an image
+
+Use `compare_stats(&reference, &candidate, false)` when only counts, bounds,
+and foreground IoU are needed. It returns `DiffStats`, validates the same
+binary raster and dimension contracts, and allocates no RGB image. Identical
+canvases take an equality shortcut after validation. Call `compare` separately
+when a diagnostic PNG is actually requested; its existing API is unchanged.
+
 ## Compare PNG files
 
 Read each file with `std::fs::read`, then use

@@ -23,6 +23,50 @@ pub struct Diff {
     pub bounds: Option<Bounds>,
     pub pixels: Vec<u8>,
 }
+/// Comparison measurements without allocating a colored difference image.
+/// Coordinates and binary-pixel validation are identical to [`compare`].
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct DiffStats {
+    pub width: u32,
+    pub height: u32,
+    pub dimensions_match: bool,
+    pub reference_only: usize,
+    pub candidate_only: usize,
+    pub both_black: usize,
+    pub both_white: usize,
+    pub bounds: Option<Bounds>,
+}
+impl DiffStats {
+    pub fn different_pixels(&self) -> usize {
+        self.reference_only + self.candidate_only
+    }
+    pub fn matches(&self) -> bool {
+        self.dimensions_match && self.different_pixels() == 0
+    }
+    /// Intersection over union of black pixels. Two blank images have IoU 1.
+    pub fn ink_iou(&self) -> f64 {
+        let union = self.both_black + self.different_pixels();
+        if union == 0 {
+            1.
+        } else {
+            self.both_black as f64 / union as f64
+        }
+    }
+}
+impl From<Diff> for DiffStats {
+    fn from(d: Diff) -> Self {
+        Self {
+            width: d.width,
+            height: d.height,
+            dimensions_match: d.dimensions_match,
+            reference_only: d.reference_only,
+            candidate_only: d.candidate_only,
+            both_black: d.both_black,
+            both_white: d.both_white,
+            bounds: d.bounds,
+        }
+    }
+}
 impl Diff {
     pub fn different_pixels(&self) -> usize {
         self.reference_only + self.candidate_only
@@ -80,6 +124,26 @@ impl Diff {
 /// Compare at the same top-left origin. `pad` explicitly permits a white canvas
 /// outside either image; dimensions still count as different for `matches()`.
 pub fn compare(reference: &Raster, candidate: &Raster, pad: bool) -> Result<Diff, String> {
+    compare_impl::<true>(reference, candidate, pad)
+}
+
+/// Compare full native canvases without constructing an RGB diagnostic image.
+///
+/// Retains all validation, counts, bounds and padding semantics of [`compare`].
+/// Use `compare` only when the colored image is needed.
+pub fn compare_stats(
+    reference: &Raster,
+    candidate: &Raster,
+    pad: bool,
+) -> Result<DiffStats, String> {
+    compare_impl::<false>(reference, candidate, pad).map(DiffStats::from)
+}
+
+fn compare_impl<const IMAGE: bool>(
+    reference: &Raster,
+    candidate: &Raster,
+    pad: bool,
+) -> Result<Diff, String> {
     for r in [reference, candidate] {
         if r.width == 0
             || r.height == 0
@@ -109,41 +173,65 @@ pub fn compare(reference: &Raster, candidate: &Raster, pad: bool) -> Result<Diff
         both_black: 0,
         both_white: 0,
         bounds: None,
-        pixels: Vec::with_capacity(size * 3),
+        pixels: if IMAGE {
+            Vec::with_capacity(size * 3)
+        } else {
+            Vec::new()
+        },
     };
+    if !IMAGE && dimensions_match && reference.pixels == candidate.pixels {
+        d.both_black = reference.pixels.iter().filter(|&&p| p == 0).count();
+        d.both_white = size - d.both_black;
+        return Ok(d);
+    }
     let (mut min_x, mut min_y, mut max_x, mut max_y) = (width, height, 0, 0);
-    for y in 0..height {
-        for x in 0..width {
-            let black = |r: &Raster| {
-                x < r.width
-                    && y < r.height
-                    && r.pixels[y as usize * r.width as usize + x as usize] == 0
-            };
-            let (a, b) = (black(reference), black(candidate));
-            let color = match (a, b) {
-                (true, false) => {
-                    d.reference_only += 1;
-                    REFERENCE_ONLY
-                }
-                (false, true) => {
-                    d.candidate_only += 1;
-                    CANDIDATE_ONLY
-                }
-                (true, true) => {
-                    d.both_black += 1;
-                    BOTH_BLACK
-                }
-                (false, false) => {
-                    d.both_white += 1;
-                    BOTH_WHITE
-                }
-            };
-            d.pixels.extend(color);
-            if a != b {
-                min_x = min_x.min(x);
-                min_y = min_y.min(y);
-                max_x = max_x.max(x);
-                max_y = max_y.max(y);
+    let mut pixel = |i: usize, a: bool, b: bool| {
+        let color = match (a, b) {
+            (true, false) => {
+                d.reference_only += 1;
+                REFERENCE_ONLY
+            }
+            (false, true) => {
+                d.candidate_only += 1;
+                CANDIDATE_ONLY
+            }
+            (true, true) => {
+                d.both_black += 1;
+                BOTH_BLACK
+            }
+            (false, false) => {
+                d.both_white += 1;
+                BOTH_WHITE
+            }
+        };
+        if IMAGE {
+            d.pixels.extend_from_slice(&color);
+        }
+        if a != b {
+            let (x, y) = ((i % width as usize) as u32, (i / width as usize) as u32);
+            min_x = min_x.min(x);
+            min_y = min_y.min(y);
+            max_x = max_x.max(x);
+            max_y = max_y.max(y);
+        }
+    };
+    if dimensions_match {
+        for (i, (&a, &b)) in reference.pixels.iter().zip(&candidate.pixels).enumerate() {
+            pixel(i, a == 0, b == 0);
+        }
+    } else {
+        for y in 0..height {
+            for x in 0..width {
+                let black = |r: &Raster| {
+                    x < r.width
+                        && y < r.height
+                        && r.pixels[y as usize * r.width as usize + x as usize] == 0
+                };
+                pixel(
+                    y as usize * width as usize + x as usize,
+                    black(reference),
+                    black(candidate),
+                );
             }
         }
     }
@@ -153,7 +241,7 @@ pub fn compare(reference: &Raster, candidate: &Raster, pad: bool) -> Result<Diff
             y: min_y,
             width: max_x - min_x + 1,
             height: max_y - min_y + 1,
-        })
+        });
     }
     Ok(d)
 }
@@ -224,6 +312,51 @@ mod tests {
             })
         );
     }
+    #[test]
+    fn statistics_preserve_counts_bounds_and_padding() {
+        for a in 0..16u8 {
+            for b in 0..16u8 {
+                let bits = |v: u8| {
+                    (0..4)
+                        .map(|i| if v & (1 << i) != 0 { 0 } else { 255 })
+                        .collect::<Vec<_>>()
+                };
+                for (wa, wb, pad) in [(2, 2, false), (1, 2, true), (4, 1, true)] {
+                    let (a, b) = (raster(wa, &bits(a)), raster(wb, &bits(b)));
+                    let expected = DiffStats::from(compare(&a, &b, pad).unwrap());
+                    let actual = compare_stats(&a, &b, pad).unwrap();
+                    assert_eq!(actual, expected);
+                    assert_eq!(actual.matches(), expected.matches());
+                    assert_eq!(actual.ink_iou(), expected.ink_iou());
+                }
+            }
+        }
+        // Equal buffers must still validate before taking the equality shortcut.
+        for bad in [
+            raster(1, &[127]),
+            Raster {
+                width: 2,
+                height: 2,
+                pixels: vec![0],
+            },
+            Raster {
+                width: 0,
+                height: 0,
+                pixels: vec![],
+            },
+        ] {
+            assert_eq!(
+                compare_stats(&bad, &bad, false).unwrap_err(),
+                compare(&bad, &bad, false).unwrap_err()
+            );
+        }
+        let (a, b) = (raster(1, &[0]), raster(2, &[0, 0]));
+        assert_eq!(
+            compare_stats(&a, &b, false).unwrap_err(),
+            compare(&a, &b, false).unwrap_err()
+        );
+    }
+
     #[test]
     fn invalid_inputs_and_scaling() {
         let bad = raster(1, &[127]);

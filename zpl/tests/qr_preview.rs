@@ -18,7 +18,7 @@ fn printer_controls_pin_every_painted_pixel() {
         let reference = raster_diff::Raster::decode_png(&png).unwrap();
         let doc = zpl::render(&input, zpl::render::profiles::ZD621_203_DPI).unwrap();
         let actual = zpl::output::raster::rasterize(&doc.labels[0]).unwrap();
-        let diff = raster_diff::compare(&reference, &actual, false).unwrap();
+        let diff = raster_diff::compare_stats(&reference, &actual, false).unwrap();
         assert!(diff.matches(), "{} automatic mask", c[0]);
         assert_eq!(
             diff.reference_only,
@@ -141,7 +141,7 @@ fn encoding_matches_every_printer_module_with_the_captured_mask() {
         explicit_mask.compatibility.qr_printer_mask_selection = false;
         let doc = zpl::render(diagnostic.as_bytes(), explicit_mask).unwrap();
         let actual = zpl::output::raster::rasterize(&doc.labels[0]).unwrap();
-        let diff = raster_diff::compare(&reference, &actual, false).unwrap();
+        let diff = raster_diff::compare_stats(&reference, &actual, false).unwrap();
         assert_eq!(diff.reference_only, 0, "{name}: encoding underpaint");
         assert_eq!(diff.candidate_only, 0, "{name}: encoding overpaint");
         count += 1;

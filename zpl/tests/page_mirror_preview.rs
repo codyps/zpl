@@ -20,7 +20,7 @@ fn printer_page_mirror_controls_are_pixel_exact() {
         let document = zpl::render(&input, zpl::render::profiles::ZD621_203_DPI).unwrap();
         assert_eq!(document.labels.len(), 1);
         let actual = zpl::output::raster::rasterize(&document.labels[0]).unwrap();
-        let diff = raster_diff::compare(&reference, &actual, false).unwrap();
+        let diff = raster_diff::compare_stats(&reference, &actual, false).unwrap();
         assert!(
             diff.matches(),
             "{} underpaint={}, overpaint={}",

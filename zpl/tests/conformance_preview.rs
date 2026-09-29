@@ -3,6 +3,7 @@
 use std::{collections::BTreeSet, fs, path::Path};
 #[path = "../../zebra-http-api/examples/font_support/mod.rs"]
 mod digest;
+mod support;
 
 #[test]
 fn complete_corpus_preserves_non_text_pixels_and_each_text_field_floor() {
@@ -14,17 +15,21 @@ fn complete_corpus_preserves_non_text_pixels_and_each_text_field_floor() {
         .map(|line| line.split('\t').collect::<Vec<_>>())
         .collect();
     assert_eq!(regions.len(), 51);
-    let (mut exact, mut text, mut blank, mut invalid, mut aligned, mut checked_regions) =
-        (0, 0, 0, 0, 0, 0);
-    let mut names = BTreeSet::new();
-    for line in include_str!("fixtures/conformance-zd621-v1/manifest.tsv")
+    let rows: Vec<_> = include_str!("fixtures/conformance-zd621-v1/manifest.tsv")
         .lines()
         .skip(1)
-    {
+        .collect();
+    let names: BTreeSet<_> = rows
+        .iter()
+        .map(|line| line.split('\t').next().unwrap())
+        .collect();
+    assert_eq!(names.len(), rows.len(), "duplicate corpus names");
+    let counts = support::map(&rows, |line| {
+        let (mut exact, mut text, mut blank, mut invalid, mut aligned, mut checked_regions) =
+            (0, 0, 0, 0, 0, 0);
         let c: Vec<_> = line.split('\t').collect();
         assert_eq!(c.len(), 9);
         let name = c[0];
-        assert!(names.insert(name), "duplicate {name}");
         aligned += usize::from(c[1].starts_with("../barcode-aligned-zd621-v1/"));
         let source = fs::read(root.join(format!("{}.zpl", c[1]))).unwrap();
         let png = fs::read(root.join(format!("{}.png", c[1]))).unwrap();
@@ -39,12 +44,12 @@ fn complete_corpus_preserves_non_text_pixels_and_each_text_field_floor() {
             assert!(reference.pixels.iter().all(|&p| p == 255));
             assert_eq!(rendered.unwrap_err().message, c[8]);
             invalid += 1;
-            continue;
+            return [exact, text, blank, invalid, aligned, checked_regions];
         }
         let doc = rendered.unwrap_or_else(|e| panic!("{name}: {e}"));
         assert_eq!(doc.labels.len(), 2, "reset plus candidate: {name}");
         let candidate = zpl::output::raster::rasterize(&doc.labels[1]).unwrap();
-        let diff = raster_diff::compare(&reference, &candidate, false).unwrap();
+        let diff = raster_diff::compare_stats(&reference, &candidate, false).unwrap();
         assert_eq!(
             (diff.reference_only, diff.candidate_only),
             (c[5].parse().unwrap(), c[6].parse().unwrap()),
@@ -107,7 +112,15 @@ fn complete_corpus_preserves_non_text_pixels_and_each_text_field_floor() {
             }
             status => panic!("unknown status {status}"),
         }
+        [exact, text, blank, invalid, aligned, checked_regions]
+    });
+    let mut totals = [0; 6];
+    for counts in counts {
+        for (total, count) in totals.iter_mut().zip(counts) {
+            *total += count;
+        }
     }
+    let [exact, text, blank, invalid, aligned, checked_regions] = totals;
     assert_eq!(names.len(), 512, "do not drop corpus cases");
     assert_eq!(
         (exact, text, blank, invalid, aligned, checked_regions),

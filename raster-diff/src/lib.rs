@@ -6,6 +6,9 @@
 //! Optional white padding permits unequal dimensions, but [`Diff::matches`]
 //! still requires equal dimensions.
 //!
+//! [`compare_stats`] returns [`DiffStats`] with the same measurements without
+//! allocating a colored image. It is intended for regression tests and bulk audits.
+//!
 //! [`Diff`] exposes directional mismatch counts, mismatch bounds, and black-pixel
 //! intersection over union via [`Diff::ink_iou`]. [`Diff::png`] encodes a colored
 //! diagnostic image with optional nearest-neighbor magnification.

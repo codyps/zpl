@@ -3,6 +3,7 @@
 use std::{fs, path::Path};
 #[path = "../../zebra-http-api/examples/font_support/mod.rs"]
 mod digest;
+mod support;
 
 #[test]
 fn printer_accuracy() {
@@ -11,12 +12,13 @@ fn printer_accuracy() {
     if let Some(dir) = &artifacts {
         fs::create_dir_all(dir).unwrap();
     }
-    let mut failures = Vec::new();
-    let mut count = 0;
-    for row in include_str!("fixtures/printer-accuracy/baseline.tsv").lines() {
-        if row.starts_with('#') {
-            continue;
-        }
+    let rows: Vec<_> = include_str!("fixtures/printer-accuracy/baseline.tsv")
+        .lines()
+        .filter(|row| !row.starts_with('#'))
+        .collect();
+    let results = support::map(&rows, |row| {
+        let mut failures = Vec::new();
+        let summary;
         let cols: Vec<_> = row.split('\t').collect();
         assert_eq!(cols.len(), 12);
         let name = cols[0];
@@ -33,7 +35,6 @@ fn printer_accuracy() {
         assert_eq!(digest::sha256(&input), cols[8], "{name}: source changed");
         assert_eq!(digest::sha256(&png), cols[9], "{name}: capture changed");
         let reference = raster_diff::Raster::decode_png(&png).unwrap();
-        count += 1;
         let document = zpl::render(
             &input,
             zpl::Options {
@@ -44,7 +45,7 @@ fn printer_accuracy() {
         );
         match document {
             Err(error) => {
-                println!("{name}: ERROR {error}");
+                summary = format!("{name}: ERROR {error}");
                 if cols[3] != "error" || error.to_string() != cols[11] {
                     failures.push(format!("{name}: unexpected render error: {error}"));
                 }
@@ -53,7 +54,7 @@ fn printer_accuracy() {
                 assert_eq!(document.labels.len(), 1, "{name}");
                 let candidate = zpl::output::raster::rasterize(&document.labels[0]).unwrap();
                 // Same origin, threshold 128, no padding, alignment or cropping.
-                let diff = raster_diff::compare(&reference, &candidate, false).unwrap();
+                let diff = raster_diff::compare_stats(&reference, &candidate, false).unwrap();
                 if let Some(dir) = &artifacts {
                     if !diff.matches() {
                         fs::write(
@@ -61,8 +62,14 @@ fn printer_accuracy() {
                             raster_diff::Png::encode_gray(&candidate, 203).unwrap(),
                         )
                         .unwrap();
-                        fs::write(dir.join(format!("{name}-diff.png")), diff.png(1).unwrap())
-                            .unwrap();
+                        fs::write(
+                            dir.join(format!("{name}-diff.png")),
+                            raster_diff::compare(&reference, &candidate, false)
+                                .unwrap()
+                                .png(1)
+                                .unwrap(),
+                        )
+                        .unwrap();
                     }
                 }
                 let actual = (
@@ -71,7 +78,7 @@ fn printer_accuracy() {
                     candidate.width as usize,
                     candidate.height as usize,
                 );
-                println!(
+                summary = format!(
                     "{name}: under={} over={} size={}x{} IoU={:.6}",
                     actual.0,
                     actual.1,
@@ -89,8 +96,14 @@ fn printer_accuracy() {
                 }
             }
         }
+        (summary, failures)
+    });
+    let mut failures = Vec::new();
+    for (summary, errors) in results {
+        println!("{summary}");
+        failures.extend(errors);
     }
-    assert_eq!(count, 164, "do not silently drop printer cases");
+    assert_eq!(rows.len(), 164, "do not silently drop printer cases");
     assert!(
         failures.is_empty(),
         "accuracy baseline changed:\n{}",

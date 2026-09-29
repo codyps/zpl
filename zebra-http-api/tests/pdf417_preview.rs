@@ -1,7 +1,7 @@
 //! Exact comparisons against pre-fix ZD621 captures at PW832 (no padding).
 #[path = "../examples/font_support/mod.rs"]
 mod digest;
-use raster_diff::{compare, Raster};
+use raster_diff::{compare_stats, Raster};
 
 #[test]
 fn recaptured_pdf417_previews_match() {
@@ -16,7 +16,7 @@ fn recaptured_pdf417_previews_match() {
         assert_eq!((printer.width, printer.height), (832, 1218));
         assert_eq!((local.width, local.height), (832, 1218));
         assert!(
-            compare(&printer, &local, false).unwrap().matches(),
+            compare_stats(&printer, &local, false).unwrap().matches(),
             "{name}"
         );
     }
@@ -61,7 +61,7 @@ fn pdf417_matches_printer_probes() {
                 assert_eq!(fields[3], "exact");
                 assert!(printer.pixels.contains(&0), "{name}: blank isn't parity");
                 let actual = zpl::output::raster::rasterize(&doc.unwrap().labels[0]).unwrap();
-                let diff = compare(&printer, &actual, false).unwrap();
+                let diff = compare_stats(&printer, &actual, false).unwrap();
                 assert!(
                     diff.matches(),
                     "{name}: {} differing pixels",

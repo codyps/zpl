@@ -22,7 +22,7 @@ fn retail_controls_match_or_reject_invalid_printer_inputs() {
         match c[3] {
             "exact" => {
                 let actual = zpl::output::raster::rasterize(&doc.unwrap().labels[0]).unwrap();
-                let diff = raster_diff::compare(&reference, &actual, false).unwrap();
+                let diff = raster_diff::compare_stats(&reference, &actual, false).unwrap();
                 assert!(
                     diff.matches(),
                     "{}: under {} over {}",

@@ -20,7 +20,7 @@ fn unavailable_fonts_match_native_controls() {
         let doc = zpl::render(&source, ZD621_203_DPI).unwrap();
         assert_eq!(doc.labels.len(), 1);
         let actual = zpl::output::raster::rasterize(&doc.labels[0]).unwrap();
-        let diff = raster_diff::compare(&reference, &actual, false).unwrap();
+        let diff = raster_diff::compare_stats(&reference, &actual, false).unwrap();
         assert_eq!(
             (diff.reference_only, diff.candidate_only),
             (c[3].parse().unwrap(), c[4].parse().unwrap()),

@@ -9,6 +9,7 @@ use std::{
 use zpl::parse::{Element, ParseContext};
 #[path = "../../zebra-http-api/examples/font_support/mod.rs"]
 mod digest;
+mod support;
 
 // Zebra ZPL Programming Guide, barcode commands ^B0–^BZ, pp. 64–150.
 // https://www.zebra.com/content/dam/support-dam/en/documentation/unrestricted/guide/software/zpl-zbi2-pg-en.pdf
@@ -43,6 +44,24 @@ fn commands(input: &[u8]) -> BTreeSet<String> {
 // Foreground IoU must be strictly above 80%; an empty union proves nothing.
 fn within_budget(both: usize, under: usize, over: usize) -> bool {
     5 * (under + over) < both + under + over
+}
+
+struct Observation {
+    name: String,
+    codes: BTreeSet<String>,
+    reference_ink: usize,
+    profile_name: &'static str,
+    status: &'static str,
+    both: usize,
+    under: usize,
+    over: usize,
+    diagnostic: String,
+    source_hash: String,
+    printer_hash: String,
+    width: u32,
+    height: u32,
+    local_size: String,
+    local_hash: String,
 }
 
 #[test]
@@ -84,13 +103,12 @@ fn barcode_reference_coverage_and_error_budget() {
     }
     let mut report = String::from("path\tcommands\tinput_sha256\tprinter_sha256\tstatus\tintersection\tunderpaint\toverpaint\terror_percent\tdiagnostic\tprofile\treference_size\tlocal_size\tlocal_pixel_sha256\tclassification\treason\n");
     let (mut count, mut positive, mut over_budget, mut blank, mut diagnostics) = (0, 0, 0, 0, 0);
-    for path in paths {
-        let input = fs::read(&path).unwrap();
+    let observations = support::map(&paths, |path| {
+        let input = fs::read(path).unwrap();
         let codes = commands(&input);
         if codes.is_empty() {
-            continue;
+            return None;
         }
-        count += 1;
         let name = path.strip_prefix(root).unwrap().to_str().unwrap();
         let png_path = path.with_extension("png");
         assert!(png_path.is_file(), "{name}: missing printer comparison");
@@ -157,7 +175,7 @@ fn barcode_reference_coverage_and_error_budget() {
                         String::new(),
                     )
                 } else {
-                    let diff = raster_diff::compare(&reference, &actual, false).unwrap();
+                    let diff = raster_diff::compare_stats(&reference, &actual, false).unwrap();
                     if !diff.matches() {
                         if let Some(dir) = &artifacts {
                             let stem = name.replace('/', "__").replace(".zpl", "");
@@ -166,8 +184,14 @@ fn barcode_reference_coverage_and_error_budget() {
                                 raster_diff::Png::encode_gray(&actual, 203).unwrap(),
                             )
                             .unwrap();
-                            fs::write(dir.join(format!("{stem}-diff.png")), diff.png(1).unwrap())
-                                .unwrap();
+                            fs::write(
+                                dir.join(format!("{stem}-diff.png")),
+                                raster_diff::compare(&reference, &actual, false)
+                                    .unwrap()
+                                    .png(1)
+                                    .unwrap(),
+                            )
+                            .unwrap();
                         }
                     }
                     (
@@ -184,6 +208,44 @@ fn barcode_reference_coverage_and_error_budget() {
                 }
             }
         };
+        Some(Observation {
+            name: name.to_owned(),
+            codes,
+            reference_ink,
+            profile_name,
+            status,
+            both,
+            under,
+            over,
+            diagnostic,
+            source_hash: digest::sha256(&input),
+            printer_hash: digest::sha256(&png),
+            width: reference.width,
+            height: reference.height,
+            local_size,
+            local_hash,
+        })
+    });
+    for observation in observations.into_iter().flatten() {
+        let Observation {
+            name,
+            codes,
+            reference_ink,
+            profile_name,
+            status,
+            both,
+            under,
+            over,
+            diagnostic,
+            source_hash,
+            printer_hash,
+            width,
+            height,
+            local_size,
+            local_hash,
+        } = observation;
+        let name = name.as_str();
+        count += 1;
         let union = both + under + over;
         // Strictly below 20% of foreground union; integer comparison keeps the
         // exact boundary independent of rounded report percentages. Blank
@@ -211,10 +273,10 @@ fn barcode_reference_coverage_and_error_budget() {
         };
         let observation = format!(
             "{}\t{}\t{status}\t{both}\t{under}\t{over}\t{error}\t{}\t{profile_name}\t{}x{}\t{local_size}\t{local_hash}",
-            digest::sha256(&input),
-            digest::sha256(&png),
+            source_hash,
+            printer_hash,
             diagnostic.replace(['\t', '\n', '\r'], " "),
-            reference.width, reference.height
+            width, height
         );
         let (classification, reason) = exceptions
             .get(name)
@@ -251,9 +313,6 @@ fn barcode_reference_coverage_and_error_budget() {
         }
         if strict && !meets_target && !is_diagnostic {
             failures.push(format!("{name}: target unmet: {status}, error={error}%"));
-        }
-        if count % 200 == 0 {
-            println!("Barcode audit: compared {count} frames");
         }
     }
     for name in exceptions.keys() {
