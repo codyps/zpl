@@ -49,3 +49,11 @@ in Annex A and run-based switching/padding in Annex F.
 
 Run `cargo test --locked -p zpl --test surepost_preview` and
 `cargo test --locked -p zpl-font-extract --test surepost_fonts`.
+
+The new strikes contain ASCII. Missing Font 0 glyphs retain the enriched
+32-dot fallback face and its original scaling, including Unicode, default
+and legacy control glyphs. Legacy backslash also uses the fallback unless a
+native replacement was sampled. Mixed text keeps native ASCII metrics and
+composes fallback ink in output coordinates. Unit tests cover all ten sizes
+and encoding/default-glyph variants; these approximations are not new native
+accuracy claims for extended characters.
