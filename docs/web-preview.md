@@ -6,8 +6,20 @@ The wrapper is an internal deployment package (`publish = false`).
 
 ZPL stays in the browser: no rendering API, analytics, persistence, or printer
 connection. PNG previews and PNG/SVG downloads use the native adapters. Multiple
-labels are selectable. Edits invalidate old previews/downloads. Errors and font
-fidelity warnings are displayed, not silently ignored.
+labels are selectable. Save PNG downloads the current label with PNG iTXt metadata:
+`Software` identifies the linked `zpl` crate version; `ZPL` contains JSON with the
+complete editor source, version, one-based label number, default width/height,
+DPI, and rendering profile. The full source is retained for multi-label inputs
+because earlier commands may affect later labels. Save SVG embeds the same JSON
+in a non-rendering `<metadata id="zpl-metadata">` element. PNG pixels and SVG geometry are unchanged. Both save buttons are disabled
+until the current preview is ready. The displayed image uses the same PNG blob as
+Save PNG, so the browser’s Save Image As action also retains the metadata. Metadata follows
+[PNG §11.3.3.4](https://www.w3.org/TR/png-3/#11iTXt) and
+[SVG §5.9](https://www.w3.org/TR/SVG2/struct.html#MetadataElement).
+
+Edits invalidate old previews/downloads. Rendering errors and actionable warnings
+remain visible. The demo omits the general resident-font printer-fidelity caveat
+to keep the interface compact.
 
 Rendering runs in a fresh module worker for each request. Cancel, edits, and the
 20-second timeout terminate the worker and release its Wasm memory. Input is

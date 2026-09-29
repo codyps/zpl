@@ -16,6 +16,8 @@ function status(message, error = false) {
   $('status').classList.toggle('error', error);
 }
 function clearPreview() {
+  $('save').disabled = true;
+  $('save-svg').disabled = true;
   $('preview').hidden = true;
   $('preview').removeAttribute('src');
   $('placeholder').hidden = false;
@@ -53,14 +55,19 @@ function run(input, label = 0) {
       $('preview').hidden = false;
       $('placeholder').hidden = true;
       for (const [i, id] of ['png', 'svg'].entries()) {
-        $(id).href = urls[i]; $(id).hidden = false; $(id).download = `label-${label + 1}.${id}`;
+        $(id).href = urls[i]; $(id).download = `label-${label + 1}.${id}`;
       }
+      $('save').disabled = false;
+      $('save-svg').disabled = false;
       $('label').max = data.labels;
       $('label').value = label + 1;
       $('label').disabled = data.labels < 2;
       $('dimensions').textContent = `${data.width} × ${data.height} dots`;
-      $('warnings').textContent = data.warnings;
-      $('warnings').hidden = !data.warnings;
+      // Omit the general printer-fidelity caveat from this compact demo.
+      const warnings = data.warnings.split('\n').filter(message => message !==
+        'Resident fonts use captured bitmap strikes; unsampled sizes, resolutions or rotations can differ from printer rasterization.').join('\n');
+      $('warnings').textContent = warnings;
+      $('warnings').hidden = !warnings;
       status(`Label ${label + 1} of ${data.labels}. Rendered locally.`);
     };
     timer = setTimeout(() => fail('Rendering exceeded 20 seconds. Simplify the label or reduce its dimensions.'), 20_000);
@@ -80,5 +87,7 @@ $('editor').addEventListener('input', () => {
 $('label').addEventListener('change', () => {
   if (lastInput && $('label').reportValidity()) run(lastInput, Number($('label').value) - 1);
 });
+$('save-svg').addEventListener('click', () => { if (!$('save-svg').disabled) $('svg').click(); });
+$('save').addEventListener('click', () => { if (!$('save').disabled) $('png').click(); });
 $('cancel').addEventListener('click', () => { stop(); status('Rendering cancelled.'); });
 window.addEventListener('pagehide', () => { stop(); clearPreview(); });

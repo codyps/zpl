@@ -5,6 +5,12 @@ use zpl::{
     render, Options,
 };
 
+/// Version of the linked renderer, rather than the browser adapter package.
+#[wasm_bindgen]
+pub fn library_version() -> String {
+    zpl::version::VERSION.into()
+}
+
 #[wasm_bindgen]
 pub struct Preview {
     png: Vec<u8>,
