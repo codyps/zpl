@@ -269,6 +269,10 @@ Decoder libraries are used only as independent test oracles:
 
 ## Real-printer preview comparisons
 
+The [cross-corpus barcode audit](barcode-accuracy.md) inventories saved previews
+with model-specific profiles and separates positive coverage from diagnostic
+controls. Run `cargo test --locked -p zpl --test barcode_accuracy`.
+
 The [ZD621 fixture corpus](../zebra-http-api/tests/fixtures/barcodes-zd621-v1/README.md)
 contains 60 real HTTP previews covering all 29 barcode commands. Run
 `cargo test -p zebra-http-api --test barcode_preview` for offline regression
