@@ -120,7 +120,16 @@ fn compact(data: &[u8]) -> (Vec<usize>, usize) {
             continue;
         }
         let target = (0..5).find(|&s| value(data[i], s).is_some()).unwrap();
-        let count = run(target);
+        let count = if set == 0 && target == 1 {
+            // Annex F's B run ends at characters also available in A.
+            // Native controls include B + RS + B: shift the first B character,
+            // emit RS in A, then decide afresh whether to latch for the next run.
+            tail.iter()
+                .take_while(|&&c| value(c, 1).is_some() && value(c, 0).is_none())
+                .count()
+        } else {
+            run(target)
+        };
         if target < 2 {
             if set >= 2 || target == 1 && count >= 2 || target == 0 && count >= 4 {
                 out.push(if target == 0 && set >= 2 { 58 } else { 63 });
@@ -205,7 +214,10 @@ fn encode(b: &Barcode, data: &[u8]) -> Result<Matrix, String> {
     }
     let (encoded, final_set) = compact(body);
     stream.extend(encoded);
-    if final_set >= 2 || b.compatibility.maxicode_terminal_latch {
+    // ISO/IEC 16023 Annex F: return to A/B for padding, not after a full
+    // secondary message. The SurePost native control fills all 84 codewords;
+    // adding a padding latch there incorrectly rejects a valid symbol.
+    if stream.len() < capacity && (final_set >= 2 || b.compatibility.maxicode_terminal_latch) {
         stream.push(63);
     }
     if stream.len() > capacity {
@@ -355,6 +367,45 @@ fn printer_geometry(m: &Matrix, dpi: u32) -> Path {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn full_capacity_needs_no_padding_latch() {
+        // ISO/IEC 16023 data capacities: 84 secondary data words in mode 2,
+        // plus nine primary data words in mode 4. Exercise a final E shift
+        // as well as a full A run, with independent decoding and overflow.
+        for profile in [
+            crate::render::profiles::SPECIFICATION,
+            crate::render::profiles::ZD621_203_DPI,
+        ] {
+            for (mode, capacity, header) in [("2", 84, "988840000000000"), ("4", 93, "")] {
+                let b =
+                    Barcode::new("BD", &[mode], 2., 2., 90., 203, profile.compatibility).unwrap();
+                for control in [false, true] {
+                    let mut body = vec![b'A'; capacity - if control { 2 } else { 0 }];
+                    if control {
+                        body.push(4);
+                    }
+                    let mut data = header.as_bytes().to_vec();
+                    data.extend_from_slice(&body);
+                    let m = encode(&b, &data).unwrap();
+                    let mut matrix = anyd::output::BitMatrix::new(30, 33, 0);
+                    for y in 0..33 {
+                        for x in 0..30 {
+                            matrix.set(x, y, m.get(x, y));
+                        }
+                    }
+                    let decoded = anyd::codes::maxicode::MaxiCodeDecoder::new()
+                        .decode_matrix(&matrix)
+                        .unwrap();
+                    assert!(decoded.payload_bytes().ends_with(&body));
+                    data.push(b'A');
+                    assert_eq!(
+                        encode(&b, &data).err().unwrap(),
+                        "MaxiCode data exceeds symbol capacity"
+                    );
+                }
+            }
+        }
+    }
     #[test]
     fn specification_dimensions() {
         fn extent(segments: &[crate::output::Segment]) -> (f64, f64) {

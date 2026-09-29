@@ -257,6 +257,18 @@ fn strikes() -> &'static Vec<(Settings, Vec<Glyph>)> {
     static STRIKES: OnceLock<Vec<(Settings, Vec<Glyph>)>> = OnceLock::new();
     STRIKES.get_or_init(|| {
         [
+            // Native SurePost sizes; sampling and independent controls in
+            // tests/fixtures/surepost-zd621-v1 (^A guide p. 60).
+            include_bytes!("../../assets/font0-18-22.zbf").as_slice(),
+            include_bytes!("../../assets/font0-20-24.zbf").as_slice(),
+            include_bytes!("../../assets/font0-22-26.zbf").as_slice(),
+            include_bytes!("../../assets/font0-23-23.zbf").as_slice(),
+            include_bytes!("../../assets/font0-26-30.zbf").as_slice(),
+            include_bytes!("../../assets/font0-28-32.zbf").as_slice(),
+            include_bytes!("../../assets/font0-30-34.zbf").as_slice(),
+            include_bytes!("../../assets/font0-39-42.zbf").as_slice(),
+            include_bytes!("../../assets/font0-45-44.zbf").as_slice(),
+            include_bytes!("../../assets/font0-72-68.zbf").as_slice(),
             // Native shipping/typography sizes, independently reconstructed
             // from shipping-fonts-zd621-v1; ^A guide p. 60, FO/FT pp. 201/205.
             include_bytes!("../../assets/font0-20-12.zbf").as_slice(),
