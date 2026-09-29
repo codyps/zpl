@@ -163,6 +163,17 @@ cargo clippy --workspace --all-targets
 
 Use `taplo fmt` to automatically format TOML files and `nix fmt` for Nix files.
 CI checks TOML formatting with the same Taplo configuration.
+
+CI uploads the Linux (`x86_64-linux`) and Intel macOS (`x86_64-darwin`)
+development shells and their dependency closures to `codyps.cachix.org` on
+pushes to `main` and manual CI runs on `main`. The jobs use Warbler's
+`warbler-linux` and `warbler-macos-intel` runners and the checked-in `flake.lock`.
+Set the repository secret `CACHIX_AUTH_TOKEN` to a token with write access to
+the `codyps` cache; missing credentials fail the job before building. Upload jobs
+do not run on pull requests. ARM shells are not covered by these runners.
+To use the cache locally, run `cachix use codyps` before entering the development
+shell.
+
 `test-data/generate.sh` is a separate external-service
 check: it sends fixtures to Labelary and writes PDFs under `test-data/_gen/`.
 See [AGENTS.md](AGENTS.md) for contribution and testing conventions.

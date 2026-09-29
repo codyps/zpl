@@ -19,6 +19,61 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  nix-shell:
+    name: Cache Nix development shell (${{ matrix.system }})
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - system: x86_64-linux
+            runner: warbler-linux
+          - system: x86_64-darwin
+            runner: warbler-macos-intel
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 60
+    steps:
+      - name: Check Cachix credentials
+        env:
+          CACHIX_AUTH_TOKEN: ${{ secrets.CACHIX_AUTH_TOKEN }}
+        run: |
+          if [ -z "$CACHIX_AUTH_TOKEN" ]; then
+            echo '::error::Set the CACHIX_AUTH_TOKEN repository secret to a Cachix write token for codyps.'
+            exit 1
+          fi
+      - name: Install checkout dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get -o Acquire::Retries=3 update
+          sudo apt-get -o Acquire::Retries=3 install -y --no-install-recommends git
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: cachix/install-nix-action@13d8dd58da0234aa297dedd986986ccb8e7f3e24 # v31.11.1
+        with:
+          extra_nix_config: |
+            download-attempts = 3
+            connect-timeout = 15
+            stalled-download-timeout = 60
+      - uses: cachix/cachix-action@38b082610b782e7e93e209c35fd730d399dee866 # v17
+        with:
+          name: codyps
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          # Push only the shell closure explicitly, including substituted paths.
+          # https://github.com/cachix/cachix-action#push-modes
+          skipPush: true
+      - name: Build development shell
+        # The profile retains the environment and its dependencies for upload.
+        # https://nix.dev/manual/nix/2.28/command-ref/new-cli/nix3-develop.html
+        env:
+          NIX_SHELL_SYSTEM: ${{ matrix.system }}
+        run: nix develop ".#devShells.$NIX_SHELL_SYSTEM.default" --no-update-lock-file --profile "$RUNNER_TEMP/nix-shell" --command true
+      - name: Upload development shell closure
+        env:
+          CACHIX_AUTH_TOKEN: ${{ secrets.CACHIX_AUTH_TOKEN }}
+        run: |
+          nix path-info --recursive "$RUNNER_TEMP/nix-shell" | cachix push codyps
+
   toml-fmt:
     name: TOML formatting
     runs-on: warbler-linux
