@@ -3,7 +3,7 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: ['**']
   pull_request:
   workflow_dispatch:
 
@@ -21,7 +21,6 @@ concurrency:
 jobs:
   nix-shell:
     name: Cache Nix development shell (${{ matrix.system }})
-    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
     strategy:
       fail-fast: false
       matrix:
@@ -33,13 +32,16 @@ jobs:
     runs-on: ${{ matrix.runner }}
     timeout-minutes: 60
     steps:
-      - name: Check Cachix credentials
+      - name: Determine Cachix write access
+        id: cachix-access
         env:
           CACHIX_AUTH_TOKEN: ${{ secrets.CACHIX_AUTH_TOKEN }}
         run: |
-          if [ -z "$CACHIX_AUTH_TOKEN" ]; then
-            echo '::error::Set the CACHIX_AUTH_TOKEN repository secret to a Cachix write token for codyps.'
-            exit 1
+          if [ -n "$CACHIX_AUTH_TOKEN" ]; then
+            echo 'can-push=true' >> "$GITHUB_OUTPUT"
+          else
+            echo 'can-push=false' >> "$GITHUB_OUTPUT"
+            echo 'CACHIX_AUTH_TOKEN is unavailable; building with read-only cache access.'
           fi
       - name: Install checkout dependencies
         if: runner.os == 'Linux'
@@ -59,9 +61,9 @@ jobs:
         with:
           name: codyps
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
-          # Push only the shell closure explicitly, including substituted paths.
+          # Cache completed derivations as they build, even if a later step fails.
           # https://github.com/cachix/cachix-action#push-modes
-          skipPush: true
+          skipPush: ${{ steps.cachix-access.outputs.can-push != 'true' }}
       - name: Build development shell
         # The profile retains the environment and its dependencies for upload.
         # print-dev-env builds the same environment without launching host Bash.
@@ -72,6 +74,8 @@ jobs:
           NIX_SHELL_SYSTEM: ${{ matrix.system }}
         run: nix print-dev-env ".#devShells.$NIX_SHELL_SYSTEM.default" --accept-flake-config --no-update-lock-file --profile "$RUNNER_TEMP/nix-shell" > /dev/null
       - name: Upload development shell closure
+        # Also include substituted dependencies, which do not trigger build hooks.
+        if: steps.cachix-access.outputs.can-push == 'true'
         env:
           CACHIX_AUTH_TOKEN: ${{ secrets.CACHIX_AUTH_TOKEN }}
         run: |
