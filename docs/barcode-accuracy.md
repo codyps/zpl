@@ -36,7 +36,7 @@ changing native output for identical requests, which a deterministic renderer
 cannot reproduce. MaxiCode mode 5 previews contain only finder/orientation
 marks, so they are also diagnostic even when their pixels match exactly.
 
-The reviewed inventory has 1,614 frames: 1,569 exact positive frames, three
+The reviewed inventory has 1,625 frames: 1,580 exact positive frames, three
 positive shipping-label frames with 6 underpaint and 9 overpaint pixels each,
 and 42 diagnostic controls. The diagnostics comprise 26 blank previews
 (eight rejected inputs and eighteen rendered blanks), seven unstable empty-QR
