@@ -20,7 +20,10 @@ The full label improved from 81.7965% foreground IoU (30,760 underpaint and
 at their original origin, with no padding, alignment, cropping or rescaling.
 The isolated MaxiCode and its repeated capture are also pixel-exact.
 
-The sampled MaxiCode encodings end set-B runs at characters available in A. In particular,
+`maxicode_printer_run_boundaries` enables the sampled ZD621 run choices.
+It is disabled in SPECIFICATION and ZQ610_PLUS_203_DPI (no matching ZQ610
+capture evidence). The sampled encodings end set-B runs at characters
+available in A. In particular,
 `>` followed by RS needs a one-character shift, not a latch and a later return.
 A full secondary message must not acquire an extra padding latch. Seven fresh
 controls cover shared RS, GS, space and comma, another B run after RS, and

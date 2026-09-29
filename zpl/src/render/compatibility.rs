@@ -343,6 +343,11 @@ pub struct Compatibility {
     /// Emit a final A/B latch before MaxiCode padding, as in ZD621 previews.
     /// ISO/IEC 16023:2000 §4.4.4.8 permits padding directly in either set.
     pub maxicode_terminal_latch: bool,
+    /// End prospective B runs at A/B-shared characters as measured in
+    /// surepost-zd621-v1. ISO/IEC 16023 Annex A permits those characters in B;
+    /// disabled uses shared B runs directly. At capacity, shared runs remain
+    /// available even when enabled, rather than rejecting valid messages.
+    pub maxicode_printer_run_boundaries: bool,
     /// Use the captured ZD621 dot template for MaxiCode modules and finder rings.
     /// Includes the full 199-dot symbol baseline for ^FT. Default: nominal
     /// physical geometry from ISO/IEC 16023:2000 §4.11.

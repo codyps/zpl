@@ -1397,3 +1397,24 @@ fn extended_model1_versions_are_optional() {
         );
     }
 }
+
+#[test]
+fn maxicode_shared_run_boundaries_are_independently_selectable() {
+    // ISO 16023 Annex A permits shared characters in B. The measured ZD621
+    // run choices are isolated from specification behavior and other options.
+    let body = "^FO20,20^BD4^FDa,ABCDEF";
+    for initial in [SPECIFICATION, ZD621_203_DPI] {
+        let mut shared = initial;
+        shared.compatibility.maxicode_printer_run_boundaries = false;
+        let mut native = shared;
+        native.compatibility.maxicode_printer_run_boundaries = true;
+        assert_ne!(raster(body, shared).pixels, raster(body, native).pixels);
+    }
+    assert!(!SPECIFICATION.compatibility.maxicode_printer_run_boundaries);
+    assert!(ZD621_203_DPI.compatibility.maxicode_printer_run_boundaries);
+    assert!(
+        !zpl::render::profiles::ZQ610_PLUS_203_DPI
+            .compatibility
+            .maxicode_printer_run_boundaries
+    );
+}

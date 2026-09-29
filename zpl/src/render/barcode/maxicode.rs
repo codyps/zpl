@@ -212,7 +212,8 @@ fn encode(b: &Barcode, data: &[u8]) -> Result<Matrix, String> {
     if total > 1 {
         stream.extend([33, (number - 1) * 8 + total - 1]);
     }
-    let (mut encoded, mut final_set) = compact(body, false);
+    let (mut encoded, mut final_set) =
+        compact(body, !b.compatibility.maxicode_printer_run_boundaries);
     if stream.len() + encoded.len() > capacity {
         // Annex A permits shared punctuation in B. The native run heuristic
         // above can waste shifts on alternating B/shared characters. Retain
