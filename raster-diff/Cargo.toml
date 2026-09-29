@@ -5,6 +5,8 @@ edition = "2021"
 license.workspace = true
 description = "Dependency-free binary raster comparison and PNG diagnostics"
 readme = "README.md"
+repository = "https://github.com/codyps/zpl"
+documentation = "https://docs.rs/raster-diff"
 
 [[bin]]
 name = "png-diff"

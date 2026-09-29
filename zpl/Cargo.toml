@@ -5,6 +5,8 @@ edition = "2021"
 description = "A high accuracy ZPL renderer"
 license.workspace = true
 readme = "README.md"
+repository = "https://github.com/codyps/zpl"
+documentation = "https://docs.rs/zpl"
 include = ["src/**", "assets/*.zbf", "LICENSE", "README.md"]
 
 [dependencies]
