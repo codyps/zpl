@@ -1,4 +1,16 @@
 {
+  nixConfig = {
+    # Public endpoints and keys: https://cachix.org/api/v1/cache/<cache-name>
+    extra-substituters = [
+      "https://codyps.cachix.org"
+      "https://nix-community.cachix.org"
+    ];
+    extra-trusted-public-keys = [
+      "codyps.cachix.org-1:T2SgQFUIPVsszIqt74ku8XhkfVDVm3sVzn4qOfUoEFY="
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+    ];
+  };
+
   inputs = {
     nixpkgs.url = "nixpkgs/nixpkgs-unstable";
     nixpkgs-intel-darwin.url = "github:NixOS/nixpkgs/nixpkgs-26.05-darwin";

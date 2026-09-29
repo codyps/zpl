@@ -171,8 +171,10 @@ pushes to `main` and manual CI runs on `main`. The jobs use Warbler's
 Set the repository secret `CACHIX_AUTH_TOKEN` to a token with write access to
 the `codyps` cache; missing credentials fail the job before building. Upload jobs
 do not run on pull requests. ARM shells are not covered by these runners.
-To use the cache locally, run `cachix use codyps` before entering the development
-shell.
+The flake configures `codyps.cachix.org` and `nix-community.cachix.org` as extra
+cache sources with their public signing keys, preserving Nix's default cache.
+Accept the flake's cache settings when prompted, or use
+`nix develop --accept-flake-config`. CI accepts these settings explicitly.
 
 `test-data/generate.sh` is a separate external-service
 check: it sends fixtures to Labelary and writes PDFs under `test-data/_gen/`.
