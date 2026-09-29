@@ -20,13 +20,16 @@ The full label improved from 81.7965% foreground IoU (30,760 underpaint and
 at their original origin, with no padding, alignment, cropping or rescaling.
 The isolated MaxiCode and its repeated capture are also pixel-exact.
 
-MaxiCode's set-B run must stop at characters also available in A. In particular,
+The sampled MaxiCode encodings end set-B runs at characters available in A. In particular,
 `>` followed by RS needs a one-character shift, not a latch and a later return.
 A full secondary message must not acquire an extra padding latch. Seven fresh
 controls cover shared RS, GS, space and comma, another B run after RS, and
 84-codeword capacity ending in either A or an E shift. They are all exact.
 Independent decoder tests cover full capacity and overflow in modes 2 and 4
-under both specification and ZD621 profiles.
+under both specification and ZD621 profiles. If the native run heuristic
+exceeds capacity, the encoder also tries runs containing shared set-B characters
+before rejecting the payload. Independent decoder tests cover forty alternating
+pairs for all eight shared characters, in modes 2 and 4 under both profiles.
 
 Ten complete 95-character ASCII Font 0 strikes were sampled at the label's
 native dimensions. Each has twelve sampling pages and an independent composed
