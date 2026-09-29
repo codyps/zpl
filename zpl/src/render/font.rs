@@ -257,6 +257,18 @@ fn strikes() -> &'static Vec<(Settings, Vec<Glyph>)> {
     static STRIKES: OnceLock<Vec<(Settings, Vec<Glyph>)>> = OnceLock::new();
     STRIKES.get_or_init(|| {
         [
+            // Native SurePost sizes; sampling and independent controls in
+            // tests/fixtures/surepost-zd621-v1 (^A guide p. 60).
+            include_bytes!("../../assets/font0-18-22.zbf").as_slice(),
+            include_bytes!("../../assets/font0-20-24.zbf").as_slice(),
+            include_bytes!("../../assets/font0-22-26.zbf").as_slice(),
+            include_bytes!("../../assets/font0-23-23.zbf").as_slice(),
+            include_bytes!("../../assets/font0-26-30.zbf").as_slice(),
+            include_bytes!("../../assets/font0-28-32.zbf").as_slice(),
+            include_bytes!("../../assets/font0-30-34.zbf").as_slice(),
+            include_bytes!("../../assets/font0-39-42.zbf").as_slice(),
+            include_bytes!("../../assets/font0-45-44.zbf").as_slice(),
+            include_bytes!("../../assets/font0-72-68.zbf").as_slice(),
             // Native shipping/typography sizes, independently reconstructed
             // from shipping-fonts-zd621-v1; ^A guide p. 60, FO/FT pp. 201/205.
             include_bytes!("../../assets/font0-20-12.zbf").as_slice(),
@@ -395,6 +407,10 @@ fn legacy_strikes() -> &'static Vec<(Settings, Vec<Glyph>)> {
                     .binary_search_by_key(&u32::from(b'\\'), |g| g.codepoint)
                     .expect("ASCII backslash");
                 glyphs[index] = replacement[0].clone();
+            } else if settings.font == '0' {
+                // Without a sampled legacy replacement, use the enriched
+                // base strike's cent-shaped backslash, not the ASCII slash.
+                glyphs.retain(|g| g.codepoint != u32::from(b'\\'));
             }
         }
         faces
@@ -524,6 +540,9 @@ fn selected(id: impl Into<Font> + Copy, w: f64, h: f64) -> (&'static [Glyph], f6
             .expect("embedded preset font");
         return (glyphs, w / s.width as f64, h / s.height as f64);
     }
+    fallback(font, w, h)
+}
+fn fallback(font: Font, w: f64, h: f64) -> (&'static [Glyph], f64, f64) {
     let fallback = if font.legacy_controls {
         &control_strikes(font.legacy_backslash, font.default_glyph)
             .last()
@@ -540,6 +559,16 @@ fn selected(id: impl Into<Font> + Copy, w: f64, h: f64) -> (&'static [Glyph], f6
         &strike().1
     };
     (fallback, w / 32., h / 32.)
+}
+// Native strikes may cover only ASCII. Keep the enriched base strike's
+// Unicode, legacy and default glyphs available with their original scale.
+fn selected_for_char(font: Font, c: char, w: f64, h: f64) -> (&'static [Glyph], f64, f64) {
+    let face = selected(font, w, h);
+    if font.id == '0' && glyph_from(face.0, c).is_err() {
+        fallback(font, w, h)
+    } else {
+        face
+    }
 }
 fn glyph_from(glyphs: &'static [Glyph], c: char) -> Result<&'static Glyph, String> {
     let index = glyphs
@@ -596,13 +625,14 @@ pub(super) fn width_for(
     h: f64,
 ) -> Result<f64, String> {
     let font = id.into();
-    let (glyphs, sx, _) = selected(font, w, h);
     s.chars().try_fold(0., |sum, c| {
         if font.is_tab(c) {
             return Ok(next_tab(sum));
         }
         let gap = font.block_flow.map_or(0., |flow| flow.gap_for(c));
-        Ok(sum + glyph_from(glyphs, font.map_char(c)?)?.advance as f64 * sx + gap)
+        let c = font.map_char(c)?;
+        let (glyphs, sx, _) = selected_for_char(font, c, w, h);
+        Ok(sum + glyph_from(glyphs, c)?.advance as f64 * sx + gap)
     })
 }
 /// ZD621 font-0 FO/I/right anchor: measure ink with a backwards pen.
@@ -616,7 +646,6 @@ pub(super) fn inverted_text_margin(
     h: f64,
     gap: f64,
 ) -> Result<f64, String> {
-    let (glyphs, sx, _) = selected(font, w, h);
     let mut pen = 0.;
     let mut right = 0_f64;
     let mut first_advance = 0.;
@@ -629,7 +658,9 @@ pub(super) fn inverted_text_margin(
             pen = next;
             continue;
         }
-        let g = glyph_from(glyphs, font.map_char(c)?)?;
+        let c = font.map_char(c)?;
+        let (glyphs, sx, _) = selected_for_char(font, c, w, h);
+        let g = glyph_from(glyphs, c)?;
         if i == 0 {
             first_advance = g.advance as f64 * sx;
         }
@@ -678,8 +709,9 @@ pub(super) fn inverted_margin(
     if font.is_tab(c) {
         return Ok(0.);
     }
-    let (glyphs, sx, _) = selected(font, w, h);
-    let g = glyph_from(glyphs, font.map_char(c)?)?;
+    let c = font.map_char(c)?;
+    let (glyphs, sx, _) = selected_for_char(font, c, w, h);
+    let g = glyph_from(glyphs, c)?;
     Ok(((g.advance as f64 - g.left as f64 - g.width as f64) * sx - 1.).max(0.))
 }
 #[cfg(test)]
@@ -755,7 +787,25 @@ pub(super) fn text_for(
         }
         return Ok(union_lines(path));
     }
-    let (glyphs, sx, sy) = selected(font, w, h);
+    let (mut glyphs, mut sx, mut sy) = selected(font, w, h);
+    if font.id == '0' {
+        for c in s.chars().filter(|&c| !font.is_tab(c)) {
+            let c = font.map_char(c)?;
+            if glyph_from(glyphs, c).is_err() {
+                if s.chars().count() == 1 {
+                    (glyphs, sx, sy) = fallback(font, w, h);
+                } else {
+                    // Mixed strikes have different bitmap units. Compose in
+                    // output coordinates, using each glyph's own advances.
+                    let mut path = Path::default();
+                    for part in text_parts_for(font, s, w, h)? {
+                        path.segments.extend(part.segments);
+                    }
+                    return Ok(union_lines(path));
+                }
+            }
+        }
+    }
     // Merge ink spans before emitting even-odd subpaths. Proportional glyphs can
     // overhang their advance; overlapping strokes must remain black, not XOR.
     let mut rows: BTreeMap<i32, Vec<(f64, f64)>> = BTreeMap::new();
@@ -927,6 +977,66 @@ pub(super) fn cull_outside(path: &mut Path, width: u32, height: u32) {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn ascii_strikes_preserve_enriched_fallback_glyphs() {
+        // ^CI / ^PA and legacy control behavior: use the same enriched
+        // 32-dot base face and scaling available before these ASCII captures.
+        for (h, w) in [
+            (18., 22.),
+            (20., 24.),
+            (22., 26.),
+            (23., 23.),
+            (26., 30.),
+            (28., 32.),
+            (30., 34.),
+            (39., 42.),
+            (45., 44.),
+            (72., 68.),
+        ] {
+            for font in [
+                Font::new('0', false),
+                Font::new('0', true),
+                Font::new('0', false).with_default_glyph(true),
+                Font::new('0', true).with_default_glyph(true),
+                Font::new('0', true).with_control_glyphs(true, false),
+                Font::new('0', true)
+                    .with_default_glyph(true)
+                    .with_control_glyphs(true, false),
+            ] {
+                let mut characters = vec!['¢', 'é', 'ð', '\u{378}', 'א', 'ب'];
+                if font.legacy_backslash {
+                    characters.push('\\');
+                }
+                if font.legacy_controls {
+                    characters.extend(['\u{1b}', '\u{7f}']);
+                }
+                for c in characters {
+                    let value = c.to_string();
+                    let mut expected = text_for(font, &value, 32., 32.).unwrap();
+                    expected.transform(|p| crate::output::Point::new(p.x * w / 32., p.y * h / 32.));
+                    let actual = text_for(font, &value, w, h).unwrap();
+                    assert_eq!(actual, expected, "{c:?} at {h}x{w}");
+                    assert_eq!(
+                        width_for(font, &value, w, h).unwrap(),
+                        width_for(font, &value, 32., 32.).unwrap() * w / 32.
+                    );
+                }
+                // ASCII remains native, even in a field containing fallback
+                // glyphs; width and ink composition agree across both scales.
+                let value = "A¢Wé";
+                let expected_width: f64 = value
+                    .chars()
+                    .map(|c| width_for(font, &c.to_string(), w, h).unwrap())
+                    .sum();
+                assert_eq!(width_for(font, value, w, h).unwrap(), expected_width);
+                let mut expected = Path::default();
+                for part in text_parts_for(font, value, w, h).unwrap() {
+                    expected.segments.extend(part.segments);
+                }
+                assert_eq!(text_for(font, value, w, h).unwrap(), union_lines(expected));
+            }
+        }
+    }
     #[test]
     fn embedded_strike_is_complete_and_compact() {
         let (s, g) = strike();

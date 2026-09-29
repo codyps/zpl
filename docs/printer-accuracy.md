@@ -1327,3 +1327,19 @@ requested diagnostic PNG output; conformance took 1.74 s and printer accuracy
 all 14 diagnostic PNGs were byte-identical to the previous run. These are
 individual local measurements, exclude compilation and process startup, and
 are not performance thresholds.
+
+## SurePost full-label and MaxiCode regressions
+
+`surepost_preview` preserves the normalized comparison label, an isolated
+MaxiCode, repeated native controls, seven independent compaction/capacity
+controls, and ten complete native Font 0 strikes with composed and rotated
+holdouts. The full 832×1524 label improves from 81.7965% to 100% foreground
+IoU: all 284,865 ink pixels match with zero underpaint or overpaint. The
+MaxiCode is also exact after correcting shared-character run selection and
+omitting the padding latch when the data fills capacity.
+
+All 151 frames pin exact source/capture/raster hashes and directional counts.
+Six independent font rotation pages retain small measured differences, with
+95% foreground IoU required separately for every field. Extraction tests
+reconstruct the ten font assets from native pages. See [the capture evidence,
+normalization and scope](../zpl/tests/fixtures/surepost-zd621-v1/README.md).

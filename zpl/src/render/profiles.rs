@@ -88,6 +88,7 @@ pub const SPECIFICATION: Options = Options {
         maxicode_standard_minimum_six_bytes: false,
         maxicode_nul_terminates_data: false,
         maxicode_terminal_latch: false,
+        maxicode_printer_run_boundaries: false,
         maxicode_printer_dot_geometry: false,
         maxicode_mode5_preview_omits_data: false,
         data_matrix_default_tilde_escape: false,
@@ -231,6 +232,7 @@ pub const ZD621_203_DPI: Options = Options {
         maxicode_standard_minimum_six_bytes: true,
         maxicode_nul_terminates_data: true,
         maxicode_terminal_latch: true,
+        maxicode_printer_run_boundaries: true,
         maxicode_printer_dot_geometry: true,
         maxicode_mode5_preview_omits_data: true,
         data_matrix_default_tilde_escape: true,
@@ -298,6 +300,8 @@ pub const ZQ610_PLUS_203_DPI: Options = Options {
         preview_max_width: Some(384),
         preview_width_latched_at_first_draw: true,
         preview_ignores_label_length: true,
+        // SurePost run-boundary evidence is ZD621-only.
+        maxicode_printer_run_boundaries: false,
         ..ZD621_203_DPI.compatibility
     },
     ..ZD621_203_DPI

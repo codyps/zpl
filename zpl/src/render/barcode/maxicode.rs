@@ -64,7 +64,7 @@ fn character(c: u8) -> (usize, usize) {
 }
 // ISO/IEC 16023:2000 Annex A pp. 24–25, Annex F.1–F.4 pp. 32–33.
 // Original implementation of the recommended run-based switching rules.
-fn compact(data: &[u8]) -> (Vec<usize>, usize) {
+fn compact(data: &[u8], include_shared_b: bool) -> (Vec<usize>, usize) {
     fn value(c: u8, set: usize) -> Option<usize> {
         if set == 0 {
             return set_a(c);
@@ -120,7 +120,16 @@ fn compact(data: &[u8]) -> (Vec<usize>, usize) {
             continue;
         }
         let target = (0..5).find(|&s| value(data[i], s).is_some()).unwrap();
-        let count = run(target);
+        let count = if set == 0 && target == 1 && !include_shared_b {
+            // Match native B-run boundaries at characters also available in A.
+            // Native controls include B + RS + B: shift the first B character,
+            // emit RS in A, then decide afresh whether to latch for the next run.
+            tail.iter()
+                .take_while(|&&c| value(c, 1).is_some() && value(c, 0).is_none())
+                .count()
+        } else {
+            run(target)
+        };
         if target < 2 {
             if set >= 2 || target == 1 && count >= 2 || target == 0 && count >= 4 {
                 out.push(if target == 0 && set >= 2 { 58 } else { 63 });
@@ -203,9 +212,23 @@ fn encode(b: &Barcode, data: &[u8]) -> Result<Matrix, String> {
     if total > 1 {
         stream.extend([33, (number - 1) * 8 + total - 1]);
     }
-    let (encoded, final_set) = compact(body);
+    let (mut encoded, mut final_set) =
+        compact(body, !b.compatibility.maxicode_printer_run_boundaries);
+    if stream.len() + encoded.len() > capacity {
+        // Annex A permits shared punctuation in B. The native run heuristic
+        // above can waste shifts on alternating B/shared characters. Retain
+        // the wider-run encoding when it is needed to fit a valid message;
+        // this also preserves inputs accepted before the native run fix.
+        let alternative = compact(body, true);
+        if alternative.0.len() < encoded.len() {
+            (encoded, final_set) = alternative;
+        }
+    }
     stream.extend(encoded);
-    if final_set >= 2 || b.compatibility.maxicode_terminal_latch {
+    // ISO/IEC 16023 Annex F: return to A/B for padding, not after a full
+    // secondary message. The SurePost native control fills all 84 codewords;
+    // adding a padding latch there incorrectly rejects a valid symbol.
+    if stream.len() < capacity && (final_set >= 2 || b.compatibility.maxicode_terminal_latch) {
         stream.push(63);
     }
     if stream.len() > capacity {
@@ -355,6 +378,79 @@ fn printer_geometry(m: &Matrix, dpi: u32) -> Path {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn shared_b_runs_fit_without_repeated_shifts() {
+        // ISO/IEC 16023 Annex A: these characters are available in A and B.
+        // Forty alternating pairs fit with a B latch; forty shifts do not.
+        for profile in [
+            crate::render::profiles::SPECIFICATION,
+            crate::render::profiles::ZD621_203_DPI,
+        ] {
+            for mode in ["2", "4"] {
+                let b =
+                    Barcode::new("BD", &[mode], 2., 2., 90., 203, profile.compatibility).unwrap();
+                for common in b" ,./:\x1c\x1d\x1e" {
+                    let body: Vec<_> = (0..40).flat_map(|_| [b'a', *common]).collect();
+                    let mut data = if mode == "2" {
+                        b"988840000000000".to_vec()
+                    } else {
+                        Vec::new()
+                    };
+                    data.extend_from_slice(&body);
+                    let m = encode(&b, &data).unwrap();
+                    let mut matrix = anyd::output::BitMatrix::new(30, 33, 0);
+                    for y in 0..33 {
+                        for x in 0..30 {
+                            matrix.set(x, y, m.get(x, y));
+                        }
+                    }
+                    let decoded = anyd::codes::maxicode::MaxiCodeDecoder::new()
+                        .decode_matrix(&matrix)
+                        .unwrap();
+                    assert!(decoded.payload_bytes().ends_with(&body));
+                }
+            }
+        }
+    }
+    #[test]
+    fn full_capacity_needs_no_padding_latch() {
+        // ISO/IEC 16023 data capacities: 84 secondary data words in mode 2,
+        // plus nine primary data words in mode 4. Exercise a final E shift
+        // as well as a full A run, with independent decoding and overflow.
+        for profile in [
+            crate::render::profiles::SPECIFICATION,
+            crate::render::profiles::ZD621_203_DPI,
+        ] {
+            for (mode, capacity, header) in [("2", 84, "988840000000000"), ("4", 93, "")] {
+                let b =
+                    Barcode::new("BD", &[mode], 2., 2., 90., 203, profile.compatibility).unwrap();
+                for control in [false, true] {
+                    let mut body = vec![b'A'; capacity - if control { 2 } else { 0 }];
+                    if control {
+                        body.push(4);
+                    }
+                    let mut data = header.as_bytes().to_vec();
+                    data.extend_from_slice(&body);
+                    let m = encode(&b, &data).unwrap();
+                    let mut matrix = anyd::output::BitMatrix::new(30, 33, 0);
+                    for y in 0..33 {
+                        for x in 0..30 {
+                            matrix.set(x, y, m.get(x, y));
+                        }
+                    }
+                    let decoded = anyd::codes::maxicode::MaxiCodeDecoder::new()
+                        .decode_matrix(&matrix)
+                        .unwrap();
+                    assert!(decoded.payload_bytes().ends_with(&body));
+                    data.push(b'A');
+                    assert_eq!(
+                        encode(&b, &data).err().unwrap(),
+                        "MaxiCode data exceeds symbol capacity"
+                    );
+                }
+            }
+        }
+    }
     #[test]
     fn specification_dimensions() {
         fn extent(segments: &[crate::output::Segment]) -> (f64, f64) {
