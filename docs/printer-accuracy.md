@@ -1291,6 +1291,9 @@ Its default backend detects x86 SHA-NI or ARM SHA-2 instructions at runtime
 and otherwise uses optimized portable code; see [backend selection](https://docs.rs/sha2/0.11.0/sha2/#backends).
 The core renderer gains no hashing dependency. Standard vectors and every
 existing source, capture and raster digest remain correctness gates.
+The barcode audit skips hashes used only for reporting when
+`ZPL_BARCODE_REPORT` is unset; hashes pinned by exception baselines are always
+checked, and requesting a report includes every hash as before.
 
 `barcode_accuracy`, `printer_accuracy` and `conformance_preview` replay
 independent frames on a bounded worker pool (available CPUs, capped at eight).

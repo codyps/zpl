@@ -101,7 +101,8 @@ fn barcode_reference_coverage_and_error_budget() {
     if let Some(dir) = &artifacts {
         fs::create_dir_all(dir).unwrap();
     }
-    let mut report = String::from("path\tcommands\tinput_sha256\tprinter_sha256\tstatus\tintersection\tunderpaint\toverpaint\terror_percent\tdiagnostic\tprofile\treference_size\tlocal_size\tlocal_pixel_sha256\tclassification\treason\n");
+    let report_path = std::env::var_os("ZPL_BARCODE_REPORT");
+    let mut report = report_path.as_ref().map(|_| String::from("path\tcommands\tinput_sha256\tprinter_sha256\tstatus\tintersection\tunderpaint\toverpaint\terror_percent\tdiagnostic\tprofile\treference_size\tlocal_size\tlocal_pixel_sha256\tclassification\treason\n"));
     let (mut count, mut positive, mut over_budget, mut blank, mut diagnostics) = (0, 0, 0, 0, 0);
     let observations = support::map(&paths, |path| {
         let input = fs::read(path).unwrap();
@@ -110,6 +111,9 @@ fn barcode_reference_coverage_and_error_budget() {
             return None;
         }
         let name = path.strip_prefix(root).unwrap().to_str().unwrap();
+        // Exact comparisons use bytes. Hash only persisted observations: a
+        // requested report or an immutable exception in the gaps manifest.
+        let needs_hashes = report_path.is_some() || exceptions.contains_key(name);
         let png_path = path.with_extension("png");
         assert!(png_path.is_file(), "{name}: missing printer comparison");
         let png = fs::read(&png_path).unwrap();
@@ -148,7 +152,9 @@ fn barcode_reference_coverage_and_error_budget() {
                 );
                 let actual = zpl::output::raster::rasterize(doc.labels.last().unwrap()).unwrap();
                 local_size = format!("{}x{}", actual.width, actual.height);
-                local_hash = digest::sha256(&actual.pixels);
+                if needs_hashes {
+                    local_hash = digest::sha256(&actual.pixels);
+                }
                 if (reference.width, reference.height) != (actual.width, actual.height) {
                     (
                         "size-mismatch",
@@ -218,8 +224,16 @@ fn barcode_reference_coverage_and_error_budget() {
             under,
             over,
             diagnostic,
-            source_hash: digest::sha256(&input),
-            printer_hash: digest::sha256(&png),
+            source_hash: if needs_hashes {
+                digest::sha256(&input)
+            } else {
+                String::new()
+            },
+            printer_hash: if needs_hashes {
+                digest::sha256(&png)
+            } else {
+                String::new()
+            },
             width: reference.width,
             height: reference.height,
             local_size,
@@ -278,23 +292,25 @@ fn barcode_reference_coverage_and_error_budget() {
             diagnostic.replace(['\t', '\n', '\r'], " "),
             width, height
         );
-        let (classification, reason) = exceptions
-            .get(name)
-            .map(|(kind, reason, _)| (*kind, *reason))
-            .unwrap_or((
-                if meets_target {
-                    "positive"
-                } else {
-                    "unreviewed"
-                },
-                "",
-            ));
-        writeln!(
-            report,
-            "{name}\t{}\t{observation}\t{classification}\t{reason}",
-            codes.into_iter().collect::<Vec<_>>().join(",")
-        )
-        .unwrap();
+        if let Some(report) = &mut report {
+            let (classification, reason) = exceptions
+                .get(name)
+                .map(|(kind, reason, _)| (*kind, *reason))
+                .unwrap_or((
+                    if meets_target {
+                        "positive"
+                    } else {
+                        "unreviewed"
+                    },
+                    "",
+                ));
+            writeln!(
+                report,
+                "{name}\t{}\t{observation}\t{classification}\t{reason}",
+                codes.into_iter().collect::<Vec<_>>().join(",")
+            )
+            .unwrap();
+        }
         if let Some((kind, _, expected)) = exceptions.get(name) {
             used_exceptions.insert(name.to_owned());
             if observation != *expected {
@@ -321,8 +337,8 @@ fn barcode_reference_coverage_and_error_budget() {
             "stale or missing comparison: {name}"
         );
     }
-    if let Some(output) = std::env::var_os("ZPL_BARCODE_REPORT") {
-        fs::write(output, &report).unwrap();
+    if let Some(output) = report_path {
+        fs::write(output, report.unwrap()).unwrap();
     }
     assert_eq!(
         count, 1614,
