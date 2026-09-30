@@ -57,7 +57,7 @@ impl Layout {
     }
     fn hyphen(&self) -> char {
         if self.compatibility.block_hyphenation_printer_layout {
-            '\u{ad}'
+            font::Font::AUTOMATIC_HYPHEN
         } else {
             '-'
         }
