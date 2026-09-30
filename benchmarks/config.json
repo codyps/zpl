@@ -1,0 +1,7 @@
+{
+  "rounds": 10,
+  "milliseconds": 200,
+  "threshold_percent": 10,
+  "threshold_ns": 1000,
+  "bootstrap_iterations": 5000
+}

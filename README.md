@@ -167,15 +167,18 @@ CI checks TOML formatting with the same Taplo configuration.
 CI uploads the Linux (`x86_64-linux`) and Intel macOS (`x86_64-darwin`)
 development shells and their dependency closures to `codyps.cachix.org` on
 pushes to every branch, pull requests, and manual CI runs when write credentials
-are available. The jobs use Warbler's `warbler-linux` and `warbler-macos-intel`
-runners and the checked-in `flake.lock`. Set the repository secret
+are available. All workflows use GitHub-hosted runners: `ubuntu-24.04` for
+Linux and `macos-15-intel` for the Intel macOS shell. Benchmarks run only on Linux.
+The shell jobs use the checked-in `flake.lock`. Set the repository secret
 `CACHIX_AUTH_TOKEN` to a token with write access to the `codyps` cache.
 Jobs without the secret (including fork and Dependabot PRs) still build using
 public caches, but skip uploads. Cachix uploads completed derivations as they
 build; a successful build also pushes the full shell closure, including
 substituted dependencies. This follows the
 [nix.dev CI guide](https://nix.dev/guides/recipes/continuous-integration-github-actions).
-ARM shells are not covered by these runners.
+ARM shells are not covered by these runners. Rust tests, Clippy, and the Pages
+build use GitHub Actions Cargo caches, with writes restricted to main; they no
+longer require private runner networking or Warbler cache credentials.
 The flake configures `codyps.cachix.org` and `nix-community.cachix.org` as extra
 cache sources with their public signing keys, preserving Nix's default cache.
 Accept the flake's cache settings when prompted, or use

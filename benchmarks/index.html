@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ZPL rendering performance</title>
+<style>
+body { font: 16px system-ui, sans-serif; color: #203036; background: #fafcfc; margin: 2rem auto; padding: 0 1rem; max-width: 1200px; }
+a { color: #086a77; } nav { display: flex; gap: 2rem; } h1 { font-size: 2rem; }
+label { display: inline-block; margin: 1rem 2rem 1rem 0; } select { font: inherit; padding: .4rem; }
+svg { width: 100%; background: white; border: 1px solid #ccd7da; } svg text { font: 12px system-ui; }
+.table { overflow-x: auto; } table { width: 100%; border-collapse: collapse; font-size: .85rem; } th, td { text-align: left; padding: .7rem; border-bottom: 1px solid #ccd7da; } th { white-space: nowrap; }
+</style>
+<nav><a href="../">Label preview</a><a href="https://github.com/codyps/zpl/blob/main/benchmarks/README.md">Measurement method</a></nav>
+<h1>Rendering performance</h1>
+<p>Native ZD621 profile · 812 × 600 dots · median of ten rounds. Scene measures parsing and scene construction; raster measures a prepared scene; total measures both. PNG encoding is excluded.</p>
+<p id="status" role="status">Loading performance history…</p>
+<label>Platform <select id="runner" aria-label="Platform"></select></label>
+<label>Workload / stage <select id="operation" aria-label="Workload and stage"></select></label>
+<svg viewBox="0 0 800 310" role="img" aria-label="Median rendering time by CI run; exact values and environment details follow in the table"></svg>
+<p>Each line keeps its exact compiler, harness, and machine environment. Historical runs are observational; PR comparisons alternate base and head on the same worker. Small differences may be noise.</p>
+<div class="table"><table><thead><tr><th>UTC</th><th>Commit</th><th>µs/op</th><th>Compiler</th><th>CPU</th><th>Environment</th><th>Evidence</th></tr></thead><tbody></tbody></table></div>
+<script type="module" src="./dashboard.mjs"></script>
+</html>

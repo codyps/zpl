@@ -8,7 +8,7 @@ createServer(async (req, res) => {
   try {
     const pathname = new URL(req.url, 'http://localhost').pathname;
     if (!pathname.startsWith('/zpl/')) throw new Error('Not found');
-    const path = resolve(root, pathname.slice(5) || 'index.html');
+    const path = resolve(root, pathname.slice(5) + (pathname.endsWith('/') ? 'index.html' : ''));
     if (!path.startsWith(root + sep)) throw new Error('Not found');
     const data = await readFile(path);
     res.writeHead(200, { 'Content-Type': types[extname(path)] || 'text/plain' });

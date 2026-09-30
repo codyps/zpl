@@ -5,8 +5,15 @@ on:
     branches: [main]
   pull_request:
   workflow_dispatch:
+  workflow_run:
+    workflows: [Publish rendering benchmarks]
+    types: [completed]
 permissions:
   contents: read
+# One combined artifact owns both / and /perf/; neither deployment can erase the other.
+concurrency:
+  group: pages-${{ github.event_name == 'pull_request' && github.ref || 'production' }}
+  cancel-in-progress: true
 env:
   CARGO_NET_RETRY: 2
   CARGO_HTTP_TIMEOUT: 30
@@ -14,23 +21,13 @@ env:
   npm_config_fetch_timeout: 30000
 jobs:
   build:
-    runs-on: warbler-linux
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
-    environment: ${{ github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && 'warbler-cache-main' || 'warbler-cache-read' }}
-    env:
-      WARBLER_CACHE_CREDENTIAL: ${{ secrets.WARBLER_CACHE_WRITE || secrets.WARBLER_CACHE_READ }}
-    concurrency:
-      group: pages-build-${{ github.ref }}
-      cancel-in-progress: true
     steps:
-      - name: Install checkout dependencies
-        run: |
-          sudo apt-get -o Acquire::Retries=3 update
-          sudo apt-get -o Acquire::Retries=3 install -y --no-install-recommends git
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      # Warbler creates a fresh Ubuntu cloud VM for every job.
       - name: Install native build dependencies
         run: |
           sudo apt-get -o Acquire::Retries=3 update
@@ -41,16 +38,9 @@ jobs:
       - uses: dtolnay/rust-toolchain@6bed0761d98439e5a578e2877258200ad565ba87 # stable
         with:
           targets: wasm32-unknown-unknown
-      - name: Configure Warbler compiler cache
-        run: |
-          curl --fail --silent --show-error --location --retry 3 \
-            https://github.com/mozilla/sccache/releases/download/v0.18.0/sccache-v0.18.0-x86_64-unknown-linux-musl.tar.gz \
-            --output "$RUNNER_TEMP/sccache.tar.gz"
-          echo "45f1447fbe231e3037bde351ef70677dd212216c8d62ae7ca409fecc4d6acc89  $RUNNER_TEMP/sccache.tar.gz" | sha256sum --check
-          tar -xzf "$RUNNER_TEMP/sccache.tar.gz" -C "$RUNNER_TEMP"
-          echo "$RUNNER_TEMP/sccache-v0.18.0-x86_64-unknown-linux-musl" >> "$GITHUB_PATH"
-          python3 -m unittest discover -s .github/scripts -p 'test_*.py'
-          python3 .github/scripts/warbler_cache.py
+      - uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6 # v2.9.2
+        with:
+          save-if: ${{ github.ref == 'refs/heads/main' && github.event_name != 'pull_request' }}
       - name: Install WebAssembly bindings CLI
         timeout-minutes: 15
         run: cargo install wasm-bindgen-cli --version 0.2.128 --locked
@@ -58,6 +48,17 @@ jobs:
         run: cargo test --locked -p zpl-wasm
       - name: Build static site
         run: bash scripts/build-site.sh
+      - name: Assemble performance dashboard and latest history
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 -m unittest discover -s benchmarks -p 'test_*.py' -v
+          node --test benchmarks/dashboard.test.mjs
+          history_ref=$(git -c 'credential.helper=!gh auth git-credential' ls-remote --heads origin benchmarks)
+          if [ -n "$history_ref" ]; then
+            git -c 'credential.helper=!gh auth git-credential' fetch --depth=1 origin refs/heads/benchmarks
+            git archive FETCH_HEAD data | tar -x -C _site/perf
+          fi
       - name: Test compiled WebAssembly
         run: node --test site/tests/wasm.test.mjs
       - name: Install browser test dependencies
@@ -70,17 +71,22 @@ jobs:
         timeout-minutes: 5
         working-directory: site
         run: npm test
+      - name: Save browser screenshots
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: preview-browser-screenshots
+          path: site/test-results/*.png
+          if-no-files-found: ignore
+          retention-days: 30
       - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
         if: github.event_name != 'pull_request'
         with:
           path: _site
-      - name: Compiler cache statistics
-        if: always() && env.RUSTC_WRAPPER == 'sccache'
-        run: sccache --show-stats | tee -a "$GITHUB_STEP_SUMMARY"
   deploy:
     if: github.repository == 'codyps/zpl' && github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
     needs: build
-    runs-on: warbler-linux
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     permissions:
       pages: write

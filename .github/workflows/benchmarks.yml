@@ -1,0 +1,97 @@
+name: Rendering benchmarks
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: '41 5 * * 1'
+permissions:
+  contents: read
+concurrency:
+  group: render-benchmarks-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
+env:
+  CARGO_NET_RETRY: 2
+  CARGO_HTTP_TIMEOUT: 30
+  npm_config_fetch_retries: 2
+  npm_config_fetch_timeout: 30000
+jobs:
+  dashboard:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24'
+      - name: Test history series
+        run: node --test benchmarks/dashboard.test.mjs
+      - name: Assemble standalone dashboard test site
+        run: |
+          mkdir -p _site/perf/data
+          cp site/index.html _site/
+          cp benchmarks/index.html benchmarks/dashboard.mjs _site/perf/
+          echo '[]' > _site/perf/data/index.json
+      - name: Install browser tests
+        working-directory: site
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+      - name: Test dashboard under the Pages project path
+        working-directory: site
+        run: npx playwright test tests/perf.browser.mjs
+      - name: Save dashboard screenshot
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: performance-browser-screenshots
+          path: site/test-results/*.png
+          if-no-files-found: ignore
+          retention-days: 30
+  measure:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      BENCH_RUNNER: ubuntu-24.04
+      RUSTFLAGS: ''
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          path: tooling
+          persist-credentials: false
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          path: candidate
+          persist-credentials: false
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        if: github.event_name == 'pull_request'
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          path: baseline
+          persist-credentials: false
+      - uses: dtolnay/rust-toolchain@6bed0761d98439e5a578e2877258200ad565ba87 # stable
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.13'
+      - name: Test benchmark tooling
+        run: python3 -m unittest discover -s tooling/benchmarks -p 'test_*.py' -v
+      - name: Compare exact PR base and head on this worker
+        if: github.event_name == 'pull_request'
+        run: python3 tooling/benchmarks/run.py --base baseline --head candidate --output results
+      - name: Measure main
+        if: github.event_name != 'pull_request'
+        run: python3 tooling/benchmarks/run.py --head candidate --output results
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        if: always()
+        with:
+          name: render-benchmark-ubuntu-24.04
+          path: |
+            results/result.json
+            results/raw.txt
+            results/summary.md
+          retention-days: 30
+          if-no-files-found: warn

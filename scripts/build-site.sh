@@ -16,3 +16,8 @@ cp site/index.html site/style.css site/app.mjs site/worker.mjs site/png-metadata
 mkdir -p _site/fonts
 cp site/fonts/PatrickHand-Regular.ttf site/fonts/OFL.txt _site/fonts/
 cp LICENSE _site/LICENSE
+
+# Performance UI shares the artifact, with history populated by the Pages workflow.
+mkdir -p _site/perf/data
+cp benchmarks/index.html benchmarks/dashboard.mjs _site/perf/
+printf '[]\n' > _site/perf/data/index.json
