@@ -41,7 +41,7 @@ def main():
     protocol = hashlib.sha256()
     for name in ('harness.rs', 'run.py', 'common.py', 'config.json'):
         protocol.update((HERE / name).read_bytes())
-    cpu = command(['sysctl', '-n', 'machdep.cpu.brand_string']) if platform.system() == 'Darwin' else next(
+    cpu = next(
         (line.split(':', 1)[1].strip() for line in Path('/proc/cpuinfo').read_text().splitlines()
          if line.startswith('model name')), platform.machine())
     record = dict(schema=1, run_id=int(os.getenv('GITHUB_RUN_ID', '0')),

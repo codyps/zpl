@@ -12,7 +12,7 @@ CONFIG = json.loads(Path(__file__).with_name('config.json').read_text())
 
 def fixture():
     run = dict(id=12, run_attempt=1, head_sha='a' * 40, event='push')
-    record = dict(schema=1, run_id=12, run_attempt=1, event='push', runner='warbler-linux',
+    record = dict(schema=1, run_id=12, run_attempt=1, event='push', runner='ubuntu-24.04',
                   commits={'head': 'a' * 40}, harness='b' * 64, timestamp='2026-09-29T00:00:00Z',
                   environment={key: 'test' for key in ('rust', 'os', 'cpu', 'image', 'rustflags', 'profile')},
                   samples={'head': {name: [10000] * 10 for name in NAMES}})
@@ -52,7 +52,7 @@ class Benchmarks(unittest.TestCase):
             archive(root, [(second, 'raw two')], dict(run, id=13))
             entries = json.loads((root / 'data/index.json').read_text())
             self.assertEqual([r['run_id'] for r in entries], [12, 13])
-            self.assertEqual((root / 'data/12-1-warbler-linux.txt').read_text(), 'raw one')
+            self.assertEqual((root / 'data/12-1-ubuntu-24.04.txt').read_text(), 'raw one')
             record['samples']['head'][NAMES[0]][0] = 11000
             with self.assertRaises(ValueError):
                 archive(root, [(record, 'raw one')], run)

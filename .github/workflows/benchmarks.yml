@@ -14,25 +14,14 @@ concurrency:
 env:
   CARGO_NET_RETRY: 2
   CARGO_HTTP_TIMEOUT: 30
-  UV_HTTP_RETRIES: 2
-  UV_HTTP_TIMEOUT: 30
 jobs:
   measure:
-    strategy:
-      fail-fast: false
-      matrix:
-        runner: [warbler-linux, warbler-macos-intel]
-    runs-on: ${{ matrix.runner }}
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     env:
-      BENCH_RUNNER: ${{ matrix.runner }}
+      BENCH_RUNNER: ubuntu-24.04
       RUSTFLAGS: ''
     steps:
-      - name: Install checkout dependencies
-        if: runner.os == 'Linux'
-        run: |
-          sudo apt-get -o Acquire::Retries=3 update
-          sudo apt-get -o Acquire::Retries=3 install -y --no-install-recommends git build-essential
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           path: tooling
@@ -49,17 +38,9 @@ jobs:
           path: baseline
           persist-credentials: false
       - uses: dtolnay/rust-toolchain@6bed0761d98439e5a578e2877258200ad565ba87 # stable
-      # Warbler macOS workers do not grant passwordless sudo. Managed Python
-      # from uv is relocatable and installs entirely in the runner's user space.
-      # https://github.com/astral-sh/setup-uv#activate-environment
-      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
-          version: '0.12.21'
           python-version: '3.13'
-          activate-environment: true
-          venv-path: ${{ runner.temp }}/benchmark-python
-          no-project: true
-          enable-cache: false
       - name: Test benchmark tooling
         run: python3 -m unittest discover -s tooling/benchmarks -p 'test_*.py' -v
       - name: Compare exact PR base and head on this worker
@@ -71,7 +52,7 @@ jobs:
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         if: always()
         with:
-          name: render-benchmark-${{ matrix.runner }}
+          name: render-benchmark-ubuntu-24.04
           path: |
             results/result.json
             results/raw.txt

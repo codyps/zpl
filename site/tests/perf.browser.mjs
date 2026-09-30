@@ -9,10 +9,10 @@ test('performance lives under its own project-relative path', async ({page}) => 
 });
 
 test('performance charts measured data, switches stages, and links raw evidence', async ({page}) => {
-  const record = {run_id: 1, run_attempt: 1, runner: 'warbler-linux', harness: 'a',
+  const record = {run_id: 1, run_attempt: 1, runner: 'ubuntu-24.04', harness: 'a',
     environment: {rust: 'rustc test', cpu: 'test CPU', os: 'Linux', image: 'test'},
     timestamp: '2026-09-29T00:00:00Z', commits: {head: 'a'.repeat(40)},
-    medians: {'text/scene': 10000, 'text/total': 20000}, file: '1-1-warbler-linux.json'};
+    medians: {'text/scene': 10000, 'text/total': 20000}, file: '1-1-ubuntu-24.04.json'};
   await page.route('**/perf/data/index.json', route => route.fulfill({json: [record]}));
   await page.goto('perf/');
   await expect(page.locator('tbody tr')).toHaveCount(1);
@@ -20,7 +20,7 @@ test('performance charts measured data, switches stages, and links raw evidence'
   await expect(page.locator('tbody')).toContainText('10.00');
   await page.getByLabel('Workload and stage').selectOption('text/total');
   await expect(page.locator('tbody')).toContainText('20.00');
-  await expect(page.getByRole('link', {name: 'Raw', exact: true})).toHaveAttribute('href', 'data/1-1-warbler-linux.txt');
+  await expect(page.getByRole('link', {name: 'Raw', exact: true})).toHaveAttribute('href', 'data/1-1-ubuntu-24.04.txt');
   await page.screenshot({path: 'test-results/perf-dashboard.png', fullPage: true});
 });
 

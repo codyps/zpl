@@ -4,11 +4,10 @@
 
 This follows the [codyps/coarsetime measurement pattern](https://github.com/codyps/coarsetime/tree/main/benchmarks):
 identical base/head harnesses, alternating rounds on the same worker, raw evidence,
-paired statistical reporting, and append-only main history. The initial ZPL suite
-uses the existing native Linux and Intel macOS Warbler runners with stable Rust.
-A pinned uv action installs Python in user space, so benchmark setup needs no
-macOS administrator access. It measures the local renderer, without a printer or
-external rendering service.
+paired statistical reporting, and append-only main history. The ZPL suite runs only on GitHub-hosted
+Ubuntu 24.04 Linux runners with stable Rust; publication uses the same hosted
+runner label. It measures the local renderer, without a printer or external
+rendering service.
 
 ## Workloads and interpretation
 
@@ -49,7 +48,7 @@ Workers have read-only permissions and retain JSON, raw iteration/nanosecond log
 and summaries as artifacts for 30 days, including partial logs on failure.
 The trusted `Publish rendering benchmarks` workflow runs main-branch code only
 and validates successful main artifacts, exact run/attempt/commit identities,
-finite samples, and complete runner matrices. PR results never enter history.
+finite samples, and the expected Linux runner. PR results never enter history.
 
 Main records and raw logs accumulate on the `benchmarks` branch, created on first
 publication. Run/attempt/runner filenames preserve repeated runs. Publication

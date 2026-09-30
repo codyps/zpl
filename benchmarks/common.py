@@ -5,7 +5,7 @@ import statistics
 
 NAMES = tuple(f"{case}/{stage}" for case in ("text", "barcodes", "graphics")
               for stage in ("scene", "raster", "total"))
-RUNNERS = {"warbler-linux", "warbler-macos-intel"}
+RUNNERS = {"ubuntu-24.04"}
 
 
 def compare(before, after, config):
