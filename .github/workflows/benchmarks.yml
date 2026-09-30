@@ -14,7 +14,43 @@ concurrency:
 env:
   CARGO_NET_RETRY: 2
   CARGO_HTTP_TIMEOUT: 30
+  npm_config_fetch_retries: 2
+  npm_config_fetch_timeout: 30000
 jobs:
+  dashboard:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24'
+      - name: Test history series
+        run: node --test benchmarks/dashboard.test.mjs
+      - name: Assemble standalone dashboard test site
+        run: |
+          mkdir -p _site/perf/data
+          cp site/index.html _site/
+          cp benchmarks/index.html benchmarks/dashboard.mjs _site/perf/
+          echo '[]' > _site/perf/data/index.json
+      - name: Install browser tests
+        working-directory: site
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+      - name: Test dashboard under the Pages project path
+        working-directory: site
+        run: npx playwright test tests/perf.browser.mjs
+      - name: Save dashboard screenshot
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: performance-browser-screenshots
+          path: site/test-results/*.png
+          if-no-files-found: ignore
+          retention-days: 30
   measure:
     runs-on: ubuntu-24.04
     timeout-minutes: 30

@@ -44,6 +44,8 @@ not a trusted authorization check. No bot comments or external service is requir
 ## History and Pages
 
 `Rendering benchmarks` runs on PRs, main pushes, Mondays, and manual dispatch.
+A separate GitHub-hosted Linux job tests the dashboard under the `/zpl/perf/`
+project path and saves a browser screenshot; it does not run on the timing worker.
 Workers have read-only permissions and retain JSON, raw iteration/nanosecond logs,
 and summaries as artifacts for 30 days, including partial logs on failure.
 The trusted `Publish rendering benchmarks` workflow runs main-branch code only
