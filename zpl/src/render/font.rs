@@ -72,14 +72,7 @@ impl Font {
         self.control_spaces = spaces;
         self
     }
-    // ^FB automatic hyphens are generated glyphs, not input code-page bytes.
-    // Programming Guide pp. 186–187; native field-block-hyphenation fixtures.
-    pub(super) const AUTOMATIC_HYPHEN: char = '\u{f0000}';
-
     fn map_char(self, c: char) -> Result<char, String> {
-        if c == Self::AUTOMATIC_HYPHEN {
-            return Ok('\u{ad}');
-        }
         let c = match self
             .character_map
             .and_then(|map| map.get(c as usize).copied())
@@ -1017,21 +1010,6 @@ pub(super) fn cull_outside(path: &mut Path, width: u32, height: u32) {
 #[cfg(test)]
 mod tests {
     use super::*;
-    #[test]
-    fn generated_hyphens_bypass_legacy_input_mapping() {
-        // ^CI CP850 input 0xAD is inverted exclamation, while the ^FB
-        // generated hyphen must retain the captured soft-hyphen glyph.
-        // https://www.unicode.org/Public/MAPPINGS/VENDORS/MICSFT/PC/CP850.TXT
-        let legacy = Font::new('0', true).with_legacy_codepage(true);
-        assert_eq!(legacy.map_char('\u{ad}').unwrap(), '¡');
-        assert_eq!(legacy.map_char(Font::AUTOMATIC_HYPHEN).unwrap(), '\u{ad}');
-        let generated = Font::AUTOMATIC_HYPHEN.to_string();
-        assert_eq!(
-            text_for(legacy, &generated, 14., 28.).unwrap(),
-            text_for(Font::new('0', true), "\u{ad}", 14., 28.).unwrap()
-        );
-    }
-
     #[test]
     fn ascii_strikes_preserve_enriched_fallback_glyphs() {
         // ^CI / ^PA and legacy control behavior: use the same enriched
