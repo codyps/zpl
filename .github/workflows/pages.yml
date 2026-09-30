@@ -12,7 +12,9 @@ permissions:
   contents: read
 # One combined artifact owns both / and /perf/; neither deployment can erase the other.
 concurrency:
-  group: pages-${{ github.event_name == 'pull_request' && github.ref || 'production' }}
+  # Even a skipped workflow can cancel another run sharing its concurrency group.
+  # Ignore unsuccessful publisher completions without touching a production build.
+  group: pages-${{ github.event_name == 'workflow_run' && github.event.workflow_run.conclusion != 'success' && github.run_id || github.ref }}
   cancel-in-progress: true
 env:
   CARGO_NET_RETRY: 2
