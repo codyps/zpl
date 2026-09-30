@@ -12,6 +12,7 @@ use std::{collections::BTreeMap, sync::OnceLock};
 pub(super) struct Font {
     id: char,
     legacy_backslash: bool,
+    legacy_codepage: bool,
     default_glyph: bool,
     character_map: Option<[u8; 256]>,
     block_flow: Option<BlockFlow>,
@@ -42,6 +43,7 @@ impl Font {
         Self {
             id,
             legacy_backslash,
+            legacy_codepage: false,
             default_glyph: false,
             character_map: None,
             block_flow: None,
@@ -49,6 +51,10 @@ impl Font {
             legacy_controls: false,
             control_spaces: false,
         }
+    }
+    pub(super) fn with_legacy_codepage(mut self, enabled: bool) -> Self {
+        self.legacy_codepage = enabled;
+        self
     }
     pub(super) fn with_tab_stops(mut self, enabled: bool) -> Self {
         self.tab_stops = enabled;
@@ -75,9 +81,15 @@ impl Font {
                 // ^CI example, Programming Guide p. 158: legacy image 21 is euro.
                 21 => '€',
                 0..=127 => char::from(source),
+                _ if self.legacy_codepage => char::from(source),
                 _ => return Err("unsupported legacy remap source glyph".into()),
             },
             _ => c,
+        };
+        let c = if self.legacy_codepage && (128..=255).contains(&(c as u32)) {
+            CP850[c as usize - 128]
+        } else {
+            c
         };
         // Canonical keys identify private legacy-only strike entries. They do
         // not add Unicode arrow/house support to the normal resident strikes.
@@ -565,6 +577,27 @@ fn fallback(font: Font, w: f64, h: f64) -> (&'static [Glyph], f64, f64) {
 fn selected_for_char(font: Font, c: char, w: f64, h: f64) -> (&'static [Glyph], f64, f64) {
     let face = selected(font, w, h);
     if font.id == '0' && glyph_from(face.0, c).is_err() {
+        static RETAIL: OnceLock<Vec<(Settings, Vec<Glyph>)>> = OnceLock::new();
+        let strikes = RETAIL.get_or_init(|| {
+            vec![
+                bitmap_font::unpack(include_bytes!("../../assets/font0-25-14-retail.zbf"))
+                    .expect("validated retail glyphs"),
+                bitmap_font::unpack(include_bytes!("../../assets/font0-32-0-retail.zbf"))
+                    .expect("validated retail glyphs"),
+            ]
+        });
+        for (settings, glyphs) in strikes {
+            let sw = if settings.width == 0 {
+                settings.height
+            } else {
+                settings.width
+            } as f64;
+            if glyph_from(glyphs, c).is_ok()
+                && ((w == sw && h == settings.height as f64) || settings.width == 0)
+            {
+                return (glyphs, w / sw, h / settings.height as f64);
+            }
+        }
         fallback(font, w, h)
     } else {
         face
@@ -793,7 +826,7 @@ pub(super) fn text_for(
             let c = font.map_char(c)?;
             if glyph_from(glyphs, c).is_err() {
                 if s.chars().count() == 1 {
-                    (glyphs, sx, sy) = fallback(font, w, h);
+                    (glyphs, sx, sy) = selected_for_char(font, c, w, h);
                 } else {
                     // Mixed strikes have different bitmap units. Compose in
                     // output coordinates, using each glyph's own advances.
@@ -1220,3 +1253,23 @@ pub(super) fn block_metrics(id: impl Into<Font>, h: f64, printer_s: bool) -> (f6
     let scale = h / native;
     (pitch * scale, ascent * scale - baseline_for('S', h))
 }
+
+// ^CI0/^CI13: Zebra CP850. Unicode mapping reference:
+// https://www.unicode.org/Public/MAPPINGS/VENDORS/MICSFT/PC/CP850.TXT
+const CP850: [char; 128] = [
+    '\u{c7}', '\u{fc}', '\u{e9}', '\u{e2}', '\u{e4}', '\u{e0}', '\u{e5}', '\u{e7}', '\u{ea}',
+    '\u{eb}', '\u{e8}', '\u{ef}', '\u{ee}', '\u{ec}', '\u{c4}', '\u{c5}', '\u{c9}', '\u{e6}',
+    '\u{c6}', '\u{f4}', '\u{f6}', '\u{f2}', '\u{fb}', '\u{f9}', '\u{ff}', '\u{d6}', '\u{dc}',
+    '\u{f8}', '\u{a3}', '\u{d8}', '\u{d7}', '\u{192}', '\u{e1}', '\u{ed}', '\u{f3}', '\u{fa}',
+    '\u{f1}', '\u{d1}', '\u{aa}', '\u{ba}', '\u{bf}', '\u{ae}', '\u{ac}', '\u{bd}', '\u{bc}',
+    '\u{a1}', '\u{ab}', '\u{bb}', '\u{2591}', '\u{2592}', '\u{2593}', '\u{2502}', '\u{2524}',
+    '\u{c1}', '\u{c2}', '\u{c0}', '\u{a9}', '\u{2563}', '\u{2551}', '\u{2557}', '\u{255d}',
+    '\u{a2}', '\u{a5}', '\u{2510}', '\u{2514}', '\u{2534}', '\u{252c}', '\u{251c}', '\u{2500}',
+    '\u{253c}', '\u{e3}', '\u{c3}', '\u{255a}', '\u{2554}', '\u{2569}', '\u{2566}', '\u{2560}',
+    '\u{2550}', '\u{256c}', '\u{a4}', '\u{f0}', '\u{d0}', '\u{ca}', '\u{cb}', '\u{c8}', '\u{131}',
+    '\u{cd}', '\u{ce}', '\u{cf}', '\u{2518}', '\u{250c}', '\u{2588}', '\u{2584}', '\u{a6}',
+    '\u{cc}', '\u{2580}', '\u{d3}', '\u{df}', '\u{d4}', '\u{d2}', '\u{f5}', '\u{d5}', '\u{b5}',
+    '\u{fe}', '\u{de}', '\u{da}', '\u{db}', '\u{d9}', '\u{fd}', '\u{dd}', '\u{af}', '\u{b4}',
+    '\u{ad}', '\u{b1}', '\u{2017}', '\u{be}', '\u{b6}', '\u{a7}', '\u{f7}', '\u{b8}', '\u{b0}',
+    '\u{a8}', '\u{b7}', '\u{b9}', '\u{b3}', '\u{b2}', '\u{25a0}', '\u{a0}',
+];

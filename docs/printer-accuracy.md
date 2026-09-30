@@ -864,7 +864,8 @@ retention across intervening commands, and permissive token/delimiter parsing.
 SPECIFICATION disables them and follows the guide's backward example and
 adjacency rule; ZD621_203_DPI enables them. Both retain the field-data size limit.
 The fixture README records exact controls and remaining scope limits, including
-unsupported non-ASCII delimiter operands and stored formats.
+unsupported non-ASCII delimiter operands. Request-local stored formats are now
+expanded before this same numbered-field planning pass.
 
 ## Unavailable resident font selection
 

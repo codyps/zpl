@@ -1,0 +1,149 @@
+{
+  "batch_size": 8,
+  "captures": [
+    {
+      "page": 0,
+      "sha256": "50a3cddcfe6c221b6dddede6742bf92ac051f9e9aa96b5e1c9c37d2d68930a35"
+    }
+  ],
+  "codepoints": [
+    32,
+    183,
+    192,
+    194,
+    9516
+  ],
+  "coordinates": "printer dots; left/top relative to FT baseline; rows top-to-bottom, MSB-first",
+  "dpi": 203,
+  "encoding": 28,
+  "font": "0",
+  "glyphs": [
+    {
+      "advance": 4,
+      "bitmap": [],
+      "character": " ",
+      "codepoint": 32,
+      "height": 0,
+      "left": 0,
+      "top": 0,
+      "width": 0
+    },
+    {
+      "advance": 1,
+      "bitmap": [
+        "80",
+        "80",
+        "80"
+      ],
+      "character": "·",
+      "codepoint": 183,
+      "height": 3,
+      "left": 0,
+      "top": -12,
+      "width": 1
+    },
+    {
+      "advance": 8,
+      "bitmap": [
+        "30",
+        "30",
+        "30",
+        "30",
+        "00",
+        "38",
+        "38",
+        "38",
+        "28",
+        "28",
+        "6C",
+        "6C",
+        "6C",
+        "6C",
+        "6C",
+        "6C",
+        "7C",
+        "7C",
+        "7C",
+        "EE",
+        "CE",
+        "C6",
+        "C6",
+        "C6"
+      ],
+      "character": "À",
+      "codepoint": 192,
+      "height": 24,
+      "left": 0,
+      "top": -24,
+      "width": 7
+    },
+    {
+      "advance": 8,
+      "bitmap": [
+        "18",
+        "18",
+        "3C",
+        "24",
+        "00",
+        "38",
+        "38",
+        "38",
+        "28",
+        "28",
+        "6C",
+        "6C",
+        "6C",
+        "6C",
+        "6C",
+        "6C",
+        "7C",
+        "7C",
+        "7C",
+        "EE",
+        "CE",
+        "C6",
+        "C6",
+        "C6"
+      ],
+      "character": "Â",
+      "codepoint": 194,
+      "height": 24,
+      "left": 0,
+      "top": -24,
+      "width": 7
+    },
+    {
+      "advance": 14,
+      "bitmap": [
+        "FFFC",
+        "FFFC",
+        "0100",
+        "0100",
+        "0100",
+        "0100",
+        "0100",
+        "0100",
+        "0100",
+        "0100",
+        "0100",
+        "0100",
+        "0100"
+      ],
+      "character": "┬",
+      "codepoint": 9516,
+      "height": 13,
+      "left": 0,
+      "top": -7,
+      "width": 14
+    }
+  ],
+  "requested_height": 25,
+  "requested_width": 14,
+  "schema": "zpl-preview-bitmap-font-v1",
+  "source": "http://127.0.0.1:18749",
+  "verification": {
+    "different_pixels": 0,
+    "sha256": "7f86f803c7a56fa8d93c47d363e4f29fcf358408cebacb297541134b84c98ae5",
+    "text": "Â· À┬"
+  }
+}

@@ -141,7 +141,7 @@ Legacy Data Matrix ECC 000–140 and `^FM` structured append for PDF417 and
 MicroPDF417 are supported. See [barcode scope](barcodes.md) for limits and the
 printer options controlling observed departures.
 
-Examples of explicit errors include Code 128 extended-byte FNC4, downloaded fonts, stored formats, print-quantity serial iteration,
+Examples of explicit errors include Code 128 extended-byte FNC4, downloaded fonts, persistent storage across render calls, print-quantity serial iteration,
 compressed binary `GFC`, and printer configuration commands.
 The parser still frames these commands; rendering coverage is separate from
 command-stream parsing coverage. Configuration persists only within one `render`
@@ -228,3 +228,19 @@ retains the setting across labels, and combines it with `^PO` inversion.
 cover horizontal gaps, vertical columns and reverse character order independently
 of glyph rotation. The printer profile selects vertical-gap and anchor departures
 through separate options. FP with FB remains an explicit unsupported combination.
+
+## Request-local stored formats
+
+`^DF` stores a template without producing a label, and `^XF` recalls it within
+the same render request. Existing `^FN` planning binds its variable fields.
+R/E/B/A names refer only to in-memory namespaces; no printer or filesystem
+storage is accessed. Omitted recall devices search R, E, B, A. Definitions can
+be replaced, and recalls can be nested within bounded limits (8 levels, 4096
+recalls, 256 objects, and 1 MiB of expanded input). Error offsets point back to
+the original source. Syntax changes inside stored templates and recalls under
+a different syntax are explicit errors. Proxy admission remains unchanged.
+
+Legacy CI0/CI13 text now maps extended bytes through CP850, after character
+remapping. Fonts still reject glyphs outside the captured repertoire. Native
+retail glyph supplements cover the original legacy byte interpretations and
+the explicit UTF-8 middle dot; see the retail-font-zd621-v1 evidence.

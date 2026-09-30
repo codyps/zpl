@@ -14,6 +14,7 @@ mod graphics;
 mod numbered;
 mod printer_shapes;
 mod serial;
+mod stored;
 mod validation;
 use crate::{
     bitmap_font::GRAPHIC_SYMBOLS,
@@ -179,6 +180,20 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
             message: "input exceeds 1 MiB renderer limit".into(),
         });
     }
+    let expanded = stored::expand(input)?;
+    if let Some(expanded) = expanded {
+        return render_expanded(&expanded.bytes, options, true).map_err(|mut error| {
+            error.offset = expanded.original_offset(error.offset);
+            error
+        });
+    }
+    render_expanded(input, options, false)
+}
+fn render_expanded(
+    input: &[u8],
+    options: Options,
+    allow_empty: bool,
+) -> Result<Document, RenderError> {
     let numbered = numbered::plan(input, options.compatibility)?;
     let mut pending_terminator = None;
     // Dimensions can change after a field. Cull only beyond every declared
@@ -952,11 +967,15 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                         &decoded
                     } else {
                         if matches!(encoding, 0 | 13) && !bytes.is_ascii() {
-                            return Err(
-                                "unsupported legacy text byte; select ^CI28 for UTF-8".into()
+                            // Preserve byte indices for CI remapping; Font maps
+                            // the resulting legacy image through CP850.
+                            decoded = std::borrow::Cow::Owned(
+                                bytes.iter().map(|&b| char::from(b)).collect(),
                             );
+                            &decoded
+                        } else {
+                            std::str::from_utf8(&bytes).map_err(|_| "invalid UTF-8 text")?
                         }
-                        std::str::from_utf8(&bytes).map_err(|_| "invalid UTF-8 text")?
                     };
                     // UAX #15 sections 1.1–1.2: canonically equivalent Unicode
                     // text has the same appearance. Native decomposed-accent
@@ -1051,6 +1070,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
                                     && (field.block.is_some() || matches!(encoding, 33..=36))
                                     && !matches!(encoding, 0 | 13),
                             )
+                            .with_legacy_codepage(matches!(encoding, 0 | 13))
                             .with_tab_stops(options.compatibility.text_tab_stops)
                             .with_default_glyph(advanced[0])
                             .with_character_map(
@@ -1944,7 +1964,7 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
             message: "unterminated label (missing XZ)".into(),
         });
     }
-    if labels.is_empty() {
+    if labels.is_empty() && !allow_empty {
         return Err(RenderError {
             offset: input.len(),
             message: "no labels".into(),

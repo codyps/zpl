@@ -1,8 +1,8 @@
 //! Inline numbered fields, Zebra Programming Guide ^FN, p. 200:
 //! https://www.zebra.com/content/dam/support-dam/en/documentation/unrestricted/guide/software/zpl-zbi2-pg-en.pdf
 //! Plan data substitutions before painting, retaining the original command
-//! stream, syntax, field styles and error offsets. Stored DF/XF formats remain
-//! unsupported by the renderer.
+//! stream, syntax, field styles and error offsets. DF/XF templates have already
+//! been expanded by the request-local stored-format planner.
 use super::RenderError;
 use crate::parse::{Element, ParseContext};
 use std::{collections::HashMap, sync::Arc};

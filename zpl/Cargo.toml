@@ -16,6 +16,7 @@ unicode-bidi = "0.3.18"
 raster-diff = { version = "0.1.0", path = "../raster-diff" }
 
 [dev-dependencies]
+serde_json = "1.0.151"
 sha2 = "0.11.0"
 rxing = { version = "0.9.3", default-features = false, features = [
     "decoders",
