@@ -5,8 +5,15 @@ on:
     branches: [main]
   pull_request:
   workflow_dispatch:
+  workflow_run:
+    workflows: [Publish rendering benchmarks]
+    types: [completed]
 permissions:
   contents: read
+# One combined artifact owns both / and /perf/; neither deployment can erase the other.
+concurrency:
+  group: pages-${{ github.event_name == 'pull_request' && github.ref || 'production' }}
+  cancel-in-progress: true
 env:
   CARGO_NET_RETRY: 2
   CARGO_HTTP_TIMEOUT: 30
@@ -14,19 +21,17 @@ env:
   npm_config_fetch_timeout: 30000
 jobs:
   build:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: warbler-linux
     timeout-minutes: 30
     environment: ${{ github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && 'warbler-cache-main' || 'warbler-cache-read' }}
     env:
       WARBLER_CACHE_CREDENTIAL: ${{ secrets.WARBLER_CACHE_WRITE || secrets.WARBLER_CACHE_READ }}
-    concurrency:
-      group: pages-build-${{ github.ref }}
-      cancel-in-progress: true
     steps:
       - name: Install checkout dependencies
         run: |
           sudo apt-get -o Acquire::Retries=3 update
-          sudo apt-get -o Acquire::Retries=3 install -y --no-install-recommends git
+          sudo apt-get -o Acquire::Retries=3 install -y --no-install-recommends git gh
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
@@ -58,6 +63,17 @@ jobs:
         run: cargo test --locked -p zpl-wasm
       - name: Build static site
         run: bash scripts/build-site.sh
+      - name: Assemble performance dashboard and latest history
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 -m unittest discover -s benchmarks -p 'test_*.py' -v
+          node --test benchmarks/dashboard.test.mjs
+          history_ref=$(git -c 'credential.helper=!gh auth git-credential' ls-remote --heads origin benchmarks)
+          if [ -n "$history_ref" ]; then
+            git -c 'credential.helper=!gh auth git-credential' fetch --depth=1 origin refs/heads/benchmarks
+            git archive FETCH_HEAD data | tar -x -C _site/perf
+          fi
       - name: Test compiled WebAssembly
         run: node --test site/tests/wasm.test.mjs
       - name: Install browser test dependencies
@@ -70,6 +86,14 @@ jobs:
         timeout-minutes: 5
         working-directory: site
         run: npm test
+      - name: Save browser screenshots
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: preview-browser-screenshots
+          path: site/test-results/*.png
+          if-no-files-found: ignore
+          retention-days: 30
       - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
         if: github.event_name != 'pull_request'
         with:

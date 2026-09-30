@@ -99,3 +99,11 @@ Errors replace the preview with a torn-paper note in the locally bundled Patrick
 font (SIL OFL 1.1; `site/fonts/OFL.txt`). The note feeds in briefly, skips motion
 when requested, and retains a screen-reader status announcement. Successful renders
 clear the status text instead of repeating the print and label counters.
+
+## Performance history
+
+The native rendering [performance dashboard](https://codyps.github.io/zpl/perf/)
+lives at the separate `/zpl/perf/` path; the label preview remains at `/zpl/`.
+The Pages workflow assembles both into a single artifact and also rebuilds after
+successful main benchmark publication. This prevents either page from replacing
+the other. See [benchmark protocol and local checks](../benchmarks/README.md).

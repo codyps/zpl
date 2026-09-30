@@ -1,0 +1,70 @@
+name: Rendering benchmarks
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: '41 5 * * 1'
+permissions:
+  contents: read
+concurrency:
+  group: render-benchmarks-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
+env:
+  CARGO_NET_RETRY: 2
+  CARGO_HTTP_TIMEOUT: 30
+jobs:
+  measure:
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [warbler-linux, warbler-macos-intel]
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 30
+    env:
+      BENCH_RUNNER: ${{ matrix.runner }}
+      RUSTFLAGS: ''
+    steps:
+      - name: Install checkout dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get -o Acquire::Retries=3 update
+          sudo apt-get -o Acquire::Retries=3 install -y --no-install-recommends git build-essential
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          path: tooling
+          persist-credentials: false
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          path: candidate
+          persist-credentials: false
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        if: github.event_name == 'pull_request'
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          path: baseline
+          persist-credentials: false
+      - uses: dtolnay/rust-toolchain@6bed0761d98439e5a578e2877258200ad565ba87 # stable
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.13'
+      - name: Test benchmark tooling
+        run: python3 -m unittest discover -s tooling/benchmarks -p 'test_*.py' -v
+      - name: Compare exact PR base and head on this worker
+        if: github.event_name == 'pull_request'
+        run: python3 tooling/benchmarks/run.py --base baseline --head candidate --output results
+      - name: Measure main
+        if: github.event_name != 'pull_request'
+        run: python3 tooling/benchmarks/run.py --head candidate --output results
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        if: always()
+        with:
+          name: render-benchmark-${{ matrix.runner }}
+          path: |
+            results/result.json
+            results/raw.txt
+            results/summary.md
+          retention-days: 30
+          if-no-files-found: warn
