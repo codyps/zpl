@@ -1,7 +1,9 @@
 import { readFile } from 'node:fs/promises';
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import init, { render_preview } from '../../_site/pkg/zpl_wasm.js';
+import { withPngMetadata } from '../png-metadata.mjs';
+import { readPng } from './png-reader.mjs';
+import init, { render_preview, library_version } from '../../_site/pkg/zpl_wasm.js';
 
 await init({ module_or_path: await readFile(new URL('../../_site/pkg/zpl_wasm_bg.wasm', import.meta.url)) });
 
@@ -27,4 +29,20 @@ test('errors cross the JS boundary, and later renders still work', () => {
   assert.throws(() => render_preview('x'.repeat(1_048_577), 100, 80, 203, 0), /1 MiB/);
   const result = render_preview('^XA^XZ^XA^XZ', 100, 80, 203, 1);
   try { assert.equal(result.labels, 2); } finally { result.free(); }
+});
+
+
+test('PNG metadata preserves Unicode source and original image chunks', async () => {
+  const manifest = await readFile(new URL('../../zpl/Cargo.toml', import.meta.url), 'utf8');
+  assert.equal(library_version(), manifest.match(/^version = "([^"]+)"/m)[1]);
+  const result = render_preview('^XA^XZ', 100, 80, 203, 0);
+  try {
+    const metadata = { source: '^XA\r\n^FDcafé 日本語\0^FS^XZ', version: library_version(),
+      width: 100, height: 80, dpi: 203, label: 1, profile: 'ZD621_203_DPI' };
+    const png = result.png();
+    const decoded = readPng(withPngMetadata(png, metadata));
+    assert.deepEqual(JSON.parse(decoded.text.ZPL), metadata);
+    assert.equal(decoded.text.Software, `zpl ${library_version()}`);
+    assert.deepEqual(decoded.original, Buffer.from(png));
+  } finally { result.free(); }
 });
