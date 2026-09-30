@@ -1,4 +1,0 @@
-self-hosted-runner:
-  labels:
-    - warbler-linux
-    - warbler-macos-intel
