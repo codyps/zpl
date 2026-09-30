@@ -5,7 +5,7 @@ import tempfile
 import unittest
 
 from common import NAMES, compare
-from publish import archive, validate
+from publish import archive, read_records, validate
 
 CONFIG = json.loads(Path(__file__).with_name('config.json').read_text())
 
@@ -40,6 +40,28 @@ class Benchmarks(unittest.TestCase):
             candidate['samples']['head'][NAMES[0]] = bad
             with self.assertRaises(ValueError):
                 validate(candidate, run)
+
+    def test_download_layouts_and_duplicate_rejection(self):
+        record, run = fixture()
+        for nested in (False, True):
+            with self.subTest(nested=nested), tempfile.TemporaryDirectory() as temp:
+                incoming = Path(temp)
+                directory = incoming / 'render-benchmark-ubuntu-24.04' if nested else incoming
+                directory.mkdir(exist_ok=True)
+                (directory / 'result.json').write_text(json.dumps(record))
+                (directory / 'raw.txt').write_text('raw evidence')
+                self.assertEqual(read_records(incoming, run), [(record, 'raw evidence')])
+                if nested:
+                    (incoming / 'result.json').write_text(json.dumps(record))
+                    (incoming / 'raw.txt').write_text('duplicate evidence')
+                    with self.assertRaises(ValueError):
+                        read_records(incoming, run)
+                (directory / 'raw.txt').unlink()
+                with self.assertRaises(ValueError):
+                    read_records(incoming, run)
+        with tempfile.TemporaryDirectory() as temp:
+            with self.assertRaises(ValueError):
+                read_records(Path(temp), run)
 
     def test_history_accumulates_and_is_idempotent(self):
         record, run = fixture()

@@ -74,6 +74,24 @@ def archive(directory, records, run):
     (data / 'index.json').write_text(json.dumps(index) + '\n')
 
 
+def read_records(incoming, run):
+    # download-artifact v8 extracts a single match directly into its destination;
+    # multiple matches use named subdirectories. Accept both, but never duplicates.
+    # https://github.com/actions/download-artifact
+    sources = sorted(incoming.glob('result.json')) + sorted(incoming.glob('render-benchmark-*/result.json'))
+    records = []
+    for path in sources:
+        raw = path.with_name('raw.txt')
+        if any(p.is_symlink() or not p.is_file() or p.stat().st_size > 1_000_000 for p in (path, raw)):
+            raise ValueError('Invalid artifact file')
+        records.append((validate(json.loads(path.read_text()), run), raw.read_text()))
+    if len(records) != len(RUNNERS) or {r['runner'] for r, _ in records} != RUNNERS:
+        raise ValueError('Incomplete runner matrix')
+    if len({r['harness'] for r, _ in records}) != 1:
+        raise ValueError('Inconsistent harness')
+    return records
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('incoming', type=Path)
@@ -88,16 +106,7 @@ def main():
     if (live['run_attempt'] != run['run_attempt'] or live['conclusion'] != 'success'
             or live['path'] != '.github/workflows/benchmarks.yml'):
         raise ValueError('Unexpected or superseded workflow')
-    records = []
-    for path in sorted(args.incoming.glob('render-benchmark-*/result.json')):
-        raw = path.with_name('raw.txt')
-        if any(p.is_symlink() or not p.is_file() or p.stat().st_size > 1_000_000 for p in (path, raw)):
-            raise ValueError('Invalid artifact file')
-        records.append((validate(json.loads(path.read_text()), run), raw.read_text()))
-    if len(records) != len(RUNNERS) or {r['runner'] for r, _ in records} != RUNNERS:
-        raise ValueError('Incomplete runner matrix')
-    if len({r['harness'] for r, _ in records}) != 1:
-        raise ValueError('Inconsistent harness')
+    records = read_records(args.incoming, run)
     # Fresh temporary repository contains only history data; never run its files.
     remote = command('git', 'remote', 'get-url', 'origin')
     with tempfile.TemporaryDirectory() as temp:
