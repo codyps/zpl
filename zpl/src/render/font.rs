@@ -73,23 +73,26 @@ impl Font {
         self
     }
     fn map_char(self, c: char) -> Result<char, String> {
+        // Text is already Unicode before layout. Recover the input image index
+        // only for ^CI remapping; do not decode layout-generated soft hyphens
+        // (U+00AD) as CP850 byte AD (inverted exclamation mark).
+        let image = if self.legacy_codepage && !c.is_ascii() {
+            CP850.iter().position(|&glyph| glyph == c).map(|i| i + 128)
+        } else {
+            Some(c as usize)
+        };
         let c = match self
             .character_map
-            .and_then(|map| map.get(c as usize).copied())
+            .and_then(|map| image.and_then(|image| map.get(image).copied()))
         {
-            Some(source) if u32::from(source) != c as u32 => match source {
+            Some(source) if Some(source as usize) != image => match source {
                 // ^CI example, Programming Guide p. 158: legacy image 21 is euro.
                 21 => '€',
                 0..=127 => char::from(source),
-                _ if self.legacy_codepage => char::from(source),
+                _ if self.legacy_codepage => legacy_char(source),
                 _ => return Err("unsupported legacy remap source glyph".into()),
             },
             _ => c,
-        };
-        let c = if self.legacy_codepage && (128..=255).contains(&(c as u32)) {
-            CP850[c as usize - 128]
-        } else {
-            c
         };
         // Canonical keys identify private legacy-only strike entries. They do
         // not add Unicode arrow/house support to the normal resident strikes.
@@ -1256,6 +1259,14 @@ pub(super) fn block_metrics(id: impl Into<Font>, h: f64, printer_s: bool) -> (f6
 
 // ^CI0/^CI13: Zebra CP850. Unicode mapping reference:
 // https://www.unicode.org/Public/MAPPINGS/VENDORS/MICSFT/PC/CP850.TXT
+pub(super) fn legacy_char(byte: u8) -> char {
+    if byte.is_ascii() {
+        char::from(byte)
+    } else {
+        CP850[byte as usize - 128]
+    }
+}
+
 const CP850: [char; 128] = [
     '\u{c7}', '\u{fc}', '\u{e9}', '\u{e2}', '\u{e4}', '\u{e0}', '\u{e5}', '\u{e7}', '\u{ea}',
     '\u{eb}', '\u{e8}', '\u{ef}', '\u{ee}', '\u{ec}', '\u{c4}', '\u{c5}', '\u{c9}', '\u{e6}',
