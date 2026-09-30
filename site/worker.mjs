@@ -12,7 +12,9 @@ self.onmessage = async ({ data }) => {
     const metadata = {
       source: data.source,
       version: library_version(),
+      print: data.printId,
       label: data.label + 1,
+      labels: result.labels,
       width: data.width,
       height: data.height,
       dpi: data.dpi,

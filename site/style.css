@@ -14,6 +14,15 @@ h1 { margin: 0; font-size: 20px; }
 #editor { flex: 1; display: flex; flex-direction: column; }
 h2 { font-size: 14px; margin: 0 0 12px; }
 h2 label { font: inherit; }
+.panel-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+.panel-heading h2 { margin: 0; }
+.history-controls { display: flex; align-items: center; gap: 6px; min-width: 0; }
+#history { width: 220px; max-width: 100%; font-size: 12px; }
+#clear-history { padding: 8px; font-size: 12px; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+#printer-slot { position: absolute; height: 4px; border-radius: 3px; background: #364b42; opacity: 0; pointer-events: none; z-index: 1; }
+@media (max-width: 1000px) { #history { width: 160px; } }
+@media (max-width: 360px) { .panel-heading { gap: 6px; } #history { width: 132px; } }
 label { display: block; font-size: 12px; font-weight: 600; }
 textarea, input, select { min-width: 0; font: inherit; border: 1px solid #becbc4; border-radius: 5px; padding: 8px; background: #fff; color: inherit; }
 textarea { display: block; width: 100%; flex: 1; min-height: 240px; height: 0; resize: vertical; font: 13px/1.65 ui-monospace, monospace; tab-size: 2; background: #fbfcfb; }
@@ -31,14 +40,33 @@ button:disabled { opacity: .5; cursor: default; }
 .preview-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; font-size: 12px; color: #586b63; }
 .preview-toolbar label { display: flex; gap: 8px; align-items: center; }
 #label { width: 64px; }
-.canvas { flex: 1; min-height: 300px; position: relative; display: grid; place-items: center; padding: 16px; background: #e9eeeb; border: 1px solid #dce3df; border-radius: 5px; }
+#dimensions { min-width: 20ch; text-align: right; font-variant-numeric: tabular-nums; }
+.canvas { overflow: hidden; flex: 1; min-height: 300px; position: relative; display: grid; place-items: center; padding: 16px; background: #e9eeeb; border: 1px solid #dce3df; border-radius: 5px; }
 .canvas p { align-self: center; color: #586b63; font-size: 13px; }
-.canvas img { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: auto; max-width: calc(100% - 32px); height: auto; max-height: calc(100% - 32px); box-shadow: 0 2px 8px #20312d1a; image-rendering: pixelated; }
+.canvas > img { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: auto; max-width: calc(100% - 32px); height: auto; max-height: calc(100% - 32px); box-shadow: 0 2px 8px #20312d1a; image-rendering: pixelated; }
 [hidden] { display: none !important; }
-#status { margin: 12px 0 0; font-size: 13px; font-weight: 600; }
-#status.error { color: #a12525; }
 #warnings { white-space: pre-wrap; overflow-wrap: anywhere; background: #fff2d7; padding: 12px; border-radius: 5px; font: 13px/1.5 system-ui, sans-serif; }
 footer { font-size: 12px; color: #586b63; line-height: 1.5; }
 footer { padding-top: 12px; padding-bottom: 12px; border-top: 1px solid #dce3df; }
 @media (max-width: 800px) { .workspace { grid-template-columns: 1fr; gap: 12px; } header, main, footer { padding: 12px; } .panel { padding: 12px; } textarea { flex: auto; height: 300px; min-height: 240px; } .canvas { flex: auto; min-height: min(70dvh, 600px); } }
 @media (max-width: 360px) { .wordmark span { margin-left: 4px; font-size: 12px; } .settings { gap: 6px; } footer { gap: 8px; font-size: 11px; } }
+
+#paper-feed { position: absolute; overflow: visible; pointer-events: none; }
+#previous-preview { display: block; width: 100%; height: 100%; object-fit: contain; box-shadow: 0 2px 8px #20312d1a; background: white; image-rendering: pixelated; }
+#preview.awaiting-feed { visibility: hidden; }
+
+.preview-toolbar { flex-wrap: wrap; }
+.print-navigation { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.print-navigation button { padding: 6px 9px; }
+.print-badge { min-width: 9ch; text-align: center; font-variant-numeric: tabular-nums; background: #e1eee7; color: #18553f; border: 1px solid #c4dace; border-radius: 4px; padding: 5px 7px; font-weight: 700; }
+#label-total { min-width: 6ch; font-variant-numeric: tabular-nums; white-space: nowrap; font-weight: 400; }
+
+.canvas.is-stale { outline: 2px solid #a76300; outline-offset: -2px; }
+#preview-state { position: absolute; right: 8px; bottom: 8px; z-index: 2; padding: 4px 8px; border: 1px solid #a76300; border-radius: 4px; background: #fff3d6; color: #734400; font-size: 12px; font-weight: 600; pointer-events: none; }
+
+/* Patrick Hand by Patrick Wagesreiter, SIL OFL 1.1 (fonts/OFL.txt).
+   Source: https://github.com/google/fonts/tree/main/ofl/patrickhand */
+@font-face { font-family: "Patrick Hand"; src: url('./fonts/PatrickHand-Regular.ttf') format('truetype'); font-display: swap; }
+.canvas.has-error > #preview, .canvas.has-error > #placeholder, .canvas.has-error > #preview-state { visibility: hidden; }
+#error-paper { position: absolute; z-index: 2; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-1deg); width: min(380px, calc(100% - 48px)); max-height: calc(100% - 48px); padding: 28px 24px 32px; background: #fffaf0; color: #842e27; font: 24px/1.3 "Patrick Hand", cursive; clip-path: polygon(0 2%, 7% 0, 14% 2%, 23% 0, 31% 1.5%, 40% 0, 49% 2%, 57% 0, 67% 2%, 76% 0, 85% 1.5%, 94% 0, 100% 2%, 100% 98%, 93% 100%, 84% 98%, 75% 100%, 65% 98.5%, 56% 100%, 46% 98%, 37% 100%, 27% 98%, 18% 100%, 9% 98%, 0 100%); display: flex; }
+#error-message { overflow: auto; overflow-wrap: anywhere; white-space: pre-wrap; }

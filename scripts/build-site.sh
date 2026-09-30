@@ -13,4 +13,6 @@ mkdir -p _site/pkg
 wasm-bindgen "$site_target/wasm32-unknown-unknown/release/zpl_wasm.wasm" --target web --out-dir _site/pkg --out-name zpl_wasm
 # Explicit allowlist: never publish the checkout, specifications, or captures.
 cp site/index.html site/style.css site/app.mjs site/worker.mjs site/png-metadata.mjs site/svg-metadata.mjs _site/
+mkdir -p _site/fonts
+cp site/fonts/PatrickHand-Regular.ttf site/fonts/OFL.txt _site/fonts/
 cp LICENSE _site/LICENSE
