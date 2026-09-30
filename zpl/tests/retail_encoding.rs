@@ -2,6 +2,55 @@
 use std::{fs, path::Path};
 #[path = "../../zebra-http-api/examples/font_support/mod.rs"]
 mod digest;
+
+fn pixels(body: &[u8], options: zpl::Options) -> raster_diff::Raster {
+    let mut source = b"^XA^PW832^LL400^FO40,40^A0N,32,0".to_vec();
+    source.extend_from_slice(body);
+    source.extend_from_slice(b"^FS^XZ");
+    let doc = zpl::render(&source, options).unwrap();
+    zpl::output::raster::rasterize(&doc.labels[0]).unwrap()
+}
+
+#[test]
+fn legacy_decoding_precedes_block_layout() {
+    // ^TB ignores soft hyphens (Programming Guide p. 356); CP850 encodes
+    // U+00AD at F0, not AD. ^FB's generated hyphens are already Unicode.
+    // https://www.zebra.com/content/dam/support-dam/en/documentation/unrestricted/guide/software/zpl-zbi2-pg-en.pdf
+    // https://www.unicode.org/Public/MAPPINGS/VENDORS/MICSFT/PC/CP850.TXT
+    for options in [
+        zpl::render::profiles::SPECIFICATION,
+        zpl::render::profiles::ZD621_203_DPI,
+    ] {
+        assert_eq!(
+            pixels(b"^CI13^TBN,200,100^FH^FDAB_F0CD", options),
+            pixels(b"^CI13^TBN,200,100^FDABCD", options)
+        );
+        assert_eq!(
+            pixels(b"^CI13^FB80,4,0,L^FDABCDEFGHIJKL", options),
+            pixels(b"^CI28^FB80,4,0,L^FDABCDEFGHIJKL", options)
+        );
+    }
+}
+
+#[test]
+fn legacy_remapping_uses_original_image_indices() {
+    // ^CI remaps source image to destination byte (Programming Guide p. 158).
+    // CP850 B6 is U+00C2, retained in the native retail supplements.
+    for options in [
+        zpl::render::profiles::SPECIFICATION,
+        zpl::render::profiles::ZD621_203_DPI,
+    ] {
+        assert_eq!(
+            pixels(b"^CI13,182,65^FDA", options),
+            pixels("^CI28^FDÂ".as_bytes(), options)
+        );
+        assert_eq!(
+            pixels(b"^CI13,65,182^FH^FD_B6", options),
+            pixels(b"^CI28^FDA", options)
+        );
+    }
+}
+
 #[test]
 fn native_retail_encoding_controls() {
     let root =

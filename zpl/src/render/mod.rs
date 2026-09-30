@@ -967,10 +967,11 @@ fn render_expanded(
                         &decoded
                     } else {
                         if matches!(encoding, 0 | 13) && !bytes.is_ascii() {
-                            // Preserve byte indices for CI remapping; Font maps
-                            // the resulting legacy image through CP850.
+                            // Decode before Unicode-aware layout and control
+                            // processing. Font recovers image indices for ^CI
+                            // remapping without decoding generated characters.
                             decoded = std::borrow::Cow::Owned(
-                                bytes.iter().map(|&b| char::from(b)).collect(),
+                                bytes.iter().map(|&b| font::legacy_char(b)).collect(),
                             );
                             &decoded
                         } else {
