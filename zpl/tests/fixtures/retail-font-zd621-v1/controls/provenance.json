@@ -1,0 +1,34 @@
+{
+  "device": "ZTC ZD621-203dpi ZPL",
+  "firmware": "V93.21.33Z",
+  "host": "http://D7J211001302.bed.einic.org/",
+  "transport": "HTTP Preview Label through loopback system-curl bridge; no physical print",
+  "captured_utc": "2026-09-29T23:53:41Z",
+  "cases": [
+    {
+      "name": "legacy",
+      "zpl_sha256": "3a070e16bc2aa563fc1a67b46d2342134a8a3cbfb91709e313dbc2490c711558",
+      "png_sha256": "cbc66b5f04d5adc5b1bd60fc8716187c7f705dc92e77fa6566306dfd696ef0f3"
+    },
+    {
+      "name": "cp1252",
+      "zpl_sha256": "d5a5f2d371fff67b8195ed2b87fa947fa04200b2fde4302fbf053fdf46b2d307",
+      "png_sha256": "de07c64d10ea8a6ed43b338606149517a3ec774a725d0da2f1e7dc3c5ab172b4"
+    },
+    {
+      "name": "utf8",
+      "zpl_sha256": "6f52b21ad7173cc621fae821232955fdc000f2e6fd7beb1a90d00bcd144b619e",
+      "png_sha256": "0941b4a4629cf2616e8ff7060e410255d3d77862829cef92e51686f3f09032a6"
+    },
+    {
+      "name": "rotations",
+      "zpl_sha256": "30ff6f1f51a222bb5717a1257f144e57a66f3bcd4e98133b4b6ef58e116d1495",
+      "png_sha256": "e27d6e522aee5ed3f729edde95a47195a7c2efa8159d39bc2bad6dc42543f6c8"
+    },
+    {
+      "name": "utf8-repeat",
+      "zpl_sha256": "6f52b21ad7173cc621fae821232955fdc000f2e6fd7beb1a90d00bcd144b619e",
+      "png_sha256": "0941b4a4629cf2616e8ff7060e410255d3d77862829cef92e51686f3f09032a6"
+    }
+  ]
+}
