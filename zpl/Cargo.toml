@@ -7,7 +7,7 @@ license.workspace = true
 readme = "README.md"
 repository = "https://github.com/codyps/zpl"
 documentation = "https://docs.rs/zpl"
-include = ["src/**", "assets/*.zbf", "LICENSE", "README.md"]
+include = ["src/**", "assets/*.zbf", "LICENSE", "README.md", "CHANGELOG.md"]
 
 [dependencies]
 encoding_rs = "0.8.41"
