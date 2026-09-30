@@ -6,7 +6,9 @@ This follows the [codyps/coarsetime measurement pattern](https://github.com/cody
 identical base/head harnesses, alternating rounds on the same worker, raw evidence,
 paired statistical reporting, and append-only main history. The initial ZPL suite
 uses the existing native Linux and Intel macOS Warbler runners with stable Rust.
-It measures the local renderer, without a printer or external rendering service.
+A pinned uv action installs Python in user space, so benchmark setup needs no
+macOS administrator access. It measures the local renderer, without a printer or
+external rendering service.
 
 ## Workloads and interpretation
 

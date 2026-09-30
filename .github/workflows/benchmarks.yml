@@ -14,6 +14,8 @@ concurrency:
 env:
   CARGO_NET_RETRY: 2
   CARGO_HTTP_TIMEOUT: 30
+  UV_HTTP_RETRIES: 2
+  UV_HTTP_TIMEOUT: 30
 jobs:
   measure:
     strategy:
@@ -47,9 +49,17 @@ jobs:
           path: baseline
           persist-credentials: false
       - uses: dtolnay/rust-toolchain@6bed0761d98439e5a578e2877258200ad565ba87 # stable
-      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+      # Warbler macOS workers do not grant passwordless sudo. Managed Python
+      # from uv is relocatable and installs entirely in the runner's user space.
+      # https://github.com/astral-sh/setup-uv#activate-environment
+      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
         with:
+          version: '0.12.21'
           python-version: '3.13'
+          activate-environment: true
+          venv-path: ${{ runner.temp }}/benchmark-python
+          no-project: true
+          enable-cache: false
       - name: Test benchmark tooling
         run: python3 -m unittest discover -s tooling/benchmarks -p 'test_*.py' -v
       - name: Compare exact PR base and head on this worker
