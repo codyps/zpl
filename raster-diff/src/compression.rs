@@ -1,17 +1,73 @@
 //! Shared in-tree zlib and checksum primitives for graphics and PNG.
+// PNG section 5.5 defines the reflected CRC polynomial and all-ones initial
+// state: https://www.w3.org/TR/PNG/#5CRC-algorithm
+// Each successive table advances the same remainder by another zero byte.
+// Eight tables let independent lookups replace the serial bit-at-a-time loop.
+const CRC_TABLES: [[u32; 256]; 8] = {
+    let mut tables = [[0; 256]; 8];
+    let mut byte = 0;
+    while byte < 256 {
+        let mut crc = byte as u32;
+        let mut bit = 0;
+        while bit < 8 {
+            crc = (crc >> 1) ^ (0xedb88320 & 0u32.wrapping_sub(crc & 1));
+            bit += 1;
+        }
+        tables[0][byte] = crc;
+        byte += 1;
+    }
+    let mut depth = 1;
+    while depth < 8 {
+        let mut byte = 0;
+        while byte < 256 {
+            let crc = tables[depth - 1][byte];
+            tables[depth][byte] = (crc >> 8) ^ tables[0][(crc & 255) as usize];
+            byte += 1;
+        }
+        depth += 1;
+    }
+    tables
+};
+
 pub(crate) fn crc32(data: &[u8]) -> u32 {
     let mut crc = !0u32;
-    for &b in data {
-        crc ^= b as u32;
-        for _ in 0..8 {
-            crc = (crc >> 1) ^ (0xedb88320 & 0u32.wrapping_sub(crc & 1));
-        }
+    let (words, tail) = data.as_chunks::<8>();
+    for word in words {
+        let low = crc ^ u32::from_le_bytes(word[..4].try_into().unwrap());
+        crc = CRC_TABLES[7][(low & 255) as usize]
+            ^ CRC_TABLES[6][((low >> 8) & 255) as usize]
+            ^ CRC_TABLES[5][((low >> 16) & 255) as usize]
+            ^ CRC_TABLES[4][(low >> 24) as usize]
+            ^ CRC_TABLES[3][word[4] as usize]
+            ^ CRC_TABLES[2][word[5] as usize]
+            ^ CRC_TABLES[1][word[6] as usize]
+            ^ CRC_TABLES[0][word[7] as usize];
+    }
+    for &byte in tail {
+        crc = (crc >> 8) ^ CRC_TABLES[0][((crc ^ u32::from(byte)) & 255) as usize];
     }
     !crc
 }
+
+fn adler32(data: &[u8]) -> u32 {
+    // RFC 1950 section 2.2, ADLER32: https://www.rfc-editor.org/rfc/rfc1950#section-2.2
+    // Defer reduction: starting with a,b <= 65520, 5552 bytes of 255
+    // keep b <= 65520 + 5552*65520 + 255*5552*5553/2 < 2^32.
+    let (mut a, mut b) = (1u32, 0u32);
+    for block in data.chunks(5552) {
+        for &byte in block {
+            a += u32::from(byte);
+            b += a;
+        }
+        a %= 65521;
+        b %= 65521;
+    }
+    (b << 16) | a
+}
 pub(crate) fn zlib_store(data: &[u8]) -> Vec<u8> {
-    let mut out = vec![0x78, 0x01];
     let count = data.len().div_ceil(65535).max(1);
+    let mut out = Vec::with_capacity(data.len() + count * 5 + 6);
+    out.extend([0x78, 0x01]);
     for i in 0..count {
         let start = i * 65535;
         let end = (start + 65535).min(data.len());
@@ -22,12 +78,7 @@ pub(crate) fn zlib_store(data: &[u8]) -> Vec<u8> {
         out.extend((!len).to_le_bytes());
         out.extend(block);
     }
-    let (mut a, mut b) = (1u32, 0u32);
-    for &v in data {
-        a = (a + v as u32) % 65521;
-        b = (b + a) % 65521;
-    }
-    out.extend(((b << 16) | a).to_be_bytes());
+    out.extend(adler32(data).to_be_bytes());
     out
 }
 struct Bits<'a> {
@@ -211,12 +262,7 @@ pub fn inflate(data: &[u8], limit: usize) -> Result<Vec<u8>, String> {
     if bits.pos.div_ceil(8) != bits.data.len() {
         return Err("trailing compressed data".into());
     }
-    let (mut a, mut b) = (1u32, 0u32);
-    for &v in &out {
-        a = (a + v as u32) % 65521;
-        b = (b + a) % 65521
-    }
-    if ((b << 16) | a) != u32::from_be_bytes(data[data.len() - 4..].try_into().unwrap()) {
+    if adler32(&out) != u32::from_be_bytes(data[data.len() - 4..].try_into().unwrap()) {
         return Err("zlib checksum mismatch".into());
     }
     Ok(out)
@@ -224,6 +270,65 @@ pub fn inflate(data: &[u8], limit: usize) -> Result<Vec<u8>, String> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn checksum_block_boundaries_match_bitwise_definitions() {
+        // Independent, deliberately unoptimized definitions from PNG 5.5 and
+        // RFC 1950 2.2 (links above). Include worst-case Adler accumulators,
+        // every CRC tail length, unaligned slices and DEFLATE block boundaries.
+        for value in [0, 255] {
+            let data = vec![value; 140001];
+            check_checksums(&data);
+        }
+        let data: Vec<_> = (0..140001)
+            .map(|i| ((i * 73 + i / 251) % 256) as u8)
+            .collect();
+        check_checksums(&data);
+    }
+
+    fn check_checksums(data: &[u8]) {
+        for start in 0..8 {
+            for len in [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                15,
+                16,
+                17,
+                5551,
+                5552,
+                5553,
+                11104,
+                65535,
+                65536,
+                140000 - start,
+            ] {
+                let input = &data[start..start + len];
+                let mut crc = !0u32;
+                let (mut a, mut b) = (1u32, 0u32);
+                for &byte in input {
+                    crc ^= u32::from(byte);
+                    for _ in 0..8 {
+                        crc = (crc >> 1) ^ if crc & 1 != 0 { 0xedb88320 } else { 0 };
+                    }
+                    a = (a + u32::from(byte)) % 65521;
+                    b = (b + a) % 65521;
+                }
+                assert_eq!(crc32(input), !crc, "CRC start={start} len={len}");
+                assert_eq!(
+                    adler32(input),
+                    (b << 16) | a,
+                    "Adler start={start} len={len}"
+                );
+            }
+        }
+    }
     #[test]
     fn independent_zlib_vectors() {
         let expected: Vec<u8> = (0..200).flat_map(|_| 0u8..=255).collect();

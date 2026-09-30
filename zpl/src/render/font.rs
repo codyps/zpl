@@ -796,10 +796,34 @@ pub(super) fn text_parts_for(
             pen = next_tab(pen);
             continue;
         }
-        let value = c.to_string();
-        let mut path = text_for(id, &value, w, h)?;
+        let c = font.map_char(c)?;
+        let (glyphs, sx, sy) = selected_for_char(font, c, w, h);
+        let g = glyph_from(glyphs, c)?;
+        // A single bitmap glyph already has disjoint row spans. Unlike a
+        // complete proportional string, it needs no BTreeMap or union/sort
+        // pass to prevent even-odd cancellation of overlapping glyph ink.
+        let mut path = Path::default();
+        for (y, row) in g.bitmap.iter().enumerate() {
+            let mut start = None;
+            for x in 0..=g.width as usize {
+                let black = x < g.width as usize && row[x / 8] & (128 >> (x % 8)) != 0;
+                match (start, black) {
+                    (None, true) => start = Some(x),
+                    (Some(left), false) => {
+                        path.rect(
+                            (g.left as f64 + left as f64) * sx,
+                            baseline_for(id, h) + (g.top + y as i32) as f64 * sy,
+                            (x - left) as f64 * sx,
+                            sy,
+                        );
+                        start = None;
+                    }
+                    _ => {}
+                }
+            }
+        }
         path.transform(|p| crate::output::Point::new(p.x + pen, p.y));
-        pen += width_for(id, &value, w, h)?;
+        pen += g.advance as f64 * sx;
         if !path.segments.is_empty() {
             parts.push(path);
         }
@@ -1013,6 +1037,39 @@ pub(super) fn cull_outside(path: &mut Path, width: u32, height: u32) {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn individual_parts_match_full_glyph_layout() {
+        // Preserve captured strike geometry and advances, including scaled
+        // fallbacks and remapped controls (Zebra ^CI p. 158, Tables 29/31).
+        for id in [
+            '0', 'A', 'B', 'D', 'E', 'F', 'G', 'H', 'P', 'Q', 'R', 'S', 'T', 'U', 'V',
+        ] {
+            for (w, h) in [(10., 16.), (16., 24.), (32., 32.), (17.3, 29.7)] {
+                for font in [
+                    Font::new(id, false),
+                    Font::new(id, true)
+                        .with_default_glyph(true)
+                        .with_control_glyphs(true, false),
+                ] {
+                    for c in (' '..='~').chain(['¢', 'é', 'א', '\u{1b}', '\u{7f}']) {
+                        let value = c.to_string();
+                        let expected = text_for(font, &value, w, h);
+                        let actual = text_parts_for(font, &value, w, h);
+                        match (expected, actual) {
+                            (Ok(expected), Ok(parts)) => {
+                                let actual = Path {
+                                    segments: parts.into_iter().flat_map(|p| p.segments).collect(),
+                                };
+                                assert_eq!(actual, expected, "{id} {c:?} {w}x{h}");
+                            }
+                            (Err(expected), Err(actual)) => assert_eq!(actual, expected),
+                            other => panic!("glyph layout disagrees: {other:?}"),
+                        }
+                    }
+                }
+            }
+        }
+    }
     #[test]
     fn ascii_strikes_preserve_enriched_fallback_glyphs() {
         // ^CI / ^PA and legacy control behavior: use the same enriched
