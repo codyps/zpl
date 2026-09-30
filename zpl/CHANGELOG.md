@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.1](https://github.com/codyps/zpl/compare/zpl-v0.1.0...zpl-v0.1.1) - 2026-09-30
+
+### Added
+
+- *(site)* improve previews, downloads, and print history
+- *(render)* support request-local formats and retail text encodings
+
+### Fixed
+
+- *(render)* decode legacy text before block layout
+
+### Other
+
+- *(render)* accelerate PNG checksums and glyph layout ([#23](https://github.com/codyps/zpl/pull/23))
+
 ## [0.1.0](https://github.com/codyps/zpl/releases/tag/zpl-v0.1.0) - 2026-09-29
 
 ### Added

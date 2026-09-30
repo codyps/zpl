@@ -2482,7 +2482,7 @@ checksum = "a611d15b50743feb4c76b7d03edcb0e64f399c26961e4efe6975bc398be6aa3d"
 
 [[package]]
 name = "raster-diff"
-version = "0.1.0"
+version = "0.1.1"
 
 [[package]]
 name = "rayon"
@@ -4028,7 +4028,7 @@ checksum = "29666d0abbfad1e3dc4dcf6144730dd3a3ab225bbbdac83319345b1b44ccfc1b"
 
 [[package]]
 name = "zpl"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "anyd",
  "encoding_rs",
