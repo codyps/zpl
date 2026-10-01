@@ -15,7 +15,10 @@ concurrency:
   # Even a skipped workflow can cancel another run sharing its concurrency group.
   # Ignore unsuccessful publisher completions without touching a production build.
   group: pages-${{ github.event_name == 'workflow_run' && github.event.workflow_run.conclusion != 'success' && github.run_id || github.ref }}
-  cancel-in-progress: true
+  # Benchmark publication refreshes the same commit: let its push checks finish
+  # before rebuilding with the new history. New pushes still supersede old builds.
+  # https://docs.github.com/en/actions/concepts/workflows-and-actions/concurrency
+  cancel-in-progress: ${{ github.event_name != 'workflow_run' }}
 env:
   CARGO_NET_RETRY: 2
   CARGO_HTTP_TIMEOUT: 30
