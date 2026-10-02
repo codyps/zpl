@@ -13,6 +13,9 @@ request history, and cache refresh controls.
 [Browser preview](web-preview.md) documents the local WebAssembly editor and
 GitHub Pages deployment.
 
+[Renderer HTTP API](worker-api.md) documents the public Cloudflare Worker,
+Labelary compatibility, rate limits, hosting comparison, and deployment.
+
 [Release PR automation](releases.md) documents release-plz setup and the separate
 crates.io publishing prerequisites.
 

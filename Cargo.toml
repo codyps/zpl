@@ -5,6 +5,7 @@ members = [
     "raster-diff",
     "zpl-wasm",
     "zpl-cmd",
+    "zpl-render-api",
     "zpl",
     "zebra-http-api",
     "zpl-proxy-api",

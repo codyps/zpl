@@ -3,7 +3,9 @@ mod advanced_text;
 mod barcode;
 mod barcode_edges;
 pub mod compatibility;
+mod limits;
 pub mod profiles;
+pub use limits::Limits;
 use raster_diff::compression;
 use unicode_normalization::UnicodeNormalization;
 mod bounded_text;
@@ -160,6 +162,17 @@ fn rotation(s: &str) -> Result<u8, String> {
 }
 /// Convert a command stream to printer-dot paths. No printer or network access occurs.
 pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
+    render_with_limits(input, options, Limits::default())
+}
+
+/// Render with tighter service budgets, including expanded formats and all labels.
+/// These limits supplement the renderer's existing per-field and raster budgets.
+pub fn render_with_limits(
+    input: &[u8],
+    options: Options,
+    limits: Limits,
+) -> Result<Document, RenderError> {
+    let limits = limits.bounded();
     for dimension in [
         options.compatibility.preview_width_quantum,
         options.compatibility.preview_max_width,
@@ -180,18 +193,31 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
             message: "input exceeds 1 MiB renderer limit".into(),
         });
     }
+    if input.len() > limits.input_bytes {
+        return Err(RenderError {
+            offset: 0,
+            message: "input exceeds configured renderer limit".into(),
+        });
+    }
     let expanded = stored::expand(input)?;
     if let Some(expanded) = expanded {
-        return render_expanded(&expanded.bytes, options, true).map_err(|mut error| {
+        if expanded.bytes.len() > limits.input_bytes {
+            return Err(RenderError {
+                offset: 0,
+                message: "expanded formats exceed configured renderer limit".into(),
+            });
+        }
+        return render_expanded(&expanded.bytes, options, limits, true).map_err(|mut error| {
             error.offset = expanded.original_offset(error.offset);
             error
         });
     }
-    render_expanded(input, options, false)
+    render_expanded(input, options, limits, false)
 }
 fn render_expanded(
     input: &[u8],
     options: Options,
+    limits: Limits,
     allow_empty: bool,
 ) -> Result<Document, RenderError> {
     let numbered = numbered::plan(input, options.compatibility)?;
@@ -357,6 +383,7 @@ fn render_expanded(
                     count,
                     row,
                     true,
+                    limits.segments,
                 )?);
                 field.graphic_size = Some(((row * 8) as f64, (count / row) as f64));
                 field.graphic_bitmap = true;
@@ -445,8 +472,10 @@ fn render_expanded(
                     if scene.is_some() {
                         return Err("nested label".into());
                     }
-                    scene =
-                        Some(Scene::new(width, height, options.dpi).map_err(|e| e.to_string())?);
+                    if limits.labels < 64 && labels.len() >= limits.labels {
+                        return Err(format!("too many labels (maximum {})", limits.labels));
+                    }
+                    scene = Some(limits.scene(width, height, options.dpi)?);
                     font_id = default_font_id;
                     font_w = default_w;
                     font_h = default_h;
@@ -481,8 +510,7 @@ fn render_expanded(
                         let logical_width = sc.width;
                         let rounded_width = logical_width.div_ceil(quantum) * quantum;
                         let offset = (rounded_width - logical_width) / 2;
-                        Scene::new(rounded_width, sc.height, options.dpi)
-                            .map_err(|e| e.to_string())?;
+                        limits.scene(rounded_width, sc.height, options.dpi)?;
                         sc.width = rounded_width;
                         for draw in &mut sc.draws {
                             draw.path
@@ -493,8 +521,8 @@ fn render_expanded(
                         // the added right-hand area. Do not erase that margin.
                     }
                     labels.push(sc);
-                    if labels.len() > 64 {
-                        return Err("too many labels (maximum 64)".into());
+                    if labels.len() > limits.labels {
+                        return Err(format!("too many labels (maximum {})", limits.labels));
                     }
                 }
                 "PW" | "LL" => {
@@ -508,8 +536,7 @@ fn render_expanded(
                     } else if !options.compatibility.preview_ignores_label_length {
                         height = n as u32
                     }
-                    let fresh =
-                        Scene::new(width, height, options.dpi).map_err(|e| e.to_string())?;
+                    let fresh = limits.scene(width, height, options.dpi)?;
                     if let Some(sc) = scene.as_mut() {
                         if !options.compatibility.preview_width_latched_at_first_draw
                             || sc.draws.is_empty()
@@ -1406,6 +1433,7 @@ fn render_expanded(
                                 n,
                                 row,
                                 false,
+                                limits.stored_graphic_segments,
                             )?,
                             ((row * 8) as f64, (n / row) as f64),
                         ),
@@ -1422,6 +1450,7 @@ fn render_expanded(
                         n,
                         row,
                         false,
+                        limits.segments,
                     )?);
                     field.graphic_size = Some(((row * 8) as f64, (n / row) as f64));
                     field.graphic_bitmap = true;
@@ -1962,7 +1991,7 @@ fn render_expanded(
                             font::cull_outside(&mut path, cull_width, cull_height);
                         }
                         total_segments += path.segments.len();
-                        if total_segments > crate::output::MAX_SEGMENTS {
+                        if total_segments > limits.segments {
                             return Err("document path limit exceeded".into());
                         }
                         // Dimensions are checked at XA/PW/LL, and the document
@@ -1995,7 +2024,7 @@ fn render_expanded(
                 .values()
                 .map(|(p, _)| p.segments.len())
                 .sum::<usize>()
-                > crate::output::MAX_SEGMENTS
+                > limits.stored_graphic_segments
             {
                 return Err("downloaded graphics path limit exceeded".into());
             }

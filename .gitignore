@@ -3,3 +3,7 @@ _*
 site/node_modules/
 site/test-results/
 site/playwright-report/
+zpl-render-api/node_modules/
+zpl-render-api/.wrangler/
+zpl-render-api/.dev.vars*
+zpl-render-api/pkg/

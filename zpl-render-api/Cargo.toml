@@ -1,0 +1,18 @@
+[package]
+name = "zpl-render-api"
+version = "0.1.0"
+edition = "2021"
+license.workspace = true
+publish = false
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+zpl = { version = "0.1.1", path = "../zpl" }
+wasm-bindgen = "=0.2.128"
+# Compression belongs to the service adapter, preserving the core PNG contract.
+png = "0.18.1"
+
+[dev-dependencies]
+raster-diff = { version = "0.1.1", path = "../raster-diff" }
