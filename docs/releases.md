@@ -1,53 +1,103 @@
-# Release pull requests
+# Releases
 
-The [release-plz workflow](../.github/workflows/release-plz.yml) runs on pushes to
-`main`, or manually from the Actions tab on `main`. It creates or updates a PR
-containing package versions, changelogs, and workspace dependency updates, using
-published **crates.io** versions as the baseline.
+The [Release-plz workflow](../.github/workflows/release-plz.yml) runs on pushes to
+`main`, or manually from the Actions tab on `main`. It has two jobs:
 
-It runs **only `release-pr`**: merging its PR does not publish crates, push release
-tags, or create a GitHub release. No crates.io token is needed for this workflow.
-The action and Rust/checkout actions are pinned to commit SHAs; the release-plz
-binary is pinned separately. Concurrent release-PR jobs are serialized.
+1. `release` publishes prepared versions to **crates.io**, pushes package tags,
+   and creates GitHub releases with changelog notes. With
+   `release_always = false`, release-plz does this only when the checked-out
+   commit is associated with a PR whose branch starts with `release-plz-`.
+   Ordinary feature and maintenance merges skip publication.
+2. After `release` succeeds, `release-pr` creates or updates a PR containing
+   package versions, changelogs, and workspace dependency updates, using the
+   published crates.io versions as the baseline. A failed publication stops
+   release preparation so it cannot race ahead of the registry.
 
 Only `raster-diff` and `zpl` are publishable and managed by release-plz. The
-remaining workspace packages set `publish = false`. When publishing is enabled,
-release-plz derives the workspace dependency order and publishes `raster-diff`
-before `zpl`.
+remaining workspace packages set `publish = false`. Release-plz derives the
+dependency order and publishes `raster-diff` before `zpl`. Their tags and GitHub
+releases are named `raster-diff-v<version>` and `zpl-v<version>`.
 
-## Repository setup
-
-1. Merge the workflow and configuration into `main`.
-2. In **Settings → Actions → General → Workflow permissions**, enable
-   **Allow GitHub Actions to create and approve pull requests**. This was disabled
-   when the workflow was added. The workflow itself grants only the required
-   `contents: write` and `pull-requests: write` permissions; no auto-approval step
-   is configured.
-3. Run **Release PR** manually or push a commit to `main`.
-
-The release-plz step uses the `RELEASE_PLZ_TOKEN` repository secret rather than
-the default `GITHUB_TOKEN`, allowing its PR creation and updates to trigger
-ordinary PR CI. Store an appropriately scoped PAT or GitHub App token in that
-secret, following the [token documentation](https://release-plz.dev/docs/github/token).
-Do not put tokens in repository files.
+The action and Rust/checkout actions are pinned to commit SHAs; the release-plz
+binary is pinned separately. Publishing jobs are serialized, and an active publish
+is not cancelled by newer pushes; release-PR jobs are also serialized. Both jobs
+are restricted to `codyps/zpl` on `main` and have bounded execution time.
 
 CI excludes pushes to release-plz's temporary `release-plz-*-tmp-*` branches to
 avoid duplicate builds and cancellation noise. The lasting release branch,
 release PR, and `main` retain their normal CI checks.
 
-## Publishing later
+## Trusted publishing setup
 
-Publishing is intentionally a separate step. Before enabling it, confirm crate
-name ownership, complete package metadata,
-and configure crates.io authentication. The repository is currently private;
-publishing a crate makes its packaged source public. Review `cargo package
---list` for each package before publication.
+Configure a GitHub trusted publisher in the crates.io settings for **both**
+[`raster-diff`](https://crates.io/crates/raster-diff/settings) and
+[`zpl`](https://crates.io/crates/zpl/settings), with these exact values:
 
-`release_always = false` is configured so that a future release job can be gated
-on merging a release PR. No publishing job or credentials are added here.
+| Field | Value |
+| --- | --- |
+| Repository owner | `codyps` |
+| Repository name | `zpl` |
+| Workflow filename | `release-plz.yml` |
+| Environment | Leave empty; the publishing job does not use an environment. |
+
+The workflow filename is the file's basename, not its display name or its full
+`.github/workflows/` path. If an environment restriction is added on crates.io,
+the publishing job must declare the same GitHub environment. Renaming the workflow
+file also requires updating both trusted-publisher entries.
+
+The pinned release-plz binary supports native trusted publishing. The `release`
+job grants `id-token: write`, and release-plz exchanges GitHub's OIDC identity for
+a short-lived crates.io token when it has a crate to publish. It does not need
+`rust-lang/crates-io-auth-action` or a `CARGO_REGISTRY_TOKEN` secret. Do not set an
+empty token variable: leave it unset so release-plz can use OIDC. Both crates must
+already exist on crates.io; trusted publishing cannot perform a first publication.
+
+The publishing job uses the default `GITHUB_TOKEN` with `contents: write` to
+create tags/releases and `pull-requests: read` to detect a release PR. The
+`release-pr` job separately uses the `RELEASE_PLZ_TOKEN` repository secret so its
+PR creation and updates trigger ordinary PR CI. Store an appropriately scoped
+PAT or GitHub App token in that secret, following the
+[token documentation](https://release-plz.dev/docs/github/token). It is a GitHub
+credential, not a crates.io publishing token. Keep **Settings → Actions → General
+→ Workflow permissions → Allow GitHub Actions to create and approve pull
+requests** enabled; no auto-approval step is configured.
+
+## Releasing and verifying
+
+Merge workflow changes into `main` before merging the generated release PR. Let
+release-plz update the release PR and wait for its normal CI checks, then merge
+it. Its push to `main` runs `release`, publishing any unpublished prepared
+versions and creating their tags/releases. Merging only a workflow or feature PR
+prepares a release PR; it does not itself publish a release.
+
+Review `cargo package --list -p raster-diff -p zpl` before publication. To verify
+both archives locally without uploading, run:
+
+```sh
+cargo package --locked -p raster-diff -p zpl
+```
+
+Packaging both crates together lets Cargo verify `zpl` against the prepared
+`raster-diff` archive before that version is available on crates.io. A
+`release-plz release --dry-run` on an ordinary commit only tests the merge gate;
+it does not prove packaging or OIDC authentication. A release-plz dry run on a
+release commit publishes nothing, so its separate per-crate Cargo invocations
+can fail to resolve an unpublished workspace dependency.
+
+After merging a release PR, check the workflow's publishing job, each crate's
+crates.io version, and the corresponding GitHub tag/release. A green
+`release-pr` job alone is not evidence that publication succeeded. Trusted
+publisher settings require crate-owner access, and actual OIDC exchange can only
+be verified in GitHub Actions when publishing is needed.
+
+If a release fails, inspect its logs and the registry/tag state before retrying
+the failed workflow run. Manual dispatch on `main` still obeys the release-PR
+gate, so it will skip publication if later ordinary commits have already landed.
+Do not bypass the gate or change version numbers merely to retry publication.
 
 References:
 
-- [Release-plz quickstart and PR-only setup](https://release-plz.dev/docs/github/quickstart)
-- [Configuration fields](https://release-plz.dev/docs/config)
-- [Action inputs](https://release-plz.dev/docs/github/input)
+- [Release-plz quickstart and native trusted publishing](https://release-plz.dev/docs/github/quickstart)
+- [Release-PR merge gate](https://release-plz.dev/docs/config#the-release_always-field)
+- [crates.io trusted publishing](https://crates.io/docs/trusted-publishing)
+- [Cargo package verification](https://doc.rust-lang.org/cargo/commands/cargo-package.html)
