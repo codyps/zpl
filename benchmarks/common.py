@@ -11,7 +11,11 @@ RUNNERS = {"ubuntu-24.04"}
 def compare(before, after, config):
     if len(before) != 10 or len(after) != 10:
         raise ValueError("Expected ten paired rounds")
-    changes = [(b / a - 1) * 100 for a, b in zip(before, after)]
+    if any(type(n) not in (int, float) or not math.isfinite(n) or n <= 0
+           for n in [*before, *after]):
+        raise ValueError("Expected positive finite timings")
+    # Subtract first so an exact 10% improvement is not rounded just below 10%.
+    changes = [(b - a) * 100 / a for a, b in zip(before, after)]
     rng = random.Random(0)
     draws = sorted(statistics.median(rng.choices(changes, k=10))
                    for _ in range(config["bootstrap_iterations"]))

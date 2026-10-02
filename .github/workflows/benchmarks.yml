@@ -57,6 +57,9 @@ jobs:
     env:
       BENCH_RUNNER: ubuntu-24.04
       RUSTFLAGS: ''
+      PR_NUMBER: ${{ github.event.pull_request.number || 0 }}
+      # Keep both checkouts on the installed compiler, even with rust-toolchain files.
+      RUSTUP_TOOLCHAIN: stable
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
