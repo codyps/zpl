@@ -38,6 +38,31 @@ pub struct Path {
     pub segments: Vec<Segment>,
 }
 impl Path {
+    /// Validate newly constructed geometry without rescanning earlier draws.
+    pub(crate) fn validate(&self) -> Result<(), OutputError> {
+        let point =
+            |p: &Point| p.x.is_finite() && p.y.is_finite() && p.x.abs() <= 1e9 && p.y.abs() <= 1e9;
+        let mut started = false;
+        for s in &self.segments {
+            match s {
+                Segment::Move(_) => started = true,
+                Segment::Line(_) | Segment::Cubic(..) if !started => {
+                    return Err(OutputError("path must begin with Move"))
+                }
+                _ => {}
+            }
+            let valid = match s {
+                Segment::Move(p) | Segment::Line(p) => point(p),
+                Segment::Cubic(a, b, c) => point(a) && point(b) && point(c),
+                Segment::Close => true,
+            };
+            if !valid {
+                return Err(OutputError("invalid path coordinate"));
+            }
+        }
+        Ok(())
+    }
+
     pub fn rect(&mut self, x: f64, y: f64, w: f64, h: f64) {
         if w <= 0.0 || h <= 0.0 {
             return;
@@ -179,27 +204,7 @@ impl Scene {
             if count > MAX_SEGMENTS {
                 return Err(OutputError("too many path segments"));
             }
-            let point = |p: &Point| {
-                p.x.is_finite() && p.y.is_finite() && p.x.abs() <= 1e9 && p.y.abs() <= 1e9
-            };
-            let mut started = false;
-            for s in &draw.path.segments {
-                match s {
-                    Segment::Move(_) => started = true,
-                    Segment::Line(_) | Segment::Cubic(..) if !started => {
-                        return Err(OutputError("path must begin with Move"))
-                    }
-                    _ => {}
-                }
-                let valid = match s {
-                    Segment::Move(p) | Segment::Line(p) => point(p),
-                    Segment::Cubic(a, b, c) => point(a) && point(b) && point(c),
-                    Segment::Close => true,
-                };
-                if !valid {
-                    return Err(OutputError("invalid path coordinate"));
-                }
-            }
+            draw.path.validate()?;
         }
         Ok(())
     }

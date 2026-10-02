@@ -1,10 +1,13 @@
 use super::*;
-use crate::output::raster::rasterize;
+use crate::output::raster::{rasterize_into, PackedRaster};
 #[derive(Debug, Default, Clone, Copy)]
 pub struct Png;
 impl Adapter for Png {
     fn encode(&self, scene: &Scene) -> Result<Vec<u8>, OutputError> {
-        raster_diff::Png::encode_gray(&rasterize(scene)?, scene.dpi).map_err(|e| OutputError(e.0))
+        let mut raster = PackedRaster::default();
+        rasterize_into(scene, &mut raster)?;
+        raster_diff::Png::encode_mono(scene.width, scene.height, &raster.pixels, scene.dpi)
+            .map_err(|e| OutputError(e.0))
     }
 }
 impl Png {

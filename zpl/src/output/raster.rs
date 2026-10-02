@@ -4,6 +4,8 @@ use std::ops::Range;
 
 use crate::output::{OutputError, Paint, Path, Point, Scene, Segment, MAX_SEGMENTS};
 pub use raster_diff::Raster;
+mod packed;
+pub(crate) use packed::PackedRaster;
 
 /// Destination for monochrome rasterization, independent of pixel storage.
 ///
@@ -88,6 +90,20 @@ pub fn rasterize_into<O: RasterOutput + ?Sized>(
         // Keep the original half-open crossing predicate below so shared
         // vertices, horizontal edges and even-odd holes retain their pixels.
         let row = |y: f64| y.max(0.0).min(scene.height as f64) as u32;
+        // Retain the conservative work accounting independently of the tighter
+        // pixel-center schedule. Resource-limit diagnostics stay unchanged.
+        work = edges.iter().fold(work, |sum, &(a, b)| {
+            if a.y == b.y {
+                sum
+            } else {
+                sum.saturating_add(u64::from(
+                    row(a.y.max(b.y).ceil()) - row(a.y.min(b.y).floor()),
+                ))
+            }
+        });
+        if work > 100_000_000 {
+            return Err(OutputError("raster scan budget exceeded"));
+        }
         let mut scheduled: Vec<_> = edges
             .iter()
             .enumerate()
@@ -95,17 +111,14 @@ pub fn rasterize_into<O: RasterOutput + ?Sized>(
                 if a.y == b.y {
                     return None;
                 }
-                let start = row(a.y.min(b.y).floor());
-                let end = row(a.y.max(b.y).ceil());
+                let start = row((a.y.min(b.y) - 0.5).ceil());
+                let end = row((a.y.max(b.y) - 0.5).ceil());
                 (start < end).then_some((start, end, index))
             })
             .collect();
-        work = scheduled.iter().fold(work, |sum, &(start, end, _)| {
-            sum.saturating_add(u64::from(end - start))
-        });
-        if work > 100_000_000 {
-            return Err(OutputError("raster scan budget exceeded"));
-        }
+        let vertical = scheduled
+            .iter()
+            .all(|&(_, _, i)| edges[i].0.x == edges[i].1.x);
         scheduled.sort_unstable_by_key(|&(start, _, _)| start);
         let min = scheduled.first().map_or(0, |edge| edge.0);
         let max = scheduled.iter().map(|edge| edge.1).max().unwrap_or(0);
@@ -113,20 +126,30 @@ pub fn rasterize_into<O: RasterOutput + ?Sized>(
         let mut active = Vec::new();
         let mut intersections = Vec::new();
         for y in min..max {
-            intersections.clear();
             let scan = y as f64 + 0.5;
+            let previous_len = active.len();
             active.retain(|&(end, _)| end > y);
+            let mut changed = active.len() != previous_len;
             while pending.peek().is_some_and(|edge| edge.0 <= y) {
                 let (_, end, index) = pending.next().unwrap();
                 active.push((end, index));
+                changed = true;
             }
-            for &(_, index) in &active {
-                let (a, b) = edges[index];
-                if (a.y <= scan && b.y > scan) || (b.y <= scan && a.y > scan) {
-                    intersections.push(a.x + (scan - a.y) * (b.x - a.x) / (b.y - a.y));
+            // Bars and bitmap runs have vertical edges. Their crossings remain
+            // identical until the next start/end event, including even-odd
+            // holes and overlaps. Reuse them instead of sorting every row.
+            if changed || !vertical {
+                intersections.clear();
+                for &(_, index) in &active {
+                    let (a, b) = edges[index];
+                    if vertical {
+                        intersections.push(a.x);
+                    } else if (a.y <= scan && b.y > scan) || (b.y <= scan && a.y > scan) {
+                        intersections.push(a.x + (scan - a.y) * (b.x - a.x) / (b.y - a.y));
+                    }
                 }
+                intersections.sort_by(f64::total_cmp);
             }
-            intersections.sort_by(f64::total_cmp);
             for pair in intersections.as_chunks::<2>().0 {
                 let start = (pair[0] - 0.5).ceil().max(0.0).min(scene.width as f64) as u32;
                 let end = (pair[1] - 0.5).ceil().max(0.0).min(scene.width as f64) as u32;
