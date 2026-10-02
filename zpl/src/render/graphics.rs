@@ -103,7 +103,13 @@ fn base64(data: &[u8]) -> Result<Vec<u8>, String> {
     }
     Ok(out)
 }
-pub(super) fn decode(data: &[u8], bytes: usize, row: usize, binary: bool) -> Result<Path, String> {
+pub(super) fn decode(
+    data: &[u8],
+    bytes: usize,
+    row: usize,
+    binary: bool,
+    segment_limit: usize,
+) -> Result<Path, String> {
     if bytes == 0 || row == 0 || !bytes.is_multiple_of(row) || bytes > 25_000 {
         return Err("invalid or excessive graphic dimensions".into());
     }
@@ -211,6 +217,11 @@ pub(super) fn decode(data: &[u8], bytes: usize, row: usize, binary: bool) -> Res
             match (start, black) {
                 (None, true) => start = Some(x),
                 (Some(a), false) => {
+                    // Bound path expansion before Vec growth. A small bitmap
+                    // with alternating pixels can otherwise allocate many MB.
+                    if path.segments.len() + 5 > segment_limit {
+                        return Err("graphic path limit exceeded".into());
+                    }
                     path.rect(a as f64, y as f64, (x - a) as f64, 1.);
                     start = None
                 }
