@@ -47,6 +47,7 @@ def main():
     record = dict(schema=1, run_id=int(os.getenv('GITHUB_RUN_ID', '0')),
                   run_attempt=int(os.getenv('GITHUB_RUN_ATTEMPT', '1')),
                   event=os.getenv('GITHUB_EVENT_NAME', 'local'),
+                  pr=int(os.getenv('PR_NUMBER', '0')),
                   runner=os.getenv('BENCH_RUNNER', platform.system()),
                   timestamp=time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime()),
                   harness=protocol.hexdigest(), config=config, commits={}, samples={},

@@ -39,7 +39,32 @@ Both improvements and regressions are flagged; positive means slower. These are
 not merge gates or guarantees, and there is no multiple-comparison correction.
 Same-worker pairing reduces machine drift; thermal and scheduling noise remain.
 Thresholds live in `config.json`. PR summaries use the PR's tooling and are advisory,
-not a trusted authorization check. No bot comments or external service is required.
+not a trusted authorization check. The comment publisher uses main's thresholds.
+
+## PR comments
+
+`Comment on rendering benchmarks` runs trusted default-branch scripts after a
+successful PR measurement workflow, using its existing artifacts. A PR receives
+one sticky `github-actions[bot]` comment when a stage crosses the thresholds.
+Both improvements and regressions are reported. Later runs update that comment,
+including clearing old alerts when no stage qualifies; an initial quiet run does
+not post. The comment links the raw evidence and historical dashboard.
+
+The publisher validates the run/attempt, both revisions and their samples, PR
+association when available, current head/base SHAs, and fork/branch identities.
+Closed PRs, stale heads/bases and results older than the existing comment are
+skipped. Rebase or trigger a new PR event if the base advances during measurement.
+Reporting thresholds come from `main`; a PR cannot lower its own alert threshold.
+Changes to the round count or measurement duration require the trusted protocol
+to be updated too. Measurement workers explicitly select stable Rust for both
+checkouts and retain read-only repository permissions.
+
+The comment workflow has only actions/contents read and pull-requests write
+permissions. Artifacts are parsed as data, never executed, and PR scripts are
+never checked out by the publisher. It is separate from history publication, so
+comments do not trigger the Pages refresh that follows a successful history run.
+The new workflow must exist on `main` before GitHub can invoke it; the PR adding
+it will have benchmark artifacts and job summaries, but no automatic comment.
 
 ## History and Pages
 
@@ -91,6 +116,21 @@ python3 benchmarks/run.py --base /path/to/base --head /path/to/head --output /tm
 The output directory must not already exist. Use the same checkout for both paths
 to run an A/A noise check. Local measurements are not automatically published.
 See [web preview checks](../docs/web-preview.md) for combined site validation.
+
+## Remaining differences from coarsetime
+
+The existing collection already covers alternating same-worker measurements,
+paired statistics, raw evidence, exact environment metadata, job summaries,
+scheduled/manual runs, durable history and an interactive dashboard. PR comments
+add the remaining reporting step, including clearing alerts and stale-run checks.
+
+Useful measurement extensions are PNG encoding (currently excluded, despite
+being part of rendering to PNG), allocation counts for text-heavy labels, and a
+Wasm benchmark for the browser preview. Stage timings do not provide an independent
+machine-noise control such as coarsetime's stdlib workloads. These require new
+measurements; native timing data cannot substantiate Wasm or allocation claims.
+Linux-only GitHub-hosted workers are intentional. There is no multi-compiler
+matrix; exact stable Rust versions are recorded and kept separate in the dashboard.
 
 References: [Rust black_box](https://doc.rust-lang.org/std/hint/fn.black_box.html),
 [Cargo lockfiles](https://doc.rust-lang.org/cargo/guide/cargo-toml-vs-cargo-lock.html),

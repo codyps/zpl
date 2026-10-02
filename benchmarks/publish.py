@@ -1,4 +1,7 @@
-"""Trusted main-only history publisher. Artifacts are data, never executable input.
+"""Trusted main-only history publisher and shared measurement validation.
+
+Artifacts are data, never executable input. PR records are validated for the
+separate comment workflow; main() still rejects them for history publication.
 
 workflow_run trust boundary:
 https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#workflow_run
@@ -21,12 +24,18 @@ def command(*args, cwd=None):
 
 
 def validate(record, run):
+    labels = {'base', 'head'} if run['event'] == 'pull_request' else {'head'}
+    commits = record.get('commits', {})
     if (record.get('schema') != 1 or record.get('run_id') != run['id']
             or record.get('run_attempt') != run['run_attempt']
             or record.get('event') != run['event']
             or record.get('runner') not in RUNNERS
-            or record.get('commits') != {'head': run['head_sha']}):
+            or set(commits) != labels or commits.get('head') != run['head_sha']
+            or any(not isinstance(sha, str) or not re.fullmatch('[0-9a-f]{40}', sha)
+                   for sha in commits.values())):
         raise ValueError('Unexpected benchmark identity')
+    if run['event'] == 'pull_request' and (type(record.get('pr')) is not int or record['pr'] <= 0):
+        raise ValueError('Invalid PR number')
     if (not isinstance(record.get('timestamp'), str)
             or not re.fullmatch(r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z', record['timestamp'])):
         raise ValueError('Invalid timestamp')
@@ -36,12 +45,15 @@ def validate(record, run):
             isinstance(record['environment'].get(key), str)
             for key in ('rust', 'os', 'cpu', 'image', 'rustflags', 'profile')):
         raise ValueError('Missing environment')
-    if set(record.get('samples', {})) != {'head'} or set(record['samples']['head']) != set(NAMES):
+    if set(record.get('samples', {})) != labels:
         raise ValueError('Missing benchmarks')
-    for samples in record['samples']['head'].values():
-        if not isinstance(samples, list) or len(samples) != 10 or any(
-                type(n) not in (int, float) or not math.isfinite(n) or not 0 < n < 1e12 for n in samples):
-            raise ValueError('Invalid samples')
+    for revision in labels:
+        if set(record['samples'][revision]) != set(NAMES):
+            raise ValueError('Missing benchmarks')
+        for samples in record['samples'][revision].values():
+            if not isinstance(samples, list) or len(samples) != 10 or any(
+                    type(n) not in (int, float) or not math.isfinite(n) or not 0 < n < 1e12 for n in samples):
+                raise ValueError('Invalid samples')
     return record
 
 
@@ -82,7 +94,8 @@ def read_records(incoming, run):
     records = []
     for path in sources:
         raw = path.with_name('raw.txt')
-        if any(p.is_symlink() or not p.is_file() or p.stat().st_size > 1_000_000 for p in (path, raw)):
+        if path.parent.is_symlink() or any(
+                p.is_symlink() or not p.is_file() or p.stat().st_size > 1_000_000 for p in (path, raw)):
             raise ValueError('Invalid artifact file')
         records.append((validate(json.loads(path.read_text()), run), raw.read_text()))
     if len(records) != len(RUNNERS) or {r['runner'] for r, _ in records} != RUNNERS:

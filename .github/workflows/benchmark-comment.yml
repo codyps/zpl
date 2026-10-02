@@ -1,0 +1,36 @@
+# PR comments have their own workflow so they cannot trigger a Pages refresh.
+# https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#workflow_run
+name: Comment on rendering benchmarks
+on:
+  workflow_run:
+    workflows: [Rendering benchmarks]
+    types: [completed]
+permissions: {}
+jobs:
+  comment:
+    if: github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'pull_request'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    concurrency:
+      group: benchmark-comment-${{ github.event.workflow_run.head_repository.full_name }}-${{ github.event.workflow_run.head_branch }}
+      cancel-in-progress: false
+    permissions:
+      actions: read
+      contents: read
+      pull-requests: write
+    steps:
+      # Never check out PR code or execute downloaded scripts with this token.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: main
+          persist-credentials: false
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
+        with:
+          github-token: ${{ github.token }}
+          run-id: ${{ github.event.workflow_run.id }}
+          pattern: render-benchmark-*
+          path: incoming
+      - name: Update performance comment
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 benchmarks/comment.py incoming
