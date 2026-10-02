@@ -90,3 +90,23 @@ fn density_classes_preserve_physical_resolution() {
         assert_eq!(reader.info().pixel_dims.unwrap().xppu, ppm);
     }
 }
+
+#[test]
+fn service_keeps_field_graphic_and_format_budgets() {
+    let field = format!("^XA^AAN,9,5^FD{}^FS^XZ", "A".repeat(4097));
+    let graphic = format!("^XA^GFA,25001,25001,1,{}^FS^XZ", "00".repeat(25_001));
+    let mut formats = "^XA^DFR:F0^XZ".to_string();
+    for i in 1..9 {
+        formats.push_str(&format!("^XA^DFR:F{i}^XFR:F{}^XZ", i - 1));
+    }
+    formats.push_str("^XA^XFR:F8^XZ");
+    for source in [field, graphic, formats] {
+        let result = render_png(source.as_bytes(), 100, 100, 203, 0);
+        assert_eq!(
+            result.status,
+            413,
+            "{}",
+            String::from_utf8_lossy(&result.body)
+        );
+    }
+}

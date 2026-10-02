@@ -2,7 +2,7 @@
 
 use std::ops::Range;
 
-use crate::output::{OutputError, Paint, Path, Point, Scene, Segment, MAX_SEGMENTS};
+use crate::output::{Limits, OutputError, Paint, Path, Point, Scene, Segment};
 pub use raster_diff::Raster;
 mod packed;
 pub(crate) use packed::PackedRaster;
@@ -27,8 +27,11 @@ impl RasterOutput for Raster {
     fn reset(&mut self, width: u32, height: u32) -> Result<(), OutputError> {
         let len = (width as usize)
             .checked_mul(height as usize)
-            .filter(|&len| width != 0 && height != 0 && len <= super::MAX_PIXELS)
+            .filter(|_| width != 0 && height != 0)
             .ok_or(OutputError("invalid or excessive image dimensions"))?;
+        self.pixels
+            .try_reserve(len.saturating_sub(self.pixels.len()))
+            .map_err(|_| OutputError("raster allocation failed"))?;
         self.pixels.resize(len, 255);
         self.pixels.fill(255);
         self.width = width;
@@ -65,6 +68,17 @@ pub fn rasterize(scene: &Scene) -> Result<Raster, OutputError> {
     Ok(image)
 }
 
+/// Rasterize with caller-selected scene, flattening and scan-work budgets.
+pub fn rasterize_with_limits(scene: &Scene, limits: Limits) -> Result<Raster, OutputError> {
+    let mut image = Raster {
+        width: 0,
+        height: 0,
+        pixels: Vec::new(),
+    };
+    rasterize_into_with_limits(scene, &mut image, limits)?;
+    Ok(image)
+}
+
 /// Rasterize filled paths into a caller-provided destination.
 ///
 /// The scene is validated before the destination is touched, then the destination
@@ -76,11 +90,22 @@ pub fn rasterize_into<O: RasterOutput + ?Sized>(
     scene: &Scene,
     output: &mut O,
 ) -> Result<(), OutputError> {
-    scene.validate()?;
+    rasterize_into_with_limits(scene, output, Limits::default())
+}
+
+/// As [`rasterize_into`], with caller-selected budgets. Scene validation still
+/// completes before destination mutation; later scan/flattening errors can leave
+/// a partial result.
+pub fn rasterize_into_with_limits<O: RasterOutput + ?Sized>(
+    scene: &Scene,
+    output: &mut O,
+    limits: Limits,
+) -> Result<(), OutputError> {
+    scene.validate_with_limits(limits)?;
     output.reset(scene.width, scene.height)?;
     let mut work = 0u64;
     for draw in &scene.draws {
-        let edges = flatten(&draw.path)?;
+        let edges = flatten(&draw.path, limits.flattened_segments)?;
         if edges.is_empty() {
             continue;
         }
@@ -101,7 +126,7 @@ pub fn rasterize_into<O: RasterOutput + ?Sized>(
                 ))
             }
         });
-        if work > 100_000_000 {
+        if work > limits.scan_work {
             return Err(OutputError("raster scan budget exceeded"));
         }
         let mut scheduled: Vec<_> = edges
@@ -164,13 +189,14 @@ pub fn rasterize_into<O: RasterOutput + ?Sized>(
 fn midpoint(a: Point, b: Point) -> Point {
     Point::new((a.x + b.x) / 2.0, (a.y + b.y) / 2.0)
 }
-fn flatten(path: &Path) -> Result<Vec<(Point, Point)>, OutputError> {
+fn flatten(path: &Path, segment_limit: usize) -> Result<Vec<(Point, Point)>, OutputError> {
     fn curve(
         a: Point,
         b: Point,
         c: Point,
         d: Point,
         depth: u8,
+        segment_limit: usize,
         edges: &mut Vec<(Point, Point)>,
     ) -> Result<(), OutputError> {
         let deviation = (3.0 * b.x - 2.0 * a.x - d.x)
@@ -187,10 +213,10 @@ fn flatten(path: &Path) -> Result<Vec<(Point, Point)>, OutputError> {
             let abc = midpoint(ab, bc);
             let bcd = midpoint(bc, cd);
             let m = midpoint(abc, bcd);
-            curve(a, ab, abc, m, depth + 1, edges)?;
-            curve(m, bcd, cd, d, depth + 1, edges)?;
+            curve(a, ab, abc, m, depth + 1, segment_limit, edges)?;
+            curve(m, bcd, cd, d, depth + 1, segment_limit, edges)?;
         }
-        if edges.len() > MAX_SEGMENTS {
+        if edges.len() > segment_limit {
             return Err(OutputError("curve flattening limit exceeded"));
         }
         Ok(())
@@ -214,7 +240,7 @@ fn flatten(path: &Path) -> Result<Vec<(Point, Point)>, OutputError> {
             }
             Segment::Cubic(b, c, d) => {
                 let a = current.ok_or(OutputError("path must begin with Move"))?;
-                curve(a, b, c, d, 0, &mut edges)?;
+                curve(a, b, c, d, 0, segment_limit, &mut edges)?;
                 current = Some(d);
             }
             Segment::Close => {
@@ -224,11 +250,14 @@ fn flatten(path: &Path) -> Result<Vec<(Point, Point)>, OutputError> {
                 }
             }
         }
+        if edges.len() > segment_limit {
+            return Err(OutputError("path flattening limit exceeded"));
+        }
     }
     if let (Some(a), Some(b)) = (current, start) {
         edges.push((a, b));
     }
-    if edges.len() > MAX_SEGMENTS {
+    if edges.len() > segment_limit {
         return Err(OutputError("path flattening limit exceeded"));
     }
     Ok(edges)

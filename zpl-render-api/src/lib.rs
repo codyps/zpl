@@ -17,6 +17,7 @@ pub const LIMITS: Limits = Limits {
     stored_graphic_segments: 100_000,
     pixels: MAX_PIXELS,
     dimension: MAX_DIMENSION,
+    ..Limits::DEFAULT
 };
 
 #[wasm_bindgen]

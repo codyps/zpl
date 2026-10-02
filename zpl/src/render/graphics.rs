@@ -109,9 +109,13 @@ pub(super) fn decode(
     row: usize,
     binary: bool,
     segment_limit: usize,
+    byte_limit: usize,
 ) -> Result<Path, String> {
-    if bytes == 0 || row == 0 || !bytes.is_multiple_of(row) || bytes > 25_000 {
+    if bytes == 0 || row == 0 || !bytes.is_multiple_of(row) || row.checked_mul(8).is_none() {
         return Err("invalid or excessive graphic dimensions".into());
+    }
+    if bytes > byte_limit {
+        return Err("graphic bytes exceed configured renderer limit".into());
     }
     let decoded = if binary {
         if data.len() < bytes || !data[bytes..].iter().all(u8::is_ascii_whitespace) {
@@ -153,6 +157,9 @@ pub(super) fn decode(
             raw
         }
     } else {
+        let nibble_limit = bytes
+            .checked_mul(2)
+            .ok_or("graphic nibble count overflow")?;
         let mut nibbles = Vec::new();
         let mut repeat = 0;
         for &c in data {
@@ -185,14 +192,18 @@ pub(super) fn decode(
                 _ => {
                     let value = hex(c)?;
                     let count = repeat.max(1);
-                    if nibbles.len() + count > bytes * 2 {
+                    if nibbles
+                        .len()
+                        .checked_add(count)
+                        .is_none_or(|n| n > nibble_limit)
+                    {
                         return Err("graphic exceeds declared size".into());
                     }
                     nibbles.extend(std::iter::repeat_n(value, count));
                     repeat = 0;
                 }
             }
-            if nibbles.len() > bytes * 2 || repeat > bytes * 2 {
+            if nibbles.len() > nibble_limit || repeat > nibble_limit {
                 return Err("graphic exceeds declared size".into());
             }
         }

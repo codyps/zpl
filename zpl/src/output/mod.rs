@@ -1,7 +1,9 @@
 //! Output-independent filled paths and adapters. Coordinates are printer dots.
 use std::{error::Error, fmt};
 
+mod limits;
 mod pdf;
+pub use limits::Limits;
 mod png;
 pub mod raster;
 mod svg;
@@ -39,9 +41,13 @@ pub struct Path {
 }
 impl Path {
     /// Validate newly constructed geometry without rescanning earlier draws.
-    pub(crate) fn validate(&self) -> Result<(), OutputError> {
-        let point =
-            |p: &Point| p.x.is_finite() && p.y.is_finite() && p.x.abs() <= 1e9 && p.y.abs() <= 1e9;
+    pub(crate) fn validate(&self, coordinate_abs: f64) -> Result<(), OutputError> {
+        let point = |p: &Point| {
+            p.x.is_finite()
+                && p.y.is_finite()
+                && p.x.abs() <= coordinate_abs
+                && p.y.abs() <= coordinate_abs
+        };
         let mut started = false;
         for s in &self.segments {
             match s {
@@ -180,20 +186,32 @@ pub struct Scene {
 }
 impl Scene {
     pub fn new(width: u32, height: u32, dpi: u32) -> Result<Self, OutputError> {
+        Self::new_with_limits(width, height, dpi, Limits::default())
+    }
+    /// Construct a scene with caller-selected resource ceilings.
+    pub fn new_with_limits(
+        width: u32,
+        height: u32,
+        dpi: u32,
+        limits: Limits,
+    ) -> Result<Self, OutputError> {
         let s = Self {
             width,
             height,
             dpi,
             draws: Vec::new(),
         };
-        s.validate()?;
+        s.validate_with_limits(limits)?;
         Ok(s)
     }
     pub fn validate(&self) -> Result<(), OutputError> {
+        self.validate_with_limits(Limits::default())
+    }
+    pub fn validate_with_limits(&self, limits: Limits) -> Result<(), OutputError> {
         let pixels = (self.width as usize)
             .checked_mul(self.height as usize)
             .ok_or(OutputError("image dimensions overflow"))?;
-        if self.width == 0 || self.height == 0 || self.dpi == 0 || pixels > MAX_PIXELS {
+        if self.width == 0 || self.height == 0 || self.dpi == 0 || pixels > limits.pixels {
             return Err(OutputError("invalid or excessive image dimensions"));
         }
         let mut count = 0usize;
@@ -201,10 +219,10 @@ impl Scene {
             count = count
                 .checked_add(draw.path.segments.len())
                 .ok_or(OutputError("too many path segments"))?;
-            if count > MAX_SEGMENTS {
+            if count > limits.segments {
                 return Err(OutputError("too many path segments"));
             }
-            draw.path.validate()?;
+            draw.path.validate(limits.coordinate_abs)?;
         }
         Ok(())
     }

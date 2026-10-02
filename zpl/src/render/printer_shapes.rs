@@ -3,7 +3,7 @@
 //! Zebra ^GB (Programming Guide pp. 210–211) specifies the rounding percentage,
 //! not this rasterization. The recurrence is derived from the raw radius atlases
 //! and checked against independent radii 49–257 in rounded-boxes-zd621-v1.
-use crate::output::{Path, MAX_SEGMENTS};
+use crate::output::Path;
 
 fn corner(radius: usize) -> Vec<usize> {
     let r = radius as i64;
@@ -48,6 +48,7 @@ pub(super) fn rounded_rect(
     width: f64,
     height: f64,
     radius: f64,
+    segment_limit: usize,
 ) -> Result<(), String> {
     if width <= 0. || height <= 0. {
         return Ok(());
@@ -56,6 +57,7 @@ pub(super) fn rounded_rect(
         path.rect(x, y, width, height);
         return Ok(());
     }
+    integer_dimensions(&[width, height, radius])?;
     let rows = height.floor() as usize;
     let edges = corner(radius.floor() as usize);
     let mut start = 0;
@@ -64,7 +66,7 @@ pub(super) fn rounded_rect(
         let edge = (row < rows).then(|| edges.get(row.min(rows - 1 - row)).copied().unwrap_or(0));
         if edge != previous {
             if let Some(left) = previous {
-                if path.segments.len() + 5 > MAX_SEGMENTS {
+                if path.segments.len() + 5 > segment_limit {
                     return Err("geometry resource limit exceeded".into());
                 }
                 path.rect(
@@ -117,7 +119,13 @@ fn circle_half_widths(diameter: usize) -> Vec<usize> {
     widths
 }
 
-pub(super) fn circle(path: &mut Path, diameter: f64, thickness: f64) -> Result<(), String> {
+pub(super) fn circle(
+    path: &mut Path,
+    diameter: f64,
+    thickness: f64,
+    segment_limit: usize,
+) -> Result<(), String> {
+    integer_dimensions(&[diameter, thickness])?;
     let diameter = (diameter.floor() as usize).max(2);
     let thickness = (thickness.floor() as usize).max(2);
     let radius = diameter / 2;
@@ -129,7 +137,7 @@ pub(super) fn circle(path: &mut Path, diameter: f64, thickness: f64) -> Result<(
         if half == 0 {
             continue;
         }
-        if path.segments.len() + 10 > MAX_SEGMENTS {
+        if path.segments.len() + 10 > segment_limit {
             return Err("geometry resource limit exceeded".into());
         }
         let left = radius - half;
@@ -212,20 +220,22 @@ pub(super) fn ellipse(
     width: f64,
     height: f64,
     thickness: f64,
+    segment_limit: usize,
 ) -> Result<(), String> {
+    integer_dimensions(&[width, height, thickness])?;
     let (width, height) = (
         (width.floor() as usize).max(2),
         (height.floor() as usize).max(2),
     );
     if width == height {
-        return circle(path, width as f64, thickness);
+        return circle(path, width as f64, thickness, segment_limit);
     }
     let transposed = width < height;
     let (width, height) = (width.max(height), width.min(height));
     let thickness = (thickness.floor() as usize).max(2);
     let (cx, cy) = (width / 2, height / 2);
     let outer = ellipse_half_widths(width, height);
-    let inner = (height > 2 * thickness)
+    let inner = (height > thickness.saturating_mul(2))
         .then(|| ellipse_half_widths(width - 2 * thickness, height - 2 * thickness));
     for row in 0..=2 * cy {
         let distance = row.abs_diff(cy);
@@ -233,11 +243,11 @@ pub(super) fn ellipse(
         if half == 0 {
             continue;
         }
-        if path.segments.len() + 10 > MAX_SEGMENTS {
+        if path.segments.len() + 10 > segment_limit {
             return Err("geometry resource limit exceeded".into());
         }
         let left = cx.saturating_sub(half);
-        let right = cx + half + usize::from(distance + thickness < cy);
+        let right = cx + half + usize::from(distance.saturating_add(thickness) < cy);
         let gap = inner
             .as_ref()
             .and_then(|widths| widths.get(distance + 1))
@@ -257,6 +267,18 @@ pub(super) fn ellipse(
         } else {
             span(left, right);
         }
+    }
+    Ok(())
+}
+
+// Integer recurrences use i64 products of half-dimensions. u32 dimensions keep
+// these representable; reject conversion overflow even without resource budgets.
+fn integer_dimensions(values: &[f64]) -> Result<(), String> {
+    if values
+        .iter()
+        .any(|v| !v.is_finite() || *v > u32::MAX as f64)
+    {
+        return Err("printer geometry dimensions overflow".into());
     }
     Ok(())
 }
