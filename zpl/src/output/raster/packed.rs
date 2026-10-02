@@ -18,8 +18,8 @@ impl RasterOutput for PackedRaster {
         self.width = width;
         self.height = height;
         self.stride = width.div_ceil(8) as usize;
+        self.pixels.clear();
         self.pixels.resize(self.stride * height as usize, 255);
-        self.pixels.fill(255);
         Ok(())
     }
 

@@ -36,6 +36,9 @@ The bitmap-run optimization also reduces SVG path data.
 ### Fresh cross-library measurements
 
 Linux x86_64, AMD Ryzen 3 PRO 5350GE, Rust/Cargo 1.98.1, release builds.
+The measurements below use renderer revision
+`97aed962a06f3dd5de065659fc966519cf48aef3`, before the review follow-up that
+removes redundant packed-buffer initialization.
 The adapters and fixtures come from comparison revision
 [`e5f2ec13168bad1c8ad41081b3250eb0bc4b8dcb`](https://github.com/codyps/zpl-comparison/tree/e5f2ec13168bad1c8ad41081b3250eb0bc4b8dcb).
 Library versions: Labelize 1.6.0, Forge 0.3.2, Rust FFI (`zpl-rs`) 0.1.8,
