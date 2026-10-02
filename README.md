@@ -24,7 +24,7 @@ Run these commands from the repository root. With Nix and direnv installed, ente
 the development environment:
 
 ```sh
-direnv exec . "$SHELL"
+direnv allow
 cargo build --workspace
 ```
 
