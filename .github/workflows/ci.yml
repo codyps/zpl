@@ -3,7 +3,11 @@ name: CI
 
 on:
   push:
-    branches: ['**']
+    # Temporary release-plz branches duplicate main and release-PR checks.
+    # https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#onpushbranchestagsbranches-ignoretags-ignore
+    branches:
+      - '**'
+      - '!release-plz-*-tmp-*'
   pull_request:
   workflow_dispatch:
 

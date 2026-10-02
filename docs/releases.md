@@ -31,6 +31,10 @@ ordinary PR CI. Store an appropriately scoped PAT or GitHub App token in that
 secret, following the [token documentation](https://release-plz.dev/docs/github/token).
 Do not put tokens in repository files.
 
+CI excludes pushes to release-plz's temporary `release-plz-*-tmp-*` branches to
+avoid duplicate builds and cancellation noise. The lasting release branch,
+release PR, and `main` retain their normal CI checks.
+
 ## Publishing later
 
 Publishing is intentionally a separate step. Before enabling it, confirm crate
