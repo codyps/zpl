@@ -11,7 +11,7 @@ import re
 import statistics
 import subprocess
 
-from common import NAMES, compare
+from common import COMPARISON_NOTES, NAMES, compare, comparison_kind
 from publish import read_records
 
 MARKER = '<!-- zpl-benchmarks -->'
@@ -36,7 +36,12 @@ def comment_body(records, run, repo, config):
              'median paired change, with a 99% paired-bootstrap interval excluding zero. '
              'Positive means slower; negative means faster.', '']
     rows = []
+    notes = []
     for record in records:
+        kind = comparison_kind(record)
+        if kind != 'measured':
+            notes.append(COMPARISON_NOTES[kind])
+            continue
         for name in NAMES:
             before = record['samples']['base'][name]
             after = record['samples']['head'][name]
@@ -49,8 +54,13 @@ def comment_body(records, run, repo, config):
     if rows:
         lines += ['| Case/stage | Base µs/op | Head µs/op | Change | Interval |',
                   '| --- | ---: | ---: | ---: | ---: |', *rows]
-    else:
+    elif not notes:
         lines += ['No measured stage crosses the reporting thresholds in this run.']
+    lines += notes
+    for record in records:
+        for label, build in record.get('builds', {}).items():
+            lines += ['', f"{label} executable SHA-256: `{build['binary_sha256']}`; "
+                      f"package inputs SHA-256: `{build['inputs_sha256']}`."]
     lines += ['', 'Informational only. Same-worker pairing reduces drift but does not eliminate noise; '
               'the interval is not a correction for multiple comparisons. PNG encoding is excluded.',
               f"[All measurements and raw samples](https://github.com/{repo}/actions/runs/{run['id']}) · "

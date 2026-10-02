@@ -96,5 +96,6 @@ jobs:
             results/result.json
             results/raw.txt
             results/summary.md
+            results/builds/
           retention-days: 30
           if-no-files-found: warn

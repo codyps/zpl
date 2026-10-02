@@ -13,6 +13,7 @@ from unittest.mock import patch
 import comment
 from common import NAMES, compare
 import publish
+from run import summary
 from test_benchmarks import CONFIG, fixture
 
 REPO = 'codyps/zpl'
@@ -24,6 +25,7 @@ def comparison(factor=1.2):
                head_repository={'full_name': 'contributor/zpl'}, path='.github/workflows/benchmarks.yml')
     record.update(event='pull_request', pr=7, config=copy.deepcopy(CONFIG))
     record['commits']['base'] = 'c' * 40
+    record['builds']['base'] = dict(inputs_sha256='f' * 64, binary_sha256='0' * 64)
     record['samples'] = {revision: {name: [10000 * multiplier] * 10 for name in NAMES}
                          for revision, multiplier in (('base', 1), ('head', factor))}
     return record, run
@@ -41,6 +43,43 @@ def previous(run_id=11, attempt=1, author='github-actions[bot]'):
 
 
 class Comments(unittest.TestCase):
+    def test_aa_noise_cannot_be_reported_as_source_change(self):
+        # Model PR #28's persistently biased rounds. The confidence interval
+        # alone cannot establish a source change between identical executables.
+        record, run = comparison(1.165)
+        record['builds']['head'] = copy.deepcopy(record['builds']['base'])
+        self.assertTrue(compare(record['samples']['base'][NAMES[0]],
+                                record['samples']['head'][NAMES[0]], CONFIG)['alert'])
+        body, flagged = comment.comment_body([record], run, REPO, CONFIG)
+        self.assertFalse(flagged)
+        self.assertIn('No relevant input changes', body)
+        self.assertIn('A/A noise control', summary(record))
+        self.assertIn('+16.5%', summary(record))  # Keep the actual observed data.
+        self.assertNotIn('| change |', summary(record))
+        with self.fake_api(comments=[previous()]) as api:
+            comment.update_comment([record], run, REPO, CONFIG)
+            self.assertEqual(api.call_args.args[1], 'PATCH')
+            self.assertIn('No relevant input changes', api.call_args.args[2]['body'])
+
+    def test_identical_binaries_and_inconclusive_builds_do_not_flag(self):
+        for same, expected in (('binary_sha256', 'executables are identical'),
+                               ('inputs_sha256', 'Inconclusive comparison')):
+            record, run = comparison()
+            record['builds']['head'][same] = record['builds']['base'][same]
+            body, flagged = comment.comment_body([record], run, REPO, CONFIG)
+            self.assertFalse(flagged)
+            self.assertIn(expected, body)
+            self.assertIn(expected, summary(record))
+            self.assertNotIn('| change |', summary(record))
+
+    def test_legacy_path_biased_results_do_not_post_alerts(self):
+        record, run = comparison()
+        del record['builds'], record['build_method']
+        publish.validate(record, run)
+        body, flagged = comment.comment_body([record], run, REPO, CONFIG)
+        self.assertFalse(flagged)
+        self.assertIn('no comparable-build provenance', body)
+
     def fake_api(self, pr=None, comments=None):
         def respond(path, method='GET', body=None):
             if method != 'GET':
@@ -71,6 +110,7 @@ class Comments(unittest.TestCase):
             lambda r: r['commits'].update(base='invalid'),
             lambda r: r.update(pr=0), lambda r: r.update(pr=True),
             lambda r: r.update(run_attempt=2),
+            lambda r: r['builds'].pop('base'),
         )
         for mutation in mutations:
             item = copy.deepcopy(record)
@@ -87,6 +127,7 @@ class Comments(unittest.TestCase):
             self.assertIn('10.000', body)  # Stored ns/op are displayed as µs/op.
             self.assertIn('https://codyps.github.io/zpl/perf/', body)
             self.assertIn('actions/runs/12', body)
+            self.assertIn('| change |', summary(record))
 
     def test_quiet_first_run_does_not_post(self):
         record, run = comparison(1)
