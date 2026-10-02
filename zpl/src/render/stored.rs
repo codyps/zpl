@@ -2,9 +2,9 @@
 //! https://docs.zebra.com/us/en/printers/software/zpl-pg/c-zpl-zpl-commands/r-zpl-df.html
 //! https://docs.zebra.com/us/en/printers/software/zpl-pg/c-zpl-zpl-commands/r-zpl-xf.html
 //! Expand command tokens before numbered-field planning. No filesystem/device IO.
-use super::RenderError;
+use super::{Limits, RenderError};
 use crate::parse::{Element, ParseContext, Syntax};
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 
 #[derive(Clone, Copy)]
 struct Token<'a> {
@@ -25,11 +25,16 @@ impl Expanded {
             .find(|(start, _)| *start <= offset)
             .map_or(offset, |(_, source)| *source)
     }
-    fn push(&mut self, token: Token<'_>) -> Result<(), RenderError> {
-        if self.bytes.len() + token.raw.len() > 1_048_576 {
+    fn push(&mut self, token: Token<'_>, byte_limit: usize) -> Result<(), RenderError> {
+        if self
+            .bytes
+            .len()
+            .checked_add(token.raw.len())
+            .is_none_or(|n| n > byte_limit)
+        {
             return Err(error(
                 token.offset,
-                "expanded formats exceed 1 MiB renderer limit",
+                "expanded formats exceed configured renderer limit",
             ));
         }
         self.origins.push((self.bytes.len(), token.offset));
@@ -66,7 +71,7 @@ fn name(token: Token<'_>, download: bool) -> Result<(Option<u8>, String), Render
     Ok((device, base.into()))
 }
 
-pub(super) fn expand(input: &[u8]) -> Result<Option<Expanded>, RenderError> {
+pub(super) fn expand(input: &[u8], limits: Limits) -> Result<Option<Expanded>, RenderError> {
     if !input.windows(2).any(|b| matches!(b, b"DF" | b"XF")) {
         return Ok(None);
     }
@@ -138,7 +143,7 @@ pub(super) fn expand(input: &[u8]) -> Result<Option<Expanded>, RenderError> {
                         if !matches!(prefix.name, b"PW" | b"LL" | b"FX") {
                             return Err(error(prefix.offset, "unsupported command before DF"));
                         }
-                        output.push(prefix)?;
+                        output.push(prefix, limits.input_bytes)?;
                     }
                     if tokens[df + 1..end].iter().any(|t| {
                         matches!(t.name, b"DF" | b"CC" | b"CT" | b"CD")
@@ -152,12 +157,12 @@ pub(super) fn expand(input: &[u8]) -> Result<Option<Expanded>, RenderError> {
                             "nested definitions or syntax changes in stored formats unsupported",
                         ));
                     }
-                    if formats.len() >= 256
+                    if formats.len() >= limits.stored_formats
                         && !formats.contains_key(&(device.unwrap(), key.clone()))
                     {
                         return Err(error(
                             tokens[df].offset,
-                            "stored formats exceed 256-object renderer limit",
+                            "stored formats exceed configured renderer limit",
                         ));
                     }
                     formats.insert((device.unwrap(), key), tokens[df + 1..end].to_vec());
@@ -175,7 +180,7 @@ pub(super) fn expand(input: &[u8]) -> Result<Option<Expanded>, RenderError> {
         if token.name == b"XZ" {
             in_label = false;
         }
-        recall(token, &formats, &mut output, 0, &mut calls)?;
+        recall(token, &formats, &mut output, &mut calls, limits)?;
         i += 1;
     }
     Ok(Some(output))
@@ -184,35 +189,57 @@ fn recall(
     token: Token<'_>,
     formats: &HashMap<(u8, String), Vec<Token<'_>>>,
     output: &mut Expanded,
-    depth: usize,
     calls: &mut usize,
+    limits: Limits,
 ) -> Result<(), RenderError> {
     if token.name != b"XF" {
-        return output.push(token);
+        return output.push(token, limits.input_bytes);
     }
-    *calls += 1;
-    if depth >= 8 || *calls > 4096 {
-        return Err(error(token.offset, "stored format recall limit exceeded"));
-    }
-    let (device, key) = name(token, false)?;
-    let body = b"REBA"
-        .iter()
-        .filter(|&&d| device.is_none_or(|wanted| wanted == d))
-        .find_map(|&d| formats.get(&(d, key.clone())))
-        .ok_or_else(|| {
-            error(
-                token.offset,
-                format!("stored format {key:?} not found in this render request"),
-            )
-        })?;
-    for &command in body {
-        if command.syntax != token.syntax {
+    // Use a heap stack so increasing recall_depth cannot overflow the Rust
+    // call stack. A repeated active format is a cycle, even in unlimited mode.
+    let mut stack = vec![(std::slice::from_ref(&token).iter(), None)];
+    let mut active = HashSet::new();
+    while let Some((commands, _)) = stack.last_mut() {
+        let Some(&command) = commands.next() else {
+            if let Some(key) = stack.pop().unwrap().1 {
+                active.remove(key);
+            }
+            continue;
+        };
+        if command.name != b"XF" {
+            output.push(command, limits.input_bytes)?;
+            continue;
+        }
+        *calls = calls
+            .checked_add(1)
+            .ok_or_else(|| error(command.offset, "stored format recall count overflow"))?;
+        if stack.len() > limits.recall_depth || *calls > limits.recall_calls {
+            return Err(error(command.offset, "stored format recall limit exceeded"));
+        }
+        let (device, key) = name(command, false)?;
+        let (key, body) = b"REBA"
+            .iter()
+            .filter(|&&d| device.is_none_or(|wanted| wanted == d))
+            .find_map(|&d| formats.get_key_value(&(d, key.clone())))
+            .ok_or_else(|| {
+                error(
+                    command.offset,
+                    format!("stored format {key:?} not found in this render request"),
+                )
+            })?;
+        if !active.insert(key) {
             return Err(error(
-                token.offset,
+                command.offset,
+                "stored format recall limit exceeded: recursive cycle",
+            ));
+        }
+        if body.iter().any(|nested| nested.syntax != command.syntax) {
+            return Err(error(
+                command.offset,
                 "stored format recall with different command syntax unsupported",
             ));
         }
-        recall(command, formats, output, depth + 1, calls)?;
+        stack.push((body.iter(), Some(key)));
     }
     Ok(())
 }

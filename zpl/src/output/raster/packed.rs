@@ -11,15 +11,19 @@ pub(crate) struct PackedRaster {
 
 impl RasterOutput for PackedRaster {
     fn reset(&mut self, width: u32, height: u32) -> Result<(), OutputError> {
-        (width as usize)
+        let stride = width.div_ceil(8) as usize;
+        let len = stride
             .checked_mul(height as usize)
-            .filter(|&n| width != 0 && height != 0 && n <= crate::output::MAX_PIXELS)
+            .filter(|_| width != 0 && height != 0)
             .ok_or(OutputError("invalid or excessive image dimensions"))?;
+        self.pixels
+            .try_reserve(len.saturating_sub(self.pixels.len()))
+            .map_err(|_| OutputError("raster allocation failed"))?;
         self.width = width;
         self.height = height;
-        self.stride = width.div_ceil(8) as usize;
-        self.pixels.clear();
-        self.pixels.resize(self.stride * height as usize, 255);
+        self.stride = stride;
+        self.pixels.resize(len, 255);
+        self.pixels.fill(255);
         Ok(())
     }
 

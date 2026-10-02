@@ -67,6 +67,8 @@ fn help_version_and_usage_are_available_without_input_files() {
         ".pdf",
         "--profile",
         "--explicit-qr-mask",
+        "--max-input-bytes",
+        "unlimited",
     ] {
         assert!(help.contains(expected), "{expected}: {help}");
     }
@@ -214,4 +216,69 @@ fn rendering_and_io_errors_report_failure_without_replacing_existing_output() {
     assert_eq!(result.status.code(), Some(1));
     assert!(!result.stderr.is_empty());
     assert_eq!(fs::read(destination).unwrap(), b"keep existing output");
+}
+
+#[test]
+fn cli_is_unlimited_by_default_across_input_canvas_and_pdf_pages() {
+    let source = format!("^XA^PW1048577^LL32^FX{}^FS^XZ", "x".repeat(1_048_577));
+    let workspace = Workspace::new(source.as_bytes());
+    for output in ["large.png", "large.svg", "large.pdf"] {
+        success(workspace.run(&["render", "input label.zpl", output]));
+        assert!(!fs::read(workspace.0.join(output)).unwrap().is_empty());
+    }
+    let workspace = Workspace::new(&b"^XA^PW10^LL10^XZ".repeat(65));
+    success(workspace.run(&["render", "input label.zpl", "many.pdf"]));
+    let bytes = fs::read(workspace.0.join("many.pdf")).unwrap();
+    assert!(String::from_utf8_lossy(&bytes).contains("/Count 65 /Kids"));
+    let result = workspace.run(&[
+        "render",
+        "input label.zpl",
+        "limited.pdf",
+        "--max-labels",
+        "64",
+    ]);
+    assert!(!result.status.success());
+    assert!(!workspace.0.join("limited.pdf").exists());
+}
+
+#[test]
+fn cli_budget_flags_are_opt_in_and_fail_before_replacing_output() {
+    let workspace = Workspace::new(b"^XA^PW100^LL100^FO1,1^GB3,3,3^FS^XZ");
+    for (flag, budget) in [
+        ("--max-input-bytes", "1"),
+        ("--max-labels", "0"),
+        ("--max-dimension", "50"),
+        ("--max-pixels", "9999"),
+        ("--max-segments", "1"),
+        ("--max-coordinate", "0"),
+        ("--max-number", "50"),
+        ("--max-flattened-segments", "0"),
+        ("--max-scan-work", "0"),
+    ] {
+        fs::write(workspace.0.join("out.png"), b"keep existing output").unwrap();
+        let result = workspace.run(&["render", "input label.zpl", "out.png", flag, budget]);
+        assert_eq!(
+            result.status.code(),
+            Some(1),
+            "{flag}: {}",
+            String::from_utf8_lossy(&result.stderr)
+        );
+        assert_eq!(
+            fs::read(workspace.0.join("out.png")).unwrap(),
+            b"keep existing output"
+        );
+    }
+    let source = format!("^XA^PW100^LL100^AAN,9,5^FD{}^FS^XZ", "A".repeat(4097));
+    let workspace = Workspace::new(source.as_bytes());
+    success(workspace.run(&["render", "input label.zpl", "out.svg"]));
+    assert!(!workspace
+        .run(&[
+            "render",
+            "input label.zpl",
+            "out.svg",
+            "--max-field-bytes",
+            "4096"
+        ])
+        .status
+        .success());
 }
