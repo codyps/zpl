@@ -149,7 +149,9 @@ include `Retry-After` (10 or 60 seconds); clients should back off with jitter.
 The CPU cap is enforced by Cloudflare, not local workerd. A Free-plan deployment
 is unsuitable because some measured labels exceed its 10 ms CPU allowance.
 
-The API uses `render::render_with_limits` to tighten existing renderer budgets.
+The API uses `render::render_with_limits` to set service-specific budgets,
+retaining `render::Limits::DEFAULT` for the remaining fields. These service
+settings are independent of the CLI, which renders without resource ceilings.
 Graphic expansion is checked before growing paths; `^PW`, `^LL`, recalled
 formats, and all labels remain subject to the limits. The first limit reached
 wins, so complex batches may fail below 50 labels. Raster scan-work and other
@@ -180,9 +182,13 @@ npm run dev
 ```
 
 HTTP tests cover byte preservation, negotiation, streaming limits, timeout,
-concurrency, CORS, and fail-closed throttling. Miniflare loads the compiled Wasm
-under workerd and checks real PNGs, binary multipart, density/canvas limits,
-graphic expansion, recovery, and Cloudflare rate limiting. Native adapter tests
+concurrency, CORS, and fail-closed throttling. Wrangler's documented
+[`createTestHarness()`](https://developers.cloudflare.com/workers/testing/test-harness/)
+loads `wrangler.jsonc`, builds the production Worker bundle, and runs the compiled
+Wasm under workerd. It checks real PNGs, binary multipart, density/canvas limits,
+graphic expansion, recovery, and Cloudflare rate limiting, resetting the harness
+between tests. Wrangler manages Miniflare internally; the tests do not pin or
+configure Miniflare separately. Native adapter tests
 compare decoded pixels with the specification raster. The renderer regression
 suite also covers printer captures and conformance fixtures.
 

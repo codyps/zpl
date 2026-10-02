@@ -238,3 +238,143 @@ fn packed_png_matches_grayscale_for_curves_clipping_and_inversion() {
         );
     }
 }
+
+#[test]
+fn caller_controls_scan_and_flattening_budgets() {
+    use zpl::output::{raster::rasterize_with_limits, Limits};
+    let scene = layered_scene();
+    let expected = rasterize(&scene).unwrap();
+    for limits in [
+        Limits {
+            scan_work: 0,
+            ..Limits::unlimited()
+        },
+        Limits {
+            flattened_segments: 0,
+            ..Limits::unlimited()
+        },
+    ] {
+        assert!(rasterize_with_limits(&scene, limits).is_err());
+    }
+    assert_eq!(
+        rasterize_with_limits(&scene, Limits::unlimited()).unwrap(),
+        expected
+    );
+    let mut curve = Scene::new(20, 20, 203).unwrap();
+    let mut path = Path::default();
+    path.ellipse(0., 0., 20., 20.);
+    curve.draws.push(Draw {
+        path,
+        paint: Paint::Black,
+    });
+    assert!(rasterize_with_limits(
+        &curve,
+        Limits {
+            flattened_segments: 4,
+            ..Limits::unlimited()
+        }
+    )
+    .is_err());
+    assert_eq!(
+        rasterize_with_limits(&curve, Limits::unlimited()).unwrap(),
+        rasterize(&curve).unwrap()
+    );
+}
+
+#[test]
+fn configured_scene_limits_fail_before_reset_even_with_unlimited_other_budgets() {
+    use zpl::output::{raster::rasterize_into_with_limits, Limits, Point, Segment};
+    let mut scene = layered_scene();
+    for limits in [
+        Limits {
+            pixels: 11,
+            ..Limits::unlimited()
+        },
+        Limits {
+            segments: 1,
+            ..Limits::unlimited()
+        },
+        Limits {
+            coordinate_abs: 1.,
+            ..Limits::unlimited()
+        },
+    ] {
+        let mut output = FailingOutput {
+            resets: 0,
+            spans: 0,
+            fail_reset: false,
+        };
+        assert!(rasterize_into_with_limits(&scene, &mut output, limits).is_err());
+        assert_eq!((output.resets, output.spans), (0, 0));
+    }
+    scene.draws[0].path.segments[0] = Segment::Move(Point::new(f64::NAN, 0.));
+    let mut output = FailingOutput {
+        resets: 0,
+        spans: 0,
+        fail_reset: false,
+    };
+    assert!(rasterize_into_with_limits(&scene, &mut output, Limits::unlimited()).is_err());
+    assert_eq!((output.resets, output.spans), (0, 0));
+}
+
+#[test]
+fn large_canvas_has_no_hidden_raster_or_png_pixel_cap() {
+    use zpl::output::{raster::rasterize_with_limits, Limits, Png, Svg};
+    // Just beyond 32 Mi pixels; width also exceeds the old numeric operand cap.
+    let scene = Scene::new_with_limits(1_048_577, 32, 203, Limits::unlimited()).unwrap();
+    assert!(scene.validate().is_err());
+    let raster = rasterize_with_limits(&scene, Limits::unlimited()).unwrap();
+    assert_eq!(raster.pixels.len(), 33_554_464);
+    assert!(raster.pixels.iter().all(|&p| p == 255));
+    let png = Png.encode_with_limits(&scene, Limits::unlimited()).unwrap();
+    assert_eq!(&png[..8], b"\x89PNG\r\n\x1a\n");
+    assert_eq!(
+        u32::from_be_bytes(png[16..20].try_into().unwrap()),
+        scene.width
+    );
+    assert_eq!(
+        u32::from_be_bytes(png[20..24].try_into().unwrap()),
+        scene.height
+    );
+    assert!(Svg.encode_with_limits(&scene, Limits::unlimited()).is_ok());
+}
+
+#[test]
+fn flattened_edges_can_exceed_the_old_fixed_ceiling() {
+    use zpl::output::{raster::rasterize_with_limits, Limits, Point, Segment, MAX_SEGMENTS};
+    let mut scene = Scene::new(1, 1, 203).unwrap();
+    scene.draws.push(Draw {
+        path: Path {
+            segments: vec![Segment::Move(Point::new(2., 2.)); MAX_SEGMENTS + 1],
+        },
+        paint: Paint::Black,
+    });
+    let limits = Limits {
+        segments: MAX_SEGMENTS + 1,
+        ..Limits::default()
+    };
+    assert_eq!(
+        rasterize_with_limits(&scene, limits),
+        Err(OutputError("path flattening limit exceeded"))
+    );
+    let raised = Limits {
+        flattened_segments: MAX_SEGMENTS + 1,
+        ..limits
+    };
+    assert_eq!(rasterize_with_limits(&scene, raised).unwrap().pixels, [255]);
+}
+
+#[test]
+fn unlimited_png_checks_format_dimensions_before_allocating_pixels() {
+    use zpl::output::{Limits, Png};
+    let scene = Scene {
+        width: u32::MAX,
+        height: 1,
+        dpi: 203,
+        draws: Vec::new(),
+    };
+    assert_eq!(
+        Png.encode_with_limits(&scene, Limits::unlimited()),
+        Err(OutputError("PNG dimensions must be at most 2^31-1"))
+    );
+}

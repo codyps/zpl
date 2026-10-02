@@ -7,7 +7,7 @@
 
 use std::{fmt::Write as _, io::Write as _};
 
-use super::{Adapter, OutputError, Paint, Scene, Segment, MAX_SEGMENTS};
+use super::{Adapter, Limits, OutputError, Paint, Scene, Segment};
 
 /// Vector PDF 1.7 output, with label dimensions converted from dots to inches
 /// using each scene's DPI. Text retains the renderer's glyph paths.
@@ -23,22 +23,35 @@ impl Adapter for Pdf {
 impl Pdf {
     /// Encode one scene per page, in order, allowing different sizes and DPIs.
     ///
-    /// Requires 1–64 scenes and at most [`MAX_SEGMENTS`] segments in total.
+    /// Uses the default output page and segment budgets.
     /// All scenes are validated before encoding. Oversized physical pages use
     /// PDF's `UserUnit`, up to its 75,000 limit; larger pages return an error.
     /// Output is deterministic and contains no timestamps or source ZPL.
     pub fn encode_pages(&self, scenes: &[Scene]) -> Result<Vec<u8>, OutputError> {
-        if scenes.is_empty() || scenes.len() > 64 {
-            return Err(OutputError("PDF requires between 1 and 64 pages"));
+        self.encode_pages_with_limits(scenes, Limits::default())
+    }
+
+    /// Encode one page per scene with caller-selected budgets. PDF format limits
+    /// (UserUnit and cross-reference offsets) still apply.
+    pub fn encode_pages_with_limits(
+        &self,
+        scenes: &[Scene],
+        limits: Limits,
+    ) -> Result<Vec<u8>, OutputError> {
+        if scenes.is_empty() {
+            return Err(OutputError("PDF requires at least one page"));
+        }
+        if scenes.len() > limits.pages {
+            return Err(OutputError("PDF page limit exceeded"));
         }
         let mut segments = 0usize;
         let mut sizes = Vec::with_capacity(scenes.len());
         for scene in scenes {
-            scene.validate()?;
+            scene.validate_with_limits(limits)?;
             for draw in &scene.draws {
                 segments = segments
                     .checked_add(draw.path.segments.len())
-                    .filter(|&n| n <= MAX_SEGMENTS)
+                    .filter(|&n| n <= limits.segments)
                     .ok_or(OutputError("too many PDF path segments"))?;
             }
             sizes.push(PageSize::new(scene)?);

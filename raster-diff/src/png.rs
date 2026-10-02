@@ -21,19 +21,33 @@ impl Png {
         pixels: &[u8],
         dpi: u32,
     ) -> Result<Vec<u8>, ImageError> {
+        Self::encode_mono_with_limit(width, height, pixels, dpi, MAX_PIXELS)
+    }
+
+    /// Encode with a caller-selected pixel budget (`usize::MAX` disables it).
+    /// PNG dimension and buffer-size constraints still apply.
+    pub fn encode_mono_with_limit(
+        width: u32,
+        height: u32,
+        pixels: &[u8],
+        dpi: u32,
+        max_pixels: usize,
+    ) -> Result<Vec<u8>, ImageError> {
         let size = (width as usize)
             .checked_mul(height as usize)
-            .filter(|&n| n > 0 && n <= MAX_PIXELS);
+            .filter(|&n| n > 0 && n <= max_pixels);
         let stride = width.div_ceil(8) as usize;
         if width == 0
             || height == 0
+            || width > i32::MAX as u32
+            || height > i32::MAX as u32
             || dpi == 0
             || size.is_none()
             || stride.checked_mul(height as usize) != Some(pixels.len())
         {
             return Err(ImageError("invalid or excessive monochrome raster"));
         }
-        Ok(encode_gray_rows(width, height, dpi, 1, pixels, stride))
+        encode_gray_rows(width, height, dpi, 1, pixels, stride)
     }
 
     pub fn encode_gray(raster: &Raster, dpi: u32) -> Result<Vec<u8>, ImageError> {
@@ -46,14 +60,14 @@ impl Png {
         {
             return Err(ImageError("invalid or excessive grayscale raster"));
         }
-        Ok(encode_gray_rows(
+        encode_gray_rows(
             raster.width,
             raster.height,
             dpi,
             8,
             &raster.pixels,
             raster.width as usize,
-        ))
+        )
     }
 }
 
@@ -64,7 +78,7 @@ fn encode_gray_rows(
     depth: u8,
     pixels: &[u8],
     stride: usize,
-) -> Vec<u8> {
+) -> Result<Vec<u8>, ImageError> {
     let mut out = b"\x89PNG\r\n\x1a\n".to_vec();
     let mut header = Vec::new();
     header.extend_from_slice(&width.to_be_bytes());
@@ -77,14 +91,24 @@ fn encode_gray_rows(
     phys.extend_from_slice(&ppm.to_be_bytes());
     phys.push(1);
     chunk(&mut out, b"pHYs", &phys);
-    let mut rows = Vec::with_capacity(pixels.len() + height as usize);
+    let size = pixels
+        .len()
+        .checked_add(height as usize)
+        .ok_or(ImageError("PNG row size overflow"))?;
+    let mut rows = Vec::new();
+    rows.try_reserve_exact(size)
+        .map_err(|_| ImageError("PNG row allocation failed"))?;
     for row in pixels.chunks_exact(stride) {
         rows.push(0);
         rows.extend_from_slice(row);
     }
-    chunk(&mut out, b"IDAT", &zlib_store(&rows));
+    // PNG §§5.3 and 11.2.4: split one zlib stream across legal IDAT chunks.
+    // https://www.w3.org/TR/png-3/#5Chunk-layout
+    for data in zlib_store(&rows).chunks(i32::MAX as usize) {
+        chunk(&mut out, b"IDAT", data);
+    }
     chunk(&mut out, b"IEND", &[]);
-    out
+    Ok(out)
 }
 
 impl Png {

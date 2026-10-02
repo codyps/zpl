@@ -4,7 +4,17 @@ use std::fmt::Write;
 pub struct Svg;
 impl Adapter for Svg {
     fn encode(&self, scene: &Scene) -> Result<Vec<u8>, OutputError> {
-        scene.validate()?;
+        self.encode_with_limits(scene, Limits::default())
+    }
+}
+impl Svg {
+    /// Encode with caller-selected output budgets.
+    pub fn encode_with_limits(
+        &self,
+        scene: &Scene,
+        limits: Limits,
+    ) -> Result<Vec<u8>, OutputError> {
+        scene.validate_with_limits(limits)?;
         let mut out=format!("<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"{}\" height=\"{}\" viewBox=\"0 0 {} {}\"><g style=\"isolation:isolate\"><rect width=\"100%\" height=\"100%\" fill=\"white\"/>",scene.width,scene.height,scene.width,scene.height);
         for draw in &scene.draws {
             let (color, style) = match draw.paint {

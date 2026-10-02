@@ -3,10 +3,14 @@
 repo_url = "https://github.com/codyps/zpl"
 # Only the renderer and its runtime dependency are public crates.
 release = false
-# Track published crates.io versions; the workflow runs release-pr only.
+# Track published crates.io versions when preparing the next release PR.
 git_only = false
-# If a release job is added later, require a merged release PR first.
+# Publish only on a release PR merge, not on ordinary commits to main.
 release_always = false
+# Each managed crate gets a crates.io version, git tag, and GitHub release.
+publish = true
+git_tag_enable = true
+git_release_enable = true
 # Release preparation must not also perform unrelated dependency upgrades.
 dependencies_update = false
 pr_name = "chore: prepare release"
