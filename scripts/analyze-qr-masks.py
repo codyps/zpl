@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Export printer-selected QR masks and all eight local candidate matrices.
 
-Build first: direnv exec . cargo build -p zpl --example zpl-to-svg --locked
+Build first: direnv exec . cargo build -p zpl-cmd --locked
 Requires Pillow. This is offline diagnosis, not the full-canvas accuracy gate.
 """
 import argparse
@@ -101,7 +101,7 @@ def export(renderer):
             for mask in range(8):
                 changed = COMMAND.sub(lambda m: m[0][:-1] + str(mask), source)
                 request.write_text(changed)
-                subprocess.run([str(renderer), str(request), str(response), "--explicit-qr-mask"], check=True,
+                subprocess.run([str(renderer), "render", str(request), str(response), "--explicit-qr-mask"], check=True,
                                capture_output=True, timeout=30)
                 with Image.open(response) as image:
                     local = image.convert("L")
@@ -118,7 +118,7 @@ def export(renderer):
             # Also verify all fields together at their original positions.
             selected = iter(record["mask"] for record in batch)
             request.write_text(COMMAND.sub(lambda m: m[0][:-1] + str(next(selected)), source))
-            subprocess.run([str(renderer), str(request), str(response), "--explicit-qr-mask"], check=True,
+            subprocess.run([str(renderer), "render", str(request), str(response), "--explicit-qr-mask"], check=True,
                            capture_output=True, timeout=30)
             with Image.open(response) as image:
                 local = image.convert("L")
@@ -132,7 +132,7 @@ def export(renderer):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("output", type=Path)
-    parser.add_argument("--renderer", type=Path, default=ROOT / "target/debug/examples/zpl-to-svg")
+    parser.add_argument("--renderer", type=Path, default=ROOT / "target/debug/zpl-cmd")
     args = parser.parse_args()
     records = export(args.renderer.resolve())
     args.output.write_text(json.dumps({"schema": 1, "symbols": records}) + "\n")

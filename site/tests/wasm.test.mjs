@@ -7,13 +7,14 @@ import init, { render_preview, library_version } from '../../_site/pkg/zpl_wasm.
 
 await init({ module_or_path: await readFile(new URL('../../_site/pkg/zpl_wasm_bg.wasm', import.meta.url)) });
 
-test('compiled Wasm renders PNG and SVG with actual label dimensions', () => {
+test('compiled Wasm renders PNG, SVG and PDF with actual label dimensions', () => {
   const result = render_preview('^XA^PW120^LL80^FO10,10^GB40,20,3^FS^XZ', 812, 1218, 203, 0);
   try {
     assert.equal(result.width, 120);
     assert.equal(result.height, 80);
     assert.deepEqual([...result.png().slice(0, 8)], [137, 80, 78, 71, 13, 10, 26, 10]);
     assert.match(new TextDecoder().decode(result.svg()), /<svg/);
+    assert.match(new TextDecoder().decode(result.pdf()), /^%PDF-1\.7/);
   } finally { result.free(); }
 });
 test('bundled page example renders', async () => {
@@ -45,4 +46,22 @@ test('PNG metadata preserves Unicode source and original image chunks', async ()
     assert.equal(decoded.text.Software, `zpl ${library_version()}`);
     assert.deepEqual(decoded.original, Buffer.from(png));
   } finally { result.free(); }
+});
+
+
+test('PDF selects the requested label and preserves physical dimensions', () => {
+  const source = '^XA^PW203^LL406^XZ^XA^PW406^LL203^FO10,10^GB20,20,20^FS^XZ';
+  for (const [label, size] of [[0, [72, 144]], [1, [144, 72]]]) {
+    const result = render_preview(source, 812, 1218, 203, label);
+    try {
+      const pdf = new TextDecoder().decode(result.pdf());
+      const box = pdf.match(/\/MediaBox \[([^\]]+)\]/)[1].split(' ').map(Number);
+      assert.deepEqual(box, [0, 0, ...size]);
+      assert.match(pdf, /\/Count 1 /);
+      assert.equal(pdf.includes('f*'), label === 1);
+    } finally { result.free(); }
+  }
+  const result = render_preview('^XA^XZ', 4096, 1, 1, 0);
+  try { assert.match(new TextDecoder().decode(result.pdf()), /\/UserUnit 21 /); }
+  finally { result.free(); }
 });

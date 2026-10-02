@@ -5,7 +5,7 @@
 //! and compatibility behavior; its default selects the ZD621 203-DPI profile.
 //! See [`render::profiles`] for other printer and specification profiles.
 //!
-//! Output adapters in [`output`] encode scenes as PNG or SVG. For direct pixel
+//! Output adapters in [`output`] encode scenes as PNG, SVG or PDF. For direct pixel
 //! access, use [`output::raster::rasterize`]. Bitmap font types and data live in
 //! [`bitmap_font`].
 //!

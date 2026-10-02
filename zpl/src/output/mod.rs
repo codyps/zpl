@@ -1,9 +1,11 @@
 //! Output-independent filled paths and adapters. Coordinates are printer dots.
 use std::{error::Error, fmt};
 
+mod pdf;
 mod png;
 pub mod raster;
 mod svg;
+pub use pdf::Pdf;
 pub use png::Png;
 pub use raster_diff::MAX_PIXELS;
 pub use svg::Svg;

@@ -48,7 +48,8 @@ complete local pixel hash. qr_preview.rs renders the unchanged source using
 ZD621_203_DPI. Zero-error cases and known gaps are both pinned; passing the suite
 does not claim that every QR symbol matches the printer.
 
-For reproducible offline mask research, build the `zpl-to-svg` example, then run
+For reproducible offline mask research, build `zpl-cmd` with
+`cargo build --locked -p zpl-cmd`, then run
 `python3 scripts/analyze-qr-masks.py /tmp/qr-masks.json` from the repository root
 with Pillow installed. The exporter checks capture hashes and format BCH bits,
 verifies exact full-canvas rendering with the captured masks, and exports all

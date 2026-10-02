@@ -11,9 +11,11 @@ rustPlatform.buildRustPackage {
       ../Cargo.lock
       ../LICENSE
       ../zpl
+      ../zpl-cmd
       ../zpl-font-extract
       ../zpl-wasm
       ../raster-diff
+      ../zebra-firmware
       ../zebra-http-api
       ../zpl-proxy-api
     ];

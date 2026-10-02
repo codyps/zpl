@@ -3,7 +3,7 @@
 **[Open the live ZPL editor and preview →](https://codyps.github.io/zpl/)**
 
 Rust tools for parsing Zebra Programming Language (ZPL), rendering labels locally
-to PNG and SVG, and comparing previews from Zebra printers. The workspace also
+to PNG, SVG and PDF, and comparing previews from Zebra printers. The workspace also
 includes a browser editor, a printer-backed HTTP proxy, and font extraction tools.
 
 Use the [firmware update CLI](docs/firmware-updates.md) to inspect network Zebra
@@ -35,13 +35,17 @@ the proxy additionally requires Diesel CLI, SQLite, and a configured database UR
 Render the included sample locally:
 
 ```sh
-cargo run -p zpl --example zpl-to-svg -- docs/examples/local-label.zpl /tmp/label.svg
-cargo run -p zpl --example zpl-to-svg -- docs/examples/local-label.zpl /tmp/label.png
+cargo run -p zpl-cmd -- render docs/examples/local-label.zpl /tmp/label.svg
+cargo run -p zpl-cmd -- render docs/examples/local-label.zpl /tmp/label.png
+cargo run -p zpl-cmd -- render docs/examples/local-label.zpl /tmp/label.pdf
 ```
 
-Despite its name, `zpl-to-svg` writes either format based on the output extension.
-It accepts one label per input; the library supports multiple labels. Local
-rendering does not contact a printer or external service.
+`zpl-cmd render` selects PNG, SVG or PDF by the output extension.
+PDF includes one page per label; PNG and SVG require a single label. Local
+rendering does not contact a printer or external service. Run
+`cargo run -p zpl-cmd -- render --help` for profile options. To install the CLI
+from this checkout, run `cargo install --locked --path zpl-cmd`, then use
+`zpl-cmd render input.zpl output.pdf`.
 
 Inspect command boundaries in a ZPL file:
 
@@ -53,7 +57,7 @@ cargo run -p zpl --example zpl-parse -- test-data/cc.zpl
 
 ```rust
 use zpl::{
-    output::{Adapter, Png, Svg},
+    output::{Adapter, Pdf, Png, Svg},
     render, Options,
 };
 
@@ -69,11 +73,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         std::fs::write(format!("label-{index}.png"), Png.encode(scene)?)?;
         std::fs::write(format!("label-{index}.svg"), Svg.encode(scene)?)?;
     }
+    std::fs::write("labels.pdf", Pdf.encode_pages(&document.labels)?)?;
     Ok(())
 }
 ```
 
-The renderer turns ZPL into a path-based scene shared by the PNG and SVG adapters.
+The renderer turns ZPL into a path-based scene shared by the PNG, SVG and PDF adapters.
+PDF pages retain physical label dimensions using the scene DPI.
 Text uses an embedded bitmap capture of resident font 0; other sizes and rotations
 can differ from printer output. See [local rendering](docs/local-renderer.md) for
 dimensions, resource limits, font fidelity, and custom output adapters.
@@ -83,7 +89,7 @@ dimensions, resource limits, font fidelity, and custom output adapters.
 **[Try the browser preview on GitHub Pages](https://codyps.github.io/zpl/).**
 
 The static editor in [`site/`](site/) uses `zpl-wasm` to render in the browser,
-with selectable labels and PNG/SVG downloads. ZPL stays in the browser.
+with selectable labels and PNG/SVG/PDF downloads. ZPL stays in the browser.
 
 For a local build, use a Rust toolchain with rustup, Node.js 22 or later, and Python 3:
 
@@ -138,7 +144,8 @@ and [telemetry](docs/telemetry.md).
 
 | Crate | Purpose |
 | --- | --- |
-| [`zpl`](zpl/) | Command-stream parser, local renderer, bitmap font types, PNG/SVG output |
+| [`zpl`](zpl/) | Command-stream parser, local renderer, bitmap font types, PNG/SVG/PDF output |
+| [`zpl-cmd`](zpl-cmd/) | Local command-line rendering with `zpl-cmd render` |
 | [`zpl-wasm`](zpl-wasm/) | WebAssembly bindings for the browser preview |
 | [`zebra-http-api`](zebra-http-api/) | Printer HTTP client and rendering/comparison examples |
 | [`zpl-proxy-api`](zpl-proxy-api/) | Axum proxy, browser interface, SQLite cache and request history |
