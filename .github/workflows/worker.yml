@@ -1,0 +1,71 @@
+# Local workerd checks do not contact Cloudflare or a printer.
+name: Renderer API
+on:
+  push:
+    branches: ['**']
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      deploy:
+        description: Deploy the tested main branch to Cloudflare
+        type: boolean
+        default: false
+permissions:
+  contents: read
+env:
+  CARGO_NET_RETRY: 2
+  CARGO_HTTP_TIMEOUT: 30
+  npm_config_fetch_retries: 2
+  npm_config_fetch_timeout: 30000
+  WRANGLER_SEND_METRICS: 'false'
+concurrency:
+  group: worker-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Install build dependencies
+        run: |
+          sudo apt-get -o Acquire::Retries=3 update
+          sudo apt-get -o Acquire::Retries=3 install -y --no-install-recommends git build-essential pkg-config libssl-dev
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24'
+      - uses: dtolnay/rust-toolchain@6bed0761d98439e5a578e2877258200ad565ba87 # stable
+        with:
+          targets: wasm32-unknown-unknown
+      - uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6 # v2.9.2
+        with:
+          save-if: ${{ github.ref == 'refs/heads/main' && github.event_name != 'pull_request' }}
+      - name: Install WebAssembly bindings CLI
+        timeout-minutes: 15
+        run: cargo install wasm-bindgen-cli --version 0.2.128 --locked
+      - name: Install Worker tools
+        working-directory: zpl-render-api
+        run: npm ci
+      - name: Test native service adapter
+        run: cargo test --locked -p zpl-render-api
+      - name: Build the Worker
+        run: bash scripts/build-worker.sh
+      - name: Test HTTP and compiled Worker
+        working-directory: zpl-render-api
+        timeout-minutes: 5
+        run: |
+          npm test
+          npm run test:worker
+      - name: Check deployment bundle
+        working-directory: zpl-render-api
+        run: npx wrangler deploy --dry-run --outdir .wrangler/build
+      - name: Deploy to Cloudflare
+        if: github.event_name == 'workflow_dispatch' && inputs.deploy && github.ref == 'refs/heads/main' && github.repository == 'codyps/zpl'
+        working-directory: zpl-render-api
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          test -n "$CLOUDFLARE_API_TOKEN" || { echo 'Configure the CLOUDFLARE_API_TOKEN repository secret.' >&2; exit 1; }
+          npx wrangler deploy

@@ -1,0 +1,17 @@
+{
+  "name": "zpl-render-api",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "bash ../scripts/build-worker.sh",
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "test": "node --test --test-isolation=none tests/http.test.mjs",
+    "test:worker": "node --test --test-isolation=none --test-timeout=30000 tests/worker.test.mjs",
+    "benchmark": "node tests/benchmark.mjs"
+  },
+  "devDependencies": {
+    "miniflare": "4.20260730.0",
+    "wrangler": "4.147.0"
+  }
+}

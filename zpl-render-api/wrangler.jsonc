@@ -1,0 +1,32 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "zpl-render-api",
+  "account_id": "5d458fdc03e990ef9fa1144bd1a7f30e",
+  "main": "worker/index.mjs",
+  "compatibility_date": "2026-07-30",
+  "workers_dev": true,
+  "preview_urls": false,
+  "build": {
+    "command": "bash ../scripts/build-worker.sh",
+    "watch_dir": ["src", "../zpl/src", "../raster-diff/src"]
+  },
+  // CPU limits apply on Cloudflare, not in local workerd.
+  // https://developers.cloudflare.com/workers/wrangler/configuration/#limits
+  "limits": { "cpu_ms": 1000 },
+  // Do not collect request URLs, headers, bodies, or source-containing errors.
+  "observability": { "enabled": false },
+  // Approximate counters local to a Cloudflare location, not global quotas.
+  // https://developers.cloudflare.com/workers/runtime-apis/bindings/rate-limit/
+  "ratelimits": [
+    {
+      "name": "CLIENT_RATE_LIMITER",
+      "namespace_id": "9428751",
+      "simple": { "limit": 30, "period": 10 }
+    },
+    {
+      "name": "SERVICE_RATE_LIMITER",
+      "namespace_id": "9428752",
+      "simple": { "limit": 600, "period": 60 }
+    }
+  ]
+}
