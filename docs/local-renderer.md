@@ -20,7 +20,9 @@ Paths contain moves, lines, cubic Béziers, and closes, with even-odd filling.
 Each drawing paints black, white, or inverts the pixels beneath it. Text glyphs,
 barcode bars, and downloaded bitmaps become paths; adapters never interpret ZPL.
 SVG uses paths and isolated difference blending for inversion. PNG uses a
-pixel-center scan converter, then grayscale PNG with stored DEFLATE blocks.
+pixel-center scan converter writing directly to packed one-bit grayscale PNG
+with stored DEFLATE blocks. Its decoded pixels match the public eight-bit raster
+output; PNG byte streams differ from earlier eight-bit encodings.
 PNG files prioritize simplicity over compression. Curves are flattened for PNG;
 SVG and PDF viewers may rasterize fractional coordinates and antialias edges
 differently; vector geometry does not guarantee pixel parity with PNG. PDF 1.7 retains vector
@@ -135,8 +137,9 @@ dimensions inherit the CF request. The printer profile's
 to native size; SPECIFICATION retains the previous size. Other resident font
 IDs and uncaptured glyphs return errors.
 
-The 4,365-byte strike is compiled into the binary. Its pixels become horizontal
-filled path runs, shared by PNG, SVG and PDF. Overlapping glyph strokes are merged.
+The 4,365-byte strike is compiled into the binary. Its pixels become filled
+rectangles, shared by PNG, SVG and PDF. Identical adjacent bitmap runs with exactly
+shared edges are joined vertically; overlapping glyph strokes are merged.
 Field blocks wrap and align using proportional advances, including spaces.
 `^FT` uses the captured baseline; `^FO` uses the font matrix. Captured strikes also cover natural-width 16/20/64-dot text and 32-dot text at
 widths 16/24/64. Unsampled sizes use scaled bitmap paths and emit a warning. Rotation can also differ slightly from

@@ -6,6 +6,57 @@ use crate::{
     output::Path,
 };
 use std::{collections::BTreeMap, sync::OnceLock};
+
+/// Emit sorted bitmap rows, extending identical runs that touch vertically.
+/// Joining only exactly shared edges preserves the even-odd region, including
+/// fractional scales whose adjacent row boundaries can differ by an ULP.
+#[derive(Default)]
+struct RowPath {
+    path: Path,
+    previous: Vec<usize>,
+    current: Vec<usize>,
+    row: Option<f64>,
+    next: usize,
+}
+impl RowPath {
+    fn rect(&mut self, x: f64, y: f64, width: f64, height: f64) {
+        use crate::output::{Point, Segment};
+        if width <= 0. || height <= 0. {
+            return;
+        }
+        if self.row != Some(y) {
+            std::mem::swap(&mut self.previous, &mut self.current);
+            self.current.clear();
+            self.next = 0;
+            self.row = Some(y);
+        }
+        let right = x + width;
+        let bottom = y + height;
+        while let Some(&index) = self.previous.get(self.next) {
+            let Segment::Move(a) = self.path.segments[index] else {
+                unreachable!()
+            };
+            if a.x < x {
+                self.next += 1;
+                continue;
+            }
+            let Segment::Line(c) = self.path.segments[index + 2] else {
+                unreachable!()
+            };
+            if a.x == x && c.x == right && c.y == y {
+                self.path.segments[index + 2] = Segment::Line(Point::new(right, bottom));
+                self.path.segments[index + 3] = Segment::Line(Point::new(x, bottom));
+                self.current.push(index);
+                self.next += 1;
+                return;
+            }
+            break;
+        }
+        self.current.push(self.path.segments.len());
+        self.path.rect(x, y, width, height);
+    }
+}
+
 /// Resident face plus the legacy ASCII backslash replacement. Keep this
 /// separate from U+00A2: bitmap faces have distinct native cent designs.
 #[derive(Clone, Copy)]
@@ -791,6 +842,7 @@ pub(super) fn text_parts_for(
     }
     let mut parts = Vec::new();
     let mut pen = 0.;
+    let baseline = baseline_for(font, h);
     for c in s.chars() {
         if font.is_tab(c) {
             pen = next_tab(pen);
@@ -802,7 +854,7 @@ pub(super) fn text_parts_for(
         // A single bitmap glyph already has disjoint row spans. Unlike a
         // complete proportional string, it needs no BTreeMap or union/sort
         // pass to prevent even-odd cancellation of overlapping glyph ink.
-        let mut path = Path::default();
+        let mut path = RowPath::default();
         for (y, row) in g.bitmap.iter().enumerate() {
             let mut start = None;
             for x in 0..=g.width as usize {
@@ -812,7 +864,7 @@ pub(super) fn text_parts_for(
                     (Some(left), false) => {
                         path.rect(
                             (g.left as f64 + left as f64) * sx,
-                            baseline_for(id, h) + (g.top + y as i32) as f64 * sy,
+                            baseline + (g.top + y as i32) as f64 * sy,
                             (x - left) as f64 * sx,
                             sy,
                         );
@@ -822,6 +874,7 @@ pub(super) fn text_parts_for(
                 }
             }
         }
+        let mut path = path.path;
         path.transform(|p| crate::output::Point::new(p.x + pen, p.y));
         pen += g.advance as f64 * sx;
         if !path.segments.is_empty() {
@@ -870,6 +923,9 @@ pub(super) fn text_for(
     // overhang their advance; overlapping strokes must remain black, not XOR.
     let mut rows: BTreeMap<i32, Vec<(f64, f64)>> = BTreeMap::new();
     let mut pen = 0.;
+    let baseline = baseline_for(font, h);
+    // Cap the estimate: a long field may contain mostly advancing blanks.
+    let row_capacity = (s.chars().count() * 2).min(64);
     for c in s.chars() {
         if font.is_tab(c) {
             pen = next_tab(pen * sx) / sx;
@@ -883,10 +939,12 @@ pub(super) fn text_for(
                 match (start, black) {
                     (None, true) => start = Some(x),
                     (Some(a), false) => {
-                        rows.entry(g.top + y as i32).or_default().push((
-                            pen + g.left as f64 + a as f64,
-                            pen + g.left as f64 + x as f64,
-                        ));
+                        rows.entry(g.top + y as i32)
+                            .or_insert_with(|| Vec::with_capacity(row_capacity))
+                            .push((
+                                pen + g.left as f64 + a as f64,
+                                pen + g.left as f64 + x as f64,
+                            ));
                         start = None
                     }
                     _ => {}
@@ -895,7 +953,7 @@ pub(super) fn text_for(
         }
         pen += g.advance as f64;
     }
-    let mut path = Path::default();
+    let mut path = RowPath::default();
     for (y, mut spans) in rows {
         spans.sort_by(|a, b| a.0.total_cmp(&b.0));
         let mut merged: Option<(f64, f64)> = None;
@@ -904,12 +962,7 @@ pub(super) fn text_for(
                 if a <= right {
                     merged = Some((left, right.max(b)));
                 } else {
-                    path.rect(
-                        left * sx,
-                        baseline_for(id, h) + y as f64 * sy,
-                        (right - left) * sx,
-                        sy,
-                    );
+                    path.rect(left * sx, baseline + y as f64 * sy, (right - left) * sx, sy);
                     merged = Some((a, b));
                 }
             } else {
@@ -917,15 +970,10 @@ pub(super) fn text_for(
             }
         }
         if let Some((left, right)) = merged {
-            path.rect(
-                left * sx,
-                baseline_for(id, h) + y as f64 * sy,
-                (right - left) * sx,
-                sy,
-            );
+            path.rect(left * sx, baseline + y as f64 * sy, (right - left) * sx, sy);
         }
     }
-    Ok(path)
+    Ok(path.path)
 }
 /// Union rectangular ink from multiple lines. Descenders and rounded glyph
 /// overshoots can touch the next line even with zero line spacing.
@@ -1015,28 +1063,85 @@ pub(super) fn printer_ft_offset(id: char, height: f64, rotation: u8) -> (f64, f6
 /// partially visible rectangles keep their original geometry and clipping.
 pub(super) fn cull_outside(path: &mut Path, width: u32, height: u32) {
     use crate::output::Segment;
-    let mut visible = Vec::new();
-    for rect in path.segments.as_chunks::<5>().0 {
-        let [Segment::Move(a), Segment::Line(b), Segment::Line(c), Segment::Line(d), Segment::Close] =
-            rect
+    let mut visible = 0;
+    for start in (0..path.segments.len()).step_by(5) {
+        let [Segment::Move(a), Segment::Line(_), Segment::Line(c), Segment::Line(_), Segment::Close] =
+            &path.segments[start..start + 5]
         else {
             unreachable!("font ink consists of rectangles")
         };
-        let points = [a, b, c, d];
-        let left = points.iter().map(|p| p.x).fold(f64::INFINITY, f64::min);
-        let right = points.iter().map(|p| p.x).fold(f64::NEG_INFINITY, f64::max);
-        let top = points.iter().map(|p| p.y).fold(f64::INFINITY, f64::min);
-        let bottom = points.iter().map(|p| p.y).fold(f64::NEG_INFINITY, f64::max);
+        // Quarter-turn text rotations preserve axis-aligned rectangles. A/C
+        // are opposite corners, including inverted and bottom-up placement.
+        let (left, right) = (a.x.min(c.x), a.x.max(c.x));
+        let (top, bottom) = (a.y.min(c.y), a.y.max(c.y));
         if right > 0. && bottom > 0. && left < width as f64 && top < height as f64 {
-            visible.extend_from_slice(rect);
+            if start != visible {
+                for offset in 0..5 {
+                    path.segments.swap(visible + offset, start + offset);
+                }
+            }
+            visible += 5;
         }
     }
-    path.segments = visible;
+    path.segments.truncate(visible);
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn joined_rows_preserve_exact_edges_and_even_odd_pixels() {
+        use crate::output::{raster::rasterize, Draw, Paint, Scene};
+        // Output-independent even-odd path contract: docs/local-renderer.md.
+        // Test exact joins, gaps, changing widths, and fractional rounding.
+        for scale in [0.1, 0.5, 1., 1.1, 1.5, 2.3] {
+            let mut rows = RowPath::default();
+            let mut original = Path::default();
+            for y in 0..12 {
+                for (x, width) in [(1., 2.), (5., if y % 3 == 0 { 2. } else { 3. })] {
+                    if y == 7 {
+                        continue;
+                    }
+                    let args = (x * scale, y as f64 * scale, width * scale, scale);
+                    rows.rect(args.0, args.1, args.2, args.3);
+                    original.rect(args.0, args.1, args.2, args.3);
+                }
+            }
+            if scale == 1. {
+                assert!(rows.path.segments.len() < original.segments.len() / 2);
+            }
+            for paint in [Paint::Black, Paint::White, Paint::Invert] {
+                let mut background = Path::default();
+                background.rect(0., 3., 20., 12.);
+                let mut scene = Scene::new(32, 32, 203).unwrap();
+                scene.draws.push(Draw {
+                    path: background,
+                    paint: Paint::Black,
+                });
+                scene.draws.push(Draw {
+                    path: original.clone(),
+                    paint,
+                });
+                let expected = rasterize(&scene).unwrap();
+                scene.draws[1].path = rows.path.clone();
+                assert_eq!(
+                    rasterize(&scene).unwrap(),
+                    expected,
+                    "scale={scale}, paint={paint:?}"
+                );
+            }
+        }
+        let mut path = RowPath::default();
+        path.rect(0., 0., 1., 1.);
+        path.rect(0., 1f64.next_up(), 1., 1.);
+        assert_eq!(
+            path.path.segments.len(),
+            10,
+            "do not fill even a subpixel gap"
+        );
+    }
+
     #[test]
     fn individual_parts_match_full_glyph_layout() {
         // Preserve captured strike geometry and advances, including scaled

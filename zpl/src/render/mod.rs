@@ -1525,18 +1525,201 @@ fn render_expanded(
                         } else {
                             field.justification
                         };
-                        let transform = |p: Point| {
-                            // ^FO p. 201 does not prescribe fractional baseline
-                            // rounding. Native FO/FT pairs at heights 10..25
-                            // place the normal horizontal baseline at floor(3h/4).
-                            let p = if options.compatibility.font0_fo_floor_baseline
-                                && font_id == '0'
-                                && field.text_size.is_some()
-                                && !field.baseline
-                                && field.bounded.is_none()
-                                && field.direction.0 == b'H'
+                        let mut advance = field.text_size.or(field.graphic_size).map_or(w, |s| s.0);
+                        if options.compatibility.field_direction_printer_anchors
+                            && field.text_size.is_some()
+                            && field.block.is_none()
+                            && field.direction.0 == b'R'
+                            && matches!(field.rotation, b'I' | b'B')
+                        {
+                            advance += field.direction_metrics.end_margin
+                                + field.direction_metrics.first_delta
+                                + if font_id == '0' { 1. } else { 0. };
+                        }
+                        if options.compatibility.field_direction_printer_anchors
+                            && field.text_size.is_some()
+                            && field.block.is_none()
+                            && field.direction.0 == b'R'
+                            && matches!(field.rotation, b'N' | b'R')
+                        {
+                            advance += field.direction_metrics.end_left;
+                        }
+                        let (dx, dy) = if field.baseline {
+                            (0., 0.)
+                        } else {
+                            let (w, h) = field
+                                .text_size
+                                .map(|(w, h)| {
+                                    if font_id == '0'
+                                        || (matches!(
+                                            font_id,
+                                            'P' | 'Q' | 'R' | 'S' | 'T' | 'U' | 'V'
+                                        ) && options.compatibility.preset_font_fo_last_dot)
+                                    {
+                                        // A zero-width printer block still
+                                        // pivots at width minus one dot.
+                                        let w = if w == 0. && field.block.is_some() {
+                                            -1.
+                                        } else {
+                                            (w - 1.).max(0.)
+                                        };
+                                        // P/Q quantize the height pivot in native cells;
+                                        // R retains the matrix boundary in native controls.
+                                        // its proportional horizontal advance loses one dot.
+                                        let last_row = match font_id {
+                                            'P' => font_h / 20.,
+                                            'Q' => font_h / 28.,
+                                            'R' => 0.,
+                                            'S' => 2. * font_h / 40.,
+                                            // Native T/U/V atlas: resident-tuv-zd621-v1.
+                                            'T' => 3. * font_h / 48.,
+                                            'U' => font_h / 59.,
+                                            'V' => 2. * font_h / 80.,
+                                            _ => 1.,
+                                        };
+                                        (w, (h - last_row).max(0.))
+                                    } else {
+                                        (w, h)
+                                    }
+                                })
+                                .unwrap_or((w, h));
+                            // ZD621 ^FO rotations pivot about the bar height,
+                            // not the combined bars/interpretation extent.
+                            // ^FM places its component paths separately.
+                            let h = if options.compatibility.barcode_fo_uses_bar_height
+                                && field.barcode.is_some()
+                                && field.origins.is_none()
                             {
-                                Point::new(p.x, p.y - font::baseline_for(font_id, font_h).fract())
+                                field.baseline_height
+                            } else {
+                                h
+                            };
+                            let w = field.barcode.as_ref().map_or(w, |barcode| {
+                                barcode.field_origin_width(w, field.barcode_width)
+                            });
+                            let w = field.direction_metrics.pivot.unwrap_or(w);
+                            match field.rotation {
+                                b'R' => (h, 0.),
+                                b'I' => (w, h),
+                                b'B' => (0., w),
+                                _ => (0., 0.),
+                            }
+                        };
+                        let (mut jx, mut jy) = if !field.baseline && field_justification == 1 {
+                            if let Some((tw, th)) = field.text_size {
+                                match field.rotation {
+                                    b'R' if field.block.is_some()
+                                        && options
+                                            .compatibility
+                                            .block_fo_right_justification_printer_layout =>
+                                    {
+                                        (-th, 0.)
+                                    }
+                                    b'B' if field.block.is_some()
+                                        && options
+                                            .compatibility
+                                            .block_fo_right_justification_printer_layout =>
+                                    {
+                                        (-th + font_h, 0.)
+                                    }
+                                    b'I' if field.block.is_some()
+                                        && options
+                                            .compatibility
+                                            .block_fo_right_justification_printer_layout =>
+                                    {
+                                        (1. - tw, 0.)
+                                    }
+                                    b'R' => (-th, -left + field.leading_tab_advance),
+                                    b'I' => (
+                                        field.inverted_margin - dx
+                                            + if font_id == '0'
+                                                && field.block.is_none()
+                                                && options
+                                                    .compatibility
+                                                    .right_justified_inverted_text_uses_ink_margin
+                                            {
+                                                0.
+                                            } else {
+                                                left
+                                            },
+                                        0.,
+                                    ),
+                                    b'B' => (-th, 0.),
+                                    _ => (-tw, 0.),
+                                }
+                            } else {
+                                (
+                                    if matches!(field.rotation, b'R' | b'B') {
+                                        -h
+                                    } else {
+                                        -field.graphic_size.map_or(w, |s| s.0)
+                                    },
+                                    0.,
+                                )
+                            }
+                        } else {
+                            (0., 0.)
+                        };
+                        if options.compatibility.field_direction_printer_anchors
+                            && field.text_size.is_some()
+                            && !field.baseline
+                            && field_justification == 1
+                            && field.block.is_none()
+                        {
+                            let dot = if font_id == '0' { 0. } else { 1. };
+                            match (field.direction.0, field.rotation) {
+                                (b'H', b'I') => {
+                                    jx += field.direction.1;
+                                }
+                                (b'R', b'R') => jy = 0.,
+                                (b'R', b'N') => jx -= field.direction_metrics.end_left,
+                                (b'R', b'I') => jx = dot - dx,
+                                (b'R', b'B') => jy = advance - dy + dot,
+                                (b'V', b'I') => {
+                                    jx = if field.direction_metrics.count == 1 {
+                                        field.direction_metrics.end_left
+                                            + field.direction_metrics.end_margin
+                                            + dot
+                                            - dx
+                                    } else {
+                                        -field.direction_metrics.vertical_extent.0
+                                            - field.direction_metrics.vertical_extent.1
+                                            + 2. * dot
+                                            - dx
+                                    };
+                                }
+                                // The right anchor uses the capital row; B also
+                                // restores the leading glyph's crop and descent.
+                                // See descender/ascender controls in the FP fixture.
+                                (b'V', b'R') => {
+                                    jx = field.direction_metrics.first_ink.1
+                                        - field.direction_metrics.leading_descent
+                                        - font_h
+                                        - dx
+                                }
+                                (b'V', b'B') => {
+                                    jx += field.direction_metrics.bottom_margin
+                                        + 2. * field.direction_metrics.leading_descent
+                                        + field.direction_metrics.leading_top;
+                                    jy = advance - dy + dot;
+                                }
+                                _ => {}
+                            }
+                        }
+                        // ^FO p. 201 does not prescribe fractional baseline
+                        // rounding. Native FO/FT pairs at heights 10..25 place
+                        // the baseline at floor(3h/4). Compute the fractional
+                        // correction once, not once per bitmap vertex.
+                        let baseline_correction = (options.compatibility.font0_fo_floor_baseline
+                            && font_id == '0'
+                            && field.text_size.is_some()
+                            && !field.baseline
+                            && field.bounded.is_none()
+                            && field.direction.0 == b'H')
+                            .then(|| font::baseline_for(font_id, font_h).fract());
+                        let transform = |p: Point| {
+                            let p = if let Some(correction) = baseline_correction {
+                                Point::new(p.x, p.y - correction)
                             } else {
                                 p
                             };
@@ -1555,26 +1738,6 @@ fn render_expanded(
                             // ^FO/^FT pp. 201/205: right justification changes
                             // the origin, not the character order. Auto (2) is
                             // left for the supported Latin scripts.
-                            let mut advance =
-                                field.text_size.or(field.graphic_size).map_or(w, |s| s.0);
-                            if options.compatibility.field_direction_printer_anchors
-                                && field.text_size.is_some()
-                                && field.block.is_none()
-                                && field.direction.0 == b'R'
-                                && matches!(field.rotation, b'I' | b'B')
-                            {
-                                advance += field.direction_metrics.end_margin
-                                    + field.direction_metrics.first_delta
-                                    + if font_id == '0' { 1. } else { 0. };
-                            }
-                            if options.compatibility.field_direction_printer_anchors
-                                && field.text_size.is_some()
-                                && field.block.is_none()
-                                && field.direction.0 == b'R'
-                                && matches!(field.rotation, b'N' | b'R')
-                            {
-                                advance += field.direction_metrics.end_left;
-                            }
                             let xp = p.x
                                 - if field.baseline && field_justification == 1 {
                                     advance
@@ -1588,158 +1751,6 @@ fn render_expanded(
                                 b'B' => (yp, -xp),
                                 _ => (xp, yp),
                             };
-                            let (dx, dy) = if field.baseline {
-                                (0., 0.)
-                            } else {
-                                let (w, h) = field
-                                    .text_size
-                                    .map(|(w, h)| {
-                                        if font_id == '0'
-                                            || (matches!(
-                                                font_id,
-                                                'P' | 'Q' | 'R' | 'S' | 'T' | 'U' | 'V'
-                                            ) && options.compatibility.preset_font_fo_last_dot)
-                                        {
-                                            // A zero-width printer block still
-                                            // pivots at width minus one dot.
-                                            let w = if w == 0. && field.block.is_some() {
-                                                -1.
-                                            } else {
-                                                (w - 1.).max(0.)
-                                            };
-                                            // P/Q quantize the height pivot in native cells;
-                                            // R retains the matrix boundary in native controls.
-                                            // its proportional horizontal advance loses one dot.
-                                            let last_row = match font_id {
-                                                'P' => font_h / 20.,
-                                                'Q' => font_h / 28.,
-                                                'R' => 0.,
-                                                'S' => 2. * font_h / 40.,
-                                                // Native T/U/V atlas: resident-tuv-zd621-v1.
-                                                'T' => 3. * font_h / 48.,
-                                                'U' => font_h / 59.,
-                                                'V' => 2. * font_h / 80.,
-                                                _ => 1.,
-                                            };
-                                            (w, (h - last_row).max(0.))
-                                        } else {
-                                            (w, h)
-                                        }
-                                    })
-                                    .unwrap_or((w, h));
-                                // ZD621 ^FO rotations pivot about the bar height,
-                                // not the combined bars/interpretation extent.
-                                // ^FM places its component paths separately.
-                                let h = if options.compatibility.barcode_fo_uses_bar_height
-                                    && field.barcode.is_some()
-                                    && field.origins.is_none()
-                                {
-                                    field.baseline_height
-                                } else {
-                                    h
-                                };
-                                let w = field.barcode.as_ref().map_or(w, |barcode| {
-                                    barcode.field_origin_width(w, field.barcode_width)
-                                });
-                                let w = field.direction_metrics.pivot.unwrap_or(w);
-                                match field.rotation {
-                                    b'R' => (h, 0.),
-                                    b'I' => (w, h),
-                                    b'B' => (0., w),
-                                    _ => (0., 0.),
-                                }
-                            };
-                            let (mut jx, mut jy) = if !field.baseline && field_justification == 1 {
-                                if let Some((tw, th)) = field.text_size {
-                                    match field.rotation {
-                                        b'R' if field.block.is_some()
-                                            && options
-                                                .compatibility
-                                                .block_fo_right_justification_printer_layout =>
-                                        {
-                                            (-th, 0.)
-                                        }
-                                        b'B' if field.block.is_some()
-                                            && options
-                                                .compatibility
-                                                .block_fo_right_justification_printer_layout =>
-                                        {
-                                            (-th + font_h, 0.)
-                                        }
-                                        b'I' if field.block.is_some()
-                                            && options
-                                                .compatibility
-                                                .block_fo_right_justification_printer_layout =>
-                                        {
-                                            (1. - tw, 0.)
-                                        }
-                                        b'R' => (-th, -left + field.leading_tab_advance),
-                                        b'I' => (field.inverted_margin - dx + if font_id == '0'
-                                            && field.block.is_none()
-                                            && options.compatibility.right_justified_inverted_text_uses_ink_margin
-                                            { 0. } else { left }, 0.),
-                                        b'B' => (-th, 0.),
-                                        _ => (-tw, 0.),
-                                    }
-                                } else {
-                                    (
-                                        if matches!(field.rotation, b'R' | b'B') {
-                                            -h
-                                        } else {
-                                            -field.graphic_size.map_or(w, |s| s.0)
-                                        },
-                                        0.,
-                                    )
-                                }
-                            } else {
-                                (0., 0.)
-                            };
-                            if options.compatibility.field_direction_printer_anchors
-                                && field.text_size.is_some()
-                                && !field.baseline
-                                && field_justification == 1
-                                && field.block.is_none()
-                            {
-                                let dot = if font_id == '0' { 0. } else { 1. };
-                                match (field.direction.0, field.rotation) {
-                                    (b'H', b'I') => {
-                                        jx += field.direction.1;
-                                    }
-                                    (b'R', b'R') => jy = 0.,
-                                    (b'R', b'N') => jx -= field.direction_metrics.end_left,
-                                    (b'R', b'I') => jx = dot - dx,
-                                    (b'R', b'B') => jy = advance - dy + dot,
-                                    (b'V', b'I') => {
-                                        jx = if field.direction_metrics.count == 1 {
-                                            field.direction_metrics.end_left
-                                                + field.direction_metrics.end_margin
-                                                + dot
-                                                - dx
-                                        } else {
-                                            -field.direction_metrics.vertical_extent.0
-                                                - field.direction_metrics.vertical_extent.1
-                                                + 2. * dot
-                                                - dx
-                                        };
-                                    }
-                                    // The right anchor uses the capital row; B also
-                                    // restores the leading glyph's crop and descent.
-                                    // See descender/ascender controls in the FP fixture.
-                                    (b'V', b'R') => {
-                                        jx = field.direction_metrics.first_ink.1
-                                            - field.direction_metrics.leading_descent
-                                            - font_h
-                                            - dx
-                                    }
-                                    (b'V', b'B') => {
-                                        jx += field.direction_metrics.bottom_margin
-                                            + 2. * field.direction_metrics.leading_descent
-                                            + field.direction_metrics.leading_top;
-                                        jy = advance - dy + dot;
-                                    }
-                                    _ => {}
-                                }
-                            }
                             let (tx, ty) = (x + a + dx + jx + ft_dx, y + b + dy + jy + ft_dy);
                             if field.graphic_size.is_some()
                                 && options.compatibility.graphic_clamps_negative_origin
@@ -1775,19 +1786,49 @@ fn render_expanded(
                                 .iter()
                                 .enumerate()
                                 .map(|(index, part)| {
-                                    let (min_x, min_y) = part
+                                    // Text placement is an axis-aligned rotation
+                                    // and translation. Transform its ink bounds
+                                    // once instead of repeating all printer
+                                    // placement rules for every bitmap vertex.
+                                    let (left, top, right, bottom) = part
                                         .segments
                                         .iter()
                                         .filter_map(|s| match s {
                                             crate::output::Segment::Move(p)
-                                            | crate::output::Segment::Line(p) => {
-                                                Some(transform(*p))
-                                            }
+                                            | crate::output::Segment::Line(p) => Some(p),
                                             _ => None,
                                         })
+                                        .fold(
+                                            (
+                                                f64::INFINITY,
+                                                f64::INFINITY,
+                                                f64::NEG_INFINITY,
+                                                f64::NEG_INFINITY,
+                                            ),
+                                            |(left, top, right, bottom), p| {
+                                                (
+                                                    left.min(p.x),
+                                                    top.min(p.y),
+                                                    right.max(p.x),
+                                                    bottom.max(p.y),
+                                                )
+                                            },
+                                        );
+                                    let (min_x, min_y) = if part.segments.is_empty() {
+                                        (f64::INFINITY, f64::INFINITY)
+                                    } else {
+                                        [
+                                            Point::new(left, top),
+                                            Point::new(right, top),
+                                            Point::new(left, bottom),
+                                            Point::new(right, bottom),
+                                        ]
+                                        .into_iter()
+                                        .map(transform)
                                         .fold((f64::INFINITY, f64::INFINITY), |(x, y), p| {
                                             (x.min(p.x), y.min(p.y))
-                                        });
+                                        })
+                                    };
                                     let (mut dx, mut dy) =
                                         if options.compatibility.text_clamps_negative_origins {
                                             ((-min_x).max(0.), (-min_y).max(0.))
@@ -1924,6 +1965,10 @@ fn render_expanded(
                         if total_segments > crate::output::MAX_SEGMENTS {
                             return Err("document path limit exceeded".into());
                         }
+                        // Dimensions are checked at XA/PW/LL, and the document
+                        // segment budget above also bounds each scene. Earlier
+                        // draws are immutable here; validate only this new path.
+                        path.validate().map_err(|e| e.to_string())?;
                         sc.draws.push(Draw {
                             path,
                             paint: if field.reverse || reverse {
@@ -1934,7 +1979,6 @@ fn render_expanded(
                                 Paint::Black
                             },
                         });
-                        sc.validate().map_err(|e| e.to_string())?;
                     }
                     font_id = default_font_id;
                     font_w = default_w;

@@ -46,6 +46,22 @@ fn main() {
         let scene = &doc.labels[0];
         let raster = rasterize(scene).unwrap();
         let png = Png.encode(scene).unwrap();
+        assert_eq!(
+            raster_diff::Raster::decode_png_with_threshold(&png, None).unwrap(),
+            raster,
+        );
+        // Prepare the PNG encoder's one-bit input outside the timed operation.
+        // The full adapter rasterizes directly to this packing; no conversion
+        // from grayscale is needed in the end-to-end measurement.
+        let stride = scene.width.div_ceil(8) as usize;
+        let mut packed = vec![255u8; stride * scene.height as usize];
+        for (y, row) in raster.pixels.chunks_exact(scene.width as usize).enumerate() {
+            for (x, &pixel) in row.iter().enumerate() {
+                if pixel == 0 {
+                    packed[y * stride + x / 8] &= !(128 >> (x % 8));
+                }
+            }
+        }
         println!(
             "{}: {}x{}, PNG {} bytes, sha256={}",
             file.to_string_lossy(),
@@ -57,6 +73,13 @@ fn main() {
                 .map(|b| format!("{b:02x}"))
                 .collect::<String>()
         );
+        println!(
+            "pixel sha256={}",
+            Sha256::digest(&raster.pixels)
+                .iter()
+                .map(|b| format!("{b:02x}"))
+                .collect::<String>()
+        );
         let render = measure(|| {
             black_box(zpl::render(black_box(&input), options).unwrap());
         });
@@ -64,7 +87,15 @@ fn main() {
             black_box(rasterize(black_box(scene)).unwrap());
         });
         let encode = measure(|| {
-            black_box(raster_diff::Png::encode_gray(black_box(&raster), scene.dpi).unwrap());
+            black_box(
+                raster_diff::Png::encode_mono(
+                    scene.width,
+                    scene.height,
+                    black_box(&packed),
+                    scene.dpi,
+                )
+                .unwrap(),
+            );
         });
         let total = measure(|| {
             let doc = zpl::render(black_box(&input), options).unwrap();
