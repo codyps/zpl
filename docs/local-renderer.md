@@ -11,6 +11,7 @@ no partial document is returned on failure. Nothing is sent to a printer.
 ZPL bytes → parse::ParseContext → render::render → output::Scene
                                                 ├─ output::Svg
                                                 ├─ output::Png
+                                                ├─ output::Pdf
                                                 └─ your output::Adapter
 ```
 
@@ -21,29 +22,44 @@ barcode bars, and downloaded bitmaps become paths; adapters never interpret ZPL.
 SVG uses paths and isolated difference blending for inversion. PNG uses a
 pixel-center scan converter, then grayscale PNG with stored DEFLATE blocks.
 PNG files prioritize simplicity over compression. Curves are flattened for PNG;
-SVG viewers may antialias edges differently.
+SVG and PDF viewers may rasterize fractional coordinates and antialias edges
+differently; vector geometry does not guarantee pixel parity with PNG. PDF 1.7 retains vector
+paths, even-odd fills, and ordered black/white/invert compositing using Difference
+blending against a white page backdrop. Text is exported as glyph paths, so no
+fonts are required and text is not searchable. The writer adds no runtime dependencies.
+PDF pages are sized in points (72 per inch) using scene DPI; there are no added
+margins. The viewer is asked to disable print scaling, but printing settings
+can still override this preference. Streams are uncompressed and output is deterministic.
 
 ```rust
 use zpl::{
-    output::{Adapter, Png, Svg},
+    output::{Adapter, Pdf, Png, Svg},
     render, Options,
 };
 let document = render(b"^XA^FO20,20^FDHELLO^FS^XZ", Options::default())?;
 for scene in &document.labels {
     let png = Png.encode(scene)?;
     let svg = Svg.encode(scene)?;
+    let pdf = Pdf.encode(scene)?;
     // Save or serve these byte buffers using your application's transport.
 }
+let multipage_pdf = Pdf.encode_pages(&document.labels)?;
 ```
 
 The library returns all labels and preview warnings. Options default to
-832 × 1218 dots at 203 DPI; `^PW` and `^LL` override dimensions. The CLI takes
-one label and selects the adapter by output extension:
+832 × 1218 dots at 203 DPI; `^PW` and `^LL` override dimensions. The `zpl-cmd render` command takes
+one label for PNG/SVG, or one or more labels for PDF, and selects the adapter
+by output extension:
 
 ```sh
-direnv exec . cargo run -p zpl --example zpl-to-svg -- docs/examples/local-label.zpl /tmp/label.svg
-direnv exec . cargo run -p zpl --example zpl-to-svg -- docs/examples/local-label.zpl /tmp/label.png
+direnv exec . cargo run -p zpl-cmd -- render docs/examples/local-label.zpl /tmp/label.svg
+direnv exec . cargo run -p zpl-cmd -- render docs/examples/local-label.zpl /tmp/label.png
+direnv exec . cargo run -p zpl-cmd -- render docs/examples/local-label.zpl /tmp/label.pdf
 ```
+
+Install from this checkout with `cargo install --locked --path zpl-cmd`, or use
+the Cargo commands above. `zpl-cmd render --help` lists the supported profiles
+and QR mask option. This command replaces the former rendering example.
 
 ## Printer profiles
 
@@ -120,7 +136,7 @@ to native size; SPECIFICATION retains the previous size. Other resident font
 IDs and uncaptured glyphs return errors.
 
 The 4,365-byte strike is compiled into the binary. Its pixels become horizontal
-filled path runs, shared by PNG and SVG. Overlapping glyph strokes are merged.
+filled path runs, shared by PNG, SVG and PDF. Overlapping glyph strokes are merged.
 Field blocks wrap and align using proportional advances, including spaces.
 `^FT` uses the captured baseline; `^FO` uses the font matrix. Captured strikes also cover natural-width 16/20/64-dot text and 32-dot text at
 widths 16/24/64. Unsampled sizes use scaled bitmap paths and emit a warning. Rotation can also differ slightly from
@@ -154,6 +170,14 @@ stored-graphic segments, 4,096 bytes per text field, 25,000 decoded bytes per
 graphic, and 32 Mi pixels per image. PNG also limits scan work and curve
 flattening. Limit violations return errors. These are resource bounds, not a
 claim that rendering arbitrary hostile inputs is constant-time.
+
+`Pdf.encode_pages` requires 1–64 scenes and at most one million total path
+segments, validating every scene before encoding. Pages can have different
+dimensions and DPIs. Large physical pages use PDF `UserUnit` to keep page-box
+coordinates within 14,400 units; pages needing a unit above 75,000 are rejected.
+PDF follows [ISO 32000-1:2008](https://pdfa.org/resource/pdf-specification-archive/),
+§§7.5–7.7 (file structure and pages), 8.3.2 (units), 8.5 (paths),
+11.3.5 and 11.6.6 (blending and page groups), and Annex C (limits).
 
 Run `direnv exec . cargo test -p zpl`. Tests cover geometry, clipping, inversion,
 rotation, framing changes, multiple labels, barcode modules, malformed commands,

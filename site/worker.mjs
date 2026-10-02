@@ -22,8 +22,9 @@ self.onmessage = async ({ data }) => {
     };
     const png = withPngMetadata(result.png(), metadata);
     const svg = withSvgMetadata(result.svg(), metadata);
-    self.postMessage({ png, svg, width: result.width, height: result.height,
-      labels: result.labels, warnings: result.warnings() }, [png.buffer, svg.buffer]);
+    const pdf = result.pdf();
+    self.postMessage({ png, svg, pdf, width: result.width, height: result.height,
+      labels: result.labels, warnings: result.warnings() }, [png.buffer, svg.buffer, pdf.buffer]);
   } catch (error) {
     self.postMessage({ error: error instanceof Error ? error.message : String(error) });
   } finally {

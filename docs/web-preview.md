@@ -5,14 +5,17 @@ renderer through wasm-bindgen without adding browser dependencies to `zpl`.
 The wrapper is an internal deployment package (`publish = false`).
 
 ZPL stays in the browser: no rendering API, analytics, persistence, or printer
-connection. PNG previews and PNG/SVG downloads use the native adapters. Multiple
+connection. PNG previews and PNG/SVG/PDF downloads use the native adapters. Multiple
 labels are selectable. Save PNG downloads the current label with PNG iTXt metadata:
 `Software` identifies the linked `zpl` crate version; `ZPL` contains JSON with the
 complete editor source, version, one-based label number, default width/height,
 DPI, rendering profile, tab-local print number, and total label count. The full source is retained for multi-label inputs
 because earlier commands may affect later labels. Save SVG embeds the same JSON
-in a non-rendering `<metadata id="zpl-metadata">` element. PNG pixels and SVG geometry are unchanged. Both save buttons are disabled
-until the current preview is ready. The displayed image uses the same PNG blob as
+in a non-rendering `<metadata id="zpl-metadata">` element. PNG pixels and SVG
+geometry are unchanged. Save PDF downloads the selected label as a single vector
+PDF page sized by its dimensions and DPI; PDF contains the rendered paths without
+source metadata. The Rust API and CLI also support multipage PDFs. All save
+buttons are disabled until the current preview is ready. The displayed image uses the same PNG blob as
 Save PNG, so the browser’s Save Image As action also retains the metadata. Metadata follows
 [PNG §11.3.3.4](https://www.w3.org/TR/png-3/#11iTXt) and
 [SVG §5.9](https://www.w3.org/TR/SVG2/struct.html#MetadataElement).
@@ -36,8 +39,8 @@ Reduced-motion preferences skip it. One previous PNG is retained for the animati
 in addition to the bounded history. Multi-label submissions feed through all labels
 in order, under one shared Print number. The counter and previous/next controls
 identify each label in the print; selecting a label or cancelling stops automatic
-feeding. Downloads include the print and label numbers in their filenames and
-metadata. Every click on Render preview starts a new print, even for identical ZPL.
+feeding. Downloads include the print and label numbers in their filenames; PNG and SVG
+also include them in metadata. Every click on Render preview starts a new print, even for identical ZPL.
 
 History has one entry per print and restores its ZPL, settings and last viewed
 label. Labels already rendered are restored byte-for-byte without rerendering;
@@ -50,6 +53,8 @@ whole older prints first. A larger print remains viewable and downloadable but
 is not retained; only its current label is cached. Clear stops automatic feeding
 and releases history while leaving the current editor and preview available.
 Restoring history cancels an active render.
+
+![Browser preview with PNG, SVG and PDF downloads](examples/pdf-preview.png)
 
 ## Local build
 

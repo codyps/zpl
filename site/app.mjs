@@ -61,6 +61,7 @@ function clearPreview(keepPaper = false) {
   $('preview').onload = null;
   $('save').disabled = true;
   $('save-svg').disabled = true;
+  $('save-pdf').disabled = true;
   if (!keepPaper) {
     displayed = undefined;
     markStale(false);
@@ -68,7 +69,7 @@ function clearPreview(keepPaper = false) {
     $('preview').removeAttribute('src');
     $('placeholder').hidden = false;
   }
-  for (const id of ['png', 'svg']) { $(id).hidden = true; $(id).removeAttribute('href'); }
+  for (const id of ['png', 'svg', 'pdf']) { $(id).hidden = true; $(id).removeAttribute('href'); }
   if (!keepPaper) {
     urls.forEach((url) => URL.revokeObjectURL(url));
     urls = [];
@@ -130,7 +131,8 @@ async function showPreview(job, data, label, animate = false, ready = () => {}, 
   const play = animate && !matchMedia('(prefers-reduced-motion: reduce)').matches;
   const paperBlob = new Blob([data.png], { type: 'image/png' });
   const nextUrls = [URL.createObjectURL(paperBlob),
-    URL.createObjectURL(new Blob([data.svg], { type: 'image/svg+xml' }))];
+    URL.createObjectURL(new Blob([data.svg], { type: 'image/svg+xml' })),
+    URL.createObjectURL(new Blob([data.pdf], { type: 'application/pdf' }))];
   const oldUrl = play && previous ? URL.createObjectURL(previous) : undefined;
   const preparedUrls = oldUrl ? [...nextUrls, oldUrl] : nextUrls;
   preparedUrls.forEach(url => pendingUrls.add(url));
@@ -183,11 +185,12 @@ async function showPreview(job, data, label, animate = false, ready = () => {}, 
   $('preview').height = data.height;
   $('preview').hidden = false;
   $('placeholder').hidden = true;
-  for (const [i, id] of ['png', 'svg'].entries()) {
+  for (const [i, id] of ['png', 'svg', 'pdf'].entries()) {
     $(id).href = urls[i]; $(id).download = `print-${job.id}-label-${label + 1}.${id}`;
   }
   $('save').disabled = false;
   $('save-svg').disabled = false;
+  $('save-pdf').disabled = false;
   job.label = label;
   $('print-id').textContent = `Print #${job.id}`;
   $('print-id').hidden = false;
@@ -220,7 +223,7 @@ function updateHistory(selected = '') {
 }
 
 function remember(job, label, data) {
-  const bytes = data.png.byteLength + data.svg.byteLength + data.warnings.length * 2;
+  const bytes = data.png.byteLength + data.svg.byteLength + data.pdf.byteLength + data.warnings.length * 2;
   job.total = data.labels;
   if (job.forget || job.oversize || job.bytes + bytes > MAX_HISTORY_BYTES) {
     const index = history.indexOf(job);
@@ -310,13 +313,14 @@ $('editor').addEventListener('input', () => {
   markStale(Boolean(displayed && !matches));
   $('save').disabled = !matches;
   $('save-svg').disabled = !matches;
+  $('save-pdf').disabled = !matches;
   $('label').disabled = !matches || displayed.data.labels < 2;
   $('previous-label').disabled = !matches || displayed.label === 0;
   $('next-label').disabled = !matches || displayed.label + 1 >= displayed.data.labels;
   $('history').value = matches && history.includes(displayed.job) ? String(displayed.job.id) : '';
   if (matches) {
     // Undoing an edit restores the exact saved image and its metadata immediately.
-    for (const [i, id] of ['png', 'svg'].entries()) {
+    for (const [i, id] of ['png', 'svg', 'pdf'].entries()) {
       $(id).href = urls[i]; $(id).download = `print-${displayed.job.id}-label-${displayed.label + 1}.${id}`;
     }
   }
@@ -357,6 +361,7 @@ $('clear-history').addEventListener('click', () => {
   updateHistory();
   status('');
 });
+$('save-pdf').addEventListener('click', () => { if (!$('save-pdf').disabled) $('pdf').click(); });
 $('save-svg').addEventListener('click', () => { if (!$('save-svg').disabled) $('svg').click(); });
 $('save').addEventListener('click', () => { if (!$('save').disabled) $('png').click(); });
 $('cancel').addEventListener('click', () => { stop(); clearFeed(); status(''); });

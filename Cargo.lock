@@ -4046,6 +4046,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "zpl-cmd"
+version = "0.1.0"
+dependencies = [
+ "clap",
+ "zpl",
+]
+
+[[package]]
 name = "zpl-font-extract"
 version = "0.1.0"
 dependencies = [

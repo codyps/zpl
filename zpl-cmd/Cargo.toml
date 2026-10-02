@@ -1,0 +1,11 @@
+[package]
+name = "zpl-cmd"
+version = "0.1.0"
+edition = "2021"
+license.workspace = true
+description = "Render ZPL labels locally to PNG, SVG and PDF"
+publish = false
+
+[dependencies]
+clap = { version = "4.6.7", features = ["derive"] }
+zpl = { version = "0.1.0", path = "../zpl" }

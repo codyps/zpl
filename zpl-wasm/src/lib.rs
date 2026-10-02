@@ -1,7 +1,7 @@
 //! Browser adapter. JS bindings: https://wasm-bindgen.github.io/wasm-bindgen/
 use wasm_bindgen::prelude::*;
 use zpl::{
-    output::{Adapter, Png, Svg},
+    output::{Adapter, Pdf, Png, Svg},
     render, Options,
 };
 
@@ -15,6 +15,7 @@ pub fn library_version() -> String {
 pub struct Preview {
     png: Vec<u8>,
     svg: Vec<u8>,
+    pdf: Vec<u8>,
     warnings: String,
     pub width: u32,
     pub height: u32,
@@ -28,6 +29,9 @@ impl Preview {
     }
     pub fn svg(&self) -> Vec<u8> {
         self.svg.clone()
+    }
+    pub fn pdf(&self) -> Vec<u8> {
+        self.pdf.clone()
     }
     pub fn warnings(&self) -> String {
         self.warnings.clone()
@@ -59,6 +63,7 @@ fn preview(input: &str, width: u32, height: u32, dpi: u32, label: u32) -> Result
     Ok(Preview {
         png: Png.encode(scene).map_err(|e| e.to_string())?,
         svg: Svg.encode(scene).map_err(|e| e.to_string())?,
+        pdf: Pdf.encode(scene).map_err(|e| e.to_string())?,
         warnings: document.warnings.join("\n"),
         width: scene.width,
         height: scene.height,
@@ -96,6 +101,7 @@ mod tests {
         .unwrap();
         assert_eq!(result.png, Png.encode(&doc.labels[0]).unwrap());
         assert_eq!(result.svg, Svg.encode(&doc.labels[0]).unwrap());
+        assert_eq!(result.pdf, Pdf.encode(&doc.labels[0]).unwrap());
         assert_eq!((result.width, result.height, result.labels), (100, 80, 1));
     }
     #[test]

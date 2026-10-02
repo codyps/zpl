@@ -4,6 +4,7 @@ members = [
     "zpl-font-extract",
     "raster-diff",
     "zpl-wasm",
+    "zpl-cmd",
     "zpl",
     "zebra-http-api",
     "zpl-proxy-api",

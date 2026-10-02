@@ -7,12 +7,13 @@ This Rust 2021 Cargo workspace contains these crates:
 - `zpl-font-extract/`: Resident-font sampling, bitmap extraction, export, and verification. Uses the bitmap strike types and decoder in `zpl::bitmap_font`.
 - `raster-diff/`: Raster image decoding and comparison.
 - `zpl-wasm/`: Browser rendering bindings.
+- `zpl-cmd/`: Local CLI with `zpl-cmd render` for PNG, SVG, and multipage PDF output.
 - `zpl/`: ZPL parsing, command/format types, and rendering. Parser unit tests live in `src/parse/test.rs`; renderer unit tests are colocated with their modules; integration tests and printer captures live in `tests/`.
 - `zebra-http-api/`: Zebra printer HTTP rendering client, with a `zebra-render` example.
 - `zebra-firmware/`: Raw TCP firmware update CLI with printer identity checks and loopback simulator tests.
 - `zpl-proxy-api/`: Axum proxy, SQLite render cache and request history, Diesel models and migrations, and browser assets in `assets/`.
 
-Shared ZPL fixtures and optional TOML metadata live in `test-data/`. The `zpl-to-svg` example renders local PNG/SVG output. `site/` contains the browser-local Wasm preview; `nix/` contains proxy packaging, the NixOS module, and VM tests. Cross-library benchmarks live in the separate sibling `zpl-comparison` repository; keep this repository’s own regression tests here.
+Shared ZPL fixtures and optional TOML metadata live in `test-data/`. The `zpl-cmd render` command renders local PNG/SVG/PDF output. `site/` contains the browser-local Wasm preview; `nix/` contains proxy packaging, the NixOS module, and VM tests. Cross-library benchmarks live in the separate sibling `zpl-comparison` repository; keep this repository’s own regression tests here.
 
 ## Build, Test, and Development Commands
 

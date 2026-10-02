@@ -10,6 +10,7 @@ test('real worker renders, downloads, navigates labels, and invalidates stale ou
   await page.goto('./');
   await expect(page.getByRole('button', { name: 'Save PNG' })).toBeDisabled();
   await expect(page.getByRole('button', { name: 'Save SVG' })).toBeDisabled();
+  await expect(page.getByRole('button', { name: 'Save PDF' })).toBeDisabled();
   await page.getByRole('button', { name: 'Render preview' }).click();
   await expect(page.locator('#preview')).toHaveAttribute('alt', 'Print #1, label 1 of 1');
   await expect(page.getByRole('status')).toBeEmpty();
@@ -50,6 +51,7 @@ test('real worker renders, downloads, navigates labels, and invalidates stale ou
   await page.locator('#source').fill('^XA^PW120^LL80^XZ^XA^FO10,10^GB20,20,2^FS^XZ');
   await expect(page.getByRole('button', { name: 'Save PNG' })).toBeDisabled();
   await expect(page.getByRole('button', { name: 'Save SVG' })).toBeDisabled();
+  await expect(page.getByRole('button', { name: 'Save PDF' })).toBeDisabled();
   await page.getByRole('button', { name: 'Render preview' }).click();
   await expect(page.locator('#preview')).toHaveAttribute('alt', 'Print #2, label 2 of 2');
   await expect(page.getByRole('status')).toBeEmpty();
@@ -533,6 +535,7 @@ test('editing retains the preview and marks it stale until restored or rendered'
   await expect(page.locator('#preview-state')).toBeVisible();
   await expect(page.getByRole('button', { name: 'Save PNG' })).toBeDisabled();
   await expect(page.getByRole('button', { name: 'Save SVG' })).toBeDisabled();
+  await expect(page.getByRole('button', { name: 'Save PDF' })).toBeDisabled();
   await page.locator('#source').fill(source);
   await expect(page.locator('#preview-state')).toBeHidden();
   await expect(page.getByRole('button', { name: 'Save PNG' })).toBeEnabled();
@@ -646,4 +649,60 @@ test('errors appear on animated handwritten paper and recover without layout shi
   await expect(page.locator('#error-paper')).toBeVisible();
   expect(await page.locator('#error-paper').evaluate(el => el.getAnimations().length)).toBe(0);
   await expect(page.getByRole('button', { name: 'Save PNG' })).toBeDisabled();
+});
+
+
+test('PDF downloads follow label selection, edits, undo, errors, and history', async ({ page }) => {
+  // Inspect Blob MIME types without fetching blob: URLs, which the page CSP blocks.
+  await page.addInitScript(() => {
+    window.pdfBlobTypes = new Map();
+    const create = URL.createObjectURL;
+    URL.createObjectURL = blob => {
+      const url = create(blob);
+      window.pdfBlobTypes.set(url, blob.type);
+      return url;
+    };
+  });
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('./');
+  const save = page.getByRole('button', { name: 'Save PDF' });
+  await expect(save).toBeDisabled();
+  const source = '^XA^PW203^LL406^XZ^XA^PW406^LL203^FO10,10^GB20,20,20^FS^XZ';
+  await page.locator('#source').fill(source);
+  await page.getByRole('button', { name: 'Render preview' }).click();
+  await expect(page.locator('#preview')).toHaveAttribute('alt', 'Print #1, label 2 of 2');
+  const downloadPdf = async (filename, size) => {
+    const downloading = page.waitForEvent('download');
+    await save.click();
+    const download = await downloading;
+    expect(download.suggestedFilename()).toBe(filename);
+    const bytes = await readFile(await download.path());
+    const pdf = bytes.toString('latin1');
+    expect(pdf.startsWith('%PDF-1.7')).toBe(true);
+    expect(pdf).toContain('/Count 1 ');
+    expect(pdf.match(/\/MediaBox \[([^\]]+)\]/)[1].split(' ').map(Number)).toEqual([0, 0, ...size]);
+    expect(await page.locator('#pdf').evaluate(a => window.pdfBlobTypes.get(a.href))).toBe('application/pdf');
+    return bytes;
+  };
+  const second = await downloadPdf('print-1-label-2.pdf', [144, 72]);
+  await page.locator('#previous-label').click();
+  await expect(page.locator('#preview')).toHaveAttribute('alt', 'Print #1, label 1 of 2');
+  const first = await downloadPdf('print-1-label-1.pdf', [72, 144]);
+  expect(first).not.toEqual(second);
+  await page.locator('#source').fill(source + '\n');
+  await expect(save).toBeDisabled();
+  await page.locator('#source').fill(source);
+  await expect(save).toBeEnabled();
+  expect(await downloadPdf('print-1-label-1.pdf', [72, 144])).toEqual(first);
+  await page.locator('#source').fill('^XA^PW100^LL100^XZ');
+  await page.getByRole('button', { name: 'Render preview' }).click();
+  await expect(page.locator('#preview')).toHaveAttribute('alt', 'Print #2, label 1 of 1');
+  await expect(save).toBeEnabled();
+  await page.locator('#history').selectOption('1');
+  await expect(page.locator('#preview')).toHaveAttribute('alt', 'Print #1, label 1 of 2');
+  expect(await downloadPdf('print-1-label-1.pdf', [72, 144])).toEqual(first);
+  await page.locator('#source').fill('');
+  await page.getByRole('button', { name: 'Render preview' }).click();
+  await expect(page.locator('#error-paper')).toBeVisible();
+  await expect(save).toBeDisabled();
 });
