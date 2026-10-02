@@ -182,9 +182,13 @@ npm run dev
 ```
 
 HTTP tests cover byte preservation, negotiation, streaming limits, timeout,
-concurrency, CORS, and fail-closed throttling. Miniflare loads the compiled Wasm
-under workerd and checks real PNGs, binary multipart, density/canvas limits,
-graphic expansion, recovery, and Cloudflare rate limiting. Native adapter tests
+concurrency, CORS, and fail-closed throttling. Wrangler's documented
+[`createTestHarness()`](https://developers.cloudflare.com/workers/testing/test-harness/)
+loads `wrangler.jsonc`, builds the production Worker bundle, and runs the compiled
+Wasm under workerd. It checks real PNGs, binary multipart, density/canvas limits,
+graphic expansion, recovery, and Cloudflare rate limiting, resetting the harness
+between tests. Wrangler manages Miniflare internally; the tests do not pin or
+configure Miniflare separately. Native adapter tests
 compare decoded pixels with the specification raster. The renderer regression
 suite also covers printer captures and conformance fixtures.
 
