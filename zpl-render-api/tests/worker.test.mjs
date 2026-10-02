@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { after, test } from 'node:test';
 import { fileURLToPath } from 'node:url';
+import { setTimeout as sleep } from 'node:timers/promises';
 import { Miniflare } from 'miniflare';
 import { inflateSync } from 'node:zlib';
 
@@ -66,14 +67,16 @@ test('real Wasm rejects limits, preserves binary multipart, and counts labels', 
 });
 
 test('Cloudflare rate-limit binding rejects excess requests', async () => {
-  let limited = false;
-  for (let i = 0; i < 35; i++) {
+  // Miniflare resets counters at wall-clock-aligned 10-second boundaries.
+  // Start in a fresh window so a mid-burst reset cannot hide the rejection.
+  // https://github.com/cloudflare/workers-sdk/blob/miniflare%404.20260730.0/packages/miniflare/src/workers/ratelimit/ratelimit-object.worker.ts#L26-L30
+  await sleep(10_000 - (Date.now() % 10_000) + 50);
+  for (let i = 0; i <= 30; i++) {
     const response = await mf.dispatchFetch(endpoint, { method: 'POST', body: '^XA^XZ', headers: { 'CF-Connecting-IP': '192.0.2.99' } });
     await response.arrayBuffer();
-    if (response.status === 429) { limited = true; assert.equal(response.headers.get('Retry-After'), '10'); break; }
-    assert.equal(response.status, 200);
+    assert.equal(response.status, i < 30 ? 200 : 429, `request ${i + 1}`);
+    if (i === 30) assert.equal(response.headers.get('Retry-After'), '10');
   }
-  assert.equal(limited, true);
 });
 
 test('workerd handles the largest canvas and rejects graphic expansion without poisoning Wasm', async () => {
