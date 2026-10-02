@@ -1,7 +1,7 @@
 //! ZD621 edge behavior measured in barcode-edges-zd621-v1. The ^FO/^FT
 //! nominal placement is described in the ZPL Programming Guide pp. 201/205:
 //! https://www.zebra.com/content/dam/support-dam/en/documentation/unrestricted/guide/software/zpl-zbi2-pg-en.pdf
-use crate::output::{Path, Segment, MAX_SEGMENTS};
+use crate::output::{Path, Segment};
 
 /// Cumulative segment boundary and unpainted distance below resident-A ink.
 #[derive(Clone)]
@@ -23,6 +23,7 @@ pub(super) fn clamp(
     split: &[PartBoundary],
     reverse: bool,
     rotation: u8,
+    segment_limit: usize,
 ) -> Result<(), String> {
     if split.is_empty() {
         return Ok(());
@@ -127,7 +128,7 @@ pub(super) fn clamp(
         if let Some((x, end)) = merged {
             out.rect(x, y, end - x, h);
         }
-        if out.segments.len() > MAX_SEGMENTS {
+        if out.segments.len() > segment_limit {
             return Err("document path limit exceeded".into());
         }
     }
