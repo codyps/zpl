@@ -1,0 +1,11 @@
+[package]
+name = "zebra-sgd"
+version = "0.1.0"
+edition = "2021"
+license.workspace = true
+description = "Bounded read-only Zebra SGD queries and printer metadata"
+publish = false
+
+[dependencies]
+eyre = "0.6.14"
+serde = { version = "1.0.229", features = ["derive"] }

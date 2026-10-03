@@ -24,6 +24,11 @@ fn migrated() -> SqliteConnection {
         ))
         .unwrap();
     connection
+        .batch_execute(include_str!(
+            "../../migrations/2026-10-03-000000_printer-identity/up.sql"
+        ))
+        .unwrap();
+    connection
         .batch_execute("PRAGMA foreign_keys = ON;")
         .unwrap();
     connection
@@ -43,14 +48,20 @@ async fn deduplicates_bytes_but_records_every_request_and_renderer() {
     let cache = cache();
     let first = begin(&cache, 1, false).await;
     assert!(first.cached_png.is_none());
-    cache.success(first, b"first-png".to_vec()).await.unwrap();
+    cache
+        .success(first, b"first-png".to_vec(), None)
+        .await
+        .unwrap();
     assert_eq!(
         begin(&cache, 1, false).await.cached_png.unwrap(),
         b"first-png"
     );
     let other = begin(&cache, 2, false).await;
     assert!(other.cached_png.is_none());
-    cache.success(other, b"first-png".to_vec()).await.unwrap();
+    cache
+        .success(other, b"first-png".to_vec(), None)
+        .await
+        .unwrap();
     let mut connection = cache.0.lock().unwrap();
     assert_eq!(
         inputs::table
@@ -92,7 +103,7 @@ async fn deduplicates_bytes_but_records_every_request_and_renderer() {
 async fn refresh_retains_history_and_errors_are_retried() {
     let cache = cache();
     cache
-        .success(begin(&cache, 1, false).await, b"old".to_vec())
+        .success(begin(&cache, 1, false).await, b"old".to_vec(), None)
         .await
         .unwrap();
     let refresh = begin(&cache, 1, true).await;
@@ -103,7 +114,7 @@ async fn refresh_retains_history_and_errors_are_retried() {
         .unwrap();
     let retry = begin(&cache, 1, false).await;
     assert!(retry.cached_png.is_none());
-    cache.success(retry, b"new".to_vec()).await.unwrap();
+    cache.success(retry, b"new".to_vec(), None).await.unwrap();
     assert_eq!(begin(&cache, 1, false).await.cached_png.unwrap(), b"new");
     let mut connection = cache.0.lock().unwrap();
     assert_eq!(
@@ -121,6 +132,59 @@ async fn refresh_retains_history_and_errors_are_retried() {
     assert_eq!(requests[1].error.as_deref(), Some("printer offline"));
     assert!(requests[1].completed_at.is_some());
     assert_ne!(requests[0].png_id, requests[2].png_id);
+}
+
+#[tokio::test]
+async fn failed_annotation_preserves_original_bytes_and_identity_without_caching() {
+    let cache = cache();
+    cache
+        .success(begin(&cache, 1, false).await, b"old".to_vec(), None)
+        .await
+        .unwrap();
+    let identity = zebra_sgd::PrinterIdentity {
+        model: "ZTC ZD621-203dpi ZPL".into(),
+        firmware: "V93.21.33Z".into(),
+        serial: "TEST-SERIAL".into(),
+        configuration: Default::default(),
+    };
+    let attempt = begin(&cache, 1, true).await;
+    let request_id = attempt.request_id;
+    cache
+        .rendered(
+            attempt,
+            b"broken PNG".to_vec(),
+            Some(identity.clone()),
+            Some("invalid printer PNG signature".into()),
+        )
+        .await
+        .unwrap();
+    assert!(begin(&cache, 1, false).await.cached_png.is_none());
+    let mut connection = cache.0.lock().unwrap();
+    let request = png_requests::table
+        .find(request_id)
+        .select(PngRequest::as_select())
+        .first::<PngRequest>(&mut *connection)
+        .unwrap();
+    assert_eq!(
+        request.error.as_deref(),
+        Some("invalid printer PNG signature")
+    );
+    assert!(request.completed_at.is_some());
+    assert_eq!(
+        serde_json::from_str::<zebra_sgd::PrinterIdentity>(
+            request.printer_identity.as_ref().unwrap()
+        )
+        .unwrap(),
+        identity
+    );
+    assert_eq!(
+        pngs::table
+            .find(request.png_id.unwrap())
+            .select(pngs::data)
+            .first::<Vec<u8>>(&mut *connection)
+            .unwrap(),
+        b"broken PNG"
+    );
 }
 
 #[tokio::test]
@@ -160,6 +224,11 @@ fn migration_round_trip_preserves_legacy_data() {
     connection.batch_execute("INSERT INTO inputs(id,hash,data) VALUES(1,X'01',X'02'); INSERT INTO png_requests(timestamp,input_id) VALUES('legacy',1);").unwrap();
     connection
         .batch_execute(include_str!(
+            "../../migrations/2026-10-03-000000_printer-identity/down.sql"
+        ))
+        .unwrap();
+    connection
+        .batch_execute(include_str!(
             "../../migrations/2026-09-15-230000_remove-client-ips/down.sql"
         ))
         .unwrap();
@@ -176,6 +245,11 @@ fn migration_round_trip_preserves_legacy_data() {
     connection
         .batch_execute(include_str!(
             "../../migrations/2026-09-15-230000_remove-client-ips/up.sql"
+        ))
+        .unwrap();
+    connection
+        .batch_execute(include_str!(
+            "../../migrations/2026-10-03-000000_printer-identity/up.sql"
         ))
         .unwrap();
     let request = png_requests::table
@@ -195,15 +269,42 @@ fn migration_round_trip_preserves_legacy_data() {
 
 #[test]
 fn printer_fingerprint_includes_configuration() {
-    let key = renderer_key("http://printer/", &["Authorization: sample".into()], "v1");
-    assert_ne!(
-        key,
-        renderer_key("http://other/", &["Authorization: sample".into()], "v1")
+    let key = renderer_key(
+        "http://printer/",
+        &["Authorization: sample".into()],
+        "v1",
+        "printer:9100",
     );
-    assert_ne!(key, renderer_key("http://printer/", &[], "v1"));
     assert_ne!(
         key,
-        renderer_key("http://printer/", &["Authorization: sample".into()], "v2")
+        renderer_key(
+            "http://other/",
+            &["Authorization: sample".into()],
+            "v1",
+            "printer:9100"
+        )
+    );
+    assert_ne!(
+        key,
+        renderer_key("http://printer/", &[], "v1", "printer:9100")
+    );
+    assert_ne!(
+        key,
+        renderer_key(
+            "http://printer/",
+            &["Authorization: sample".into()],
+            "v2",
+            "printer:9100"
+        )
+    );
+    assert_ne!(
+        key,
+        renderer_key(
+            "http://printer/",
+            &["Authorization: sample".into()],
+            "v1",
+            "printer:9101"
+        )
     );
     assert_eq!(key.len(), 32);
 }

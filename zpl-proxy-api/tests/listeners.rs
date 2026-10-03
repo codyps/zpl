@@ -54,6 +54,7 @@ fn configure(command: &mut Command, dir: &tempfile::TempDir) {
         include_str!("../migrations/2026-09-14-000000_fix-request-client/up.sql"),
         include_str!("../migrations/2026-09-15-220000_persist-render-results/up.sql"),
         include_str!("../migrations/2026-09-15-230000_remove-client-ips/up.sql"),
+        include_str!("../migrations/2026-10-03-000000_printer-identity/up.sql"),
     ] {
         connection.batch_execute(migration).unwrap();
     }

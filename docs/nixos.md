@@ -84,10 +84,17 @@ namespace; the worker receives its variables without access to the source file.
 Custom file-based telemetry certificates or other runtime inputs require explicit
 `systemd.services.zpl-proxy-api.serviceConfig.BindReadOnlyPaths` entries.
 
+Metadata is queried with read-only SGD commands over TCP, normally to the host
+in `printerUrl` on port 9100. The HTTP preview and SGD endpoints must reach the
+same printer. The [cache documentation](proxy-cache.md) describes the captured
+metadata and timeout behavior.
+
 Additional options:
 
 - `cacheNamespace`: defaults to `"default"`; change after firmware, font, media,
   or rendering configuration changes to invalidate cached results.
+- `printerSgdAddress`: optional `"IP:port"` override for SGD metadata queries
+  (IPv6: `"[address]:port"`); defaults to the HTTP URL host on port 9100.
 - `printerHeaders`: a list of `"Name: value"` headers. These are visible in the
   Nix store and process arguments, so use only nonsecret values.
 - `environment`: additional variables such as `RUST_LOG` and `OTEL_*`; see

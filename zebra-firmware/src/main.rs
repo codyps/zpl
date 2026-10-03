@@ -70,36 +70,8 @@ fn connect(address: SocketAddr, deadline: Instant) -> Result<TcpStream> {
     )?)
 }
 
-// Zebra SGD getvar framing and variable definitions:
-// https://www.zebra.com/content/dam/support-dam/en/documentation/unrestricted/guide/software/zpl-zbi2-pg-en.pdf
-// Sections: getvar, device.product_name, device.unique_id, appl.name.
-// Read a quoted value without requiring a trailing newline (SGD responses may omit it).
-fn getvar(stream: &mut TcpStream, name: &str, deadline: Instant) -> Result<String> {
-    stream.set_write_timeout(Some(remaining(deadline)?))?;
-    write!(stream, "! U1 getvar \"{name}\"\r\n")?;
-    let mut value = Vec::new();
-    let mut opened = false;
-    for _ in 0..4096 {
-        stream.set_read_timeout(Some(remaining(deadline)?))?;
-        let mut byte = [0];
-        stream.read_exact(&mut byte)?;
-        match byte[0] {
-            b'"' if !opened => opened = true,
-            b'"' => {
-                let value = String::from_utf8(value)?;
-                ensure!(
-                    !value.trim().is_empty() && value != "?",
-                    "unsupported SGD variable {name}"
-                );
-                return Ok(value);
-            }
-            b'\r' | b'\n' if !opened => {}
-            byte if opened && !byte.is_ascii_control() => value.push(byte),
-            _ => bail!("malformed SGD response for {name}"),
-        }
-    }
-    bail!("SGD response for {name} exceeds 4096 bytes")
-}
+// Shared bounded SGD reads; firmware uploads still use the guarded path below.
+use zebra_sgd::get_required as getvar;
 
 fn identity(stream: &mut TcpStream, deadline: Instant) -> Result<Identity> {
     Ok(Identity {

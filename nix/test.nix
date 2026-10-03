@@ -6,12 +6,16 @@ let
     services.zpl-proxy-api = {
       enable = true;
       printerUrl = "http://printer.test:9100/";
+      printerSgdAddress = "127.0.0.1:9101";
       environment.OTEL_TRACES_EXPORTER = "none";
       environmentFile = "/run/proxy-test.env";
     };
-    environment.systemPackages = [ pkgs.curl pkgs.sqlite ];
+    environment.systemPackages = [ pkgs.curl pkgs.sqlite pkgs.python3 ];
     environment.etc."proxy-unrelated".text = "unrelated host data";
     networking.hosts."127.0.0.1" = [ "printer.test" ];
+    # Supply both address families so the HTTP resolver never needs external
+    # DNS for this test hostname. IPv6 connects may fall back to the IPv4 mock.
+    networking.hosts."::1" = [ "printer.test" ];
     systemd.tmpfiles.rules = [
       "f /run/proxy-test.env 0600 root root - PROXY_NAMESPACE_TEST=present"
       "f /srv/proxy-unrelated 0644 root root - unrelated"
@@ -20,6 +24,23 @@ let
       wantedBy = [ "multi-user.target" ];
       serviceConfig.ExecStart = "${pkgs.python3}/bin/python3 ${pkgs.writeText "mock-printer.py" ''
         from http.server import BaseHTTPRequestHandler, HTTPServer
+        import socketserver, threading, struct, zlib
+
+        def chunk(kind, data):
+            return struct.pack('>I', len(data)) + kind + data + struct.pack('>I', zlib.crc32(kind + data))
+
+        png = b'\x89PNG\r\n\x1a\n' + chunk(b'IHDR', struct.pack('>IIBBBBB', 1, 1, 8, 0, 0, 0, 0)) + chunk(b'IDAT', zlib.compress(b'\0\0')) + chunk(b'IEND', b"")
+
+        class Sgd(socketserver.StreamRequestHandler):
+            def handle(self):
+                for line in self.rfile:
+                    assert line.startswith(b'! U1 getvar "') and line.endswith(b'"\r\n')
+                    name = line.split(b'"')[1]
+                    value = {b'device.product_name': b'ZD621', b'device.unique_id': b'TEST-SERIAL', b'appl.name': b'V93.21.33Z', b'head.resolution.in_dpi': b'203'}.get(name, b'?')
+                    self.wfile.write(b'"' + value + b'"\r\n')
+
+        sgd = socketserver.TCPServer(("127.0.0.1", 9101), Sgd)
+        threading.Thread(target=sgd.serve_forever, daemon=True).start()
 
         class Printer(BaseHTTPRequestHandler):
             def do_POST(self):
@@ -31,7 +52,7 @@ let
             def do_GET(self):
                 self.send_response(200)
                 self.end_headers()
-                self.wfile.write(b'mock PNG bytes')
+                self.wfile.write(png)
 
         HTTPServer(("127.0.0.1", 9100), Printer).serve_forever()
       ''}";
@@ -81,13 +102,16 @@ pkgs.testers.runNixOSTest {
         request = f"{curl} -sS -D /tmp/headers -o /tmp/image --data-urlencode 'zpl=^XA^XZ' http://127.0.0.1:3000/api/zpl-zd621"
         machine.succeed(request)
         machine.succeed("grep -i 'x-zpl-cache: miss' /tmp/headers")
-        assert machine.succeed("cat /tmp/image") == "mock PNG bytes"
+        machine.succeed("grep -i 'x-zpl-printer-serial: TEST-SERIAL' /tmp/headers")
+        machine.succeed("cp /tmp/image /tmp/first-image")
+        # Original bytes remain unannotated; returned metadata describes SGD.
+        machine.succeed("python3 -c \"import sqlite3; p=open('/tmp/image','rb').read(); raw=sqlite3.connect('/var/lib/zpl-proxy-api/db.sqlite').execute('SELECT data FROM pngs').fetchone()[0]; assert raw.startswith(bytes.fromhex('89504e470d0a1a0a')); assert b'ZPL Source' not in raw; assert b'ZPL Source' in p and b'TEST-SERIAL' in p and b'head.resolution.in_dpi' in p\"")
         machine.succeed("systemctl stop mock-printer.service zpl-proxy-api.service")
         machine.wait_for_unit("zpl-proxy-api.socket")
         # A new connection reactivates the worker with the same listener and DB.
         machine.succeed(request)
         machine.succeed("grep -i 'x-zpl-cache: hit' /tmp/headers")
-        assert machine.succeed("cat /tmp/image") == "mock PNG bytes"
+        machine.succeed("cmp /tmp/first-image /tmp/image")
         assert machine.succeed("sqlite3 /var/lib/zpl-proxy-api/db.sqlite 'SELECT COUNT(*) FROM png_requests'").strip() == "2"
 
     assert unix.succeed("stat -c '%a %G' /run/zpl-proxy-api.sock").strip() == "660 proxy-clients"

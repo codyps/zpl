@@ -1,4 +1,6 @@
 mod listener;
+mod png_metadata;
+mod printer;
 
 use std::path::Path;
 use std::sync::Arc;
@@ -25,6 +27,9 @@ use zpl_proxy_api::validation::{RenderZpl, ValidationError};
 struct Args {
     #[clap(long)]
     zd621_url: reqwest::Url,
+    /// SGD IP:port for the same printer; defaults to the HTTP URL host on 9100.
+    #[clap(long)]
+    zd621_sgd_address: Option<std::net::SocketAddr>,
     #[clap(long)]
     zd621_header: Vec<String>,
     #[command(flatten)]
@@ -38,6 +43,7 @@ struct Args {
 struct Zd621 {
     zd621_client: reqwest::Client,
     zd621_url: Arc<reqwest::Url>,
+    sgd_target: Arc<String>,
     cache: Cache,
     renderer_key: Vec<u8>,
     render_lock: Arc<tokio::sync::Mutex<()>>,
@@ -79,14 +85,17 @@ async fn run(args: Args, listener: listener::Listener) -> eyre::Result<()> {
         .await
         .unwrap()
         .expect("Cannot open cache database; run diesel migration run first");
+    let sgd_target = printer::target(&args.zd621_url, args.zd621_sgd_address)?;
     let renderer_key = cache::renderer_key(
         args.zd621_url.as_str(),
         &args.zd621_header,
         &args.cache_namespace,
+        &sgd_target,
     );
     let app_state = Zd621 {
         zd621_client,
         zd621_url: Arc::new(args.zd621_url),
+        sgd_target: Arc::new(sgd_target),
         cache,
         renderer_key,
         render_lock: Arc::new(tokio::sync::Mutex::new(())),
@@ -128,13 +137,20 @@ async fn zd621_zpl_to_png(
 ) -> impl IntoResponse {
     // Finish persistence even when the requesting client disconnects.
     let result = telemetry::spawn("render.task", render_cached(zd621, print_spec)).await;
+    let result = result.map(|result| {
+        result.and_then(|(png, cache_hit, identity)| {
+            let response = Response::builder()
+                .status(StatusCode::OK)
+                .header(header::CONTENT_TYPE, "image/png")
+                .header("X-ZPL-Cache", if cache_hit { "hit" } else { "miss" })
+                .header("X-ZPL-Printer-Model", &identity.model)
+                .header("X-ZPL-Printer-Firmware", &identity.firmware)
+                .header("X-ZPL-Printer-Serial", &identity.serial);
+            Ok(response.body(Body::from(png))?)
+        })
+    });
     match result {
-        Ok(Ok((png, cache_hit))) => Response::builder()
-            .status(StatusCode::OK)
-            .header(header::CONTENT_TYPE, "image/png")
-            .header("X-ZPL-Cache", if cache_hit { "hit" } else { "miss" })
-            .body(Body::from(png))
-            .unwrap(),
+        Ok(Ok(response)) => response,
         Ok(Err(error)) if error.downcast_ref::<ValidationError>().is_some() => (
             StatusCode::BAD_REQUEST,
             error.downcast_ref::<ValidationError>().unwrap().to_string(),
@@ -152,7 +168,10 @@ async fn zd621_zpl_to_png(
 }
 
 #[fastrace::trace(name = "render.cached")]
-async fn render_cached(zd621: Zd621, print_spec: PrintSpec) -> eyre::Result<(Vec<u8>, bool)> {
+async fn render_cached(
+    zd621: Zd621,
+    print_spec: PrintSpec,
+) -> eyre::Result<(Vec<u8>, bool, zebra_sgd::PrinterIdentity)> {
     // Validate before cache lookup too: historical cache entries are not proof
     // that the current admission policy permits this input.
     let zpl =
@@ -173,24 +192,54 @@ async fn render_cached(zd621: Zd621, print_spec: PrintSpec) -> eyre::Result<(Vec
             print_spec.refresh,
         )
         .await?;
-    if let Some(png) = attempt.cached_png {
+    if let Some(png) = &attempt.cached_png {
         LocalSpan::add_property(|| ("cache.hit", "true"));
-        return Ok((png, true));
+        let result = (|| {
+            let identity = attempt
+                .cached_identity
+                .clone()
+                .ok_or_else(|| eyre::eyre!("cached printer identity missing"))?;
+            Ok::<_, eyre::Report>((
+                png_metadata::annotate(png, &identity, zpl.as_str())?,
+                true,
+                identity,
+            ))
+        })();
+        if let Err(error) = &result {
+            zd621.cache.failure(attempt, error.to_string()).await?;
+        }
+        return result;
     }
     LocalSpan::add_property(|| ("cache.hit", "false"));
-    match zebra_http_api::zpl_to_png(
-        zd621.zd621_client.clone(),
-        (*zd621.zd621_url).clone(),
-        zpl.as_str(),
-    )
-    .in_span(
-        Span::enter_with_local_parent("printer.preview").with_property(|| ("span.kind", "client")),
-    )
-    .await
+    let render = async {
+        let identity = printer::identity((*zd621.sgd_target).clone()).await?;
+        let png = zebra_http_api::zpl_to_png(
+            zd621.zd621_client.clone(),
+            (*zd621.zd621_url).clone(),
+            zpl.as_str(),
+        )
+        .await?;
+        Ok::<_, eyre::Report>((png, identity))
+    };
+    match render
+        .in_span(
+            Span::enter_with_local_parent("printer.preview")
+                .with_property(|| ("span.kind", "client")),
+        )
+        .await
     {
-        Ok(png) => {
-            zd621.cache.success(attempt, png.clone()).await?;
-            Ok((png, false))
+        Ok((png, identity)) => {
+            let response_png = png_metadata::annotate(&png, &identity, zpl.as_str());
+            zd621
+                .cache
+                .rendered(
+                    attempt,
+                    png,
+                    Some(identity.clone()),
+                    response_png.as_ref().err().map(ToString::to_string),
+                )
+                .await?;
+            Ok((response_png?, false, identity))
         }
         Err(e) => {
             LocalSpan::add_property(|| ("span.status_code", "error"));
@@ -273,6 +322,73 @@ mod tests {
     use diesel::{connection::SimpleConnection, prelude::*};
     use std::sync::atomic::{AtomicBool, AtomicUsize, Ordering};
 
+    fn mock_identity(version: usize) -> zebra_sgd::PrinterIdentity {
+        zebra_sgd::PrinterIdentity {
+            model: "ZD621".into(),
+            serial: "TEST-SERIAL".into(),
+            firmware: format!("V93.21.{version}Z"),
+            configuration: [
+                ("zpl.label_length".into(), version.to_string()),
+                ("head.resolution.in_dpi".into(), "203".into()),
+                ("appl.link_os_version".into(), "7.0".into()),
+                ("appl.bootblock".into(), "7.0.4 0.0".into()),
+            ]
+            .into(),
+        }
+    }
+
+    async fn mock_sgd(
+        version: Arc<AtomicUsize>,
+        calls: Arc<AtomicUsize>,
+        fail: Arc<AtomicBool>,
+    ) -> (String, tokio::task::JoinHandle<()>) {
+        use tokio::io::{AsyncBufReadExt, AsyncWriteExt, BufReader};
+        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let address = listener.local_addr().unwrap().to_string();
+        let task = tokio::spawn(async move {
+            loop {
+                let (stream, _) = listener.accept().await.unwrap();
+                calls.fetch_add(1, Ordering::SeqCst);
+                let identity = mock_identity(version.load(Ordering::SeqCst));
+                let mut stream = BufReader::new(stream);
+                loop {
+                    let mut command = String::new();
+                    match stream.read_line(&mut command).await {
+                        Ok(0) => break,
+                        Ok(_) => {}
+                        Err(error) if error.kind() == std::io::ErrorKind::ConnectionReset => break,
+                        Err(error) => panic!("mock SGD read failed: {error}"),
+                    }
+                    let name = command
+                        .strip_prefix("! U1 getvar \"")
+                        .unwrap()
+                        .strip_suffix("\"\r\n")
+                        .unwrap();
+                    let value = match name {
+                        "device.product_name" => &identity.model,
+                        "device.unique_id" if fail.load(Ordering::SeqCst) => "?",
+                        "device.unique_id" => &identity.serial,
+                        "appl.name" => &identity.firmware,
+                        name => {
+                            assert!(zebra_sgd::RENDER_SETTINGS.contains(&name));
+                            identity
+                                .configuration
+                                .get(name)
+                                .map(String::as_str)
+                                .unwrap_or("?")
+                        }
+                    };
+                    stream
+                        .get_mut()
+                        .write_all(format!("\"{value}\"\r\n").as_bytes())
+                        .await
+                        .unwrap();
+                }
+            }
+        });
+        (address, task)
+    }
+
     #[tokio::test]
     async fn caches_mock_printer_results_and_persists_refresh_failures() {
         let directory = tempfile::tempdir().unwrap();
@@ -283,11 +399,21 @@ mod tests {
             include_str!("../migrations/2026-09-14-000000_fix-request-client/up.sql"),
             include_str!("../migrations/2026-09-15-220000_persist-render-results/up.sql"),
             include_str!("../migrations/2026-09-15-230000_remove-client-ips/up.sql"),
+            include_str!("../migrations/2026-10-03-000000_printer-identity/up.sql"),
         ] {
             connection.batch_execute(migration).unwrap();
         }
         let calls = Arc::new(AtomicUsize::new(0));
         let fail = Arc::new(AtomicBool::new(false));
+        let firmware = Arc::new(AtomicUsize::new(33));
+        let identity_calls = Arc::new(AtomicUsize::new(0));
+        let identity_fail = Arc::new(AtomicBool::new(false));
+        let (sgd_target, sgd_server) = mock_sgd(
+            firmware.clone(),
+            identity_calls.clone(),
+            identity_fail.clone(),
+        )
+        .await;
         let printer = Router::new()
             .route(
                 "/zpl",
@@ -310,7 +436,7 @@ mod tests {
             )
             .route(
                 "/image",
-                axum::routing::get(|| async { b"mock PNG bytes".as_slice() }),
+                axum::routing::get(|| async { png_metadata::test_png() }),
             );
         let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
         let url: reqwest::Url = format!("http://{}/", listener.local_addr().unwrap())
@@ -325,7 +451,8 @@ mod tests {
                 .timeout(Duration::from_secs(5))
                 .build()
                 .unwrap(),
-            renderer_key: cache::renderer_key(url.as_str(), &[], "test"),
+            renderer_key: cache::renderer_key(url.as_str(), &[], "test", &sgd_target),
+            sgd_target: Arc::new(sgd_target),
             zd621_url: Arc::new(url),
             cache: Cache::open(path.to_str().unwrap()).unwrap(),
             render_lock: Arc::new(tokio::sync::Mutex::new(())),
@@ -340,25 +467,35 @@ mod tests {
         );
         let first = first.unwrap();
         let second = second.unwrap();
-        assert_eq!(first.0, b"mock PNG bytes");
+        assert_eq!(
+            first.0,
+            png_metadata::annotate(&png_metadata::test_png(), &first.2, &spec().zpl).unwrap()
+        );
         assert_eq!(second.0, first.0);
         assert_ne!(first.1, second.1);
         assert_eq!(calls.load(Ordering::SeqCst), 1);
 
+        assert_eq!(identity_calls.load(Ordering::SeqCst), 1);
+        // A cache hit after a firmware change must describe the original render.
+        firmware.store(34, Ordering::SeqCst);
         state.cache = Cache::open(path.to_str().unwrap()).unwrap();
         let response = zd621_zpl_to_png(State(state.clone()), JsonOrForm(spec()))
             .await
             .into_response();
         assert_eq!(response.status(), StatusCode::OK);
         assert_eq!(response.headers()["X-ZPL-Cache"], "hit");
+        assert_eq!(response.headers()["X-ZPL-Printer-Model"], "ZD621");
+        assert_eq!(response.headers()["X-ZPL-Printer-Firmware"], "V93.21.33Z");
+        assert_eq!(response.headers()["X-ZPL-Printer-Serial"], "TEST-SERIAL");
         assert_eq!(
             axum::body::to_bytes(response.into_body(), 1024)
                 .await
                 .unwrap()
                 .as_ref(),
-            b"mock PNG bytes"
+            first.0
         );
         assert_eq!(calls.load(Ordering::SeqCst), 1);
+        assert_eq!(identity_calls.load(Ordering::SeqCst), 1);
         fail.store(true, Ordering::SeqCst);
         assert!(render_cached(
             state.clone(),
@@ -370,7 +507,10 @@ mod tests {
         .await
         .is_err());
         fail.store(false, Ordering::SeqCst);
-        assert!(!render_cached(state.clone(), spec()).await.unwrap().1);
+        let refreshed = render_cached(state.clone(), spec()).await.unwrap();
+        assert!(!refreshed.1);
+        assert_eq!(refreshed.2.firmware, "V93.21.34Z");
+        assert_eq!(refreshed.2.configuration["zpl.label_length"], "34");
         assert_eq!(calls.load(Ordering::SeqCst), 3);
 
         use zpl_proxy_api::{
@@ -385,6 +525,23 @@ mod tests {
         assert_eq!(history.len(), 5);
         assert!(history.iter().all(|r| r.completed_at.is_some()));
         assert!(history[3].error.as_ref().unwrap().contains("503"));
+        for request in &history[..3] {
+            let identity: zebra_sgd::PrinterIdentity =
+                serde_json::from_str(request.printer_identity.as_ref().unwrap()).unwrap();
+            assert_eq!(identity.firmware, "V93.21.33Z");
+            assert_eq!(identity.configuration["zpl.label_length"], "33");
+        }
+        let latest: zebra_sgd::PrinterIdentity =
+            serde_json::from_str(history[4].printer_identity.as_ref().unwrap()).unwrap();
+        assert_eq!(latest.firmware, "V93.21.34Z");
+        // Original bytes and their digest survive annotation and firmware changes.
+        let (stored, hash) = pngs::table
+            .select((pngs::data, pngs::hash))
+            .first::<(Vec<u8>, Vec<u8>)>(&mut connection)
+            .unwrap();
+        assert_eq!(stored, png_metadata::test_png());
+        use sha2::Digest;
+        assert_eq!(hash, sha2::Sha256::digest(&stored).to_vec());
         assert_eq!(
             inputs::table
                 .count()
@@ -399,7 +556,30 @@ mod tests {
                 .unwrap(),
             1
         );
+        // Failed metadata discovery must be recorded, invalidate refresh, and
+        // never submit a preview with an unknown printer identity.
+        identity_fail.store(true, Ordering::SeqCst);
+        assert!(render_cached(
+            state.clone(),
+            PrintSpec {
+                refresh: true,
+                ..spec()
+            }
+        )
+        .await
+        .is_err());
+        assert_eq!(calls.load(Ordering::SeqCst), 3);
+        let error = png_requests::table
+            .order(png_requests::rowid.desc())
+            .select(png_requests::error)
+            .first::<Option<String>>(&mut connection)
+            .unwrap()
+            .unwrap();
+        assert!(error.contains("unsupported SGD variable device.unique_id"));
+        identity_fail.store(false, Ordering::SeqCst);
+        assert!(!render_cached(state, spec()).await.unwrap().1);
         server.abort();
+        sgd_server.abort();
     }
 
     #[tokio::test]
@@ -412,10 +592,18 @@ mod tests {
             include_str!("../migrations/2026-09-14-000000_fix-request-client/up.sql"),
             include_str!("../migrations/2026-09-15-220000_persist-render-results/up.sql"),
             include_str!("../migrations/2026-09-15-230000_remove-client-ips/up.sql"),
+            include_str!("../migrations/2026-10-03-000000_printer-identity/up.sql"),
         ] {
             connection.batch_execute(migration).unwrap();
         }
         let calls = Arc::new(AtomicUsize::new(0));
+        let identity_calls = Arc::new(AtomicUsize::new(0));
+        let (sgd_target, sgd_server) = mock_sgd(
+            Arc::new(AtomicUsize::new(33)),
+            identity_calls.clone(),
+            Arc::new(AtomicBool::new(false)),
+        )
+        .await;
         let printer = Router::new()
             .route(
                 "/zpl",
@@ -427,7 +615,10 @@ mod tests {
                     }
                 }),
             )
-            .route("/image", axum::routing::get(|| async { "safe PNG" }));
+            .route(
+                "/image",
+                axum::routing::get(|| async { png_metadata::test_png() }),
+            );
         let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
         let url: reqwest::Url = format!("http://{}/", listener.local_addr().unwrap())
             .parse()
@@ -436,7 +627,8 @@ mod tests {
             tokio::spawn(async move { axum::serve(listener, printer).await.unwrap() });
         let state = Zd621 {
             zd621_client: reqwest::Client::builder().no_proxy().build().unwrap(),
-            renderer_key: cache::renderer_key(url.as_str(), &[], "test"),
+            renderer_key: cache::renderer_key(url.as_str(), &[], "test", &sgd_target),
+            sgd_target: Arc::new(sgd_target),
             zd621_url: Arc::new(url),
             cache: Cache::open(path.to_str().unwrap()).unwrap(),
             render_lock: Arc::new(tokio::sync::Mutex::new(())),
@@ -455,7 +647,7 @@ mod tests {
             .unwrap();
         state
             .cache
-            .success(attempt, b"private cached PNG".to_vec())
+            .success(attempt, b"private cached PNG".to_vec(), None)
             .await
             .unwrap();
         let app = Router::new()
@@ -496,6 +688,7 @@ mod tests {
             }
         }
         assert_eq!(calls.load(Ordering::SeqCst), 0);
+        assert_eq!(identity_calls.load(Ordering::SeqCst), 0);
         use zpl_proxy_api::schema::{inputs, png_requests};
         assert_eq!(
             inputs::table
@@ -529,15 +722,26 @@ mod tests {
         {
             let response = request.send().await.unwrap();
             assert_eq!(response.status(), StatusCode::OK);
+            assert!(!response.headers().contains_key("X-ZPL-Printer-Part-Number"));
             assert_eq!(
                 response.headers()["X-ZPL-Cache"],
                 if index == 0 { "miss" } else { "hit" }
             );
-            assert_eq!(response.bytes().await.unwrap().as_ref(), b"safe PNG");
+            assert_eq!(
+                response.bytes().await.unwrap().as_ref(),
+                png_metadata::annotate(
+                    &png_metadata::test_png(),
+                    &mock_identity(33),
+                    "^XA^FO10,20^FDhello^FS^XZ",
+                )
+                .unwrap()
+            );
         }
         assert_eq!(calls.load(Ordering::SeqCst), 1);
+        assert_eq!(identity_calls.load(Ordering::SeqCst), 1);
         proxy_task.abort();
         printer_task.abort();
+        sgd_server.abort();
     }
 
     async fn extract(content_type: &str, body: impl Into<Body>) -> Result<String, StatusCode> {

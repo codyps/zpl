@@ -1,4 +1,4 @@
-{ lib, rustPlatform, pkg-config, sqlite }:
+{ lib, rustPlatform, pkg-config, sqlite, cacert }:
 
 rustPlatform.buildRustPackage {
   pname = "zpl-proxy-api";
@@ -12,9 +12,11 @@ rustPlatform.buildRustPackage {
       ../LICENSE
       ../zpl
       ../zpl-cmd
+      ../zpl-render-api
       ../zpl-font-extract
       ../zpl-wasm
       ../raster-diff
+      ../zebra-sgd
       ../zebra-firmware
       ../zebra-http-api
       ../zpl-proxy-api
@@ -28,6 +30,9 @@ rustPlatform.buildRustPackage {
 
   nativeBuildInputs = [ pkg-config ];
   buildInputs = [ sqlite ];
+
+  # Reqwest initializes its system trust store even for loopback HTTP tests.
+  SSL_CERT_FILE = "${cacert}/etc/ssl/certs/ca-bundle.crt";
 
   postInstall = ''
     mkdir -p $out/share/zpl-proxy-api

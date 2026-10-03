@@ -3947,6 +3947,7 @@ dependencies = [
  "clap",
  "eyre",
  "sha2",
+ "zebra-sgd",
 ]
 
 [[package]]
@@ -3964,6 +3965,14 @@ dependencies = [
  "tokio",
  "zpl",
  "zpl-font-extract",
+]
+
+[[package]]
+name = "zebra-sgd"
+version = "0.1.0"
+dependencies = [
+ "eyre",
+ "serde",
 ]
 
 [[package]]
@@ -4100,6 +4109,7 @@ version = "0.1.0"
 dependencies = [
  "axum",
  "clap",
+ "crc32fast",
  "diesel",
  "eyre",
  "fastrace",
@@ -4114,6 +4124,7 @@ dependencies = [
  "opentelemetry",
  "opentelemetry-otlp",
  "opentelemetry_sdk",
+ "png",
  "reqwest",
  "serde",
  "serde_json",
@@ -4125,6 +4136,7 @@ dependencies = [
  "tower-layer",
  "tower-livereload",
  "zebra-http-api",
+ "zebra-sgd",
  "zpl",
 ]
 

@@ -9,7 +9,8 @@ let
     "--socket-activation"
     "--cache-namespace"
     cfg.cacheNamespace
-  ] ++ lib.concatMap (header: [ "--zd621-header" header ]) cfg.printerHeaders;
+  ] ++ lib.optionals (cfg.printerSgdAddress != null) [ "--zd621-sgd-address" cfg.printerSgdAddress ]
+  ++ lib.concatMap (header: [ "--zd621-header" header ]) cfg.printerHeaders;
 in
 {
   options.services.zpl-proxy-api = {
@@ -24,6 +25,12 @@ in
       type = lib.types.str;
       example = "http://printer.local/";
       description = "Base HTTP URL of the Zebra printer. Run only one proxy per printer.";
+    };
+    printerSgdAddress = lib.mkOption {
+      type = lib.types.nullOr lib.types.str;
+      default = null;
+      example = "192.0.2.10:9100";
+      description = "SGD IP:port for the same printer as printerUrl. Null uses the HTTP URL host on port 9100. Use [address]:port for IPv6.";
     };
     printerHeaders = lib.mkOption {
       type = lib.types.listOf lib.types.str;
