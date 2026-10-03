@@ -76,6 +76,7 @@ struct Field {
     barcode: Option<barcode::Barcode>,
     barcode_error: Option<String>,
     path: Option<Path>,
+    inline_graphic: bool,
     origins: Option<Vec<Option<(f64, f64)>>>,
     multiple_paths: Option<Vec<(f64, f64, Path)>>,
     block: Option<(f64, usize, f64, u8, f64)>,
@@ -127,6 +128,7 @@ impl Default for Field {
             center_overflow: Vec::new(),
             graphic_size: None,
             graphic_bitmap: false,
+            inline_graphic: false,
             direction: (b'H', 0.),
             direction_metrics: font::DirectionMetrics::default(),
         }
@@ -291,6 +293,17 @@ fn render_expanded(
                 })?;
                 (syntax, offset, item, false)
             };
+        // Public ZD621 Example2 omits FS after both inline graphics. Replay
+        // the following setup command after the ordinary FS placement/reset,
+        // preserving compositing, field state and resource accounting.
+        if options.compatibility.inline_graphic_implicit_separator
+            && field.inline_graphic
+            && matches!(item, Element::FormatCommand(_))
+            && matches!(item.as_bytes().get(1..3), Some(b"FO" | b"FT" | b"BY"))
+        {
+            pending_terminator = Some((syntax, offset, item));
+            item = Element::FormatCommand(b"^FS");
+        }
         let replacement = if replayed {
             None
         } else {
@@ -388,6 +401,7 @@ fn render_expanded(
                 )?);
                 field.graphic_size = Some(((row * 8) as f64, (count / row) as f64));
                 field.graphic_bitmap = true;
+                field.inline_graphic = true;
                 return Ok(());
             }
             if !syntax.delimiter.is_ascii() {
@@ -842,7 +856,14 @@ fn render_expanded(
                     module = number(&p, 0, module)?;
                     ratio = number(&p, 1, ratio)?;
                     bar_h = number(&p, 2, bar_h)?;
-                    if !(1. ..=10.).contains(&module) || !(2. ..=3.).contains(&ratio) || bar_h <= 0.
+                    let max_module = if options.compatibility.barcode_module_width_through_12 {
+                        12.
+                    } else {
+                        10.
+                    };
+                    if !(1. ..=max_module).contains(&module)
+                        || !(2. ..=3.).contains(&ratio)
+                        || bar_h <= 0.
                     {
                         return Err("invalid barcode dimensions".into());
                     }
@@ -1361,6 +1382,14 @@ fn render_expanded(
                 "GB" | "GE" | "GC" => {
                     let ti = if name == "GC" { 1 } else { 2 };
                     let t = number(&p, ti, 1.)?;
+                    let t = if name == "GB"
+                        && t == 0.
+                        && options.compatibility.box_zero_thickness_as_one
+                    {
+                        1.
+                    } else {
+                        t
+                    };
                     // Zebra Programming Guide, ^GB, p. 210: omitted dimensions
                     // default to thickness; adjust dimensions to at least t
                     // before calculating rounding (including the zero-width example).
@@ -1478,6 +1507,7 @@ fn render_expanded(
                     )?);
                     field.graphic_size = Some(((row * 8) as f64, (n / row) as f64));
                     field.graphic_bitmap = true;
+                    field.inline_graphic = true;
                 }
                 "XG" => {
                     let (mut path, graphic_size) = graphics

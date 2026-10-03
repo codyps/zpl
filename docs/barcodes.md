@@ -94,6 +94,11 @@ The supplied PDFs remain outside the repository and are not redistributed here.
   uppercases raw lowercase and skips unsupported bytes. Literal full
   ASCII must be expressed through the documented substitute pairs.
   Code 39 supports its optional Mod-43 checksum and above/below interpretation.
+  Its independent `code39_normalize_input` printer option uppercases ASCII letters
+  and drops bytes outside the alphabet before checksums and interpretation.
+  Thus template `%s` encodes `%S` (Extended Code 39 `~`) and `{0}` encodes `0`;
+  SPECIFICATION rejects both original inputs. `barcode_module_width_through_12`
+  permits the captured ZD621 `BY12` case; strict `BY` retains the 1–10 range.
   Code 128 supports ZPL subset A/B/C starts and switches, SHIFT/FNC1–3, automatic
   ASCII compaction, UCC Mod-10 and case mode U, and parenthesized GS1 mode D
   with AI 00/01/02 key checks. Extended-byte FNC4 remains unsupported.
@@ -102,6 +107,11 @@ The supplied PDFs remain outside the repository and are not redistributed here.
   automatic optimization across numeric/alphanumeric/byte segments and manual
   `N`, `A`, `Bdddd` inputs. No Kanji, mixed manual segments, ECI, or
   structured append. The field's error-level switch selects error correction.
+  The ZD621 `qr_malformed_header_uses_defaults` option accepts an invalid initial
+  correction selector by consuming three bytes, selecting level M and encoding
+  the remainder automatically. This reproduces `Package…` becoming `kage…`;
+  valid/manual/structured-append headers keep their existing validation. See the
+  [public-document evidence](../zpl/tests/fixtures/public-zpl-zd621-v1/README.md).
 - Data Matrix: ECC200 ASCII, C40, Text, X12, EDIFACT and Base256 encodation,
   digit pairs, upper shift, square sizes 10–144 and six rectangular sizes.
   FNC1, doubled escape and escaped ASCII control characters are supported;

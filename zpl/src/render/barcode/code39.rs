@@ -3,6 +3,16 @@
 use crate::output::Path;
 const CHECK_CHARS: &str = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ-. $/+%";
 
+// ZD621 V93.21.33Z public Example5/8: normalize before both checksum and
+// interpretation, without expanding the data into full-ASCII substitutes.
+pub(super) fn normalize(bytes: &[u8]) -> Vec<u8> {
+    bytes
+        .iter()
+        .map(u8::to_ascii_uppercase)
+        .filter(|c| CHECK_CHARS.as_bytes().contains(c))
+        .collect()
+}
+
 pub(super) fn standalone(b: &super::Barcode, bytes: &[u8]) -> Result<Path, String> {
     // Zebra ^B3 pp. 70–72: optional Mod-43 checksum precedes the stop
     // character. Interpretation formatting is handled by the shared renderer.

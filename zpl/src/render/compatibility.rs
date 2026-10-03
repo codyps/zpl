@@ -13,6 +13,24 @@
 /// initial value: the renderer does not reapply it after you change an option.
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct Compatibility {
+    /// Finish an inline GF field before FO, FT or BY without an explicit FS.
+    /// ZD621 V93.21.33Z public Example2; disabled: require FS (^GF p. 215).
+    pub inline_graphic_implicit_separator: bool,
+    /// Consume three QR switch bytes with an invalid correction selector and
+    /// encode the remainder with automatic input and level M. Public Example4's
+    /// `Package...` becomes `kage...` on ZD621 V93.21.33Z. Valid/manual/append
+    /// headers remain strict (^BQ pp. 129–134). See public-zpl-zd621-v1.
+    pub qr_malformed_header_uses_defaults: bool,
+    /// Uppercase Code 39 ASCII letters and discard bytes outside its alphabet.
+    /// Public Example5 `%s` encodes `%S`, Example8 `{0}` encodes `0` on ZD621
+    /// V93.21.33Z. Disabled: reject invalid input (^B3 pp. 70–72).
+    pub code39_normalize_input: bool,
+    /// Accept BY module widths through 12 dots, as observed in public Example6
+    /// on ZD621 V93.21.33Z. Disabled: the documented 1–10 range (^BY p. 148).
+    pub barcode_module_width_through_12: bool,
+    /// Treat GB thickness zero as one dot, observed in public Example4 on
+    /// ZD621 V93.21.33Z. Disabled: reject zero (^GB p. 210).
+    pub box_zero_thickness_as_one: bool,
     /// Round the preview canvas width up to this dot quantum and center its
     /// printable content. Native ZQ610/ZD621 controls use 64 dots. None keeps
     /// exact requested widths. See tests/fixtures/zq610-plus-v1.
