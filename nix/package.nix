@@ -12,6 +12,7 @@ rustPlatform.buildRustPackage {
       ../LICENSE
       ../zpl
       ../zpl-cmd
+      ../zpl-render-api
       ../zpl-font-extract
       ../zpl-wasm
       ../raster-diff
