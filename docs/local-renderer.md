@@ -165,7 +165,28 @@ Examples of explicit errors include Code 128 extended-byte FNC4, downloaded font
 compressed binary `GFC`, and printer configuration commands.
 The parser still frames these commands; rendering coverage is separate from
 command-stream parsing coverage. Configuration persists only within one `render`
-call. Each field must end with `FS` before another drawing command.
+call. Fields require `FS`; the ZD621 profile also ends inline `GF` fields before
+`FO`, `FT`, or `BY` through `inline_graphic_implicit_separator`.
+
+The [public-document regressions](../zpl/tests/fixtures/public-zpl-zd621-v1/README.md)
+cover all 22 labels from the October 2026 comparison. Five independent tolerances
+are enabled in `ZD621_203_DPI` (and therefore `Options::default()`), while
+`SPECIFICATION` and the mobile-printer profile retain strict behavior:
+
+| Compatibility field | ZD621 behavior |
+| --- | --- |
+| `inline_graphic_implicit_separator` | Finish inline `GF` before `FO`/`FT`/`BY` without `FS` |
+| `qr_malformed_header_uses_defaults` | An invalid correction selector consumes three switch bytes, then uses automatic input and level M |
+| `code39_normalize_input` | Uppercase ASCII letters and discard bytes outside the Code 39 alphabet before checksums and captions |
+| `barcode_module_width_through_12` | Accept `BY` module widths through 12 dots |
+| `box_zero_thickness_as_one` | Treat `GB` thickness zero as one dot |
+
+These settings reproduce acceptance, including data loss: the malformed QR
+`Package…` encodes `kage…`, and Code 39 `{0}` encodes `0`. Valid QR headers,
+manual segments and structured append remain strictly parsed. Successful rendering
+does not establish intended barcode payload correctness or full-image printer parity.
+All 22 native canvases have pinned regression counts and hashes; the affected
+graphics/barcode regions in the five formerly rejected labels are pixel-exact.
 
 ## Limits and validation
 

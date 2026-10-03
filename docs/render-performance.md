@@ -1,5 +1,37 @@
 # Rendering performance
 
+## Automatic comparison refresh
+
+[Refresh comparison site](../.github/workflows/comparison.yml) dispatches the
+`Comparison site` workflow (`benchmarks.yml`) in `codyps/zpl-comparison` on every
+push to this repository's `main`. It can also be run manually on `main` to retry
+a failed dispatch. Pull requests and forks do not dispatch comparison runs.
+
+Configure the `ZPL_COMPARISON_ACTIONS_TOKEN` Actions secret in **codyps/zpl** with
+a fine-grained personal access token restricted to **codyps/zpl-comparison** and
+repository **Actions: Read and write** permission. GitHub's
+[workflow dispatch API](https://docs.github.com/en/rest/actions/workflows#create-a-workflow-dispatch-event)
+requires this permission; the automatic `GITHUB_TOKEN` is
+[limited to its own repository](https://docs.github.com/en/actions/concepts/security/github_token).
+Set the secret interactively without putting the token in a command argument:
+
+```sh
+gh secret set ZPL_COMPARISON_ACTIONS_TOKEN --repo codyps/zpl
+```
+
+The receiving workflow already accepts `workflow_dispatch` on its `main`, checks
+out the latest `zpl/main` using its existing `ZPL_SOURCE_TOKEN`, records the
+resolved source pins, rebuilds reports and performance measurements, and
+publishes the comparison site. No receiver change is needed. It resolves the
+latest source when it starts, so closely spaced pushes can share a newer
+revision rather than producing a report for each pushed SHA. Its existing
+concurrency policy lets an active publication finish and coalesces pending runs.
+
+A successful sender run means GitHub accepted the dispatch. Check the
+[comparison workflow runs](https://github.com/codyps/zpl-comparison/actions/workflows/benchmarks.yml)
+for build and publication results. A missing or expired dispatch secret fails
+the sender visibly; the comparison's daily schedule remains a fallback.
+
 ## Follow-up (2026-10-02)
 
 The optimized renderer is fastest on all five PNG workloads among the seven

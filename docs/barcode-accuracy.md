@@ -17,8 +17,8 @@ cropping, alignment or rescaling.
 The aggregate foreground error is `1 - intersection / union`, measured at
 threshold 128. The positive-frame inventory requires error strictly below
 20% (foreground IoU strictly above 80%). Unlisted positive frames must also
-remain pixel-exact; only three individually pinned shipping-label text
-residuals are permitted. This is a whole-frame audit, not proof of individual symbol geometry or decoded payloads. Mixed text, multiple
+remain pixel-exact; individually reviewed text residuals and known gaps are
+pinned separately. This is a whole-frame audit, not proof of individual symbol geometry or decoded payloads. Mixed text, multiple
 symbols, clipping and reversed fields need their dedicated tests. Existing
 pixel-exact, per-field, hash and decoder gates remain authoritative; this
 inventory does not replace or relax them. See [printer accuracy](printer-accuracy.md)
@@ -36,14 +36,30 @@ changing native output for identical requests, which a deterministic renderer
 cannot reproduce. MaxiCode mode 5 previews contain only finder/orientation
 marks, so they are also diagnostic even when their pixels match exactly.
 
-The reviewed inventory has 1,697 frames: 1,652 exact positive frames, three
-positive shipping-label frames with 6 underpaint and 9 overpaint pixels each,
-and 42 diagnostic controls. The diagnostics comprise 26 blank previews
+The reviewed inventory has 1,719 frames: 1,659 exact positive frames, thirteen
+positive text-residual frames, one unmet accuracy target, and 46 diagnostic
+controls. The original three shipping-label residuals still have 6 underpaint
+and 9 overpaint pixels each. The original diagnostics comprise 26 blank previews
 (eight rejected inputs and eighteen rendered blanks), seven unstable empty-QR
-captures, and nine finder-only MaxiCode mode 5 captures. There are no accepted
-accuracy gaps. Counts describe saved previews, not fresh device measurements or
+captures, and nine finder-only MaxiCode mode 5 captures. The 22 added public
+documents contribute seven exact frames, ten positive text-residual frames,
+one known gap, and four malformed-barcode diagnostics. Counts describe saved previews, not fresh device measurements or
 physical printing. The source inventory count is pinned to prevent silent loss
 of cases; extensions require deliberate review.
+
+The [public-document campaign](../zpl/tests/fixtures/public-zpl-zd621-v1/README.md)
+retains the Shopify label's text error above 20% as an explicitly unmet target,
+including under `ZPL_BARCODE_STRICT=1`. The Labelixa QR URL label now matches
+every pixel through the QR segmentation option and captured 28-dot font strike.
+The font strike also resolves the EAN-13 product label and reduces the pinned
+text errors in five other public documents. The PDF417 layout/punctuation fix resolves the carrier
+label's symbol differences, leaving a positive text-residual comparison.
+Four BinaryKits documents contain
+a truncated QR payload, literal Code 39 template placeholders, or clipped BY12
+bars that did not decode in the archived audit. Their acceptance is tested without
+counting them as positive barcode evidence. Every new residual has its own
+reason and immutable observation in the gaps manifest, and the dedicated
+`public_zpl_preview` test pins all 22 full canvases and the affected non-text regions.
 
 The shipping-label residuals are checked against per-field foreground masks and
 exact non-text pixels in `conformance_preview` and `shipping_fonts_preview`.
