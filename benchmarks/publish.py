@@ -31,7 +31,9 @@ def validate(record, run):
             or record.get('run_attempt') != run['run_attempt']
             or record.get('event') != run['event']
             or record.get('runner') not in RUNNERS
-            or set(commits) != labels or commits.get('head') != run['head_sha']
+            or set(commits) != labels
+            or (record.get('pr_head_sha') if run['event'] == 'pull_request'
+                else commits.get('head')) != run['head_sha']
             or any(not isinstance(sha, str) or not re.fullmatch('[0-9a-f]{40}', sha)
                    for sha in commits.values())):
         raise ValueError('Unexpected benchmark identity')
