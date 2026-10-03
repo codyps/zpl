@@ -177,10 +177,6 @@ impl Cache {
                     .do_update()
                     .set(render_cache::png_id.eq(png.id))
                     .execute(connection)?;
-                // Preserve the legacy latest-output association for existing readers.
-                diesel::update(inputs::table.filter(inputs::id.eq(attempt.input_id)))
-                    .set(inputs::png_id.eq(png.id))
-                    .execute(connection)?;
                 diesel::update(
                     png_requests::table.filter(png_requests::rowid.eq(attempt.request_id)),
                 )

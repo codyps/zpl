@@ -33,10 +33,10 @@ To run the proxy, enter `direnv exec .`, create the database directory with `mkd
 ```sh
 cd zpl-proxy-api
 diesel migration run
-cargo run -- --zd621-url http://printer.local/ --bind-addr 127.0.0.1:3000
+cargo run -- --printers printers.json --bind-addr 127.0.0.1:3000
 ```
 
-Replace the printer URL with your device address. Run from this crate directory because static assets use a relative path.
+Create `printers.json` using the named-printer example in `docs/proxy-cache.md`. Run from this crate directory because static assets use a relative path.
 The proxy requires `DATABASE_URL` and current migrations. It stores submitted ZPL,
 PNG results, errors, and request history; see `docs/proxy-cache.md`.
 

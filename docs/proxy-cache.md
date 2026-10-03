@@ -41,10 +41,7 @@ names/endpoints are rejected, and discovered serial numbers cannot be owned by t
 names in one process, including DNS aliases. Run only one proxy instance per
 physical printer and prevent other clients from accessing its management ports.
 
-Legacy `--zd621-url` / `--zd621-header` remain supported, with public name `zd621`,
-SGD port 9100, and a default 832×1218 canvas. `/api/zpl-zd621` aliases that name;
-it returns 404 when no printer named `zd621` exists. New deployments should use
-explicit named configuration. The legacy mode now requires SGD access too.
+The named-printer configuration is required, including for a single printer.
 
 ## State, provenance, and cache
 

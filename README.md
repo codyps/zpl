@@ -136,16 +136,17 @@ the development shell:
 mkdir -p _db
 cd zpl-proxy-api
 diesel migration run
-cargo run -- --zd621-url http://printer.local/ --bind-addr 127.0.0.1:3000
+cargo run -- --printers printers.json --bind-addr 127.0.0.1:3000
 ```
 
-Open <http://127.0.0.1:3000/>. Run the proxy from `zpl-proxy-api/` because its
+Create `printers.json` from the [named-printer configuration example](docs/proxy-cache.md),
+then open <http://127.0.0.1:3000/>. Run the proxy from `zpl-proxy-api/` because its
 static asset paths are relative to that directory. Outside the development shell,
 set `DATABASE_URL` to an absolute SQLite database path before running migrations.
 
-The proxy exposes `POST /api/zpl-zd621` and stores submitted ZPL, PNG results,
-errors, and request history in SQLite. Run one proxy instance per printer because
-the printer preview object is shared. See [cache behavior and refresh controls](docs/proxy-cache.md)
+The proxy exposes `POST /api/printers/{name}/preview` and stores submitted ZPL, PNG results,
+errors, and request history in SQLite. One proxy can manage multiple named printers; each physical printer must have
+only one owning proxy instance. See [cache behavior and refresh controls](docs/proxy-cache.md)
 and [telemetry](docs/telemetry.md).
 
 ## Workspace

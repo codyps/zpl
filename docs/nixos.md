@@ -56,7 +56,13 @@ For a local reverse proxy, select a Unix socket instead of TCP:
 ```nix
 services.zpl-proxy-api = {
   enable = true;
-  printerUrl = "http://printer.local/";
+  printers = [{
+    name = "ZD621";
+    url = "http://printer.local/";
+    control_address = "printer.local:9100";
+    width = 832;
+    height = 1218;
+  }];
   unixSocket = "/run/zpl-proxy-api.sock";
   unixSocketGroup = "nginx"; # An existing group used by the reverse proxy.
   unixSocketMode = "0660";
@@ -96,8 +102,8 @@ Additional options:
 
 - `cacheNamespace`: defaults to `"default"`; change after firmware, font, media,
   or rendering configuration changes to invalidate cached results.
-- `printerHeaders`: a list of `"Name: value"` headers. These are visible in the
-  Nix store and process arguments, so use only nonsecret values.
+- `printers[*].headers`: a list of `"Name: value"` headers. These are visible in the
+  Nix store, so use only nonsecret values.
 - `environment`: additional variables such as `RUST_LOG` and `OTEL_*`; see
   [telemetry configuration](telemetry.md).
 - `environmentFile`: optional runtime path such as
@@ -111,7 +117,7 @@ and logs with `journalctl -u zpl-proxy-api`. Stopping only the service leaves
 socket activation enabled; a new connection starts it again. Start the socket
 unit after maintenance with `systemctl start zpl-proxy-api.socket`. The UI is at
 `/` and the rendering endpoint is
-`POST /api/zpl-zd621`; see [cache behavior](proxy-cache.md).
+`POST /api/printers/{name}/preview`; see [cache behavior](proxy-cache.md).
 
 Build the package on Linux with `nix build .#zpl-proxy-api`. Run the NixOS
 integration test with `nix build .#checks.x86_64-linux.zpl-proxy-api` on a
@@ -123,8 +129,8 @@ Outside the NixOS module, select exactly one listener option while keeping the
 existing database/migration setup and `zpl-proxy-api/` working directory:
 
 ```sh
-cargo run -p zpl-proxy-api -- --zd621-url http://printer.local/ --bind-addr 127.0.0.1:3000
-cargo run -p zpl-proxy-api -- --zd621-url http://printer.local/ --unix-socket /tmp/zpl-proxy.sock
+cargo run -p zpl-proxy-api -- --printers printers.json --bind-addr 127.0.0.1:3000
+cargo run -p zpl-proxy-api -- --printers printers.json --unix-socket /tmp/zpl-proxy.sock
 ```
 
 A standalone Unix listener requires an existing parent directory. Permissions

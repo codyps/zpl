@@ -4,10 +4,7 @@ let
   cfg = config.services.zpl-proxy-api;
   bindAddress = if lib.hasInfix ":" cfg.listenAddress then "[${cfg.listenAddress}]" else cfg.listenAddress;
   printerConfig = pkgs.writeText "zpl-printers.json" (builtins.toJSON cfg.printers);
-  arguments = [ "--socket-activation" "--cache-namespace" cfg.cacheNamespace ]
-    ++ (if cfg.printers != [ ] then [ "--printers" printerConfig ] else
-  [ "--zd621-url" cfg.printerUrl ]
-    ++ lib.concatMap (header: [ "--zd621-header" header ]) cfg.printerHeaders);
+  arguments = [ "--socket-activation" "--cache-namespace" cfg.cacheNamespace "--printers" printerConfig ];
 
 in
 {
@@ -33,18 +30,6 @@ in
           serial = lib.mkOption { type = lib.types.nullOr lib.types.str; default = null; description = "Optional expected serial number; mismatches fail closed."; };
         };
       });
-    };
-    printerUrl = lib.mkOption {
-      type = lib.types.nullOr lib.types.str;
-      default = null;
-      example = "http://printer.local/";
-      description = "Base HTTP URL of the Zebra printer. Run only one proxy per printer.";
-    };
-    printerHeaders = lib.mkOption {
-      type = lib.types.listOf lib.types.str;
-      default = [ ];
-      example = [ "X-Example: value" ];
-      description = "Extra printer headers in 'Name: value' format. Values are public in the Nix store; do not put secrets here.";
     };
     listenAddress = lib.mkOption {
       type = lib.types.str;
@@ -101,21 +86,13 @@ in
   config = lib.mkIf cfg.enable {
     assertions = [
       {
-        assertion = (cfg.printers != [ ]) != (cfg.printerUrl != null);
-        message = "Configure either services.zpl-proxy-api.printers or legacy printerUrl.";
+        assertion = cfg.printers != [ ];
+        message = "Configure at least one services.zpl-proxy-api.printers entry.";
       }
 
       {
         assertion = cfg.unixSocket == null || lib.hasPrefix "/" cfg.unixSocket;
         message = "services.zpl-proxy-api.unixSocket must be an absolute filesystem path.";
-      }
-      {
-        assertion = cfg.printerUrl == null || lib.hasPrefix "http://" cfg.printerUrl || lib.hasPrefix "https://" cfg.printerUrl;
-        message = "services.zpl-proxy-api.printerUrl must be an HTTP(S) URL.";
-      }
-      {
-        assertion = lib.all (header: lib.hasInfix ": " header) cfg.printerHeaders;
-        message = "services.zpl-proxy-api.printerHeaders must use 'Name: value' format.";
       }
       {
         assertion = !(cfg.environment ? DATABASE_URL);
@@ -190,7 +167,8 @@ in
           "/etc/resolv.conf"
           "/etc/nsswitch.conf"
           "/etc/ssl/certs/ca-certificates.crt"
-        ] ++ lib.optional (cfg.printers != [ ]) printerConfig;
+          printerConfig
+        ];
         MountAPIVFS = true;
         ProtectProc = "invisible";
         ProcSubset = "pid";

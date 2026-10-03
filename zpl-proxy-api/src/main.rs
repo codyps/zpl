@@ -26,17 +26,8 @@ use zpl_proxy_api::{
 #[derive(Debug, Parser)]
 struct Args {
     /// JSON array of named printers with url, control_address, width and height.
-    #[clap(
-        long,
-        conflicts_with = "zd621_url",
-        required_unless_present = "zd621_url"
-    )]
-    printers: Option<PathBuf>,
-    /// Legacy single-printer configuration; public name is zd621.
     #[clap(long)]
-    zd621_url: Option<reqwest::Url>,
-    #[clap(long)]
-    zd621_header: Vec<String>,
+    printers: PathBuf,
     #[command(flatten)]
     listen: listener::ListenOptions,
     #[clap(long, default_value = "default")]
@@ -63,35 +54,11 @@ async fn run(args: Args, listener: listener::Listener) -> eyre::Result<()> {
 
     let database_url = std::env::var("DATABASE_URL").expect("DATABASE_URL must be set");
     let cache = tokio::task::spawn_blocking(move || Cache::open(&database_url)).await??;
-    let configs: Vec<PrinterConfig> = if let Some(path) = args.printers {
-        serde_json::from_slice(&std::fs::read(path)?)?
-    } else {
-        let url = args
-            .zd621_url
-            .expect("clap requires a printer configuration");
-        let host = url
-            .host_str()
-            .ok_or_else(|| eyre::eyre!("missing printer host"))?;
-        let control_address = if host.contains(':') {
-            format!("[{host}]:9100")
-        } else {
-            format!("{host}:9100")
-        };
-        vec![PrinterConfig {
-            name: "zd621".into(),
-            url: url.to_string(),
-            control_address,
-            width: 832,
-            height: 1218,
-            headers: args.zd621_header,
-            serial: None,
-        }]
-    };
+    let configs: Vec<PrinterConfig> = serde_json::from_slice(&std::fs::read(args.printers)?)?;
     let app_state = configured_printers(configs, cache, &args.cache_namespace)?;
     let api_router = Router::new()
         .route("/printers", get(printer_names))
         .route("/printers/{name}/preview", post(named_zpl_to_png))
-        .route("/zpl-zd621", post(zd621_zpl_to_png))
         .with_state(app_state);
 
     let app = Router::new()
@@ -157,13 +124,6 @@ async fn named_zpl_to_png(
     JsonOrForm(spec): JsonOrForm,
 ) -> Response<Body> {
     render_response(state, name, spec).await
-}
-
-async fn zd621_zpl_to_png(
-    State(state): State<AppState>,
-    JsonOrForm(spec): JsonOrForm,
-) -> Response<Body> {
-    render_response(state, "zd621".into(), spec).await
 }
 
 async fn render_response(state: AppState, name: String, spec: PrintSpec) -> Response<Body> {
