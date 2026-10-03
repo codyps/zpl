@@ -241,19 +241,10 @@ mod tests {
     use super::*;
     #[tokio::test]
     async fn named_routes_reject_unknown_printers_and_unsafe_history_in_every_format() {
-        use diesel::{connection::SimpleConnection, prelude::*};
+        use diesel::prelude::*;
         let dir = tempfile::tempdir().unwrap();
         let path = dir.path().join("db.sqlite");
         let mut db = diesel::SqliteConnection::establish(path.to_str().unwrap()).unwrap();
-        for migration in [
-            include_str!("../migrations/2024-10-03-035443_cache-results/up.sql"),
-            include_str!("../migrations/2026-09-14-000000_fix-request-client/up.sql"),
-            include_str!("../migrations/2026-09-15-220000_persist-render-results/up.sql"),
-            include_str!("../migrations/2026-09-15-230000_remove-client-ips/up.sql"),
-            include_str!("../migrations/2026-09-29-120000_printer-management/up.sql"),
-        ] {
-            db.batch_execute(migration).unwrap();
-        }
         let cache = Cache::open(path.to_str().unwrap()).unwrap();
         let forbidden = "^XA^XGR:PRIVATE.GRF,1,1^FS^XZ";
         let attempt = cache

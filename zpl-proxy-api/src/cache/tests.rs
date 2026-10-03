@@ -3,31 +3,7 @@ use crate::models::PngRequest;
 
 fn migrated() -> SqliteConnection {
     let mut connection = SqliteConnection::establish(":memory:").unwrap();
-    connection
-        .batch_execute(include_str!(
-            "../../migrations/2024-10-03-035443_cache-results/up.sql"
-        ))
-        .unwrap();
-    connection
-        .batch_execute(include_str!(
-            "../../migrations/2026-09-14-000000_fix-request-client/up.sql"
-        ))
-        .unwrap();
-    connection
-        .batch_execute(include_str!(
-            "../../migrations/2026-09-15-220000_persist-render-results/up.sql"
-        ))
-        .unwrap();
-    connection
-        .batch_execute(include_str!(
-            "../../migrations/2026-09-15-230000_remove-client-ips/up.sql"
-        ))
-        .unwrap();
-    connection
-        .batch_execute(include_str!(
-            "../../migrations/2026-09-29-120000_printer-management/up.sql"
-        ))
-        .unwrap();
+    connection.run_pending_migrations(MIGRATIONS).unwrap();
     connection
         .batch_execute("PRAGMA foreign_keys = ON;")
         .unwrap();
@@ -211,4 +187,63 @@ fn printer_fingerprint_includes_configuration() {
         renderer_key("http://printer/", &["Authorization: sample".into()], "v2")
     );
     assert_eq!(key.len(), 32);
+}
+
+#[test]
+fn startup_migrates_fresh_database_and_reopens_without_reapplying() {
+    let directory = tempfile::tempdir().unwrap();
+    let path = directory.path().join("fresh.sqlite");
+    let cache = Cache::open(path.to_str().unwrap()).unwrap();
+    let versions = cache.0.lock().unwrap().applied_migrations().unwrap();
+    assert_eq!(versions.len(), 5);
+    drop(cache);
+    let reopened = Cache::open(path.to_str().unwrap()).unwrap();
+    assert_eq!(
+        reopened.0.lock().unwrap().applied_migrations().unwrap(),
+        versions
+    );
+}
+
+#[test]
+fn startup_applies_pending_migrations_and_preserves_existing_history() {
+    let directory = tempfile::tempdir().unwrap();
+    let path = directory.path().join("upgrade.sqlite");
+    drop(Cache::open(path.to_str().unwrap()).unwrap());
+    let mut db = SqliteConnection::establish(path.to_str().unwrap()).unwrap();
+    db.revert_last_migration(MIGRATIONS).unwrap();
+    db.batch_execute("INSERT INTO inputs(id,hash,data) VALUES(1,X'01',X'02'); INSERT INTO png_requests(timestamp,input_id) VALUES('existing',1);").unwrap();
+    assert_eq!(db.applied_migrations().unwrap().len(), 4);
+    let upgraded = Cache::open(path.to_str().unwrap()).unwrap();
+    assert_eq!(db.applied_migrations().unwrap().len(), 5);
+    assert_eq!(
+        png_requests::table
+            .count()
+            .get_result::<i64>(&mut db)
+            .unwrap(),
+        1
+    );
+    drop(upgraded);
+}
+
+#[test]
+fn startup_migration_failure_is_returned_without_recording_success() {
+    let directory = tempfile::tempdir().unwrap();
+    let path = directory.path().join("broken.sqlite");
+    let mut db = SqliteConnection::establish(path.to_str().unwrap()).unwrap();
+    // Force the initial migration to fail against an incompatible table.
+    db.batch_execute(
+        "CREATE TABLE inputs (sentinel TEXT); INSERT INTO inputs VALUES ('preserve');",
+    )
+    .unwrap();
+    let error = Cache::open(path.to_str().unwrap())
+        .err()
+        .expect("startup must fail");
+    assert!(error.to_string().contains("Database migration failed"));
+    assert!(db.applied_migrations().unwrap().is_empty());
+    let value = diesel::select(diesel::dsl::sql::<diesel::sql_types::Text>(
+        "(SELECT sentinel FROM inputs)",
+    ))
+    .get_result::<String>(&mut db)
+    .unwrap();
+    assert_eq!(value, "preserve");
 }

@@ -32,12 +32,11 @@ To run the proxy, enter `direnv exec .`, create the database directory with `mkd
 
 ```sh
 cd zpl-proxy-api
-diesel migration run
 cargo run -- --printers printers.json --bind-addr 127.0.0.1:3000
 ```
 
 Create `printers.json` using the named-printer example in `docs/proxy-cache.md`. Run from this crate directory because static assets use a relative path.
-The proxy requires `DATABASE_URL` and current migrations. It stores submitted ZPL,
+The proxy requires `DATABASE_URL` and automatically applies its embedded Diesel migrations on startup. It stores submitted ZPL,
 PNG results, errors, and request history; see `docs/proxy-cache.md`.
 
 Preserve the flake's conditional `mbx` Cargo-shim precedence and separate unstable/Intel-Darwin Nixpkgs inputs. Check the resolved input tree when changing overrides. Keep CI job timeouts, bounded download retries, and cancellation of superseded builds; do not automatically retry failing tests to obtain a green result.

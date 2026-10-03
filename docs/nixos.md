@@ -83,13 +83,14 @@ curl --unix-socket /run/zpl-proxy-api.sock http://localhost/
 
 The systemd service runs as a dynamic user, serves the packaged browser assets,
 and stores its SQLite database at `/var/lib/zpl-proxy-api/db.sqlite`. Systemd
-manages the directory ownership and keeps it across restarts. Diesel migrations
-run before every start, including upgrades; migration failure prevents startup.
+manages the directory ownership and keeps it across restarts. The proxy executable applies its embedded Diesel migrations
+on every startup, including upgrades; migration failure prevents serving requests.
+No separate Diesel CLI step is required.
 Back up the database before upgrading. To take a simple offline backup, stop
 both units with `systemctl stop zpl-proxy-api.socket zpl-proxy-api.service`, then
 copy its state directory (dereferencing the systemd symlink if present). NixOS rollback does not roll back the database schema.
 
-The worker and migrations run inside a minimal filesystem namespace. Only their
+The worker, including startup migrations, runs inside a minimal filesystem namespace. Only their
 Nix runtime closures, `/etc/hosts`, `/etc/resolv.conf`, `/etc/nsswitch.conf`, and
 the system CA bundle are exposed, alongside private temporary/device filesystems,
 restricted proc/sys interfaces, and the writable state directory. Unrelated host
@@ -110,7 +111,7 @@ Additional options:
   `"/run/secrets/zpl-proxy-api.env"` for systemd environment settings, including
   OTLP credentials. Keep it outside the Nix store. Do not override `DATABASE_URL`.
 - `package`: override the proxy package. It must include the binary and
-  `share/zpl-proxy-api/{assets,migrations}`.
+  `share/zpl-proxy-api/assets` and embed its migrations.
 
 Inspect status with `systemctl status zpl-proxy-api.socket zpl-proxy-api.service`
 and logs with `journalctl -u zpl-proxy-api`. Stopping only the service leaves
@@ -126,7 +127,7 @@ Linux builder with KVM support.
 ## Standalone listener modes
 
 Outside the NixOS module, select exactly one listener option while keeping the
-existing database/migration setup and `zpl-proxy-api/` working directory:
+database environment and parent directory and `zpl-proxy-api/` working directory:
 
 ```sh
 cargo run -p zpl-proxy-api -- --printers printers.json --bind-addr 127.0.0.1:3000

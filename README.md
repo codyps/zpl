@@ -135,14 +135,14 @@ the development shell:
 ```sh
 mkdir -p _db
 cd zpl-proxy-api
-diesel migration run
 cargo run -- --printers printers.json --bind-addr 127.0.0.1:3000
 ```
 
 Create `printers.json` from the [named-printer configuration example](docs/proxy-cache.md),
 then open <http://127.0.0.1:3000/>. Run the proxy from `zpl-proxy-api/` because its
 static asset paths are relative to that directory. Outside the development shell,
-set `DATABASE_URL` to an absolute SQLite database path before running migrations.
+set `DATABASE_URL` to an absolute SQLite database path. Pending Diesel migrations
+are embedded in the executable and applied automatically before requests are served.
 
 The proxy exposes `POST /api/printers/{name}/preview` and stores submitted ZPL, PNG results,
 errors, and request history in SQLite. One proxy can manage multiple named printers; each physical printer must have

@@ -36,7 +36,7 @@ rustPlatform.buildRustPackage {
 
   postInstall = ''
     mkdir -p $out/share/zpl-proxy-api
-    cp -r zpl-proxy-api/assets zpl-proxy-api/migrations $out/share/zpl-proxy-api/
+    cp -r zpl-proxy-api/assets $out/share/zpl-proxy-api/
   '';
 
   meta = {

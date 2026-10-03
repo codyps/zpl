@@ -8,8 +8,14 @@ multipart forms to `POST /api/printers/{name}/preview`, with `zpl` and optional
 
 ## Configuration
 
-Run from `zpl-proxy-api/` with `DATABASE_URL` set, apply migrations using
-`diesel migration run`, then start with `--printers /path/to/printers.json`:
+Run from `zpl-proxy-api/` with `DATABASE_URL` set and start with
+`--printers /path/to/printers.json`. The executable embeds its Diesel migrations
+and applies pending migrations automatically before serving requests. Applied
+versions are tracked in Diesel's migration table, so restarts do not reapply them.
+A migration failure stops startup; no separate CLI call or migration files are
+needed at runtime. The database parent directory must already exist.
+
+Example printer configuration:
 
 ```json
 [

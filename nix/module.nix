@@ -14,7 +14,7 @@ in
       type = lib.types.package;
       default = pkgs.callPackage ./package.nix { };
       defaultText = lib.literalExpression "pkgs.callPackage ./package.nix { }";
-      description = "Proxy package, including assets and migrations under share/zpl-proxy-api.";
+      description = "Proxy package with embedded migrations and assets under share/zpl-proxy-api.";
     };
     printers = lib.mkOption {
       default = [ ];
@@ -134,11 +134,6 @@ in
       environment = cfg.environment // {
         DATABASE_URL = "/var/lib/zpl-proxy-api/db.sqlite";
       };
-      # Diesel records applied migrations, so this also handles subsequent upgrades.
-      # https://diesel.rs/guides/getting-started.html
-      preStart = ''
-        ${lib.getExe pkgs.diesel-cli} migration run --migration-dir ${cfg.package}/share/zpl-proxy-api/migrations
-      '';
       serviceConfig = {
         ExecStart = utils.escapeSystemdExecArgs ([ (lib.getExe cfg.package) ] ++ arguments);
         WorkingDirectory = "${cfg.package}/share/zpl-proxy-api";

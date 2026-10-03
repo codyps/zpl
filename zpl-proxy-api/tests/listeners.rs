@@ -9,8 +9,6 @@ use std::{
     time::Duration,
 };
 
-use diesel::{connection::SimpleConnection, Connection};
-
 struct Process(Child);
 impl Drop for Process {
     fn drop(&mut self) {
@@ -48,16 +46,6 @@ fn directory() -> tempfile::TempDir {
 
 fn configure(command: &mut Command, dir: &tempfile::TempDir) {
     let database = dir.path().join("db.sqlite");
-    let mut connection = diesel::SqliteConnection::establish(database.to_str().unwrap()).unwrap();
-    for migration in [
-        include_str!("../migrations/2024-10-03-035443_cache-results/up.sql"),
-        include_str!("../migrations/2026-09-14-000000_fix-request-client/up.sql"),
-        include_str!("../migrations/2026-09-15-220000_persist-render-results/up.sql"),
-        include_str!("../migrations/2026-09-15-230000_remove-client-ips/up.sql"),
-        include_str!("../migrations/2026-09-29-120000_printer-management/up.sql"),
-    ] {
-        connection.batch_execute(migration).unwrap();
-    }
     let config = dir.path().join("printers.json");
     std::fs::write(&config, r#"[{"name":"test","url":"http://127.0.0.1:9/","control_address":"127.0.0.1:9","width":832,"height":1218}]"#).unwrap();
     command

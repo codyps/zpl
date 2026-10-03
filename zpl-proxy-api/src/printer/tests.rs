@@ -6,7 +6,7 @@ use axum::{
     routing::{get, post},
     Router,
 };
-use diesel::{connection::SimpleConnection, prelude::*};
+use diesel::prelude::*;
 use std::{
     collections::HashMap,
     sync::{
@@ -183,16 +183,7 @@ impl Mock {
 fn database() -> (tempfile::TempDir, Cache, SqliteConnection) {
     let dir = tempfile::tempdir().unwrap();
     let path = dir.path().join("db.sqlite");
-    let mut db = SqliteConnection::establish(path.to_str().unwrap()).unwrap();
-    for sql in [
-        include_str!("../../migrations/2024-10-03-035443_cache-results/up.sql"),
-        include_str!("../../migrations/2026-09-14-000000_fix-request-client/up.sql"),
-        include_str!("../../migrations/2026-09-15-220000_persist-render-results/up.sql"),
-        include_str!("../../migrations/2026-09-15-230000_remove-client-ips/up.sql"),
-        include_str!("../../migrations/2026-09-29-120000_printer-management/up.sql"),
-    ] {
-        db.batch_execute(sql).unwrap();
-    }
+    let db = SqliteConnection::establish(path.to_str().unwrap()).unwrap();
     let cache = Cache::open(path.to_str().unwrap()).unwrap();
     (dir, cache, db)
 }
