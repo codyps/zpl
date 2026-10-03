@@ -12,7 +12,7 @@ use axum::{
 use clap::Parser;
 use serde::Deserialize;
 use std::{
-    collections::HashMap,
+    collections::{BTreeMap, HashMap},
     path::{Path, PathBuf},
     sync::Arc,
 };
@@ -25,7 +25,7 @@ use zpl_proxy_api::{
 
 #[derive(Debug, Parser)]
 struct Args {
-    /// JSON array of named printers with url, control_address, width and height.
+    /// JSON object keyed by printer name, with url, control_address, width and height.
     #[clap(long)]
     printers: PathBuf,
     #[command(flatten)]
@@ -85,20 +85,54 @@ struct PrintSpec {
     refresh: bool,
 }
 
-fn parse_printers(bytes: &[u8]) -> eyre::Result<Vec<PrinterConfig>> {
+fn parse_printers(bytes: &[u8]) -> eyre::Result<BTreeMap<String, PrinterConfig>> {
     // Serde errors can quote invalid values. Configuration may contain secrets,
     // so report only the location, never parser-provided input excerpts.
-    serde_json::from_slice(bytes).map_err(|error| {
-        eyre::eyre!(
-            "Invalid printer configuration at line {}, column {}",
-            error.line(),
-            error.column()
-        )
-    })
+    #[derive(Deserialize)]
+    struct Config(#[serde(deserialize_with = "unique_printers")] BTreeMap<String, PrinterConfig>);
+    serde_json::from_slice::<Config>(bytes)
+        .map(|config| config.0)
+        .map_err(|error| {
+            eyre::eyre!(
+                "Invalid printer configuration at line {}, column {}",
+                error.line(),
+                error.column()
+            )
+        })
+}
+
+// JSON permits repeated object keys; reject them instead of silently replacing a
+// printer (Serde MapAccess: https://serde.rs/deserialize-map.html).
+fn unique_printers<'de, D>(deserializer: D) -> Result<BTreeMap<String, PrinterConfig>, D::Error>
+where
+    D: serde::Deserializer<'de>,
+{
+    struct Visitor;
+    impl<'de> serde::de::Visitor<'de> for Visitor {
+        type Value = BTreeMap<String, PrinterConfig>;
+
+        fn expecting(&self, formatter: &mut std::fmt::Formatter) -> std::fmt::Result {
+            formatter.write_str("an object keyed by unique printer names")
+        }
+
+        fn visit_map<M>(self, mut map: M) -> Result<Self::Value, M::Error>
+        where
+            M: serde::de::MapAccess<'de>,
+        {
+            let mut printers = BTreeMap::new();
+            while let Some((name, config)) = map.next_entry()? {
+                if printers.insert(name, config).is_some() {
+                    return Err(serde::de::Error::custom("duplicate printer name"));
+                }
+            }
+            Ok(printers)
+        }
+    }
+    deserializer.deserialize_map(Visitor)
 }
 
 fn configured_printers(
-    configs: Vec<PrinterConfig>,
+    configs: BTreeMap<String, PrinterConfig>,
     cache: Cache,
     namespace: &str,
 ) -> eyre::Result<AppState> {
@@ -107,17 +141,20 @@ fn configured_printers(
     let owners = Ownership::default();
     let mut endpoints = std::collections::HashSet::new();
     let mut controls = std::collections::HashSet::new();
-    for config in configs {
+    for (name, config) in configs {
         let url: reqwest::Url = config.url.parse()?;
         eyre::ensure!(
             endpoints.insert(url.to_string()) && controls.insert(config.control_address.clone()),
             "duplicate printer endpoint; configure each physical printer once"
         );
-        let printer = Printer::new(config, cache.clone(), namespace, owners.clone())?;
-        eyre::ensure!(
-            printers.insert(printer.name().into(), printer).is_none(),
-            "duplicate printer name"
-        );
+        let printer = Printer::new(
+            name.clone(),
+            config,
+            cache.clone(),
+            namespace,
+            owners.clone(),
+        )?;
+        printers.insert(name, printer);
     }
     Ok(AppState {
         printers: Arc::new(printers),
@@ -252,10 +289,34 @@ where
 mod tests {
     use super::*;
     #[test]
+    fn configuration_is_keyed_by_public_name() {
+        let config = r#"{"ZD621":{"url":"http://one.local/","control_address":"one.local:9100","width":832,"height":1218},"ZQ610":{"url":"http://two.local/","control_address":"two.local:9100","width":384,"height":600}}"#;
+        let printers = parse_printers(config.as_bytes()).unwrap();
+        assert_eq!(printers.len(), 2);
+        assert_eq!(printers["ZD621"].width, 832);
+        assert_eq!(printers["ZQ610"].url, "http://two.local/");
+    }
+
+    #[test]
+    fn configuration_rejects_duplicate_keys_and_legacy_names() {
+        let printer = r#"{"url":"http://printer.local/","control_address":"printer.local:9100","width":64,"height":32}"#;
+        for config in [
+            format!(r#"{{"Test":{printer},"Test":{printer}}}"#),
+            format!("[{printer}]"),
+            format!(
+                r#"{{"Test":{{"name":"Test",{}}}}}"#,
+                &printer[1..printer.len() - 1]
+            ),
+        ] {
+            assert!(parse_printers(config.as_bytes()).is_err());
+        }
+    }
+
+    #[test]
     fn configuration_errors_do_not_disclose_secret_values() {
         let secret = "PRIVATE_AUTH_TOKEN";
         let bytes = format!(
-            r#"[{{"name":"Test","url":"http://printer.local/","control_address":"printer.local:9100","width":"{secret}","height":32}}]"#
+            r#"{{"Test":{{"url":"http://printer.local/","control_address":"printer.local:9100","width":"{secret}","height":32}}}}"#
         );
         let error = parse_printers(bytes.as_bytes()).err().unwrap();
         assert!(error.to_string().contains("line 1, column"));
@@ -278,15 +339,17 @@ mod tests {
             .success(attempt, b"private PNG".to_vec())
             .await
             .unwrap();
-        let configs = vec![PrinterConfig {
-            name: "ZD621-V93".into(),
-            url: "http://127.0.0.1:9/".into(),
-            control_address: "127.0.0.1:9".into(),
-            width: 832,
-            height: 1218,
-            headers: vec![],
-            serial: None,
-        }];
+        let configs = BTreeMap::from([(
+            "ZD621-V93".into(),
+            PrinterConfig {
+                url: "http://127.0.0.1:9/".into(),
+                control_address: "127.0.0.1:9".into(),
+                width: 832,
+                height: 1218,
+                headers: vec![],
+                serial: None,
+            },
+        )]);
         let app = Router::new()
             .route("/api/printers/{name}/preview", post(named_zpl_to_png))
             .with_state(configured_printers(configs, cache, "test").unwrap());

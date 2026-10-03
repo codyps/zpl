@@ -15,26 +15,25 @@ versions are tracked in Diesel's migration table, so restarts do not reapply the
 A migration failure stops startup; no separate CLI call or migration files are
 needed at runtime. The database parent directory must already exist.
 
-Example printer configuration:
+Printer configuration is a map keyed by public printer name (there is no nested
+`name` field). For example:
 
 ```json
-[
-  {
-    "name": "ZD621",
+{
+  "ZD621": {
     "url": "http://printer-one.local/",
     "control_address": "printer-one.local:9100",
     "width": 832,
     "height": 1218,
     "serial": "EXPECTED-SERIAL"
   },
-  {
-    "name": "ZD621-V93",
+  "ZD621-V93": {
     "url": "http://printer-two.local/",
     "control_address": "printer-two.local:9100",
     "width": 832,
     "height": 1218
   }
-]
+}
 ```
 
 Names contain 1–80 ASCII letters, digits, dots, underscores or hyphens and are

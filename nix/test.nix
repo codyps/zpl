@@ -5,13 +5,12 @@ let
     imports = [ ./module.nix ];
     services.zpl-proxy-api = {
       enable = true;
-      printers = [{
-        name = "ZD621";
+      printers.ZD621 = {
         url = "http://printer.test:9100/";
         control_address = "printer.test:9101";
         width = 64;
         height = 32;
-      }];
+      };
       environment.OTEL_TRACES_EXPORTER = "none";
       environmentFile = "/run/proxy-test.env";
     };
@@ -95,7 +94,7 @@ pkgs.testers.runNixOSTest {
   nodes.unix = { lib, ... }: {
     imports = [ common ];
     services.zpl-proxy-api = {
-      printers = lib.mkForce [ ];
+      printers = lib.mkForce { };
       printersFile = "/run/secrets/printers.json";
       unixSocket = "/run/zpl-proxy-api.sock";
       unixSocketGroup = "proxy-clients";
@@ -116,11 +115,11 @@ pkgs.testers.runNixOSTest {
     # Model a sops-provisioned root-only file. Generate the value inside the test
     # driver so no credential value exists in a derivation or the Nix store.
     token = secrets.token_hex(24)
-    printer_config = [{"name": "ZD621", "url": "http://printer.test:9100/",
+    printer_config = {"ZD621": { "url": "http://printer.test:9100/",
                        "control_address": "printer.test:9101", "width": 64, "height": 32,
-                       "headers": ["Authorization: Bearer " + token]}]
+                       "headers": ["Authorization: Bearer " + token]}}
     def provision(value):
-        printer_config[0]["headers"] = ["Authorization: Bearer " + value]
+        printer_config["ZD621"]["headers"] = ["Authorization: Bearer " + value]
         unix.succeed("install -d -m 0700 /run/secrets")
         unix.succeed("umask 077; printf %s " + shlex.quote(json.dumps(printer_config)) + " > /run/secrets/next.json; mv /run/secrets/next.json /run/secrets/printers.json")
         unix.succeed("umask 077; printf %s " + shlex.quote(value) + " > /run/secrets/expected-token")

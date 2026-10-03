@@ -17,6 +17,7 @@ use std::{
 use tokio::io::{AsyncBufReadExt, BufReader};
 
 struct Mock {
+    name: String,
     config: PrinterConfig,
     labels: Arc<StdMutex<Vec<String>>>,
     firmware: Arc<StdMutex<String>>,
@@ -147,8 +148,8 @@ impl Mock {
             }
         });
         Self {
+            name: name.into(),
             config: PrinterConfig {
-                name: name.into(),
                 url,
                 control_address,
                 width: 64,
@@ -165,6 +166,7 @@ impl Mock {
     }
     fn printer(&self, cache: Cache) -> Printer {
         Printer::with_timing(
+            self.name.clone(),
             self.config.clone(),
             cache,
             "test",

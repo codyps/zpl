@@ -17,13 +17,12 @@ and import the module in your host configuration:
         {
           services.zpl-proxy-api = {
             enable = true;
-            printers = [ {
-              name = "ZD621";
+            printers.ZD621 = {
               url = "http://printer.local/";
               control_address = "printer.local:9100";
               width = 832;
               height = 1218;
-            } ];
+            };
             # For direct access from the LAN:
             listenAddress = "0.0.0.0";
             port = 3000;
@@ -69,8 +68,8 @@ No secret values enter command arguments, and configuration parsing errors omit
 input values.
 
 For example, with the sops-nix module already imported and its decryption key
-configured, store the complete printer JSON array as a YAML string secret named
-`zpl-printers` in your encrypted `secrets.yaml`:
+configured, store the complete printer JSON object keyed by printer name as a
+YAML string secret named `zpl-printers` in your encrypted `secrets.yaml`:
 
 ```nix
 { config, ... }: {
@@ -87,8 +86,8 @@ configured, store the complete printer JSON array as a YAML string secret named
 }
 ```
 
-The decrypted value is the JSON array documented in [proxy configuration](proxy-cache.md),
-including any `headers` such as `Authorization: Bearer ...`. The entire array can
+The decrypted value is the JSON object documented in
+[proxy configuration](proxy-cache.md), including any `headers` such as `Authorization: Bearer ...`. The entire object can
 be encrypted, so nonsecret fields and secret fields can coexist without custom
 substitution rules. Alternatively, point `printersFile` at a
 `sops.templates.<name>.path`; ensure the rendered result is valid JSON, including
@@ -107,13 +106,12 @@ For a local reverse proxy, select a Unix socket instead of TCP:
 ```nix
 services.zpl-proxy-api = {
   enable = true;
-  printers = [{
-    name = "ZD621";
+  printers.ZD621 = {
     url = "http://printer.local/";
     control_address = "printer.local:9100";
     width = 832;
     height = 1218;
-  }];
+  };
   unixSocket = "/run/zpl-proxy-api.sock";
   unixSocketGroup = "nginx"; # An existing group used by the reverse proxy.
   unixSocketMode = "0660";
@@ -154,7 +152,7 @@ Additional options:
 
 - `cacheNamespace`: defaults to `"default"`; change after firmware, font, media,
   or rendering configuration changes to invalidate cached results.
-- `printers[*].headers`: a list of `"Name: value"` headers. These are visible in the
+- `printers.<name>.headers`: a list of `"Name: value"` headers. These are visible in the
   Nix store, so use only nonsecret values.
 - `environment`: additional variables such as `RUST_LOG` and `OTEL_*`; see
   [telemetry configuration](telemetry.md).

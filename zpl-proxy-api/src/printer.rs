@@ -26,7 +26,6 @@ pub struct Identity {
 #[derive(Clone, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct PrinterConfig {
-    pub name: String,
     pub url: String,
     /// Trusted operator endpoint for SGD identity/restart, never supplied by a request.
     pub control_address: String,
@@ -63,6 +62,7 @@ pub struct Ownership(Arc<std::sync::Mutex<std::collections::HashMap<String, Stri
 #[derive(Clone)]
 pub struct Printer(Arc<Inner>);
 struct Inner {
+    name: String,
     config: PrinterConfig,
     client: reqwest::Client,
     url: reqwest::Url,
@@ -102,14 +102,16 @@ impl Default for Timing {
 
 impl Printer {
     pub fn new(
+        name: String,
         config: PrinterConfig,
         cache: Cache,
         namespace: &str,
         owners: Ownership,
     ) -> eyre::Result<Self> {
-        Self::with_timing(config, cache, namespace, Timing::default(), owners)
+        Self::with_timing(name, config, cache, namespace, Timing::default(), owners)
     }
     fn with_timing(
+        name: String,
         config: PrinterConfig,
         cache: Cache,
         namespace: &str,
@@ -117,10 +119,9 @@ impl Printer {
         owners: Ownership,
     ) -> eyre::Result<Self> {
         eyre::ensure!(
-            !config.name.is_empty()
-                && config.name.len() <= 80
-                && config
-                    .name
+            !name.is_empty()
+                && name.len() <= 80
+                && name
                     .bytes()
                     .all(|b| b.is_ascii_alphanumeric() || b"-_.".contains(&b)),
             "printer name must contain 1-80 ASCII letters, digits, '.', '_' or '-'"
@@ -159,10 +160,11 @@ impl Printer {
             .build()?;
         let namespace = format!(
             "managed-v1:{namespace}:{}:{}:{}",
-            config.name, config.width, config.height
+            name, config.width, config.height
         );
         let key = cache::renderer_key(url.as_str(), &config.headers, &namespace);
         Ok(Self(Arc::new(Inner {
+            name,
             config,
             client,
             url,
@@ -175,7 +177,7 @@ impl Printer {
         })))
     }
     pub fn name(&self) -> &str {
-        &self.0.config.name
+        &self.0.name
     }
 
     /// Admission is bounded before spawning disconnect-independent work. Every

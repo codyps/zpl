@@ -18,11 +18,10 @@ in
       description = "Proxy package with embedded migrations and assets under share/zpl-proxy-api.";
     };
     printers = lib.mkOption {
-      default = [ ];
-      description = "Named, exclusively owned printers. Public requests select name via /api/printers/{name}/preview. Values are public in the Nix store.";
-      type = lib.types.listOf (lib.types.submodule {
+      default = { };
+      description = "Exclusively owned printers keyed by public name, typically model or model-firmware. Public requests select name via /api/printers/{name}/preview. Values are public in the Nix store.";
+      type = lib.types.attrsOf (lib.types.submodule {
         options = {
-          name = lib.mkOption { type = lib.types.strMatching "[A-Za-z0-9_.-]{1,80}"; description = "Public printer name, typically model or model-firmware."; };
           url = lib.mkOption { type = lib.types.str; description = "Printer HTTP(S) origin."; };
           control_address = lib.mkOption { type = lib.types.str; description = "Trusted SGD host:port, usually printer:9100."; };
           width = lib.mkOption { type = lib.types.ints.between 8 32000; description = "Default native canvas width in dots."; };
@@ -36,7 +35,7 @@ in
       type = lib.types.nullOr lib.types.str;
       default = null;
       example = "/run/secrets/zpl-printers.json";
-      description = "Absolute runtime path to the complete printer JSON array, e.g. a sops-nix secret or template. Mutually exclusive with printers. Systemd reads this file as root using LoadCredential; its contents are never evaluated by Nix. Restart the service to load changed contents.";
+      description = "Absolute runtime path to the complete printer JSON object keyed by name, e.g. a sops-nix secret or template. Mutually exclusive with printers. Systemd reads this file as root using LoadCredential; its contents are never evaluated by Nix. Restart the service to load changed contents.";
     };
     listenAddress = lib.mkOption {
       type = lib.types.str;
@@ -93,7 +92,11 @@ in
   config = lib.mkIf cfg.enable {
     assertions = [
       {
-        assertion = (cfg.printers != [ ]) != (cfg.printersFile != null);
+        assertion = lib.all (name: builtins.match "[A-Za-z0-9_.-]{1,80}" name != null) (lib.attrNames cfg.printers);
+        message = "Printer names must contain 1-80 ASCII letters, digits, dots, underscores or hyphens.";
+      }
+      {
+        assertion = (cfg.printers != { }) != (cfg.printersFile != null);
         message = "Configure exactly one of services.zpl-proxy-api.printers or printersFile.";
       }
 

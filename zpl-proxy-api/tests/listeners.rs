@@ -47,7 +47,7 @@ fn directory() -> tempfile::TempDir {
 fn configure(command: &mut Command, dir: &tempfile::TempDir) {
     let database = dir.path().join("db.sqlite");
     let config = dir.path().join("printers.json");
-    std::fs::write(&config, r#"[{"name":"test","url":"http://127.0.0.1:9/","control_address":"127.0.0.1:9","width":832,"height":1218}]"#).unwrap();
+    std::fs::write(&config, r#"{"test":{"url":"http://127.0.0.1:9/","control_address":"127.0.0.1:9","width":832,"height":1218}}"#).unwrap();
     command
         .arg("--printers")
         .arg(config)
