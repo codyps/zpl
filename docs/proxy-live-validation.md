@@ -11,8 +11,8 @@ were exercised; no physical print job or firmware upload was submitted.
 
 The [captures and manifest](../zpl-proxy-api/tests/fixtures/managed-printers-2026-09-30/manifest.json)
 retain exact PNG bytes, original ZPL, SHA-256 hashes, request outcomes and identity-
-stamped attempt records. This evidence is specific to these devices and firmware. Serial values are
-anonymized publication identifiers, not actual hardware serial numbers.
+stamped attempt records. This evidence is specific to these devices and firmware. Serial values in
+this document are anonymized; the capture manifest retains original provenance.
 
 ## State isolation and cache
 
