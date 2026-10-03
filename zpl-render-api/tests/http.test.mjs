@@ -9,10 +9,11 @@ const env = { CLIENT_RATE_LIMITER: permit, SERVICE_RATE_LIMITER: permit };
 function fixture(overrides = {}) {
   const calls = [];
   let freed = 0;
-  const handler = createHandler({ version: 'test', render: (...args) => {
+  const renderer = (...args) => {
     calls.push(args);
     return { status: 200, labels: 2, warning_count: 1, take_body: () => new Uint8Array([137, 80, 78, 71]), free: () => freed++, ...overrides };
-  } });
+  };
+  const handler = createHandler({ version: 'test', render: renderer, renderLabelZoom: renderer });
   return { handler, calls, get freed() { return freed; } };
 }
 function post(body = '^XA^XZ', headers = {}, url = endpoint) {
@@ -172,4 +173,104 @@ test('preserves renderer error status and frees Wasm output on success and failu
   assert.equal(failure.status, 500);
   assert.equal(await failure.text(), 'Rendering failed');
   assert.equal(broken.freed, 1);
+});
+
+const labelzoom = 'https://example.test/api/v2/convert/zpl/to/';
+
+// LabelZoom conversion parameters: JSON and dot notation, with dot values winning.
+// https://docs.labelzoom.com/reference/conversion-parameters/
+test('LabelZoom PNG/PDF routes preserve bytes, exact DPI and parameter precedence', async () => {
+  const f = fixture();
+  const bytes = new Uint8Array([...encoder.encode('^XA^FDa+b%20&c=1'), 0, 0xff, 0x80]);
+  for (const dpi of [152, 203, 300, 600]) {
+    const query = new URLSearchParams({ params: JSON.stringify({ dpi: 203, label: { width: 4, height: 6 } }), dpi: String(dpi), 'label.width': '1.5' });
+    const response = await f.handler(post(bytes, { 'Content-Type': 'application/octet-stream' }, `${labelzoom}png/?${query}`), env);
+    assert.equal(response.status, 200);
+    assert.deepEqual(f.calls.at(-1), [bytes, Math.floor(1.5 * dpi), 6 * dpi, dpi, false]);
+    assert.equal(response.headers.get('Content-Type'), 'image/png');
+  }
+  const pdf = await f.handler(post('^XA^XZ', { Authorization: 'Bearer unused', Accept: 'application/pdf' }, `${labelzoom}pdf`), env);
+  assert.equal(pdf.status, 200);
+  assert.equal(pdf.headers.get('Content-Type'), 'application/pdf');
+  assert.equal(pdf.headers.get('Cache-Control'), 'no-store');
+  assert.equal(pdf.headers.get('X-Total-Count'), '2');
+  assert.deepEqual(f.calls.at(-1).slice(1), [0, 0, 203, true]);
+  const partial = await f.handler(post('^XA^XZ', {}, `${labelzoom}png?label.height=2&rotation=0&scaling=100&watermark=false`), env);
+  assert.equal(partial.status, 200);
+  assert.deepEqual(f.calls.at(-1).slice(1), [0, 406, 203, false]);
+  const fractional = await f.handler(post('^XA^XZ', {}, `${labelzoom}png?label.width=.5&label.height=1.234`), env);
+  assert.equal(fractional.status, 200);
+  assert.deepEqual(f.calls.at(-1).slice(1), [101, 250, 203, false]);
+  assert.equal(f.freed, f.calls.length);
+});
+
+test('LabelZoom rejects invalid, excessive and unsupported parameters before reading bodies', async () => {
+  const f = fixture();
+  const queries = [
+    'params={', 'params=null', 'params=[]', 'params=1', 'params={"label":null}',
+    'params={"label":{"depth":2}}', 'params={"dpi":"300"}', 'params={"__proto__":{"dpi":600}}',
+    'dpi=0', 'dpi=304', 'dpi=1.5', 'dpi=true', 'dpi=null', 'dpi=', 'dpi=203&dpi=300',
+    'params={}&params={}', 'label.width=0', 'label.width=-1', 'label.width=0.0001',
+    'label.height=16', 'label.width=15&dpi=600', 'label.width=15&label.height=15&dpi=300',
+    'label.width=1e999', 'label.width="4"', 'label.width=false', 'label.width=[]',
+    'rotation=90', 'scaling=50', 'watermark=true', 'data=[]', 'pdf.pageNumber=0',
+    'zpl.commandsToIgnore=["^PQ"]', 'unknown=0', `params=${' '.repeat(8193)}`,
+  ];
+  for (const query of queries) {
+    const request = post('^XA^XZ', {}, `${labelzoom}png?${query}`);
+    const response = await f.handler(request, env);
+    assert.equal(response.status, 400, query);
+    assert.equal(request.bodyUsed, false);
+  }
+  for (const path of ['zpl/to/jpeg', 'pdf/to/zpl', 'url/to/png']) {
+    assert.equal((await f.handler(post('^XA^XZ', {}, `https://example.test/api/v2/convert/${path}`), env)).status, 400);
+  }
+  assert.equal((await f.handler(post('^XA^XZ', {}, `${labelzoom}png/extra`), env)).status, 404);
+  assert.equal(f.calls.length, 0);
+});
+
+// Supported formats, "Matching content types"; live OpenAPI convert description.
+// https://docs.labelzoom.com/reference/supported-formats/#matching-content-types
+// https://api.labelzoom.com/v3/api-docs
+test('LabelZoom validates media types and supports SDK preflight with Authorization', async () => {
+  const f = fixture();
+  for (const format of ['png', 'pdf']) {
+    const url = labelzoom + format;
+    const type = format === 'pdf' ? 'application/pdf' : 'image/png';
+    for (const accept of [type, '*/*', type.split('/')[0] + '/*', `${type};q=0;charset=utf-8`]) {
+      assert.equal((await f.handler(post('^XA^XZ', { Accept: accept, 'Content-Type': 'text/x-zpl' }, url), env)).status, 200);
+    }
+    assert.equal((await f.handler(post('^XA^XZ', { Accept: 'text/html' }, url), env)).status, 406);
+    const mismatch = format === 'pdf' ? 'image/png' : 'application/pdf';
+    assert.equal((await f.handler(post('^XA^XZ', { Accept: mismatch }, url), env)).status, 400);
+    for (const inputType of ['application/json', 'application/pdf', 'application/x-www-form-urlencoded', 'multipart/form-data']) {
+      assert.equal((await f.handler(post('^XA^XZ', { 'Content-Type': inputType }, url), env)).status, 400);
+    }
+    const preflight = await f.handler(new Request(url, { method: 'OPTIONS', headers: { 'Access-Control-Request-Headers': 'authorization,content-type' } }), {});
+    assert.equal(preflight.status, 204);
+    assert.match(preflight.headers.get('Access-Control-Allow-Headers'), /Authorization/);
+    assert.equal((await f.handler(new Request(url), {})).status, 405);
+  }
+});
+
+test('LabelZoom shares rate, body and rendering failure protections', async () => {
+  const f = fixture();
+  for (const format of ['png', 'pdf']) {
+    const url = labelzoom + format;
+    const request = post('^XA^XZ', {}, url);
+    assert.equal((await f.handler(request, {})).status, 503);
+    assert.equal(request.bodyUsed, false);
+    const limited = await f.handler(request, { ...env, SERVICE_RATE_LIMITER: { limit: async () => ({ success: false }) } });
+    assert.equal(limited.status, 429);
+    assert.equal(request.bodyUsed, false);
+    assert.equal((await f.handler(post(new Uint8Array(MAX_INPUT_BYTES + 1), {}, url), env)).status, 413);
+    assert.equal((await f.handler(post('', {}, url), env)).status, 400);
+    const broken = fixture({ status: 400, take_body: () => encoder.encode('Unsupported ZPL') });
+    const failure = await broken.handler(post('^XA^XZ', {}, url), env);
+    assert.equal(failure.status, 400);
+    assert.equal(failure.headers.get('Content-Type'), 'text/plain; charset=utf-8');
+    assert.equal(await failure.text(), 'Unsupported ZPL');
+    assert.equal(broken.freed, 1);
+  }
+  assert.equal(f.calls.length, 0);
 });

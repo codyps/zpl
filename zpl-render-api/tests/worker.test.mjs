@@ -59,6 +59,54 @@ test('real Wasm rejects limits, preserves binary multipart, and counts labels', 
   }
 });
 
+// LabelZoom v2: PNG selects the first scene; PDF retains every scene in order.
+// https://docs.labelzoom.com/reference/supported-formats/#multi-label-jobs
+test('LabelZoom routes render real PNG and multipage PDF with exact DPI and size overrides', async () => {
+  const base = 'https://example.test/api/v2/convert/zpl/to/';
+  const body = Buffer.from('^XA^PW300^LL600^FO0,0^GFB,1,1,1,\x80^FS^XZ^XA^PW600^LL300^XZ', 'latin1');
+  const headers = { 'Content-Type': 'application/octet-stream', 'CF-Connecting-IP': '192.0.2.51' };
+  const pngResponse = await server.fetch(base + 'png?dpi=300', { method: 'POST', headers, body });
+  assert.equal(pngResponse.status, 200, await pngResponse.clone().text());
+  assert.equal(pngResponse.headers.get('Content-Type'), 'image/png');
+  assert.equal(pngResponse.headers.get('X-Total-Count'), '2');
+  const png = Buffer.from(await pngResponse.arrayBuffer());
+  assert.equal(png.readUInt32BE(16), 300);
+  assert.equal(png.readUInt32BE(20), 600);
+  const pdfResponse = await server.fetch(base + 'pdf?dpi=300', {
+    method: 'POST', headers: { ...headers, Accept: 'application/pdf' }, body,
+  });
+  assert.equal(pdfResponse.status, 200, await pdfResponse.clone().text());
+  assert.equal(pdfResponse.headers.get('Content-Type'), 'application/pdf');
+  assert.equal(pdfResponse.headers.get('Cache-Control'), 'no-store');
+  assert.equal(pdfResponse.headers.get('X-Total-Count'), '2');
+  const pdf = await pdfResponse.text();
+  assert.match(pdf, /^%PDF-1.7/);
+  assert.match(pdf, /\/Type \/Pages \/Count 2/);
+  assert.ok(pdf.indexOf('/MediaBox [0 0 72.000000000000 144.000000000000]') < pdf.indexOf('/MediaBox [0 0 144.000000000000 72.000000000000]'));
+  const query = new URLSearchParams({ params: JSON.stringify({ dpi: 203, label: { width: 4, height: 6 } }), dpi: '300' });
+  const fixed = await server.fetch(base + `png?${query}`, { method: 'POST', headers, body });
+  assert.equal(fixed.status, 200);
+  const fixedPng = Buffer.from(await fixed.arrayBuffer());
+  assert.equal(fixedPng.readUInt32BE(16), 1200);
+  assert.equal(fixedPng.readUInt32BE(20), 1800);
+});
+
+test('LabelZoom routes retain Wasm validation and recover after rejected requests', async () => {
+  const headers = { 'Content-Type': 'text/plain', 'CF-Connecting-IP': '192.0.2.52' };
+  for (const format of ['png', 'pdf']) {
+    const url = `https://example.test/api/v2/convert/zpl/to/${format}`;
+    for (const [body, status] of [['^XA^XZ^XA^ZZ^XZ', 400], ['^XA^PW10000^XZ', 413], ['^XA^XZ'.repeat(51), 413]]) {
+      const rejected = await server.fetch(url, { method: 'POST', headers, body });
+      assert.equal(rejected.status, status, await rejected.clone().text());
+      assert.match(rejected.headers.get('Content-Type'), /^text\/plain/);
+      await rejected.arrayBuffer();
+    }
+    const recovered = await server.fetch(url, { method: 'POST', headers, body: '^XA^XZ' });
+    assert.equal(recovered.status, 200);
+    await recovered.arrayBuffer();
+  }
+});
+
 test('Cloudflare rate-limit binding rejects excess requests', async () => {
   // Miniflare resets counters at wall-clock-aligned 10-second boundaries.
   // Start in a fresh window so a mid-burst reset cannot hide the rejection.
