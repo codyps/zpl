@@ -257,13 +257,15 @@ def main():
     ap.add_argument("--comparison", type=Path)
     ap.add_argument("--output", type=Path, required=True)
     ap.add_argument("--width", type=int, default=384)
-    ap.add_argument("--host", default="http://xxzmj230802993.bed.einic.org/")
+    ap.add_argument("--host", help="printer origin; required with --capture")
     ap.add_argument("--capture", action="store_true", help="perform previews; otherwise inventory only")
     ap.add_argument("--verify", action="store_true", help="verify saved hashes offline")
     ap.add_argument("--resume", action="store_true")
     ap.add_argument("--limit", type=int, help="capture a bounded smoke-test subset")
     ap.add_argument("--interval", type=float, default=2)
     args = ap.parse_args()
+    if args.capture and not args.host:
+        ap.error("--host is required with --capture")
     if args.verify:
         manifest = verify(args.output)
         print(f"Verified {len(manifest['files'])} files; status: {manifest['status']}")
