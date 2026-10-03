@@ -1,3 +1,14 @@
+/// A completed preview response without an image. Distinct from an outage or
+/// authentication/transport failure so callers can classify repeated rejection.
+#[derive(Debug)]
+pub struct NoPreview;
+impl std::fmt::Display for NoPreview {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str("no image found")
+    }
+}
+impl std::error::Error for NoPreview {}
+
 /// Render ZPL using the printer's HTTP preview endpoint.
 ///
 /// Configure `client` with `reqwest::Client::builder().http1_title_case_headers()`:
@@ -36,18 +47,18 @@ pub async fn zpl_to_png_with_credentials<U: reqwest::IntoUrl>(
         .send()
         .await?;
 
-    if !response.status().is_success() {
-        return Err(eyre::eyre!("request failed: {:?}", response.status()));
-    }
+    let response = response.error_for_status()?;
+    eyre::ensure!(
+        response.status().is_success(),
+        "unexpected preview redirect"
+    );
 
     let bytes = bounded_body(response).await?;
 
     // There's only 1 img tag in the returned html, and it's always all caps, one line, and with
     // src attr first. Skip html parsing.
     let prefix = b"<IMG SRC=\"";
-    let img_src_index = memchr::memmem::find(&bytes, prefix)
-        .ok_or_else(|| eyre::eyre!("no image found"))?
-        + prefix.len();
+    let img_src_index = memchr::memmem::find(&bytes, prefix).ok_or(NoPreview)? + prefix.len();
     let img_src_end = memchr::memchr(b'"', &bytes[img_src_index..])
         .ok_or_else(|| eyre::eyre!("missing end quote"))?;
     let img_src = &bytes[img_src_index..img_src_index + img_src_end];

@@ -7,15 +7,20 @@ use crate::{
     schema::{inputs, png_requests, pngs, render_cache},
 };
 use diesel::{connection::SimpleConnection, prelude::*};
+use diesel_migrations::{embed_migrations, EmbeddedMigrations, MigrationHarness};
 use sha2::{Digest, Sha256};
+
+const MIGRATIONS: EmbeddedMigrations = embed_migrations!("migrations");
 use std::sync::{Arc, Mutex};
 
 #[derive(Clone)]
 pub struct Cache(Arc<Mutex<SqliteConnection>>);
 
+mod managed;
 #[cfg(test)]
 mod tests;
 
+#[derive(Clone)]
 pub struct Attempt {
     pub request_id: i64,
     pub input_id: i64,
@@ -39,12 +44,19 @@ pub fn renderer_key(url: &str, headers: &[String], namespace: &str) -> Vec<u8> {
 }
 
 impl Cache {
-    /// The caller must run Diesel migrations first. No user DB is migrated here.
+    /// Apply embedded Diesel migrations before returning a usable database.
+    /// Run on a blocking thread, as with all SQLite initialization.
     pub fn open(path: &str) -> eyre::Result<Self> {
         let mut connection = SqliteConnection::establish(path)?;
         connection.batch_execute(
             "PRAGMA busy_timeout = 5000; PRAGMA foreign_keys = ON; PRAGMA journal_mode = WAL;",
         )?;
+        // Diesel tracks applied versions and honors each migration's transaction
+        // metadata (one existing migration manages its own SQLite transaction).
+        // https://docs.rs/diesel_migrations/2.3.2/diesel_migrations/trait.MigrationHarness.html
+        connection
+            .run_pending_migrations(MIGRATIONS)
+            .map_err(|error| eyre::eyre!("Database migration failed: {error}"))?;
         // Fail at startup with a migration error, not after accepting a request.
         render_cache::table
             .select(render_cache::input_id)
@@ -54,6 +66,8 @@ impl Cache {
             .select((png_requests::completed_at, png_requests::error))
             .limit(1)
             .load::<(Option<String>, Option<String>)>(&mut connection)?;
+        diesel::sql_query("SELECT request_id FROM printer_requests LIMIT 0")
+            .execute(&mut connection)?;
         Ok(Self(Arc::new(Mutex::new(connection))))
     }
 
@@ -172,10 +186,6 @@ impl Cache {
                     .on_conflict((render_cache::input_id, render_cache::renderer_key))
                     .do_update()
                     .set(render_cache::png_id.eq(png.id))
-                    .execute(connection)?;
-                // Preserve the legacy latest-output association for existing readers.
-                diesel::update(inputs::table.filter(inputs::id.eq(attempt.input_id)))
-                    .set(inputs::png_id.eq(png.id))
                     .execute(connection)?;
                 diesel::update(
                     png_requests::table.filter(png_requests::rowid.eq(attempt.request_id)),

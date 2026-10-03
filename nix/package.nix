@@ -1,4 +1,4 @@
-{ lib, rustPlatform, pkg-config, sqlite }:
+{ lib, rustPlatform, pkg-config, sqlite, cacert }:
 
 rustPlatform.buildRustPackage {
   pname = "zpl-proxy-api";
@@ -12,6 +12,7 @@ rustPlatform.buildRustPackage {
       ../LICENSE
       ../zpl
       ../zpl-cmd
+      ../zpl-render-api
       ../zpl-font-extract
       ../zpl-wasm
       ../raster-diff
@@ -28,10 +29,15 @@ rustPlatform.buildRustPackage {
 
   nativeBuildInputs = [ pkg-config ];
   buildInputs = [ sqlite ];
+  # Reqwest's platform verifier initializes system roots even for loopback HTTP.
+  # The Nix build sandbox has no host /etc/ssl; keep verification enabled.
+  preCheck = ''
+    export SSL_CERT_FILE=${cacert}/etc/ssl/certs/ca-bundle.crt
+  '';
 
   postInstall = ''
     mkdir -p $out/share/zpl-proxy-api
-    cp -r zpl-proxy-api/assets zpl-proxy-api/migrations $out/share/zpl-proxy-api/
+    cp -r zpl-proxy-api/assets $out/share/zpl-proxy-api/
   '';
 
   meta = {

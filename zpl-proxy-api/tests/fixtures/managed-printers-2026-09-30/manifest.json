@@ -1,0 +1,409 @@
+{
+  "captured_at": "2026-09-30",
+  "purpose": "Live exclusive-owner proxy validation; previews only, no physical labels sent",
+  "base_commit": "4c6b77ee576234cdb250f2915a4d3c73e4782c96",
+  "implementation": "Working tree managed-v1 proxy; source not yet committed",
+  "printers": [
+    {
+      "name": "ZD621",
+      "width": 832,
+      "height": 240,
+      "serial": "D7J211001302",
+      "model": "ZD621",
+      "firmware": "V93.21.33Z",
+      "dpi": 203
+    },
+    {
+      "name": "ZQ610-Plus",
+      "width": 384,
+      "height": 2030,
+      "serial": "XXZMJ230802993",
+      "model": "ZQ610 Plus",
+      "firmware": "V100.21.21Z",
+      "dpi": 203
+    }
+  ],
+  "state_results": [
+    [
+      {
+        "name": "ZD621",
+        "phase": "defaults-before",
+        "status": 200,
+        "cache": "miss",
+        "sha256": "1080e6b8d8f0fecc2c174d76c299f57909fb0771836231ef73c9bb271c30ee4a",
+        "dimensions": [
+          832,
+          240
+        ]
+      },
+      {
+        "name": "ZD621",
+        "phase": "changed-state",
+        "status": 200,
+        "cache": "miss",
+        "sha256": "ec3b223043b2bde0f52dd1d37b7c1de6b03f5d7b249eb0f570087f88e99b4b19",
+        "dimensions": [
+          192,
+          160
+        ]
+      },
+      {
+        "name": "ZD621",
+        "phase": "defaults-after",
+        "status": 200,
+        "cache": "miss",
+        "sha256": "1080e6b8d8f0fecc2c174d76c299f57909fb0771836231ef73c9bb271c30ee4a",
+        "dimensions": [
+          832,
+          240
+        ],
+        "byte_exact_to_before": true
+      },
+      {
+        "name": "ZD621",
+        "phase": "defaults-hit",
+        "status": 200,
+        "cache": "hit",
+        "sha256": "1080e6b8d8f0fecc2c174d76c299f57909fb0771836231ef73c9bb271c30ee4a",
+        "dimensions": [
+          832,
+          240
+        ],
+        "byte_exact_to_before": true
+      }
+    ],
+    [
+      {
+        "name": "ZQ610-Plus",
+        "phase": "defaults-before",
+        "status": 200,
+        "cache": "miss",
+        "sha256": "3eab7bdd3cdda9d3e40c7a8ba8fcebb867b045a483bbebf87d8a8f06d9cb6e81",
+        "dimensions": [
+          384,
+          2030
+        ]
+      },
+      {
+        "name": "ZQ610-Plus",
+        "phase": "changed-state",
+        "status": 200,
+        "cache": "miss",
+        "sha256": "46a606828be7ff8230c35fe07475b22da1755d9af0ff853c2b5f63178bec08bf",
+        "dimensions": [
+          192,
+          2030
+        ]
+      },
+      {
+        "name": "ZQ610-Plus",
+        "phase": "defaults-after",
+        "status": 200,
+        "cache": "miss",
+        "sha256": "3eab7bdd3cdda9d3e40c7a8ba8fcebb867b045a483bbebf87d8a8f06d9cb6e81",
+        "dimensions": [
+          384,
+          2030
+        ],
+        "byte_exact_to_before": true
+      },
+      {
+        "name": "ZQ610-Plus",
+        "phase": "defaults-hit",
+        "status": 200,
+        "cache": "hit",
+        "sha256": "3eab7bdd3cdda9d3e40c7a8ba8fcebb867b045a483bbebf87d8a8f06d9cb6e81",
+        "dimensions": [
+          384,
+          2030
+        ],
+        "byte_exact_to_before": true
+      }
+    ]
+  ],
+  "requests": [
+    {
+      "rowid": 1,
+      "timestamp": "2026-09-30T04:27:29.108Z",
+      "name": "ZQ610-Plus",
+      "serial": "XXZMJ230802993",
+      "firmware": "V100.21.21Z",
+      "png_id": 2,
+      "error": null,
+      "completed_at": "2026-09-30T04:27:31.117Z",
+      "cache_hit": 0
+    },
+    {
+      "rowid": 2,
+      "timestamp": "2026-09-30T04:27:29.116Z",
+      "name": "ZD621",
+      "serial": "D7J211001302",
+      "firmware": "V93.21.33Z",
+      "png_id": 1,
+      "error": null,
+      "completed_at": "2026-09-30T04:27:29.395Z",
+      "cache_hit": 0
+    },
+    {
+      "rowid": 3,
+      "timestamp": "2026-09-30T04:28:28.680Z",
+      "name": "ZQ610-Plus",
+      "serial": "XXZMJ230802993",
+      "firmware": "V100.21.21Z",
+      "png_id": 5,
+      "error": null,
+      "completed_at": "2026-09-30T04:28:28.962Z",
+      "cache_hit": 0
+    },
+    {
+      "rowid": 4,
+      "timestamp": "2026-09-30T04:28:28.680Z",
+      "name": "ZD621",
+      "serial": "D7J211001302",
+      "firmware": "V93.21.33Z",
+      "png_id": 3,
+      "error": null,
+      "completed_at": "2026-09-30T04:28:28.796Z",
+      "cache_hit": 0
+    },
+    {
+      "rowid": 5,
+      "timestamp": "2026-09-30T04:28:28.800Z",
+      "name": "ZD621",
+      "serial": "D7J211001302",
+      "firmware": "V93.21.33Z",
+      "png_id": 4,
+      "error": null,
+      "completed_at": "2026-09-30T04:28:28.910Z",
+      "cache_hit": 0
+    },
+    {
+      "rowid": 6,
+      "timestamp": "2026-09-30T04:28:28.912Z",
+      "name": "ZD621",
+      "serial": "D7J211001302",
+      "firmware": "V93.21.33Z",
+      "png_id": 3,
+      "error": null,
+      "completed_at": "2026-09-30T04:28:29.034Z",
+      "cache_hit": 0
+    },
+    {
+      "rowid": 7,
+      "timestamp": "2026-09-30T04:28:28.964Z",
+      "name": "ZQ610-Plus",
+      "serial": "XXZMJ230802993",
+      "firmware": "V100.21.21Z",
+      "png_id": 6,
+      "error": null,
+      "completed_at": "2026-09-30T04:28:29.239Z",
+      "cache_hit": 0
+    },
+    {
+      "rowid": 8,
+      "timestamp": "2026-09-30T04:28:29.036Z",
+      "name": "ZD621",
+      "serial": "D7J211001302",
+      "firmware": "V93.21.33Z",
+      "png_id": 3,
+      "error": null,
+      "completed_at": "2026-09-30T04:28:29.062Z",
+      "cache_hit": 1
+    },
+    {
+      "rowid": 9,
+      "timestamp": "2026-09-30T04:28:29.240Z",
+      "name": "ZQ610-Plus",
+      "serial": "XXZMJ230802993",
+      "firmware": "V100.21.21Z",
+      "png_id": 5,
+      "error": null,
+      "completed_at": "2026-09-30T04:29:29.102Z",
+      "cache_hit": 0
+    },
+    {
+      "rowid": 10,
+      "timestamp": "2026-09-30T04:29:29.105Z",
+      "name": "ZQ610-Plus",
+      "serial": "XXZMJ230802993",
+      "firmware": "V100.21.21Z",
+      "png_id": 5,
+      "error": null,
+      "completed_at": "2026-09-30T04:29:29.134Z",
+      "cache_hit": 1
+    }
+  ],
+  "attempts": [
+    {
+      "id": 1,
+      "request_id": 2,
+      "name": "ZD621",
+      "serial": "D7J211001302",
+      "firmware": "V93.21.33Z",
+      "phase": "initialize",
+      "started_at": "2026-09-30T04:27:29.153Z",
+      "completed_at": "2026-09-30T04:27:29.271Z",
+      "failure_kind": null,
+      "error": null
+    },
+    {
+      "id": 2,
+      "request_id": 2,
+      "name": "ZD621",
+      "serial": "D7J211001302",
+      "firmware": "V93.21.33Z",
+      "phase": "label",
+      "started_at": "2026-09-30T04:27:29.271Z",
+      "completed_at": "2026-09-30T04:27:29.393Z",
+      "failure_kind": null,
+      "error": null
+    },
+    {
+      "id": 3,
+      "request_id": 1,
+      "name": "ZQ610-Plus",
+      "serial": "XXZMJ230802993",
+      "firmware": "V100.21.21Z",
+      "phase": "initialize",
+      "started_at": "2026-09-30T04:27:29.345Z",
+      "completed_at": "2026-09-30T04:27:30.623Z",
+      "failure_kind": null,
+      "error": null
+    },
+    {
+      "id": 4,
+      "request_id": 1,
+      "name": "ZQ610-Plus",
+      "serial": "XXZMJ230802993",
+      "firmware": "V100.21.21Z",
+      "phase": "label",
+      "started_at": "2026-09-30T04:27:30.624Z",
+      "completed_at": "2026-09-30T04:27:31.115Z",
+      "failure_kind": null,
+      "error": null
+    },
+    {
+      "id": 5,
+      "request_id": 4,
+      "name": "ZD621",
+      "serial": "D7J211001302",
+      "firmware": "V93.21.33Z",
+      "phase": "label",
+      "started_at": "2026-09-30T04:28:28.710Z",
+      "completed_at": "2026-09-30T04:28:28.796Z",
+      "failure_kind": null,
+      "error": null
+    },
+    {
+      "id": 6,
+      "request_id": 3,
+      "name": "ZQ610-Plus",
+      "serial": "XXZMJ230802993",
+      "firmware": "V100.21.21Z",
+      "phase": "label",
+      "started_at": "2026-09-30T04:28:28.728Z",
+      "completed_at": "2026-09-30T04:28:28.961Z",
+      "failure_kind": null,
+      "error": null
+    },
+    {
+      "id": 7,
+      "request_id": 5,
+      "name": "ZD621",
+      "serial": "D7J211001302",
+      "firmware": "V93.21.33Z",
+      "phase": "label",
+      "started_at": "2026-09-30T04:28:28.824Z",
+      "completed_at": "2026-09-30T04:28:28.909Z",
+      "failure_kind": null,
+      "error": null
+    },
+    {
+      "id": 8,
+      "request_id": 6,
+      "name": "ZD621",
+      "serial": "D7J211001302",
+      "firmware": "V93.21.33Z",
+      "phase": "label",
+      "started_at": "2026-09-30T04:28:28.943Z",
+      "completed_at": "2026-09-30T04:28:29.034Z",
+      "failure_kind": null,
+      "error": null
+    },
+    {
+      "id": 9,
+      "request_id": 7,
+      "name": "ZQ610-Plus",
+      "serial": "XXZMJ230802993",
+      "firmware": "V100.21.21Z",
+      "phase": "label",
+      "started_at": "2026-09-30T04:28:28.992Z",
+      "completed_at": "2026-09-30T04:28:29.238Z",
+      "failure_kind": null,
+      "error": null
+    },
+    {
+      "id": 10,
+      "request_id": 9,
+      "name": "ZQ610-Plus",
+      "serial": "XXZMJ230802993",
+      "firmware": "V100.21.21Z",
+      "phase": "label",
+      "started_at": "2026-09-30T04:28:29.264Z",
+      "completed_at": "2026-09-30T04:28:59.268Z",
+      "failure_kind": "hang",
+      "error": "Printer preview failed: hang"
+    },
+    {
+      "id": 11,
+      "request_id": 9,
+      "name": "ZQ610-Plus",
+      "serial": "XXZMJ230802993",
+      "firmware": "V100.21.21Z",
+      "phase": "restart",
+      "started_at": "2026-09-30T04:28:59.270Z",
+      "completed_at": "2026-09-30T04:29:28.868Z",
+      "failure_kind": null,
+      "error": null
+    },
+    {
+      "id": 12,
+      "request_id": 9,
+      "name": "ZQ610-Plus",
+      "serial": "XXZMJ230802993",
+      "firmware": "V100.21.21Z",
+      "phase": "recovery-control",
+      "started_at": "2026-09-30T04:29:28.502Z",
+      "completed_at": "2026-09-30T04:29:28.868Z",
+      "failure_kind": null,
+      "error": null
+    },
+    {
+      "id": 13,
+      "request_id": 9,
+      "name": "ZQ610-Plus",
+      "serial": "XXZMJ230802993",
+      "firmware": "V100.21.21Z",
+      "phase": "retry",
+      "started_at": "2026-09-30T04:29:28.869Z",
+      "completed_at": "2026-09-30T04:29:29.101Z",
+      "failure_kind": null,
+      "error": null
+    }
+  ],
+  "files": {
+    "ZD621-baseline.png": "c72ade32633f36b9c8f8eb7e1a5a3dfcaa0538601c7cb86ad52650ce1b4bf59f",
+    "ZD621-changed-state.png": "ec3b223043b2bde0f52dd1d37b7c1de6b03f5d7b249eb0f570087f88e99b4b19",
+    "ZD621-defaults-after.png": "1080e6b8d8f0fecc2c174d76c299f57909fb0771836231ef73c9bb271c30ee4a",
+    "ZD621-defaults-before.png": "1080e6b8d8f0fecc2c174d76c299f57909fb0771836231ef73c9bb271c30ee4a",
+    "ZD621-defaults-hit.png": "1080e6b8d8f0fecc2c174d76c299f57909fb0771836231ef73c9bb271c30ee4a",
+    "ZQ610-Plus-baseline.png": "fdb3de71b8fd5e3042f111b942eb7cdab8703c47f68442ba531bc24d6f36b2ee",
+    "ZQ610-Plus-changed-state.png": "46a606828be7ff8230c35fe07475b22da1755d9af0ff853c2b5f63178bec08bf",
+    "ZQ610-Plus-defaults-after.png": "3eab7bdd3cdda9d3e40c7a8ba8fcebb867b045a483bbebf87d8a8f06d9cb6e81",
+    "ZQ610-Plus-defaults-before.png": "3eab7bdd3cdda9d3e40c7a8ba8fcebb867b045a483bbebf87d8a8f06d9cb6e81",
+    "ZQ610-Plus-defaults-hit.png": "3eab7bdd3cdda9d3e40c7a8ba8fcebb867b045a483bbebf87d8a8f06d9cb6e81",
+    "baseline.zpl": "a2f9e805b3c543ca9376951860636abe9d23c5024eb1d50321784932aa20454b",
+    "changed-state.zpl": "12e6c385e2aadc51c3f7d5d9717bf02f3552880e8d0a5809894c1a438b6abcbb",
+    "defaults.zpl": "4998113d002af3d83247021222ec15ac719c19bfc8b01fda715ba6c6d99f6f01"
+  }
+}
