@@ -97,6 +97,7 @@ overridable. It targets a 203-DPI ZD621 running V93.21.33Z, with initial dimensi
 | --- | --- | --- |
 | `qr_fo_uses_by_height` | QR ink begins at `^FO` | Offset by `^BY` height minus one dot |
 | `qr_ft_includes_margin` | QR base at `^FT` | Include three modules minus one dot below symbol |
+| `qr_printer_segmentation` | Minimum-bit automatic QR encoding | Forward run merging measured on ZD621; can change symbol size and modules |
 | `diagonal_dot_runs` | Diagonal band clipped to `^GD` box | Firmware horizontal runs, possibly outside box |
 | `postal_fixed_pitch` | Use `^BY` ratio | Truncated 2.5-module pitch |
 | `intelligent_mail_outward_rounding` | Fractional tracker thirds | Round tracker edges outward |

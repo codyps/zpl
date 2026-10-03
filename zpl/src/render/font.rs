@@ -366,6 +366,8 @@ fn strikes() -> &'static Vec<(Settings, Vec<Glyph>)> {
             include_bytes!("../../assets/font0-24-24.zbf").as_slice(),
             include_bytes!("../../assets/font0-24-12.zbf").as_slice(),
             include_bytes!("../../assets/font0-24-16.zbf").as_slice(),
+            // Native 28-dot natural width: qr-segmentation-zd621-v1/font-0-28.
+            include_bytes!("../../assets/font0-28-0.zbf").as_slice(),
             include_bytes!("../../assets/font0-28-14.zbf").as_slice(),
             include_bytes!("../../assets/font0-26-16.zbf").as_slice(),
             include_bytes!("../../assets/font0-40-24.zbf").as_slice(),
@@ -1186,6 +1188,7 @@ mod tests {
             (23., 23.),
             (26., 30.),
             (28., 32.),
+            (28., 28.),
             (30., 34.),
             (39., 42.),
             (45., 44.),

@@ -7,7 +7,8 @@ pub(super) fn render(b: &Barcode, data: &[u8]) -> Result<Path, String> {
     b.require(3, "Q", &["L", "M", "Q", "H"])?;
     let scale = b.num(2, b.scale(), 1., 100.)?;
     let mask = b.integer(4, 7, 0, 7)?;
-    let (level, input) = Input::parse(data)?;
+    let (level, mut input) = Input::parse(data)?;
+    input.printer_segmentation = b.compatibility.qr_printer_segmentation;
     let encode_mask = |mask| {
         if b.param(1, "2") == "1" {
             super::qr_model1::encode(
@@ -33,6 +34,7 @@ pub(super) fn render(b: &Barcode, data: &[u8]) -> Result<Path, String> {
 pub(super) struct Input<'a> {
     append: Option<[usize; 3]>,
     segments: Vec<(usize, &'a [u8])>,
+    printer_segmentation: bool,
 }
 impl<'a> Input<'a> {
     pub(super) fn parse(mut data: &'a [u8]) -> Result<(usize, Self), String> {
@@ -69,6 +71,7 @@ impl<'a> Input<'a> {
         let mut input = Self {
             append,
             segments: Vec::new(),
+            printer_segmentation: false,
         };
         match data[1] {
             b'A' => input.segments.push((0, &data[3..])),
@@ -131,13 +134,90 @@ impl<'a> Input<'a> {
             bits::push(&mut out, parity, 8);
         }
         for &(mode, data) in &self.segments {
-            out.extend(message(data, mode, version)?);
+            if mode == 0 && self.printer_segmentation {
+                out.extend(printer_message(data, version)?);
+            } else {
+                out.extend(message(data, mode, version)?);
+            }
         }
         Ok(out)
     }
 }
 
 const ALPHABET: &[u8] = b"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:";
+
+// ZD621 V93.21.33Z automatic-mode captures: qr-segmentation-zd621-v1.
+// Unlike the minimum-bit search below, the printer merges adjacent runs in a
+// forward scan, with compact-run lookahead before absorption into byte mode.
+// ISO/IEC 18004:2000 §§8.3–8.4 describes the modes and their bit costs;
+// this ordering is an empirical encoding choice, not a normative requirement.
+// https://www.iso.org/standard/30789.html
+fn printer_message(data: &[u8], version: usize) -> Result<Vec<bool>, String> {
+    if data.len() > 7089 {
+        return Err("QR data exceeds version 40 capacity".into());
+    }
+    if data.is_empty() {
+        return message(data, 1, version);
+    }
+    let mut runs: Vec<(usize, usize, usize)> = Vec::new();
+    for (i, byte) in data.iter().enumerate() {
+        let mode = if byte.is_ascii_digit() {
+            1
+        } else if ALPHABET.contains(byte) {
+            2
+        } else {
+            4
+        };
+        if let Some(last) = runs.last_mut().filter(|last| last.0 == mode) {
+            last.2 = i + 1;
+        } else {
+            runs.push((mode, i, i + 1));
+        }
+    }
+    let cost = |mode, len: usize| {
+        4 + count_width(mode, version)
+            + match mode {
+                1 => len / 3 * 10 + [0, 4, 7][len % 3],
+                2 => len / 2 * 11 + len % 2 * 6,
+                _ => len * 8,
+            }
+    };
+    let merge_cost = |runs: &[(usize, usize, usize)]| {
+        let target = runs.iter().map(|r| r.0).max().unwrap();
+        let separate: usize = runs.iter().map(|&(m, a, b)| cost(m, b - a)).sum();
+        (cost(target, runs.last().unwrap().2 - runs[0].1) < separate).then_some(target)
+    };
+    let mut i = 0;
+    while i + 1 < runs.len() {
+        let end = if i + 2 < runs.len() && runs[i].0 == runs[i + 2].0 && runs[i].0 >= runs[i + 1].0
+        {
+            i + 2
+        } else {
+            i + 1
+        };
+        if let Some(target) = merge_cost(&runs[i..=end]) {
+            // Before absorbing a compact run into bytes, give its following
+            // compact run a chance to join it. Never revisit an earlier
+            // boundary after advancing: this is deliberately not optimal.
+            if target == 4 && i + 2 < runs.len() && runs[i + 1].0 < 4 && runs[i + 2].0 < 4 {
+                if let Some(next_target) = merge_cost(&runs[i + 1..=i + 2]) {
+                    let joined = (next_target, runs[i + 1].1, runs[i + 2].2);
+                    runs.splice(i + 1..=i + 2, [joined]);
+                    continue;
+                }
+            }
+            let joined = (target, runs[i].1, runs[end].2);
+            runs.splice(i..=end, [joined]);
+        } else {
+            i += 1;
+        }
+    }
+    let mut out = Vec::new();
+    for (mode, start, end) in runs {
+        out.extend(message(&data[start..end], mode, version)?);
+    }
+    Ok(out)
+}
 // ISO/IEC 18004 tables, cross-checked against Thonky error-correction tables.
 const EC: [[usize; 40]; 4] = [
     [
@@ -534,6 +614,44 @@ pub(super) fn mask_bit(mask: usize, x: usize, y: usize) -> bool {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn printer_segments_match_decoded_native_bitstreams() {
+        // Independently read from the format/data modules in the immutable
+        // Labelixa and merge-order captures. ISO/IEC 18004:2000 §§8.3–8.4.
+        // https://www.iso.org/standard/30789.html
+        let url = b"https://example.com/product/48213";
+        let native: Vec<_> = message(b"https://example.com/product", 4, 1)
+            .unwrap()
+            .into_iter()
+            .chain(message(b"/48213", 2, 1).unwrap())
+            .collect();
+        assert_eq!(printer_message(url, 1).unwrap(), native);
+        assert_eq!(native.len(), 274); // Exceeds Version 3/Q's 272 data bits.
+        assert_eq!(automatic_message(url, 1).unwrap().len(), 267);
+
+        // A previously accepted boundary is not revisited after the following
+        // numeric run joins an alphanumeric run, even when bytes would be shorter.
+        let native: Vec<_> = message(b"abc", 4, 1)
+            .unwrap()
+            .into_iter()
+            .chain(message(b"ABCDEF123", 2, 1).unwrap())
+            .chain(message(b"xyz", 4, 1).unwrap())
+            .collect();
+        assert_eq!(printer_message(b"abcABCDEF123xyz", 1).unwrap(), native);
+        assert_eq!(
+            printer_message(b"abcABCDE1234z", 1).unwrap(),
+            message(b"abcABCDE1234z", 4, 1).unwrap()
+        );
+        // Existing qr-zd621-v1 mixed controls: a byte run cannot be
+        // absorbed by less general alphanumeric neighbors as one triple.
+        let native: Vec<_> = message(b"Hello", 4, 1)
+            .unwrap()
+            .into_iter()
+            .chain(message(b" QR 123", 2, 1).unwrap())
+            .collect();
+        assert_eq!(printer_message(b"Hello QR 123", 1).unwrap(), native);
+    }
 
     #[test]
     fn structured_append_header_and_manual_segments() {

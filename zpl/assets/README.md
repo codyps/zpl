@@ -85,6 +85,11 @@ are in `tests/fixtures/resident-fonts-zd621-v1`. ZBF1's one-byte codepoint also
 supports U+00A0–00FF; counts are bounded at 191 and C0/C1/DEL remain excluded.
 Unsampled font-0 sizes still fall back to scaling the original 32-dot strike.
 
+`font0-28-0.zbf` adds all 95 printable ASCII glyphs at natural-width 28 dots.
+The 3,584-byte strike, raw sampling pages, exact independent text verification,
+four-orientation FO/FT controls, and full Labelixa QR label comparisons are
+documented in [qr-segmentation-zd621-v1](../tests/fixtures/qr-segmentation-zd621-v1/README.md).
+
 `fontE-28-15.zbf` supplies all 95 printable ASCII OCR-B glyphs, including the
 ten unchanged digits used for UPC/EAN captions.
 It is a native 203-DPI printer strike, with a 20-dot advance and zero-based
