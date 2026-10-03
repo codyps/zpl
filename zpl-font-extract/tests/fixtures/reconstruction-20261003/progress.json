@@ -1,0 +1,261 @@
+{
+  "executed_evaluations": 229,
+  "model_sha256": "984870484ecd80ba20aa0d2ce2bed24a4b0ee29901bf8fe9188b0c97695a53b6",
+  "schema": "automatic-font-reconstruction-v1",
+  "stages": [
+    {
+      "candidates": [
+        {
+          "candidate": "polygon",
+          "loss": 0.024884301548453874,
+          "points": 708
+        },
+        {
+          "candidate": "quadratic-0.65",
+          "loss": 0.017407226891064675,
+          "points": 754
+        },
+        {
+          "candidate": "quadratic-0.9",
+          "loss": 0.01857859455424015,
+          "points": 233
+        },
+        {
+          "candidate": "quadratic-1.25",
+          "loss": 0.01983488612554375,
+          "points": 92
+        },
+        {
+          "candidate": "quadratic-1.75",
+          "loss": 0.022461374700861906,
+          "points": 75
+        }
+      ],
+      "glyph": "@",
+      "rejected": [],
+      "selected": "quadratic-1.25",
+      "stage": "geometry"
+    },
+    {
+      "candidates": [
+        {
+          "candidate": "polygon",
+          "loss": 0.018580867411340362,
+          "points": 12
+        },
+        {
+          "candidate": "quadratic-0.65",
+          "loss": 0.012426067215800538,
+          "points": 12
+        },
+        {
+          "candidate": "quadratic-0.9",
+          "loss": 0.012426067215800538,
+          "points": 12
+        },
+        {
+          "candidate": "quadratic-1.25",
+          "loss": 0.012426067215800538,
+          "points": 12
+        },
+        {
+          "candidate": "quadratic-1.75",
+          "loss": 0.012426067215800538,
+          "points": 12
+        }
+      ],
+      "glyph": "H",
+      "rejected": [],
+      "selected": "quadratic-0.65",
+      "stage": "geometry"
+    },
+    {
+      "candidates": [
+        {
+          "candidate": "polygon",
+          "loss": 0.01896699766660693,
+          "points": 440
+        },
+        {
+          "candidate": "quadratic-0.9",
+          "loss": 0.014060893941248714,
+          "points": 205
+        },
+        {
+          "candidate": "quadratic-1.25",
+          "loss": 0.015193814873054809,
+          "points": 61
+        },
+        {
+          "candidate": "quadratic-1.75",
+          "loss": 0.01610554619888933,
+          "points": 53
+        }
+      ],
+      "glyph": "O",
+      "rejected": [
+        {
+          "candidate": "quadratic-0.65",
+          "reason": "curve subdivision budget exceeded"
+        }
+      ],
+      "selected": "quadratic-1.25",
+      "stage": "geometry"
+    },
+    {
+      "candidates": [
+        {
+          "candidate": "polygon",
+          "loss": 0.014243182053806142,
+          "points": 608
+        },
+        {
+          "candidate": "quadratic-0.65",
+          "loss": 0.009077134010692498,
+          "points": 617
+        },
+        {
+          "candidate": "quadratic-0.9",
+          "loss": 0.010051306683144643,
+          "points": 249
+        },
+        {
+          "candidate": "quadratic-1.25",
+          "loss": 0.011015257759980197,
+          "points": 50
+        },
+        {
+          "candidate": "quadratic-1.75",
+          "loss": 0.011704119907590663,
+          "points": 46
+        }
+      ],
+      "glyph": "S",
+      "rejected": [],
+      "selected": "quadratic-1.25",
+      "stage": "geometry"
+    },
+    {
+      "candidates": [
+        {
+          "candidate": "polygon",
+          "loss": 0.013676411318744475,
+          "points": 382
+        },
+        {
+          "candidate": "quadratic-0.65",
+          "loss": 0.01717709834864764,
+          "points": 387
+        },
+        {
+          "candidate": "quadratic-0.9",
+          "loss": 0.017709712313362172,
+          "points": 170
+        },
+        {
+          "candidate": "quadratic-1.25",
+          "loss": 0.018456725922427742,
+          "points": 58
+        },
+        {
+          "candidate": "quadratic-1.75",
+          "loss": 0.020279560327150562,
+          "points": 49
+        }
+      ],
+      "glyph": "g",
+      "rejected": [],
+      "selected": "polygon",
+      "stage": "geometry"
+    },
+    {
+      "candidates": [
+        {
+          "candidate": "polygon",
+          "loss": 0.005045631453093644,
+          "points": 58
+        },
+        {
+          "candidate": "quadratic-0.65",
+          "loss": 0.002784493098251949,
+          "points": 60
+        },
+        {
+          "candidate": "quadratic-0.9",
+          "loss": 0.002594561689810347,
+          "points": 35
+        },
+        {
+          "candidate": "quadratic-1.25",
+          "loss": 0.0035573751085987673,
+          "points": 16
+        },
+        {
+          "candidate": "quadratic-1.75",
+          "loss": 0.0035573751085987673,
+          "points": 16
+        }
+      ],
+      "glyph": "j",
+      "rejected": [],
+      "selected": "quadratic-0.9",
+      "stage": "geometry"
+    },
+    {
+      "accepted": false,
+      "glyph": "@",
+      "selected": [
+        "none",
+        "none"
+      ],
+      "stage": "hints"
+    },
+    {
+      "accepted": true,
+      "glyph": "H",
+      "selected": [
+        "stems-low",
+        "none"
+      ],
+      "stage": "hints"
+    },
+    {
+      "accepted": true,
+      "glyph": "O",
+      "selected": [
+        "stems-low",
+        "stems-center"
+      ],
+      "stage": "hints"
+    },
+    {
+      "accepted": true,
+      "glyph": "S",
+      "selected": [
+        "grid",
+        "none"
+      ],
+      "stage": "hints"
+    },
+    {
+      "accepted": true,
+      "glyph": "g",
+      "selected": [
+        "stems-low",
+        "none"
+      ],
+      "stage": "hints"
+    },
+    {
+      "accepted": true,
+      "glyph": "j",
+      "selected": [
+        "stems-low",
+        "grid"
+      ],
+      "stage": "hints"
+    }
+  ],
+  "status": "complete",
+  "unique_evaluations": 229
+}

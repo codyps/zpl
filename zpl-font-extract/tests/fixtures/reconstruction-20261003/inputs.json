@@ -1,0 +1,90 @@
+{
+  "complexity_penalty": 1e-05,
+  "development": {
+    "manifest_sha256": "f1fd7a3d2c7ccc9344b2587bddf0bf622844473412c14d5ac95a3b878c11b16c",
+    "pages": [
+      {
+        "name": "font0-small-development",
+        "png_sha256": "80582d225c832ec1246e6f8c8d6f92aacc3f61e6b7e873806ba402989ac8759d"
+      },
+      {
+        "name": "font0-transform-development",
+        "png_sha256": "c2daaef416647a59906abe59b3caff3424be7ceee9139639672e68f399f9a066"
+      }
+    ],
+    "printer": {
+      "dpi": 203,
+      "firmware": "V93.21.33Z",
+      "model": "ZD621",
+      "serial": "D7J211001302"
+    }
+  },
+  "engine_sha256": "4a02ea60aed8d4b8e5ad13a8b6b665f5ff355dc24d8450091a6180473c989537",
+  "hint_cutin": 24,
+  "schema": "automatic-font-reconstruction-v1",
+  "scripts": {
+    "analyze_font0_outline.py": "e0a05ed4bc67922cfb36fa66b69bd2d68338a450873704cc5343d4d584205240",
+    "analyze_font_probe.py": "d81f8a15949bb9594ae9b743392e1398d1ce0c9d6a8bced43902bf00a2fa96d9",
+    "capture_font_probe.py": "3df2193eba9e8a29b2627fa9f22d9b753743c276a7ced197f5cf1e4f2e04d27c",
+    "compare_swiss.py": "795eb70877c1bf0460c45602af4afbe520f62e5ead8e7bfa59c9b03059fab5d3",
+    "font0_hint_model.py": "39b32de2fd377da3d0ff98a9d49978d3fc0a70a986fc1c45b63715379587747a",
+    "font_probe.py": "467c77d1a615e71caab9714f29af4553badbd8dff1585c25afb2ce7d03fd7257",
+    "reconstruct_font.py": "63c209046e1828afef3589e209fa4e32ed78ea0d29ca5037bb109f8557430d76",
+    "reconstruct_geometry.py": "99fe8954bd4772dc73d8df2ec4c6123bacdc09f4f1921948fb8ee2dd7ff4ed29",
+    "reconstruct_hints.py": "0fcd5fd605615791bbe296ef196c16e1546858b5987b10f87050af6876f20154"
+  },
+  "selection": "development-only; every third size configuration reserved for hint acceptance",
+  "source": {
+    "manifest_sha256": "07f6dc3853a7885286419ae914841efe040b2222b4e6debd5835e88852dcfdfc",
+    "pages": [
+      {
+        "name": "outline-256-HO",
+        "png_sha256": "af2e1a0f7b1e8dd1c66894c1e27c83b4aa3723bac671504b1e186a23e0eb3095"
+      },
+      {
+        "name": "outline-256-Sg",
+        "png_sha256": "0818413d09dc5be3eee6514fc58dafd2c24cf32cedbe6361431b41fd172dfff2"
+      },
+      {
+        "name": "outline-256-jat",
+        "png_sha256": "9c5ae7f2ce0eae7a8ce266f71ce19320cce3103c445fed4593fd8000ca32775f"
+      },
+      {
+        "name": "outline-384-HO",
+        "png_sha256": "da4f541b64005a7c3350bb1af3d791bab889b37defd35b3d3e160723c94d4a8e"
+      },
+      {
+        "name": "outline-384-Sg",
+        "png_sha256": "4e35d589f39e89c80b75cafeeaafa5cd356816757fd7d4a0190317c924d50794"
+      },
+      {
+        "name": "outline-384-jat",
+        "png_sha256": "3347dd378945b4d544e75ae83e90d8f065732919e76748cbf9e9564a4dccf2f4"
+      },
+      {
+        "name": "outline-512-HO",
+        "png_sha256": "deace3d836889e2976c9a54ad8d23ea0483251d118657261ef630ac9452409a9"
+      },
+      {
+        "name": "outline-512-Sg",
+        "png_sha256": "eaea2edba1e895c6938f56bdfaa207e73b5fe46c923f0db0c8c050da16de4955"
+      },
+      {
+        "name": "outline-512-jat",
+        "png_sha256": "4d22dc2f6302097a1a27d3a0f3c64c89ac6beb477e00670268023465a5c7ee05"
+      }
+    ],
+    "printer": {
+      "dpi": 203,
+      "firmware": "V93.21.33Z",
+      "model": "ZD621",
+      "serial": "D7J211001302"
+    }
+  },
+  "tolerances": [
+    0.65,
+    0.9,
+    1.25,
+    1.75
+  ]
+}

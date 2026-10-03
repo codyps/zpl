@@ -87,6 +87,9 @@ the large-outline Font 0 recovery pilot.
 [Small-size font results](font-small-sizes.md) records reconstructed hint programs,
 independent validation, generated-font printer replay, and the CVT axis correction.
 
+[Automatic font reconstruction](automatic-font-reconstruction.md) describes bounded geometry
+and hint fitting, resumable runs, frozen font export and independent validation.
+
 ## Rendering comparisons
 
 [Binary PNG image diff](raster-diff.md) describes the Rust `png-diff` tool,

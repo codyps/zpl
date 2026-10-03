@@ -6,6 +6,9 @@ The first validation set exposed a failure of simple point relationships; a
 revised model improves a fresh reserved set while regressing the earlier set.
 Both results are retained below. Production font selection is unchanged.
 
+The [automatic reconstruction follow-up](automatic-font-reconstruction.md) adds curve fitting,
+geometry-derived hints, resumable automation and separate acceptance gates.
+
 The handler also now scales the ZD621 control-value table (CVT) on the larger
 requested axis and projects it with a 16.16 ratio. Original diagnostic fonts
 validate this correction exactly. It does not change the Swiss small-size

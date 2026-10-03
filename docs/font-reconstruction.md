@@ -1,5 +1,8 @@
 # Resident font reconstruction study
 
+The [automatic reconstruction pipeline](automatic-font-reconstruction.md) implements
+curve fitting, inferred hints, frozen export and independent acceptance checks.
+
 ## Result
 
 The 32-dot bitmap is exact only in its measured context. It does **not** contain

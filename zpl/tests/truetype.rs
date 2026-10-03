@@ -413,6 +413,7 @@ fn zd621_point_quantization_rounding_and_spacing_match_native_canvases() {
         "cvt-axis-20261003",
         "cvt-axis-validation-v2-20261003",
         "font0-hints-20261003",
+        "reconstruction-replay-20261003",
     ] {
         let root = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
             .join("../zpl-font-extract/tests/fixtures")
@@ -540,11 +541,16 @@ fn zd621_point_quantization_rounding_and_spacing_match_native_canvases() {
                     (5, 8, 3909),
                 ];
                 assert_eq!(actual, expected[page_index], "{directory}/{name}");
+            } else if directory == "reconstruction-replay-20261003" {
+                // Automatically fitted quadratic geometry and derived hints;
+                // same generated TTF on both sides, native unaligned canvases.
+                let expected = [(0, 0, 52), (43, 41, 20632), (4, 16, 990)];
+                assert_eq!(actual, expected[page_index], "{directory}/{name}");
             } else {
                 assert_eq!((actual.0, actual.1), (0, 0), "{directory}/{name}");
             }
         }
     }
-    assert_eq!(pages, 33);
-    assert_eq!(fields, 2172);
+    assert_eq!(pages, 36);
+    assert_eq!(fields, 2264);
 }
