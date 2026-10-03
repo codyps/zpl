@@ -5,8 +5,6 @@ diesel::table! {
         id -> BigInt,
         hash -> Binary,
         data -> Binary,
-        png_id -> Nullable<BigInt>,
-        rendered_zpl_id -> Nullable<BigInt>,
     }
 }
 
@@ -15,7 +13,7 @@ diesel::table! {
         rowid -> BigInt,
         timestamp -> Text,
         input_id -> BigInt,
-        renderer_key -> Nullable<Binary>,
+        renderer_key -> Binary,
         png_id -> Nullable<BigInt>,
         error -> Nullable<Text>,
         completed_at -> Nullable<Text>,
@@ -39,11 +37,10 @@ diesel::table! {
         input_id -> BigInt,
         renderer_key -> Binary,
         png_id -> BigInt,
-        printer_identity -> Nullable<Text>,
+        printer_identity -> Text,
     }
 }
 
-diesel::joinable!(inputs -> pngs (png_id));
 diesel::joinable!(png_requests -> inputs (input_id));
 diesel::joinable!(png_requests -> pngs (png_id));
 diesel::joinable!(render_cache -> inputs (input_id));

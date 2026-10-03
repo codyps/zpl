@@ -14,7 +14,7 @@ let
       environment.OTEL_TRACES_EXPORTER = "none";
       environmentFile = "/run/proxy-test.env";
     };
-    environment.systemPackages = [ pkgs.curl pkgs.sqlite ];
+    environment.systemPackages = [ pkgs.curl pkgs.sqlite pkgs.python3 ];
     environment.etc."proxy-unrelated".text = "unrelated host data";
     networking.hosts."127.0.0.1" = [ "printer.test" ];
     # Reqwest queries both address families. Answer absent AAAA records locally
@@ -49,7 +49,7 @@ let
             def handle(self):
                 try:
                     for line in self.rfile:
-                        value = b"SERIAL-1" if b"device.unique_id" in line else b"V1"
+                        value = b"SERIAL-1" if b"device.unique_id" in line else b"ZD621" if b"device.product_name" in line else b"V1" if b"appl.name" in line else b"?"
                         self.wfile.write(b'"' + value + b'"\r\n')
                         self.wfile.flush()
                 except ConnectionError:
@@ -123,6 +123,13 @@ pkgs.testers.runNixOSTest {
         unix.succeed("install -d -m 0700 /run/secrets")
         unix.succeed("umask 077; printf %s " + shlex.quote(json.dumps(printer_config)) + " > /run/secrets/next.json; mv /run/secrets/next.json /run/secrets/printers.json")
         unix.succeed("umask 077; printf %s " + shlex.quote(value) + " > /run/secrets/expected-token")
+    def check_png(machine):
+        machine.succeed("grep -i 'x-zpl-printer-model: ZD621' /tmp/headers")
+        machine.succeed("grep -i 'x-zpl-printer-serial: SERIAL-1' /tmp/headers")
+        machine.succeed("grep -i 'x-zpl-printer-firmware: V1' /tmp/headers")
+        script = "import sqlite3; from pathlib import Path; original=Path('/tmp/mock-printer.png').read_bytes(); response=Path('/tmp/image').read_bytes(); db=sqlite3.connect('/var/lib/zpl-proxy-api/db.sqlite'); assert db.execute('SELECT data FROM pngs').fetchone()[0] == original; assert b'ZPL Source' in response and b'^XA^XZ' in response; assert b'ZPL Printer Configuration' in response; assert response != original"
+        machine.succeed("python3 -c " + shlex.quote(script))
+
     provision(token)
     for machine, transport in [(tcp, ""), (unix, "--unix-socket /run/zpl-proxy-api.sock")]:
         machine.wait_for_unit("zpl-proxy-api.socket")
@@ -149,13 +156,13 @@ pkgs.testers.runNixOSTest {
         machine.succeed(request)
         machine.succeed("grep -i 'x-zpl-cache: miss' /tmp/headers")
         assert machine.succeed("sqlite3 /var/lib/zpl-proxy-api/db.sqlite 'SELECT name || char(58) || serial || char(58) || firmware FROM printer_requests'").strip() == "ZD621:SERIAL-1:V1"
-        machine.succeed("cmp /tmp/image /tmp/mock-printer.png")
+        check_png(machine)
         machine.succeed("systemctl stop zpl-proxy-api.service")
         machine.wait_for_unit("zpl-proxy-api.socket")
         # A new connection reactivates the worker with the same listener and DB.
         machine.succeed(request)
         machine.succeed("grep -i 'x-zpl-cache: hit' /tmp/headers")
-        machine.succeed("cmp /tmp/image /tmp/mock-printer.png")
+        check_png(machine)
         assert machine.succeed("sqlite3 /var/lib/zpl-proxy-api/db.sqlite 'SELECT COUNT(*) FROM png_requests'").strip() == "2"
 
     pid = unix.succeed("systemctl show -p MainPID --value zpl-proxy-api.service").strip()
@@ -170,7 +177,7 @@ pkgs.testers.runNixOSTest {
     unix.succeed("systemctl restart zpl-proxy-api.service")
     unix.succeed(request + " --data-urlencode refresh=true")
     unix.succeed("grep -i 'x-zpl-cache: miss' /tmp/headers")
-    unix.succeed("cmp /tmp/image /tmp/mock-printer.png")
+    check_png(unix)
 
     assert unix.succeed("stat -c '%a %G' /run/zpl-proxy-api.sock").strip() == "660 proxy-clients"
     unix.succeed("su -s /bin/sh proxy-client -c 'curl --fail --unix-socket /run/zpl-proxy-api.sock http://localhost/'")
