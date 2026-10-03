@@ -4114,6 +4114,7 @@ dependencies = [
  "opentelemetry",
  "opentelemetry-otlp",
  "opentelemetry_sdk",
+ "raster-diff",
  "reqwest",
  "serde",
  "serde_json",

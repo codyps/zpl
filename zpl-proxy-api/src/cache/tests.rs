@@ -24,6 +24,11 @@ fn migrated() -> SqliteConnection {
         ))
         .unwrap();
     connection
+        .batch_execute(include_str!(
+            "../../migrations/2026-09-29-120000_printer-management/up.sql"
+        ))
+        .unwrap();
+    connection
         .batch_execute("PRAGMA foreign_keys = ON;")
         .unwrap();
     connection

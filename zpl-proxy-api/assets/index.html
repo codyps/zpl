@@ -1,57 +1,112 @@
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-	<title>ZPL Print Preview</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ZPL Print Preview</title>
+    <style>
+        :root { color-scheme: light dark; font-family: system-ui, sans-serif; }
+        main { max-width: 60rem; margin: 2rem auto; padding: 0 1rem; }
+        label { display: block; margin-top: 1rem; margin-bottom: .4rem; }
+        textarea { box-sizing: border-box; width: 100%; font-family: monospace; }
+        select, button { font: inherit; padding: .4rem .7rem; }
+        button { margin-top: 1rem; }
+        img { max-width: 100%; height: auto; background: white; }
+    </style>
 </head>
-
 <body>
-	<h1>ZPL Print Preview</h1>
-	<textarea id="zpl" rows="10" cols="50">
-		^XA
-		^FO50,50
-		^A0N50,50
-		^FDHello, World!^FS
-		^XZ
-	</textarea>
+<main>
+    <h1>ZPL Print Preview</h1>
+    <form id="preview-form">
+        <label for="printer">Printer</label>
+        <select id="printer" required disabled><option value="">Loading printers…</option></select>
+        <label for="zpl">ZPL label</label>
+        <textarea id="zpl" rows="10" cols="50" required spellcheck="false">^XA
+^FO50,50
+^A0N,50,50
+^FDHello, World!^FS
+^XZ</textarea>
+        <button id="preview" disabled>Preview</button>
+    </form>
+    <p id="status" role="status"></p>
+    <p id="error" role="alert"></p>
+    <img id="image" alt="Rendered label preview" hidden>
+</main>
+<script>
+    const form = document.getElementById('preview-form');
+    const printer = document.getElementById('printer');
+    const zpl = document.getElementById('zpl');
+    const preview = document.getElementById('preview');
+    const image = document.getElementById('image');
+    const status = document.getElementById('status');
+    const error = document.getElementById('error');
+    let imageUrl;
+    let generation = 0;
+    let busy = false;
 
-	<button id="print">Print</button>
-	<p id="error" role="alert"></p>
+    function clearPreview() {
+        generation++;
+        image.hidden = true;
+        image.removeAttribute('src');
+        if (imageUrl) URL.revokeObjectURL(imageUrl);
+        imageUrl = undefined;
+        error.textContent = '';
+        if (!busy) status.textContent = '';
+    }
+    printer.addEventListener('change', clearPreview);
+    zpl.addEventListener('input', clearPreview);
 
-	<img id="image" />
-
-	<script>
-		const zpl = document.getElementById('zpl');
-		const print = document.getElementById('print');
-		const image = document.getElementById('image');
-		const error = document.getElementById('error');
-		let imageUrl;
-
-		print.addEventListener('click', async function() {
-			print.disabled = true;
-			error.textContent = '';
-			try {
-				const response = await fetch("/api/zpl-zd621", {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-						'Accept': 'image/png',
-					},
-					body: JSON.stringify({ zpl: zpl.value }),
-				});
-				if (!response.ok) {
-					throw new Error(`Preview failed (${response.status})`);
-				}
-				const nextUrl = URL.createObjectURL(await response.blob());
-				image.src = nextUrl;
-				if (imageUrl) URL.revokeObjectURL(imageUrl);
-				imageUrl = nextUrl;
-			} catch (cause) {
-				error.textContent = cause.message;
-			} finally {
-				print.disabled = false;
-			}
-		});
-
-		
-	</script>
+    async function loadPrinters() {
+        try {
+            const response = await fetch('api/printers');
+            if (!response.ok) throw new Error('Unable to load printers. Reload to try again.');
+            const names = await response.json();
+            if (!Array.isArray(names) || names.length === 0 || !names.every(name => typeof name === 'string')) {
+                throw new Error('No printers are configured.');
+            }
+            printer.replaceChildren(...names.map(name => new Option(name, name)));
+            printer.disabled = false;
+            preview.disabled = false;
+        } catch (cause) {
+            error.textContent = cause.message;
+            printer.replaceChildren(new Option('Printers unavailable', ''));
+        }
+    }
+    form.addEventListener('submit', async event => {
+        event.preventDefault();
+        if (busy || !printer.value) return;
+        clearPreview();
+        const current = generation;
+        const name = printer.value;
+        busy = true;
+        preview.disabled = true;
+        status.textContent = `Generating preview on ${name}… Recovery is automatic if the printer stops responding.`;
+        try {
+            const response = await fetch(`api/printers/${encodeURIComponent(name)}/preview`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'image/png' },
+                body: JSON.stringify({ zpl: zpl.value }),
+            });
+            if (!response.ok) {
+                const message = await response.text();
+                throw new Error(message || `Preview failed (${response.status})`);
+            }
+            const blob = await response.blob();
+            if (current !== generation) return;
+            imageUrl = URL.createObjectURL(blob);
+            image.src = imageUrl;
+            image.alt = `Label preview from ${name}`;
+            image.hidden = false;
+            status.textContent = `Preview from ${name}`;
+        } catch (cause) {
+            if (current === generation) error.textContent = cause.message;
+        } finally {
+            busy = false;
+            preview.disabled = false;
+            if (image.hidden) status.textContent = '';
+        }
+    });
+    loadPrinters();
+</script>
 </body>
 </html>

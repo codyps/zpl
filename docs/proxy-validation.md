@@ -70,12 +70,15 @@ insufficient: it supports downloaded graphics and stored-image recall.
 Use a dedicated, trusted printer with default ZPL syntax, normal bitmap clearing
 (`MCY`), and trusted resident-font mappings. Do not share it with clients that
 change syntax, retain bitmap templates, substitute fonts, or execute arbitrary
-commands. A validator cannot prove or undo pre-existing printer state. Even
+commands. The proxy prefixes every preview with explicit rendering defaults and bitmap
+clearing, and verifies a control preview on first use and during recovery.
+It does not undo arbitrary resident-font substitutions or changed command syntax. Even
 built-in font identifiers can have been remapped by `CW`; a retained bitmap can
 otherwise appear behind a later label. This policy prevents submitted requests
 from making those changes; it is not a sandbox for a printer already configured
-by an untrusted client. Change the cache namespace after trusted configuration
-changes, as described in [proxy caching](proxy-cache.md).
+by an untrusted client. Firmware and serial changes are included in cache identity automatically.
+Change the cache namespace after other trusted configuration changes, as described
+in [proxy caching and automatic recovery](proxy-cache.md).
 
 The policy is based on the [Zebra programming guide](https://www.zebra.com/content/dam/support-dam/en/documentation/unrestricted/guide/software/zpl-zbi2-pg-en.pdf),
 also bundled as `docs/zpl-zbi2-pg-en.pdf`: `FD`/`FH` pp. 190/193, `GF` p. 215,

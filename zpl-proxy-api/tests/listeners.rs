@@ -54,6 +54,7 @@ fn configure(command: &mut Command, dir: &tempfile::TempDir) {
         include_str!("../migrations/2026-09-14-000000_fix-request-client/up.sql"),
         include_str!("../migrations/2026-09-15-220000_persist-render-results/up.sql"),
         include_str!("../migrations/2026-09-15-230000_remove-client-ips/up.sql"),
+        include_str!("../migrations/2026-09-29-120000_printer-management/up.sql"),
     ] {
         connection.batch_execute(migration).unwrap();
     }
@@ -128,7 +129,7 @@ async fn inherited_tcp_listener_serves_http_and_preserves_validation() {
         .text()
         .await
         .unwrap()
-        .contains("<html>"));
+        .contains("<title>ZPL Print Preview</title>"));
     let response = client
         .post(format!("{url}api/zpl-zd621"))
         .json(&serde_json::json!({"zpl": "^XA^WD*:*.*^XZ"}))
@@ -158,7 +159,7 @@ async fn inherited_unix_listener_serves_http_and_keeps_systemd_owned_path() {
         .text()
         .await
         .unwrap()
-        .contains("<html>"));
+        .contains("<title>ZPL Print Preview</title>"));
     process.stop().await;
     assert!(path.exists(), "the socket unit owns this path");
 }
@@ -182,7 +183,7 @@ async fn standalone_unix_listener_serves_http_and_removes_its_path_on_shutdown()
         .text()
         .await
         .unwrap()
-        .contains("<html>"));
+        .contains("<title>ZPL Print Preview</title>"));
     process.stop().await;
     assert!(!path.exists());
 }

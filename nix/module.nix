@@ -3,13 +3,12 @@
 let
   cfg = config.services.zpl-proxy-api;
   bindAddress = if lib.hasInfix ":" cfg.listenAddress then "[${cfg.listenAddress}]" else cfg.listenAddress;
-  arguments = [
-    "--zd621-url"
-    cfg.printerUrl
-    "--socket-activation"
-    "--cache-namespace"
-    cfg.cacheNamespace
-  ] ++ lib.concatMap (header: [ "--zd621-header" header ]) cfg.printerHeaders;
+  printerConfig = pkgs.writeText "zpl-printers.json" (builtins.toJSON cfg.printers);
+  arguments = [ "--socket-activation" "--cache-namespace" cfg.cacheNamespace ]
+    ++ (if cfg.printers != [ ] then [ "--printers" printerConfig ] else
+  [ "--zd621-url" cfg.printerUrl ]
+    ++ lib.concatMap (header: [ "--zd621-header" header ]) cfg.printerHeaders);
+
 in
 {
   options.services.zpl-proxy-api = {
@@ -20,8 +19,24 @@ in
       defaultText = lib.literalExpression "pkgs.callPackage ./package.nix { }";
       description = "Proxy package, including assets and migrations under share/zpl-proxy-api.";
     };
+    printers = lib.mkOption {
+      default = [ ];
+      description = "Named, exclusively owned printers. Public requests select name via /api/printers/{name}/preview. Values are public in the Nix store.";
+      type = lib.types.listOf (lib.types.submodule {
+        options = {
+          name = lib.mkOption { type = lib.types.strMatching "[A-Za-z0-9_.-]{1,80}"; description = "Public printer name, typically model or model-firmware."; };
+          url = lib.mkOption { type = lib.types.str; description = "Printer HTTP(S) origin."; };
+          control_address = lib.mkOption { type = lib.types.str; description = "Trusted SGD host:port, usually printer:9100."; };
+          width = lib.mkOption { type = lib.types.ints.between 8 32000; description = "Default native canvas width in dots."; };
+          height = lib.mkOption { type = lib.types.ints.between 8 32000; description = "Default canvas height in dots."; };
+          headers = lib.mkOption { type = lib.types.listOf lib.types.str; default = [ ]; description = "HTTP headers; do not put secrets in the Nix store."; };
+          serial = lib.mkOption { type = lib.types.nullOr lib.types.str; default = null; description = "Optional expected serial number; mismatches fail closed."; };
+        };
+      });
+    };
     printerUrl = lib.mkOption {
-      type = lib.types.str;
+      type = lib.types.nullOr lib.types.str;
+      default = null;
       example = "http://printer.local/";
       description = "Base HTTP URL of the Zebra printer. Run only one proxy per printer.";
     };
@@ -86,11 +101,16 @@ in
   config = lib.mkIf cfg.enable {
     assertions = [
       {
+        assertion = (cfg.printers != [ ]) != (cfg.printerUrl != null);
+        message = "Configure either services.zpl-proxy-api.printers or legacy printerUrl.";
+      }
+
+      {
         assertion = cfg.unixSocket == null || lib.hasPrefix "/" cfg.unixSocket;
         message = "services.zpl-proxy-api.unixSocket must be an absolute filesystem path.";
       }
       {
-        assertion = lib.hasPrefix "http://" cfg.printerUrl || lib.hasPrefix "https://" cfg.printerUrl;
+        assertion = cfg.printerUrl == null || lib.hasPrefix "http://" cfg.printerUrl || lib.hasPrefix "https://" cfg.printerUrl;
         message = "services.zpl-proxy-api.printerUrl must be an HTTP(S) URL.";
       }
       {
@@ -170,7 +190,7 @@ in
           "/etc/resolv.conf"
           "/etc/nsswitch.conf"
           "/etc/ssl/certs/ca-certificates.crt"
-        ];
+        ] ++ lib.optional (cfg.printers != [ ]) printerConfig;
         MountAPIVFS = true;
         ProtectProc = "invisible";
         ProcSubset = "pid";

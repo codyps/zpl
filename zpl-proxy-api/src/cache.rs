@@ -13,9 +13,11 @@ use std::sync::{Arc, Mutex};
 #[derive(Clone)]
 pub struct Cache(Arc<Mutex<SqliteConnection>>);
 
+mod managed;
 #[cfg(test)]
 mod tests;
 
+#[derive(Clone)]
 pub struct Attempt {
     pub request_id: i64,
     pub input_id: i64,
@@ -54,6 +56,8 @@ impl Cache {
             .select((png_requests::completed_at, png_requests::error))
             .limit(1)
             .load::<(Option<String>, Option<String>)>(&mut connection)?;
+        diesel::sql_query("SELECT request_id FROM printer_requests LIMIT 0")
+            .execute(&mut connection)?;
         Ok(Self(Arc::new(Mutex::new(connection))))
     }
 

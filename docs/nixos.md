@@ -17,7 +17,13 @@ and import the module in your host configuration:
         {
           services.zpl-proxy-api = {
             enable = true;
-            printerUrl = "http://printer.local/";
+            printers = [ {
+              name = "ZD621";
+              url = "http://printer.local/";
+              control_address = "printer.local:9100";
+              width = 832;
+              height = 1218;
+            } ];
             # For direct access from the LAN:
             listenAddress = "0.0.0.0";
             port = 3000;
@@ -39,7 +45,9 @@ By default the socket listens on `127.0.0.1:3000` and leaves the firewall closed
 which also suits a local reverse proxy. IPv6 addresses should be unbracketed,
 for example `listenAddress = "::1"`. The HTTP endpoint has no authentication;
 expose it only to trusted clients or through an authenticated reverse proxy.
-Run only one proxy per printer because the printer preview object is shared.
+One proxy can own multiple named printers, with independent queues. Run only one
+proxy instance per physical printer because its preview object is shared.
+See [configuration, identity recording and automatic recovery](proxy-cache.md).
 Use a dedicated printer with trusted default syntax, bitmap clearing, and font
 mappings; see the [admission policy and printer state prerequisite](proxy-validation.md).
 
