@@ -156,6 +156,7 @@ impl Mock {
                 height: 32,
                 headers: vec![],
                 serial: None,
+                admission: Default::default(),
             },
             labels,
             firmware,
@@ -282,71 +283,74 @@ async fn deterministic_rejection_is_durable_and_refresh_cannot_bypass_it() {
 
 #[tokio::test]
 async fn stuck_preview_restarts_and_retries_or_quarantines_reproduced_hang() {
-    for mode in [2, 3] {
-        let (_dir, cache, mut db) = database();
-        let mock = Mock::new("ZD621").await;
-        mock.mode.store(mode, Ordering::SeqCst);
-        let mut printer = mock.printer(cache);
-        Arc::get_mut(&mut printer.0).unwrap().timing.cooldown = Duration::from_secs(1);
-        let result = printer.render(LABEL.into(), false).await;
-        if mode == 2 {
-            assert!(!result.unwrap().1);
-        } else {
-            assert!(result.unwrap_err().downcast_ref::<Unavailable>().is_some());
+    for policy in [AdmissionPolicy::Restricted, AdmissionPolicy::Unrestricted] {
+        for mode in [2, 3] {
+            let (_dir, cache, mut db) = database();
+            let mut mock = Mock::new("ZD621").await;
+            mock.config.admission = policy;
+            mock.mode.store(mode, Ordering::SeqCst);
+            let mut printer = mock.printer(cache);
+            Arc::get_mut(&mut printer.0).unwrap().timing.cooldown = Duration::from_secs(1);
+            let result = printer.render(LABEL.into(), false).await;
+            if mode == 2 {
+                assert!(!result.unwrap().1);
+            } else {
+                assert!(result.unwrap_err().downcast_ref::<Unavailable>().is_some());
+                assert_eq!(
+                    mock.restarts.load(Ordering::SeqCst),
+                    1,
+                    "second restart must wait for cooldown"
+                );
+                timeout(Duration::from_secs(4), async {
+                    loop {
+                        if !printer.0.state.lock().await.recovering {
+                            break;
+                        }
+                        tokio::time::sleep(Duration::from_millis(20)).await;
+                    }
+                })
+                .await
+                .expect("automatic recovery did not finish");
+                assert!(
+                    printer
+                        .render(LABEL.into(), true)
+                        .await
+                        .unwrap_err()
+                        .downcast_ref::<Rejected>()
+                        .unwrap()
+                        .cached
+                );
+            }
             assert_eq!(
                 mock.restarts.load(Ordering::SeqCst),
-                1,
-                "second restart must wait for cooldown"
+                if mode == 2 { 1 } else { 2 }
             );
-            timeout(Duration::from_secs(4), async {
-                loop {
-                    if !printer.0.state.lock().await.recovering {
-                        break;
-                    }
-                    tokio::time::sleep(Duration::from_millis(20)).await;
-                }
-            })
-            .await
-            .expect("automatic recovery did not finish");
-            assert!(
-                printer
-                    .render(LABEL.into(), true)
-                    .await
-                    .unwrap_err()
-                    .downcast_ref::<Rejected>()
+            use crate::schema::preview_attempts as p;
+            let phases = p::table
+                .order(p::id)
+                .select(p::phase)
+                .load::<String>(&mut db)
+                .unwrap();
+            assert!(phases.iter().any(|p| p == "retry"));
+            assert_eq!(
+                p::table
+                    .filter(p::phase.eq("label"))
+                    .select(p::failure_kind)
+                    .first::<Option<String>>(&mut db)
                     .unwrap()
-                    .cached
+                    .as_deref(),
+                Some("hang")
+            );
+            assert!(phases.iter().any(|p| p == "recovery-control"));
+            assert_eq!(
+                p::table
+                    .filter(p::serial.ne("serial-ZD621"))
+                    .count()
+                    .get_result::<i64>(&mut db)
+                    .unwrap(),
+                0
             );
         }
-        assert_eq!(
-            mock.restarts.load(Ordering::SeqCst),
-            if mode == 2 { 1 } else { 2 }
-        );
-        use crate::schema::preview_attempts as p;
-        let phases = p::table
-            .order(p::id)
-            .select(p::phase)
-            .load::<String>(&mut db)
-            .unwrap();
-        assert!(phases.iter().any(|p| p == "retry"));
-        assert_eq!(
-            p::table
-                .filter(p::phase.eq("label"))
-                .select(p::failure_kind)
-                .first::<Option<String>>(&mut db)
-                .unwrap()
-                .as_deref(),
-            Some("hang")
-        );
-        assert!(phases.iter().any(|p| p == "recovery-control"));
-        assert_eq!(
-            p::table
-                .filter(p::serial.ne("serial-ZD621"))
-                .count()
-                .get_result::<i64>(&mut db)
-                .unwrap(),
-            0
-        );
     }
 }
 
@@ -401,7 +405,7 @@ async fn admission_precedes_all_identity_preview_and_cache_access() {
     let mock = Mock::new("a").await;
     let printer = mock.printer(cache);
     assert!(printer
-        .render("^XA^XGR:PRIVATE.GRF,1,1^FS^XZ".into(), true)
+        .render("^XA^XFR:PRIVATE.ZPL^FS^XZ".into(), true)
         .await
         .is_err());
     assert!(mock.labels.lock().unwrap().is_empty());
@@ -561,4 +565,114 @@ async fn client_disconnect_does_not_cancel_hang_recovery_or_persistence() {
             .unwrap(),
         0
     );
+}
+
+#[tokio::test]
+async fn unrestricted_preserves_input_with_caching_refresh_and_control_labels() {
+    let (_dir, cache, mut db) = database();
+    let mut mock = Mock::new("raw").await;
+    mock.config.admission = AdmissionPolicy::Unrestricted;
+    let printer = mock.printer(cache);
+    // Intentionally not a standard single label. No parser, reset-prefix insertion,
+    // or rendering allowlist may rewrite/reject this trusted operator stream.
+    let input = "~CC! !XA!XFR:FORMAT.ZPL!XZ\n";
+    for (refresh, hit) in [(false, false), (false, true), (true, false)] {
+        assert_eq!(printer.render(input.into(), refresh).await.unwrap().1, hit);
+    }
+    assert_eq!(
+        *mock.labels.lock().unwrap(),
+        vec![reset_label(CONTROL, 64, 32), input.into(), input.into()]
+    );
+    assert_eq!(mock.restarts.load(Ordering::SeqCst), 0);
+    use crate::schema::{png_requests as r, printer_requests as p, render_cache as c};
+    assert_eq!(
+        r::table
+            .filter(r::png_id.is_not_null())
+            .count()
+            .get_result::<i64>(&mut db)
+            .unwrap(),
+        3
+    );
+    assert_eq!(
+        p::table
+            .filter(p::serial.is_not_null())
+            .count()
+            .get_result::<i64>(&mut db)
+            .unwrap(),
+        3
+    );
+    assert_eq!(c::table.count().get_result::<i64>(&mut db).unwrap(), 1);
+}
+
+#[tokio::test]
+async fn unrestricted_retries_then_caches_confirmed_rejections() {
+    let (_dir, cache, mut db) = database();
+    let mut mock = Mock::new("raw-failure").await;
+    mock.config.admission = AdmissionPolicy::Unrestricted;
+    mock.mode.store(1, Ordering::SeqCst);
+    let printer = mock.printer(cache);
+    let error = printer.render(LABEL.into(), false).await.unwrap_err();
+    assert!(!error.downcast_ref::<Rejected>().unwrap().cached);
+    let sent = mock.labels.lock().unwrap().clone();
+    assert_eq!(
+        sent.iter().filter(|label| label.as_str() == LABEL).count(),
+        2
+    );
+    assert!(sent
+        .iter()
+        .any(|label| label == &reset_label(CONTROL, 64, 32)));
+    assert!(
+        printer
+            .render(LABEL.into(), true)
+            .await
+            .unwrap_err()
+            .downcast_ref::<Rejected>()
+            .unwrap()
+            .cached
+    );
+    assert_eq!(*mock.labels.lock().unwrap(), sent);
+    assert_eq!(mock.restarts.load(Ordering::SeqCst), 0);
+    use crate::schema::{permanent_errors as e, png_requests as r};
+    assert_eq!(e::table.count().get_result::<i64>(&mut db).unwrap(), 1);
+    assert_eq!(
+        r::table
+            .filter(r::error.is_not_null())
+            .filter(r::completed_at.is_not_null())
+            .count()
+            .get_result::<i64>(&mut db)
+            .unwrap(),
+        2
+    );
+}
+
+#[tokio::test]
+async fn stored_and_variable_content_use_caching_and_refresh() {
+    let (_dir, cache, mut db) = database();
+    let mock = Mock::new("images").await;
+    let printer = mock.printer(cache);
+    for input in [
+        "^XA^XGR:IMAGE.GRF,1,1^FS^XZ",
+        "^XA^FC^FDtime^FS^XZ",
+        "^XA^SN1^FS^XZ",
+    ] {
+        assert!(!printer.render(input.into(), false).await.unwrap().1);
+        assert!(printer.render(input.into(), false).await.unwrap().1);
+        assert!(!printer.render(input.into(), true).await.unwrap().1);
+    }
+    assert_eq!(mock.labels.lock().unwrap().len(), 7); // initialization + six labels
+    use crate::schema::render_cache as c;
+    assert_eq!(c::table.count().get_result::<i64>(&mut db).unwrap(), 3);
+}
+
+#[tokio::test]
+async fn policy_changes_select_a_new_cache_scope() {
+    let (_dir, cache, _db) = database();
+    let mut mock = Mock::new("policy").await;
+    let restricted = mock.printer(cache.clone());
+    restricted.render(LABEL.into(), false).await.unwrap();
+    mock.config.admission = AdmissionPolicy::Unrestricted;
+    let unrestricted = mock.printer(cache);
+    assert_ne!(restricted.0.key, unrestricted.0.key);
+    assert!(!unrestricted.render(LABEL.into(), false).await.unwrap().1);
+    assert_eq!(mock.labels.lock().unwrap().last().unwrap(), LABEL);
 }

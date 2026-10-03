@@ -6,7 +6,7 @@
 use crate::{
     cache::{self, Attempt, Cache},
     telemetry,
-    validation::RenderZpl,
+    validation::{AdmissionPolicy, RenderZpl},
 };
 use serde::Deserialize;
 use std::{sync::Arc, time::Duration};
@@ -35,6 +35,9 @@ pub struct PrinterConfig {
     pub headers: Vec<String>,
     #[serde(default)]
     pub serial: Option<String>,
+    /// Admission policy for this named endpoint; not a request option.
+    #[serde(default)]
+    pub admission: AdmissionPolicy,
 }
 
 #[derive(Debug)]
@@ -159,8 +162,8 @@ impl Printer {
             .default_headers(headers)
             .build()?;
         let namespace = format!(
-            "managed-v1:{namespace}:{}:{}:{}",
-            name, config.width, config.height
+            "managed-v3:{namespace}:{}:{}:{}:{:?}",
+            name, config.width, config.height, config.admission
         );
         let key = cache::renderer_key(url.as_str(), &config.headers, &namespace);
         Ok(Self(Arc::new(Inner {
@@ -189,22 +192,28 @@ impl Printer {
             .clone()
             .try_acquire_owned()
             .map_err(|_| Unavailable)?;
-        let zpl =
-            telemetry::spawn_blocking("render.validate", move || RenderZpl::parse(input)).await??;
+        let policy = self.0.config.admission;
+        let input = if policy == AdmissionPolicy::Restricted {
+            let zpl = telemetry::spawn_blocking("render.validate", move || RenderZpl::parse(input))
+                .await??;
+            zpl.as_str().to_owned()
+        } else {
+            input
+        };
         let this = self.clone();
         telemetry::spawn("printer.task", async move {
             let _permit = permit;
-            this.render_owned(zpl, refresh).await
+            this.render_owned(input, refresh).await
         })
         .await?
     }
 
-    async fn render_owned(&self, zpl: RenderZpl, refresh: bool) -> eyre::Result<(Vec<u8>, bool)> {
+    async fn render_owned(&self, zpl: String, refresh: bool) -> eyre::Result<(Vec<u8>, bool)> {
         let mut state = self.0.state.lock().await;
         let mut attempt = self
             .0
             .cache
-            .begin(zpl.as_str().as_bytes().to_vec(), self.0.key.clone(), true)
+            .begin(zpl.as_bytes().to_vec(), self.0.key.clone(), true)
             .await?;
         self.0
             .cache
@@ -589,10 +598,16 @@ impl Printer {
                 phase,
             )
             .await?;
-        let label = reset_label(zpl, self.0.config.width, self.0.config.height);
+        // Both policies use the same controls and recovery. Unrestricted user
+        // streams need not contain ^XA, so never pass them to reset_label.
+        let control = !matches!(phase, "label" | "retry");
+        let label = if !control && self.0.config.admission == AdmissionPolicy::Unrestricted {
+            zpl.to_owned()
+        } else {
+            reset_label(zpl, self.0.config.width, self.0.config.height)
+        };
         let result =
             zebra_http_api::zpl_to_png(self.0.client.clone(), self.0.url.clone(), &label).await;
-        let control = zpl == CONTROL;
         let width = self.0.config.width;
         let height = self.0.config.height;
         let result = match result {
@@ -670,7 +685,7 @@ fn reset_label(zpl: &str, width: u16, height: u16) -> String {
         .trim_start()
         .strip_prefix("^XA")
         .expect("validated label");
-    format!("^XA^MCY^PW{width}^LL{height}^LH0,0^LS0^LT0^PON^PMN^LRN^FWN,0^CFA,9,5^BY2,3,10^CI27^FPH,0^FO0,0{body}")
+    format!("^XA^MCY^PW{width}^LL{height}^LH0,0^LS0^LT0^PON^PMN^LRN^FWN,0^CFA,9,5^BY2,3,10^CI27^PA0,0,0,0^FPH,0^FO0,0{body}")
 }
 fn recovery_key(identity: &Identity) -> Vec<u8> {
     // Restart throttling is physical-printer scoped, independent of render cache

@@ -298,6 +298,23 @@ mod tests {
     }
 
     #[test]
+    fn admission_is_selected_by_endpoint_configuration() {
+        use zpl_proxy_api::validation::AdmissionPolicy;
+        let base = r#""url":"http://printer.local/","control_address":"printer.local:9100","width":64,"height":32"#;
+        let configs = parse_printers(
+            format!(r#"{{"restricted":{{{base}}},"raw":{{{base},"admission":"unrestricted"}}}}"#)
+                .as_bytes(),
+        )
+        .unwrap();
+        assert_eq!(configs["restricted"].admission, AdmissionPolicy::Restricted);
+        assert_eq!(configs["raw"].admission, AdmissionPolicy::Unrestricted);
+        assert!(
+            parse_printers(format!(r#"{{"bad":{{{base},"admission":"typo"}}}}"#).as_bytes())
+                .is_err()
+        );
+    }
+
+    #[test]
     fn configuration_rejects_duplicate_keys_and_legacy_names() {
         let printer = r#"{"url":"http://printer.local/","control_address":"printer.local:9100","width":64,"height":32}"#;
         for config in [
@@ -330,7 +347,7 @@ mod tests {
         let path = dir.path().join("db.sqlite");
         let mut db = diesel::SqliteConnection::establish(path.to_str().unwrap()).unwrap();
         let cache = Cache::open(path.to_str().unwrap()).unwrap();
-        let forbidden = "^XA^XGR:PRIVATE.GRF,1,1^FS^XZ";
+        let forbidden = "^XA^XFR:PRIVATE.ZPL^FS^XZ";
         let attempt = cache
             .begin(forbidden.as_bytes().to_vec(), vec![1], false)
             .await
@@ -348,6 +365,7 @@ mod tests {
                 height: 1218,
                 headers: vec![],
                 serial: None,
+                admission: Default::default(),
             },
         )]);
         let app = Router::new()
@@ -404,6 +422,61 @@ mod tests {
                 .get_result::<i64>(&mut db)
                 .unwrap(),
             1
+        );
+        server.abort();
+    }
+
+    #[tokio::test]
+    async fn unrestricted_http_formats_bypass_zpl_admission_but_keep_history() {
+        use diesel::prelude::*;
+        let dir = tempfile::tempdir().unwrap();
+        let path = dir.path().join("db.sqlite");
+        let cache = Cache::open(path.to_str().unwrap()).unwrap();
+        let mut db = diesel::SqliteConnection::establish(path.to_str().unwrap()).unwrap();
+        // Keep a bound, non-listening port so identity fails immediately and
+        // deterministically after admission, without any physical printer access.
+        let unavailable = tokio::net::TcpSocket::new_v4().unwrap();
+        unavailable.bind("127.0.0.1:0".parse().unwrap()).unwrap();
+        let address = unavailable.local_addr().unwrap();
+        let configs = parse_printers(format!(r#"{{"raw":{{"url":"http://{address}/","control_address":"{address}","width":64,"height":32,"admission":"unrestricted"}}}}"#).as_bytes()).unwrap();
+        let app = Router::new()
+            .route("/api/printers/{name}/preview", post(named_zpl_to_png))
+            .with_state(configured_printers(configs, cache, "test").unwrap());
+        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let endpoint = format!(
+            "http://{}/api/printers/raw/preview",
+            listener.local_addr().unwrap()
+        );
+        let server = tokio::spawn(async move {
+            axum::serve(listener, app).await.unwrap();
+        });
+        let client = reqwest::Client::builder().no_proxy().build().unwrap();
+        let input = "~HS\nnot a framed label";
+        for request in [
+            client
+                .post(&endpoint)
+                .json(&serde_json::json!({"zpl":input})),
+            client.post(&endpoint).form(&[("zpl", input)]),
+            client
+                .post(&endpoint)
+                .header(header::CONTENT_TYPE, MULTIPART)
+                .body(multipart(&[("zpl", input.as_bytes())])),
+        ] {
+            // A transport failure (503), not ZPL admission rejection (400).
+            assert_eq!(
+                request.send().await.unwrap().status(),
+                StatusCode::SERVICE_UNAVAILABLE
+            );
+        }
+        use zpl_proxy_api::schema::png_requests as r;
+        assert_eq!(
+            r::table
+                .filter(r::error.is_not_null())
+                .filter(r::completed_at.is_not_null())
+                .count()
+                .get_result::<i64>(&mut db)
+                .unwrap(),
+            3
         );
         server.abort();
     }
