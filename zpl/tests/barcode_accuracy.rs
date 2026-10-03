@@ -342,9 +342,10 @@ fn barcode_reference_coverage_and_error_budget() {
     }
     assert_eq!(
         // Original 1,614 frames plus eleven SurePost barcode captures:
-        // two full labels, two isolated symbols, seven compaction controls.
+        // two full labels, two isolated symbols, seven compaction controls;
+        // plus 22 public-document previews, each pinned independently.
         count,
-        1625,
+        1647,
         "review inventory changes; do not silently drop captures"
     );
     for model in ["ZD621_203_DPI", "ZQ610_PLUS_203_DPI"] {
