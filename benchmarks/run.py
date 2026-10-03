@@ -5,13 +5,12 @@ import json
 import os
 from pathlib import Path
 import platform
-import shutil
 import statistics
 import subprocess
 import time
-import tomllib
 
-from common import NAMES, compare
+from build import METHOD, build_revision
+from common import COMPARISON_NOTES, NAMES, compare, comparison_kind
 
 HERE = Path(__file__).resolve().parent
 
@@ -39,7 +38,7 @@ def main():
     config = json.loads((HERE / 'config.json').read_text())
     harness = (HERE / 'harness.rs').read_bytes()
     protocol = hashlib.sha256()
-    for name in ('harness.rs', 'run.py', 'common.py', 'config.json'):
+    for name in ('harness.rs', 'run.py', 'build.py', 'common.py', 'config.json'):
         protocol.update((HERE / name).read_bytes())
     cpu = next(
         (line.split(':', 1)[1].strip() for line in Path('/proc/cpuinfo').read_text().splitlines()
@@ -51,6 +50,7 @@ def main():
                   runner=os.getenv('BENCH_RUNNER', platform.system()),
                   timestamp=time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime()),
                   harness=protocol.hexdigest(), config=config, commits={}, samples={},
+                  build_method=METHOD, builds={},
                   environment=dict(rust=command(['rustc', '-Vv']), os=platform.platform(), cpu=cpu,
                                    image=os.getenv('ImageVersion', 'unknown'),
                                    rustflags=os.getenv('RUSTFLAGS', ''), profile='release'))
@@ -59,31 +59,15 @@ def main():
         if checkout is None:
             continue
         checkout = checkout.resolve()
-        record['commits'][label] = command(['git', 'rev-parse', 'HEAD'], cwd=checkout)
-        # Separate workspace avoids changing either revision, including old revisions
-        # without this benchmark. Reuse its exact dependency resolution.
-        build = output / label
-        (build / 'src').mkdir(parents=True)
-        (build / 'src/main.rs').write_bytes(harness)
-        (build / 'Cargo.toml').write_text(
-            '[package]\nname = "zpl-perf-harness"\nversion = "0.0.0"\nedition = "2021"\n'
-            '[workspace]\n[dependencies]\nzpl = { path = ' + json.dumps(str(checkout / 'zpl')) + ' }\n')
-        shutil.copyfile(checkout / 'Cargo.lock', build / 'Cargo.lock')
-        # Prune the workspace lock and add the local harness, rejecting any new
-        # registry resolution. The subsequent build enforces this lock.
-        subprocess.run(['cargo', 'metadata', '--format-version=1'], cwd=build,
-                       stdout=subprocess.DEVNULL, check=True)
-        original = tomllib.loads((checkout / 'Cargo.lock').read_text())
-        resolved = tomllib.loads((build / 'Cargo.lock').read_text())
-        locked = {(p['name'], p['version'], p.get('source'), p.get('checksum')) for p in original['package']}
-        if any((p['name'], p['version'], p.get('source'), p.get('checksum')) not in locked
-               for p in resolved['package'] if p['name'] != 'zpl-perf-harness'):
-            raise ValueError('Harness changed dependency versions')
-        env = dict(os.environ, CARGO_TARGET_DIR=str(build / 'target'))
-        subprocess.run(['cargo', 'build', '--release', '--locked'], cwd=build, env=env, check=True)
-        binary = build / 'target/release/zpl-perf-harness'
+        commit, binary, provenance = build_revision(
+            checkout, output / 'build', output / 'builds' / label, harness)
+        record['commits'][label] = commit
+        record['builds'][label] = provenance
+        print(f'{label}: {json.dumps(provenance)}', flush=True)
         binaries[label] = binary
         record['samples'][label] = {name: [] for name in NAMES}
+    # Warm both retained executables after the final build, before paired rounds.
+    for binary in binaries.values():
         for name in NAMES:
             measure(binary, name, 25)  # validates nonblank native canvas, then warms up
     with (output / 'raw.txt').open('w') as log:
@@ -98,19 +82,32 @@ def main():
                     log.write(f'{round_id} {label} {name} {raw}\n')
                     log.flush()
     (output / 'result.json').write_text(json.dumps(record, indent=2) + '\n')
-    lines = ['## Rendering performance', '', '| Case/stage | Head ns/op | Paired change | Flag |',
-             '| --- | ---: | ---: | --- |']
-    for name in NAMES:
-        value = statistics.median(record['samples']['head'][name])
-        change = compare(record['samples']['base'][name], record['samples']['head'][name], config) if args.base else None
-        delta = f"{change['percent']:+.1f}%" if change else '—'
-        lines.append(f"| {name} | {value:.0f} | {delta} | {'change' if change and change['alert'] else '—'} |")
-    lines += ['', 'Positive change means slower. Flags require ≥10%, ≥1 µs, and a 99% paired-bootstrap interval excluding zero. Informational only.']
-    report = '\n'.join(lines) + '\n'
+    report = summary(record)
     (output / 'summary.md').write_text(report)
     if os.getenv('GITHUB_STEP_SUMMARY'):
         with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as stream:
             stream.write(report)
+
+
+def summary(record):
+    config = record['config']
+    kind = comparison_kind(record) if 'base' in record['samples'] else None
+    lines = ['## Rendering performance', '']
+    if kind in COMPARISON_NOTES:
+        lines += [COMPARISON_NOTES[kind], '']
+    lines += ['| Case/stage | Head ns/op | Observed paired timing change | Flag |',
+             '| --- | ---: | ---: | --- |']
+    for name in NAMES:
+        value = statistics.median(record['samples']['head'][name])
+        change = compare(record['samples']['base'][name], record['samples']['head'][name], config) if kind else None
+        delta = f"{change['percent']:+.1f}%" if change else '—'
+        flagged = kind == 'measured' and change['alert']
+        lines.append(f"| {name} | {value:.0f} | {delta} | {'change' if flagged else '—'} |")
+    lines += ['', 'Positive change means slower. Flags require ≥10%, ≥1 µs, and a 99% paired-bootstrap interval excluding zero. Informational only.']
+    for label, build in record['builds'].items():
+        lines += ['', f"{label} executable SHA-256: `{build['binary_sha256']}`; "
+                  f"package inputs SHA-256: `{build['inputs_sha256']}`."]
+    return '\n'.join(lines) + '\n'
 
 
 if __name__ == '__main__':
