@@ -6,12 +6,13 @@ were exercised; no physical print job or firmware upload was submitted.
 
 | Public name | Model | Serial | Firmware | DPI | Default native canvas |
 | --- | --- | --- | --- | --- | --- |
-| `ZD621` | ZD621 | D7J211001302 | V93.21.33Z | 203 | 832 × 240 |
-| `ZQ610-Plus` | ZQ610 Plus | XXZMJ230802993 | V100.21.21Z | 203 | 384 × 2030 |
+| `ZD621` | ZD621 | REDACTED-ZD621 | V93.21.33Z | 203 | 832 × 240 |
+| `ZQ610-Plus` | ZQ610 Plus | REDACTED-ZQ610-PLUS | V100.21.21Z | 203 | 384 × 2030 |
 
 The [captures and manifest](../zpl-proxy-api/tests/fixtures/managed-printers-2026-09-30/manifest.json)
 retain exact PNG bytes, original ZPL, SHA-256 hashes, request outcomes and identity-
-stamped attempt records. This evidence is specific to these devices and firmware.
+stamped attempt records. This evidence is specific to these devices and firmware. Serial values are
+anonymized publication identifiers, not actual hardware serial numbers.
 
 ## State isolation and cache
 

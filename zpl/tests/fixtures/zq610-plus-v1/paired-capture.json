@@ -8553,29 +8553,29 @@
     "zd621": {
       "dpi": 203,
       "firmware": "V93.21.33Z",
-      "host": "http://d7j211001302.bed.einic.org/",
+      "host": "http://zd621.example.invalid/",
       "model": "ZTC ZD621-203dpi ZPL",
-      "serial": "D7J211001302"
+      "serial": "REDACTED-ZD621"
     },
     "zq610": {
       "dpi": 203,
       "firmware": "V100.21.21Z",
-      "host": "http://xxzmj230802993.bed.einic.org/",
+      "host": "http://zq610-plus.example.invalid/",
       "model": "ZTC ZQ610 Plus-203dpi ZPL",
-      "serial": "XXZMJ230802993"
+      "serial": "REDACTED-ZQ610-PLUS"
     }
   },
   "restarts": [
     {
       "method": "! U1 do \"device.reset\" \"\"",
       "requested_utc": "2026-09-27T02:54:36.476056+00:00",
-      "serial": "XXZMJ230802993",
+      "serial": "REDACTED-ZQ610-PLUS",
       "status": "sent; recovery must be verified by next HTTP identity check"
     },
     {
       "method": "! U1 do \"device.reset\" \"\"",
       "requested_utc": "2026-09-27T02:57:17.250140+00:00",
-      "serial": "XXZMJ230802993",
+      "serial": "REDACTED-ZQ610-PLUS",
       "status": "sent; recovery must be verified by next HTTP identity check"
     }
   ],
