@@ -9,8 +9,6 @@ use std::{
     time::Duration,
 };
 
-use diesel::{connection::SimpleConnection, Connection};
-
 struct Process(Child);
 impl Drop for Process {
     fn drop(&mut self) {
@@ -48,17 +46,11 @@ fn directory() -> tempfile::TempDir {
 
 fn configure(command: &mut Command, dir: &tempfile::TempDir) {
     let database = dir.path().join("db.sqlite");
-    let mut connection = diesel::SqliteConnection::establish(database.to_str().unwrap()).unwrap();
-    for migration in [
-        include_str!("../migrations/2024-10-03-035443_cache-results/up.sql"),
-        include_str!("../migrations/2026-09-14-000000_fix-request-client/up.sql"),
-        include_str!("../migrations/2026-09-15-220000_persist-render-results/up.sql"),
-        include_str!("../migrations/2026-09-15-230000_remove-client-ips/up.sql"),
-    ] {
-        connection.batch_execute(migration).unwrap();
-    }
+    let config = dir.path().join("printers.json");
+    std::fs::write(&config, r#"{"test":{"url":"http://127.0.0.1:9/","control_address":"127.0.0.1:9","width":832,"height":1218}}"#).unwrap();
     command
-        .args(["--zd621-url", "http://127.0.0.1:9/"])
+        .arg("--printers")
+        .arg(config)
         .current_dir(env!("CARGO_MANIFEST_DIR"))
         .env("DATABASE_URL", database)
         .env("OTEL_TRACES_EXPORTER", "none")
@@ -128,14 +120,21 @@ async fn inherited_tcp_listener_serves_http_and_preserves_validation() {
         .text()
         .await
         .unwrap()
-        .contains("<html>"));
+        .contains("<title>ZPL Print Preview</title>"));
     let response = client
-        .post(format!("{url}api/zpl-zd621"))
+        .post(format!("{url}api/printers/test/preview"))
         .json(&serde_json::json!({"zpl": "^XA^WD*:*.*^XZ"}))
         .send()
         .await
         .unwrap();
     assert_eq!(response.status(), 400);
+    let removed = client
+        .post(format!("{url}api/zpl-zd621"))
+        .json(&serde_json::json!({"zpl": "^XA^XZ"}))
+        .send()
+        .await
+        .unwrap();
+    assert!(matches!(removed.status().as_u16(), 404 | 405));
     process.stop().await;
 }
 
@@ -158,7 +157,7 @@ async fn inherited_unix_listener_serves_http_and_keeps_systemd_owned_path() {
         .text()
         .await
         .unwrap()
-        .contains("<html>"));
+        .contains("<title>ZPL Print Preview</title>"));
     process.stop().await;
     assert!(path.exists(), "the socket unit owns this path");
 }
@@ -182,7 +181,7 @@ async fn standalone_unix_listener_serves_http_and_removes_its_path_on_shutdown()
         .text()
         .await
         .unwrap()
-        .contains("<html>"));
+        .contains("<title>ZPL Print Preview</title>"));
     process.stop().await;
     assert!(!path.exists());
 }
@@ -193,7 +192,7 @@ fn standalone_unix_listener_does_not_remove_an_existing_file() {
     let path = dir.path().join("keep");
     std::fs::write(&path, b"do not remove").unwrap();
     let result = Command::new(env!("CARGO_BIN_EXE_zpl-proxy-api"))
-        .args(["--zd621-url", "http://127.0.0.1:9/", "--unix-socket"])
+        .args(["--printers", "unused.json", "--unix-socket"])
         .arg(&path)
         .output()
         .unwrap();
@@ -208,7 +207,7 @@ fn activation_rejects_missing_wrong_pid_multiple_and_wrong_type_descriptors() {
     for count in [None, Some("1"), Some("2"), Some("invalid")] {
         let mut command = Command::new(binary);
         command
-            .args(["--zd621-url", "http://127.0.0.1:9/", "--socket-activation"])
+            .args(["--printers", "unused.json", "--socket-activation"])
             .env("LISTEN_PID", "0")
             .env_remove("LISTEN_FDS");
         if let Some(count) = count {
@@ -220,7 +219,7 @@ fn activation_rejects_missing_wrong_pid_multiple_and_wrong_type_descriptors() {
     }
     let udp = std::net::UdpSocket::bind("127.0.0.1:0").unwrap();
     let mut command = activation(udp.as_raw_fd());
-    command.args(["--zd621-url", "http://127.0.0.1:9/"]);
+    command.args(["--printers", "unused.json"]);
     let result = command.output().unwrap();
     assert!(!result.status.success());
     assert!(String::from_utf8_lossy(&result.stderr).contains("TCP or Unix stream listener"));
@@ -244,7 +243,28 @@ fn exactly_one_listener_mode_is_required() {
         vec!["--unix-socket", "/tmp/unused.sock", "--socket-activation"],
     ] {
         let result = Command::new(env!("CARGO_BIN_EXE_zpl-proxy-api"))
-            .args(["--zd621-url", "http://127.0.0.1:9/"])
+            .args(["--printers", "unused.json"])
+            .args(args)
+            .output()
+            .unwrap();
+        assert_eq!(result.status.code(), Some(2));
+    }
+}
+
+#[test]
+fn named_configuration_is_required_and_removed_flags_are_rejected() {
+    for args in [
+        vec![],
+        vec!["--zd621-url", "http://127.0.0.1:9/"],
+        vec![
+            "--printers",
+            "unused.json",
+            "--zd621-header",
+            "X-Test: value",
+        ],
+    ] {
+        let result = Command::new(env!("CARGO_BIN_EXE_zpl-proxy-api"))
+            .args(["--bind-addr", "127.0.0.1:0"])
             .args(args)
             .output()
             .unwrap();

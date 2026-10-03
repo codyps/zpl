@@ -9,7 +9,7 @@ Input and PNG SHA-256 values were checked against the published category evidenc
 The printer is **ZTC ZD621-203dpi ZPL, V93.21.33Z**, at 203 DPI. These are HTTP
 Preview Label responses from October 2, 2026, not physical prints. `capture.json`
 preserves capture times, submitted hashes, native dimensions, reset ZPL and the
-matching repeat-end control. The repeat is byte-identical to the carrier-style
+matching repeat-end control. The endpoint hostname is anonymized. The repeat is byte-identical to the carrier-style
 input/capture already included here. No printer was contacted for this regression.
 
 `sources.json` and `manifest.json` preserve the comparison repository's source
@@ -25,8 +25,9 @@ requires one nonblank native-sized output per case, and pins **full-canvas**
 underpaint, overpaint and local pixel hashes in `baseline.tsv`. Counts use the
 original origin without padding, alignment, cropping or scaling. IoU is foreground
 intersection over union; higher is better. Five complete labels remain exact.
-Existing font differences and the valid Labelixa QR/PDF417 encoding differences
-are not resolved by these acceptance fixes.
+Existing font differences and the valid Labelixa QR encoding difference remain.
+The PDF417 layout/punctuation fix merged from main makes the carrier symbol
+pixel-exact; its whole-label residual is now text only.
 
 The five formerly rejected documents now render:
 

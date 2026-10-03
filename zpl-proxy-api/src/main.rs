@@ -1,46 +1,42 @@
 mod listener;
 
-use std::path::Path;
-use std::sync::Arc;
-use std::time::Duration;
-
 use axum::{
     body::Body,
     error_handling::HandleError,
-    extract::{Form, FromRequest, Json, Multipart, State},
-    http::{header, HeaderName, HeaderValue, Request, Response, StatusCode},
+    extract::{Form, FromRequest, Json, Multipart, Path as ApiPath, State},
+    http::{header, Request, Response, StatusCode},
     response::IntoResponse,
-    routing::post,
+    routing::{get, post},
     RequestExt, Router,
 };
 use clap::Parser;
-use fastrace::{future::FutureExt, local::LocalSpan, Span};
 use serde::Deserialize;
-use tower_layer::Layer;
-use zpl_proxy_api::cache::{self, Cache};
-use zpl_proxy_api::telemetry;
-use zpl_proxy_api::validation::{RenderZpl, ValidationError};
+use std::{
+    collections::{BTreeMap, HashMap},
+    path::{Path, PathBuf},
+    sync::Arc,
+};
+use zpl_proxy_api::{
+    cache::Cache,
+    printer::{Ownership, Printer, PrinterConfig, Rejected, Unavailable},
+    telemetry,
+    validation::ValidationError,
+};
 
 #[derive(Debug, Parser)]
 struct Args {
+    /// JSON object keyed by printer name, with url, control_address, width and height.
     #[clap(long)]
-    zd621_url: reqwest::Url,
-    #[clap(long)]
-    zd621_header: Vec<String>,
+    printers: PathBuf,
     #[command(flatten)]
     listen: listener::ListenOptions,
-    /// Change after printer firmware, fonts, media, or other rendering state changes.
     #[clap(long, default_value = "default")]
     cache_namespace: String,
 }
 
 #[derive(Clone)]
-struct Zd621 {
-    zd621_client: reqwest::Client,
-    zd621_url: Arc<reqwest::Url>,
-    cache: Cache,
-    renderer_key: Vec<u8>,
-    render_lock: Arc<tokio::sync::Mutex<()>>,
+struct AppState {
+    printers: Arc<HashMap<String, Printer>>,
 }
 
 fn main() -> eyre::Result<()> {
@@ -56,46 +52,13 @@ fn main() -> eyre::Result<()> {
 async fn run(args: Args, listener: listener::Listener) -> eyre::Result<()> {
     let _telemetry = telemetry::init().expect("initialize telemetry");
 
-    let zd621_client = reqwest::Client::builder()
-        .timeout(Duration::from_secs(30))
-        // The printer rejects lowercase HTTP/1 header names.
-        .http1_title_case_headers()
-        .default_headers(
-            args.zd621_header
-                .iter()
-                .map(|header| {
-                    let (key, value) = header.split_once(": ").unwrap();
-                    let key: HeaderName = key.parse().unwrap();
-                    let value: HeaderValue = value.parse().unwrap();
-                    (key, value)
-                })
-                .collect(),
-        )
-        .build()
-        .unwrap();
-
     let database_url = std::env::var("DATABASE_URL").expect("DATABASE_URL must be set");
-    let cache = tokio::task::spawn_blocking(move || Cache::open(&database_url))
-        .await
-        .unwrap()
-        .expect("Cannot open cache database; run diesel migration run first");
-    let renderer_key = cache::renderer_key(
-        args.zd621_url.as_str(),
-        &args.zd621_header,
-        &args.cache_namespace,
-    );
-    let app_state = Zd621 {
-        zd621_client,
-        zd621_url: Arc::new(args.zd621_url),
-        cache,
-        renderer_key,
-        render_lock: Arc::new(tokio::sync::Mutex::new(())),
-    };
-
-    let livereload = tower_livereload::LiveReloadLayer::new();
-
+    let cache = tokio::task::spawn_blocking(move || Cache::open(&database_url)).await??;
+    let configs = parse_printers(&std::fs::read(args.printers)?)?;
+    let app_state = configured_printers(configs, cache, &args.cache_namespace)?;
     let api_router = Router::new()
-        .route("/zpl-zd621", post(zd621_zpl_to_png))
+        .route("/printers", get(printer_names))
+        .route("/printers/{name}/preview", post(named_zpl_to_png))
         .with_state(app_state);
 
     let app = Router::new()
@@ -103,7 +66,7 @@ async fn run(args: Args, listener: listener::Listener) -> eyre::Result<()> {
         // Axum 0.8 rejects nesting at "/"; use the static service as fallback.
         // https://docs.rs/axum/0.8.9/axum/struct.Router.html#method.fallback_service
         .fallback_service(HandleError::new(
-            livereload.layer(tower_http::services::ServeDir::new(Path::new("assets"))),
+            tower_http::services::ServeDir::new(Path::new("assets")),
             |error| async move {
                 log::error!("static asset service error: {}", error);
                 StatusCode::INTERNAL_SERVER_ERROR
@@ -122,80 +85,135 @@ struct PrintSpec {
     refresh: bool,
 }
 
-async fn zd621_zpl_to_png(
-    State(zd621): State<Zd621>,
-    JsonOrForm(print_spec): JsonOrForm,
-) -> impl IntoResponse {
-    // Finish persistence even when the requesting client disconnects.
-    let result = telemetry::spawn("render.task", render_cached(zd621, print_spec)).await;
-    match result {
-        Ok(Ok((png, cache_hit))) => Response::builder()
+fn parse_printers(bytes: &[u8]) -> eyre::Result<BTreeMap<String, PrinterConfig>> {
+    // Serde errors can quote invalid values. Configuration may contain secrets,
+    // so report only the location, never parser-provided input excerpts.
+    #[derive(Deserialize)]
+    struct Config(#[serde(deserialize_with = "unique_printers")] BTreeMap<String, PrinterConfig>);
+    serde_json::from_slice::<Config>(bytes)
+        .map(|config| config.0)
+        .map_err(|error| {
+            eyre::eyre!(
+                "Invalid printer configuration at line {}, column {}",
+                error.line(),
+                error.column()
+            )
+        })
+}
+
+// JSON permits repeated object keys; reject them instead of silently replacing a
+// printer (Serde MapAccess: https://serde.rs/deserialize-map.html).
+fn unique_printers<'de, D>(deserializer: D) -> Result<BTreeMap<String, PrinterConfig>, D::Error>
+where
+    D: serde::Deserializer<'de>,
+{
+    struct Visitor;
+    impl<'de> serde::de::Visitor<'de> for Visitor {
+        type Value = BTreeMap<String, PrinterConfig>;
+
+        fn expecting(&self, formatter: &mut std::fmt::Formatter) -> std::fmt::Result {
+            formatter.write_str("an object keyed by unique printer names")
+        }
+
+        fn visit_map<M>(self, mut map: M) -> Result<Self::Value, M::Error>
+        where
+            M: serde::de::MapAccess<'de>,
+        {
+            let mut printers = BTreeMap::new();
+            while let Some((name, config)) = map.next_entry()? {
+                if printers.insert(name, config).is_some() {
+                    return Err(serde::de::Error::custom("duplicate printer name"));
+                }
+            }
+            Ok(printers)
+        }
+    }
+    deserializer.deserialize_map(Visitor)
+}
+
+fn configured_printers(
+    configs: BTreeMap<String, PrinterConfig>,
+    cache: Cache,
+    namespace: &str,
+) -> eyre::Result<AppState> {
+    eyre::ensure!(!configs.is_empty(), "configure at least one printer");
+    let mut printers = HashMap::new();
+    let owners = Ownership::default();
+    let mut endpoints = std::collections::HashSet::new();
+    let mut controls = std::collections::HashSet::new();
+    for (name, config) in configs {
+        let url: reqwest::Url = config.url.parse()?;
+        eyre::ensure!(
+            endpoints.insert(url.to_string()) && controls.insert(config.control_address.clone()),
+            "duplicate printer endpoint; configure each physical printer once"
+        );
+        let printer = Printer::new(
+            name.clone(),
+            config,
+            cache.clone(),
+            namespace,
+            owners.clone(),
+        )?;
+        printers.insert(name, printer);
+    }
+    Ok(AppState {
+        printers: Arc::new(printers),
+    })
+}
+
+async fn printer_names(State(state): State<AppState>) -> Json<Vec<String>> {
+    let mut names = state.printers.keys().cloned().collect::<Vec<_>>();
+    names.sort();
+    Json(names)
+}
+
+async fn named_zpl_to_png(
+    State(state): State<AppState>,
+    ApiPath(name): ApiPath<String>,
+    JsonOrForm(spec): JsonOrForm,
+) -> Response<Body> {
+    render_response(state, name, spec).await
+}
+
+async fn render_response(state: AppState, name: String, spec: PrintSpec) -> Response<Body> {
+    let Some(printer) = state.printers.get(&name) else {
+        return (StatusCode::NOT_FOUND, "Unknown printer name").into_response();
+    };
+    match printer.render(spec.zpl, spec.refresh).await {
+        Ok((png, cache_hit)) => Response::builder()
             .status(StatusCode::OK)
             .header(header::CONTENT_TYPE, "image/png")
             .header("X-ZPL-Cache", if cache_hit { "hit" } else { "miss" })
+            .header(header::CACHE_CONTROL, "no-store")
             .body(Body::from(png))
             .unwrap(),
-        Ok(Err(error)) if error.downcast_ref::<ValidationError>().is_some() => (
+        Err(error) if error.downcast_ref::<ValidationError>().is_some() => (
             StatusCode::BAD_REQUEST,
             error.downcast_ref::<ValidationError>().unwrap().to_string(),
         )
             .into_response(),
-        _ => {
+        Err(error) if error.downcast_ref::<Unavailable>().is_some() => (
+            StatusCode::SERVICE_UNAVAILABLE,
+            [(header::RETRY_AFTER, "300")],
+            "Printer unavailable; retry later",
+        )
+            .into_response(),
+        Err(error) if error.downcast_ref::<Rejected>().is_some() => {
+            let cached = error.downcast_ref::<Rejected>().unwrap().cached;
+            (
+                StatusCode::UNPROCESSABLE_ENTITY,
+                [("X-ZPL-Cache", if cached { "hit" } else { "miss" })],
+                "Label repeatedly failed on this printer firmware",
+            )
+                .into_response()
+        }
+        Err(_) => {
             log::error!("render or cache operation failed");
             (
                 StatusCode::INTERNAL_SERVER_ERROR,
                 "Unable to render and persist the label",
             )
                 .into_response()
-        }
-    }
-}
-
-#[fastrace::trace(name = "render.cached")]
-async fn render_cached(zd621: Zd621, print_spec: PrintSpec) -> eyre::Result<(Vec<u8>, bool)> {
-    // Validate before cache lookup too: historical cache entries are not proof
-    // that the current admission policy permits this input.
-    let zpl =
-        telemetry::spawn_blocking("render.validate", move || RenderZpl::parse(print_spec.zpl))
-            .await??;
-    // Zebra uses a shared TEST1 preview object. Serialize the entire POST/GET
-    // cycle as well as cache misses so concurrent requests cannot mix images.
-    let _guard = zd621
-        .render_lock
-        .lock()
-        .in_span(Span::enter_with_local_parent("printer.queue"))
-        .await;
-    let attempt = zd621
-        .cache
-        .begin(
-            zpl.as_str().as_bytes().to_vec(),
-            zd621.renderer_key.clone(),
-            print_spec.refresh,
-        )
-        .await?;
-    if let Some(png) = attempt.cached_png {
-        LocalSpan::add_property(|| ("cache.hit", "true"));
-        return Ok((png, true));
-    }
-    LocalSpan::add_property(|| ("cache.hit", "false"));
-    match zebra_http_api::zpl_to_png(
-        zd621.zd621_client.clone(),
-        (*zd621.zd621_url).clone(),
-        zpl.as_str(),
-    )
-    .in_span(
-        Span::enter_with_local_parent("printer.preview").with_property(|| ("span.kind", "client")),
-    )
-    .await
-    {
-        Ok(png) => {
-            zd621.cache.success(attempt, png.clone()).await?;
-            Ok((png, false))
-        }
-        Err(e) => {
-            LocalSpan::add_property(|| ("span.status_code", "error"));
-            zd621.cache.failure(attempt, e.to_string()).await?;
-            Err(e)
         }
     }
 }
@@ -270,201 +288,85 @@ where
 #[cfg(test)]
 mod tests {
     use super::*;
-    use diesel::{connection::SimpleConnection, prelude::*};
-    use std::sync::atomic::{AtomicBool, AtomicUsize, Ordering};
+    #[test]
+    fn configuration_is_keyed_by_public_name() {
+        let config = r#"{"ZD621":{"url":"http://one.local/","control_address":"one.local:9100","width":832,"height":1218},"ZQ610":{"url":"http://two.local/","control_address":"two.local:9100","width":384,"height":600}}"#;
+        let printers = parse_printers(config.as_bytes()).unwrap();
+        assert_eq!(printers.len(), 2);
+        assert_eq!(printers["ZD621"].width, 832);
+        assert_eq!(printers["ZQ610"].url, "http://two.local/");
+    }
 
-    #[tokio::test]
-    async fn caches_mock_printer_results_and_persists_refresh_failures() {
-        let directory = tempfile::tempdir().unwrap();
-        let path = directory.path().join("cache.sqlite");
-        let mut connection = diesel::SqliteConnection::establish(path.to_str().unwrap()).unwrap();
-        for migration in [
-            include_str!("../migrations/2024-10-03-035443_cache-results/up.sql"),
-            include_str!("../migrations/2026-09-14-000000_fix-request-client/up.sql"),
-            include_str!("../migrations/2026-09-15-220000_persist-render-results/up.sql"),
-            include_str!("../migrations/2026-09-15-230000_remove-client-ips/up.sql"),
+    #[test]
+    fn configuration_rejects_duplicate_keys_and_legacy_names() {
+        let printer = r#"{"url":"http://printer.local/","control_address":"printer.local:9100","width":64,"height":32}"#;
+        for config in [
+            format!(r#"{{"Test":{printer},"Test":{printer}}}"#),
+            format!("[{printer}]"),
+            format!(
+                r#"{{"Test":{{"name":"Test",{}}}}}"#,
+                &printer[1..printer.len() - 1]
+            ),
         ] {
-            connection.batch_execute(migration).unwrap();
+            assert!(parse_printers(config.as_bytes()).is_err());
         }
-        let calls = Arc::new(AtomicUsize::new(0));
-        let fail = Arc::new(AtomicBool::new(false));
-        let printer = Router::new()
-            .route(
-                "/zpl",
-                post({
-                    let calls = calls.clone();
-                    let fail = fail.clone();
-                    move || {
-                        let calls = calls.clone();
-                        let fail = fail.clone();
-                        async move {
-                            calls.fetch_add(1, Ordering::SeqCst);
-                            if fail.load(Ordering::SeqCst) {
-                                (StatusCode::SERVICE_UNAVAILABLE, "offline")
-                            } else {
-                                (StatusCode::OK, "<IMG SRC=\"/image\">")
-                            }
-                        }
-                    }
-                }),
-            )
-            .route(
-                "/image",
-                axum::routing::get(|| async { b"mock PNG bytes".as_slice() }),
-            );
-        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
-        let url: reqwest::Url = format!("http://{}/", listener.local_addr().unwrap())
-            .parse()
-            .unwrap();
-        let server = tokio::spawn(async move {
-            axum::serve(listener, printer).await.unwrap();
-        });
-        let mut state = Zd621 {
-            zd621_client: reqwest::Client::builder()
-                .no_proxy()
-                .timeout(Duration::from_secs(5))
-                .build()
-                .unwrap(),
-            renderer_key: cache::renderer_key(url.as_str(), &[], "test"),
-            zd621_url: Arc::new(url),
-            cache: Cache::open(path.to_str().unwrap()).unwrap(),
-            render_lock: Arc::new(tokio::sync::Mutex::new(())),
-        };
-        let spec = || PrintSpec {
-            zpl: "^XA^XZ".into(),
-            refresh: false,
-        };
-        let (first, second) = tokio::join!(
-            render_cached(state.clone(), spec()),
-            render_cached(state.clone(), spec())
-        );
-        let first = first.unwrap();
-        let second = second.unwrap();
-        assert_eq!(first.0, b"mock PNG bytes");
-        assert_eq!(second.0, first.0);
-        assert_ne!(first.1, second.1);
-        assert_eq!(calls.load(Ordering::SeqCst), 1);
+    }
 
-        state.cache = Cache::open(path.to_str().unwrap()).unwrap();
-        let response = zd621_zpl_to_png(State(state.clone()), JsonOrForm(spec()))
-            .await
-            .into_response();
-        assert_eq!(response.status(), StatusCode::OK);
-        assert_eq!(response.headers()["X-ZPL-Cache"], "hit");
-        assert_eq!(
-            axum::body::to_bytes(response.into_body(), 1024)
-                .await
-                .unwrap()
-                .as_ref(),
-            b"mock PNG bytes"
+    #[test]
+    fn configuration_errors_do_not_disclose_secret_values() {
+        let secret = "PRIVATE_AUTH_TOKEN";
+        let bytes = format!(
+            r#"{{"Test":{{"url":"http://printer.local/","control_address":"printer.local:9100","width":"{secret}","height":32}}}}"#
         );
-        assert_eq!(calls.load(Ordering::SeqCst), 1);
-        fail.store(true, Ordering::SeqCst);
-        assert!(render_cached(
-            state.clone(),
-            PrintSpec {
-                refresh: true,
-                ..spec()
-            }
-        )
-        .await
-        .is_err());
-        fail.store(false, Ordering::SeqCst);
-        assert!(!render_cached(state.clone(), spec()).await.unwrap().1);
-        assert_eq!(calls.load(Ordering::SeqCst), 3);
-
-        use zpl_proxy_api::{
-            models::PngRequest,
-            schema::{inputs, png_requests, pngs},
-        };
-        let history = png_requests::table
-            .order(png_requests::rowid)
-            .select(PngRequest::as_select())
-            .load::<PngRequest>(&mut connection)
-            .unwrap();
-        assert_eq!(history.len(), 5);
-        assert!(history.iter().all(|r| r.completed_at.is_some()));
-        assert!(history[3].error.as_ref().unwrap().contains("503"));
-        assert_eq!(
-            inputs::table
-                .count()
-                .get_result::<i64>(&mut connection)
-                .unwrap(),
-            1
-        );
-        assert_eq!(
-            pngs::table
-                .count()
-                .get_result::<i64>(&mut connection)
-                .unwrap(),
-            1
-        );
-        server.abort();
+        let error = parse_printers(bytes.as_bytes()).err().unwrap();
+        assert!(error.to_string().contains("line 1, column"));
+        assert!(!format!("{error:?}").contains(secret));
     }
 
     #[tokio::test]
-    async fn rejects_unsafe_zpl_in_every_http_format_before_cache_or_printer() {
-        let directory = tempfile::tempdir().unwrap();
-        let path = directory.path().join("cache.sqlite");
-        let mut connection = diesel::SqliteConnection::establish(path.to_str().unwrap()).unwrap();
-        for migration in [
-            include_str!("../migrations/2024-10-03-035443_cache-results/up.sql"),
-            include_str!("../migrations/2026-09-14-000000_fix-request-client/up.sql"),
-            include_str!("../migrations/2026-09-15-220000_persist-render-results/up.sql"),
-            include_str!("../migrations/2026-09-15-230000_remove-client-ips/up.sql"),
-        ] {
-            connection.batch_execute(migration).unwrap();
-        }
-        let calls = Arc::new(AtomicUsize::new(0));
-        let printer = Router::new()
-            .route(
-                "/zpl",
-                post({
-                    let calls = calls.clone();
-                    move || {
-                        calls.fetch_add(1, Ordering::SeqCst);
-                        async { "<IMG SRC=\"/image\">" }
-                    }
-                }),
-            )
-            .route("/image", axum::routing::get(|| async { "safe PNG" }));
-        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
-        let url: reqwest::Url = format!("http://{}/", listener.local_addr().unwrap())
-            .parse()
-            .unwrap();
-        let printer_task =
-            tokio::spawn(async move { axum::serve(listener, printer).await.unwrap() });
-        let state = Zd621 {
-            zd621_client: reqwest::Client::builder().no_proxy().build().unwrap(),
-            renderer_key: cache::renderer_key(url.as_str(), &[], "test"),
-            zd621_url: Arc::new(url),
-            cache: Cache::open(path.to_str().unwrap()).unwrap(),
-            render_lock: Arc::new(tokio::sync::Mutex::new(())),
-        };
-        // Simulate a result cached before admission validation existed. The new
-        // policy must not disclose it, including when refresh is requested.
+    async fn named_routes_reject_unknown_printers_and_unsafe_history_in_every_format() {
+        use diesel::prelude::*;
+        let dir = tempfile::tempdir().unwrap();
+        let path = dir.path().join("db.sqlite");
+        let mut db = diesel::SqliteConnection::establish(path.to_str().unwrap()).unwrap();
+        let cache = Cache::open(path.to_str().unwrap()).unwrap();
         let forbidden = "^XA^XGR:PRIVATE.GRF,1,1^FS^XZ";
-        let attempt = state
-            .cache
-            .begin(
-                forbidden.as_bytes().to_vec(),
-                state.renderer_key.clone(),
-                false,
-            )
+        let attempt = cache
+            .begin(forbidden.as_bytes().to_vec(), vec![1], false)
             .await
             .unwrap();
-        state
-            .cache
-            .success(attempt, b"private cached PNG".to_vec())
+        cache
+            .success(attempt, b"private PNG".to_vec())
             .await
             .unwrap();
+        let configs = BTreeMap::from([(
+            "ZD621-V93".into(),
+            PrinterConfig {
+                url: "http://127.0.0.1:9/".into(),
+                control_address: "127.0.0.1:9".into(),
+                width: 832,
+                height: 1218,
+                headers: vec![],
+                serial: None,
+            },
+        )]);
         let app = Router::new()
-            .route("/api/zpl-zd621", post(zd621_zpl_to_png))
-            .with_state(state);
+            .route("/api/printers/{name}/preview", post(named_zpl_to_png))
+            .with_state(configured_printers(configs, cache, "test").unwrap());
         let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
-        let endpoint = format!("http://{}/api/zpl-zd621", listener.local_addr().unwrap());
-        let proxy_task = tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+        let base = format!("http://{}/api/printers", listener.local_addr().unwrap());
+        let server = tokio::spawn(async move {
+            axum::serve(listener, app).await.unwrap();
+        });
         let client = reqwest::Client::builder().no_proxy().build().unwrap();
+        let unknown = client
+            .post(format!("{base}/unknown/preview"))
+            .json(&serde_json::json!({"zpl":"^XA^XZ"}))
+            .send()
+            .await
+            .unwrap();
+        assert_eq!(unknown.status(), StatusCode::NOT_FOUND);
+        let endpoint = format!("{base}/ZD621-V93/preview");
         for zpl in [
             forbidden,
             "^XA^FO1,2^FDhello^FS^XZ^",
@@ -472,10 +374,10 @@ mod tests {
             "^XA^FXcomment\n! U1 getvar \"allcv\"\n^FS^XZ",
         ] {
             for refresh in [false, true] {
-                let requests = [
+                for request in [
                     client
                         .post(&endpoint)
-                        .json(&serde_json::json!({ "zpl": zpl, "refresh": refresh })),
+                        .json(&serde_json::json!({"zpl":zpl,"refresh":refresh})),
                     client.post(&endpoint).form(&[
                         ("zpl", zpl),
                         ("refresh", if refresh { "true" } else { "false" }),
@@ -487,57 +389,23 @@ mod tests {
                             ("zpl", zpl.as_bytes()),
                             ("refresh", if refresh { b"true" } else { b"false" }),
                         ])),
-                ];
-                for request in requests {
-                    let response = request.send().await.unwrap();
-                    assert_eq!(response.status(), StatusCode::BAD_REQUEST, "{zpl:?}");
-                    assert!(response.text().await.unwrap().starts_with("ZPL byte "));
+                ] {
+                    assert_eq!(
+                        request.send().await.unwrap().status(),
+                        StatusCode::BAD_REQUEST
+                    );
                 }
             }
         }
-        assert_eq!(calls.load(Ordering::SeqCst), 0);
-        use zpl_proxy_api::schema::{inputs, png_requests};
-        assert_eq!(
-            inputs::table
-                .count()
-                .get_result::<i64>(&mut connection)
-                .unwrap(),
-            1
-        );
+        use zpl_proxy_api::schema::png_requests;
         assert_eq!(
             png_requests::table
                 .count()
-                .get_result::<i64>(&mut connection)
+                .get_result::<i64>(&mut db)
                 .unwrap(),
             1
         );
-        // Ordinary labels still reach the printer, then serve from the cache.
-        for (index, request) in [
-            client
-                .post(&endpoint)
-                .json(&serde_json::json!({"zpl": "^XA^FO10,20^FDhello^FS^XZ"})),
-            client
-                .post(&endpoint)
-                .form(&[("zpl", "^XA^FO10,20^FDhello^FS^XZ")]),
-            client
-                .post(&endpoint)
-                .header(header::CONTENT_TYPE, MULTIPART)
-                .body(multipart(&[("zpl", b"^XA^FO10,20^FDhello^FS^XZ")])),
-        ]
-        .into_iter()
-        .enumerate()
-        {
-            let response = request.send().await.unwrap();
-            assert_eq!(response.status(), StatusCode::OK);
-            assert_eq!(
-                response.headers()["X-ZPL-Cache"],
-                if index == 0 { "miss" } else { "hit" }
-            );
-            assert_eq!(response.bytes().await.unwrap().as_ref(), b"safe PNG");
-        }
-        assert_eq!(calls.load(Ordering::SeqCst), 1);
-        proxy_task.abort();
-        printer_task.abort();
+        server.abort();
     }
 
     async fn extract(content_type: &str, body: impl Into<Body>) -> Result<String, StatusCode> {

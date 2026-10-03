@@ -59,6 +59,7 @@ fn all_public_documents_render_on_native_canvases() {
         // addition to the full-canvas baseline. Bounds include every graphic/
         // symbol dot, including clipping at the label bottom in Example6.
         let regions: &[(u32, u32, u32, u32)] = match name {
+            "labelixa-carrier-style-shipping-4x6" => &[(40, 600, 348, 732)],
             "binarykits-example2-102x170" => &[(729, 1148, 801, 1295), (56, 663, 104, 879)],
             "binarykits-example4-102x152" => &[(30, 129, 262, 361), (149, 435, 152, 890)],
             "binarykits-example5-75x202" => &[(48, 516, 264, 648)],

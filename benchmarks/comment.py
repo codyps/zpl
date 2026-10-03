@@ -29,7 +29,9 @@ def api(path, method='GET', body=None):
 def comment_body(records, run, repo, config):
     lines = [MARKER, f"<!-- benchmark-run: {run['id']} attempt: {run['run_attempt']} -->",
              '## Rendering performance', '',
-             f"Base `{records[0]['commits']['base'][:12]}` → head `{run['head_sha'][:12]}`.", '',
+             f"Target `{records[0]['commits']['base'][:12]}` → "
+             f"PR merge `{records[0]['commits']['head'][:12]}` "
+             f"(PR head `{run['head_sha'][:12]}`).", '',
              'Both revisions use the same harness and compiler on a GitHub-hosted Linux worker, '
              'with ten alternating paired rounds.',
              f"Flags require ≥{config['threshold_percent']}% and ≥{config['threshold_ns'] / 1000:g} µs/op "
@@ -52,7 +54,7 @@ def comment_body(records, run, repo, config):
                             f"{statistics.median(after) / 1000:.3f} | {change['percent']:+.1f}% | "
                             f"{low:+.1f}% to {high:+.1f}% |")
     if rows:
-        lines += ['| Case/stage | Base µs/op | Head µs/op | Change | Interval |',
+        lines += ['| Case/stage | Target µs/op | PR merge µs/op | Change | Interval |',
                   '| --- | ---: | ---: | ---: | ---: |', *rows]
     elif not notes:
         lines += ['No measured stage crosses the reporting thresholds in this run.']
@@ -79,11 +81,13 @@ def update_comment(records, run, repo, config):
     pr = api(f'repos/{repo}/pulls/{number}')
     # Fork runs can omit pull_requests. Validate live identity even when GitHub
     # does supply an association; artifact metadata alone never selects a PR.
-    if (pr['state'] != 'open' or pr['base']['repo']['full_name'] != repo
+    if (pr['state'] != 'open' or pr.get('mergeable') is not True
+            or pr['base']['repo']['full_name'] != repo
             or pr['head']['sha'] != run['head_sha'] or not pr['head']['repo']
             or pr['head']['repo']['full_name'] != run['head_repository']['full_name']
             or pr['head']['ref'] != run['head_branch']
-            or any(record['commits']['base'] != pr['base']['sha'] for record in records)):
+            or any(record['commits']['base'] != pr['base']['sha']
+                   or record['commits']['head'] != pr['merge_commit_sha'] for record in records)):
         print('Skipping closed, obsolete or mismatched PR comparison')
         return
     previous = None

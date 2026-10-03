@@ -24,13 +24,25 @@ jobs:
         with:
           ref: main
           persist-credentials: false
+      - name: Check whether measurement ran
+        id: measurement
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.event.workflow_run.id }}
+          RUN_ATTEMPT: ${{ github.event.workflow_run.run_attempt }}
+        run: |
+          conclusion=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$RUN_ID/attempts/$RUN_ATTEMPT/jobs" \
+            --jq '.jobs[] | select(.name == "measure") | .conclusion')
+          echo "conclusion=$conclusion" >> "$GITHUB_OUTPUT"
       - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
+        if: steps.measurement.outputs.conclusion == 'success'
         with:
           github-token: ${{ github.token }}
           run-id: ${{ github.event.workflow_run.id }}
           pattern: render-benchmark-*
           path: incoming
       - name: Update performance comment
+        if: steps.measurement.outputs.conclusion == 'success'
         env:
           GH_TOKEN: ${{ github.token }}
         run: python3 benchmarks/comment.py incoming

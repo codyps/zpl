@@ -138,6 +138,12 @@ The supplied PDFs remain outside the repository and are not redistributed here.
   with a one-dot minimum. Explicit row height is dots on the tested ZD621, despite
   contradictory multiplier wording in the guide. Automatic dimensions target
   nominal 2:1 width:height at Y=3X, before applying the requested row height.
+  The ZD621 profile compares integer grids instead of rounding the continuous
+  column estimate, and latches Text into Punctuation for runs of four or more
+  punctuation characters. These choices have independent compatibility options;
+  [60 native controls](../zpl/tests/fixtures/pdf417-layout-zd621-v1/README.md)
+  pin layout transitions and punctuation handling. The Labelixa carrier symbol
+  matches the captured 308×132-dot PDF417 exactly (previously 274×162 dots).
   Numeric runs of at least eight digits follow the sampled ZD621 threshold.
   Compaction is deterministic, not globally optimal or guaranteed identical to
   every firmware for every payload. Macro PDF417 is supported through `^FM`; ECI remains unsupported.

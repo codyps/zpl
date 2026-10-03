@@ -3,6 +3,7 @@ use std::env;
 
 pub mod cache;
 pub mod models;
+pub mod printer;
 pub mod realip;
 pub mod schema;
 pub mod telemetry;

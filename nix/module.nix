@@ -3,13 +3,10 @@
 let
   cfg = config.services.zpl-proxy-api;
   bindAddress = if lib.hasInfix ":" cfg.listenAddress then "[${cfg.listenAddress}]" else cfg.listenAddress;
-  arguments = [
-    "--zd621-url"
-    cfg.printerUrl
-    "--socket-activation"
-    "--cache-namespace"
-    cfg.cacheNamespace
-  ] ++ lib.concatMap (header: [ "--zd621-header" header ]) cfg.printerHeaders;
+  printerConfig = if cfg.printersFile != null then cfg.printersFile else
+  pkgs.writeText "zpl-printers.json" (builtins.toJSON cfg.printers);
+  arguments = [ "--socket-activation" "--cache-namespace" cfg.cacheNamespace "--printers" ];
+
 in
 {
   options.services.zpl-proxy-api = {
@@ -18,18 +15,27 @@ in
       type = lib.types.package;
       default = pkgs.callPackage ./package.nix { };
       defaultText = lib.literalExpression "pkgs.callPackage ./package.nix { }";
-      description = "Proxy package, including assets and migrations under share/zpl-proxy-api.";
+      description = "Proxy package with embedded migrations and assets under share/zpl-proxy-api.";
     };
-    printerUrl = lib.mkOption {
-      type = lib.types.str;
-      example = "http://printer.local/";
-      description = "Base HTTP URL of the Zebra printer. Run only one proxy per printer.";
+    printers = lib.mkOption {
+      default = { };
+      description = "Exclusively owned printers keyed by public name, typically model or model-firmware. Public requests select name via /api/printers/{name}/preview. Values are public in the Nix store.";
+      type = lib.types.attrsOf (lib.types.submodule {
+        options = {
+          url = lib.mkOption { type = lib.types.str; description = "Printer HTTP(S) origin."; };
+          control_address = lib.mkOption { type = lib.types.str; description = "Trusted SGD host:port, usually printer:9100."; };
+          width = lib.mkOption { type = lib.types.ints.between 8 32000; description = "Default native canvas width in dots."; };
+          height = lib.mkOption { type = lib.types.ints.between 8 32000; description = "Default canvas height in dots."; };
+          headers = lib.mkOption { type = lib.types.listOf lib.types.str; default = [ ]; description = "HTTP headers; do not put secrets in the Nix store."; };
+          serial = lib.mkOption { type = lib.types.nullOr lib.types.str; default = null; description = "Optional expected serial number; mismatches fail closed."; };
+        };
+      });
     };
-    printerHeaders = lib.mkOption {
-      type = lib.types.listOf lib.types.str;
-      default = [ ];
-      example = [ "X-Example: value" ];
-      description = "Extra printer headers in 'Name: value' format. Values are public in the Nix store; do not put secrets here.";
+    printersFile = lib.mkOption {
+      type = lib.types.nullOr lib.types.str;
+      default = null;
+      example = "/run/secrets/zpl-printers.json";
+      description = "Absolute runtime path to the complete printer JSON object keyed by name, e.g. a sops-nix secret or template. Mutually exclusive with printers. Systemd reads this file as root using LoadCredential; its contents are never evaluated by Nix. Restart the service to load changed contents.";
     };
     listenAddress = lib.mkOption {
       type = lib.types.str;
@@ -86,16 +92,21 @@ in
   config = lib.mkIf cfg.enable {
     assertions = [
       {
+        assertion = lib.all (name: builtins.match "[A-Za-z0-9_.-]{1,80}" name != null) (lib.attrNames cfg.printers);
+        message = "Printer names must contain 1-80 ASCII letters, digits, dots, underscores or hyphens.";
+      }
+      {
+        assertion = (cfg.printers != { }) != (cfg.printersFile != null);
+        message = "Configure exactly one of services.zpl-proxy-api.printers or printersFile.";
+      }
+
+      {
+        assertion = cfg.printersFile == null || (lib.hasPrefix "/" cfg.printersFile && !(lib.hasPrefix builtins.storeDir cfg.printersFile));
+        message = "services.zpl-proxy-api.printersFile must be an absolute runtime path outside the Nix store.";
+      }
+      {
         assertion = cfg.unixSocket == null || lib.hasPrefix "/" cfg.unixSocket;
         message = "services.zpl-proxy-api.unixSocket must be an absolute filesystem path.";
-      }
-      {
-        assertion = lib.hasPrefix "http://" cfg.printerUrl || lib.hasPrefix "https://" cfg.printerUrl;
-        message = "services.zpl-proxy-api.printerUrl must be an HTTP(S) URL.";
-      }
-      {
-        assertion = lib.all (header: lib.hasInfix ": " header) cfg.printerHeaders;
-        message = "services.zpl-proxy-api.printerHeaders must use 'Name: value' format.";
       }
       {
         assertion = !(cfg.environment ? DATABASE_URL);
@@ -137,13 +148,12 @@ in
       environment = cfg.environment // {
         DATABASE_URL = "/var/lib/zpl-proxy-api/db.sqlite";
       };
-      # Diesel records applied migrations, so this also handles subsequent upgrades.
-      # https://diesel.rs/guides/getting-started.html
-      preStart = ''
-        ${lib.getExe pkgs.diesel-cli} migration run --migration-dir ${cfg.package}/share/zpl-proxy-api/migrations
-      '';
       serviceConfig = {
-        ExecStart = utils.escapeSystemdExecArgs ([ (lib.getExe cfg.package) ] ++ arguments);
+        # Inadyn/Stalwart use systemd credentials for runtime secret files:
+        # https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/services/networking/inadyn.nix
+        # Keep the trusted %d specifier outside escapeSystemdExecArgs (which escapes %).
+        ExecStart = utils.escapeSystemdExecArgs ([ (lib.getExe cfg.package) ] ++ arguments) + " %d/printers.json";
+        LoadCredential = [ "printers.json:${printerConfig}" ];
         WorkingDirectory = "${cfg.package}/share/zpl-proxy-api";
         Restart = "on-failure";
         RestartSec = 5;

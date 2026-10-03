@@ -4,7 +4,7 @@
   "device": "ZTC ZD621-203dpi ZPL",
   "firmware": "V93.21.33Z",
   "dpi": 203,
-  "host": "http://D7J211001302.bed.einic.org/",
+  "host": "http://printer.local/",
   "captured_utc": "2026-10-02T13:31:22Z",
   "method": "printer HTTP Preview Label; not physical print/scan",
   "cases": [

@@ -51,13 +51,35 @@ jobs:
           path: site/test-results/*.png
           if-no-files-found: ignore
           retention-days: 30
+  revisions:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      base: ${{ steps.select.outputs.base }}
+      head: ${{ steps.select.outputs.head }}
+      pr_head: ${{ steps.select.outputs.pr_head }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Select current target and confirmed PR merge
+        id: select
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 benchmarks/revisions.py
   measure:
+    needs: revisions
+    if: needs.revisions.outputs.head != ''
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     env:
       BENCH_RUNNER: ubuntu-24.04
       RUSTFLAGS: ''
       PR_NUMBER: ${{ github.event.pull_request.number || 0 }}
+      PR_HEAD_SHA: ${{ needs.revisions.outputs.pr_head }}
       # Keep both checkouts on the installed compiler, even with rust-toolchain files.
       RUSTUP_TOOLCHAIN: stable
     steps:
@@ -67,13 +89,14 @@ jobs:
           persist-credentials: false
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          ref: ${{ needs.revisions.outputs.head }}
+          fetch-depth: 2
           path: candidate
           persist-credentials: false
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         if: github.event_name == 'pull_request'
         with:
-          ref: ${{ github.event.pull_request.base.sha }}
+          ref: ${{ needs.revisions.outputs.base }}
           path: baseline
           persist-credentials: false
       - uses: dtolnay/rust-toolchain@6bed0761d98439e5a578e2877258200ad565ba87 # stable
@@ -82,7 +105,7 @@ jobs:
           python-version: '3.13'
       - name: Test benchmark tooling
         run: python3 -m unittest discover -s tooling/benchmarks -p 'test_*.py' -v
-      - name: Compare exact PR base and head on this worker
+      - name: Compare current target and PR merge on this worker
         if: github.event_name == 'pull_request'
         run: python3 tooling/benchmarks/run.py --base baseline --head candidate --output results
       - name: Measure main
