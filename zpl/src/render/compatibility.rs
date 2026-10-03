@@ -35,6 +35,14 @@ pub struct Compatibility {
     /// Let ^BQ magnification replace the shared barcode module width, including
     /// later fields, until ^BY changes it. Native qr-module-state-zd621-v1.
     pub qr_updates_barcode_module_width: bool,
+    /// Select automatic PDF417 columns by comparing integer grids at nominal
+    /// Y=3X, minimizing |width - 2*height|. Disabled: round the continuous
+    /// aspect-ratio estimate. ^B7 pp. 79–82; pdf417-layout-zd621-v1 controls.
+    pub pdf417_integer_grid_layout: bool,
+    /// Latch standalone PDF417 Text into Punctuation for runs of at least four
+    /// punctuation characters. Disabled: use individual punctuation shifts.
+    /// USS PDF417 §2.2.4.4; pdf417-layout-zd621-v1 native compaction controls.
+    pub pdf417_punctuation_latches: bool,
     /// Clamp off-label retail caption groups along the reading axis. N/R use
     /// nominal origins, I/B visible edges; retail-caption-edges-zd621-v1.
     pub retail_caption_clamps_negative_inline_origin: bool,

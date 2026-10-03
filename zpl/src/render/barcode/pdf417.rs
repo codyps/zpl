@@ -89,13 +89,22 @@ pub(super) fn field_escapes(data: &[u8]) -> Vec<u8> {
 }
 
 fn render_payload(b: &Barcode, payload: &[u8], ec: usize, count: usize) -> Result<Path, String> {
-    let stream = high_level::encode(payload);
+    let stream = high_level::encode(payload, b.compatibility.pdf417_punctuation_latches);
     let needed = stream.len() + 1 + count;
     let mut cols = b.integer(3, 0, 0, 30)?;
     let mut rows = b.integer(4, 0, 0, 90)?;
     if cols == 0 {
         cols = if rows != 0 {
             needed.div_ceil(rows)
+        } else if b.compatibility.pdf417_integer_grid_layout {
+            // Compare the actual integer grids, not a rounded solution with
+            // fractional rows. Nominal Y=3X and W:H=2:1 give W - 2H =
+            // 17c + 69 - 6r. Native controls bracket multiple transitions;
+            // 105 words choose 4x27, whereas 106 choose 5x22.
+            // ^B7 guide pp. 79–82; tests/fixtures/pdf417-layout-zd621-v1.
+            (1usize..=30)
+                .min_by_key(|&c| (17 * c + 69).abs_diff(6 * needed.div_ceil(c).max(3)))
+                .unwrap()
         } else {
             // Nominal Y=3X, width:height=2:1, including start/stop and row
             // indicators: (17c + 69)c = 6n. ZD621 chooses dimensions before
