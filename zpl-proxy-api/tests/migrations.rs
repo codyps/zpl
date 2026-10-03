@@ -5,6 +5,59 @@ const FIX: &str = include_str!("../migrations/2026-09-14-000000_fix-request-clie
 const REVERT: &str = include_str!("../migrations/2026-09-14-000000_fix-request-client/down.sql");
 
 #[test]
+fn identity_migration_preserves_original_pngs_and_legacy_mappings() {
+    let mut db = SqliteConnection::establish(":memory:").unwrap();
+    for migration in [
+        INITIAL,
+        FIX,
+        include_str!("../migrations/2026-09-15-220000_persist-render-results/up.sql"),
+        include_str!("../migrations/2026-09-15-230000_remove-client-ips/up.sql"),
+    ] {
+        db.batch_execute(migration).unwrap();
+    }
+    db.batch_execute(
+        "PRAGMA foreign_keys = ON;
+        INSERT INTO pngs VALUES(7,'original',X'0102',X'89504E470D0A1A0A',42);
+        INSERT INTO inputs(id,hash,data,png_id) VALUES(8,X'03',X'04',7);
+        INSERT INTO render_cache VALUES(8,X'05',7);
+        INSERT INTO png_requests(rowid,timestamp,input_id,png_id) VALUES(9,'legacy',8,7);",
+    )
+    .unwrap();
+    for _ in 0..2 {
+        db.batch_execute(include_str!(
+            "../migrations/2026-10-03-000000_printer-identity/up.sql"
+        ))
+        .unwrap();
+        use zpl_proxy_api::schema::{png_requests, pngs, render_cache};
+        let original = pngs::table
+            .find(7)
+            .select((pngs::data, pngs::hash))
+            .first::<(Vec<u8>, Vec<u8>)>(&mut db)
+            .unwrap();
+        assert_eq!(original, (b"\x89PNG\r\n\x1a\n".to_vec(), vec![1, 2]));
+        assert_eq!(
+            render_cache::table
+                .select((render_cache::png_id, render_cache::printer_identity))
+                .first::<(i64, Option<String>)>(&mut db)
+                .unwrap(),
+            (7, None)
+        );
+        assert_eq!(
+            png_requests::table
+                .find(9)
+                .select((png_requests::png_id, png_requests::printer_identity))
+                .first::<(Option<i64>, Option<String>)>(&mut db)
+                .unwrap(),
+            (Some(7), None)
+        );
+        db.batch_execute(include_str!(
+            "../migrations/2026-10-03-000000_printer-identity/down.sql"
+        ))
+        .unwrap();
+    }
+}
+
+#[test]
 fn migration_removes_ips_and_preserves_request_history() {
     let mut db = SqliteConnection::establish(":memory:").unwrap();
     for migration in [
@@ -30,6 +83,10 @@ fn migration_removes_ips_and_preserves_request_history() {
     assert!(db
         .batch_execute("SELECT peer_id FROM png_requests")
         .is_err());
+    db.batch_execute(include_str!(
+        "../migrations/2026-10-03-000000_printer-identity/up.sql"
+    ))
+    .unwrap();
     use zpl_proxy_api::{models::PngRequest, schema::png_requests};
     let row = png_requests::table
         .find(42)

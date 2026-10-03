@@ -20,6 +20,7 @@ diesel::table! {
         error -> Nullable<Text>,
         completed_at -> Nullable<Text>,
         cache_hit -> Bool,
+        printer_identity -> Nullable<Text>,
     }
 }
 
@@ -38,6 +39,7 @@ diesel::table! {
         input_id -> BigInt,
         renderer_key -> Binary,
         png_id -> BigInt,
+        printer_identity -> Nullable<Text>,
     }
 }
 

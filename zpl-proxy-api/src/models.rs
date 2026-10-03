@@ -34,4 +34,5 @@ pub struct PngRequest {
     pub error: Option<String>,
     pub completed_at: Option<String>,
     pub cache_hit: bool,
+    pub printer_identity: Option<String>,
 }
