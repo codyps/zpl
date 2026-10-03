@@ -1,0 +1,1083 @@
+{
+  "printer": {
+    "model": "ZD621",
+    "serial": "D7J211001302",
+    "firmware": "V93.21.33Z",
+    "dpi": 203
+  },
+  "font_sha256": "2552366ec5e6e1c3a468c1f15c8ec7c0268837d64f69d16b915b6a2a4b98a1b6",
+  "manifest_sha256": "286c285948c4b1aac6dec66f1fb4936a5bb9cbec091dce2134b7cf08b69f67cc",
+  "pages": [
+    {
+      "name": "00-state",
+      "cases": [
+        {
+          "name": "identity",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 26
+        },
+        {
+          "name": "instruction-witness",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 26
+        }
+      ],
+      "under": 0,
+      "over": 0,
+      "xor": 0,
+      "union": 52
+    },
+    {
+      "name": "round-16",
+      "cases": [
+        {
+          "name": "round-0-24",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 32
+        },
+        {
+          "name": "round-0-25",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 32
+        },
+        {
+          "name": "round-0-26",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 32
+        },
+        {
+          "name": "round-0-27",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 32
+        },
+        {
+          "name": "round-0-28",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 32
+        },
+        {
+          "name": "round-0-29",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 32
+        },
+        {
+          "name": "round-0-30",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 32
+        },
+        {
+          "name": "round-0-31",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 32
+        },
+        {
+          "name": "round-0-32",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 48
+        },
+        {
+          "name": "round-0-33",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 48
+        },
+        {
+          "name": "round-0-34",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 48
+        },
+        {
+          "name": "round-0-35",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 48
+        },
+        {
+          "name": "round-0-36",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 48
+        },
+        {
+          "name": "round-0-37",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 48
+        },
+        {
+          "name": "round-0-38",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 48
+        },
+        {
+          "name": "round-0-39",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 48
+        },
+        {
+          "name": "round-0-40",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 48
+        },
+        {
+          "name": "round-1-24",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 32
+        },
+        {
+          "name": "round-1-25",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 32
+        },
+        {
+          "name": "round-1-26",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 32
+        },
+        {
+          "name": "round-1-27",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 32
+        },
+        {
+          "name": "round-1-28",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 32
+        },
+        {
+          "name": "round-1-29",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 32
+        },
+        {
+          "name": "round-1-30",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 32
+        },
+        {
+          "name": "round-1-31",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 32
+        },
+        {
+          "name": "round-1-32",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 48
+        },
+        {
+          "name": "round-1-33",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 48
+        },
+        {
+          "name": "round-1-34",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 48
+        },
+        {
+          "name": "round-1-35",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 48
+        },
+        {
+          "name": "round-1-36",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 48
+        },
+        {
+          "name": "round-1-37",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 48
+        },
+        {
+          "name": "round-1-38",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 48
+        },
+        {
+          "name": "round-1-39",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 48
+        },
+        {
+          "name": "round-1-40",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 48
+        },
+        {
+          "name": "round-2-24",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 32
+        },
+        {
+          "name": "round-2-25",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 32
+        },
+        {
+          "name": "round-2-26",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 32
+        },
+        {
+          "name": "round-2-27",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 32
+        },
+        {
+          "name": "round-2-28",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 32
+        },
+        {
+          "name": "round-2-29",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 32
+        },
+        {
+          "name": "round-2-30",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 32
+        },
+        {
+          "name": "round-2-31",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 32
+        },
+        {
+          "name": "round-2-32",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 48
+        },
+        {
+          "name": "round-2-33",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 48
+        },
+        {
+          "name": "round-2-34",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 48
+        },
+        {
+          "name": "round-2-35",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 48
+        },
+        {
+          "name": "round-2-36",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 48
+        },
+        {
+          "name": "round-2-37",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 48
+        },
+        {
+          "name": "round-2-38",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 48
+        },
+        {
+          "name": "round-2-39",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 48
+        },
+        {
+          "name": "round-2-40",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 48
+        }
+      ],
+      "under": 0,
+      "over": 0,
+      "xor": 0,
+      "union": 2064
+    },
+    {
+      "name": "round-32",
+      "cases": [
+        {
+          "name": "round-0-24",
+          "width": 32,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 64
+        },
+        {
+          "name": "round-0-25",
+          "width": 32,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 64
+        },
+        {
+          "name": "round-0-26",
+          "width": 32,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 64
+        },
+        {
+          "name": "round-0-27",
+          "width": 32,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 64
+        },
+        {
+          "name": "round-0-28",
+          "width": 32,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 64
+        },
+        {
+          "name": "round-0-29",
+          "width": 32,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 64
+        },
+        {
+          "name": "round-0-30",
+          "width": 32,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 64
+        },
+        {
+          "name": "round-0-31",
+          "width": 32,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 64
+        },
+        {
+          "name": "round-0-32",
+          "width": 32,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 96
+        },
+        {
+          "name": "round-0-33",
+          "width": 32,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 96
+        },
+        {
+          "name": "round-0-34",
+          "width": 32,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 96
+        },
+        {
+          "name": "round-0-35",
+          "width": 32,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 96
+        },
+        {
+          "name": "round-0-36",
+          "width": 32,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 96
+        },
+        {
+          "name": "round-0-37",
+          "width": 32,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 96
+        },
+        {
+          "name": "round-0-38",
+          "width": 32,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 96
+        },
+        {
+          "name": "round-0-39",
+          "width": 32,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 96
+        },
+        {
+          "name": "round-0-40",
+          "width": 32,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 96
+        },
+        {
+          "name": "round-1-24",
+          "width": 32,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 64
+        },
+        {
+          "name": "round-1-25",
+          "width": 32,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 64
+        },
+        {
+          "name": "round-1-26",
+          "width": 32,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 64
+        },
+        {
+          "name": "round-1-27",
+          "width": 32,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 64
+        },
+        {
+          "name": "round-1-28",
+          "width": 32,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 64
+        },
+        {
+          "name": "round-1-29",
+          "width": 32,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 64
+        },
+        {
+          "name": "round-1-30",
+          "width": 32,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 64
+        },
+        {
+          "name": "round-1-31",
+          "width": 32,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 64
+        },
+        {
+          "name": "round-1-32",
+          "width": 32,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 96
+        },
+        {
+          "name": "round-1-33",
+          "width": 32,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 96
+        },
+        {
+          "name": "round-1-34",
+          "width": 32,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 96
+        },
+        {
+          "name": "round-1-35",
+          "width": 32,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 96
+        },
+        {
+          "name": "round-1-36",
+          "width": 32,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 96
+        },
+        {
+          "name": "round-1-37",
+          "width": 32,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 96
+        },
+        {
+          "name": "round-1-38",
+          "width": 32,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 96
+        },
+        {
+          "name": "round-1-39",
+          "width": 32,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 96
+        },
+        {
+          "name": "round-1-40",
+          "width": 32,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 96
+        },
+        {
+          "name": "round-2-24",
+          "width": 32,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 64
+        },
+        {
+          "name": "round-2-25",
+          "width": 32,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 64
+        },
+        {
+          "name": "round-2-26",
+          "width": 32,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 64
+        },
+        {
+          "name": "round-2-27",
+          "width": 32,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 64
+        },
+        {
+          "name": "round-2-28",
+          "width": 32,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 64
+        },
+        {
+          "name": "round-2-29",
+          "width": 32,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 64
+        },
+        {
+          "name": "round-2-30",
+          "width": 32,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 64
+        },
+        {
+          "name": "round-2-31",
+          "width": 32,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 64
+        },
+        {
+          "name": "round-2-32",
+          "width": 32,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 96
+        },
+        {
+          "name": "round-2-33",
+          "width": 32,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 96
+        },
+        {
+          "name": "round-2-34",
+          "width": 32,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 96
+        },
+        {
+          "name": "round-2-35",
+          "width": 32,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 96
+        },
+        {
+          "name": "round-2-36",
+          "width": 32,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 96
+        },
+        {
+          "name": "round-2-37",
+          "width": 32,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 96
+        },
+        {
+          "name": "round-2-38",
+          "width": 32,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 96
+        },
+        {
+          "name": "round-2-39",
+          "width": 32,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 96
+        },
+        {
+          "name": "round-2-40",
+          "width": 32,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 96
+        }
+      ],
+      "under": 0,
+      "over": 0,
+      "xor": 0,
+      "union": 4128
+    },
+    {
+      "name": "cvt-16",
+      "cases": [
+        {
+          "name": "cvt-fraction-1473",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 54
+        },
+        {
+          "name": "cvt-fraction-993",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 90
+        },
+        {
+          "name": "cvt-fraction-1757",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 80
+        },
+        {
+          "name": "cvt-fraction-735",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 90
+        },
+        {
+          "name": "cvt-fraction-737",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 92
+        }
+      ],
+      "under": 0,
+      "over": 0,
+      "xor": 0,
+      "union": 406
+    },
+    {
+      "name": "cvt-32",
+      "cases": [
+        {
+          "name": "cvt-fraction-1473",
+          "width": 32,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 248
+        },
+        {
+          "name": "cvt-fraction-993",
+          "width": 32,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 124
+        },
+        {
+          "name": "cvt-fraction-1757",
+          "width": 32,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 100
+        },
+        {
+          "name": "cvt-fraction-735",
+          "width": 32,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 116
+        },
+        {
+          "name": "cvt-fraction-737",
+          "width": 32,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 124
+        }
+      ],
+      "under": 0,
+      "over": 0,
+      "xor": 0,
+      "union": 712
+    }
+  ]
+}

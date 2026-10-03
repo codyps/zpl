@@ -1,0 +1,8328 @@
+{
+  "schema": "constructed-font-freetype-v1",
+  "freetype_version": [
+    2,
+    13,
+    2
+  ],
+  "python_packages": {
+    "freetype-py": "2.5.1",
+    "Pillow": "12.3.0"
+  },
+  "manifest_sha256": "380b2c0f25f9dd45a0cbdb061379442ff073526372c0cb7381afab59224d9daf",
+  "font_sources": [
+    {
+      "bytes": 1092,
+      "object": "R:ZRFN.TTF",
+      "sha256": "8d170e65a6109ef3dd16c30ef683809fae81342ccf59d496a9f210cfd4863e19"
+    },
+    {
+      "bytes": 1196,
+      "object": "R:ZRFH.TTF",
+      "sha256": "1e42573d296323d14dae931857e40b92dbeea288a7742ac3cd2beaabcb6a3d69"
+    }
+  ],
+  "load_flags": {
+    "native": 163844,
+    "unhinted": 131078,
+    "auto": 131108,
+    "default": 131076
+  },
+  "face_lifecycle": "new face for each glyph",
+  "coordinate_policy": "original full canvas; no alignment, clipping, or resampling",
+  "sealed_pixels_read": false,
+  "printer_shift_controls": [
+    {
+      "plain": "010-calibration",
+      "shifted": "020-calibration",
+      "xor": 0
+    },
+    {
+      "plain": "011-calibration",
+      "shifted": "021-calibration",
+      "xor": 0
+    },
+    {
+      "plain": "012-calibration",
+      "shifted": "022-calibration",
+      "xor": 0
+    },
+    {
+      "plain": "013-calibration",
+      "shifted": "023-calibration",
+      "xor": 0
+    },
+    {
+      "plain": "014-calibration",
+      "shifted": "024-calibration",
+      "xor": 0
+    },
+    {
+      "plain": "015-calibration",
+      "shifted": "025-calibration",
+      "xor": 0
+    },
+    {
+      "plain": "016-calibration",
+      "shifted": "026-calibration",
+      "xor": 0
+    },
+    {
+      "plain": "017-calibration",
+      "shifted": "027-calibration",
+      "xor": 0
+    },
+    {
+      "plain": "018-calibration",
+      "shifted": "028-calibration",
+      "xor": 0
+    },
+    {
+      "plain": "019-calibration",
+      "shifted": "029-calibration",
+      "xor": 0
+    }
+  ],
+  "comparisons": [
+    {
+      "page": "010-calibration",
+      "font": "R:ZRFN.TTF",
+      "height": 16,
+      "width": 0,
+      "orientation": "N",
+      "mode": "native",
+      "underpaint": 21,
+      "overpaint": 1,
+      "xor": 22,
+      "union": 345,
+      "exact_glyphs": 5,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 24,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 24,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 84,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 0,
+          "overpaint": 1,
+          "xor": 1,
+          "union": 96,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 11,
+          "overpaint": 0,
+          "xor": 11,
+          "union": 15,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 64,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 28,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 10,
+          "overpaint": 0,
+          "xor": 10,
+          "union": 10,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "010-calibration",
+      "font": "R:ZRFN.TTF",
+      "height": 16,
+      "width": 0,
+      "orientation": "N",
+      "mode": "unhinted",
+      "underpaint": 8,
+      "overpaint": 5,
+      "xor": 13,
+      "union": 349,
+      "exact_glyphs": 6,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 24,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 24,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 84,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 0,
+          "overpaint": 1,
+          "xor": 1,
+          "union": 96,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 8,
+          "overpaint": 4,
+          "xor": 12,
+          "union": 19,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 64,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 28,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 10,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "010-calibration",
+      "font": "R:ZRFN.TTF",
+      "height": 16,
+      "width": 0,
+      "orientation": "N",
+      "mode": "auto",
+      "underpaint": 8,
+      "overpaint": 7,
+      "xor": 15,
+      "union": 351,
+      "exact_glyphs": 5,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 24,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 24,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 84,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 0,
+          "overpaint": 1,
+          "xor": 1,
+          "union": 96,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 8,
+          "overpaint": 4,
+          "xor": 12,
+          "union": 19,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 64,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 28,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 0,
+          "overpaint": 2,
+          "xor": 2,
+          "union": 12,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "010-calibration",
+      "font": "R:ZRFN.TTF",
+      "height": 16,
+      "width": 0,
+      "orientation": "N",
+      "mode": "default",
+      "underpaint": 21,
+      "overpaint": 1,
+      "xor": 22,
+      "union": 345,
+      "exact_glyphs": 5,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 24,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 24,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 84,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 0,
+          "overpaint": 1,
+          "xor": 1,
+          "union": 96,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 11,
+          "overpaint": 0,
+          "xor": 11,
+          "union": 15,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 64,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 28,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 10,
+          "overpaint": 0,
+          "xor": 10,
+          "union": 10,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "011-calibration",
+      "font": "R:ZRFN.TTF",
+      "height": 31,
+      "width": 0,
+      "orientation": "N",
+      "mode": "native",
+      "underpaint": 42,
+      "overpaint": 19,
+      "xor": 61,
+      "union": 1247,
+      "exact_glyphs": 4,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 92,
+          "advance_26_6": [
+            1984,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 92,
+          "advance_26_6": [
+            1984,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 0,
+          "overpaint": 14,
+          "xor": 14,
+          "union": 309,
+          "advance_26_6": [
+            1984,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 0,
+          "overpaint": 5,
+          "xor": 5,
+          "union": 356,
+          "advance_26_6": [
+            1984,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 21,
+          "overpaint": 0,
+          "xor": 21,
+          "union": 29,
+          "advance_26_6": [
+            1984,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 240,
+          "advance_26_6": [
+            1984,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 108,
+          "advance_26_6": [
+            1984,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 21,
+          "overpaint": 0,
+          "xor": 21,
+          "union": 21,
+          "advance_26_6": [
+            1984,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "011-calibration",
+      "font": "R:ZRFN.TTF",
+      "height": 31,
+      "width": 0,
+      "orientation": "N",
+      "mode": "unhinted",
+      "underpaint": 14,
+      "overpaint": 27,
+      "xor": 41,
+      "union": 1255,
+      "exact_glyphs": 5,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 92,
+          "advance_26_6": [
+            1984,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 92,
+          "advance_26_6": [
+            1984,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 0,
+          "overpaint": 14,
+          "xor": 14,
+          "union": 309,
+          "advance_26_6": [
+            1984,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 0,
+          "overpaint": 5,
+          "xor": 5,
+          "union": 356,
+          "advance_26_6": [
+            1984,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 14,
+          "overpaint": 8,
+          "xor": 22,
+          "union": 37,
+          "advance_26_6": [
+            1984,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 240,
+          "advance_26_6": [
+            1984,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 108,
+          "advance_26_6": [
+            1984,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 21,
+          "advance_26_6": [
+            1984,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "011-calibration",
+      "font": "R:ZRFN.TTF",
+      "height": 31,
+      "width": 0,
+      "orientation": "N",
+      "mode": "auto",
+      "underpaint": 28,
+      "overpaint": 65,
+      "xor": 93,
+      "union": 1293,
+      "exact_glyphs": 3,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 92,
+          "advance_26_6": [
+            1984,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 92,
+          "advance_26_6": [
+            1984,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 0,
+          "overpaint": 29,
+          "xor": 29,
+          "union": 324,
+          "advance_26_6": [
+            1984,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 0,
+          "overpaint": 4,
+          "xor": 4,
+          "union": 355,
+          "advance_26_6": [
+            1984,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 13,
+          "overpaint": 7,
+          "xor": 20,
+          "union": 36,
+          "advance_26_6": [
+            1984,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 15,
+          "overpaint": 23,
+          "xor": 38,
+          "union": 263,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 108,
+          "advance_26_6": [
+            1984,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 0,
+          "overpaint": 2,
+          "xor": 2,
+          "union": 23,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "011-calibration",
+      "font": "R:ZRFN.TTF",
+      "height": 31,
+      "width": 0,
+      "orientation": "N",
+      "mode": "default",
+      "underpaint": 42,
+      "overpaint": 19,
+      "xor": 61,
+      "union": 1247,
+      "exact_glyphs": 4,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 92,
+          "advance_26_6": [
+            1984,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 92,
+          "advance_26_6": [
+            1984,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 0,
+          "overpaint": 14,
+          "xor": 14,
+          "union": 309,
+          "advance_26_6": [
+            1984,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 0,
+          "overpaint": 5,
+          "xor": 5,
+          "union": 356,
+          "advance_26_6": [
+            1984,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 21,
+          "overpaint": 0,
+          "xor": 21,
+          "union": 29,
+          "advance_26_6": [
+            1984,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 240,
+          "advance_26_6": [
+            1984,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 108,
+          "advance_26_6": [
+            1984,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 21,
+          "overpaint": 0,
+          "xor": 21,
+          "union": 21,
+          "advance_26_6": [
+            1984,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "012-calibration",
+      "font": "R:ZRFN.TTF",
+      "height": 32,
+      "width": 0,
+      "orientation": "N",
+      "mode": "native",
+      "underpaint": 15,
+      "overpaint": 4,
+      "xor": 19,
+      "union": 1336,
+      "exact_glyphs": 5,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 96,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 96,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 336,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 0,
+          "overpaint": 2,
+          "xor": 2,
+          "union": 385,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 15,
+          "overpaint": 0,
+          "xor": 15,
+          "union": 31,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 256,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 112,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 0,
+          "overpaint": 2,
+          "xor": 2,
+          "union": 24,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "012-calibration",
+      "font": "R:ZRFN.TTF",
+      "height": 32,
+      "width": 0,
+      "orientation": "N",
+      "mode": "unhinted",
+      "underpaint": 7,
+      "overpaint": 4,
+      "xor": 11,
+      "union": 1336,
+      "exact_glyphs": 5,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 96,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 96,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 336,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 0,
+          "overpaint": 2,
+          "xor": 2,
+          "union": 385,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 7,
+          "overpaint": 0,
+          "xor": 7,
+          "union": 31,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 256,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 112,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 0,
+          "overpaint": 2,
+          "xor": 2,
+          "union": 24,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "012-calibration",
+      "font": "R:ZRFN.TTF",
+      "height": 32,
+      "width": 0,
+      "orientation": "N",
+      "mode": "auto",
+      "underpaint": 7,
+      "overpaint": 4,
+      "xor": 11,
+      "union": 1336,
+      "exact_glyphs": 5,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 96,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 96,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 336,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 0,
+          "overpaint": 2,
+          "xor": 2,
+          "union": 385,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 7,
+          "overpaint": 0,
+          "xor": 7,
+          "union": 31,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 256,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 112,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 0,
+          "overpaint": 2,
+          "xor": 2,
+          "union": 24,
+          "advance_26_6": [
+            2112,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "012-calibration",
+      "font": "R:ZRFN.TTF",
+      "height": 32,
+      "width": 0,
+      "orientation": "N",
+      "mode": "default",
+      "underpaint": 15,
+      "overpaint": 4,
+      "xor": 19,
+      "union": 1336,
+      "exact_glyphs": 5,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 96,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 96,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 336,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 0,
+          "overpaint": 2,
+          "xor": 2,
+          "union": 385,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 15,
+          "overpaint": 0,
+          "xor": 15,
+          "union": 31,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 256,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 112,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 0,
+          "overpaint": 2,
+          "xor": 2,
+          "union": 24,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "013-calibration",
+      "font": "R:ZRFN.TTF",
+      "height": 33,
+      "width": 0,
+      "orientation": "N",
+      "mode": "native",
+      "underpaint": 8,
+      "overpaint": 20,
+      "xor": 28,
+      "union": 1472,
+      "exact_glyphs": 5,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 100,
+          "advance_26_6": [
+            2112,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 125,
+          "advance_26_6": [
+            2112,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 379,
+          "advance_26_6": [
+            2112,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 0,
+          "overpaint": 3,
+          "xor": 3,
+          "union": 413,
+          "advance_26_6": [
+            2112,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 8,
+          "overpaint": 0,
+          "xor": 8,
+          "union": 25,
+          "advance_26_6": [
+            2112,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 0,
+          "overpaint": 17,
+          "xor": 17,
+          "union": 289,
+          "advance_26_6": [
+            2112,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 116,
+          "advance_26_6": [
+            2112,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 25,
+          "advance_26_6": [
+            2112,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "013-calibration",
+      "font": "R:ZRFN.TTF",
+      "height": 33,
+      "width": 0,
+      "orientation": "N",
+      "mode": "unhinted",
+      "underpaint": 8,
+      "overpaint": 28,
+      "xor": 36,
+      "union": 1480,
+      "exact_glyphs": 5,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 100,
+          "advance_26_6": [
+            2112,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 125,
+          "advance_26_6": [
+            2112,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 379,
+          "advance_26_6": [
+            2112,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 0,
+          "overpaint": 3,
+          "xor": 3,
+          "union": 413,
+          "advance_26_6": [
+            2112,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 8,
+          "overpaint": 8,
+          "xor": 16,
+          "union": 33,
+          "advance_26_6": [
+            2112,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 0,
+          "overpaint": 17,
+          "xor": 17,
+          "union": 289,
+          "advance_26_6": [
+            2112,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 116,
+          "advance_26_6": [
+            2112,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 25,
+          "advance_26_6": [
+            2112,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "013-calibration",
+      "font": "R:ZRFN.TTF",
+      "height": 33,
+      "width": 0,
+      "orientation": "N",
+      "mode": "auto",
+      "underpaint": 72,
+      "overpaint": 28,
+      "xor": 100,
+      "union": 1480,
+      "exact_glyphs": 3,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 100,
+          "advance_26_6": [
+            2112,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 25,
+          "overpaint": 0,
+          "xor": 25,
+          "union": 125,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 14,
+          "overpaint": 0,
+          "xor": 14,
+          "union": 379,
+          "advance_26_6": [
+            2112,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 0,
+          "overpaint": 3,
+          "xor": 3,
+          "union": 413,
+          "advance_26_6": [
+            2112,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 8,
+          "overpaint": 8,
+          "xor": 16,
+          "union": 33,
+          "advance_26_6": [
+            2112,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 25,
+          "overpaint": 17,
+          "xor": 42,
+          "union": 289,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 116,
+          "advance_26_6": [
+            2112,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 25,
+          "advance_26_6": [
+            2112,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "013-calibration",
+      "font": "R:ZRFN.TTF",
+      "height": 33,
+      "width": 0,
+      "orientation": "N",
+      "mode": "default",
+      "underpaint": 8,
+      "overpaint": 20,
+      "xor": 28,
+      "union": 1472,
+      "exact_glyphs": 5,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 100,
+          "advance_26_6": [
+            2112,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 125,
+          "advance_26_6": [
+            2112,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 379,
+          "advance_26_6": [
+            2112,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 0,
+          "overpaint": 3,
+          "xor": 3,
+          "union": 413,
+          "advance_26_6": [
+            2112,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 8,
+          "overpaint": 0,
+          "xor": 8,
+          "union": 25,
+          "advance_26_6": [
+            2112,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 0,
+          "overpaint": 17,
+          "xor": 17,
+          "union": 289,
+          "advance_26_6": [
+            2112,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 116,
+          "advance_26_6": [
+            2112,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 25,
+          "advance_26_6": [
+            2112,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "014-calibration",
+      "font": "R:ZRFN.TTF",
+      "height": 48,
+      "width": 0,
+      "orientation": "N",
+      "mode": "native",
+      "underpaint": 11,
+      "overpaint": 0,
+      "xor": 11,
+      "union": 2953,
+      "exact_glyphs": 7,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 216,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 216,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 756,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 866,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 11,
+          "overpaint": 0,
+          "xor": 11,
+          "union": 35,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 576,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 252,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 36,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "014-calibration",
+      "font": "R:ZRFN.TTF",
+      "height": 48,
+      "width": 0,
+      "orientation": "N",
+      "mode": "unhinted",
+      "underpaint": 11,
+      "overpaint": 12,
+      "xor": 23,
+      "union": 2965,
+      "exact_glyphs": 7,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 216,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 216,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 756,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 866,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 11,
+          "overpaint": 12,
+          "xor": 23,
+          "union": 47,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 576,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 252,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 36,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "014-calibration",
+      "font": "R:ZRFN.TTF",
+      "height": 48,
+      "width": 0,
+      "orientation": "N",
+      "mode": "auto",
+      "underpaint": 11,
+      "overpaint": 12,
+      "xor": 23,
+      "union": 2965,
+      "exact_glyphs": 7,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 216,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 216,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 756,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 866,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 11,
+          "overpaint": 12,
+          "xor": 23,
+          "union": 47,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 576,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 252,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 36,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "014-calibration",
+      "font": "R:ZRFN.TTF",
+      "height": 48,
+      "width": 0,
+      "orientation": "N",
+      "mode": "default",
+      "underpaint": 11,
+      "overpaint": 0,
+      "xor": 11,
+      "union": 2953,
+      "exact_glyphs": 7,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 216,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 216,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 756,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 866,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 11,
+          "overpaint": 0,
+          "xor": 11,
+          "union": 35,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 576,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 252,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 36,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "015-calibration",
+      "font": "R:ZRFN.TTF",
+      "height": 64,
+      "width": 0,
+      "orientation": "N",
+      "mode": "native",
+      "underpaint": 0,
+      "overpaint": 105,
+      "xor": 105,
+      "union": 5321,
+      "exact_glyphs": 5,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 384,
+          "advance_26_6": [
+            4096,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 0,
+          "overpaint": 48,
+          "xor": 48,
+          "union": 432,
+          "advance_26_6": [
+            4096,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 1344,
+          "advance_26_6": [
+            4096,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 0,
+          "overpaint": 1,
+          "xor": 1,
+          "union": 1537,
+          "advance_26_6": [
+            4096,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 48,
+          "advance_26_6": [
+            4096,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 1024,
+          "advance_26_6": [
+            4096,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 0,
+          "overpaint": 56,
+          "xor": 56,
+          "union": 504,
+          "advance_26_6": [
+            4096,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 48,
+          "advance_26_6": [
+            4096,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "015-calibration",
+      "font": "R:ZRFN.TTF",
+      "height": 64,
+      "width": 0,
+      "orientation": "N",
+      "mode": "unhinted",
+      "underpaint": 0,
+      "overpaint": 105,
+      "xor": 105,
+      "union": 5321,
+      "exact_glyphs": 5,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 384,
+          "advance_26_6": [
+            4096,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 0,
+          "overpaint": 48,
+          "xor": 48,
+          "union": 432,
+          "advance_26_6": [
+            4096,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 1344,
+          "advance_26_6": [
+            4096,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 0,
+          "overpaint": 1,
+          "xor": 1,
+          "union": 1537,
+          "advance_26_6": [
+            4096,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 48,
+          "advance_26_6": [
+            4096,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 1024,
+          "advance_26_6": [
+            4096,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 0,
+          "overpaint": 56,
+          "xor": 56,
+          "union": 504,
+          "advance_26_6": [
+            4096,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 48,
+          "advance_26_6": [
+            4096,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "015-calibration",
+      "font": "R:ZRFN.TTF",
+      "height": 64,
+      "width": 0,
+      "orientation": "N",
+      "mode": "auto",
+      "underpaint": 48,
+      "overpaint": 49,
+      "xor": 97,
+      "union": 5265,
+      "exact_glyphs": 6,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 384,
+          "advance_26_6": [
+            4096,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 48,
+          "overpaint": 48,
+          "xor": 96,
+          "union": 432,
+          "advance_26_6": [
+            4096,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 1344,
+          "advance_26_6": [
+            4096,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 0,
+          "overpaint": 1,
+          "xor": 1,
+          "union": 1537,
+          "advance_26_6": [
+            4096,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 48,
+          "advance_26_6": [
+            4096,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 1024,
+          "advance_26_6": [
+            4096,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 448,
+          "advance_26_6": [
+            4160,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 48,
+          "advance_26_6": [
+            4096,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "015-calibration",
+      "font": "R:ZRFN.TTF",
+      "height": 64,
+      "width": 0,
+      "orientation": "N",
+      "mode": "default",
+      "underpaint": 0,
+      "overpaint": 105,
+      "xor": 105,
+      "union": 5321,
+      "exact_glyphs": 5,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 384,
+          "advance_26_6": [
+            4096,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 0,
+          "overpaint": 48,
+          "xor": 48,
+          "union": 432,
+          "advance_26_6": [
+            4096,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 1344,
+          "advance_26_6": [
+            4096,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 0,
+          "overpaint": 1,
+          "xor": 1,
+          "union": 1537,
+          "advance_26_6": [
+            4096,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 48,
+          "advance_26_6": [
+            4096,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 1024,
+          "advance_26_6": [
+            4096,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 0,
+          "overpaint": 56,
+          "xor": 56,
+          "union": 504,
+          "advance_26_6": [
+            4096,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 48,
+          "advance_26_6": [
+            4096,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "016-calibration",
+      "font": "R:ZRFN.TTF",
+      "height": 32,
+      "width": 19,
+      "orientation": "N",
+      "mode": "native",
+      "underpaint": 18,
+      "overpaint": 10,
+      "xor": 28,
+      "union": 845,
+      "exact_glyphs": 5,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 72,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 48,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 0,
+          "overpaint": 8,
+          "xor": 8,
+          "union": 208,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 0,
+          "overpaint": 2,
+          "xor": 2,
+          "union": 237,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 18,
+          "overpaint": 0,
+          "xor": 18,
+          "union": 24,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 176,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 56,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 24,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "016-calibration",
+      "font": "R:ZRFN.TTF",
+      "height": 32,
+      "width": 19,
+      "orientation": "N",
+      "mode": "unhinted",
+      "underpaint": 15,
+      "overpaint": 23,
+      "xor": 38,
+      "union": 858,
+      "exact_glyphs": 5,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 72,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 48,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 0,
+          "overpaint": 8,
+          "xor": 8,
+          "union": 208,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 0,
+          "overpaint": 2,
+          "xor": 2,
+          "union": 237,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 15,
+          "overpaint": 13,
+          "xor": 28,
+          "union": 37,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 176,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 56,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 24,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "016-calibration",
+      "font": "R:ZRFN.TTF",
+      "height": 32,
+      "width": 19,
+      "orientation": "N",
+      "mode": "auto",
+      "underpaint": 84,
+      "overpaint": 21,
+      "xor": 105,
+      "union": 856,
+      "exact_glyphs": 3,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 24,
+          "overpaint": 0,
+          "xor": 24,
+          "union": 72,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 48,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 0,
+          "overpaint": 8,
+          "xor": 8,
+          "union": 208,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 5,
+          "overpaint": 0,
+          "xor": 5,
+          "union": 235,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 15,
+          "overpaint": 13,
+          "xor": 28,
+          "union": 37,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 40,
+          "overpaint": 0,
+          "xor": 40,
+          "union": 176,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 56,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 24,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "016-calibration",
+      "font": "R:ZRFN.TTF",
+      "height": 32,
+      "width": 19,
+      "orientation": "N",
+      "mode": "default",
+      "underpaint": 18,
+      "overpaint": 10,
+      "xor": 28,
+      "union": 845,
+      "exact_glyphs": 5,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 72,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 48,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 0,
+          "overpaint": 8,
+          "xor": 8,
+          "union": 208,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 0,
+          "overpaint": 2,
+          "xor": 2,
+          "union": 237,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 18,
+          "overpaint": 0,
+          "xor": 18,
+          "union": 24,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 176,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 56,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 24,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "017-calibration",
+      "font": "R:ZRFN.TTF",
+      "height": 32,
+      "width": 0,
+      "orientation": "R",
+      "mode": "native",
+      "underpaint": 39,
+      "overpaint": 35,
+      "xor": 74,
+      "union": 1360,
+      "exact_glyphs": 5,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 96,
+          "advance_26_6": [
+            0,
+            -2048
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 96,
+          "advance_26_6": [
+            0,
+            -2048
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 336,
+          "advance_26_6": [
+            0,
+            -2048
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 0,
+          "overpaint": 3,
+          "xor": 3,
+          "union": 385,
+          "advance_26_6": [
+            0,
+            -2048
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 15,
+          "overpaint": 8,
+          "xor": 23,
+          "union": 31,
+          "advance_26_6": [
+            0,
+            -2048
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 256,
+          "advance_26_6": [
+            0,
+            -2048
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 112,
+          "advance_26_6": [
+            0,
+            -2048
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 24,
+          "overpaint": 24,
+          "xor": 48,
+          "union": 48,
+          "advance_26_6": [
+            0,
+            -2048
+          ]
+        }
+      ]
+    },
+    {
+      "page": "017-calibration",
+      "font": "R:ZRFN.TTF",
+      "height": 32,
+      "width": 0,
+      "orientation": "R",
+      "mode": "unhinted",
+      "underpaint": 39,
+      "overpaint": 43,
+      "xor": 82,
+      "union": 1368,
+      "exact_glyphs": 5,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 96,
+          "advance_26_6": [
+            0,
+            -2048
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 96,
+          "advance_26_6": [
+            0,
+            -2048
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 336,
+          "advance_26_6": [
+            0,
+            -2048
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 0,
+          "overpaint": 3,
+          "xor": 3,
+          "union": 385,
+          "advance_26_6": [
+            0,
+            -2048
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 15,
+          "overpaint": 16,
+          "xor": 31,
+          "union": 39,
+          "advance_26_6": [
+            0,
+            -2048
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 256,
+          "advance_26_6": [
+            0,
+            -2048
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 112,
+          "advance_26_6": [
+            0,
+            -2048
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 24,
+          "overpaint": 24,
+          "xor": 48,
+          "union": 48,
+          "advance_26_6": [
+            0,
+            -2048
+          ]
+        }
+      ]
+    },
+    {
+      "page": "017-calibration",
+      "font": "R:ZRFN.TTF",
+      "height": 32,
+      "width": 0,
+      "orientation": "R",
+      "mode": "auto",
+      "underpaint": 39,
+      "overpaint": 43,
+      "xor": 82,
+      "union": 1368,
+      "exact_glyphs": 5,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 96,
+          "advance_26_6": [
+            0,
+            -2048
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 96,
+          "advance_26_6": [
+            0,
+            -2048
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 336,
+          "advance_26_6": [
+            0,
+            -2048
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 0,
+          "overpaint": 3,
+          "xor": 3,
+          "union": 385,
+          "advance_26_6": [
+            0,
+            -2048
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 15,
+          "overpaint": 16,
+          "xor": 31,
+          "union": 39,
+          "advance_26_6": [
+            0,
+            -2048
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 256,
+          "advance_26_6": [
+            0,
+            -2048
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 112,
+          "advance_26_6": [
+            0,
+            -2048
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 24,
+          "overpaint": 24,
+          "xor": 48,
+          "union": 48,
+          "advance_26_6": [
+            0,
+            -2112
+          ]
+        }
+      ]
+    },
+    {
+      "page": "017-calibration",
+      "font": "R:ZRFN.TTF",
+      "height": 32,
+      "width": 0,
+      "orientation": "R",
+      "mode": "default",
+      "underpaint": 39,
+      "overpaint": 35,
+      "xor": 74,
+      "union": 1360,
+      "exact_glyphs": 5,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 96,
+          "advance_26_6": [
+            0,
+            -2048
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 96,
+          "advance_26_6": [
+            0,
+            -2048
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 336,
+          "advance_26_6": [
+            0,
+            -2048
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 0,
+          "overpaint": 3,
+          "xor": 3,
+          "union": 385,
+          "advance_26_6": [
+            0,
+            -2048
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 15,
+          "overpaint": 8,
+          "xor": 23,
+          "union": 31,
+          "advance_26_6": [
+            0,
+            -2048
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 256,
+          "advance_26_6": [
+            0,
+            -2048
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 112,
+          "advance_26_6": [
+            0,
+            -2048
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 24,
+          "overpaint": 24,
+          "xor": 48,
+          "union": 48,
+          "advance_26_6": [
+            0,
+            -2048
+          ]
+        }
+      ]
+    },
+    {
+      "page": "018-calibration",
+      "font": "R:ZRFN.TTF",
+      "height": 32,
+      "width": 0,
+      "orientation": "I",
+      "mode": "native",
+      "underpaint": 37,
+      "overpaint": 28,
+      "xor": 65,
+      "union": 1358,
+      "exact_glyphs": 5,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 96,
+          "advance_26_6": [
+            -2048,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 96,
+          "advance_26_6": [
+            -2048,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 336,
+          "advance_26_6": [
+            -2048,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 0,
+          "overpaint": 4,
+          "xor": 4,
+          "union": 385,
+          "advance_26_6": [
+            -2048,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 15,
+          "overpaint": 0,
+          "xor": 15,
+          "union": 31,
+          "advance_26_6": [
+            -2048,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 256,
+          "advance_26_6": [
+            -2048,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 112,
+          "advance_26_6": [
+            -2048,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 22,
+          "overpaint": 24,
+          "xor": 46,
+          "union": 46,
+          "advance_26_6": [
+            -2048,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "018-calibration",
+      "font": "R:ZRFN.TTF",
+      "height": 32,
+      "width": 0,
+      "orientation": "I",
+      "mode": "unhinted",
+      "underpaint": 37,
+      "overpaint": 36,
+      "xor": 73,
+      "union": 1366,
+      "exact_glyphs": 5,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 96,
+          "advance_26_6": [
+            -2048,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 96,
+          "advance_26_6": [
+            -2048,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 336,
+          "advance_26_6": [
+            -2048,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 0,
+          "overpaint": 4,
+          "xor": 4,
+          "union": 385,
+          "advance_26_6": [
+            -2048,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 15,
+          "overpaint": 8,
+          "xor": 23,
+          "union": 39,
+          "advance_26_6": [
+            -2048,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 256,
+          "advance_26_6": [
+            -2048,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 112,
+          "advance_26_6": [
+            -2048,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 22,
+          "overpaint": 24,
+          "xor": 46,
+          "union": 46,
+          "advance_26_6": [
+            -2048,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "018-calibration",
+      "font": "R:ZRFN.TTF",
+      "height": 32,
+      "width": 0,
+      "orientation": "I",
+      "mode": "auto",
+      "underpaint": 37,
+      "overpaint": 36,
+      "xor": 73,
+      "union": 1366,
+      "exact_glyphs": 5,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 96,
+          "advance_26_6": [
+            -2048,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 96,
+          "advance_26_6": [
+            -2048,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 336,
+          "advance_26_6": [
+            -2048,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 0,
+          "overpaint": 4,
+          "xor": 4,
+          "union": 385,
+          "advance_26_6": [
+            -2048,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 15,
+          "overpaint": 8,
+          "xor": 23,
+          "union": 39,
+          "advance_26_6": [
+            -2048,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 256,
+          "advance_26_6": [
+            -2048,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 112,
+          "advance_26_6": [
+            -2048,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 22,
+          "overpaint": 24,
+          "xor": 46,
+          "union": 46,
+          "advance_26_6": [
+            -2112,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "018-calibration",
+      "font": "R:ZRFN.TTF",
+      "height": 32,
+      "width": 0,
+      "orientation": "I",
+      "mode": "default",
+      "underpaint": 37,
+      "overpaint": 28,
+      "xor": 65,
+      "union": 1358,
+      "exact_glyphs": 5,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 96,
+          "advance_26_6": [
+            -2048,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 96,
+          "advance_26_6": [
+            -2048,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 336,
+          "advance_26_6": [
+            -2048,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 0,
+          "overpaint": 4,
+          "xor": 4,
+          "union": 385,
+          "advance_26_6": [
+            -2048,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 15,
+          "overpaint": 0,
+          "xor": 15,
+          "union": 31,
+          "advance_26_6": [
+            -2048,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 256,
+          "advance_26_6": [
+            -2048,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 112,
+          "advance_26_6": [
+            -2048,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 22,
+          "overpaint": 24,
+          "xor": 46,
+          "union": 46,
+          "advance_26_6": [
+            -2048,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "019-calibration",
+      "font": "R:ZRFN.TTF",
+      "height": 32,
+      "width": 0,
+      "orientation": "B",
+      "mode": "native",
+      "underpaint": 8,
+      "overpaint": 4,
+      "xor": 12,
+      "union": 1329,
+      "exact_glyphs": 6,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 96,
+          "advance_26_6": [
+            0,
+            2048
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 96,
+          "advance_26_6": [
+            0,
+            2048
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 336,
+          "advance_26_6": [
+            0,
+            2048
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 0,
+          "overpaint": 3,
+          "xor": 3,
+          "union": 385,
+          "advance_26_6": [
+            0,
+            2048
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 8,
+          "overpaint": 1,
+          "xor": 9,
+          "union": 24,
+          "advance_26_6": [
+            0,
+            2048
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 256,
+          "advance_26_6": [
+            0,
+            2048
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 112,
+          "advance_26_6": [
+            0,
+            2048
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 24,
+          "advance_26_6": [
+            0,
+            2048
+          ]
+        }
+      ]
+    },
+    {
+      "page": "019-calibration",
+      "font": "R:ZRFN.TTF",
+      "height": 32,
+      "width": 0,
+      "orientation": "B",
+      "mode": "unhinted",
+      "underpaint": 7,
+      "overpaint": 11,
+      "xor": 18,
+      "union": 1336,
+      "exact_glyphs": 6,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 96,
+          "advance_26_6": [
+            0,
+            2048
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 96,
+          "advance_26_6": [
+            0,
+            2048
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 336,
+          "advance_26_6": [
+            0,
+            2048
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 0,
+          "overpaint": 3,
+          "xor": 3,
+          "union": 385,
+          "advance_26_6": [
+            0,
+            2048
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 7,
+          "overpaint": 8,
+          "xor": 15,
+          "union": 31,
+          "advance_26_6": [
+            0,
+            2048
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 256,
+          "advance_26_6": [
+            0,
+            2048
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 112,
+          "advance_26_6": [
+            0,
+            2048
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 24,
+          "advance_26_6": [
+            0,
+            2048
+          ]
+        }
+      ]
+    },
+    {
+      "page": "019-calibration",
+      "font": "R:ZRFN.TTF",
+      "height": 32,
+      "width": 0,
+      "orientation": "B",
+      "mode": "auto",
+      "underpaint": 7,
+      "overpaint": 11,
+      "xor": 18,
+      "union": 1336,
+      "exact_glyphs": 6,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 96,
+          "advance_26_6": [
+            0,
+            2048
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 96,
+          "advance_26_6": [
+            0,
+            2048
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 336,
+          "advance_26_6": [
+            0,
+            2048
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 0,
+          "overpaint": 3,
+          "xor": 3,
+          "union": 385,
+          "advance_26_6": [
+            0,
+            2048
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 7,
+          "overpaint": 8,
+          "xor": 15,
+          "union": 31,
+          "advance_26_6": [
+            0,
+            2048
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 256,
+          "advance_26_6": [
+            0,
+            2048
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 112,
+          "advance_26_6": [
+            0,
+            2048
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 24,
+          "advance_26_6": [
+            0,
+            2112
+          ]
+        }
+      ]
+    },
+    {
+      "page": "019-calibration",
+      "font": "R:ZRFN.TTF",
+      "height": 32,
+      "width": 0,
+      "orientation": "B",
+      "mode": "default",
+      "underpaint": 8,
+      "overpaint": 4,
+      "xor": 12,
+      "union": 1329,
+      "exact_glyphs": 6,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 96,
+          "advance_26_6": [
+            0,
+            2048
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 96,
+          "advance_26_6": [
+            0,
+            2048
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 336,
+          "advance_26_6": [
+            0,
+            2048
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 0,
+          "overpaint": 3,
+          "xor": 3,
+          "union": 385,
+          "advance_26_6": [
+            0,
+            2048
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 8,
+          "overpaint": 1,
+          "xor": 9,
+          "union": 24,
+          "advance_26_6": [
+            0,
+            2048
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 256,
+          "advance_26_6": [
+            0,
+            2048
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 112,
+          "advance_26_6": [
+            0,
+            2048
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 24,
+          "advance_26_6": [
+            0,
+            2048
+          ]
+        }
+      ]
+    },
+    {
+      "page": "020-calibration",
+      "font": "R:ZRFH.TTF",
+      "height": 16,
+      "width": 0,
+      "orientation": "N",
+      "mode": "native",
+      "underpaint": 7,
+      "overpaint": 7,
+      "xor": 14,
+      "union": 351,
+      "exact_glyphs": 5,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 24,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 24,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 84,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 0,
+          "overpaint": 1,
+          "xor": 1,
+          "union": 96,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 7,
+          "overpaint": 4,
+          "xor": 11,
+          "union": 19,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 64,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 28,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 0,
+          "overpaint": 2,
+          "xor": 2,
+          "union": 12,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "020-calibration",
+      "font": "R:ZRFH.TTF",
+      "height": 16,
+      "width": 0,
+      "orientation": "N",
+      "mode": "unhinted",
+      "underpaint": 106,
+      "overpaint": 103,
+      "xor": 209,
+      "union": 447,
+      "exact_glyphs": 0,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 12,
+          "overpaint": 12,
+          "xor": 24,
+          "union": 36,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 12,
+          "overpaint": 12,
+          "xor": 24,
+          "union": 36,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 12,
+          "overpaint": 12,
+          "xor": 24,
+          "union": 96,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 11,
+          "overpaint": 12,
+          "xor": 23,
+          "union": 107,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 15,
+          "overpaint": 11,
+          "xor": 26,
+          "union": 26,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 20,
+          "overpaint": 20,
+          "xor": 40,
+          "union": 84,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 14,
+          "overpaint": 14,
+          "xor": 28,
+          "union": 42,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 10,
+          "overpaint": 10,
+          "xor": 20,
+          "union": 20,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "020-calibration",
+      "font": "R:ZRFH.TTF",
+      "height": 16,
+      "width": 0,
+      "orientation": "N",
+      "mode": "auto",
+      "underpaint": 106,
+      "overpaint": 105,
+      "xor": 211,
+      "union": 449,
+      "exact_glyphs": 0,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 12,
+          "overpaint": 12,
+          "xor": 24,
+          "union": 36,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 12,
+          "overpaint": 12,
+          "xor": 24,
+          "union": 36,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 12,
+          "overpaint": 12,
+          "xor": 24,
+          "union": 96,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 11,
+          "overpaint": 12,
+          "xor": 23,
+          "union": 107,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 15,
+          "overpaint": 11,
+          "xor": 26,
+          "union": 26,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 20,
+          "overpaint": 20,
+          "xor": 40,
+          "union": 84,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 14,
+          "overpaint": 14,
+          "xor": 28,
+          "union": 42,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 10,
+          "overpaint": 12,
+          "xor": 22,
+          "union": 22,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "020-calibration",
+      "font": "R:ZRFH.TTF",
+      "height": 16,
+      "width": 0,
+      "orientation": "N",
+      "mode": "default",
+      "underpaint": 7,
+      "overpaint": 7,
+      "xor": 14,
+      "union": 351,
+      "exact_glyphs": 5,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 24,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 24,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 84,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 0,
+          "overpaint": 1,
+          "xor": 1,
+          "union": 96,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 7,
+          "overpaint": 4,
+          "xor": 11,
+          "union": 19,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 64,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 28,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 0,
+          "overpaint": 2,
+          "xor": 2,
+          "union": 12,
+          "advance_26_6": [
+            1024,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "021-calibration",
+      "font": "R:ZRFH.TTF",
+      "height": 31,
+      "width": 0,
+      "orientation": "N",
+      "mode": "native",
+      "underpaint": 14,
+      "overpaint": 30,
+      "xor": 44,
+      "union": 1258,
+      "exact_glyphs": 4,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 92,
+          "advance_26_6": [
+            1984,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 92,
+          "advance_26_6": [
+            1984,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 0,
+          "overpaint": 14,
+          "xor": 14,
+          "union": 309,
+          "advance_26_6": [
+            1984,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 0,
+          "overpaint": 5,
+          "xor": 5,
+          "union": 356,
+          "advance_26_6": [
+            1984,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 14,
+          "overpaint": 9,
+          "xor": 23,
+          "union": 38,
+          "advance_26_6": [
+            1984,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 240,
+          "advance_26_6": [
+            1984,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 108,
+          "advance_26_6": [
+            1984,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 0,
+          "overpaint": 2,
+          "xor": 2,
+          "union": 23,
+          "advance_26_6": [
+            1984,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "021-calibration",
+      "font": "R:ZRFH.TTF",
+      "height": 31,
+      "width": 0,
+      "orientation": "N",
+      "mode": "unhinted",
+      "underpaint": 194,
+      "overpaint": 207,
+      "xor": 401,
+      "union": 1435,
+      "exact_glyphs": 0,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 23,
+          "overpaint": 23,
+          "xor": 46,
+          "union": 115,
+          "advance_26_6": [
+            1984,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 23,
+          "overpaint": 23,
+          "xor": 46,
+          "union": 115,
+          "advance_26_6": [
+            1984,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 15,
+          "overpaint": 29,
+          "xor": 44,
+          "union": 324,
+          "advance_26_6": [
+            1984,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 18,
+          "overpaint": 23,
+          "xor": 41,
+          "union": 374,
+          "advance_26_6": [
+            1984,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 29,
+          "overpaint": 23,
+          "xor": 52,
+          "union": 52,
+          "advance_26_6": [
+            1984,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 38,
+          "overpaint": 38,
+          "xor": 76,
+          "union": 278,
+          "advance_26_6": [
+            1984,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 27,
+          "overpaint": 27,
+          "xor": 54,
+          "union": 135,
+          "advance_26_6": [
+            1984,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 21,
+          "overpaint": 21,
+          "xor": 42,
+          "union": 42,
+          "advance_26_6": [
+            1984,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "021-calibration",
+      "font": "R:ZRFH.TTF",
+      "height": 31,
+      "width": 0,
+      "orientation": "N",
+      "mode": "auto",
+      "underpaint": 157,
+      "overpaint": 194,
+      "xor": 351,
+      "union": 1422,
+      "exact_glyphs": 0,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 23,
+          "overpaint": 23,
+          "xor": 46,
+          "union": 115,
+          "advance_26_6": [
+            1984,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 23,
+          "overpaint": 23,
+          "xor": 46,
+          "union": 115,
+          "advance_26_6": [
+            1984,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 0,
+          "overpaint": 29,
+          "xor": 29,
+          "union": 324,
+          "advance_26_6": [
+            1984,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 19,
+          "overpaint": 23,
+          "xor": 42,
+          "union": 374,
+          "advance_26_6": [
+            1984,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 29,
+          "overpaint": 23,
+          "xor": 52,
+          "union": 52,
+          "advance_26_6": [
+            1984,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 15,
+          "overpaint": 23,
+          "xor": 38,
+          "union": 263,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 27,
+          "overpaint": 27,
+          "xor": 54,
+          "union": 135,
+          "advance_26_6": [
+            1984,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 21,
+          "overpaint": 23,
+          "xor": 44,
+          "union": 44,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "021-calibration",
+      "font": "R:ZRFH.TTF",
+      "height": 31,
+      "width": 0,
+      "orientation": "N",
+      "mode": "default",
+      "underpaint": 14,
+      "overpaint": 30,
+      "xor": 44,
+      "union": 1258,
+      "exact_glyphs": 4,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 92,
+          "advance_26_6": [
+            1984,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 92,
+          "advance_26_6": [
+            1984,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 0,
+          "overpaint": 14,
+          "xor": 14,
+          "union": 309,
+          "advance_26_6": [
+            1984,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 0,
+          "overpaint": 5,
+          "xor": 5,
+          "union": 356,
+          "advance_26_6": [
+            1984,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 14,
+          "overpaint": 9,
+          "xor": 23,
+          "union": 38,
+          "advance_26_6": [
+            1984,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 240,
+          "advance_26_6": [
+            1984,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 108,
+          "advance_26_6": [
+            1984,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 0,
+          "overpaint": 2,
+          "xor": 2,
+          "union": 23,
+          "advance_26_6": [
+            1984,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "022-calibration",
+      "font": "R:ZRFH.TTF",
+      "height": 32,
+      "width": 0,
+      "orientation": "N",
+      "mode": "native",
+      "underpaint": 7,
+      "overpaint": 5,
+      "xor": 12,
+      "union": 1337,
+      "exact_glyphs": 5,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 96,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 96,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 336,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 0,
+          "overpaint": 2,
+          "xor": 2,
+          "union": 385,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 7,
+          "overpaint": 1,
+          "xor": 8,
+          "union": 32,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 256,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 112,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 0,
+          "overpaint": 2,
+          "xor": 2,
+          "union": 24,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "022-calibration",
+      "font": "R:ZRFH.TTF",
+      "height": 32,
+      "width": 0,
+      "orientation": "N",
+      "mode": "unhinted",
+      "underpaint": 215,
+      "overpaint": 212,
+      "xor": 427,
+      "union": 1544,
+      "exact_glyphs": 0,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 24,
+          "overpaint": 24,
+          "xor": 48,
+          "union": 120,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 24,
+          "overpaint": 24,
+          "xor": 48,
+          "union": 120,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 24,
+          "overpaint": 24,
+          "xor": 48,
+          "union": 360,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 22,
+          "overpaint": 24,
+          "xor": 46,
+          "union": 407,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 31,
+          "overpaint": 24,
+          "xor": 55,
+          "union": 55,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 40,
+          "overpaint": 40,
+          "xor": 80,
+          "union": 296,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 28,
+          "overpaint": 28,
+          "xor": 56,
+          "union": 140,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 22,
+          "overpaint": 24,
+          "xor": 46,
+          "union": 46,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "022-calibration",
+      "font": "R:ZRFH.TTF",
+      "height": 32,
+      "width": 0,
+      "orientation": "N",
+      "mode": "auto",
+      "underpaint": 215,
+      "overpaint": 212,
+      "xor": 427,
+      "union": 1544,
+      "exact_glyphs": 0,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 24,
+          "overpaint": 24,
+          "xor": 48,
+          "union": 120,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 24,
+          "overpaint": 24,
+          "xor": 48,
+          "union": 120,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 24,
+          "overpaint": 24,
+          "xor": 48,
+          "union": 360,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 22,
+          "overpaint": 24,
+          "xor": 46,
+          "union": 407,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 31,
+          "overpaint": 24,
+          "xor": 55,
+          "union": 55,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 40,
+          "overpaint": 40,
+          "xor": 80,
+          "union": 296,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 28,
+          "overpaint": 28,
+          "xor": 56,
+          "union": 140,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 22,
+          "overpaint": 24,
+          "xor": 46,
+          "union": 46,
+          "advance_26_6": [
+            2112,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "022-calibration",
+      "font": "R:ZRFH.TTF",
+      "height": 32,
+      "width": 0,
+      "orientation": "N",
+      "mode": "default",
+      "underpaint": 7,
+      "overpaint": 5,
+      "xor": 12,
+      "union": 1337,
+      "exact_glyphs": 5,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 96,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 96,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 336,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 0,
+          "overpaint": 2,
+          "xor": 2,
+          "union": 385,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 7,
+          "overpaint": 1,
+          "xor": 8,
+          "union": 32,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 256,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 112,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 0,
+          "overpaint": 2,
+          "xor": 2,
+          "union": 24,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "023-calibration",
+      "font": "R:ZRFH.TTF",
+      "height": 33,
+      "width": 0,
+      "orientation": "N",
+      "mode": "native",
+      "underpaint": 8,
+      "overpaint": 28,
+      "xor": 36,
+      "union": 1480,
+      "exact_glyphs": 5,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 100,
+          "advance_26_6": [
+            2112,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 125,
+          "advance_26_6": [
+            2112,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 379,
+          "advance_26_6": [
+            2112,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 0,
+          "overpaint": 3,
+          "xor": 3,
+          "union": 413,
+          "advance_26_6": [
+            2112,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 8,
+          "overpaint": 8,
+          "xor": 16,
+          "union": 33,
+          "advance_26_6": [
+            2112,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 0,
+          "overpaint": 17,
+          "xor": 17,
+          "union": 289,
+          "advance_26_6": [
+            2112,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 116,
+          "advance_26_6": [
+            2112,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 25,
+          "advance_26_6": [
+            2112,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "023-calibration",
+      "font": "R:ZRFH.TTF",
+      "height": 33,
+      "width": 0,
+      "orientation": "N",
+      "mode": "unhinted",
+      "underpaint": 218,
+      "overpaint": 238,
+      "xor": 456,
+      "union": 1690,
+      "exact_glyphs": 0,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 25,
+          "overpaint": 25,
+          "xor": 50,
+          "union": 125,
+          "advance_26_6": [
+            2112,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 25,
+          "overpaint": 25,
+          "xor": 50,
+          "union": 150,
+          "advance_26_6": [
+            2112,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 25,
+          "overpaint": 25,
+          "xor": 50,
+          "union": 404,
+          "advance_26_6": [
+            2112,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 22,
+          "overpaint": 25,
+          "xor": 47,
+          "union": 435,
+          "advance_26_6": [
+            2112,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 25,
+          "overpaint": 25,
+          "xor": 50,
+          "union": 50,
+          "advance_26_6": [
+            2112,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 42,
+          "overpaint": 59,
+          "xor": 101,
+          "union": 331,
+          "advance_26_6": [
+            2112,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 29,
+          "overpaint": 29,
+          "xor": 58,
+          "union": 145,
+          "advance_26_6": [
+            2112,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 25,
+          "overpaint": 25,
+          "xor": 50,
+          "union": 50,
+          "advance_26_6": [
+            2112,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "023-calibration",
+      "font": "R:ZRFH.TTF",
+      "height": 33,
+      "width": 0,
+      "orientation": "N",
+      "mode": "auto",
+      "underpaint": 282,
+      "overpaint": 238,
+      "xor": 520,
+      "union": 1690,
+      "exact_glyphs": 0,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 25,
+          "overpaint": 25,
+          "xor": 50,
+          "union": 125,
+          "advance_26_6": [
+            2112,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 50,
+          "overpaint": 25,
+          "xor": 75,
+          "union": 150,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 38,
+          "overpaint": 24,
+          "xor": 62,
+          "union": 403,
+          "advance_26_6": [
+            2112,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 23,
+          "overpaint": 26,
+          "xor": 49,
+          "union": 436,
+          "advance_26_6": [
+            2112,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 25,
+          "overpaint": 25,
+          "xor": 50,
+          "union": 50,
+          "advance_26_6": [
+            2112,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 67,
+          "overpaint": 59,
+          "xor": 126,
+          "union": 331,
+          "advance_26_6": [
+            2048,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 29,
+          "overpaint": 29,
+          "xor": 58,
+          "union": 145,
+          "advance_26_6": [
+            2112,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 25,
+          "overpaint": 25,
+          "xor": 50,
+          "union": 50,
+          "advance_26_6": [
+            2112,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "023-calibration",
+      "font": "R:ZRFH.TTF",
+      "height": 33,
+      "width": 0,
+      "orientation": "N",
+      "mode": "default",
+      "underpaint": 8,
+      "overpaint": 28,
+      "xor": 36,
+      "union": 1480,
+      "exact_glyphs": 5,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 100,
+          "advance_26_6": [
+            2112,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 125,
+          "advance_26_6": [
+            2112,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 379,
+          "advance_26_6": [
+            2112,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 0,
+          "overpaint": 3,
+          "xor": 3,
+          "union": 413,
+          "advance_26_6": [
+            2112,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 8,
+          "overpaint": 8,
+          "xor": 16,
+          "union": 33,
+          "advance_26_6": [
+            2112,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 0,
+          "overpaint": 17,
+          "xor": 17,
+          "union": 289,
+          "advance_26_6": [
+            2112,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 116,
+          "advance_26_6": [
+            2112,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 25,
+          "advance_26_6": [
+            2112,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "024-calibration",
+      "font": "R:ZRFH.TTF",
+      "height": 48,
+      "width": 0,
+      "orientation": "N",
+      "mode": "native",
+      "underpaint": 11,
+      "overpaint": 13,
+      "xor": 24,
+      "union": 2966,
+      "exact_glyphs": 7,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 216,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 216,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 756,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 866,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 11,
+          "overpaint": 13,
+          "xor": 24,
+          "union": 48,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 576,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 252,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 36,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "024-calibration",
+      "font": "R:ZRFH.TTF",
+      "height": 48,
+      "width": 0,
+      "orientation": "N",
+      "mode": "unhinted",
+      "underpaint": 317,
+      "overpaint": 318,
+      "xor": 635,
+      "union": 3271,
+      "exact_glyphs": 0,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 36,
+          "overpaint": 36,
+          "xor": 72,
+          "union": 252,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 36,
+          "overpaint": 36,
+          "xor": 72,
+          "union": 252,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 36,
+          "overpaint": 36,
+          "xor": 72,
+          "union": 792,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 36,
+          "overpaint": 36,
+          "xor": 72,
+          "union": 902,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 35,
+          "overpaint": 36,
+          "xor": 71,
+          "union": 71,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 60,
+          "overpaint": 60,
+          "xor": 120,
+          "union": 636,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 42,
+          "overpaint": 42,
+          "xor": 84,
+          "union": 294,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 36,
+          "overpaint": 36,
+          "xor": 72,
+          "union": 72,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "024-calibration",
+      "font": "R:ZRFH.TTF",
+      "height": 48,
+      "width": 0,
+      "orientation": "N",
+      "mode": "auto",
+      "underpaint": 317,
+      "overpaint": 318,
+      "xor": 635,
+      "union": 3271,
+      "exact_glyphs": 0,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 36,
+          "overpaint": 36,
+          "xor": 72,
+          "union": 252,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 36,
+          "overpaint": 36,
+          "xor": 72,
+          "union": 252,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 36,
+          "overpaint": 36,
+          "xor": 72,
+          "union": 792,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 36,
+          "overpaint": 36,
+          "xor": 72,
+          "union": 902,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 35,
+          "overpaint": 36,
+          "xor": 71,
+          "union": 71,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 60,
+          "overpaint": 60,
+          "xor": 120,
+          "union": 636,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 42,
+          "overpaint": 42,
+          "xor": 84,
+          "union": 294,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 36,
+          "overpaint": 36,
+          "xor": 72,
+          "union": 72,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "024-calibration",
+      "font": "R:ZRFH.TTF",
+      "height": 48,
+      "width": 0,
+      "orientation": "N",
+      "mode": "default",
+      "underpaint": 11,
+      "overpaint": 13,
+      "xor": 24,
+      "union": 2966,
+      "exact_glyphs": 7,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 216,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 216,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 756,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 866,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 11,
+          "overpaint": 13,
+          "xor": 24,
+          "union": 48,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 576,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 252,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 36,
+          "advance_26_6": [
+            3072,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "025-calibration",
+      "font": "R:ZRFH.TTF",
+      "height": 64,
+      "width": 0,
+      "orientation": "N",
+      "mode": "native",
+      "underpaint": 0,
+      "overpaint": 105,
+      "xor": 105,
+      "union": 5321,
+      "exact_glyphs": 5,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 384,
+          "advance_26_6": [
+            4096,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 0,
+          "overpaint": 48,
+          "xor": 48,
+          "union": 432,
+          "advance_26_6": [
+            4096,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 1344,
+          "advance_26_6": [
+            4096,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 0,
+          "overpaint": 1,
+          "xor": 1,
+          "union": 1537,
+          "advance_26_6": [
+            4096,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 48,
+          "advance_26_6": [
+            4096,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 1024,
+          "advance_26_6": [
+            4096,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 0,
+          "overpaint": 56,
+          "xor": 56,
+          "union": 504,
+          "advance_26_6": [
+            4096,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 48,
+          "advance_26_6": [
+            4096,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "025-calibration",
+      "font": "R:ZRFH.TTF",
+      "height": 64,
+      "width": 0,
+      "orientation": "N",
+      "mode": "unhinted",
+      "underpaint": 423,
+      "overpaint": 528,
+      "xor": 951,
+      "union": 5744,
+      "exact_glyphs": 0,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 48,
+          "overpaint": 48,
+          "xor": 96,
+          "union": 432,
+          "advance_26_6": [
+            4096,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 48,
+          "overpaint": 96,
+          "xor": 144,
+          "union": 480,
+          "advance_26_6": [
+            4096,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 48,
+          "overpaint": 48,
+          "xor": 96,
+          "union": 1392,
+          "advance_26_6": [
+            4096,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 47,
+          "overpaint": 48,
+          "xor": 95,
+          "union": 1584,
+          "advance_26_6": [
+            4096,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 48,
+          "overpaint": 48,
+          "xor": 96,
+          "union": 96,
+          "advance_26_6": [
+            4096,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 80,
+          "overpaint": 80,
+          "xor": 160,
+          "union": 1104,
+          "advance_26_6": [
+            4096,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 56,
+          "overpaint": 112,
+          "xor": 168,
+          "union": 560,
+          "advance_26_6": [
+            4096,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 48,
+          "overpaint": 48,
+          "xor": 96,
+          "union": 96,
+          "advance_26_6": [
+            4096,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "025-calibration",
+      "font": "R:ZRFH.TTF",
+      "height": 64,
+      "width": 0,
+      "orientation": "N",
+      "mode": "auto",
+      "underpaint": 471,
+      "overpaint": 472,
+      "xor": 943,
+      "union": 5688,
+      "exact_glyphs": 0,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 48,
+          "overpaint": 48,
+          "xor": 96,
+          "union": 432,
+          "advance_26_6": [
+            4096,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 96,
+          "overpaint": 96,
+          "xor": 192,
+          "union": 480,
+          "advance_26_6": [
+            4096,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 48,
+          "overpaint": 48,
+          "xor": 96,
+          "union": 1392,
+          "advance_26_6": [
+            4096,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 47,
+          "overpaint": 48,
+          "xor": 95,
+          "union": 1584,
+          "advance_26_6": [
+            4096,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 48,
+          "overpaint": 48,
+          "xor": 96,
+          "union": 96,
+          "advance_26_6": [
+            4096,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 80,
+          "overpaint": 80,
+          "xor": 160,
+          "union": 1104,
+          "advance_26_6": [
+            4096,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 56,
+          "overpaint": 56,
+          "xor": 112,
+          "union": 504,
+          "advance_26_6": [
+            4160,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 48,
+          "overpaint": 48,
+          "xor": 96,
+          "union": 96,
+          "advance_26_6": [
+            4096,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "025-calibration",
+      "font": "R:ZRFH.TTF",
+      "height": 64,
+      "width": 0,
+      "orientation": "N",
+      "mode": "default",
+      "underpaint": 0,
+      "overpaint": 105,
+      "xor": 105,
+      "union": 5321,
+      "exact_glyphs": 5,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 384,
+          "advance_26_6": [
+            4096,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 0,
+          "overpaint": 48,
+          "xor": 48,
+          "union": 432,
+          "advance_26_6": [
+            4096,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 1344,
+          "advance_26_6": [
+            4096,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 0,
+          "overpaint": 1,
+          "xor": 1,
+          "union": 1537,
+          "advance_26_6": [
+            4096,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 48,
+          "advance_26_6": [
+            4096,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 1024,
+          "advance_26_6": [
+            4096,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 0,
+          "overpaint": 56,
+          "xor": 56,
+          "union": 504,
+          "advance_26_6": [
+            4096,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 48,
+          "advance_26_6": [
+            4096,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "026-calibration",
+      "font": "R:ZRFH.TTF",
+      "height": 32,
+      "width": 19,
+      "orientation": "N",
+      "mode": "native",
+      "underpaint": 15,
+      "overpaint": 25,
+      "xor": 40,
+      "union": 860,
+      "exact_glyphs": 5,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 72,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 48,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 0,
+          "overpaint": 8,
+          "xor": 8,
+          "union": 208,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 0,
+          "overpaint": 2,
+          "xor": 2,
+          "union": 237,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 15,
+          "overpaint": 15,
+          "xor": 30,
+          "union": 39,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 176,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 56,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 24,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "026-calibration",
+      "font": "R:ZRFH.TTF",
+      "height": 32,
+      "width": 19,
+      "orientation": "N",
+      "mode": "unhinted",
+      "underpaint": 202,
+      "overpaint": 210,
+      "xor": 412,
+      "union": 1045,
+      "exact_glyphs": 0,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 24,
+          "overpaint": 24,
+          "xor": 48,
+          "union": 96,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 24,
+          "overpaint": 24,
+          "xor": 48,
+          "union": 72,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 16,
+          "overpaint": 24,
+          "xor": 40,
+          "union": 224,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 22,
+          "overpaint": 24,
+          "xor": 46,
+          "union": 259,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 24,
+          "overpaint": 22,
+          "xor": 46,
+          "union": 46,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 40,
+          "overpaint": 40,
+          "xor": 80,
+          "union": 216,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 28,
+          "overpaint": 28,
+          "xor": 56,
+          "union": 84,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 24,
+          "overpaint": 24,
+          "xor": 48,
+          "union": 48,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "026-calibration",
+      "font": "R:ZRFH.TTF",
+      "height": 32,
+      "width": 19,
+      "orientation": "N",
+      "mode": "auto",
+      "underpaint": 273,
+      "overpaint": 210,
+      "xor": 483,
+      "union": 1045,
+      "exact_glyphs": 0,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 48,
+          "overpaint": 24,
+          "xor": 72,
+          "union": 96,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 24,
+          "overpaint": 24,
+          "xor": 48,
+          "union": 72,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 16,
+          "overpaint": 24,
+          "xor": 40,
+          "union": 224,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 29,
+          "overpaint": 24,
+          "xor": 53,
+          "union": 259,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 24,
+          "overpaint": 22,
+          "xor": 46,
+          "union": 46,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 80,
+          "overpaint": 40,
+          "xor": 120,
+          "union": 216,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 28,
+          "overpaint": 28,
+          "xor": 56,
+          "union": 84,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 24,
+          "overpaint": 24,
+          "xor": 48,
+          "union": 48,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "026-calibration",
+      "font": "R:ZRFH.TTF",
+      "height": 32,
+      "width": 19,
+      "orientation": "N",
+      "mode": "default",
+      "underpaint": 15,
+      "overpaint": 25,
+      "xor": 40,
+      "union": 860,
+      "exact_glyphs": 5,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 72,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 48,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 0,
+          "overpaint": 8,
+          "xor": 8,
+          "union": 208,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 0,
+          "overpaint": 2,
+          "xor": 2,
+          "union": 237,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 15,
+          "overpaint": 15,
+          "xor": 30,
+          "union": 39,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 176,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 56,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 24,
+          "advance_26_6": [
+            1216,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "027-calibration",
+      "font": "R:ZRFH.TTF",
+      "height": 32,
+      "width": 0,
+      "orientation": "R",
+      "mode": "native",
+      "underpaint": 39,
+      "overpaint": 43,
+      "xor": 82,
+      "union": 1368,
+      "exact_glyphs": 5,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 96,
+          "advance_26_6": [
+            0,
+            -2048
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 96,
+          "advance_26_6": [
+            0,
+            -2048
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 336,
+          "advance_26_6": [
+            0,
+            -2048
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 0,
+          "overpaint": 3,
+          "xor": 3,
+          "union": 385,
+          "advance_26_6": [
+            0,
+            -2048
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 15,
+          "overpaint": 16,
+          "xor": 31,
+          "union": 39,
+          "advance_26_6": [
+            0,
+            -2048
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 256,
+          "advance_26_6": [
+            0,
+            -2048
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 112,
+          "advance_26_6": [
+            0,
+            -2048
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 24,
+          "overpaint": 24,
+          "xor": 48,
+          "union": 48,
+          "advance_26_6": [
+            0,
+            -2048
+          ]
+        }
+      ]
+    },
+    {
+      "page": "027-calibration",
+      "font": "R:ZRFH.TTF",
+      "height": 32,
+      "width": 0,
+      "orientation": "R",
+      "mode": "unhinted",
+      "underpaint": 169,
+      "overpaint": 173,
+      "xor": 342,
+      "union": 1498,
+      "exact_glyphs": 1,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 24,
+          "overpaint": 24,
+          "xor": 48,
+          "union": 120,
+          "advance_26_6": [
+            0,
+            -2048
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 24,
+          "overpaint": 24,
+          "xor": 48,
+          "union": 120,
+          "advance_26_6": [
+            0,
+            -2048
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 24,
+          "overpaint": 24,
+          "xor": 48,
+          "union": 360,
+          "advance_26_6": [
+            0,
+            -2048
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 21,
+          "overpaint": 24,
+          "xor": 45,
+          "union": 406,
+          "advance_26_6": [
+            0,
+            -2048
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 8,
+          "overpaint": 9,
+          "xor": 17,
+          "union": 32,
+          "advance_26_6": [
+            0,
+            -2048
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 40,
+          "overpaint": 40,
+          "xor": 80,
+          "union": 296,
+          "advance_26_6": [
+            0,
+            -2048
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 28,
+          "overpaint": 28,
+          "xor": 56,
+          "union": 140,
+          "advance_26_6": [
+            0,
+            -2048
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 24,
+          "advance_26_6": [
+            0,
+            -2048
+          ]
+        }
+      ]
+    },
+    {
+      "page": "027-calibration",
+      "font": "R:ZRFH.TTF",
+      "height": 32,
+      "width": 0,
+      "orientation": "R",
+      "mode": "auto",
+      "underpaint": 169,
+      "overpaint": 173,
+      "xor": 342,
+      "union": 1498,
+      "exact_glyphs": 1,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 24,
+          "overpaint": 24,
+          "xor": 48,
+          "union": 120,
+          "advance_26_6": [
+            0,
+            -2048
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 24,
+          "overpaint": 24,
+          "xor": 48,
+          "union": 120,
+          "advance_26_6": [
+            0,
+            -2048
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 24,
+          "overpaint": 24,
+          "xor": 48,
+          "union": 360,
+          "advance_26_6": [
+            0,
+            -2048
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 21,
+          "overpaint": 24,
+          "xor": 45,
+          "union": 406,
+          "advance_26_6": [
+            0,
+            -2048
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 8,
+          "overpaint": 9,
+          "xor": 17,
+          "union": 32,
+          "advance_26_6": [
+            0,
+            -2048
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 40,
+          "overpaint": 40,
+          "xor": 80,
+          "union": 296,
+          "advance_26_6": [
+            0,
+            -2048
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 28,
+          "overpaint": 28,
+          "xor": 56,
+          "union": 140,
+          "advance_26_6": [
+            0,
+            -2048
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 24,
+          "advance_26_6": [
+            0,
+            -2112
+          ]
+        }
+      ]
+    },
+    {
+      "page": "027-calibration",
+      "font": "R:ZRFH.TTF",
+      "height": 32,
+      "width": 0,
+      "orientation": "R",
+      "mode": "default",
+      "underpaint": 39,
+      "overpaint": 43,
+      "xor": 82,
+      "union": 1368,
+      "exact_glyphs": 5,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 96,
+          "advance_26_6": [
+            0,
+            -2048
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 96,
+          "advance_26_6": [
+            0,
+            -2048
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 336,
+          "advance_26_6": [
+            0,
+            -2048
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 0,
+          "overpaint": 3,
+          "xor": 3,
+          "union": 385,
+          "advance_26_6": [
+            0,
+            -2048
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 15,
+          "overpaint": 16,
+          "xor": 31,
+          "union": 39,
+          "advance_26_6": [
+            0,
+            -2048
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 256,
+          "advance_26_6": [
+            0,
+            -2048
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 112,
+          "advance_26_6": [
+            0,
+            -2048
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 24,
+          "overpaint": 24,
+          "xor": 48,
+          "union": 48,
+          "advance_26_6": [
+            0,
+            -2048
+          ]
+        }
+      ]
+    },
+    {
+      "page": "028-calibration",
+      "font": "R:ZRFH.TTF",
+      "height": 32,
+      "width": 0,
+      "orientation": "I",
+      "mode": "native",
+      "underpaint": 37,
+      "overpaint": 36,
+      "xor": 73,
+      "union": 1366,
+      "exact_glyphs": 5,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 96,
+          "advance_26_6": [
+            -2048,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 96,
+          "advance_26_6": [
+            -2048,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 336,
+          "advance_26_6": [
+            -2048,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 0,
+          "overpaint": 4,
+          "xor": 4,
+          "union": 385,
+          "advance_26_6": [
+            -2048,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 15,
+          "overpaint": 8,
+          "xor": 23,
+          "union": 39,
+          "advance_26_6": [
+            -2048,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 256,
+          "advance_26_6": [
+            -2048,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 112,
+          "advance_26_6": [
+            -2048,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 22,
+          "overpaint": 24,
+          "xor": 46,
+          "union": 46,
+          "advance_26_6": [
+            -2048,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "028-calibration",
+      "font": "R:ZRFH.TTF",
+      "height": 32,
+      "width": 0,
+      "orientation": "I",
+      "mode": "unhinted",
+      "underpaint": 176,
+      "overpaint": 175,
+      "xor": 351,
+      "union": 1505,
+      "exact_glyphs": 0,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 24,
+          "overpaint": 24,
+          "xor": 48,
+          "union": 120,
+          "advance_26_6": [
+            -2048,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 24,
+          "overpaint": 24,
+          "xor": 48,
+          "union": 120,
+          "advance_26_6": [
+            -2048,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 24,
+          "overpaint": 24,
+          "xor": 48,
+          "union": 360,
+          "advance_26_6": [
+            -2048,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 20,
+          "overpaint": 24,
+          "xor": 44,
+          "union": 405,
+          "advance_26_6": [
+            -2048,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 16,
+          "overpaint": 9,
+          "xor": 25,
+          "union": 40,
+          "advance_26_6": [
+            -2048,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 40,
+          "overpaint": 40,
+          "xor": 80,
+          "union": 296,
+          "advance_26_6": [
+            -2048,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 28,
+          "overpaint": 28,
+          "xor": 56,
+          "union": 140,
+          "advance_26_6": [
+            -2048,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 0,
+          "overpaint": 2,
+          "xor": 2,
+          "union": 24,
+          "advance_26_6": [
+            -2048,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "028-calibration",
+      "font": "R:ZRFH.TTF",
+      "height": 32,
+      "width": 0,
+      "orientation": "I",
+      "mode": "auto",
+      "underpaint": 176,
+      "overpaint": 175,
+      "xor": 351,
+      "union": 1505,
+      "exact_glyphs": 0,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 24,
+          "overpaint": 24,
+          "xor": 48,
+          "union": 120,
+          "advance_26_6": [
+            -2048,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 24,
+          "overpaint": 24,
+          "xor": 48,
+          "union": 120,
+          "advance_26_6": [
+            -2048,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 24,
+          "overpaint": 24,
+          "xor": 48,
+          "union": 360,
+          "advance_26_6": [
+            -2048,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 20,
+          "overpaint": 24,
+          "xor": 44,
+          "union": 405,
+          "advance_26_6": [
+            -2048,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 16,
+          "overpaint": 9,
+          "xor": 25,
+          "union": 40,
+          "advance_26_6": [
+            -2048,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 40,
+          "overpaint": 40,
+          "xor": 80,
+          "union": 296,
+          "advance_26_6": [
+            -2048,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 28,
+          "overpaint": 28,
+          "xor": 56,
+          "union": 140,
+          "advance_26_6": [
+            -2048,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 0,
+          "overpaint": 2,
+          "xor": 2,
+          "union": 24,
+          "advance_26_6": [
+            -2112,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "028-calibration",
+      "font": "R:ZRFH.TTF",
+      "height": 32,
+      "width": 0,
+      "orientation": "I",
+      "mode": "default",
+      "underpaint": 37,
+      "overpaint": 36,
+      "xor": 73,
+      "union": 1366,
+      "exact_glyphs": 5,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 96,
+          "advance_26_6": [
+            -2048,
+            0
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 96,
+          "advance_26_6": [
+            -2048,
+            0
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 336,
+          "advance_26_6": [
+            -2048,
+            0
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 0,
+          "overpaint": 4,
+          "xor": 4,
+          "union": 385,
+          "advance_26_6": [
+            -2048,
+            0
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 15,
+          "overpaint": 8,
+          "xor": 23,
+          "union": 39,
+          "advance_26_6": [
+            -2048,
+            0
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 256,
+          "advance_26_6": [
+            -2048,
+            0
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 112,
+          "advance_26_6": [
+            -2048,
+            0
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 22,
+          "overpaint": 24,
+          "xor": 46,
+          "union": 46,
+          "advance_26_6": [
+            -2048,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "page": "029-calibration",
+      "font": "R:ZRFH.TTF",
+      "height": 32,
+      "width": 0,
+      "orientation": "B",
+      "mode": "native",
+      "underpaint": 8,
+      "overpaint": 12,
+      "xor": 20,
+      "union": 1337,
+      "exact_glyphs": 6,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 96,
+          "advance_26_6": [
+            0,
+            2048
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 96,
+          "advance_26_6": [
+            0,
+            2048
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 336,
+          "advance_26_6": [
+            0,
+            2048
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 0,
+          "overpaint": 3,
+          "xor": 3,
+          "union": 385,
+          "advance_26_6": [
+            0,
+            2048
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 8,
+          "overpaint": 9,
+          "xor": 17,
+          "union": 32,
+          "advance_26_6": [
+            0,
+            2048
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 256,
+          "advance_26_6": [
+            0,
+            2048
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 112,
+          "advance_26_6": [
+            0,
+            2048
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 24,
+          "advance_26_6": [
+            0,
+            2048
+          ]
+        }
+      ]
+    },
+    {
+      "page": "029-calibration",
+      "font": "R:ZRFH.TTF",
+      "height": 32,
+      "width": 0,
+      "orientation": "B",
+      "mode": "unhinted",
+      "underpaint": 208,
+      "overpaint": 212,
+      "xor": 420,
+      "union": 1537,
+      "exact_glyphs": 0,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 24,
+          "overpaint": 24,
+          "xor": 48,
+          "union": 120,
+          "advance_26_6": [
+            0,
+            2048
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 24,
+          "overpaint": 24,
+          "xor": 48,
+          "union": 120,
+          "advance_26_6": [
+            0,
+            2048
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 24,
+          "overpaint": 24,
+          "xor": 48,
+          "union": 360,
+          "advance_26_6": [
+            0,
+            2048
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 21,
+          "overpaint": 24,
+          "xor": 45,
+          "union": 406,
+          "advance_26_6": [
+            0,
+            2048
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 23,
+          "overpaint": 24,
+          "xor": 47,
+          "union": 47,
+          "advance_26_6": [
+            0,
+            2048
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 40,
+          "overpaint": 40,
+          "xor": 80,
+          "union": 296,
+          "advance_26_6": [
+            0,
+            2048
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 28,
+          "overpaint": 28,
+          "xor": 56,
+          "union": 140,
+          "advance_26_6": [
+            0,
+            2048
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 24,
+          "overpaint": 24,
+          "xor": 48,
+          "union": 48,
+          "advance_26_6": [
+            0,
+            2048
+          ]
+        }
+      ]
+    },
+    {
+      "page": "029-calibration",
+      "font": "R:ZRFH.TTF",
+      "height": 32,
+      "width": 0,
+      "orientation": "B",
+      "mode": "auto",
+      "underpaint": 208,
+      "overpaint": 212,
+      "xor": 420,
+      "union": 1537,
+      "exact_glyphs": 0,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 24,
+          "overpaint": 24,
+          "xor": 48,
+          "union": 120,
+          "advance_26_6": [
+            0,
+            2048
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 24,
+          "overpaint": 24,
+          "xor": 48,
+          "union": 120,
+          "advance_26_6": [
+            0,
+            2048
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 24,
+          "overpaint": 24,
+          "xor": 48,
+          "union": 360,
+          "advance_26_6": [
+            0,
+            2048
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 21,
+          "overpaint": 24,
+          "xor": 45,
+          "union": 406,
+          "advance_26_6": [
+            0,
+            2048
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 23,
+          "overpaint": 24,
+          "xor": 47,
+          "union": 47,
+          "advance_26_6": [
+            0,
+            2048
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 40,
+          "overpaint": 40,
+          "xor": 80,
+          "union": 296,
+          "advance_26_6": [
+            0,
+            2048
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 28,
+          "overpaint": 28,
+          "xor": 56,
+          "union": 140,
+          "advance_26_6": [
+            0,
+            2048
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 24,
+          "overpaint": 24,
+          "xor": 48,
+          "union": 48,
+          "advance_26_6": [
+            0,
+            2112
+          ]
+        }
+      ]
+    },
+    {
+      "page": "029-calibration",
+      "font": "R:ZRFH.TTF",
+      "height": 32,
+      "width": 0,
+      "orientation": "B",
+      "mode": "default",
+      "underpaint": 8,
+      "overpaint": 12,
+      "xor": 20,
+      "union": 1337,
+      "exact_glyphs": 6,
+      "glyphs": [
+        {
+          "glyph": "A",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 96,
+          "advance_26_6": [
+            0,
+            2048
+          ]
+        },
+        {
+          "glyph": "B",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 96,
+          "advance_26_6": [
+            0,
+            2048
+          ]
+        },
+        {
+          "glyph": "C",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 336,
+          "advance_26_6": [
+            0,
+            2048
+          ]
+        },
+        {
+          "glyph": "D",
+          "underpaint": 0,
+          "overpaint": 3,
+          "xor": 3,
+          "union": 385,
+          "advance_26_6": [
+            0,
+            2048
+          ]
+        },
+        {
+          "glyph": "E",
+          "underpaint": 8,
+          "overpaint": 9,
+          "xor": 17,
+          "union": 32,
+          "advance_26_6": [
+            0,
+            2048
+          ]
+        },
+        {
+          "glyph": "F",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 256,
+          "advance_26_6": [
+            0,
+            2048
+          ]
+        },
+        {
+          "glyph": "G",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 112,
+          "advance_26_6": [
+            0,
+            2048
+          ]
+        },
+        {
+          "glyph": "H",
+          "underpaint": 0,
+          "overpaint": 0,
+          "xor": 0,
+          "union": 24,
+          "advance_26_6": [
+            0,
+            2048
+          ]
+        }
+      ]
+    }
+  ]
+}

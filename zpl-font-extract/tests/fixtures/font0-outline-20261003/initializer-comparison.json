@@ -1,0 +1,188 @@
+{
+  "schema": "font0-outline-initializer-v1",
+  "printer": {
+    "model": "ZD621",
+    "serial": "D7J211001302",
+    "firmware": "V93.21.33Z",
+    "dpi": 203
+  },
+  "manifest_sha256": "07f6dc3853a7885286419ae914841efe040b2222b4e6debd5835e88852dcfdfc",
+  "source_size": 512,
+  "simplification_tolerance": 0.65,
+  "spacing": "not measured; isolated geometry only",
+  "models": [
+    {
+      "text": "H",
+      "ink": 62504,
+      "contours": 1,
+      "vertices": 12
+    },
+    {
+      "text": "O",
+      "ink": 62237,
+      "contours": 2,
+      "vertices": 440
+    },
+    {
+      "text": "S",
+      "ink": 56697,
+      "contours": 1,
+      "vertices": 608
+    },
+    {
+      "text": "g",
+      "ink": 55873,
+      "contours": 2,
+      "vertices": 382
+    },
+    {
+      "text": "j",
+      "ink": 31020,
+      "contours": 2,
+      "vertices": 58
+    },
+    {
+      "text": "@",
+      "ink": 76315,
+      "contours": 2,
+      "vertices": 708
+    }
+  ],
+  "pages": [
+    {
+      "name": "outline-256-HO",
+      "group": "development",
+      "under": 86,
+      "over": 210,
+      "xor": 296,
+      "union": 31310,
+      "iou": 0.9905461513893324
+    },
+    {
+      "name": "outline-256-Sg",
+      "group": "development",
+      "under": 449,
+      "over": 480,
+      "xor": 929,
+      "union": 28548,
+      "iou": 0.9674583158189716
+    },
+    {
+      "name": "outline-256-jat",
+      "group": "development",
+      "under": 447,
+      "over": 549,
+      "xor": 996,
+      "union": 27308,
+      "iou": 0.9635271715248279
+    },
+    {
+      "name": "outline-384-HO",
+      "group": "development",
+      "under": 359,
+      "over": 1138,
+      "xor": 1497,
+      "union": 70728,
+      "iou": 0.9788344078724126
+    },
+    {
+      "name": "outline-384-Sg",
+      "group": "development",
+      "under": 527,
+      "over": 521,
+      "xor": 1048,
+      "union": 63853,
+      "iou": 0.9835873020844753
+    },
+    {
+      "name": "outline-384-jat",
+      "group": "development",
+      "under": 955,
+      "over": 787,
+      "xor": 1742,
+      "union": 61366,
+      "iou": 0.9716129452791448
+    },
+    {
+      "name": "outline-512-HO",
+      "group": "development",
+      "under": 13,
+      "over": 11,
+      "xor": 24,
+      "union": 124752,
+      "iou": 0.9998076183147364
+    },
+    {
+      "name": "outline-512-Sg",
+      "group": "development",
+      "under": 26,
+      "over": 30,
+      "xor": 56,
+      "union": 112600,
+      "iou": 0.9995026642984014
+    },
+    {
+      "name": "outline-512-jat",
+      "group": "development",
+      "under": 29,
+      "over": 20,
+      "xor": 49,
+      "union": 107355,
+      "iou": 0.99954357039728
+    },
+    {
+      "name": "outline-320-HO",
+      "group": "validation",
+      "under": 150,
+      "over": 177,
+      "xor": 327,
+      "union": 48692,
+      "iou": 0.9932843177524029
+    },
+    {
+      "name": "outline-320-Sg",
+      "group": "validation",
+      "under": 168,
+      "over": 342,
+      "xor": 510,
+      "union": 44026,
+      "iou": 0.9884159360377959
+    },
+    {
+      "name": "outline-320-jat",
+      "group": "validation",
+      "under": 445,
+      "over": 611,
+      "xor": 1056,
+      "union": 42418,
+      "iou": 0.9751049082936489
+    },
+    {
+      "name": "outline-448-HO",
+      "group": "validation",
+      "under": 532,
+      "over": 1218,
+      "xor": 1750,
+      "union": 95959,
+      "iou": 0.9817630446336456
+    },
+    {
+      "name": "outline-448-Sg",
+      "group": "validation",
+      "under": 230,
+      "over": 694,
+      "xor": 924,
+      "union": 86275,
+      "iou": 0.989290060851927
+    },
+    {
+      "name": "outline-448-jat",
+      "group": "validation",
+      "under": 726,
+      "over": 1465,
+      "xor": 2191,
+      "union": 83110,
+      "iou": 0.9736373480928889
+    }
+  ]
+}

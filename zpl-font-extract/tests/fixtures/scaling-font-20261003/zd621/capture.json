@@ -1,0 +1,143 @@
+{
+  "schema": "constructed-font-capture-v1",
+  "started_utc": "2026-10-03T14:48:49.539766+00:00",
+  "host": "d7j211001302.bed.einic.org",
+  "manifest_sha256": "0670fabb1ed0e202430e759393cedab6c5232aad4c2e2db98e88e567cdcc171c",
+  "pages": [
+    {
+      "name": "resident-start",
+      "started_utc": "2026-10-03T14:48:49.616466+00:00",
+      "prepared_zpl_sha256": "25a64b990aae299bb565ab55fa6effc916f09dce2e9ee847df0a4365db5e40d6",
+      "zpl_sha256": "25a64b990aae299bb565ab55fa6effc916f09dce2e9ee847df0a4365db5e40d6",
+      "status": "captured",
+      "png_sha256": "618f1c5e64ca8784aee5277aa13cce5a5d79f853e9b50c5687e00b95e0b1aac0",
+      "dimensions": [
+        384,
+        192
+      ]
+    },
+    {
+      "name": "00-state",
+      "started_utc": "2026-10-03T14:48:55.751246+00:00",
+      "prepared_zpl_sha256": "f6ab16a6b573b20bf5a42628c54505011eda14c8e7fc685653acf9475a9b3667",
+      "zpl_sha256": "f6ab16a6b573b20bf5a42628c54505011eda14c8e7fc685653acf9475a9b3667",
+      "status": "captured",
+      "png_sha256": "73ce6e49747cdc30483664fad770968aa3c337d3d8c591709fdc6e138e7e6e19",
+      "dimensions": [
+        384,
+        64
+      ]
+    },
+    {
+      "name": "cvt-x",
+      "started_utc": "2026-10-03T14:49:00.852414+00:00",
+      "prepared_zpl_sha256": "952243f69b64176f91de27a385707173d917649c5d7fc8907beedd82b25e047d",
+      "zpl_sha256": "952243f69b64176f91de27a385707173d917649c5d7fc8907beedd82b25e047d",
+      "status": "captured",
+      "png_sha256": "b0e1615645be99db20b8e1a6bf612dae8f28eef0d9f6d7894581874b3f5bc519",
+      "dimensions": [
+        384,
+        512
+      ]
+    },
+    {
+      "name": "cvt-y",
+      "started_utc": "2026-10-03T14:49:07.004076+00:00",
+      "prepared_zpl_sha256": "8ee3ff81a227b381d80eb022e223a239744e1aa7902764f668ac586b3fddb90d",
+      "zpl_sha256": "8ee3ff81a227b381d80eb022e223a239744e1aa7902764f668ac586b3fddb90d",
+      "status": "captured",
+      "png_sha256": "b0e1615645be99db20b8e1a6bf612dae8f28eef0d9f6d7894581874b3f5bc519",
+      "dimensions": [
+        384,
+        512
+      ]
+    },
+    {
+      "name": "outline-x",
+      "started_utc": "2026-10-03T14:49:13.109314+00:00",
+      "prepared_zpl_sha256": "2c39bcb6abc58bc205304af05603d8c85f2b677e5d5455e04cdc07f27429e9b2",
+      "zpl_sha256": "2c39bcb6abc58bc205304af05603d8c85f2b677e5d5455e04cdc07f27429e9b2",
+      "status": "captured",
+      "png_sha256": "b0e1615645be99db20b8e1a6bf612dae8f28eef0d9f6d7894581874b3f5bc519",
+      "dimensions": [
+        384,
+        512
+      ]
+    },
+    {
+      "name": "outline-y",
+      "started_utc": "2026-10-03T14:49:19.216091+00:00",
+      "prepared_zpl_sha256": "5c6f267ec2728459050c8caa29ab85829c65d932cbdb4b6600fbc9463f2c53d1",
+      "zpl_sha256": "5c6f267ec2728459050c8caa29ab85829c65d932cbdb4b6600fbc9463f2c53d1",
+      "status": "captured",
+      "png_sha256": "b0e1615645be99db20b8e1a6bf612dae8f28eef0d9f6d7894581874b3f5bc519",
+      "dimensions": [
+        384,
+        512
+      ]
+    },
+    {
+      "name": "advances-16-16",
+      "started_utc": "2026-10-03T14:49:25.323138+00:00",
+      "prepared_zpl_sha256": "7380805c732e028a2a0f35232710dfcc89bb874c56cf4f02d04d8339abea11a4",
+      "zpl_sha256": "7380805c732e028a2a0f35232710dfcc89bb874c56cf4f02d04d8339abea11a4",
+      "status": "captured",
+      "png_sha256": "bd11f086333dbda8c570dc2692a596177f8f24c0f5b71bc349c47d135fd0b81e",
+      "dimensions": [
+        384,
+        576
+      ]
+    },
+    {
+      "name": "advances-32-32",
+      "started_utc": "2026-10-03T14:49:30.709660+00:00",
+      "prepared_zpl_sha256": "d30ff287ace0d87615a269c9a814f41fe529f4328134051604d6ab4ee8de2638",
+      "zpl_sha256": "d30ff287ace0d87615a269c9a814f41fe529f4328134051604d6ab4ee8de2638",
+      "status": "captured",
+      "png_sha256": "fcf404172d251a90d996871552436f4e8a2105ead83367d5919bf0b212ea7ffe",
+      "dimensions": [
+        384,
+        576
+      ]
+    },
+    {
+      "name": "advances-19-32",
+      "started_utc": "2026-10-03T14:49:36.094783+00:00",
+      "prepared_zpl_sha256": "92cf73f6a59e309b01200b565a0dbfaf65a77af4acc8853d69d7eea16f430948",
+      "zpl_sha256": "92cf73f6a59e309b01200b565a0dbfaf65a77af4acc8853d69d7eea16f430948",
+      "status": "captured",
+      "png_sha256": "6bd51f8c691f9c26890682dea00a770accfe71abfc70124f383be6a078cd1bf2",
+      "dimensions": [
+        384,
+        576
+      ]
+    },
+    {
+      "name": "resident-end",
+      "started_utc": "2026-10-03T14:49:41.477557+00:00",
+      "prepared_zpl_sha256": "25a64b990aae299bb565ab55fa6effc916f09dce2e9ee847df0a4365db5e40d6",
+      "zpl_sha256": "25a64b990aae299bb565ab55fa6effc916f09dce2e9ee847df0a4365db5e40d6",
+      "status": "captured",
+      "png_sha256": "618f1c5e64ca8784aee5277aa13cce5a5d79f853e9b50c5687e00b95e0b1aac0",
+      "dimensions": [
+        384,
+        192
+      ]
+    }
+  ],
+  "status": "complete",
+  "printer": {
+    "model": "ZD621",
+    "serial": "D7J211001302",
+    "firmware": "V93.21.33Z",
+    "dpi": 203
+  },
+  "font_selection_and_execution_verified": true,
+  "resident_repeat_exact": true,
+  "cleanup": {
+    "object": "R:ZP26C.TTF",
+    "method": "SGD file.delete",
+    "confirmed_absent": true
+  },
+  "finished_utc": "2026-10-03T14:49:47.635917+00:00"
+}

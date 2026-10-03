@@ -1,0 +1,13 @@
+{
+  "method": "SGD file.delete; exact owned RAM object",
+  "object": "R:ZP26A.TTF",
+  "confirmed_absent": true,
+  "printer": {
+    "model": "ZD621",
+    "serial": "D7J211001302",
+    "firmware": "V93.21.33Z"
+  },
+  "font_sha256": "6366abca64676b4b950cb24fa607c5b29ff5714daf46f3276f1c522ffca07dd9",
+  "capture_sha256": "e7df0e8c83425e89154084b4efa7a98a70f6c79fdcc4fb45a687e902f6a7f036",
+  "utc": "2026-10-02T22:37:25.720539+00:00"
+}

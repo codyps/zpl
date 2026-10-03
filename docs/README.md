@@ -68,6 +68,22 @@ PNG/SVG adapters, supported command subset, limitations, and CLI examples.
 [Font extraction](font-extraction.md) documents the Rust preview API
 sampler, bitmap font exports, resumable captures, and pixel-level verification.
 
+[Arbitrary-size font rendering](font-scaling-options.md) compares original-font
+hinting, font engines, and reconstruction options, with a staged recommendation
+that avoids capturing a bitmap strike for every size.
+
+[Constructed font probes](font-probe-plan.md) examines calibration through
+downloaded fonts, records a new offline engine comparison, and proposes
+discriminating geometry, hint-state, and metrics experiments.
+
+[October 2 live font probes](font-probe-results-20261002.md) records constructed
+font uploads to the ZD621 and ZQ610 Plus, independent X/Y hinting, spacing and
+scan-conversion findings, native comparisons, and verified cleanup.
+
+[Swiss TrueType calibration](swiss-font-rendering.md) records the original
+interpreter, shared device scaling/spacing rules, reserved-size accuracy, and
+the large-outline Font 0 recovery pilot.
+
 ## Rendering comparisons
 
 [Binary PNG image diff](raster-diff.md) describes the Rust `png-diff` tool,

@@ -1,0 +1,6148 @@
+{
+  "schema": "swiss-native-comparison-v1",
+  "font_sha256": "da20a4d8c58b3ed09fb9177e09378bd1b824894751add6c1267c64d58f026456",
+  "validation": true,
+  "printer": {
+    "model": "ZD621",
+    "serial": "D7J211001302",
+    "firmware": "V93.21.33Z",
+    "dpi": 203
+  },
+  "manifest_sha256": "f0ce5c92786aef996f6d5405b50c2c223d7c729db55fd9d2092c1748a93e4123",
+  "pages": [
+    {
+      "name": "validation-37-23-N",
+      "results": {
+        "zebra-native": {
+          "under": 98,
+          "over": 171,
+          "xor": 269,
+          "union": 9376,
+          "exact": 46,
+          "cases": 95,
+          "iou": 0.9713097269624573,
+          "glyphs": [
+            {
+              "text": " ",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 0
+            },
+            {
+              "text": "!",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 41
+            },
+            {
+              "text": "\"",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 36
+            },
+            {
+              "text": "#",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 158
+            },
+            {
+              "text": "$",
+              "under": 8,
+              "over": 12,
+              "xor": 20,
+              "union": 157
+            },
+            {
+              "text": "%",
+              "under": 0,
+              "over": 9,
+              "xor": 9,
+              "union": 164
+            },
+            {
+              "text": "&",
+              "under": 1,
+              "over": 4,
+              "xor": 5,
+              "union": 157
+            },
+            {
+              "text": "'",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 18
+            },
+            {
+              "text": "(",
+              "under": 0,
+              "over": 2,
+              "xor": 2,
+              "union": 63
+            },
+            {
+              "text": ")",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 63
+            },
+            {
+              "text": "*",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 63
+            },
+            {
+              "text": "+",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 82
+            },
+            {
+              "text": ",",
+              "under": 0,
+              "over": 2,
+              "xor": 2,
+              "union": 15
+            },
+            {
+              "text": "-",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 18
+            },
+            {
+              "text": ".",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 9
+            },
+            {
+              "text": "/",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 41
+            },
+            {
+              "text": "0",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 116
+            },
+            {
+              "text": "1",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 61
+            },
+            {
+              "text": "2",
+              "under": 1,
+              "over": 3,
+              "xor": 4,
+              "union": 123
+            },
+            {
+              "text": "3",
+              "under": 2,
+              "over": 1,
+              "xor": 3,
+              "union": 117
+            },
+            {
+              "text": "4",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 109
+            },
+            {
+              "text": "5",
+              "under": 0,
+              "over": 3,
+              "xor": 3,
+              "union": 125
+            },
+            {
+              "text": "6",
+              "under": 2,
+              "over": 5,
+              "xor": 7,
+              "union": 140
+            },
+            {
+              "text": "7",
+              "under": 1,
+              "over": 0,
+              "xor": 1,
+              "union": 81
+            },
+            {
+              "text": "8",
+              "under": 3,
+              "over": 2,
+              "xor": 5,
+              "union": 145
+            },
+            {
+              "text": "9",
+              "under": 2,
+              "over": 8,
+              "xor": 10,
+              "union": 143
+            },
+            {
+              "text": ":",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 18
+            },
+            {
+              "text": ";",
+              "under": 0,
+              "over": 2,
+              "xor": 2,
+              "union": 24
+            },
+            {
+              "text": "<",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 70
+            },
+            {
+              "text": "=",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 88
+            },
+            {
+              "text": ">",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 70
+            },
+            {
+              "text": "?",
+              "under": 0,
+              "over": 2,
+              "xor": 2,
+              "union": 80
+            },
+            {
+              "text": "@",
+              "under": 9,
+              "over": 9,
+              "xor": 18,
+              "union": 194
+            },
+            {
+              "text": "A",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 140
+            },
+            {
+              "text": "B",
+              "under": 0,
+              "over": 2,
+              "xor": 2,
+              "union": 174
+            },
+            {
+              "text": "C",
+              "under": 2,
+              "over": 5,
+              "xor": 7,
+              "union": 125
+            },
+            {
+              "text": "D",
+              "under": 2,
+              "over": 3,
+              "xor": 5,
+              "union": 153
+            },
+            {
+              "text": "E",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 143
+            },
+            {
+              "text": "F",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 107
+            },
+            {
+              "text": "G",
+              "under": 2,
+              "over": 1,
+              "xor": 3,
+              "union": 157
+            },
+            {
+              "text": "H",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 132
+            },
+            {
+              "text": "I",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 51
+            },
+            {
+              "text": "J",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 78
+            },
+            {
+              "text": "K",
+              "under": 7,
+              "over": 12,
+              "xor": 19,
+              "union": 150
+            },
+            {
+              "text": "L",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 79
+            },
+            {
+              "text": "M",
+              "under": 1,
+              "over": 0,
+              "xor": 1,
+              "union": 206
+            },
+            {
+              "text": "N",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 175
+            },
+            {
+              "text": "O",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 142
+            },
+            {
+              "text": "P",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 123
+            },
+            {
+              "text": "Q",
+              "under": 1,
+              "over": 3,
+              "xor": 4,
+              "union": 160
+            },
+            {
+              "text": "R",
+              "under": 1,
+              "over": 0,
+              "xor": 1,
+              "union": 154
+            },
+            {
+              "text": "S",
+              "under": 1,
+              "over": 6,
+              "xor": 7,
+              "union": 151
+            },
+            {
+              "text": "T",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 83
+            },
+            {
+              "text": "U",
+              "under": 4,
+              "over": 2,
+              "xor": 6,
+              "union": 123
+            },
+            {
+              "text": "V",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 113
+            },
+            {
+              "text": "W",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 203
+            },
+            {
+              "text": "X",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 128
+            },
+            {
+              "text": "Y",
+              "under": 25,
+              "over": 22,
+              "xor": 47,
+              "union": 126
+            },
+            {
+              "text": "Z",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 134
+            },
+            {
+              "text": "[",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 79
+            },
+            {
+              "text": "\\",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 41
+            },
+            {
+              "text": "]",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 79
+            },
+            {
+              "text": "^",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 42
+            },
+            {
+              "text": "_",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 19
+            },
+            {
+              "text": "`",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 12
+            },
+            {
+              "text": "a",
+              "under": 1,
+              "over": 1,
+              "xor": 2,
+              "union": 115
+            },
+            {
+              "text": "b",
+              "under": 1,
+              "over": 3,
+              "xor": 4,
+              "union": 124
+            },
+            {
+              "text": "c",
+              "under": 1,
+              "over": 1,
+              "xor": 2,
+              "union": 83
+            },
+            {
+              "text": "d",
+              "under": 0,
+              "over": 3,
+              "xor": 3,
+              "union": 124
+            },
+            {
+              "text": "e",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 110
+            },
+            {
+              "text": "f",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 68
+            },
+            {
+              "text": "g",
+              "under": 1,
+              "over": 3,
+              "xor": 4,
+              "union": 149
+            },
+            {
+              "text": "h",
+              "under": 1,
+              "over": 0,
+              "xor": 1,
+              "union": 104
+            },
+            {
+              "text": "i",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 42
+            },
+            {
+              "text": "j",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 62
+            },
+            {
+              "text": "k",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 107
+            },
+            {
+              "text": "l",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 51
+            },
+            {
+              "text": "m",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 138
+            },
+            {
+              "text": "n",
+              "under": 1,
+              "over": 0,
+              "xor": 1,
+              "union": 89
+            },
+            {
+              "text": "o",
+              "under": 8,
+              "over": 13,
+              "xor": 21,
+              "union": 108
+            },
+            {
+              "text": "p",
+              "under": 1,
+              "over": 2,
+              "xor": 3,
+              "union": 123
+            },
+            {
+              "text": "q",
+              "under": 0,
+              "over": 2,
+              "xor": 2,
+              "union": 123
+            },
+            {
+              "text": "r",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 48
+            },
+            {
+              "text": "s",
+              "under": 0,
+              "over": 5,
+              "xor": 5,
+              "union": 100
+            },
+            {
+              "text": "t",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 62
+            },
+            {
+              "text": "u",
+              "under": 1,
+              "over": 0,
+              "xor": 1,
+              "union": 89
+            },
+            {
+              "text": "v",
+              "under": 2,
+              "over": 6,
+              "xor": 8,
+              "union": 80
+            },
+            {
+              "text": "w",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 137
+            },
+            {
+              "text": "x",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 90
+            },
+            {
+              "text": "y",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 102
+            },
+            {
+              "text": "z",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 89
+            },
+            {
+              "text": "{",
+              "under": 1,
+              "over": 2,
+              "xor": 3,
+              "union": 84
+            },
+            {
+              "text": "|",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 69
+            },
+            {
+              "text": "}",
+              "under": 1,
+              "over": 2,
+              "xor": 3,
+              "union": 84
+            },
+            {
+              "text": "~",
+              "under": 3,
+              "over": 1,
+              "xor": 4,
+              "union": 51
+            }
+          ]
+        },
+        "zd621-device": {
+          "under": 16,
+          "over": 52,
+          "xor": 68,
+          "union": 9257,
+          "exact": 65,
+          "cases": 95,
+          "iou": 0.9926542076266609,
+          "glyphs": [
+            {
+              "text": " ",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 0
+            },
+            {
+              "text": "!",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 41
+            },
+            {
+              "text": "\"",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 36
+            },
+            {
+              "text": "#",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 158
+            },
+            {
+              "text": "$",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 145
+            },
+            {
+              "text": "%",
+              "under": 3,
+              "over": 0,
+              "xor": 3,
+              "union": 155
+            },
+            {
+              "text": "&",
+              "under": 0,
+              "over": 3,
+              "xor": 3,
+              "union": 156
+            },
+            {
+              "text": "'",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 18
+            },
+            {
+              "text": "(",
+              "under": 0,
+              "over": 2,
+              "xor": 2,
+              "union": 63
+            },
+            {
+              "text": ")",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 63
+            },
+            {
+              "text": "*",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 63
+            },
+            {
+              "text": "+",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 82
+            },
+            {
+              "text": ",",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 14
+            },
+            {
+              "text": "-",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 18
+            },
+            {
+              "text": ".",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 9
+            },
+            {
+              "text": "/",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 41
+            },
+            {
+              "text": "0",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 116
+            },
+            {
+              "text": "1",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 61
+            },
+            {
+              "text": "2",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 120
+            },
+            {
+              "text": "3",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 116
+            },
+            {
+              "text": "4",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 109
+            },
+            {
+              "text": "5",
+              "under": 0,
+              "over": 2,
+              "xor": 2,
+              "union": 124
+            },
+            {
+              "text": "6",
+              "under": 0,
+              "over": 3,
+              "xor": 3,
+              "union": 138
+            },
+            {
+              "text": "7",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 81
+            },
+            {
+              "text": "8",
+              "under": 0,
+              "over": 2,
+              "xor": 2,
+              "union": 145
+            },
+            {
+              "text": "9",
+              "under": 0,
+              "over": 3,
+              "xor": 3,
+              "union": 138
+            },
+            {
+              "text": ":",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 18
+            },
+            {
+              "text": ";",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 23
+            },
+            {
+              "text": "<",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 70
+            },
+            {
+              "text": "=",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 88
+            },
+            {
+              "text": ">",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 70
+            },
+            {
+              "text": "?",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 79
+            },
+            {
+              "text": "@",
+              "under": 4,
+              "over": 5,
+              "xor": 9,
+              "union": 190
+            },
+            {
+              "text": "A",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 140
+            },
+            {
+              "text": "B",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 173
+            },
+            {
+              "text": "C",
+              "under": 1,
+              "over": 2,
+              "xor": 3,
+              "union": 122
+            },
+            {
+              "text": "D",
+              "under": 2,
+              "over": 3,
+              "xor": 5,
+              "union": 153
+            },
+            {
+              "text": "E",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 143
+            },
+            {
+              "text": "F",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 107
+            },
+            {
+              "text": "G",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 157
+            },
+            {
+              "text": "H",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 132
+            },
+            {
+              "text": "I",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 51
+            },
+            {
+              "text": "J",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 77
+            },
+            {
+              "text": "K",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 138
+            },
+            {
+              "text": "L",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 79
+            },
+            {
+              "text": "M",
+              "under": 1,
+              "over": 0,
+              "xor": 1,
+              "union": 206
+            },
+            {
+              "text": "N",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 175
+            },
+            {
+              "text": "O",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 142
+            },
+            {
+              "text": "P",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 123
+            },
+            {
+              "text": "Q",
+              "under": 1,
+              "over": 1,
+              "xor": 2,
+              "union": 158
+            },
+            {
+              "text": "R",
+              "under": 1,
+              "over": 0,
+              "xor": 1,
+              "union": 154
+            },
+            {
+              "text": "S",
+              "under": 0,
+              "over": 4,
+              "xor": 4,
+              "union": 149
+            },
+            {
+              "text": "T",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 83
+            },
+            {
+              "text": "U",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 122
+            },
+            {
+              "text": "V",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 113
+            },
+            {
+              "text": "W",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 203
+            },
+            {
+              "text": "X",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 128
+            },
+            {
+              "text": "Y",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 104
+            },
+            {
+              "text": "Z",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 134
+            },
+            {
+              "text": "[",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 79
+            },
+            {
+              "text": "\\",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 41
+            },
+            {
+              "text": "]",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 79
+            },
+            {
+              "text": "^",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 42
+            },
+            {
+              "text": "_",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 18
+            },
+            {
+              "text": "`",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 12
+            },
+            {
+              "text": "a",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 114
+            },
+            {
+              "text": "b",
+              "under": 0,
+              "over": 2,
+              "xor": 2,
+              "union": 123
+            },
+            {
+              "text": "c",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 83
+            },
+            {
+              "text": "d",
+              "under": 0,
+              "over": 2,
+              "xor": 2,
+              "union": 123
+            },
+            {
+              "text": "e",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 109
+            },
+            {
+              "text": "f",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 67
+            },
+            {
+              "text": "g",
+              "under": 0,
+              "over": 3,
+              "xor": 3,
+              "union": 149
+            },
+            {
+              "text": "h",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 104
+            },
+            {
+              "text": "i",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 42
+            },
+            {
+              "text": "j",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 61
+            },
+            {
+              "text": "k",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 107
+            },
+            {
+              "text": "l",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 51
+            },
+            {
+              "text": "m",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 138
+            },
+            {
+              "text": "n",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 89
+            },
+            {
+              "text": "o",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 96
+            },
+            {
+              "text": "p",
+              "under": 0,
+              "over": 2,
+              "xor": 2,
+              "union": 123
+            },
+            {
+              "text": "q",
+              "under": 0,
+              "over": 2,
+              "xor": 2,
+              "union": 123
+            },
+            {
+              "text": "r",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 48
+            },
+            {
+              "text": "s",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 95
+            },
+            {
+              "text": "t",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 62
+            },
+            {
+              "text": "u",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 89
+            },
+            {
+              "text": "v",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 74
+            },
+            {
+              "text": "w",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 137
+            },
+            {
+              "text": "x",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 90
+            },
+            {
+              "text": "y",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 102
+            },
+            {
+              "text": "z",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 89
+            },
+            {
+              "text": "{",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 82
+            },
+            {
+              "text": "|",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 69
+            },
+            {
+              "text": "}",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 82
+            },
+            {
+              "text": "~",
+              "under": 3,
+              "over": 1,
+              "xor": 4,
+              "union": 51
+            }
+          ]
+        },
+        "freetype": {
+          "under": 97,
+          "over": 192,
+          "xor": 289,
+          "union": 9397,
+          "exact": 39,
+          "cases": 95,
+          "iou": 0.9692455038842184,
+          "glyphs": [
+            {
+              "text": " ",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 0
+            },
+            {
+              "text": "!",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 41
+            },
+            {
+              "text": "\"",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 36
+            },
+            {
+              "text": "#",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 159
+            },
+            {
+              "text": "$",
+              "under": 8,
+              "over": 12,
+              "xor": 20,
+              "union": 157
+            },
+            {
+              "text": "%",
+              "under": 0,
+              "over": 11,
+              "xor": 11,
+              "union": 166
+            },
+            {
+              "text": "&",
+              "under": 1,
+              "over": 5,
+              "xor": 6,
+              "union": 158
+            },
+            {
+              "text": "'",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 18
+            },
+            {
+              "text": "(",
+              "under": 0,
+              "over": 2,
+              "xor": 2,
+              "union": 63
+            },
+            {
+              "text": ")",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 63
+            },
+            {
+              "text": "*",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 63
+            },
+            {
+              "text": "+",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 82
+            },
+            {
+              "text": ",",
+              "under": 0,
+              "over": 2,
+              "xor": 2,
+              "union": 15
+            },
+            {
+              "text": "-",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 18
+            },
+            {
+              "text": ".",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 9
+            },
+            {
+              "text": "/",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 41
+            },
+            {
+              "text": "0",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 116
+            },
+            {
+              "text": "1",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 61
+            },
+            {
+              "text": "2",
+              "under": 1,
+              "over": 3,
+              "xor": 4,
+              "union": 123
+            },
+            {
+              "text": "3",
+              "under": 2,
+              "over": 1,
+              "xor": 3,
+              "union": 117
+            },
+            {
+              "text": "4",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 109
+            },
+            {
+              "text": "5",
+              "under": 0,
+              "over": 3,
+              "xor": 3,
+              "union": 125
+            },
+            {
+              "text": "6",
+              "under": 2,
+              "over": 5,
+              "xor": 7,
+              "union": 140
+            },
+            {
+              "text": "7",
+              "under": 1,
+              "over": 0,
+              "xor": 1,
+              "union": 81
+            },
+            {
+              "text": "8",
+              "under": 3,
+              "over": 2,
+              "xor": 5,
+              "union": 145
+            },
+            {
+              "text": "9",
+              "under": 2,
+              "over": 8,
+              "xor": 10,
+              "union": 143
+            },
+            {
+              "text": ":",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 18
+            },
+            {
+              "text": ";",
+              "under": 0,
+              "over": 2,
+              "xor": 2,
+              "union": 24
+            },
+            {
+              "text": "<",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 70
+            },
+            {
+              "text": "=",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 88
+            },
+            {
+              "text": ">",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 70
+            },
+            {
+              "text": "?",
+              "under": 0,
+              "over": 2,
+              "xor": 2,
+              "union": 80
+            },
+            {
+              "text": "@",
+              "under": 9,
+              "over": 9,
+              "xor": 18,
+              "union": 194
+            },
+            {
+              "text": "A",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 141
+            },
+            {
+              "text": "B",
+              "under": 0,
+              "over": 2,
+              "xor": 2,
+              "union": 174
+            },
+            {
+              "text": "C",
+              "under": 2,
+              "over": 5,
+              "xor": 7,
+              "union": 125
+            },
+            {
+              "text": "D",
+              "under": 2,
+              "over": 3,
+              "xor": 5,
+              "union": 153
+            },
+            {
+              "text": "E",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 143
+            },
+            {
+              "text": "F",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 107
+            },
+            {
+              "text": "G",
+              "under": 2,
+              "over": 2,
+              "xor": 4,
+              "union": 158
+            },
+            {
+              "text": "H",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 132
+            },
+            {
+              "text": "I",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 51
+            },
+            {
+              "text": "J",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 78
+            },
+            {
+              "text": "K",
+              "under": 7,
+              "over": 14,
+              "xor": 21,
+              "union": 152
+            },
+            {
+              "text": "L",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 79
+            },
+            {
+              "text": "M",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 206
+            },
+            {
+              "text": "N",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 175
+            },
+            {
+              "text": "O",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 142
+            },
+            {
+              "text": "P",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 123
+            },
+            {
+              "text": "Q",
+              "under": 1,
+              "over": 3,
+              "xor": 4,
+              "union": 160
+            },
+            {
+              "text": "R",
+              "under": 2,
+              "over": 0,
+              "xor": 2,
+              "union": 154
+            },
+            {
+              "text": "S",
+              "under": 1,
+              "over": 5,
+              "xor": 6,
+              "union": 150
+            },
+            {
+              "text": "T",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 83
+            },
+            {
+              "text": "U",
+              "under": 4,
+              "over": 2,
+              "xor": 6,
+              "union": 123
+            },
+            {
+              "text": "V",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 113
+            },
+            {
+              "text": "W",
+              "under": 0,
+              "over": 3,
+              "xor": 3,
+              "union": 206
+            },
+            {
+              "text": "X",
+              "under": 0,
+              "over": 4,
+              "xor": 4,
+              "union": 132
+            },
+            {
+              "text": "Y",
+              "under": 24,
+              "over": 22,
+              "xor": 46,
+              "union": 126
+            },
+            {
+              "text": "Z",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 134
+            },
+            {
+              "text": "[",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 79
+            },
+            {
+              "text": "\\",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 41
+            },
+            {
+              "text": "]",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 79
+            },
+            {
+              "text": "^",
+              "under": 0,
+              "over": 2,
+              "xor": 2,
+              "union": 44
+            },
+            {
+              "text": "_",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 19
+            },
+            {
+              "text": "`",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 13
+            },
+            {
+              "text": "a",
+              "under": 1,
+              "over": 1,
+              "xor": 2,
+              "union": 115
+            },
+            {
+              "text": "b",
+              "under": 1,
+              "over": 3,
+              "xor": 4,
+              "union": 124
+            },
+            {
+              "text": "c",
+              "under": 1,
+              "over": 1,
+              "xor": 2,
+              "union": 83
+            },
+            {
+              "text": "d",
+              "under": 0,
+              "over": 3,
+              "xor": 3,
+              "union": 124
+            },
+            {
+              "text": "e",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 110
+            },
+            {
+              "text": "f",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 68
+            },
+            {
+              "text": "g",
+              "under": 1,
+              "over": 3,
+              "xor": 4,
+              "union": 149
+            },
+            {
+              "text": "h",
+              "under": 1,
+              "over": 0,
+              "xor": 1,
+              "union": 104
+            },
+            {
+              "text": "i",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 42
+            },
+            {
+              "text": "j",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 62
+            },
+            {
+              "text": "k",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 108
+            },
+            {
+              "text": "l",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 51
+            },
+            {
+              "text": "m",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 138
+            },
+            {
+              "text": "n",
+              "under": 1,
+              "over": 0,
+              "xor": 1,
+              "union": 89
+            },
+            {
+              "text": "o",
+              "under": 8,
+              "over": 13,
+              "xor": 21,
+              "union": 108
+            },
+            {
+              "text": "p",
+              "under": 1,
+              "over": 2,
+              "xor": 3,
+              "union": 123
+            },
+            {
+              "text": "q",
+              "under": 0,
+              "over": 2,
+              "xor": 2,
+              "union": 123
+            },
+            {
+              "text": "r",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 48
+            },
+            {
+              "text": "s",
+              "under": 0,
+              "over": 5,
+              "xor": 5,
+              "union": 100
+            },
+            {
+              "text": "t",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 62
+            },
+            {
+              "text": "u",
+              "under": 1,
+              "over": 0,
+              "xor": 1,
+              "union": 89
+            },
+            {
+              "text": "v",
+              "under": 2,
+              "over": 6,
+              "xor": 8,
+              "union": 80
+            },
+            {
+              "text": "w",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 137
+            },
+            {
+              "text": "x",
+              "under": 0,
+              "over": 4,
+              "xor": 4,
+              "union": 94
+            },
+            {
+              "text": "y",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 102
+            },
+            {
+              "text": "z",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 89
+            },
+            {
+              "text": "{",
+              "under": 1,
+              "over": 2,
+              "xor": 3,
+              "union": 84
+            },
+            {
+              "text": "|",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 69
+            },
+            {
+              "text": "}",
+              "under": 1,
+              "over": 1,
+              "xor": 2,
+              "union": 83
+            },
+            {
+              "text": "~",
+              "under": 3,
+              "over": 1,
+              "xor": 4,
+              "union": 51
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "validation-23-37-N",
+      "results": {
+        "zebra-native": {
+          "under": 97,
+          "over": 144,
+          "xor": 241,
+          "union": 9459,
+          "exact": 50,
+          "cases": 95,
+          "iou": 0.9745216196215245,
+          "glyphs": [
+            {
+              "text": " ",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 0
+            },
+            {
+              "text": "!",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 50
+            },
+            {
+              "text": "\"",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 40
+            },
+            {
+              "text": "#",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 158
+            },
+            {
+              "text": "$",
+              "under": 6,
+              "over": 6,
+              "xor": 12,
+              "union": 148
+            },
+            {
+              "text": "%",
+              "under": 0,
+              "over": 13,
+              "xor": 13,
+              "union": 166
+            },
+            {
+              "text": "&",
+              "under": 11,
+              "over": 8,
+              "xor": 19,
+              "union": 168
+            },
+            {
+              "text": "'",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 20
+            },
+            {
+              "text": "(",
+              "under": 6,
+              "over": 2,
+              "xor": 8,
+              "union": 68
+            },
+            {
+              "text": ")",
+              "under": 6,
+              "over": 2,
+              "xor": 8,
+              "union": 68
+            },
+            {
+              "text": "*",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 64
+            },
+            {
+              "text": "+",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 82
+            },
+            {
+              "text": ",",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 13
+            },
+            {
+              "text": "-",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 18
+            },
+            {
+              "text": ".",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 8
+            },
+            {
+              "text": "/",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 44
+            },
+            {
+              "text": "0",
+              "under": 4,
+              "over": 8,
+              "xor": 12,
+              "union": 118
+            },
+            {
+              "text": "1",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 65
+            },
+            {
+              "text": "2",
+              "under": 3,
+              "over": 2,
+              "xor": 5,
+              "union": 122
+            },
+            {
+              "text": "3",
+              "under": 0,
+              "over": 5,
+              "xor": 5,
+              "union": 122
+            },
+            {
+              "text": "4",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 106
+            },
+            {
+              "text": "5",
+              "under": 1,
+              "over": 1,
+              "xor": 2,
+              "union": 125
+            },
+            {
+              "text": "6",
+              "under": 3,
+              "over": 2,
+              "xor": 5,
+              "union": 135
+            },
+            {
+              "text": "7",
+              "under": 2,
+              "over": 1,
+              "xor": 3,
+              "union": 81
+            },
+            {
+              "text": "8",
+              "under": 0,
+              "over": 5,
+              "xor": 5,
+              "union": 137
+            },
+            {
+              "text": "9",
+              "under": 3,
+              "over": 2,
+              "xor": 5,
+              "union": 135
+            },
+            {
+              "text": ":",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 16
+            },
+            {
+              "text": ";",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 21
+            },
+            {
+              "text": "<",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 72
+            },
+            {
+              "text": "=",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 78
+            },
+            {
+              "text": ">",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 70
+            },
+            {
+              "text": "?",
+              "under": 1,
+              "over": 1,
+              "xor": 2,
+              "union": 79
+            },
+            {
+              "text": "@",
+              "under": 5,
+              "over": 7,
+              "xor": 12,
+              "union": 203
+            },
+            {
+              "text": "A",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 137
+            },
+            {
+              "text": "B",
+              "under": 3,
+              "over": 2,
+              "xor": 5,
+              "union": 178
+            },
+            {
+              "text": "C",
+              "under": 4,
+              "over": 1,
+              "xor": 5,
+              "union": 126
+            },
+            {
+              "text": "D",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 146
+            },
+            {
+              "text": "E",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 141
+            },
+            {
+              "text": "F",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 105
+            },
+            {
+              "text": "G",
+              "under": 1,
+              "over": 2,
+              "xor": 3,
+              "union": 161
+            },
+            {
+              "text": "H",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 135
+            },
+            {
+              "text": "I",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 54
+            },
+            {
+              "text": "J",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 80
+            },
+            {
+              "text": "K",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 139
+            },
+            {
+              "text": "L",
+              "under": 0,
+              "over": 3,
+              "xor": 3,
+              "union": 81
+            },
+            {
+              "text": "M",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 213
+            },
+            {
+              "text": "N",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 167
+            },
+            {
+              "text": "O",
+              "under": 0,
+              "over": 4,
+              "xor": 4,
+              "union": 152
+            },
+            {
+              "text": "P",
+              "under": 2,
+              "over": 0,
+              "xor": 2,
+              "union": 124
+            },
+            {
+              "text": "Q",
+              "under": 1,
+              "over": 5,
+              "xor": 6,
+              "union": 169
+            },
+            {
+              "text": "R",
+              "under": 4,
+              "over": 1,
+              "xor": 5,
+              "union": 155
+            },
+            {
+              "text": "S",
+              "under": 2,
+              "over": 2,
+              "xor": 4,
+              "union": 143
+            },
+            {
+              "text": "T",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 84
+            },
+            {
+              "text": "U",
+              "under": 1,
+              "over": 3,
+              "xor": 4,
+              "union": 122
+            },
+            {
+              "text": "V",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 115
+            },
+            {
+              "text": "W",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 198
+            },
+            {
+              "text": "X",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 137
+            },
+            {
+              "text": "Y",
+              "under": 1,
+              "over": 0,
+              "xor": 1,
+              "union": 98
+            },
+            {
+              "text": "Z",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 136
+            },
+            {
+              "text": "[",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 80
+            },
+            {
+              "text": "\\",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 44
+            },
+            {
+              "text": "]",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 80
+            },
+            {
+              "text": "^",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 44
+            },
+            {
+              "text": "_",
+              "under": 0,
+              "over": 2,
+              "xor": 2,
+              "union": 24
+            },
+            {
+              "text": "`",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 13
+            },
+            {
+              "text": "a",
+              "under": 0,
+              "over": 3,
+              "xor": 3,
+              "union": 114
+            },
+            {
+              "text": "b",
+              "under": 1,
+              "over": 3,
+              "xor": 4,
+              "union": 128
+            },
+            {
+              "text": "c",
+              "under": 0,
+              "over": 2,
+              "xor": 2,
+              "union": 90
+            },
+            {
+              "text": "d",
+              "under": 0,
+              "over": 2,
+              "xor": 2,
+              "union": 128
+            },
+            {
+              "text": "e",
+              "under": 2,
+              "over": 5,
+              "xor": 7,
+              "union": 117
+            },
+            {
+              "text": "f",
+              "under": 1,
+              "over": 0,
+              "xor": 1,
+              "union": 71
+            },
+            {
+              "text": "g",
+              "under": 1,
+              "over": 4,
+              "xor": 5,
+              "union": 152
+            },
+            {
+              "text": "h",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 107
+            },
+            {
+              "text": "i",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 46
+            },
+            {
+              "text": "j",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 66
+            },
+            {
+              "text": "k",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 104
+            },
+            {
+              "text": "l",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 54
+            },
+            {
+              "text": "m",
+              "under": 2,
+              "over": 0,
+              "xor": 2,
+              "union": 138
+            },
+            {
+              "text": "n",
+              "under": 1,
+              "over": 1,
+              "xor": 2,
+              "union": 92
+            },
+            {
+              "text": "o",
+              "under": 15,
+              "over": 17,
+              "xor": 32,
+              "union": 115
+            },
+            {
+              "text": "p",
+              "under": 1,
+              "over": 3,
+              "xor": 4,
+              "union": 128
+            },
+            {
+              "text": "q",
+              "under": 0,
+              "over": 5,
+              "xor": 5,
+              "union": 128
+            },
+            {
+              "text": "r",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 50
+            },
+            {
+              "text": "s",
+              "under": 0,
+              "over": 2,
+              "xor": 2,
+              "union": 99
+            },
+            {
+              "text": "t",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 67
+            },
+            {
+              "text": "u",
+              "under": 1,
+              "over": 1,
+              "xor": 2,
+              "union": 92
+            },
+            {
+              "text": "v",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 80
+            },
+            {
+              "text": "w",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 137
+            },
+            {
+              "text": "x",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 85
+            },
+            {
+              "text": "y",
+              "under": 1,
+              "over": 0,
+              "xor": 1,
+              "union": 100
+            },
+            {
+              "text": "z",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 91
+            },
+            {
+              "text": "{",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 89
+            },
+            {
+              "text": "|",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 74
+            },
+            {
+              "text": "}",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 89
+            },
+            {
+              "text": "~",
+              "under": 1,
+              "over": 4,
+              "xor": 5,
+              "union": 47
+            }
+          ]
+        },
+        "zd621-device": {
+          "under": 32,
+          "over": 57,
+          "xor": 89,
+          "union": 9372,
+          "exact": 64,
+          "cases": 95,
+          "iou": 0.9905036278275715,
+          "glyphs": [
+            {
+              "text": " ",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 0
+            },
+            {
+              "text": "!",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 50
+            },
+            {
+              "text": "\"",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 40
+            },
+            {
+              "text": "#",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 158
+            },
+            {
+              "text": "$",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 142
+            },
+            {
+              "text": "%",
+              "under": 1,
+              "over": 2,
+              "xor": 3,
+              "union": 155
+            },
+            {
+              "text": "&",
+              "under": 6,
+              "over": 2,
+              "xor": 8,
+              "union": 162
+            },
+            {
+              "text": "'",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 20
+            },
+            {
+              "text": "(",
+              "under": 4,
+              "over": 0,
+              "xor": 4,
+              "union": 66
+            },
+            {
+              "text": ")",
+              "under": 4,
+              "over": 0,
+              "xor": 4,
+              "union": 66
+            },
+            {
+              "text": "*",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 64
+            },
+            {
+              "text": "+",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 82
+            },
+            {
+              "text": ",",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 13
+            },
+            {
+              "text": "-",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 18
+            },
+            {
+              "text": ".",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 8
+            },
+            {
+              "text": "/",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 44
+            },
+            {
+              "text": "0",
+              "under": 4,
+              "over": 8,
+              "xor": 12,
+              "union": 118
+            },
+            {
+              "text": "1",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 65
+            },
+            {
+              "text": "2",
+              "under": 2,
+              "over": 1,
+              "xor": 3,
+              "union": 121
+            },
+            {
+              "text": "3",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 118
+            },
+            {
+              "text": "4",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 106
+            },
+            {
+              "text": "5",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 124
+            },
+            {
+              "text": "6",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 134
+            },
+            {
+              "text": "7",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 80
+            },
+            {
+              "text": "8",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 133
+            },
+            {
+              "text": "9",
+              "under": 1,
+              "over": 1,
+              "xor": 2,
+              "union": 134
+            },
+            {
+              "text": ":",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 16
+            },
+            {
+              "text": ";",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 21
+            },
+            {
+              "text": "<",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 72
+            },
+            {
+              "text": "=",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 78
+            },
+            {
+              "text": ">",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 70
+            },
+            {
+              "text": "?",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 78
+            },
+            {
+              "text": "@",
+              "under": 2,
+              "over": 3,
+              "xor": 5,
+              "union": 199
+            },
+            {
+              "text": "A",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 137
+            },
+            {
+              "text": "B",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 176
+            },
+            {
+              "text": "C",
+              "under": 3,
+              "over": 0,
+              "xor": 3,
+              "union": 125
+            },
+            {
+              "text": "D",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 145
+            },
+            {
+              "text": "E",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 141
+            },
+            {
+              "text": "F",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 105
+            },
+            {
+              "text": "G",
+              "under": 1,
+              "over": 0,
+              "xor": 1,
+              "union": 159
+            },
+            {
+              "text": "H",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 135
+            },
+            {
+              "text": "I",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 54
+            },
+            {
+              "text": "J",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 80
+            },
+            {
+              "text": "K",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 139
+            },
+            {
+              "text": "L",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 78
+            },
+            {
+              "text": "M",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 213
+            },
+            {
+              "text": "N",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 167
+            },
+            {
+              "text": "O",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 148
+            },
+            {
+              "text": "P",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 124
+            },
+            {
+              "text": "Q",
+              "under": 1,
+              "over": 2,
+              "xor": 3,
+              "union": 166
+            },
+            {
+              "text": "R",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 154
+            },
+            {
+              "text": "S",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 142
+            },
+            {
+              "text": "T",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 84
+            },
+            {
+              "text": "U",
+              "under": 0,
+              "over": 3,
+              "xor": 3,
+              "union": 122
+            },
+            {
+              "text": "V",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 115
+            },
+            {
+              "text": "W",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 198
+            },
+            {
+              "text": "X",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 137
+            },
+            {
+              "text": "Y",
+              "under": 1,
+              "over": 0,
+              "xor": 1,
+              "union": 98
+            },
+            {
+              "text": "Z",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 136
+            },
+            {
+              "text": "[",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 80
+            },
+            {
+              "text": "\\",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 44
+            },
+            {
+              "text": "]",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 80
+            },
+            {
+              "text": "^",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 44
+            },
+            {
+              "text": "_",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 22
+            },
+            {
+              "text": "`",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 13
+            },
+            {
+              "text": "a",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 112
+            },
+            {
+              "text": "b",
+              "under": 0,
+              "over": 3,
+              "xor": 3,
+              "union": 128
+            },
+            {
+              "text": "c",
+              "under": 0,
+              "over": 2,
+              "xor": 2,
+              "union": 90
+            },
+            {
+              "text": "d",
+              "under": 0,
+              "over": 2,
+              "xor": 2,
+              "union": 128
+            },
+            {
+              "text": "e",
+              "under": 0,
+              "over": 2,
+              "xor": 2,
+              "union": 114
+            },
+            {
+              "text": "f",
+              "under": 1,
+              "over": 0,
+              "xor": 1,
+              "union": 71
+            },
+            {
+              "text": "g",
+              "under": 0,
+              "over": 4,
+              "xor": 4,
+              "union": 152
+            },
+            {
+              "text": "h",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 107
+            },
+            {
+              "text": "i",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 46
+            },
+            {
+              "text": "j",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 66
+            },
+            {
+              "text": "k",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 104
+            },
+            {
+              "text": "l",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 54
+            },
+            {
+              "text": "m",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 138
+            },
+            {
+              "text": "n",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 92
+            },
+            {
+              "text": "o",
+              "under": 0,
+              "over": 4,
+              "xor": 4,
+              "union": 102
+            },
+            {
+              "text": "p",
+              "under": 0,
+              "over": 2,
+              "xor": 2,
+              "union": 127
+            },
+            {
+              "text": "q",
+              "under": 0,
+              "over": 5,
+              "xor": 5,
+              "union": 128
+            },
+            {
+              "text": "r",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 50
+            },
+            {
+              "text": "s",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 97
+            },
+            {
+              "text": "t",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 67
+            },
+            {
+              "text": "u",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 92
+            },
+            {
+              "text": "v",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 80
+            },
+            {
+              "text": "w",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 137
+            },
+            {
+              "text": "x",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 85
+            },
+            {
+              "text": "y",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 100
+            },
+            {
+              "text": "z",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 91
+            },
+            {
+              "text": "{",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 89
+            },
+            {
+              "text": "|",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 74
+            },
+            {
+              "text": "}",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 89
+            },
+            {
+              "text": "~",
+              "under": 1,
+              "over": 3,
+              "xor": 4,
+              "union": 46
+            }
+          ]
+        },
+        "freetype": {
+          "under": 81,
+          "over": 164,
+          "xor": 245,
+          "union": 9479,
+          "exact": 44,
+          "cases": 95,
+          "iou": 0.9741533917079861,
+          "glyphs": [
+            {
+              "text": " ",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 0
+            },
+            {
+              "text": "!",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 50
+            },
+            {
+              "text": "\"",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 40
+            },
+            {
+              "text": "#",
+              "under": 0,
+              "over": 5,
+              "xor": 5,
+              "union": 163
+            },
+            {
+              "text": "$",
+              "under": 6,
+              "over": 6,
+              "xor": 12,
+              "union": 148
+            },
+            {
+              "text": "%",
+              "under": 0,
+              "over": 13,
+              "xor": 13,
+              "union": 166
+            },
+            {
+              "text": "&",
+              "under": 11,
+              "over": 9,
+              "xor": 20,
+              "union": 169
+            },
+            {
+              "text": "'",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 20
+            },
+            {
+              "text": "(",
+              "under": 6,
+              "over": 2,
+              "xor": 8,
+              "union": 68
+            },
+            {
+              "text": ")",
+              "under": 4,
+              "over": 2,
+              "xor": 6,
+              "union": 68
+            },
+            {
+              "text": "*",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 64
+            },
+            {
+              "text": "+",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 82
+            },
+            {
+              "text": ",",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 13
+            },
+            {
+              "text": "-",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 18
+            },
+            {
+              "text": ".",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 8
+            },
+            {
+              "text": "/",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 45
+            },
+            {
+              "text": "0",
+              "under": 1,
+              "over": 8,
+              "xor": 9,
+              "union": 118
+            },
+            {
+              "text": "1",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 65
+            },
+            {
+              "text": "2",
+              "under": 3,
+              "over": 3,
+              "xor": 6,
+              "union": 123
+            },
+            {
+              "text": "3",
+              "under": 0,
+              "over": 4,
+              "xor": 4,
+              "union": 121
+            },
+            {
+              "text": "4",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 106
+            },
+            {
+              "text": "5",
+              "under": 1,
+              "over": 2,
+              "xor": 3,
+              "union": 126
+            },
+            {
+              "text": "6",
+              "under": 3,
+              "over": 1,
+              "xor": 4,
+              "union": 134
+            },
+            {
+              "text": "7",
+              "under": 2,
+              "over": 1,
+              "xor": 3,
+              "union": 81
+            },
+            {
+              "text": "8",
+              "under": 0,
+              "over": 5,
+              "xor": 5,
+              "union": 137
+            },
+            {
+              "text": "9",
+              "under": 3,
+              "over": 4,
+              "xor": 7,
+              "union": 137
+            },
+            {
+              "text": ":",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 16
+            },
+            {
+              "text": ";",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 21
+            },
+            {
+              "text": "<",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 72
+            },
+            {
+              "text": "=",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 78
+            },
+            {
+              "text": ">",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 71
+            },
+            {
+              "text": "?",
+              "under": 1,
+              "over": 2,
+              "xor": 3,
+              "union": 80
+            },
+            {
+              "text": "@",
+              "under": 5,
+              "over": 7,
+              "xor": 12,
+              "union": 203
+            },
+            {
+              "text": "A",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 137
+            },
+            {
+              "text": "B",
+              "under": 1,
+              "over": 1,
+              "xor": 2,
+              "union": 177
+            },
+            {
+              "text": "C",
+              "under": 5,
+              "over": 1,
+              "xor": 6,
+              "union": 126
+            },
+            {
+              "text": "D",
+              "under": 0,
+              "over": 2,
+              "xor": 2,
+              "union": 147
+            },
+            {
+              "text": "E",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 141
+            },
+            {
+              "text": "F",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 105
+            },
+            {
+              "text": "G",
+              "under": 1,
+              "over": 2,
+              "xor": 3,
+              "union": 161
+            },
+            {
+              "text": "H",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 135
+            },
+            {
+              "text": "I",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 54
+            },
+            {
+              "text": "J",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 80
+            },
+            {
+              "text": "K",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 139
+            },
+            {
+              "text": "L",
+              "under": 0,
+              "over": 3,
+              "xor": 3,
+              "union": 81
+            },
+            {
+              "text": "M",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 214
+            },
+            {
+              "text": "N",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 167
+            },
+            {
+              "text": "O",
+              "under": 0,
+              "over": 4,
+              "xor": 4,
+              "union": 152
+            },
+            {
+              "text": "P",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 124
+            },
+            {
+              "text": "Q",
+              "under": 0,
+              "over": 6,
+              "xor": 6,
+              "union": 170
+            },
+            {
+              "text": "R",
+              "under": 3,
+              "over": 0,
+              "xor": 3,
+              "union": 154
+            },
+            {
+              "text": "S",
+              "under": 1,
+              "over": 2,
+              "xor": 3,
+              "union": 143
+            },
+            {
+              "text": "T",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 84
+            },
+            {
+              "text": "U",
+              "under": 1,
+              "over": 3,
+              "xor": 4,
+              "union": 122
+            },
+            {
+              "text": "V",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 115
+            },
+            {
+              "text": "W",
+              "under": 0,
+              "over": 2,
+              "xor": 2,
+              "union": 200
+            },
+            {
+              "text": "X",
+              "under": 1,
+              "over": 2,
+              "xor": 3,
+              "union": 139
+            },
+            {
+              "text": "Y",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 98
+            },
+            {
+              "text": "Z",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 137
+            },
+            {
+              "text": "[",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 80
+            },
+            {
+              "text": "\\",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 44
+            },
+            {
+              "text": "]",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 80
+            },
+            {
+              "text": "^",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 44
+            },
+            {
+              "text": "_",
+              "under": 0,
+              "over": 2,
+              "xor": 2,
+              "union": 24
+            },
+            {
+              "text": "`",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 13
+            },
+            {
+              "text": "a",
+              "under": 0,
+              "over": 3,
+              "xor": 3,
+              "union": 114
+            },
+            {
+              "text": "b",
+              "under": 1,
+              "over": 3,
+              "xor": 4,
+              "union": 128
+            },
+            {
+              "text": "c",
+              "under": 0,
+              "over": 2,
+              "xor": 2,
+              "union": 90
+            },
+            {
+              "text": "d",
+              "under": 0,
+              "over": 2,
+              "xor": 2,
+              "union": 128
+            },
+            {
+              "text": "e",
+              "under": 1,
+              "over": 4,
+              "xor": 5,
+              "union": 116
+            },
+            {
+              "text": "f",
+              "under": 1,
+              "over": 1,
+              "xor": 2,
+              "union": 72
+            },
+            {
+              "text": "g",
+              "under": 1,
+              "over": 4,
+              "xor": 5,
+              "union": 152
+            },
+            {
+              "text": "h",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 107
+            },
+            {
+              "text": "i",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 46
+            },
+            {
+              "text": "j",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 66
+            },
+            {
+              "text": "k",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 104
+            },
+            {
+              "text": "l",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 54
+            },
+            {
+              "text": "m",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 138
+            },
+            {
+              "text": "n",
+              "under": 1,
+              "over": 1,
+              "xor": 2,
+              "union": 92
+            },
+            {
+              "text": "o",
+              "under": 15,
+              "over": 17,
+              "xor": 32,
+              "union": 115
+            },
+            {
+              "text": "p",
+              "under": 1,
+              "over": 3,
+              "xor": 4,
+              "union": 128
+            },
+            {
+              "text": "q",
+              "under": 0,
+              "over": 5,
+              "xor": 5,
+              "union": 128
+            },
+            {
+              "text": "r",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 50
+            },
+            {
+              "text": "s",
+              "under": 0,
+              "over": 2,
+              "xor": 2,
+              "union": 99
+            },
+            {
+              "text": "t",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 67
+            },
+            {
+              "text": "u",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 92
+            },
+            {
+              "text": "v",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 81
+            },
+            {
+              "text": "w",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 137
+            },
+            {
+              "text": "x",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 86
+            },
+            {
+              "text": "y",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 101
+            },
+            {
+              "text": "z",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 91
+            },
+            {
+              "text": "{",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 89
+            },
+            {
+              "text": "|",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 74
+            },
+            {
+              "text": "}",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 89
+            },
+            {
+              "text": "~",
+              "under": 1,
+              "over": 4,
+              "xor": 5,
+              "union": 47
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "validation-23-37-R",
+      "results": {
+        "zebra-native": {
+          "under": 98,
+          "over": 146,
+          "xor": 244,
+          "union": 9460,
+          "exact": 48,
+          "cases": 95,
+          "iou": 0.9742071881606765,
+          "glyphs": [
+            {
+              "text": " ",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 0
+            },
+            {
+              "text": "!",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 50
+            },
+            {
+              "text": "\"",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 40
+            },
+            {
+              "text": "#",
+              "under": 0,
+              "over": 3,
+              "xor": 3,
+              "union": 161
+            },
+            {
+              "text": "$",
+              "under": 6,
+              "over": 6,
+              "xor": 12,
+              "union": 148
+            },
+            {
+              "text": "%",
+              "under": 0,
+              "over": 12,
+              "xor": 12,
+              "union": 166
+            },
+            {
+              "text": "&",
+              "under": 11,
+              "over": 9,
+              "xor": 20,
+              "union": 168
+            },
+            {
+              "text": "'",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 20
+            },
+            {
+              "text": "(",
+              "under": 6,
+              "over": 2,
+              "xor": 8,
+              "union": 68
+            },
+            {
+              "text": ")",
+              "under": 6,
+              "over": 2,
+              "xor": 8,
+              "union": 68
+            },
+            {
+              "text": "*",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 64
+            },
+            {
+              "text": "+",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 82
+            },
+            {
+              "text": ",",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 13
+            },
+            {
+              "text": "-",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 18
+            },
+            {
+              "text": ".",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 8
+            },
+            {
+              "text": "/",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 44
+            },
+            {
+              "text": "0",
+              "under": 4,
+              "over": 8,
+              "xor": 12,
+              "union": 118
+            },
+            {
+              "text": "1",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 65
+            },
+            {
+              "text": "2",
+              "under": 3,
+              "over": 2,
+              "xor": 5,
+              "union": 122
+            },
+            {
+              "text": "3",
+              "under": 0,
+              "over": 5,
+              "xor": 5,
+              "union": 122
+            },
+            {
+              "text": "4",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 106
+            },
+            {
+              "text": "5",
+              "under": 1,
+              "over": 1,
+              "xor": 2,
+              "union": 125
+            },
+            {
+              "text": "6",
+              "under": 4,
+              "over": 3,
+              "xor": 7,
+              "union": 136
+            },
+            {
+              "text": "7",
+              "under": 2,
+              "over": 1,
+              "xor": 3,
+              "union": 81
+            },
+            {
+              "text": "8",
+              "under": 0,
+              "over": 5,
+              "xor": 5,
+              "union": 137
+            },
+            {
+              "text": "9",
+              "under": 2,
+              "over": 2,
+              "xor": 4,
+              "union": 134
+            },
+            {
+              "text": ":",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 16
+            },
+            {
+              "text": ";",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 21
+            },
+            {
+              "text": "<",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 72
+            },
+            {
+              "text": "=",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 78
+            },
+            {
+              "text": ">",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 70
+            },
+            {
+              "text": "?",
+              "under": 1,
+              "over": 0,
+              "xor": 1,
+              "union": 79
+            },
+            {
+              "text": "@",
+              "under": 5,
+              "over": 8,
+              "xor": 13,
+              "union": 203
+            },
+            {
+              "text": "A",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 137
+            },
+            {
+              "text": "B",
+              "under": 3,
+              "over": 2,
+              "xor": 5,
+              "union": 178
+            },
+            {
+              "text": "C",
+              "under": 4,
+              "over": 1,
+              "xor": 5,
+              "union": 126
+            },
+            {
+              "text": "D",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 146
+            },
+            {
+              "text": "E",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 141
+            },
+            {
+              "text": "F",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 105
+            },
+            {
+              "text": "G",
+              "under": 1,
+              "over": 2,
+              "xor": 3,
+              "union": 161
+            },
+            {
+              "text": "H",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 135
+            },
+            {
+              "text": "I",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 54
+            },
+            {
+              "text": "J",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 80
+            },
+            {
+              "text": "K",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 139
+            },
+            {
+              "text": "L",
+              "under": 0,
+              "over": 3,
+              "xor": 3,
+              "union": 81
+            },
+            {
+              "text": "M",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 213
+            },
+            {
+              "text": "N",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 167
+            },
+            {
+              "text": "O",
+              "under": 0,
+              "over": 4,
+              "xor": 4,
+              "union": 152
+            },
+            {
+              "text": "P",
+              "under": 2,
+              "over": 0,
+              "xor": 2,
+              "union": 124
+            },
+            {
+              "text": "Q",
+              "under": 1,
+              "over": 3,
+              "xor": 4,
+              "union": 167
+            },
+            {
+              "text": "R",
+              "under": 5,
+              "over": 1,
+              "xor": 6,
+              "union": 156
+            },
+            {
+              "text": "S",
+              "under": 2,
+              "over": 2,
+              "xor": 4,
+              "union": 143
+            },
+            {
+              "text": "T",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 84
+            },
+            {
+              "text": "U",
+              "under": 1,
+              "over": 3,
+              "xor": 4,
+              "union": 122
+            },
+            {
+              "text": "V",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 115
+            },
+            {
+              "text": "W",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 198
+            },
+            {
+              "text": "X",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 137
+            },
+            {
+              "text": "Y",
+              "under": 1,
+              "over": 0,
+              "xor": 1,
+              "union": 98
+            },
+            {
+              "text": "Z",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 136
+            },
+            {
+              "text": "[",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 80
+            },
+            {
+              "text": "\\",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 44
+            },
+            {
+              "text": "]",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 80
+            },
+            {
+              "text": "^",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 44
+            },
+            {
+              "text": "_",
+              "under": 0,
+              "over": 2,
+              "xor": 2,
+              "union": 24
+            },
+            {
+              "text": "`",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 13
+            },
+            {
+              "text": "a",
+              "under": 0,
+              "over": 3,
+              "xor": 3,
+              "union": 114
+            },
+            {
+              "text": "b",
+              "under": 1,
+              "over": 3,
+              "xor": 4,
+              "union": 128
+            },
+            {
+              "text": "c",
+              "under": 0,
+              "over": 2,
+              "xor": 2,
+              "union": 90
+            },
+            {
+              "text": "d",
+              "under": 0,
+              "over": 2,
+              "xor": 2,
+              "union": 128
+            },
+            {
+              "text": "e",
+              "under": 2,
+              "over": 5,
+              "xor": 7,
+              "union": 117
+            },
+            {
+              "text": "f",
+              "under": 1,
+              "over": 0,
+              "xor": 1,
+              "union": 71
+            },
+            {
+              "text": "g",
+              "under": 1,
+              "over": 5,
+              "xor": 6,
+              "union": 152
+            },
+            {
+              "text": "h",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 107
+            },
+            {
+              "text": "i",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 46
+            },
+            {
+              "text": "j",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 66
+            },
+            {
+              "text": "k",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 104
+            },
+            {
+              "text": "l",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 54
+            },
+            {
+              "text": "m",
+              "under": 2,
+              "over": 0,
+              "xor": 2,
+              "union": 138
+            },
+            {
+              "text": "n",
+              "under": 1,
+              "over": 0,
+              "xor": 1,
+              "union": 92
+            },
+            {
+              "text": "o",
+              "under": 15,
+              "over": 17,
+              "xor": 32,
+              "union": 115
+            },
+            {
+              "text": "p",
+              "under": 1,
+              "over": 3,
+              "xor": 4,
+              "union": 128
+            },
+            {
+              "text": "q",
+              "under": 0,
+              "over": 5,
+              "xor": 5,
+              "union": 128
+            },
+            {
+              "text": "r",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 50
+            },
+            {
+              "text": "s",
+              "under": 0,
+              "over": 2,
+              "xor": 2,
+              "union": 99
+            },
+            {
+              "text": "t",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 67
+            },
+            {
+              "text": "u",
+              "under": 1,
+              "over": 1,
+              "xor": 2,
+              "union": 92
+            },
+            {
+              "text": "v",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 80
+            },
+            {
+              "text": "w",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 137
+            },
+            {
+              "text": "x",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 85
+            },
+            {
+              "text": "y",
+              "under": 1,
+              "over": 0,
+              "xor": 1,
+              "union": 100
+            },
+            {
+              "text": "z",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 91
+            },
+            {
+              "text": "{",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 89
+            },
+            {
+              "text": "|",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 74
+            },
+            {
+              "text": "}",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 89
+            },
+            {
+              "text": "~",
+              "under": 1,
+              "over": 3,
+              "xor": 4,
+              "union": 46
+            }
+          ]
+        },
+        "zd621-device": {
+          "under": 32,
+          "over": 58,
+          "xor": 90,
+          "union": 9372,
+          "exact": 62,
+          "cases": 95,
+          "iou": 0.9903969270166453,
+          "glyphs": [
+            {
+              "text": " ",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 0
+            },
+            {
+              "text": "!",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 50
+            },
+            {
+              "text": "\"",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 40
+            },
+            {
+              "text": "#",
+              "under": 0,
+              "over": 3,
+              "xor": 3,
+              "union": 161
+            },
+            {
+              "text": "$",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 142
+            },
+            {
+              "text": "%",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 154
+            },
+            {
+              "text": "&",
+              "under": 5,
+              "over": 2,
+              "xor": 7,
+              "union": 161
+            },
+            {
+              "text": "'",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 20
+            },
+            {
+              "text": "(",
+              "under": 4,
+              "over": 0,
+              "xor": 4,
+              "union": 66
+            },
+            {
+              "text": ")",
+              "under": 4,
+              "over": 0,
+              "xor": 4,
+              "union": 66
+            },
+            {
+              "text": "*",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 64
+            },
+            {
+              "text": "+",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 82
+            },
+            {
+              "text": ",",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 13
+            },
+            {
+              "text": "-",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 18
+            },
+            {
+              "text": ".",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 8
+            },
+            {
+              "text": "/",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 44
+            },
+            {
+              "text": "0",
+              "under": 4,
+              "over": 8,
+              "xor": 12,
+              "union": 118
+            },
+            {
+              "text": "1",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 65
+            },
+            {
+              "text": "2",
+              "under": 2,
+              "over": 1,
+              "xor": 3,
+              "union": 121
+            },
+            {
+              "text": "3",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 118
+            },
+            {
+              "text": "4",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 106
+            },
+            {
+              "text": "5",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 124
+            },
+            {
+              "text": "6",
+              "under": 1,
+              "over": 2,
+              "xor": 3,
+              "union": 135
+            },
+            {
+              "text": "7",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 80
+            },
+            {
+              "text": "8",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 133
+            },
+            {
+              "text": "9",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 133
+            },
+            {
+              "text": ":",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 16
+            },
+            {
+              "text": ";",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 21
+            },
+            {
+              "text": "<",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 72
+            },
+            {
+              "text": "=",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 78
+            },
+            {
+              "text": ">",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 70
+            },
+            {
+              "text": "?",
+              "under": 1,
+              "over": 0,
+              "xor": 1,
+              "union": 79
+            },
+            {
+              "text": "@",
+              "under": 2,
+              "over": 4,
+              "xor": 6,
+              "union": 199
+            },
+            {
+              "text": "A",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 137
+            },
+            {
+              "text": "B",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 176
+            },
+            {
+              "text": "C",
+              "under": 3,
+              "over": 0,
+              "xor": 3,
+              "union": 125
+            },
+            {
+              "text": "D",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 145
+            },
+            {
+              "text": "E",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 141
+            },
+            {
+              "text": "F",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 105
+            },
+            {
+              "text": "G",
+              "under": 1,
+              "over": 0,
+              "xor": 1,
+              "union": 159
+            },
+            {
+              "text": "H",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 135
+            },
+            {
+              "text": "I",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 54
+            },
+            {
+              "text": "J",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 80
+            },
+            {
+              "text": "K",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 139
+            },
+            {
+              "text": "L",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 78
+            },
+            {
+              "text": "M",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 213
+            },
+            {
+              "text": "N",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 167
+            },
+            {
+              "text": "O",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 148
+            },
+            {
+              "text": "P",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 124
+            },
+            {
+              "text": "Q",
+              "under": 1,
+              "over": 0,
+              "xor": 1,
+              "union": 164
+            },
+            {
+              "text": "R",
+              "under": 1,
+              "over": 0,
+              "xor": 1,
+              "union": 155
+            },
+            {
+              "text": "S",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 142
+            },
+            {
+              "text": "T",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 84
+            },
+            {
+              "text": "U",
+              "under": 0,
+              "over": 3,
+              "xor": 3,
+              "union": 122
+            },
+            {
+              "text": "V",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 115
+            },
+            {
+              "text": "W",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 198
+            },
+            {
+              "text": "X",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 137
+            },
+            {
+              "text": "Y",
+              "under": 1,
+              "over": 0,
+              "xor": 1,
+              "union": 98
+            },
+            {
+              "text": "Z",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 136
+            },
+            {
+              "text": "[",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 80
+            },
+            {
+              "text": "\\",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 44
+            },
+            {
+              "text": "]",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 80
+            },
+            {
+              "text": "^",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 44
+            },
+            {
+              "text": "_",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 22
+            },
+            {
+              "text": "`",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 13
+            },
+            {
+              "text": "a",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 112
+            },
+            {
+              "text": "b",
+              "under": 0,
+              "over": 3,
+              "xor": 3,
+              "union": 128
+            },
+            {
+              "text": "c",
+              "under": 0,
+              "over": 2,
+              "xor": 2,
+              "union": 90
+            },
+            {
+              "text": "d",
+              "under": 0,
+              "over": 2,
+              "xor": 2,
+              "union": 128
+            },
+            {
+              "text": "e",
+              "under": 0,
+              "over": 2,
+              "xor": 2,
+              "union": 114
+            },
+            {
+              "text": "f",
+              "under": 1,
+              "over": 0,
+              "xor": 1,
+              "union": 71
+            },
+            {
+              "text": "g",
+              "under": 0,
+              "over": 5,
+              "xor": 5,
+              "union": 152
+            },
+            {
+              "text": "h",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 107
+            },
+            {
+              "text": "i",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 46
+            },
+            {
+              "text": "j",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 66
+            },
+            {
+              "text": "k",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 104
+            },
+            {
+              "text": "l",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 54
+            },
+            {
+              "text": "m",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 138
+            },
+            {
+              "text": "n",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 92
+            },
+            {
+              "text": "o",
+              "under": 0,
+              "over": 4,
+              "xor": 4,
+              "union": 102
+            },
+            {
+              "text": "p",
+              "under": 0,
+              "over": 2,
+              "xor": 2,
+              "union": 127
+            },
+            {
+              "text": "q",
+              "under": 0,
+              "over": 5,
+              "xor": 5,
+              "union": 128
+            },
+            {
+              "text": "r",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 50
+            },
+            {
+              "text": "s",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 97
+            },
+            {
+              "text": "t",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 67
+            },
+            {
+              "text": "u",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 92
+            },
+            {
+              "text": "v",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 80
+            },
+            {
+              "text": "w",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 137
+            },
+            {
+              "text": "x",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 85
+            },
+            {
+              "text": "y",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 100
+            },
+            {
+              "text": "z",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 91
+            },
+            {
+              "text": "{",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 89
+            },
+            {
+              "text": "|",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 74
+            },
+            {
+              "text": "}",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 89
+            },
+            {
+              "text": "~",
+              "under": 1,
+              "over": 2,
+              "xor": 3,
+              "union": 45
+            }
+          ]
+        },
+        "freetype": {
+          "under": 84,
+          "over": 173,
+          "xor": 257,
+          "union": 9487,
+          "exact": 40,
+          "cases": 95,
+          "iou": 0.9729102983029408,
+          "glyphs": [
+            {
+              "text": " ",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 0
+            },
+            {
+              "text": "!",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 50
+            },
+            {
+              "text": "\"",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 40
+            },
+            {
+              "text": "#",
+              "under": 0,
+              "over": 5,
+              "xor": 5,
+              "union": 163
+            },
+            {
+              "text": "$",
+              "under": 6,
+              "over": 5,
+              "xor": 11,
+              "union": 147
+            },
+            {
+              "text": "%",
+              "under": 0,
+              "over": 12,
+              "xor": 12,
+              "union": 166
+            },
+            {
+              "text": "&",
+              "under": 11,
+              "over": 10,
+              "xor": 21,
+              "union": 169
+            },
+            {
+              "text": "'",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 20
+            },
+            {
+              "text": "(",
+              "under": 4,
+              "over": 2,
+              "xor": 6,
+              "union": 68
+            },
+            {
+              "text": ")",
+              "under": 5,
+              "over": 2,
+              "xor": 7,
+              "union": 68
+            },
+            {
+              "text": "*",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 64
+            },
+            {
+              "text": "+",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 82
+            },
+            {
+              "text": ",",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 13
+            },
+            {
+              "text": "-",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 18
+            },
+            {
+              "text": ".",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 8
+            },
+            {
+              "text": "/",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 45
+            },
+            {
+              "text": "0",
+              "under": 2,
+              "over": 8,
+              "xor": 10,
+              "union": 118
+            },
+            {
+              "text": "1",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 65
+            },
+            {
+              "text": "2",
+              "under": 3,
+              "over": 2,
+              "xor": 5,
+              "union": 122
+            },
+            {
+              "text": "3",
+              "under": 1,
+              "over": 4,
+              "xor": 5,
+              "union": 121
+            },
+            {
+              "text": "4",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 106
+            },
+            {
+              "text": "5",
+              "under": 1,
+              "over": 3,
+              "xor": 4,
+              "union": 127
+            },
+            {
+              "text": "6",
+              "under": 4,
+              "over": 2,
+              "xor": 6,
+              "union": 135
+            },
+            {
+              "text": "7",
+              "under": 1,
+              "over": 1,
+              "xor": 2,
+              "union": 81
+            },
+            {
+              "text": "8",
+              "under": 0,
+              "over": 5,
+              "xor": 5,
+              "union": 137
+            },
+            {
+              "text": "9",
+              "under": 2,
+              "over": 1,
+              "xor": 3,
+              "union": 133
+            },
+            {
+              "text": ":",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 16
+            },
+            {
+              "text": ";",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 21
+            },
+            {
+              "text": "<",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 72
+            },
+            {
+              "text": "=",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 78
+            },
+            {
+              "text": ">",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 71
+            },
+            {
+              "text": "?",
+              "under": 1,
+              "over": 1,
+              "xor": 2,
+              "union": 80
+            },
+            {
+              "text": "@",
+              "under": 3,
+              "over": 10,
+              "xor": 13,
+              "union": 205
+            },
+            {
+              "text": "A",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 137
+            },
+            {
+              "text": "B",
+              "under": 3,
+              "over": 2,
+              "xor": 5,
+              "union": 178
+            },
+            {
+              "text": "C",
+              "under": 3,
+              "over": 2,
+              "xor": 5,
+              "union": 127
+            },
+            {
+              "text": "D",
+              "under": 0,
+              "over": 2,
+              "xor": 2,
+              "union": 147
+            },
+            {
+              "text": "E",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 141
+            },
+            {
+              "text": "F",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 105
+            },
+            {
+              "text": "G",
+              "under": 1,
+              "over": 2,
+              "xor": 3,
+              "union": 161
+            },
+            {
+              "text": "H",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 135
+            },
+            {
+              "text": "I",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 54
+            },
+            {
+              "text": "J",
+              "under": 0,
+              "over": 2,
+              "xor": 2,
+              "union": 82
+            },
+            {
+              "text": "K",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 139
+            },
+            {
+              "text": "L",
+              "under": 0,
+              "over": 3,
+              "xor": 3,
+              "union": 81
+            },
+            {
+              "text": "M",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 214
+            },
+            {
+              "text": "N",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 167
+            },
+            {
+              "text": "O",
+              "under": 0,
+              "over": 4,
+              "xor": 4,
+              "union": 152
+            },
+            {
+              "text": "P",
+              "under": 1,
+              "over": 0,
+              "xor": 1,
+              "union": 124
+            },
+            {
+              "text": "Q",
+              "under": 1,
+              "over": 6,
+              "xor": 7,
+              "union": 170
+            },
+            {
+              "text": "R",
+              "under": 4,
+              "over": 1,
+              "xor": 5,
+              "union": 156
+            },
+            {
+              "text": "S",
+              "under": 1,
+              "over": 1,
+              "xor": 2,
+              "union": 142
+            },
+            {
+              "text": "T",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 84
+            },
+            {
+              "text": "U",
+              "under": 1,
+              "over": 4,
+              "xor": 5,
+              "union": 123
+            },
+            {
+              "text": "V",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 115
+            },
+            {
+              "text": "W",
+              "under": 0,
+              "over": 2,
+              "xor": 2,
+              "union": 200
+            },
+            {
+              "text": "X",
+              "under": 1,
+              "over": 2,
+              "xor": 3,
+              "union": 139
+            },
+            {
+              "text": "Y",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 98
+            },
+            {
+              "text": "Z",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 137
+            },
+            {
+              "text": "[",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 80
+            },
+            {
+              "text": "\\",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 44
+            },
+            {
+              "text": "]",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 80
+            },
+            {
+              "text": "^",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 44
+            },
+            {
+              "text": "_",
+              "under": 0,
+              "over": 2,
+              "xor": 2,
+              "union": 24
+            },
+            {
+              "text": "`",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 13
+            },
+            {
+              "text": "a",
+              "under": 0,
+              "over": 3,
+              "xor": 3,
+              "union": 114
+            },
+            {
+              "text": "b",
+              "under": 0,
+              "over": 3,
+              "xor": 3,
+              "union": 128
+            },
+            {
+              "text": "c",
+              "under": 0,
+              "over": 2,
+              "xor": 2,
+              "union": 90
+            },
+            {
+              "text": "d",
+              "under": 1,
+              "over": 2,
+              "xor": 3,
+              "union": 128
+            },
+            {
+              "text": "e",
+              "under": 2,
+              "over": 5,
+              "xor": 7,
+              "union": 117
+            },
+            {
+              "text": "f",
+              "under": 1,
+              "over": 0,
+              "xor": 1,
+              "union": 71
+            },
+            {
+              "text": "g",
+              "under": 1,
+              "over": 5,
+              "xor": 6,
+              "union": 152
+            },
+            {
+              "text": "h",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 107
+            },
+            {
+              "text": "i",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 46
+            },
+            {
+              "text": "j",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 67
+            },
+            {
+              "text": "k",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 104
+            },
+            {
+              "text": "l",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 54
+            },
+            {
+              "text": "m",
+              "under": 0,
+              "over": 1,
+              "xor": 1,
+              "union": 139
+            },
+            {
+              "text": "n",
+              "under": 1,
+              "over": 0,
+              "xor": 1,
+              "union": 92
+            },
+            {
+              "text": "o",
+              "under": 15,
+              "over": 17,
+              "xor": 32,
+              "union": 115
+            },
+            {
+              "text": "p",
+              "under": 0,
+              "over": 3,
+              "xor": 3,
+              "union": 128
+            },
+            {
+              "text": "q",
+              "under": 0,
+              "over": 5,
+              "xor": 5,
+              "union": 128
+            },
+            {
+              "text": "r",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 50
+            },
+            {
+              "text": "s",
+              "under": 0,
+              "over": 2,
+              "xor": 2,
+              "union": 99
+            },
+            {
+              "text": "t",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 67
+            },
+            {
+              "text": "u",
+              "under": 1,
+              "over": 1,
+              "xor": 2,
+              "union": 92
+            },
+            {
+              "text": "v",
+              "under": 0,
+              "over": 3,
+              "xor": 3,
+              "union": 82
+            },
+            {
+              "text": "w",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 137
+            },
+            {
+              "text": "x",
+              "under": 0,
+              "over": 2,
+              "xor": 2,
+              "union": 87
+            },
+            {
+              "text": "y",
+              "under": 1,
+              "over": 1,
+              "xor": 2,
+              "union": 101
+            },
+            {
+              "text": "z",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 91
+            },
+            {
+              "text": "{",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 89
+            },
+            {
+              "text": "|",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 74
+            },
+            {
+              "text": "}",
+              "under": 0,
+              "over": 0,
+              "xor": 0,
+              "union": 89
+            },
+            {
+              "text": "~",
+              "under": 1,
+              "over": 4,
+              "xor": 5,
+              "union": 47
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "totals": {
+    "glyphs/zebra-native": {
+      "under": 293,
+      "over": 461,
+      "xor": 754,
+      "union": 28295,
+      "exact": 144,
+      "cases": 285,
+      "iou": 0.9733521823643754
+    },
+    "glyphs/zd621-device": {
+      "under": 80,
+      "over": 167,
+      "xor": 247,
+      "union": 28001,
+      "exact": 191,
+      "cases": 285,
+      "iou": 0.9911788864683404
+    },
+    "glyphs/freetype": {
+      "under": 262,
+      "over": 529,
+      "xor": 791,
+      "union": 28363,
+      "exact": 123,
+      "cases": 285,
+      "iou": 0.9721115537848606
+    }
+  },
+  "retained_modes": [
+    "freetype",
+    "zd621-device",
+    "zebra-native"
+  ],
+  "curve_flatness": 0.25
+}
