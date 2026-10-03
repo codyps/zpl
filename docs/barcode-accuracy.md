@@ -36,22 +36,23 @@ changing native output for identical requests, which a deterministic renderer
 cannot reproduce. MaxiCode mode 5 previews contain only finder/orientation
 marks, so they are also diagnostic even when their pixels match exactly.
 
-The reviewed inventory has 1,707 frames: 1,645 exact positive frames, fourteen
-positive text-residual frames, two unmet accuracy targets, and 46 diagnostic
+The reviewed inventory has 1,719 frames: 1,659 exact positive frames, thirteen
+positive text-residual frames, one unmet accuracy target, and 46 diagnostic
 controls. The original three shipping-label residuals still have 6 underpaint
 and 9 overpaint pixels each. The original diagnostics comprise 26 blank previews
 (eight rejected inputs and eighteen rendered blanks), seven unstable empty-QR
 captures, and nine finder-only MaxiCode mode 5 captures. The 22 added public
-documents contribute five exact frames, eleven positive text-residual frames,
-two known gaps, and four malformed-barcode diagnostics. Counts describe saved previews, not fresh device measurements or
+documents contribute seven exact frames, ten positive text-residual frames,
+one known gap, and four malformed-barcode diagnostics. Counts describe saved previews, not fresh device measurements or
 physical printing. The source inventory count is pinned to prevent silent loss
 of cases; extensions require deliberate review.
 
 The [public-document campaign](../zpl/tests/fixtures/public-zpl-zd621-v1/README.md)
-retains the Labelixa QR-version difference and the Shopify label's text error
-above 20%. These are explicitly unmet targets, including under
-`ZPL_BARCODE_STRICT=1`; importing the captures does not claim to fix their
-encoding or fonts. The PDF417 layout/punctuation fix resolves the carrier
+retains the Shopify label's text error above 20% as an explicitly unmet target,
+including under `ZPL_BARCODE_STRICT=1`. The Labelixa QR URL label now matches
+every pixel through the QR segmentation option and captured 28-dot font strike.
+The font strike also resolves the EAN-13 product label and reduces the pinned
+text errors in five other public documents. The PDF417 layout/punctuation fix resolves the carrier
 label's symbol differences, leaving a positive text-residual comparison.
 Four BinaryKits documents contain
 a truncated QR payload, literal Code 39 template placeholders, or clipped BY12

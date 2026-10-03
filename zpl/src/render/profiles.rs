@@ -23,6 +23,7 @@ pub const SPECIFICATION: Options = Options {
         preview_width_latched_at_first_draw: false,
         preview_ignores_label_length: false,
         qr_printer_mask_selection: false,
+        qr_printer_segmentation: false,
         qr_updates_barcode_module_width: false,
         pdf417_integer_grid_layout: false,
         pdf417_punctuation_latches: false,
@@ -175,6 +176,7 @@ pub const ZD621_203_DPI: Options = Options {
         preview_width_latched_at_first_draw: false,
         preview_ignores_label_length: false,
         qr_printer_mask_selection: true,
+        qr_printer_segmentation: true,
         qr_updates_barcode_module_width: true,
         pdf417_integer_grid_layout: true,
         pdf417_punctuation_latches: true,
@@ -323,6 +325,8 @@ pub const ZQ610_PLUS_203_DPI: Options = Options {
         preview_max_width: Some(384),
         preview_width_latched_at_first_draw: true,
         preview_ignores_label_length: true,
+        // Automatic QR segmentation evidence is ZD621-only.
+        qr_printer_segmentation: false,
         // SurePost run-boundary evidence is ZD621-only.
         maxicode_printer_run_boundaries: false,
         // Integer-grid and punctuation-run controls were captured on ZD621.

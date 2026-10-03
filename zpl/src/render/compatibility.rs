@@ -50,6 +50,10 @@ pub struct Compatibility {
     /// Ignore the requested QR mask and select using the printer's staged
     /// penalty evaluation. See docs/qr-mask-selection.md and native holdouts.
     pub qr_printer_mask_selection: bool,
+    /// Merge automatic QR character runs in printer order rather than choosing
+    /// the globally shortest bitstream. Can change symbol version and mask.
+    /// ZD621 V93.21.33Z: tests/fixtures/qr-segmentation-zd621-v1.
+    pub qr_printer_segmentation: bool,
     /// Let ^BQ magnification replace the shared barcode module width, including
     /// later fields, until ^BY changes it. Native qr-module-state-zd621-v1.
     pub qr_updates_barcode_module_width: bool,

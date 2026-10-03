@@ -24,8 +24,13 @@ original comparison campaign; three batch formats were separated there.
 requires one nonblank native-sized output per case, and pins **full-canvas**
 underpaint, overpaint and local pixel hashes in `baseline.tsv`. Counts use the
 original origin without padding, alignment, cropping or scaling. IoU is foreground
-intersection over union; higher is better. Five complete labels remain exact.
-Existing font differences and the valid Labelixa QR encoding difference remain.
+intersection over union; higher is better. Seven complete labels are exact.
+The QR segmentation compatibility option and captured 28-dot font strike resolve
+the Labelixa QR URL label; the font also resolves the EAN-13 product label.
+The same strike reduces both directional errors in Example3-54x86, the carrier,
+GS1-128, pallet, and shipping labels. Their stronger baselines retain the original
+captures; remaining differences are text. See the
+[QR/font capture evidence](../qr-segmentation-zd621-v1/README.md).
 The PDF417 layout/punctuation fix merged from main makes the carrier symbol
 pixel-exact; its whole-label residual is now text only.
 
