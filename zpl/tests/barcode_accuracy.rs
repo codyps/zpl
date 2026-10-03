@@ -341,9 +341,9 @@ fn barcode_reference_coverage_and_error_budget() {
         fs::write(output, report.unwrap()).unwrap();
     }
     assert_eq!(
-        // Existing 1,625 frames plus 60 PDF417 layout/punctuation controls.
+        // Existing 1,685 frames plus 22 public-document previews.
         count,
-        1685,
+        1707,
         "review inventory changes; do not silently drop captures"
     );
     for model in ["ZD621_203_DPI", "ZQ610_PLUS_203_DPI"] {

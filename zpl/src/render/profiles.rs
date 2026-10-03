@@ -12,6 +12,12 @@ pub const SPECIFICATION: Options = Options {
     height: 1218,
     dpi: 203,
     compatibility: Compatibility {
+        inline_graphic_implicit_separator: false,
+        qr_malformed_header_uses_defaults: false,
+        code39_normalize_input: false,
+        barcode_module_width_through_12: false,
+        box_zero_thickness_as_one: false,
+
         preview_width_quantum: None,
         preview_max_width: None,
         preview_width_latched_at_first_draw: false,
@@ -158,6 +164,12 @@ pub const ZD621_203_DPI: Options = Options {
     height: 1218,
     dpi: 203,
     compatibility: Compatibility {
+        inline_graphic_implicit_separator: true,
+        qr_malformed_header_uses_defaults: true,
+        code39_normalize_input: true,
+        barcode_module_width_through_12: true,
+        box_zero_thickness_as_one: true,
+
         preview_width_quantum: None,
         preview_max_width: None,
         preview_width_latched_at_first_draw: false,
@@ -300,6 +312,13 @@ pub const ZQ610_PLUS_203_DPI: Options = Options {
     width: 384,
     height: 2030,
     compatibility: Compatibility {
+        // Public-document tolerances have only been observed on the ZD621.
+        inline_graphic_implicit_separator: false,
+        qr_malformed_header_uses_defaults: false,
+        code39_normalize_input: false,
+        barcode_module_width_through_12: false,
+        box_zero_thickness_as_one: false,
+
         preview_width_quantum: Some(64),
         preview_max_width: Some(384),
         preview_width_latched_at_first_draw: true,

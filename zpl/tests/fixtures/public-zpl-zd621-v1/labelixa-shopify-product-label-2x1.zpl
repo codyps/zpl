@@ -1,0 +1,10 @@
+^XA
+^PW448
+^LL203
+^CF0,26
+^FO16,12^FDLinen Shirt - Sand^FS
+^FO300,12^FD$49.00^FS
+^CF0,22
+^FO16,44^FDSize M / Relaxed fit^FS
+^FO16,76^BY2^BCN,70,Y,N,N^FDLS-SAND-M^FS
+^XZ

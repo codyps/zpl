@@ -7,7 +7,27 @@ pub(super) fn render(b: &Barcode, data: &[u8]) -> Result<Path, String> {
     b.require(3, "Q", &["L", "M", "Q", "H"])?;
     let scale = b.num(2, b.scale(), 1., 100.)?;
     let mask = b.integer(4, 7, 0, 7)?;
-    let (level, input) = Input::parse(data)?;
+    // The public ZD621 Example4 consumes `Pac` as an invalid switch header.
+    // Limit this fallback to malformed automatic headers; do not hide errors
+    // in structured append or manual segments (Zebra ^BQ pp. 129–134).
+    let (level, input) = if b.compatibility.qr_malformed_header_uses_defaults
+        && data.len() >= 3
+        && !matches!(data[0], b'L' | b'M' | b'Q' | b'H' | b'D')
+        && data[1] != b'M'
+    {
+        // The capture's BCH-protected format bits identify level M (mask 0),
+        // despite BQ's documented Q default. Do not infer a different level
+        // from the malformed first byte.
+        (
+            1,
+            Input {
+                append: None,
+                segments: vec![(0, &data[3..])],
+            },
+        )
+    } else {
+        Input::parse(data)?
+    };
     let encode_mask = |mask| {
         if b.param(1, "2") == "1" {
             super::qr_model1::encode(
