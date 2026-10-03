@@ -5,33 +5,21 @@ fn migrated() -> SqliteConnection {
     let mut connection = SqliteConnection::establish(":memory:").unwrap();
     connection
         .batch_execute(include_str!(
-            "../../migrations/2024-10-03-035443_cache-results/up.sql"
-        ))
-        .unwrap();
-    connection
-        .batch_execute(include_str!(
-            "../../migrations/2026-09-14-000000_fix-request-client/up.sql"
-        ))
-        .unwrap();
-    connection
-        .batch_execute(include_str!(
-            "../../migrations/2026-09-15-220000_persist-render-results/up.sql"
-        ))
-        .unwrap();
-    connection
-        .batch_execute(include_str!(
-            "../../migrations/2026-09-15-230000_remove-client-ips/up.sql"
-        ))
-        .unwrap();
-    connection
-        .batch_execute(include_str!(
-            "../../migrations/2026-10-03-000000_printer-identity/up.sql"
+            "../../migrations/2026-10-03-000000_create-render-cache/up.sql"
         ))
         .unwrap();
     connection
         .batch_execute("PRAGMA foreign_keys = ON;")
         .unwrap();
     connection
+}
+fn identity() -> zebra_sgd::PrinterIdentity {
+    zebra_sgd::PrinterIdentity {
+        model: "ZD621".into(),
+        serial: "TEST-SERIAL".into(),
+        firmware: "V93.21.33Z".into(),
+        configuration: Default::default(),
+    }
 }
 fn cache() -> Cache {
     Cache(Arc::new(Mutex::new(migrated())))
@@ -47,19 +35,19 @@ async fn begin(cache: &Cache, key: u8, refresh: bool) -> Attempt {
 async fn deduplicates_bytes_but_records_every_request_and_renderer() {
     let cache = cache();
     let first = begin(&cache, 1, false).await;
-    assert!(first.cached_png.is_none());
+    assert!(first.cached.is_none());
     cache
-        .success(first, b"first-png".to_vec(), None)
+        .rendered(first, b"first-png".to_vec(), identity(), None)
         .await
         .unwrap();
     assert_eq!(
-        begin(&cache, 1, false).await.cached_png.unwrap(),
+        begin(&cache, 1, false).await.cached.unwrap().png,
         b"first-png"
     );
     let other = begin(&cache, 2, false).await;
-    assert!(other.cached_png.is_none());
+    assert!(other.cached.is_none());
     cache
-        .success(other, b"first-png".to_vec(), None)
+        .rendered(other, b"first-png".to_vec(), identity(), None)
         .await
         .unwrap();
     let mut connection = cache.0.lock().unwrap();
@@ -103,19 +91,27 @@ async fn deduplicates_bytes_but_records_every_request_and_renderer() {
 async fn refresh_retains_history_and_errors_are_retried() {
     let cache = cache();
     cache
-        .success(begin(&cache, 1, false).await, b"old".to_vec(), None)
+        .rendered(
+            begin(&cache, 1, false).await,
+            b"old".to_vec(),
+            identity(),
+            None,
+        )
         .await
         .unwrap();
     let refresh = begin(&cache, 1, true).await;
-    assert!(refresh.cached_png.is_none());
+    assert!(refresh.cached.is_none());
     cache
         .failure(refresh, "printer offline".into())
         .await
         .unwrap();
     let retry = begin(&cache, 1, false).await;
-    assert!(retry.cached_png.is_none());
-    cache.success(retry, b"new".to_vec(), None).await.unwrap();
-    assert_eq!(begin(&cache, 1, false).await.cached_png.unwrap(), b"new");
+    assert!(retry.cached.is_none());
+    cache
+        .rendered(retry, b"new".to_vec(), identity(), None)
+        .await
+        .unwrap();
+    assert_eq!(begin(&cache, 1, false).await.cached.unwrap().png, b"new");
     let mut connection = cache.0.lock().unwrap();
     assert_eq!(
         pngs::table
@@ -138,7 +134,12 @@ async fn refresh_retains_history_and_errors_are_retried() {
 async fn failed_annotation_preserves_original_bytes_and_identity_without_caching() {
     let cache = cache();
     cache
-        .success(begin(&cache, 1, false).await, b"old".to_vec(), None)
+        .rendered(
+            begin(&cache, 1, false).await,
+            b"old".to_vec(),
+            identity(),
+            None,
+        )
         .await
         .unwrap();
     let identity = zebra_sgd::PrinterIdentity {
@@ -153,12 +154,12 @@ async fn failed_annotation_preserves_original_bytes_and_identity_without_caching
         .rendered(
             attempt,
             b"broken PNG".to_vec(),
-            Some(identity.clone()),
+            identity.clone(),
             Some("invalid printer PNG signature".into()),
         )
         .await
         .unwrap();
-    assert!(begin(&cache, 1, false).await.cached_png.is_none());
+    assert!(begin(&cache, 1, false).await.cached.is_none());
     let mut connection = cache.0.lock().unwrap();
     let request = png_requests::table
         .find(request_id)
@@ -215,55 +216,6 @@ async fn pending_request_and_input_survive_reopen() {
             .first::<Vec<u8>>(&mut *connection)
             .unwrap(),
         b"^XA^XZ"
-    );
-}
-
-#[test]
-fn migration_round_trip_preserves_legacy_data() {
-    let mut connection = migrated();
-    connection.batch_execute("INSERT INTO inputs(id,hash,data) VALUES(1,X'01',X'02'); INSERT INTO png_requests(timestamp,input_id) VALUES('legacy',1);").unwrap();
-    connection
-        .batch_execute(include_str!(
-            "../../migrations/2026-10-03-000000_printer-identity/down.sql"
-        ))
-        .unwrap();
-    connection
-        .batch_execute(include_str!(
-            "../../migrations/2026-09-15-230000_remove-client-ips/down.sql"
-        ))
-        .unwrap();
-    connection
-        .batch_execute(include_str!(
-            "../../migrations/2026-09-15-220000_persist-render-results/down.sql"
-        ))
-        .unwrap();
-    connection
-        .batch_execute(include_str!(
-            "../../migrations/2026-09-15-220000_persist-render-results/up.sql"
-        ))
-        .unwrap();
-    connection
-        .batch_execute(include_str!(
-            "../../migrations/2026-09-15-230000_remove-client-ips/up.sql"
-        ))
-        .unwrap();
-    connection
-        .batch_execute(include_str!(
-            "../../migrations/2026-10-03-000000_printer-identity/up.sql"
-        ))
-        .unwrap();
-    let request = png_requests::table
-        .select(PngRequest::as_select())
-        .first::<PngRequest>(&mut connection)
-        .unwrap();
-    assert_eq!(request.timestamp, "legacy");
-    assert!(request.renderer_key.is_none());
-    assert_eq!(
-        render_cache::table
-            .count()
-            .get_result::<i64>(&mut connection)
-            .unwrap(),
-        0
     );
 }
 

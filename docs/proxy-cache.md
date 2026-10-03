@@ -6,11 +6,10 @@ and each completed outcome in SQLite. This is separate from the GitHub Pages
 preview, which remains browser-local and uploads nothing.
 
 Set `DATABASE_URL` and run `diesel migration run` from `zpl-proxy-api/` before
-starting the proxy. Existing databases require all migrations, including
-`printer-identity`; startup fails clearly if it has not been applied. The standalone proxy
-does not automatically migrate databases. The [NixOS module](nixos.md) runs
-migrations before starting its managed service. Back up existing databases before
-migration.
+starting the proxy with a fresh database. The standalone proxy does not
+initialize the schema automatically; the [NixOS module](nixos.md) does so before
+starting its managed service. The schema is defined in one initial migration;
+there is no upgrade path for development databases from earlier revisions.
 
 ## Stored data and cache behavior
 
@@ -25,8 +24,9 @@ migration.
 - `png_requests`: one row per request, including cache hits, input, renderer key,
   timestamps, resulting original PNG, printer identity JSON, or a render error.
   A null completion timestamp means
-  the process stopped or persistence failed before completion. Old rows remain
-  readable but their unscoped input/PNG mappings are not reused as cache hits.
+  the process stopped or persistence failed before completion. Cache mappings
+  require printer identity; pending requests and failures before preview can
+  have no identity.
 
 Inputs and request rows are committed before printer access. Successful responses
 are returned only after the PNG and request outcome commit. Database errors fail
@@ -83,7 +83,7 @@ Two UTF-8 PNG `iTXt` chunks also accompany every returned image:
 
 - `ZPL Source`: the exact submitted ZPL, including Unicode, whitespace, and line
   endings. This is the same source saved in `inputs.data` and sent to the printer.
-- `ZPL Printer Configuration`: JSON with `schema_version: 2`,
+- `ZPL Printer Configuration`: JSON with `schema_version: 1`,
   `source: "sgd"`, `capture: "before_preview"`, and a `settings` object.
   This captures reported print width, label length, resolution, media/print modes,
   darkness/speed, orientation, syntax prefixes, and related rendering settings.
@@ -112,14 +112,10 @@ no printer access; after a firmware change they still describe the printer that 
 or change the namespace to obtain a new rendering and identity. External printer
 changes during a render cannot be prevented by the proxy's in-process lock.
 
-The cache transport version changes with this feature, so older entries remain
-in history but are not reused. Run `diesel migration run` before
-starting the updated proxy; existing original PNGs are preserved by the migration.
-
 ## Validation
 
 `cargo test -p zpl-proxy-api` covers request formats, database persistence,
 renderer isolation, repeated requests, refresh/failure behavior, migration
 round trips, UTF-8 source/configuration metadata, and mock HTTP/SGD printer cache
 hits. `cargo test -p zebra-sgd -p zebra-firmware` covers bounded TCP query framing
-and firmware identity compatibility. No real printer is needed.
+and firmware identity queries. No real printer is needed.

@@ -9,7 +9,6 @@ const SIGNATURE: &[u8] = b"\x89PNG\r\n\x1a\n";
 const MODEL: &str = "ZPL Printer Model";
 const FIRMWARE: &str = "ZPL Printer Firmware";
 const SERIAL: &str = "ZPL Printer Serial";
-const LEGACY_PART: &str = "ZPL Printer Part Number";
 const SOURCE: &str = "ZPL Source";
 const CONFIGURATION: &str = "ZPL Printer Configuration";
 
@@ -29,7 +28,7 @@ pub fn annotate(original: &[u8], identity: &PrinterIdentity, zpl: &str) -> eyre:
         // including compressed pixels, remain byte-for-byte intact otherwise.
         if matches!(kind, b"tEXt" | b"zTXt" | b"iTXt") {
             let keyword = chunk[8..chunk.len() - 4].split(|b| *b == 0).next().unwrap();
-            if [MODEL, FIRMWARE, SERIAL, LEGACY_PART, SOURCE, CONFIGURATION]
+            if [MODEL, FIRMWARE, SERIAL, SOURCE, CONFIGURATION]
                 .iter()
                 .any(|key| keyword == key.as_bytes())
             {
@@ -38,31 +37,29 @@ pub fn annotate(original: &[u8], identity: &PrinterIdentity, zpl: &str) -> eyre:
         }
         if kind == b"IEND" {
             for (key, value) in [
-                (MODEL, Some(&identity.model)),
-                (FIRMWARE, Some(&identity.firmware)),
-                (SERIAL, Some(&identity.serial)),
+                (MODEL, &identity.model),
+                (FIRMWARE, &identity.firmware),
+                (SERIAL, &identity.serial),
             ] {
-                if let Some(value) = value {
-                    eyre::ensure!(
-                        !value.is_empty()
-                            && value.len() <= 256
-                            && value.bytes().all(|b| (32..=126).contains(&b)),
-                        "invalid printer metadata"
-                    );
-                    let length = key.len() + 1 + value.len();
-                    output.extend_from_slice(&(length as u32).to_be_bytes());
-                    let start = output.len();
-                    output.extend_from_slice(b"tEXt");
-                    output.extend_from_slice(key.as_bytes());
-                    output.push(0);
-                    output.extend_from_slice(value.as_bytes());
-                    let crc = crc32fast::hash(&output[start..]);
-                    output.extend_from_slice(&crc.to_be_bytes());
-                }
+                eyre::ensure!(
+                    !value.is_empty()
+                        && value.len() <= 256
+                        && value.bytes().all(|b| (32..=126).contains(&b)),
+                    "invalid printer metadata"
+                );
+                let length = key.len() + 1 + value.len();
+                output.extend_from_slice(&(length as u32).to_be_bytes());
+                let start = output.len();
+                output.extend_from_slice(b"tEXt");
+                output.extend_from_slice(key.as_bytes());
+                output.push(0);
+                output.extend_from_slice(value.as_bytes());
+                let crc = crc32fast::hash(&output[start..]);
+                output.extend_from_slice(&crc.to_be_bytes());
             }
             write_itxt(&mut output, SOURCE, zpl)?;
             let configuration = serde_json::to_string(&serde_json::json!({
-                "schema_version": 2,
+                "schema_version": 1,
                 "source": "sgd",
                 "capture": "before_preview",
                 "settings": identity.configuration,

@@ -192,15 +192,12 @@ async fn render_cached(
             print_spec.refresh,
         )
         .await?;
-    if let Some(png) = &attempt.cached_png {
+    if let Some(cached) = &attempt.cached {
         LocalSpan::add_property(|| ("cache.hit", "true"));
         let result = (|| {
-            let identity = attempt
-                .cached_identity
-                .clone()
-                .ok_or_else(|| eyre::eyre!("cached printer identity missing"))?;
+            let identity = cached.identity.clone();
             Ok::<_, eyre::Report>((
-                png_metadata::annotate(png, &identity, zpl.as_str())?,
+                png_metadata::annotate(&cached.png, &identity, zpl.as_str())?,
                 true,
                 identity,
             ))
@@ -235,7 +232,7 @@ async fn render_cached(
                 .rendered(
                     attempt,
                     png,
-                    Some(identity.clone()),
+                    identity.clone(),
                     response_png.as_ref().err().map(ToString::to_string),
                 )
                 .await?;
@@ -287,8 +284,7 @@ where
                     .map_err(IntoResponse::into_response)?
                 {
                     if field.name() == Some("zpl") {
-                        // Preserve the old non-strict derive: unknown fields are
-                        // ignored, and the last repeated zpl field wins.
+                        // Unknown fields are ignored; the last zpl field wins.
                         let bytes = field.bytes().await.map_err(IntoResponse::into_response)?;
                         zpl = Some(String::from_utf8(bytes.to_vec()).map_err(|_| {
                             (StatusCode::BAD_REQUEST, "zpl field is not UTF-8").into_response()
@@ -394,15 +390,11 @@ mod tests {
         let directory = tempfile::tempdir().unwrap();
         let path = directory.path().join("cache.sqlite");
         let mut connection = diesel::SqliteConnection::establish(path.to_str().unwrap()).unwrap();
-        for migration in [
-            include_str!("../migrations/2024-10-03-035443_cache-results/up.sql"),
-            include_str!("../migrations/2026-09-14-000000_fix-request-client/up.sql"),
-            include_str!("../migrations/2026-09-15-220000_persist-render-results/up.sql"),
-            include_str!("../migrations/2026-09-15-230000_remove-client-ips/up.sql"),
-            include_str!("../migrations/2026-10-03-000000_printer-identity/up.sql"),
-        ] {
-            connection.batch_execute(migration).unwrap();
-        }
+        connection
+            .batch_execute(include_str!(
+                "../migrations/2026-10-03-000000_create-render-cache/up.sql"
+            ))
+            .unwrap();
         let calls = Arc::new(AtomicUsize::new(0));
         let fail = Arc::new(AtomicBool::new(false));
         let firmware = Arc::new(AtomicUsize::new(33));
@@ -587,15 +579,11 @@ mod tests {
         let directory = tempfile::tempdir().unwrap();
         let path = directory.path().join("cache.sqlite");
         let mut connection = diesel::SqliteConnection::establish(path.to_str().unwrap()).unwrap();
-        for migration in [
-            include_str!("../migrations/2024-10-03-035443_cache-results/up.sql"),
-            include_str!("../migrations/2026-09-14-000000_fix-request-client/up.sql"),
-            include_str!("../migrations/2026-09-15-220000_persist-render-results/up.sql"),
-            include_str!("../migrations/2026-09-15-230000_remove-client-ips/up.sql"),
-            include_str!("../migrations/2026-10-03-000000_printer-identity/up.sql"),
-        ] {
-            connection.batch_execute(migration).unwrap();
-        }
+        connection
+            .batch_execute(include_str!(
+                "../migrations/2026-10-03-000000_create-render-cache/up.sql"
+            ))
+            .unwrap();
         let calls = Arc::new(AtomicUsize::new(0));
         let identity_calls = Arc::new(AtomicUsize::new(0));
         let (sgd_target, sgd_server) = mock_sgd(
@@ -647,7 +635,12 @@ mod tests {
             .unwrap();
         state
             .cache
-            .success(attempt, b"private cached PNG".to_vec(), None)
+            .rendered(
+                attempt,
+                b"private cached PNG".to_vec(),
+                mock_identity(33),
+                None,
+            )
             .await
             .unwrap();
         let app = Router::new()
@@ -722,7 +715,6 @@ mod tests {
         {
             let response = request.send().await.unwrap();
             assert_eq!(response.status(), StatusCode::OK);
-            assert!(!response.headers().contains_key("X-ZPL-Printer-Part-Number"));
             assert_eq!(
                 response.headers()["X-ZPL-Cache"],
                 if index == 0 { "miss" } else { "hit" }

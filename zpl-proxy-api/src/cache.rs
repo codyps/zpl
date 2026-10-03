@@ -20,15 +20,19 @@ pub struct Attempt {
     pub request_id: i64,
     pub input_id: i64,
     pub renderer_key: Vec<u8>,
-    pub cached_png: Option<Vec<u8>>,
-    pub cached_identity: Option<zebra_sgd::PrinterIdentity>,
+    pub cached: Option<CachedRender>,
+}
+
+pub struct CachedRender {
+    pub png: Vec<u8>,
+    pub identity: zebra_sgd::PrinterIdentity,
 }
 
 pub fn renderer_key(url: &str, headers: &[String], namespace: &str, sgd_target: &str) -> Vec<u8> {
     // Length prefixes avoid ambiguous concatenation. Only the digest is stored,
     // never the configured authentication headers or credential-bearing URL.
     let mut hash = Sha256::new();
-    for part in std::iter::once("zebra-http-preview-v4-sgd")
+    for part in std::iter::once("zebra-http-preview-sgd-v1")
         .chain(std::iter::once(url))
         .chain(std::iter::once(namespace))
         .chain(std::iter::once(sgd_target))
@@ -51,7 +55,7 @@ impl Cache {
         render_cache::table
             .select((render_cache::input_id, render_cache::printer_identity))
             .limit(1)
-            .load::<(i64, Option<String>)>(&mut connection)?;
+            .load::<(i64, String)>(&mut connection)?;
         png_requests::table
             .select((
                 png_requests::completed_at,
@@ -120,14 +124,9 @@ impl Cache {
                         .filter(render_cache::input_id.eq(input.id))
                         .filter(render_cache::renderer_key.eq(&key))
                         .select((pngs::id, pngs::data, render_cache::printer_identity))
-                        .first::<(i64, Vec<u8>, Option<String>)>(connection)
+                        .first::<(i64, Vec<u8>, String)>(connection)
                         .optional()?
                 };
-                let cached_identity = cached
-                    .as_ref()
-                    .and_then(|(_, _, identity)| identity.as_deref())
-                    .map(serde_json::from_str)
-                    .transpose()?;
                 if let Some((png_id, _, identity)) = &cached {
                     diesel::update(png_requests::table.filter(png_requests::rowid.eq(request_id)))
                         .set((
@@ -146,21 +145,18 @@ impl Cache {
                     request_id,
                     input_id: input.id,
                     renderer_key: key,
-                    cached_png: cached.map(|(_, data, _)| data),
-                    cached_identity,
+                    cached: cached
+                        .map(|(_, png, identity)| {
+                            Ok::<_, eyre::Report>(CachedRender {
+                                png,
+                                identity: serde_json::from_str(&identity)?,
+                            })
+                        })
+                        .transpose()?,
                 })
             })
         })
         .await
-    }
-
-    pub async fn success(
-        &self,
-        attempt: Attempt,
-        data: Vec<u8>,
-        identity: Option<zebra_sgd::PrinterIdentity>,
-    ) -> eyre::Result<()> {
-        self.rendered(attempt, data, identity, None).await
     }
 
     /// Preserve the original printer response even if response annotation fails.
@@ -169,12 +165,10 @@ impl Cache {
         &self,
         attempt: Attempt,
         data: Vec<u8>,
-        identity: Option<zebra_sgd::PrinterIdentity>,
+        identity: zebra_sgd::PrinterIdentity,
         response_error: Option<String>,
     ) -> eyre::Result<()> {
-        let identity = identity
-            .map(|identity| serde_json::to_string(&identity))
-            .transpose()?;
+        let identity = serde_json::to_string(&identity)?;
         self.run("cache.store", move |connection| {
             connection.immediate_transaction(|connection| {
                 let hash = Sha256::digest(&data).to_vec();
@@ -217,10 +211,6 @@ impl Cache {
                             render_cache::png_id.eq(png.id),
                             render_cache::printer_identity.eq(&identity),
                         ))
-                        .execute(connection)?;
-                    // Preserve the legacy latest-output association for existing readers.
-                    diesel::update(inputs::table.filter(inputs::id.eq(attempt.input_id)))
-                        .set(inputs::png_id.eq(png.id))
                         .execute(connection)?;
                 }
                 diesel::update(
