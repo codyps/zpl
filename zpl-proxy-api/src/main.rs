@@ -54,7 +54,7 @@ async fn run(args: Args, listener: listener::Listener) -> eyre::Result<()> {
 
     let database_url = std::env::var("DATABASE_URL").expect("DATABASE_URL must be set");
     let cache = tokio::task::spawn_blocking(move || Cache::open(&database_url)).await??;
-    let configs: Vec<PrinterConfig> = serde_json::from_slice(&std::fs::read(args.printers)?)?;
+    let configs = parse_printers(&std::fs::read(args.printers)?)?;
     let app_state = configured_printers(configs, cache, &args.cache_namespace)?;
     let api_router = Router::new()
         .route("/printers", get(printer_names))
@@ -83,6 +83,18 @@ struct PrintSpec {
     zpl: String,
     #[serde(default)]
     refresh: bool,
+}
+
+fn parse_printers(bytes: &[u8]) -> eyre::Result<Vec<PrinterConfig>> {
+    // Serde errors can quote invalid values. Configuration may contain secrets,
+    // so report only the location, never parser-provided input excerpts.
+    serde_json::from_slice(bytes).map_err(|error| {
+        eyre::eyre!(
+            "Invalid printer configuration at line {}, column {}",
+            error.line(),
+            error.column()
+        )
+    })
 }
 
 fn configured_printers(
@@ -239,6 +251,17 @@ where
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn configuration_errors_do_not_disclose_secret_values() {
+        let secret = "PRIVATE_AUTH_TOKEN";
+        let bytes = format!(
+            r#"[{{"name":"Test","url":"http://printer.local/","control_address":"printer.local:9100","width":"{secret}","height":32}}]"#
+        );
+        let error = parse_printers(bytes.as_bytes()).err().unwrap();
+        assert!(error.to_string().contains("line 1, column"));
+        assert!(!format!("{error:?}").contains(secret));
+    }
+
     #[tokio::test]
     async fn named_routes_reject_unknown_printers_and_unsafe_history_in_every_format() {
         use diesel::prelude::*;

@@ -3,8 +3,9 @@
 let
   cfg = config.services.zpl-proxy-api;
   bindAddress = if lib.hasInfix ":" cfg.listenAddress then "[${cfg.listenAddress}]" else cfg.listenAddress;
-  printerConfig = pkgs.writeText "zpl-printers.json" (builtins.toJSON cfg.printers);
-  arguments = [ "--socket-activation" "--cache-namespace" cfg.cacheNamespace "--printers" printerConfig ];
+  printerConfig = if cfg.printersFile != null then cfg.printersFile else
+  pkgs.writeText "zpl-printers.json" (builtins.toJSON cfg.printers);
+  arguments = [ "--socket-activation" "--cache-namespace" cfg.cacheNamespace "--printers" ];
 
 in
 {
@@ -30,6 +31,12 @@ in
           serial = lib.mkOption { type = lib.types.nullOr lib.types.str; default = null; description = "Optional expected serial number; mismatches fail closed."; };
         };
       });
+    };
+    printersFile = lib.mkOption {
+      type = lib.types.nullOr lib.types.str;
+      default = null;
+      example = "/run/secrets/zpl-printers.json";
+      description = "Absolute runtime path to the complete printer JSON array, e.g. a sops-nix secret or template. Mutually exclusive with printers. Systemd reads this file as root using LoadCredential; its contents are never evaluated by Nix. Restart the service to load changed contents.";
     };
     listenAddress = lib.mkOption {
       type = lib.types.str;
@@ -86,10 +93,14 @@ in
   config = lib.mkIf cfg.enable {
     assertions = [
       {
-        assertion = cfg.printers != [ ];
-        message = "Configure at least one services.zpl-proxy-api.printers entry.";
+        assertion = (cfg.printers != [ ]) != (cfg.printersFile != null);
+        message = "Configure exactly one of services.zpl-proxy-api.printers or printersFile.";
       }
 
+      {
+        assertion = cfg.printersFile == null || (lib.hasPrefix "/" cfg.printersFile && !(lib.hasPrefix builtins.storeDir cfg.printersFile));
+        message = "services.zpl-proxy-api.printersFile must be an absolute runtime path outside the Nix store.";
+      }
       {
         assertion = cfg.unixSocket == null || lib.hasPrefix "/" cfg.unixSocket;
         message = "services.zpl-proxy-api.unixSocket must be an absolute filesystem path.";
@@ -135,7 +146,11 @@ in
         DATABASE_URL = "/var/lib/zpl-proxy-api/db.sqlite";
       };
       serviceConfig = {
-        ExecStart = utils.escapeSystemdExecArgs ([ (lib.getExe cfg.package) ] ++ arguments);
+        # Inadyn/Stalwart use systemd credentials for runtime secret files:
+        # https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/services/networking/inadyn.nix
+        # Keep the trusted %d specifier outside escapeSystemdExecArgs (which escapes %).
+        ExecStart = utils.escapeSystemdExecArgs ([ (lib.getExe cfg.package) ] ++ arguments) + " %d/printers.json";
+        LoadCredential = [ "printers.json:${printerConfig}" ];
         WorkingDirectory = "${cfg.package}/share/zpl-proxy-api";
         Restart = "on-failure";
         RestartSec = 5;
@@ -162,7 +177,6 @@ in
           "/etc/resolv.conf"
           "/etc/nsswitch.conf"
           "/etc/ssl/certs/ca-certificates.crt"
-          printerConfig
         ];
         MountAPIVFS = true;
         ProtectProc = "invisible";

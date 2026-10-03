@@ -51,6 +51,57 @@ See [configuration, identity recording and automatic recovery](proxy-cache.md).
 Use a dedicated printer with trusted default syntax, bitmap clearing, and font
 mappings; see the [admission policy and printer state prerequisite](proxy-validation.md).
 
+## Runtime secrets with sops-nix
+
+Use `printers` only for nonsecret settings: those values enter the Nix store.
+For credentials or private printer addresses/serials, set `printersFile` instead.
+It is an absolute runtime **string** path to the complete JSON printer array;
+configure exactly one of `printers` and `printersFile`. Do not use
+`builtins.readFile` on a decrypted secret or put plaintext secrets in `pkgs.writeText`.
+
+Following nixpkgs' [Inadyn config-file option](https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/services/networking/inadyn.nix)
+and [Stalwart credentials](https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/services/mail/stalwart.nix),
+the module uses systemd `LoadCredential`. Systemd reads the source as root and
+makes a private copy available to the dynamic service user inside its confined
+filesystem. The original secret path is not mounted into the worker. Both public
+generated configuration and runtime secret files use the same credential path.
+No secret values enter command arguments, and configuration parsing errors omit
+input values.
+
+For example, with the sops-nix module already imported and its decryption key
+configured, store the complete printer JSON array as a YAML string secret named
+`zpl-printers` in your encrypted `secrets.yaml`:
+
+```nix
+{ config, ... }: {
+  sops.secrets.zpl-printers = {
+    sopsFile = ./secrets.yaml;
+    owner = "root";
+    mode = "0400";
+    restartUnits = [ "zpl-proxy-api.service" ];
+  };
+  services.zpl-proxy-api = {
+    enable = true;
+    printersFile = config.sops.secrets.zpl-printers.path;
+  };
+}
+```
+
+The decrypted value is the JSON array documented in [proxy configuration](proxy-cache.md),
+including any `headers` such as `Authorization: Bearer ...`. The entire array can
+be encrypted, so nonsecret fields and secret fields can coexist without custom
+substitution rules. Alternatively, point `printersFile` at a
+`sops.templates.<name>.path`; ensure the rendered result is valid JSON, including
+proper escaping of secret strings. No direct sops-nix dependency is required by
+this module, and other runtime secret-file providers work as well.
+
+Secrets are loaded on service startup, not watched. Use sops-nix
+[`restartUnits`](https://github.com/Mic92/sops-nix#restartingreloading-systemd-units-on-secret-change)
+for rotation; manually replacing a file also requires a service restart. A missing
+secret or invalid JSON fails startup. The module rejects `printersFile` paths in
+the Nix store. `environmentFile` can likewise point at a sops-managed dotenv file
+for telemetry credentials; it does not substitute variables into printer JSON.
+
 For a local reverse proxy, select a Unix socket instead of TCP:
 
 ```nix
@@ -92,7 +143,7 @@ copy its state directory (dereferencing the systemd symlink if present). NixOS r
 
 The worker, including startup migrations, runs inside a minimal filesystem namespace. Only their
 Nix runtime closures, `/etc/hosts`, `/etc/resolv.conf`, `/etc/nsswitch.conf`, and
-the system CA bundle are exposed, alongside private temporary/device filesystems,
+the system CA bundle are exposed, alongside the service credential directory, private temporary/device filesystems,
 restricted proc/sys interfaces, and the writable state directory. Unrelated host
 files and Nix store paths are hidden. Systemd reads `environmentFile` outside the
 namespace; the worker receives its variables without access to the source file.

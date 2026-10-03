@@ -60,13 +60,25 @@ let
         threading.Thread(target=server.serve_forever, daemon=True).start()
 
         class Printer(BaseHTTPRequestHandler):
+            def authorized(self):
+                import os
+                if os.path.exists("/run/secrets/expected-token"):
+                    with open("/run/secrets/expected-token") as f:
+                        expected = f.read()
+                    if self.headers.get("Authorization") != "Bearer " + expected:
+                        self.send_error(401)
+                        return False
+                return True
+
             def do_POST(self):
+                if not self.authorized(): return
                 self.rfile.read(int(self.headers.get("Content-Length", "0")))
                 self.send_response(200)
                 self.end_headers()
                 self.wfile.write(b'<IMG SRC="/image">')
 
             def do_GET(self):
+                if not self.authorized(): return
                 self.send_response(200)
                 self.end_headers()
                 self.wfile.write(png)
@@ -80,9 +92,11 @@ in
 pkgs.testers.runNixOSTest {
   name = "zpl-proxy-api";
   nodes.tcp.imports = [ common ];
-  nodes.unix = {
+  nodes.unix = { lib, ... }: {
     imports = [ common ];
     services.zpl-proxy-api = {
+      printers = lib.mkForce [ ];
+      printersFile = "/run/secrets/printers.json";
       unixSocket = "/run/zpl-proxy-api.sock";
       unixSocketGroup = "proxy-clients";
       # The TCP-only firewall option must have no effect in Unix socket mode.
@@ -96,7 +110,21 @@ pkgs.testers.runNixOSTest {
   };
 
   testScript = ''
+    import json, secrets, shlex
     start_all()
+    unix.wait_for_unit("multi-user.target")
+    # Model a sops-provisioned root-only file. Generate the value inside the test
+    # driver so no credential value exists in a derivation or the Nix store.
+    token = secrets.token_hex(24)
+    printer_config = [{"name": "ZD621", "url": "http://printer.test:9100/",
+                       "control_address": "printer.test:9101", "width": 64, "height": 32,
+                       "headers": ["Authorization: Bearer " + token]}]
+    def provision(value):
+        printer_config[0]["headers"] = ["Authorization: Bearer " + value]
+        unix.succeed("install -d -m 0700 /run/secrets")
+        unix.succeed("umask 077; printf %s " + shlex.quote(json.dumps(printer_config)) + " > /run/secrets/next.json; mv /run/secrets/next.json /run/secrets/printers.json")
+        unix.succeed("umask 077; printf %s " + shlex.quote(value) + " > /run/secrets/expected-token")
+    provision(token)
     for machine, transport in [(tcp, ""), (unix, "--unix-socket /run/zpl-proxy-api.sock")]:
         machine.wait_for_unit("zpl-proxy-api.socket")
         machine.wait_for_unit("mock-printer.service")
@@ -105,6 +133,7 @@ pkgs.testers.runNixOSTest {
         curl = f"curl --fail --max-time 30 {transport}"
         machine.succeed(f"{curl} http://127.0.0.1:3000/ | grep -i '<html'")
         machine.wait_for_unit("zpl-proxy-api.service")
+        assert machine.succeed("systemctl show -p ExecStart --value zpl-proxy-api.service").find("/run/credentials/") != -1
         # Inspect the actual worker root, not a separately configured sandbox.
         # proc_pid_root(5): https://man7.org/linux/man-pages/man5/proc_pid_root.5.html
         pid = machine.succeed("systemctl show -p MainPID --value zpl-proxy-api.service").strip()
@@ -130,6 +159,20 @@ pkgs.testers.runNixOSTest {
         machine.succeed("cmp /tmp/image /tmp/mock-printer.png")
         assert machine.succeed("sqlite3 /var/lib/zpl-proxy-api/db.sqlite 'SELECT COUNT(*) FROM png_requests'").strip() == "2"
 
+    pid = unix.succeed("systemctl show -p MainPID --value zpl-proxy-api.service").strip()
+    unix.fail(f"cat /proc/{pid}/root/run/secrets/printers.json")
+    unix.fail("su -s /bin/sh nobody -c 'cat /run/credentials/zpl-proxy-api.service/printers.json'")
+    unix.fail(f"grep -F {token} /proc/{pid}/cmdline /proc/{pid}/environ")
+    unix.fail(f"journalctl -u zpl-proxy-api.service | grep -F {token}")
+    unix.fail(f"systemctl cat zpl-proxy-api.service | grep -F {token}")
+    unix.succeed("test $(stat -c %a /run/secrets/printers.json) = 600")
+    token = secrets.token_hex(24)
+    provision(token)
+    unix.succeed("systemctl restart zpl-proxy-api.service")
+    unix.succeed(request + " --data-urlencode refresh=true")
+    unix.succeed("grep -i 'x-zpl-cache: miss' /tmp/headers")
+    unix.succeed("cmp /tmp/image /tmp/mock-printer.png")
+
     assert unix.succeed("stat -c '%a %G' /run/zpl-proxy-api.sock").strip() == "660 proxy-clients"
     unix.succeed("su -s /bin/sh proxy-client -c 'curl --fail --unix-socket /run/zpl-proxy-api.sock http://localhost/'")
     unix.fail("su -s /bin/sh nobody -c 'curl --fail --unix-socket /run/zpl-proxy-api.sock http://localhost/'")
@@ -137,5 +180,8 @@ pkgs.testers.runNixOSTest {
     unix.succeed("systemctl stop zpl-proxy-api.socket")
     unix.fail("systemctl is-active --quiet zpl-proxy-api.service")
     unix.succeed("test ! -e /run/zpl-proxy-api.sock")
+    unix.succeed("rm /run/secrets/printers.json; systemctl start zpl-proxy-api.socket")
+    unix.fail("systemctl start zpl-proxy-api.service")
+    unix.succeed("systemctl stop zpl-proxy-api.socket")
   '';
 }

@@ -41,7 +41,9 @@ Names contain 1–80 ASCII letters, digits, dots, underscores or hyphens and are
 case-sensitive. Width and height are explicit default canvas sizes in native dots;
 use the printer's actual supported width. A label can override them with `PW` and
 `LL`. `headers` optionally supplies HTTP headers; protect configuration files
-containing credentials. `serial` optionally pins the expected physical printer.
+containing credentials. The NixOS module can load this whole JSON file from a
+sops-managed runtime secret using `printersFile` and systemd credentials; see
+[runtime secrets](nixos.md#runtime-secrets-with-sops-nix). `serial` optionally pins the expected physical printer.
 The HTTP and SGD endpoints **must address the same physical device**. Duplicate
 names/endpoints are rejected, and discovered serial numbers cannot be owned by two
 names in one process, including DNS aliases. Run only one proxy instance per
