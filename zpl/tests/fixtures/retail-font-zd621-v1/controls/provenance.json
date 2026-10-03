@@ -1,7 +1,7 @@
 {
   "device": "ZTC ZD621-203dpi ZPL",
   "firmware": "V93.21.33Z",
-  "host": "http://zd621.example.invalid/",
+  "host": "http://D7J211001302.bed.einic.org/",
   "transport": "HTTP Preview Label through loopback system-curl bridge; no physical print",
   "captured_utc": "2026-09-29T23:53:41Z",
   "cases": [

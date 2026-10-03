@@ -79,14 +79,14 @@
     "status-1.html": "79b24bddeda6398f9b066fc6442aa45fcfba4b728c47c07d6b66ba8de1352c1b",
     "status-2.html": "79b24bddeda6398f9b066fc6442aa45fcfba4b728c47c07d6b66ba8de1352c1b"
   },
-  "host": "http://zq610-plus.example.invalid/",
+  "host": "http://xxzmj230802993.bed.einic.org/",
   "method": "HTTP Preview Label; no physical print",
   "plan_sha256": "d48e4f3c832e2a28b9e06d75a1506a0b1c830d987708bb9821f06e3efdc0f9d2",
   "printer": {
     "dpi": 203,
     "firmware": "V100.21.21Z",
     "model": "ZTC ZQ610 Plus-203dpi ZPL",
-    "serial": "REDACTED-ZQ610-PLUS"
+    "serial": "XXZMJ230802993"
   },
   "schema": 1,
   "sessions": [
