@@ -1,6 +1,6 @@
 # ZQ610 Plus native preview controls
 
-120 unmodified PNGs from ZTC ZQ610 Plus-203dpi ZPL, serial XXZMJ230802993,
+120 unmodified PNGs from ZTC ZQ610 Plus-203dpi ZPL, serial REDACTED-ZQ610-PLUS,
 firmware V100.21.21Z. These are HTTP Preview Label results, not physical prints.
 UTC timestamps, submitted-byte hashes, returned-image hashes, printer identity,
 and acquisition status are preserved in `paired-capture.json` and

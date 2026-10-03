@@ -32,7 +32,7 @@ python3 scripts/capture-printer-previews.py --output ../zq610-captures
 
 # Capture all supported cases sequentially, or add --limit 3 for a smoke test.
 python3 scripts/capture-printer-previews.py --output ../zq610-captures \
-  --resume --capture --host http://xxzmj230802993.bed.einic.org/
+  --resume --capture --host http://zq610-plus.example.invalid/
 
 # Offline integrity verification, independent of either source checkout.
 python3 scripts/capture-printer-previews.py --output ../zq610-captures --verify

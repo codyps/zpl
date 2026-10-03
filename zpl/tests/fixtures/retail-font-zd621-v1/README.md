@@ -1,7 +1,7 @@
 # Retail encoding and missing glyph evidence
 
-Captured on ZTC ZD621-203dpi ZPL D7J211001302, firmware V93.21.33Z,
-at http://D7J211001302.bed.einic.org/ using HTTP Preview Label, not printing.
+Captured on ZTC ZD621-203dpi ZPL REDACTED-ZD621, firmware V93.21.33Z,
+at http://zd621.example.invalid/ using HTTP Preview Label, not printing.
 The temporary loopback transport delegates to system /usr/bin/curl because
 other processes in the automation session could not access the local network.
 
