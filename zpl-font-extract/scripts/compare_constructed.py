@@ -11,6 +11,12 @@ from compare_swiss import counts, pixels
 
 
 def compare(root, engine):
+    observation = root / "observation.json"
+    if (
+        observation.exists()
+        and json.loads(observation.read_text()).get("status") == "diagnostic-only"
+    ):
+        raise ValueError("diagnostic-only capture is not font-accuracy evidence")
     manifest = json.loads((root / "manifest.json").read_text())
     capture = json.loads((root / "zd621/capture.json").read_text())
     assert (
@@ -63,16 +69,19 @@ def compare(root, engine):
             ax, ay = p["anchor"]
             pen = 0
             points = set()
-            assert p["orientation"] == "N"
+            turn = "NRIB".index(p["orientation"])
             for c in p["text"]:
-                row = rows[(p["width"], p["height"], ord(c), 0)]
+                row = rows[(p["width"], p["height"], ord(c), turn)]
                 if "error" in row:
                     raise ValueError((page["name"], p, row))
-                points.update((tx + ax + x + pen, ty + ay + y) for x, y in pixels(row))
+                dx, dy = [(pen, 0), (0, pen), (-pen, 0), (0, -pen)][turn]
+                points.update(
+                    (tx + ax + x + dx, ty + ay + y + dy) for x, y in pixels(row)
+                )
                 pen += row["layout_advance"]
             assert all(tx <= x < tx + tw and ty <= y < ty + th for x, y in points), (
                 page["name"],
-                p["name"],
+                p.get("name", p["text"]),
                 "candidate escapes tile",
             )
             candidate.update(points)
@@ -81,7 +90,7 @@ def compare(root, engine):
             }
             cases.append(
                 dict(
-                    name=p["name"],
+                    name=p.get("name", p["text"]),
                     width=p["width"],
                     height=p["height"],
                     **counts(expected, points)

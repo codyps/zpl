@@ -5,6 +5,8 @@ from pathlib import Path
 import tempfile
 import unittest
 
+import cvt_axis_probe
+import small_font_probe
 import analyze_font0_outline
 import font0_outline_probe
 import rounding_probe
@@ -22,6 +24,19 @@ class SwissProbeTests(unittest.TestCase):
             ("scaling-font-validation-20261003", lambda p: scale_probe.prepare(p, 65)),
             ("swiss-font-20261003", swiss_probe.prepare),
             ("font0-outline-20261003", font0_outline_probe.prepare),
+        ]
+        cases += [
+            ("cvt-axis-20261003", cvt_axis_probe.prepare),
+            ("cvt-axis-validation-20261003", lambda p: cvt_axis_probe.prepare(p, True)),
+            (
+                "cvt-axis-validation-v2-20261003",
+                lambda p: cvt_axis_probe.prepare(p, True, "R:ZP26E.TTF"),
+            ),
+            ("small-font-20261003", small_font_probe.prepare),
+            (
+                "small-font-validation-20261003",
+                lambda p: small_font_probe.prepare(p, True),
+            ),
         ]
         for name, prepare in cases:
             with self.subTest(

@@ -1,0 +1,5 @@
+{
+  "status": "diagnostic-only",
+  "reason": "CVT outputs match the preceding font at the reused RAM object name, not the new font bytes. Identity/SCFS controls alone do not distinguish these revisions.",
+  "followup": "Repeat using a fresh RAM object name; do not use this campaign as accuracy evidence."
+}

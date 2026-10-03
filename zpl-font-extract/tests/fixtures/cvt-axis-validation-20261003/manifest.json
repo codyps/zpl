@@ -1,0 +1,9690 @@
+{
+  "schema": "constructed-font-live-v1",
+  "object": "R:ZP26D.TTF",
+  "font_sha256": "e73fc8981f1619f82465dad1846d3258644a411512e8cc1fdfd4fe8db2401e71",
+  "glyphs": [
+    {
+      "name": "space",
+      "codepoint": 32,
+      "contours": [],
+      "instructions": "",
+      "advance": 512,
+      "family": "unused"
+    },
+    {
+      "name": "identity",
+      "codepoint": 33,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            512,
+            true
+          ],
+          [
+            128,
+            512,
+            true
+          ],
+          [
+            128,
+            0,
+            true
+          ]
+        ],
+        [
+          [
+            256,
+            0,
+            true
+          ],
+          [
+            256,
+            768,
+            true
+          ],
+          [
+            384,
+            768,
+            true
+          ],
+          [
+            384,
+            0,
+            true
+          ]
+        ],
+        [
+          [
+            512,
+            0,
+            true
+          ],
+          [
+            512,
+            1024,
+            true
+          ],
+          [
+            768,
+            1024,
+            true
+          ],
+          [
+            768,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "",
+      "advance": 1024,
+      "family": "identity"
+    },
+    {
+      "name": "instruction-witness",
+      "codepoint": 34,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b002b803400148b003b803400148",
+      "advance": 1024,
+      "family": "state"
+    },
+    {
+      "name": "cvt-91-x-integer",
+      "codepoint": 35,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00201b00045660148b00301b0004566014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-91-x-fraction",
+      "codepoint": 36,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00201b00045206661b81000630148b00301b00045206661b8100063014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-91-y-integer",
+      "codepoint": 37,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00200b00045660148b00300b0004566014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-91-y-fraction",
+      "codepoint": 38,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00200b00045206661b81000630148b00300b00045206661b8100063014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-127-x-integer",
+      "codepoint": 39,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00201b00145660148b00301b0014566014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-127-x-fraction",
+      "codepoint": 40,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00201b00145206661b81000630148b00301b00145206661b8100063014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-127-y-integer",
+      "codepoint": 41,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00200b00145660148b00300b0014566014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-127-y-fraction",
+      "codepoint": 42,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00200b00145206661b81000630148b00300b00145206661b8100063014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-272-x-integer",
+      "codepoint": 43,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00201b00245660148b00301b0024566014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-272-x-fraction",
+      "codepoint": 44,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00201b00245206661b81000630148b00301b00245206661b8100063014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-272-y-integer",
+      "codepoint": 45,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00200b00245660148b00300b0024566014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-272-y-fraction",
+      "codepoint": 46,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00200b00245206661b81000630148b00300b00245206661b8100063014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-453-x-integer",
+      "codepoint": 47,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00201b00345660148b00301b0034566014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-453-x-fraction",
+      "codepoint": 48,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00201b00345206661b81000630148b00301b00345206661b8100063014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-453-y-integer",
+      "codepoint": 49,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00200b00345660148b00300b0034566014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-453-y-fraction",
+      "codepoint": 50,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00200b00345206661b81000630148b00300b00345206661b8100063014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-635-x-integer",
+      "codepoint": 51,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00201b00445660148b00301b0044566014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-635-x-fraction",
+      "codepoint": 52,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00201b00445206661b81000630148b00301b00445206661b8100063014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-635-y-integer",
+      "codepoint": 53,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00200b00445660148b00300b0044566014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-635-y-fraction",
+      "codepoint": 54,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00200b00445206661b81000630148b00300b00445206661b8100063014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-816-x-integer",
+      "codepoint": 55,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00201b00545660148b00301b0054566014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-816-x-fraction",
+      "codepoint": 56,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00201b00545206661b81000630148b00301b00545206661b8100063014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-816-y-integer",
+      "codepoint": 57,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00200b00545660148b00300b0054566014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-816-y-fraction",
+      "codepoint": 58,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00200b00545206661b81000630148b00300b00545206661b8100063014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-896-x-integer",
+      "codepoint": 59,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00201b00645660148b00301b0064566014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-896-x-fraction",
+      "codepoint": 60,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00201b00645206661b81000630148b00301b00645206661b8100063014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-896-y-integer",
+      "codepoint": 61,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00200b00645660148b00300b0064566014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-896-y-fraction",
+      "codepoint": 62,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00200b00645206661b81000630148b00300b00645206661b8100063014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-1077-x-integer",
+      "codepoint": 63,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00201b00745660148b00301b0074566014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-1077-x-fraction",
+      "codepoint": 64,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00201b00745206661b81000630148b00301b00745206661b8100063014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-1077-y-integer",
+      "codepoint": 65,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00200b00745660148b00300b0074566014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-1077-y-fraction",
+      "codepoint": 66,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00200b00745206661b81000630148b00300b00745206661b8100063014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-1360-x-integer",
+      "codepoint": 67,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00201b00845660148b00301b0084566014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-1360-x-fraction",
+      "codepoint": 68,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00201b00845206661b81000630148b00301b00845206661b8100063014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-1360-y-integer",
+      "codepoint": 69,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00200b00845660148b00300b0084566014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-1360-y-fraction",
+      "codepoint": 70,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00200b00845206661b81000630148b00300b00845206661b8100063014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-1536-x-integer",
+      "codepoint": 71,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00201b00945660148b00301b0094566014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-1536-x-fraction",
+      "codepoint": 72,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00201b00945206661b81000630148b00301b00945206661b8100063014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-1536-y-integer",
+      "codepoint": 73,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00200b00945660148b00300b0094566014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-1536-y-fraction",
+      "codepoint": 74,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00200b00945206661b81000630148b00300b00945206661b8100063014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-1685-x-integer",
+      "codepoint": 75,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00201b00a45660148b00301b00a4566014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-1685-x-fraction",
+      "codepoint": 76,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00201b00a45206661b81000630148b00301b00a45206661b8100063014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-1685-y-integer",
+      "codepoint": 77,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00200b00a45660148b00300b00a4566014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-1685-y-fraction",
+      "codepoint": 78,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00200b00a45206661b81000630148b00300b00a45206661b8100063014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-1730-x-integer",
+      "codepoint": 79,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00201b00b45660148b00301b00b4566014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-1730-x-fraction",
+      "codepoint": 80,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00201b00b45206661b81000630148b00301b00b45206661b8100063014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-1730-y-integer",
+      "codepoint": 81,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00200b00b45660148b00300b00b4566014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-1730-y-fraction",
+      "codepoint": 82,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00200b00b45206661b81000630148b00300b00b45206661b8100063014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-1775-x-integer",
+      "codepoint": 83,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00201b00c45660148b00301b00c4566014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-1775-x-fraction",
+      "codepoint": 84,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00201b00c45206661b81000630148b00301b00c45206661b8100063014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-1775-y-integer",
+      "codepoint": 85,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00200b00c45660148b00300b00c4566014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-1775-y-fraction",
+      "codepoint": 86,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00200b00c45206661b81000630148b00300b00c45206661b8100063014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-1821-x-integer",
+      "codepoint": 87,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00201b00d45660148b00301b00d4566014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-1821-x-fraction",
+      "codepoint": 88,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00201b00d45206661b81000630148b00301b00d45206661b8100063014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-1821-y-integer",
+      "codepoint": 89,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00200b00d45660148b00300b00d4566014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-1821-y-fraction",
+      "codepoint": 90,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00200b00d45206661b81000630148b00300b00d45206661b8100063014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-1866-x-integer",
+      "codepoint": 91,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00201b00e45660148b00301b00e4566014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-1866-x-fraction",
+      "codepoint": 92,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00201b00e45206661b81000630148b00301b00e45206661b8100063014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-1866-y-integer",
+      "codepoint": 93,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00200b00e45660148b00300b00e4566014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-1866-y-fraction",
+      "codepoint": 94,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00200b00e45206661b81000630148b00300b00e45206661b8100063014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-1911-x-integer",
+      "codepoint": 95,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00201b00f45660148b00301b00f4566014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-1911-x-fraction",
+      "codepoint": 96,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00201b00f45206661b81000630148b00301b00f45206661b8100063014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-1911-y-integer",
+      "codepoint": 97,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00200b00f45660148b00300b00f4566014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-1911-y-fraction",
+      "codepoint": 98,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00200b00f45206661b81000630148b00300b00f45206661b8100063014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-1944-x-integer",
+      "codepoint": 99,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00201b01045660148b00301b0104566014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-1944-x-fraction",
+      "codepoint": 100,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00201b01045206661b81000630148b00301b01045206661b8100063014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-1944-y-integer",
+      "codepoint": 101,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00200b01045660148b00300b0104566014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-1944-y-fraction",
+      "codepoint": 102,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00200b01045206661b81000630148b00300b01045206661b8100063014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-1957-x-integer",
+      "codepoint": 103,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00201b01145660148b00301b0114566014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-1957-x-fraction",
+      "codepoint": 104,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00201b01145206661b81000630148b00301b01145206661b8100063014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-1957-y-integer",
+      "codepoint": 105,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00200b01145660148b00300b0114566014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-1957-y-fraction",
+      "codepoint": 106,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00200b01145206661b81000630148b00300b01145206661b8100063014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-1989-x-integer",
+      "codepoint": 107,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00201b01245660148b00301b0124566014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-1989-x-fraction",
+      "codepoint": 108,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00201b01245206661b81000630148b00301b01245206661b8100063014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-1989-y-integer",
+      "codepoint": 109,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00200b01245660148b00300b0124566014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-1989-y-fraction",
+      "codepoint": 110,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00200b01245206661b81000630148b00300b01245206661b8100063014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-2002-x-integer",
+      "codepoint": 111,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00201b01345660148b00301b0134566014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-2002-x-fraction",
+      "codepoint": 112,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00201b01345206661b81000630148b00301b01345206661b8100063014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-2002-y-integer",
+      "codepoint": 113,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00200b01345660148b00300b0134566014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-2002-y-fraction",
+      "codepoint": 114,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00200b01345206661b81000630148b00300b01345206661b8100063014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-2034-x-integer",
+      "codepoint": 115,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00201b01445660148b00301b0144566014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-2034-x-fraction",
+      "codepoint": 116,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00201b01445206661b81000630148b00301b01445206661b8100063014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-2034-y-integer",
+      "codepoint": 117,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00200b01445660148b00300b0144566014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-2034-y-fraction",
+      "codepoint": 118,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00200b01445206661b81000630148b00300b01445206661b8100063014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-2048-x-integer",
+      "codepoint": 119,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00201b01545660148b00301b0154566014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-2048-x-fraction",
+      "codepoint": 120,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00201b01545206661b81000630148b00301b01545206661b8100063014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-2048-y-integer",
+      "codepoint": 121,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00200b01545660148b00300b0154566014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-2048-y-fraction",
+      "codepoint": 122,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00200b01545206661b81000630148b00300b01545206661b8100063014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-2080-x-integer",
+      "codepoint": 123,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00201b01645660148b00301b0164566014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-2080-x-fraction",
+      "codepoint": 124,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00201b01645206661b81000630148b00301b01645206661b8100063014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-2080-y-integer",
+      "codepoint": 125,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00200b01645660148b00300b0164566014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    },
+    {
+      "name": "cvt-2080-y-fraction",
+      "codepoint": 126,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            256,
+            true
+          ],
+          [
+            1024,
+            256,
+            true
+          ],
+          [
+            1024,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b00200b01645206661b81000630148b00300b01645206661b8100063014800b001b0804800b002b08048",
+      "advance": 2048,
+      "family": "cvt"
+    }
+  ],
+  "pages": [
+    {
+      "name": "00-state",
+      "group": "cvt-axis",
+      "canvas": [
+        384,
+        64
+      ],
+      "probes": [
+        {
+          "name": "identity",
+          "text": "!",
+          "tile": [
+            0,
+            0,
+            64,
+            64
+          ],
+          "anchor": [
+            16,
+            32
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "instruction-witness",
+          "text": "\"",
+          "tile": [
+            64,
+            0,
+            64,
+            64
+          ],
+          "anchor": [
+            16,
+            32
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        }
+      ],
+      "zpl_sha256": "1f7c53cdde99903ce0e74a9996a543ccd6aeab4307319ab467d8e1adf195e85e"
+    },
+    {
+      "name": "cvt-13-23",
+      "group": "cvt-axis",
+      "canvas": [
+        384,
+        248
+      ],
+      "probes": [
+        {
+          "name": "cvt-91-x-integer",
+          "text": "#",
+          "tile": [
+            0,
+            0,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-91-x-fraction",
+          "text": "$",
+          "tile": [
+            128,
+            0,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-91-y-integer",
+          "text": "%",
+          "tile": [
+            256,
+            0,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-91-y-fraction",
+          "text": "&",
+          "tile": [
+            0,
+            8,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-127-x-integer",
+          "text": "'",
+          "tile": [
+            128,
+            8,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-127-x-fraction",
+          "text": "(",
+          "tile": [
+            256,
+            8,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-127-y-integer",
+          "text": ")",
+          "tile": [
+            0,
+            16,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-127-y-fraction",
+          "text": "*",
+          "tile": [
+            128,
+            16,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-272-x-integer",
+          "text": "+",
+          "tile": [
+            256,
+            16,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-272-x-fraction",
+          "text": ",",
+          "tile": [
+            0,
+            24,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-272-y-integer",
+          "text": "-",
+          "tile": [
+            128,
+            24,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-272-y-fraction",
+          "text": ".",
+          "tile": [
+            256,
+            24,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-453-x-integer",
+          "text": "/",
+          "tile": [
+            0,
+            32,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-453-x-fraction",
+          "text": "0",
+          "tile": [
+            128,
+            32,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-453-y-integer",
+          "text": "1",
+          "tile": [
+            256,
+            32,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-453-y-fraction",
+          "text": "2",
+          "tile": [
+            0,
+            40,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-635-x-integer",
+          "text": "3",
+          "tile": [
+            128,
+            40,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-635-x-fraction",
+          "text": "4",
+          "tile": [
+            256,
+            40,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-635-y-integer",
+          "text": "5",
+          "tile": [
+            0,
+            48,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-635-y-fraction",
+          "text": "6",
+          "tile": [
+            128,
+            48,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-816-x-integer",
+          "text": "7",
+          "tile": [
+            256,
+            48,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-816-x-fraction",
+          "text": "8",
+          "tile": [
+            0,
+            56,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-816-y-integer",
+          "text": "9",
+          "tile": [
+            128,
+            56,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-816-y-fraction",
+          "text": ":",
+          "tile": [
+            256,
+            56,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-896-x-integer",
+          "text": ";",
+          "tile": [
+            0,
+            64,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-896-x-fraction",
+          "text": "<",
+          "tile": [
+            128,
+            64,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-896-y-integer",
+          "text": "=",
+          "tile": [
+            256,
+            64,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-896-y-fraction",
+          "text": ">",
+          "tile": [
+            0,
+            72,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1077-x-integer",
+          "text": "?",
+          "tile": [
+            128,
+            72,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1077-x-fraction",
+          "text": "@",
+          "tile": [
+            256,
+            72,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1077-y-integer",
+          "text": "A",
+          "tile": [
+            0,
+            80,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1077-y-fraction",
+          "text": "B",
+          "tile": [
+            128,
+            80,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1360-x-integer",
+          "text": "C",
+          "tile": [
+            256,
+            80,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1360-x-fraction",
+          "text": "D",
+          "tile": [
+            0,
+            88,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1360-y-integer",
+          "text": "E",
+          "tile": [
+            128,
+            88,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1360-y-fraction",
+          "text": "F",
+          "tile": [
+            256,
+            88,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1536-x-integer",
+          "text": "G",
+          "tile": [
+            0,
+            96,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1536-x-fraction",
+          "text": "H",
+          "tile": [
+            128,
+            96,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1536-y-integer",
+          "text": "I",
+          "tile": [
+            256,
+            96,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1536-y-fraction",
+          "text": "J",
+          "tile": [
+            0,
+            104,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1685-x-integer",
+          "text": "K",
+          "tile": [
+            128,
+            104,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1685-x-fraction",
+          "text": "L",
+          "tile": [
+            256,
+            104,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1685-y-integer",
+          "text": "M",
+          "tile": [
+            0,
+            112,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1685-y-fraction",
+          "text": "N",
+          "tile": [
+            128,
+            112,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1730-x-integer",
+          "text": "O",
+          "tile": [
+            256,
+            112,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1730-x-fraction",
+          "text": "P",
+          "tile": [
+            0,
+            120,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1730-y-integer",
+          "text": "Q",
+          "tile": [
+            128,
+            120,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1730-y-fraction",
+          "text": "R",
+          "tile": [
+            256,
+            120,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1775-x-integer",
+          "text": "S",
+          "tile": [
+            0,
+            128,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1775-x-fraction",
+          "text": "T",
+          "tile": [
+            128,
+            128,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1775-y-integer",
+          "text": "U",
+          "tile": [
+            256,
+            128,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1775-y-fraction",
+          "text": "V",
+          "tile": [
+            0,
+            136,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1821-x-integer",
+          "text": "W",
+          "tile": [
+            128,
+            136,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1821-x-fraction",
+          "text": "X",
+          "tile": [
+            256,
+            136,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1821-y-integer",
+          "text": "Y",
+          "tile": [
+            0,
+            144,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1821-y-fraction",
+          "text": "Z",
+          "tile": [
+            128,
+            144,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1866-x-integer",
+          "text": "[",
+          "tile": [
+            256,
+            144,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1866-x-fraction",
+          "text": "\\",
+          "tile": [
+            0,
+            152,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1866-y-integer",
+          "text": "]",
+          "tile": [
+            128,
+            152,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1866-y-fraction",
+          "text": "^",
+          "tile": [
+            256,
+            152,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1911-x-integer",
+          "text": "_",
+          "tile": [
+            0,
+            160,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1911-x-fraction",
+          "text": "`",
+          "tile": [
+            128,
+            160,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1911-y-integer",
+          "text": "a",
+          "tile": [
+            256,
+            160,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1911-y-fraction",
+          "text": "b",
+          "tile": [
+            0,
+            168,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1944-x-integer",
+          "text": "c",
+          "tile": [
+            128,
+            168,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1944-x-fraction",
+          "text": "d",
+          "tile": [
+            256,
+            168,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1944-y-integer",
+          "text": "e",
+          "tile": [
+            0,
+            176,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1944-y-fraction",
+          "text": "f",
+          "tile": [
+            128,
+            176,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1957-x-integer",
+          "text": "g",
+          "tile": [
+            256,
+            176,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1957-x-fraction",
+          "text": "h",
+          "tile": [
+            0,
+            184,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1957-y-integer",
+          "text": "i",
+          "tile": [
+            128,
+            184,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1957-y-fraction",
+          "text": "j",
+          "tile": [
+            256,
+            184,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1989-x-integer",
+          "text": "k",
+          "tile": [
+            0,
+            192,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1989-x-fraction",
+          "text": "l",
+          "tile": [
+            128,
+            192,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1989-y-integer",
+          "text": "m",
+          "tile": [
+            256,
+            192,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1989-y-fraction",
+          "text": "n",
+          "tile": [
+            0,
+            200,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2002-x-integer",
+          "text": "o",
+          "tile": [
+            128,
+            200,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2002-x-fraction",
+          "text": "p",
+          "tile": [
+            256,
+            200,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2002-y-integer",
+          "text": "q",
+          "tile": [
+            0,
+            208,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2002-y-fraction",
+          "text": "r",
+          "tile": [
+            128,
+            208,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2034-x-integer",
+          "text": "s",
+          "tile": [
+            256,
+            208,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2034-x-fraction",
+          "text": "t",
+          "tile": [
+            0,
+            216,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2034-y-integer",
+          "text": "u",
+          "tile": [
+            128,
+            216,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2034-y-fraction",
+          "text": "v",
+          "tile": [
+            256,
+            216,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2048-x-integer",
+          "text": "w",
+          "tile": [
+            0,
+            224,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2048-x-fraction",
+          "text": "x",
+          "tile": [
+            128,
+            224,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2048-y-integer",
+          "text": "y",
+          "tile": [
+            256,
+            224,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2048-y-fraction",
+          "text": "z",
+          "tile": [
+            0,
+            232,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2080-x-integer",
+          "text": "{",
+          "tile": [
+            128,
+            232,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2080-x-fraction",
+          "text": "|",
+          "tile": [
+            256,
+            232,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2080-y-integer",
+          "text": "}",
+          "tile": [
+            0,
+            240,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2080-y-fraction",
+          "text": "~",
+          "tile": [
+            128,
+            240,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 13,
+          "height": 23,
+          "orientation": "N",
+          "origin": "FT"
+        }
+      ],
+      "zpl_sha256": "8dfb5af8cd0935f4e89450e0649053a65d453db8646070516efc22bc2902bada"
+    },
+    {
+      "name": "cvt-23-13",
+      "group": "cvt-axis",
+      "canvas": [
+        384,
+        248
+      ],
+      "probes": [
+        {
+          "name": "cvt-91-x-integer",
+          "text": "#",
+          "tile": [
+            0,
+            0,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-91-x-fraction",
+          "text": "$",
+          "tile": [
+            128,
+            0,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-91-y-integer",
+          "text": "%",
+          "tile": [
+            256,
+            0,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-91-y-fraction",
+          "text": "&",
+          "tile": [
+            0,
+            8,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-127-x-integer",
+          "text": "'",
+          "tile": [
+            128,
+            8,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-127-x-fraction",
+          "text": "(",
+          "tile": [
+            256,
+            8,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-127-y-integer",
+          "text": ")",
+          "tile": [
+            0,
+            16,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-127-y-fraction",
+          "text": "*",
+          "tile": [
+            128,
+            16,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-272-x-integer",
+          "text": "+",
+          "tile": [
+            256,
+            16,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-272-x-fraction",
+          "text": ",",
+          "tile": [
+            0,
+            24,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-272-y-integer",
+          "text": "-",
+          "tile": [
+            128,
+            24,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-272-y-fraction",
+          "text": ".",
+          "tile": [
+            256,
+            24,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-453-x-integer",
+          "text": "/",
+          "tile": [
+            0,
+            32,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-453-x-fraction",
+          "text": "0",
+          "tile": [
+            128,
+            32,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-453-y-integer",
+          "text": "1",
+          "tile": [
+            256,
+            32,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-453-y-fraction",
+          "text": "2",
+          "tile": [
+            0,
+            40,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-635-x-integer",
+          "text": "3",
+          "tile": [
+            128,
+            40,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-635-x-fraction",
+          "text": "4",
+          "tile": [
+            256,
+            40,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-635-y-integer",
+          "text": "5",
+          "tile": [
+            0,
+            48,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-635-y-fraction",
+          "text": "6",
+          "tile": [
+            128,
+            48,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-816-x-integer",
+          "text": "7",
+          "tile": [
+            256,
+            48,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-816-x-fraction",
+          "text": "8",
+          "tile": [
+            0,
+            56,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-816-y-integer",
+          "text": "9",
+          "tile": [
+            128,
+            56,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-816-y-fraction",
+          "text": ":",
+          "tile": [
+            256,
+            56,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-896-x-integer",
+          "text": ";",
+          "tile": [
+            0,
+            64,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-896-x-fraction",
+          "text": "<",
+          "tile": [
+            128,
+            64,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-896-y-integer",
+          "text": "=",
+          "tile": [
+            256,
+            64,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-896-y-fraction",
+          "text": ">",
+          "tile": [
+            0,
+            72,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1077-x-integer",
+          "text": "?",
+          "tile": [
+            128,
+            72,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1077-x-fraction",
+          "text": "@",
+          "tile": [
+            256,
+            72,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1077-y-integer",
+          "text": "A",
+          "tile": [
+            0,
+            80,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1077-y-fraction",
+          "text": "B",
+          "tile": [
+            128,
+            80,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1360-x-integer",
+          "text": "C",
+          "tile": [
+            256,
+            80,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1360-x-fraction",
+          "text": "D",
+          "tile": [
+            0,
+            88,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1360-y-integer",
+          "text": "E",
+          "tile": [
+            128,
+            88,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1360-y-fraction",
+          "text": "F",
+          "tile": [
+            256,
+            88,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1536-x-integer",
+          "text": "G",
+          "tile": [
+            0,
+            96,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1536-x-fraction",
+          "text": "H",
+          "tile": [
+            128,
+            96,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1536-y-integer",
+          "text": "I",
+          "tile": [
+            256,
+            96,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1536-y-fraction",
+          "text": "J",
+          "tile": [
+            0,
+            104,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1685-x-integer",
+          "text": "K",
+          "tile": [
+            128,
+            104,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1685-x-fraction",
+          "text": "L",
+          "tile": [
+            256,
+            104,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1685-y-integer",
+          "text": "M",
+          "tile": [
+            0,
+            112,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1685-y-fraction",
+          "text": "N",
+          "tile": [
+            128,
+            112,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1730-x-integer",
+          "text": "O",
+          "tile": [
+            256,
+            112,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1730-x-fraction",
+          "text": "P",
+          "tile": [
+            0,
+            120,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1730-y-integer",
+          "text": "Q",
+          "tile": [
+            128,
+            120,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1730-y-fraction",
+          "text": "R",
+          "tile": [
+            256,
+            120,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1775-x-integer",
+          "text": "S",
+          "tile": [
+            0,
+            128,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1775-x-fraction",
+          "text": "T",
+          "tile": [
+            128,
+            128,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1775-y-integer",
+          "text": "U",
+          "tile": [
+            256,
+            128,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1775-y-fraction",
+          "text": "V",
+          "tile": [
+            0,
+            136,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1821-x-integer",
+          "text": "W",
+          "tile": [
+            128,
+            136,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1821-x-fraction",
+          "text": "X",
+          "tile": [
+            256,
+            136,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1821-y-integer",
+          "text": "Y",
+          "tile": [
+            0,
+            144,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1821-y-fraction",
+          "text": "Z",
+          "tile": [
+            128,
+            144,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1866-x-integer",
+          "text": "[",
+          "tile": [
+            256,
+            144,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1866-x-fraction",
+          "text": "\\",
+          "tile": [
+            0,
+            152,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1866-y-integer",
+          "text": "]",
+          "tile": [
+            128,
+            152,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1866-y-fraction",
+          "text": "^",
+          "tile": [
+            256,
+            152,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1911-x-integer",
+          "text": "_",
+          "tile": [
+            0,
+            160,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1911-x-fraction",
+          "text": "`",
+          "tile": [
+            128,
+            160,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1911-y-integer",
+          "text": "a",
+          "tile": [
+            256,
+            160,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1911-y-fraction",
+          "text": "b",
+          "tile": [
+            0,
+            168,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1944-x-integer",
+          "text": "c",
+          "tile": [
+            128,
+            168,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1944-x-fraction",
+          "text": "d",
+          "tile": [
+            256,
+            168,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1944-y-integer",
+          "text": "e",
+          "tile": [
+            0,
+            176,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1944-y-fraction",
+          "text": "f",
+          "tile": [
+            128,
+            176,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1957-x-integer",
+          "text": "g",
+          "tile": [
+            256,
+            176,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1957-x-fraction",
+          "text": "h",
+          "tile": [
+            0,
+            184,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1957-y-integer",
+          "text": "i",
+          "tile": [
+            128,
+            184,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1957-y-fraction",
+          "text": "j",
+          "tile": [
+            256,
+            184,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1989-x-integer",
+          "text": "k",
+          "tile": [
+            0,
+            192,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1989-x-fraction",
+          "text": "l",
+          "tile": [
+            128,
+            192,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1989-y-integer",
+          "text": "m",
+          "tile": [
+            256,
+            192,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1989-y-fraction",
+          "text": "n",
+          "tile": [
+            0,
+            200,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2002-x-integer",
+          "text": "o",
+          "tile": [
+            128,
+            200,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2002-x-fraction",
+          "text": "p",
+          "tile": [
+            256,
+            200,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2002-y-integer",
+          "text": "q",
+          "tile": [
+            0,
+            208,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2002-y-fraction",
+          "text": "r",
+          "tile": [
+            128,
+            208,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2034-x-integer",
+          "text": "s",
+          "tile": [
+            256,
+            208,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2034-x-fraction",
+          "text": "t",
+          "tile": [
+            0,
+            216,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2034-y-integer",
+          "text": "u",
+          "tile": [
+            128,
+            216,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2034-y-fraction",
+          "text": "v",
+          "tile": [
+            256,
+            216,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2048-x-integer",
+          "text": "w",
+          "tile": [
+            0,
+            224,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2048-x-fraction",
+          "text": "x",
+          "tile": [
+            128,
+            224,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2048-y-integer",
+          "text": "y",
+          "tile": [
+            256,
+            224,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2048-y-fraction",
+          "text": "z",
+          "tile": [
+            0,
+            232,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2080-x-integer",
+          "text": "{",
+          "tile": [
+            128,
+            232,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2080-x-fraction",
+          "text": "|",
+          "tile": [
+            256,
+            232,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2080-y-integer",
+          "text": "}",
+          "tile": [
+            0,
+            240,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2080-y-fraction",
+          "text": "~",
+          "tile": [
+            128,
+            240,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 23,
+          "height": 13,
+          "orientation": "N",
+          "origin": "FT"
+        }
+      ],
+      "zpl_sha256": "86fc07cced5bef054d83b216d47cf01263ca7d464ddb19761700bc0cb42c0c6f"
+    },
+    {
+      "name": "cvt-17-29",
+      "group": "cvt-axis",
+      "canvas": [
+        384,
+        248
+      ],
+      "probes": [
+        {
+          "name": "cvt-91-x-integer",
+          "text": "#",
+          "tile": [
+            0,
+            0,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-91-x-fraction",
+          "text": "$",
+          "tile": [
+            128,
+            0,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-91-y-integer",
+          "text": "%",
+          "tile": [
+            256,
+            0,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-91-y-fraction",
+          "text": "&",
+          "tile": [
+            0,
+            8,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-127-x-integer",
+          "text": "'",
+          "tile": [
+            128,
+            8,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-127-x-fraction",
+          "text": "(",
+          "tile": [
+            256,
+            8,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-127-y-integer",
+          "text": ")",
+          "tile": [
+            0,
+            16,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-127-y-fraction",
+          "text": "*",
+          "tile": [
+            128,
+            16,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-272-x-integer",
+          "text": "+",
+          "tile": [
+            256,
+            16,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-272-x-fraction",
+          "text": ",",
+          "tile": [
+            0,
+            24,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-272-y-integer",
+          "text": "-",
+          "tile": [
+            128,
+            24,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-272-y-fraction",
+          "text": ".",
+          "tile": [
+            256,
+            24,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-453-x-integer",
+          "text": "/",
+          "tile": [
+            0,
+            32,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-453-x-fraction",
+          "text": "0",
+          "tile": [
+            128,
+            32,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-453-y-integer",
+          "text": "1",
+          "tile": [
+            256,
+            32,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-453-y-fraction",
+          "text": "2",
+          "tile": [
+            0,
+            40,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-635-x-integer",
+          "text": "3",
+          "tile": [
+            128,
+            40,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-635-x-fraction",
+          "text": "4",
+          "tile": [
+            256,
+            40,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-635-y-integer",
+          "text": "5",
+          "tile": [
+            0,
+            48,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-635-y-fraction",
+          "text": "6",
+          "tile": [
+            128,
+            48,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-816-x-integer",
+          "text": "7",
+          "tile": [
+            256,
+            48,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-816-x-fraction",
+          "text": "8",
+          "tile": [
+            0,
+            56,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-816-y-integer",
+          "text": "9",
+          "tile": [
+            128,
+            56,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-816-y-fraction",
+          "text": ":",
+          "tile": [
+            256,
+            56,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-896-x-integer",
+          "text": ";",
+          "tile": [
+            0,
+            64,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-896-x-fraction",
+          "text": "<",
+          "tile": [
+            128,
+            64,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-896-y-integer",
+          "text": "=",
+          "tile": [
+            256,
+            64,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-896-y-fraction",
+          "text": ">",
+          "tile": [
+            0,
+            72,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1077-x-integer",
+          "text": "?",
+          "tile": [
+            128,
+            72,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1077-x-fraction",
+          "text": "@",
+          "tile": [
+            256,
+            72,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1077-y-integer",
+          "text": "A",
+          "tile": [
+            0,
+            80,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1077-y-fraction",
+          "text": "B",
+          "tile": [
+            128,
+            80,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1360-x-integer",
+          "text": "C",
+          "tile": [
+            256,
+            80,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1360-x-fraction",
+          "text": "D",
+          "tile": [
+            0,
+            88,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1360-y-integer",
+          "text": "E",
+          "tile": [
+            128,
+            88,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1360-y-fraction",
+          "text": "F",
+          "tile": [
+            256,
+            88,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1536-x-integer",
+          "text": "G",
+          "tile": [
+            0,
+            96,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1536-x-fraction",
+          "text": "H",
+          "tile": [
+            128,
+            96,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1536-y-integer",
+          "text": "I",
+          "tile": [
+            256,
+            96,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1536-y-fraction",
+          "text": "J",
+          "tile": [
+            0,
+            104,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1685-x-integer",
+          "text": "K",
+          "tile": [
+            128,
+            104,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1685-x-fraction",
+          "text": "L",
+          "tile": [
+            256,
+            104,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1685-y-integer",
+          "text": "M",
+          "tile": [
+            0,
+            112,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1685-y-fraction",
+          "text": "N",
+          "tile": [
+            128,
+            112,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1730-x-integer",
+          "text": "O",
+          "tile": [
+            256,
+            112,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1730-x-fraction",
+          "text": "P",
+          "tile": [
+            0,
+            120,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1730-y-integer",
+          "text": "Q",
+          "tile": [
+            128,
+            120,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1730-y-fraction",
+          "text": "R",
+          "tile": [
+            256,
+            120,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1775-x-integer",
+          "text": "S",
+          "tile": [
+            0,
+            128,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1775-x-fraction",
+          "text": "T",
+          "tile": [
+            128,
+            128,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1775-y-integer",
+          "text": "U",
+          "tile": [
+            256,
+            128,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1775-y-fraction",
+          "text": "V",
+          "tile": [
+            0,
+            136,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1821-x-integer",
+          "text": "W",
+          "tile": [
+            128,
+            136,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1821-x-fraction",
+          "text": "X",
+          "tile": [
+            256,
+            136,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1821-y-integer",
+          "text": "Y",
+          "tile": [
+            0,
+            144,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1821-y-fraction",
+          "text": "Z",
+          "tile": [
+            128,
+            144,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1866-x-integer",
+          "text": "[",
+          "tile": [
+            256,
+            144,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1866-x-fraction",
+          "text": "\\",
+          "tile": [
+            0,
+            152,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1866-y-integer",
+          "text": "]",
+          "tile": [
+            128,
+            152,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1866-y-fraction",
+          "text": "^",
+          "tile": [
+            256,
+            152,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1911-x-integer",
+          "text": "_",
+          "tile": [
+            0,
+            160,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1911-x-fraction",
+          "text": "`",
+          "tile": [
+            128,
+            160,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1911-y-integer",
+          "text": "a",
+          "tile": [
+            256,
+            160,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1911-y-fraction",
+          "text": "b",
+          "tile": [
+            0,
+            168,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1944-x-integer",
+          "text": "c",
+          "tile": [
+            128,
+            168,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1944-x-fraction",
+          "text": "d",
+          "tile": [
+            256,
+            168,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1944-y-integer",
+          "text": "e",
+          "tile": [
+            0,
+            176,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1944-y-fraction",
+          "text": "f",
+          "tile": [
+            128,
+            176,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1957-x-integer",
+          "text": "g",
+          "tile": [
+            256,
+            176,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1957-x-fraction",
+          "text": "h",
+          "tile": [
+            0,
+            184,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1957-y-integer",
+          "text": "i",
+          "tile": [
+            128,
+            184,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1957-y-fraction",
+          "text": "j",
+          "tile": [
+            256,
+            184,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1989-x-integer",
+          "text": "k",
+          "tile": [
+            0,
+            192,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1989-x-fraction",
+          "text": "l",
+          "tile": [
+            128,
+            192,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1989-y-integer",
+          "text": "m",
+          "tile": [
+            256,
+            192,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1989-y-fraction",
+          "text": "n",
+          "tile": [
+            0,
+            200,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2002-x-integer",
+          "text": "o",
+          "tile": [
+            128,
+            200,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2002-x-fraction",
+          "text": "p",
+          "tile": [
+            256,
+            200,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2002-y-integer",
+          "text": "q",
+          "tile": [
+            0,
+            208,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2002-y-fraction",
+          "text": "r",
+          "tile": [
+            128,
+            208,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2034-x-integer",
+          "text": "s",
+          "tile": [
+            256,
+            208,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2034-x-fraction",
+          "text": "t",
+          "tile": [
+            0,
+            216,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2034-y-integer",
+          "text": "u",
+          "tile": [
+            128,
+            216,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2034-y-fraction",
+          "text": "v",
+          "tile": [
+            256,
+            216,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2048-x-integer",
+          "text": "w",
+          "tile": [
+            0,
+            224,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2048-x-fraction",
+          "text": "x",
+          "tile": [
+            128,
+            224,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2048-y-integer",
+          "text": "y",
+          "tile": [
+            256,
+            224,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2048-y-fraction",
+          "text": "z",
+          "tile": [
+            0,
+            232,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2080-x-integer",
+          "text": "{",
+          "tile": [
+            128,
+            232,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2080-x-fraction",
+          "text": "|",
+          "tile": [
+            256,
+            232,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2080-y-integer",
+          "text": "}",
+          "tile": [
+            0,
+            240,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2080-y-fraction",
+          "text": "~",
+          "tile": [
+            128,
+            240,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 17,
+          "height": 29,
+          "orientation": "N",
+          "origin": "FT"
+        }
+      ],
+      "zpl_sha256": "1ce3eea3a3ce5402f3b55a3e4da65063b146b7552e37cd3cba90c91b5f7c9af3"
+    },
+    {
+      "name": "cvt-29-17",
+      "group": "cvt-axis",
+      "canvas": [
+        384,
+        248
+      ],
+      "probes": [
+        {
+          "name": "cvt-91-x-integer",
+          "text": "#",
+          "tile": [
+            0,
+            0,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-91-x-fraction",
+          "text": "$",
+          "tile": [
+            128,
+            0,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-91-y-integer",
+          "text": "%",
+          "tile": [
+            256,
+            0,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-91-y-fraction",
+          "text": "&",
+          "tile": [
+            0,
+            8,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-127-x-integer",
+          "text": "'",
+          "tile": [
+            128,
+            8,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-127-x-fraction",
+          "text": "(",
+          "tile": [
+            256,
+            8,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-127-y-integer",
+          "text": ")",
+          "tile": [
+            0,
+            16,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-127-y-fraction",
+          "text": "*",
+          "tile": [
+            128,
+            16,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-272-x-integer",
+          "text": "+",
+          "tile": [
+            256,
+            16,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-272-x-fraction",
+          "text": ",",
+          "tile": [
+            0,
+            24,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-272-y-integer",
+          "text": "-",
+          "tile": [
+            128,
+            24,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-272-y-fraction",
+          "text": ".",
+          "tile": [
+            256,
+            24,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-453-x-integer",
+          "text": "/",
+          "tile": [
+            0,
+            32,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-453-x-fraction",
+          "text": "0",
+          "tile": [
+            128,
+            32,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-453-y-integer",
+          "text": "1",
+          "tile": [
+            256,
+            32,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-453-y-fraction",
+          "text": "2",
+          "tile": [
+            0,
+            40,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-635-x-integer",
+          "text": "3",
+          "tile": [
+            128,
+            40,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-635-x-fraction",
+          "text": "4",
+          "tile": [
+            256,
+            40,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-635-y-integer",
+          "text": "5",
+          "tile": [
+            0,
+            48,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-635-y-fraction",
+          "text": "6",
+          "tile": [
+            128,
+            48,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-816-x-integer",
+          "text": "7",
+          "tile": [
+            256,
+            48,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-816-x-fraction",
+          "text": "8",
+          "tile": [
+            0,
+            56,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-816-y-integer",
+          "text": "9",
+          "tile": [
+            128,
+            56,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-816-y-fraction",
+          "text": ":",
+          "tile": [
+            256,
+            56,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-896-x-integer",
+          "text": ";",
+          "tile": [
+            0,
+            64,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-896-x-fraction",
+          "text": "<",
+          "tile": [
+            128,
+            64,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-896-y-integer",
+          "text": "=",
+          "tile": [
+            256,
+            64,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-896-y-fraction",
+          "text": ">",
+          "tile": [
+            0,
+            72,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1077-x-integer",
+          "text": "?",
+          "tile": [
+            128,
+            72,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1077-x-fraction",
+          "text": "@",
+          "tile": [
+            256,
+            72,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1077-y-integer",
+          "text": "A",
+          "tile": [
+            0,
+            80,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1077-y-fraction",
+          "text": "B",
+          "tile": [
+            128,
+            80,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1360-x-integer",
+          "text": "C",
+          "tile": [
+            256,
+            80,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1360-x-fraction",
+          "text": "D",
+          "tile": [
+            0,
+            88,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1360-y-integer",
+          "text": "E",
+          "tile": [
+            128,
+            88,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1360-y-fraction",
+          "text": "F",
+          "tile": [
+            256,
+            88,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1536-x-integer",
+          "text": "G",
+          "tile": [
+            0,
+            96,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1536-x-fraction",
+          "text": "H",
+          "tile": [
+            128,
+            96,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1536-y-integer",
+          "text": "I",
+          "tile": [
+            256,
+            96,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1536-y-fraction",
+          "text": "J",
+          "tile": [
+            0,
+            104,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1685-x-integer",
+          "text": "K",
+          "tile": [
+            128,
+            104,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1685-x-fraction",
+          "text": "L",
+          "tile": [
+            256,
+            104,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1685-y-integer",
+          "text": "M",
+          "tile": [
+            0,
+            112,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1685-y-fraction",
+          "text": "N",
+          "tile": [
+            128,
+            112,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1730-x-integer",
+          "text": "O",
+          "tile": [
+            256,
+            112,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1730-x-fraction",
+          "text": "P",
+          "tile": [
+            0,
+            120,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1730-y-integer",
+          "text": "Q",
+          "tile": [
+            128,
+            120,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1730-y-fraction",
+          "text": "R",
+          "tile": [
+            256,
+            120,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1775-x-integer",
+          "text": "S",
+          "tile": [
+            0,
+            128,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1775-x-fraction",
+          "text": "T",
+          "tile": [
+            128,
+            128,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1775-y-integer",
+          "text": "U",
+          "tile": [
+            256,
+            128,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1775-y-fraction",
+          "text": "V",
+          "tile": [
+            0,
+            136,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1821-x-integer",
+          "text": "W",
+          "tile": [
+            128,
+            136,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1821-x-fraction",
+          "text": "X",
+          "tile": [
+            256,
+            136,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1821-y-integer",
+          "text": "Y",
+          "tile": [
+            0,
+            144,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1821-y-fraction",
+          "text": "Z",
+          "tile": [
+            128,
+            144,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1866-x-integer",
+          "text": "[",
+          "tile": [
+            256,
+            144,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1866-x-fraction",
+          "text": "\\",
+          "tile": [
+            0,
+            152,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1866-y-integer",
+          "text": "]",
+          "tile": [
+            128,
+            152,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1866-y-fraction",
+          "text": "^",
+          "tile": [
+            256,
+            152,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1911-x-integer",
+          "text": "_",
+          "tile": [
+            0,
+            160,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1911-x-fraction",
+          "text": "`",
+          "tile": [
+            128,
+            160,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1911-y-integer",
+          "text": "a",
+          "tile": [
+            256,
+            160,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1911-y-fraction",
+          "text": "b",
+          "tile": [
+            0,
+            168,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1944-x-integer",
+          "text": "c",
+          "tile": [
+            128,
+            168,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1944-x-fraction",
+          "text": "d",
+          "tile": [
+            256,
+            168,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1944-y-integer",
+          "text": "e",
+          "tile": [
+            0,
+            176,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1944-y-fraction",
+          "text": "f",
+          "tile": [
+            128,
+            176,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1957-x-integer",
+          "text": "g",
+          "tile": [
+            256,
+            176,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1957-x-fraction",
+          "text": "h",
+          "tile": [
+            0,
+            184,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1957-y-integer",
+          "text": "i",
+          "tile": [
+            128,
+            184,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1957-y-fraction",
+          "text": "j",
+          "tile": [
+            256,
+            184,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1989-x-integer",
+          "text": "k",
+          "tile": [
+            0,
+            192,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1989-x-fraction",
+          "text": "l",
+          "tile": [
+            128,
+            192,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1989-y-integer",
+          "text": "m",
+          "tile": [
+            256,
+            192,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-1989-y-fraction",
+          "text": "n",
+          "tile": [
+            0,
+            200,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2002-x-integer",
+          "text": "o",
+          "tile": [
+            128,
+            200,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2002-x-fraction",
+          "text": "p",
+          "tile": [
+            256,
+            200,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2002-y-integer",
+          "text": "q",
+          "tile": [
+            0,
+            208,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2002-y-fraction",
+          "text": "r",
+          "tile": [
+            128,
+            208,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2034-x-integer",
+          "text": "s",
+          "tile": [
+            256,
+            208,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2034-x-fraction",
+          "text": "t",
+          "tile": [
+            0,
+            216,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2034-y-integer",
+          "text": "u",
+          "tile": [
+            128,
+            216,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2034-y-fraction",
+          "text": "v",
+          "tile": [
+            256,
+            216,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2048-x-integer",
+          "text": "w",
+          "tile": [
+            0,
+            224,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2048-x-fraction",
+          "text": "x",
+          "tile": [
+            128,
+            224,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2048-y-integer",
+          "text": "y",
+          "tile": [
+            256,
+            224,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2048-y-fraction",
+          "text": "z",
+          "tile": [
+            0,
+            232,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2080-x-integer",
+          "text": "{",
+          "tile": [
+            128,
+            232,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2080-x-fraction",
+          "text": "|",
+          "tile": [
+            256,
+            232,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2080-y-integer",
+          "text": "}",
+          "tile": [
+            0,
+            240,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "cvt-2080-y-fraction",
+          "text": "~",
+          "tile": [
+            128,
+            240,
+            128,
+            8
+          ],
+          "anchor": [
+            8,
+            4
+          ],
+          "width": 29,
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT"
+        }
+      ],
+      "zpl_sha256": "6c5d507c799049232cbb6dc498d72570e3a93ec476d6dd06a7d37967a78a00d6"
+    }
+  ]
+}

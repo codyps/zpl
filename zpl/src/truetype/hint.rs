@@ -106,7 +106,11 @@ impl Vm {
                 .0
                 .iter()
                 .map(|b| {
-                    environment.scale(i16::from_be_bytes([b[0], b[1]]) as i32, size.y, font.units)
+                    environment.scale(
+                        i16::from_be_bytes([b[0], b[1]]) as i32,
+                        environment.cvt_axis(size),
+                        font.units,
+                    )
                 })
                 .collect::<Result<Vec<_>>>()?,
             storage: vec![0; font.storage],
@@ -304,12 +308,10 @@ impl Vm {
     }
     fn cvt_ratio(&self) -> f64 {
         let [x, y] = self.state.pv;
-        (((self.environment.ppem(self.size.x, false) / self.environment.ppem(self.size.y, false)
-            * x as f64)
-            .powi(2)
-            + (y as f64).powi(2))
-        .sqrt())
-            / 16384.
+        let base = self.environment.cvt_axis(self.size);
+        let x = self.environment.cvt_ratio(self.size.x, base) * x as f64;
+        let y = self.environment.cvt_ratio(self.size.y, base) * y as f64;
+        (x.powi(2) + y.powi(2)).sqrt() / 16384.
     }
     fn cvt(&self, index: usize) -> Result<i32> {
         let value = *self
@@ -774,8 +776,9 @@ impl Vm {
                             *self
                                 .cvt
                                 .get_mut(index)
-                                .ok_or_else(|| invalid("CVT index out of range"))? =
-                                self.environment.scale(value, self.size.y, self.units)?;
+                                .ok_or_else(|| invalid("CVT index out of range"))? = self
+                                .environment
+                                .scale(value, self.environment.cvt_axis(self.size), self.units)?;
                         }
                     }
                     0x45 => {

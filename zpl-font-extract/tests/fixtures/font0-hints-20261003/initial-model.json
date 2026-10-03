@@ -1,0 +1,201 @@
+{
+  "schema": "font0-hint-graph-v1",
+  "source_manifest_sha256": "07f6dc3853a7885286419ae914841efe040b2222b4e6debd5835e88852dcfdfc",
+  "development_manifest_sha256": "f1fd7a3d2c7ccc9344b2587bddf0bf622844473412c14d5ac95a3b878c11b16c",
+  "parameters": {
+    "stem_x": 272,
+    "stem_y": 208,
+    "cutin": 24,
+    "bias_x": 0,
+    "bias_y": 0,
+    "overshoot": 36,
+    "edge_min": 80
+  },
+  "hints": {
+    "H": [
+      [
+        "grid",
+        "prev",
+        "grid",
+        "prev"
+      ],
+      [
+        "none",
+        "none",
+        "none",
+        "none"
+      ]
+    ],
+    "O": [
+      [
+        "grid",
+        "prev",
+        "none",
+        "none"
+      ],
+      [
+        "grid",
+        "prev",
+        "next",
+        "zone"
+      ]
+    ],
+    "S": [
+      [
+        "none",
+        "grid",
+        "none",
+        "grid"
+      ],
+      [
+        "none",
+        "none",
+        "none",
+        "none"
+      ]
+    ],
+    "g": [
+      [
+        "grid",
+        "prev",
+        "none",
+        "none"
+      ],
+      [
+        "center_next",
+        "none",
+        "none",
+        "none",
+        "grid",
+        "none"
+      ]
+    ],
+    "j": [
+      [
+        "next",
+        "grid",
+        "prev"
+      ],
+      [
+        "grid",
+        "grid",
+        "prev",
+        "prev"
+      ]
+    ],
+    "@": [
+      [
+        "grid",
+        "prev",
+        "prev",
+        "none",
+        "grid",
+        "grid",
+        "none",
+        "center_prev",
+        "none"
+      ],
+      [
+        "none",
+        "none",
+        "none",
+        "none",
+        "none",
+        "none",
+        "none"
+      ]
+    ]
+  },
+  "history": [
+    {
+      "text": "H",
+      "iteration": 1,
+      "loss": 0.13770685579196218,
+      "constraints": 4
+    },
+    {
+      "text": "H",
+      "iteration": 2,
+      "loss": 0.13770685579196218,
+      "constraints": 4
+    },
+    {
+      "text": "O",
+      "iteration": 1,
+      "loss": 1.3693281605242729,
+      "constraints": 6
+    },
+    {
+      "text": "O",
+      "iteration": 2,
+      "loss": 1.1551781795987905,
+      "constraints": 6
+    },
+    {
+      "text": "O",
+      "iteration": 3,
+      "loss": 1.1551781795987905,
+      "constraints": 6
+    },
+    {
+      "text": "S",
+      "iteration": 1,
+      "loss": 2.3828189666684563,
+      "constraints": 3
+    },
+    {
+      "text": "S",
+      "iteration": 2,
+      "loss": 2.3828189666684563,
+      "constraints": 2
+    },
+    {
+      "text": "S",
+      "iteration": 3,
+      "loss": 2.3828189666684563,
+      "constraints": 2
+    },
+    {
+      "text": "g",
+      "iteration": 1,
+      "loss": 2.1464269473166646,
+      "constraints": 4
+    },
+    {
+      "text": "g",
+      "iteration": 2,
+      "loss": 2.1464269473166646,
+      "constraints": 4
+    },
+    {
+      "text": "j",
+      "iteration": 1,
+      "loss": 0.381436687617166,
+      "constraints": 7
+    },
+    {
+      "text": "j",
+      "iteration": 2,
+      "loss": 0.381436687617166,
+      "constraints": 7
+    },
+    {
+      "text": "@",
+      "iteration": 1,
+      "loss": 3.746976036303386,
+      "constraints": 7
+    },
+    {
+      "text": "@",
+      "iteration": 2,
+      "loss": 3.5767263940718923,
+      "constraints": 6
+    },
+    {
+      "text": "@",
+      "iteration": 3,
+      "loss": 3.5767263940718923,
+      "constraints": 6
+    }
+  ]
+}

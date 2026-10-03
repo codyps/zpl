@@ -410,6 +410,9 @@ fn zd621_point_quantization_rounding_and_spacing_match_native_canvases() {
         "rounding-font-20261003",
         "scaling-font-20261003",
         "scaling-font-validation-20261003",
+        "cvt-axis-20261003",
+        "cvt-axis-validation-v2-20261003",
+        "font0-hints-20261003",
     ] {
         let root = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
             .join("../zpl-font-extract/tests/fixtures")
@@ -432,7 +435,7 @@ fn zd621_point_quantization_rounding_and_spacing_match_native_canvases() {
         assert_eq!(hash(&data), manifest["font_sha256"]);
         assert_eq!(hash(&manifest_bytes), capture["manifest_sha256"]);
         let font = Font::parse(&data).unwrap();
-        for page in manifest["pages"].as_array().unwrap() {
+        for (page_index, page) in manifest["pages"].as_array().unwrap().iter().enumerate() {
             pages += 1;
             let name = page["name"].as_str().unwrap();
             let record = capture["pages"]
@@ -464,7 +467,7 @@ fn zd621_point_quantization_rounding_and_spacing_match_native_canvases() {
             let mut candidate = BTreeSet::new();
             for p in page["probes"].as_array().unwrap() {
                 fields += 1;
-                assert_eq!(p["orientation"], "N");
+                let turns = "NRIB".find(p["orientation"].as_str().unwrap()).unwrap() as u8;
                 let size = Size::new(
                     p["width"].as_u64().unwrap() as u16,
                     p["height"].as_u64().unwrap() as u16,
@@ -474,7 +477,9 @@ fn zd621_point_quantization_rounding_and_spacing_match_native_canvases() {
                     .instance(
                         size,
                         Hinting::Native,
-                        Environment::Zd621V93 { quarter_turns: 0 },
+                        Environment::Zd621V93 {
+                            quarter_turns: turns,
+                        },
                     )
                     .unwrap();
                 let tx = p["tile"][0].as_i64().unwrap() as i32;
@@ -492,16 +497,18 @@ fn zd621_point_quantization_rounding_and_spacing_match_native_canvases() {
                         &instance.glyph(ch).unwrap(),
                         ch as u32,
                         advance,
-                        0,
+                        turns,
                         ScanMode::Zd621V93,
                     )
                     .unwrap();
                     for (row, bits) in glyph.bitmap.iter().enumerate() {
                         for col in 0..glyph.width as usize {
                             if bits[col / 8] & (128 >> (col % 8)) != 0 {
+                                let (dx, dy) =
+                                    [(pen, 0), (0, pen), (-pen, 0), (0, -pen)][turns as usize];
                                 let point = (
-                                    x + pen + glyph.left + col as i32,
-                                    y + glyph.top + row as i32,
+                                    x + dx + glyph.left + col as i32,
+                                    y + dy + glyph.top + row as i32,
                                 );
                                 assert!(
                                     point.0 >= tx
@@ -517,16 +524,27 @@ fn zd621_point_quantization_rounding_and_spacing_match_native_canvases() {
                     pen += advance as i32;
                 }
             }
-            assert_eq!(
-                (
-                    reference.difference(&candidate).count(),
-                    candidate.difference(&reference).count()
-                ),
-                (0, 0),
-                "{directory}/{name}"
+            let actual = (
+                reference.difference(&candidate).count(),
+                candidate.difference(&reference).count(),
+                reference.union(&candidate).count(),
             );
+            if directory == "font0-hints-20261003" {
+                // Same generated font, local versus printer. Keep residuals
+                // distinct from the larger error against resident Font 0.
+                let expected = [
+                    (0, 0, 52),
+                    (5, 4, 4934),
+                    (3, 3, 2555),
+                    (9, 12, 11798),
+                    (5, 8, 3909),
+                ];
+                assert_eq!(actual, expected[page_index], "{directory}/{name}");
+            } else {
+                assert_eq!((actual.0, actual.1), (0, 0), "{directory}/{name}");
+            }
         }
     }
-    assert_eq!(pages, 18);
-    assert_eq!(fields, 1250);
+    assert_eq!(pages, 33);
+    assert_eq!(fields, 2172);
 }

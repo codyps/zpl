@@ -84,6 +84,9 @@ scan-conversion findings, native comparisons, and verified cleanup.
 interpreter, shared device scaling/spacing rules, reserved-size accuracy, and
 the large-outline Font 0 recovery pilot.
 
+[Small-size font results](font-small-sizes.md) records reconstructed hint programs,
+independent validation, generated-font printer replay, and the CVT axis correction.
+
 ## Rendering comparisons
 
 [Binary PNG image diff](raster-diff.md) describes the Rust `png-diff` tool,

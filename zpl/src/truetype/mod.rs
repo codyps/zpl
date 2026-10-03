@@ -90,6 +90,27 @@ pub enum Environment {
 }
 
 impl Environment {
+    pub(super) fn cvt_axis(self, size: Size) -> u16 {
+        if matches!(self, Self::Zd621V93 { .. }) {
+            size.x.max(size.y)
+        } else {
+            size.y
+        }
+    }
+
+    pub(super) fn cvt_ratio(self, dots: u16, base: u16) -> f64 {
+        let ratio = self.ppem(dots, false) / self.ppem(base, false);
+        if matches!(self, Self::Zd621V93 { .. }) {
+            // Fractional RCVT witnesses on both axes: projection uses a 16.16
+            // matrix after scaling the CVT at the larger device dimension.
+            // See docs/font-small-sizes.md, "CVT scaling correction", and the
+            // cvt-axis-validation-v2-20261003 printer-capture fixtures.
+            (ratio * 65536.).round() / 65536.
+        } else {
+            ratio
+        }
+    }
+
     pub(super) fn ppem(self, dots: u16, layout: bool) -> f64 {
         if matches!(self, Self::Zd621V93 { .. }) {
             // Oct 3 scale/CVT and advance probes: nominal 203-DPI dots become

@@ -1,0 +1,3387 @@
+{
+  "printer": {
+    "model": "ZD621",
+    "serial": "D7J211001302",
+    "firmware": "V93.21.33Z",
+    "dpi": 203
+  },
+  "font_sha256": "e73fc8981f1619f82465dad1846d3258644a411512e8cc1fdfd4fe8db2401e71",
+  "manifest_sha256": "4621771126314a444b83f2f2e3a38e3ecabbdeb3c8d4b1802be00218d8800224",
+  "pages": [
+    {
+      "name": "00-state",
+      "cases": [
+        {
+          "name": "identity",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 26
+        },
+        {
+          "name": "instruction-witness",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 26
+        }
+      ],
+      "under": 0,
+      "over": 0,
+      "xor": 0,
+      "union": 52
+    },
+    {
+      "name": "cvt-13-23",
+      "cases": [
+        {
+          "name": "cvt-91-x-integer",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 0
+        },
+        {
+          "name": "cvt-91-x-fraction",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 74
+        },
+        {
+          "name": "cvt-91-y-integer",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 2
+        },
+        {
+          "name": "cvt-91-y-fraction",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 2
+        },
+        {
+          "name": "cvt-127-x-integer",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 0
+        },
+        {
+          "name": "cvt-127-x-fraction",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 102
+        },
+        {
+          "name": "cvt-127-y-integer",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 2
+        },
+        {
+          "name": "cvt-127-y-fraction",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 54
+        },
+        {
+          "name": "cvt-272-x-integer",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 2
+        },
+        {
+          "name": "cvt-272-x-fraction",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 92
+        },
+        {
+          "name": "cvt-272-y-integer",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 6
+        },
+        {
+          "name": "cvt-272-y-fraction",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 6
+        },
+        {
+          "name": "cvt-453-x-integer",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 4
+        },
+        {
+          "name": "cvt-453-x-fraction",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 110
+        },
+        {
+          "name": "cvt-453-y-integer",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 10
+        },
+        {
+          "name": "cvt-453-y-fraction",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 10
+        },
+        {
+          "name": "cvt-635-x-integer",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 8
+        },
+        {
+          "name": "cvt-635-x-fraction",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 0
+        },
+        {
+          "name": "cvt-635-y-integer",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 14
+        },
+        {
+          "name": "cvt-635-y-fraction",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 14
+        },
+        {
+          "name": "cvt-816-x-integer",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 10
+        },
+        {
+          "name": "cvt-816-x-fraction",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 18
+        },
+        {
+          "name": "cvt-816-y-integer",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 18
+        },
+        {
+          "name": "cvt-816-y-fraction",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 18
+        },
+        {
+          "name": "cvt-896-x-integer",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 10
+        },
+        {
+          "name": "cvt-896-x-fraction",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 82
+        },
+        {
+          "name": "cvt-896-y-integer",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 20
+        },
+        {
+          "name": "cvt-896-y-fraction",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 4
+        },
+        {
+          "name": "cvt-1077-x-integer",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 12
+        },
+        {
+          "name": "cvt-1077-x-fraction",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 100
+        },
+        {
+          "name": "cvt-1077-y-integer",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 24
+        },
+        {
+          "name": "cvt-1077-y-fraction",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 8
+        },
+        {
+          "name": "cvt-1360-x-integer",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 16
+        },
+        {
+          "name": "cvt-1360-x-fraction",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 72
+        },
+        {
+          "name": "cvt-1360-y-integer",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 30
+        },
+        {
+          "name": "cvt-1360-y-fraction",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 30
+        },
+        {
+          "name": "cvt-1536-x-integer",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 18
+        },
+        {
+          "name": "cvt-1536-x-fraction",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 84
+        },
+        {
+          "name": "cvt-1536-y-integer",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 34
+        },
+        {
+          "name": "cvt-1536-y-fraction",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 26
+        },
+        {
+          "name": "cvt-1685-x-integer",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 20
+        },
+        {
+          "name": "cvt-1685-x-fraction",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 76
+        },
+        {
+          "name": "cvt-1685-y-integer",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 36
+        },
+        {
+          "name": "cvt-1685-y-fraction",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 110
+        },
+        {
+          "name": "cvt-1730-x-integer",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 20
+        },
+        {
+          "name": "cvt-1730-x-fraction",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 112
+        },
+        {
+          "name": "cvt-1730-y-integer",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 38
+        },
+        {
+          "name": "cvt-1730-y-fraction",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 48
+        },
+        {
+          "name": "cvt-1775-x-integer",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 22
+        },
+        {
+          "name": "cvt-1775-x-fraction",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 20
+        },
+        {
+          "name": "cvt-1775-y-integer",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 38
+        },
+        {
+          "name": "cvt-1775-y-fraction",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 112
+        },
+        {
+          "name": "cvt-1821-x-integer",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 22
+        },
+        {
+          "name": "cvt-1821-x-fraction",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 58
+        },
+        {
+          "name": "cvt-1821-y-integer",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 40
+        },
+        {
+          "name": "cvt-1821-y-fraction",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 50
+        },
+        {
+          "name": "cvt-1866-x-integer",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 22
+        },
+        {
+          "name": "cvt-1866-x-fraction",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 94
+        },
+        {
+          "name": "cvt-1866-y-integer",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 40
+        },
+        {
+          "name": "cvt-1866-y-fraction",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 114
+        },
+        {
+          "name": "cvt-1911-x-integer",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 24
+        },
+        {
+          "name": "cvt-1911-x-fraction",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 2
+        },
+        {
+          "name": "cvt-1911-y-integer",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 42
+        },
+        {
+          "name": "cvt-1911-y-fraction",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 50
+        },
+        {
+          "name": "cvt-1944-x-integer",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 24
+        },
+        {
+          "name": "cvt-1944-x-fraction",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 28
+        },
+        {
+          "name": "cvt-1944-y-integer",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 42
+        },
+        {
+          "name": "cvt-1944-y-fraction",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 98
+        },
+        {
+          "name": "cvt-1957-x-integer",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 24
+        },
+        {
+          "name": "cvt-1957-x-fraction",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 38
+        },
+        {
+          "name": "cvt-1957-y-integer",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 42
+        },
+        {
+          "name": "cvt-1957-y-fraction",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 116
+        },
+        {
+          "name": "cvt-1989-x-integer",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 24
+        },
+        {
+          "name": "cvt-1989-x-fraction",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 64
+        },
+        {
+          "name": "cvt-1989-y-integer",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 44
+        },
+        {
+          "name": "cvt-1989-y-fraction",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 34
+        },
+        {
+          "name": "cvt-2002-x-integer",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 24
+        },
+        {
+          "name": "cvt-2002-x-fraction",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 76
+        },
+        {
+          "name": "cvt-2002-y-integer",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 44
+        },
+        {
+          "name": "cvt-2002-y-fraction",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 54
+        },
+        {
+          "name": "cvt-2034-x-integer",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 24
+        },
+        {
+          "name": "cvt-2034-x-fraction",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 102
+        },
+        {
+          "name": "cvt-2034-y-integer",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 44
+        },
+        {
+          "name": "cvt-2034-y-fraction",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 100
+        },
+        {
+          "name": "cvt-2048-x-integer",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 24
+        },
+        {
+          "name": "cvt-2048-x-fraction",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 112
+        },
+        {
+          "name": "cvt-2048-y-integer",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 44
+        },
+        {
+          "name": "cvt-2048-y-fraction",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 120
+        },
+        {
+          "name": "cvt-2080-x-integer",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 26
+        },
+        {
+          "name": "cvt-2080-x-fraction",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 10
+        },
+        {
+          "name": "cvt-2080-y-integer",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 46
+        },
+        {
+          "name": "cvt-2080-y-fraction",
+          "width": 13,
+          "height": 23,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 36
+        }
+      ],
+      "under": 0,
+      "over": 0,
+      "xor": 0,
+      "union": 3820
+    },
+    {
+      "name": "cvt-23-13",
+      "cases": [
+        {
+          "name": "cvt-91-x-integer",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 2
+        },
+        {
+          "name": "cvt-91-x-fraction",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 2
+        },
+        {
+          "name": "cvt-91-y-integer",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 0
+        },
+        {
+          "name": "cvt-91-y-fraction",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 74
+        },
+        {
+          "name": "cvt-127-x-integer",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 2
+        },
+        {
+          "name": "cvt-127-x-fraction",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 54
+        },
+        {
+          "name": "cvt-127-y-integer",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 0
+        },
+        {
+          "name": "cvt-127-y-fraction",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 102
+        },
+        {
+          "name": "cvt-272-x-integer",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 6
+        },
+        {
+          "name": "cvt-272-x-fraction",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 6
+        },
+        {
+          "name": "cvt-272-y-integer",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 2
+        },
+        {
+          "name": "cvt-272-y-fraction",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 92
+        },
+        {
+          "name": "cvt-453-x-integer",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 10
+        },
+        {
+          "name": "cvt-453-x-fraction",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 10
+        },
+        {
+          "name": "cvt-453-y-integer",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 4
+        },
+        {
+          "name": "cvt-453-y-fraction",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 110
+        },
+        {
+          "name": "cvt-635-x-integer",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 14
+        },
+        {
+          "name": "cvt-635-x-fraction",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 14
+        },
+        {
+          "name": "cvt-635-y-integer",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 8
+        },
+        {
+          "name": "cvt-635-y-fraction",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 0
+        },
+        {
+          "name": "cvt-816-x-integer",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 18
+        },
+        {
+          "name": "cvt-816-x-fraction",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 18
+        },
+        {
+          "name": "cvt-816-y-integer",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 10
+        },
+        {
+          "name": "cvt-816-y-fraction",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 18
+        },
+        {
+          "name": "cvt-896-x-integer",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 20
+        },
+        {
+          "name": "cvt-896-x-fraction",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 4
+        },
+        {
+          "name": "cvt-896-y-integer",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 10
+        },
+        {
+          "name": "cvt-896-y-fraction",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 82
+        },
+        {
+          "name": "cvt-1077-x-integer",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 24
+        },
+        {
+          "name": "cvt-1077-x-fraction",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 8
+        },
+        {
+          "name": "cvt-1077-y-integer",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 12
+        },
+        {
+          "name": "cvt-1077-y-fraction",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 100
+        },
+        {
+          "name": "cvt-1360-x-integer",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 30
+        },
+        {
+          "name": "cvt-1360-x-fraction",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 30
+        },
+        {
+          "name": "cvt-1360-y-integer",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 16
+        },
+        {
+          "name": "cvt-1360-y-fraction",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 72
+        },
+        {
+          "name": "cvt-1536-x-integer",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 34
+        },
+        {
+          "name": "cvt-1536-x-fraction",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 26
+        },
+        {
+          "name": "cvt-1536-y-integer",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 18
+        },
+        {
+          "name": "cvt-1536-y-fraction",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 84
+        },
+        {
+          "name": "cvt-1685-x-integer",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 36
+        },
+        {
+          "name": "cvt-1685-x-fraction",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 110
+        },
+        {
+          "name": "cvt-1685-y-integer",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 20
+        },
+        {
+          "name": "cvt-1685-y-fraction",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 76
+        },
+        {
+          "name": "cvt-1730-x-integer",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 38
+        },
+        {
+          "name": "cvt-1730-x-fraction",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 48
+        },
+        {
+          "name": "cvt-1730-y-integer",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 20
+        },
+        {
+          "name": "cvt-1730-y-fraction",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 112
+        },
+        {
+          "name": "cvt-1775-x-integer",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 38
+        },
+        {
+          "name": "cvt-1775-x-fraction",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 112
+        },
+        {
+          "name": "cvt-1775-y-integer",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 22
+        },
+        {
+          "name": "cvt-1775-y-fraction",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 20
+        },
+        {
+          "name": "cvt-1821-x-integer",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 40
+        },
+        {
+          "name": "cvt-1821-x-fraction",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 50
+        },
+        {
+          "name": "cvt-1821-y-integer",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 22
+        },
+        {
+          "name": "cvt-1821-y-fraction",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 58
+        },
+        {
+          "name": "cvt-1866-x-integer",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 40
+        },
+        {
+          "name": "cvt-1866-x-fraction",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 114
+        },
+        {
+          "name": "cvt-1866-y-integer",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 22
+        },
+        {
+          "name": "cvt-1866-y-fraction",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 94
+        },
+        {
+          "name": "cvt-1911-x-integer",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 42
+        },
+        {
+          "name": "cvt-1911-x-fraction",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 50
+        },
+        {
+          "name": "cvt-1911-y-integer",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 24
+        },
+        {
+          "name": "cvt-1911-y-fraction",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 2
+        },
+        {
+          "name": "cvt-1944-x-integer",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 42
+        },
+        {
+          "name": "cvt-1944-x-fraction",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 98
+        },
+        {
+          "name": "cvt-1944-y-integer",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 24
+        },
+        {
+          "name": "cvt-1944-y-fraction",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 28
+        },
+        {
+          "name": "cvt-1957-x-integer",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 42
+        },
+        {
+          "name": "cvt-1957-x-fraction",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 116
+        },
+        {
+          "name": "cvt-1957-y-integer",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 24
+        },
+        {
+          "name": "cvt-1957-y-fraction",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 38
+        },
+        {
+          "name": "cvt-1989-x-integer",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 44
+        },
+        {
+          "name": "cvt-1989-x-fraction",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 34
+        },
+        {
+          "name": "cvt-1989-y-integer",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 24
+        },
+        {
+          "name": "cvt-1989-y-fraction",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 64
+        },
+        {
+          "name": "cvt-2002-x-integer",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 44
+        },
+        {
+          "name": "cvt-2002-x-fraction",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 54
+        },
+        {
+          "name": "cvt-2002-y-integer",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 24
+        },
+        {
+          "name": "cvt-2002-y-fraction",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 76
+        },
+        {
+          "name": "cvt-2034-x-integer",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 44
+        },
+        {
+          "name": "cvt-2034-x-fraction",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 100
+        },
+        {
+          "name": "cvt-2034-y-integer",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 24
+        },
+        {
+          "name": "cvt-2034-y-fraction",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 102
+        },
+        {
+          "name": "cvt-2048-x-integer",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 44
+        },
+        {
+          "name": "cvt-2048-x-fraction",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 120
+        },
+        {
+          "name": "cvt-2048-y-integer",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 24
+        },
+        {
+          "name": "cvt-2048-y-fraction",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 112
+        },
+        {
+          "name": "cvt-2080-x-integer",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 46
+        },
+        {
+          "name": "cvt-2080-x-fraction",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 36
+        },
+        {
+          "name": "cvt-2080-y-integer",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 26
+        },
+        {
+          "name": "cvt-2080-y-fraction",
+          "width": 23,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 10
+        }
+      ],
+      "under": 0,
+      "over": 0,
+      "xor": 0,
+      "union": 3820
+    },
+    {
+      "name": "cvt-17-29",
+      "cases": [
+        {
+          "name": "cvt-91-x-integer",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 0
+        },
+        {
+          "name": "cvt-91-x-fraction",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 96
+        },
+        {
+          "name": "cvt-91-y-integer",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 2
+        },
+        {
+          "name": "cvt-91-y-fraction",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 36
+        },
+        {
+          "name": "cvt-127-x-integer",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 2
+        },
+        {
+          "name": "cvt-127-x-fraction",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 6
+        },
+        {
+          "name": "cvt-127-y-integer",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 2
+        },
+        {
+          "name": "cvt-127-y-fraction",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 102
+        },
+        {
+          "name": "cvt-272-x-integer",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 4
+        },
+        {
+          "name": "cvt-272-x-fraction",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 32
+        },
+        {
+          "name": "cvt-272-y-integer",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 6
+        },
+        {
+          "name": "cvt-272-y-fraction",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 108
+        },
+        {
+          "name": "cvt-453-x-integer",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 6
+        },
+        {
+          "name": "cvt-453-x-fraction",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 96
+        },
+        {
+          "name": "cvt-453-y-integer",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 12
+        },
+        {
+          "name": "cvt-453-y-fraction",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 52
+        },
+        {
+          "name": "cvt-635-x-integer",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 10
+        },
+        {
+          "name": "cvt-635-x-fraction",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 32
+        },
+        {
+          "name": "cvt-635-y-integer",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 16
+        },
+        {
+          "name": "cvt-635-y-fraction",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 124
+        },
+        {
+          "name": "cvt-816-x-integer",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 12
+        },
+        {
+          "name": "cvt-816-x-fraction",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 96
+        },
+        {
+          "name": "cvt-816-y-integer",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 22
+        },
+        {
+          "name": "cvt-816-y-fraction",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 68
+        },
+        {
+          "name": "cvt-896-x-integer",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 14
+        },
+        {
+          "name": "cvt-896-x-fraction",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 52
+        },
+        {
+          "name": "cvt-896-y-integer",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 24
+        },
+        {
+          "name": "cvt-896-y-fraction",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 84
+        },
+        {
+          "name": "cvt-1077-x-integer",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 16
+        },
+        {
+          "name": "cvt-1077-x-fraction",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 116
+        },
+        {
+          "name": "cvt-1077-y-integer",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 30
+        },
+        {
+          "name": "cvt-1077-y-fraction",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 28
+        },
+        {
+          "name": "cvt-1360-x-integer",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 22
+        },
+        {
+          "name": "cvt-1360-x-fraction",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 30
+        },
+        {
+          "name": "cvt-1360-y-integer",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 38
+        },
+        {
+          "name": "cvt-1360-y-fraction",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 26
+        },
+        {
+          "name": "cvt-1536-x-integer",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 24
+        },
+        {
+          "name": "cvt-1536-x-fraction",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 90
+        },
+        {
+          "name": "cvt-1536-y-integer",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 42
+        },
+        {
+          "name": "cvt-1536-y-fraction",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 90
+        },
+        {
+          "name": "cvt-1685-x-integer",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 26
+        },
+        {
+          "name": "cvt-1685-x-fraction",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 120
+        },
+        {
+          "name": "cvt-1685-y-integer",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 46
+        },
+        {
+          "name": "cvt-1685-y-fraction",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 102
+        },
+        {
+          "name": "cvt-1730-x-integer",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 28
+        },
+        {
+          "name": "cvt-1730-x-fraction",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 40
+        },
+        {
+          "name": "cvt-1730-y-integer",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 48
+        },
+        {
+          "name": "cvt-1730-y-fraction",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 56
+        },
+        {
+          "name": "cvt-1775-x-integer",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 28
+        },
+        {
+          "name": "cvt-1775-x-fraction",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 88
+        },
+        {
+          "name": "cvt-1775-y-integer",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 50
+        },
+        {
+          "name": "cvt-1775-y-fraction",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 10
+        },
+        {
+          "name": "cvt-1821-x-integer",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 30
+        },
+        {
+          "name": "cvt-1821-x-fraction",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 8
+        },
+        {
+          "name": "cvt-1821-y-integer",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 50
+        },
+        {
+          "name": "cvt-1821-y-fraction",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 92
+        },
+        {
+          "name": "cvt-1866-x-integer",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 30
+        },
+        {
+          "name": "cvt-1866-x-fraction",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 56
+        },
+        {
+          "name": "cvt-1866-y-integer",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 52
+        },
+        {
+          "name": "cvt-1866-y-fraction",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 46
+        },
+        {
+          "name": "cvt-1911-x-integer",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 30
+        },
+        {
+          "name": "cvt-1911-x-fraction",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 104
+        },
+        {
+          "name": "cvt-1911-y-integer",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 54
+        },
+        {
+          "name": "cvt-1911-y-fraction",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 0
+        },
+        {
+          "name": "cvt-1944-x-integer",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 32
+        },
+        {
+          "name": "cvt-1944-x-fraction",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 10
+        },
+        {
+          "name": "cvt-1944-y-integer",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 54
+        },
+        {
+          "name": "cvt-1944-y-fraction",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 58
+        },
+        {
+          "name": "cvt-1957-x-integer",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 32
+        },
+        {
+          "name": "cvt-1957-x-fraction",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 24
+        },
+        {
+          "name": "cvt-1957-y-integer",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 54
+        },
+        {
+          "name": "cvt-1957-y-fraction",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 82
+        },
+        {
+          "name": "cvt-1989-x-integer",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 32
+        },
+        {
+          "name": "cvt-1989-x-fraction",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 58
+        },
+        {
+          "name": "cvt-1989-y-integer",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 56
+        },
+        {
+          "name": "cvt-1989-y-fraction",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 12
+        },
+        {
+          "name": "cvt-2002-x-integer",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 32
+        },
+        {
+          "name": "cvt-2002-x-fraction",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 72
+        },
+        {
+          "name": "cvt-2002-y-integer",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 56
+        },
+        {
+          "name": "cvt-2002-y-fraction",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 36
+        },
+        {
+          "name": "cvt-2034-x-integer",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 32
+        },
+        {
+          "name": "cvt-2034-x-fraction",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 106
+        },
+        {
+          "name": "cvt-2034-y-integer",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 56
+        },
+        {
+          "name": "cvt-2034-y-fraction",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 94
+        },
+        {
+          "name": "cvt-2048-x-integer",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 32
+        },
+        {
+          "name": "cvt-2048-x-fraction",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 120
+        },
+        {
+          "name": "cvt-2048-y-integer",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 56
+        },
+        {
+          "name": "cvt-2048-y-fraction",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 118
+        },
+        {
+          "name": "cvt-2080-x-integer",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 34
+        },
+        {
+          "name": "cvt-2080-x-fraction",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 26
+        },
+        {
+          "name": "cvt-2080-y-integer",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 58
+        },
+        {
+          "name": "cvt-2080-y-fraction",
+          "width": 17,
+          "height": 29,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 48
+        }
+      ],
+      "under": 0,
+      "over": 0,
+      "xor": 0,
+      "union": 4342
+    },
+    {
+      "name": "cvt-29-17",
+      "cases": [
+        {
+          "name": "cvt-91-x-integer",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 2
+        },
+        {
+          "name": "cvt-91-x-fraction",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 36
+        },
+        {
+          "name": "cvt-91-y-integer",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 0
+        },
+        {
+          "name": "cvt-91-y-fraction",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 96
+        },
+        {
+          "name": "cvt-127-x-integer",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 2
+        },
+        {
+          "name": "cvt-127-x-fraction",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 102
+        },
+        {
+          "name": "cvt-127-y-integer",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 2
+        },
+        {
+          "name": "cvt-127-y-fraction",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 6
+        },
+        {
+          "name": "cvt-272-x-integer",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 6
+        },
+        {
+          "name": "cvt-272-x-fraction",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 108
+        },
+        {
+          "name": "cvt-272-y-integer",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 4
+        },
+        {
+          "name": "cvt-272-y-fraction",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 32
+        },
+        {
+          "name": "cvt-453-x-integer",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 12
+        },
+        {
+          "name": "cvt-453-x-fraction",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 52
+        },
+        {
+          "name": "cvt-453-y-integer",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 6
+        },
+        {
+          "name": "cvt-453-y-fraction",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 96
+        },
+        {
+          "name": "cvt-635-x-integer",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 16
+        },
+        {
+          "name": "cvt-635-x-fraction",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 124
+        },
+        {
+          "name": "cvt-635-y-integer",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 10
+        },
+        {
+          "name": "cvt-635-y-fraction",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 32
+        },
+        {
+          "name": "cvt-816-x-integer",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 22
+        },
+        {
+          "name": "cvt-816-x-fraction",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 68
+        },
+        {
+          "name": "cvt-816-y-integer",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 12
+        },
+        {
+          "name": "cvt-816-y-fraction",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 96
+        },
+        {
+          "name": "cvt-896-x-integer",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 24
+        },
+        {
+          "name": "cvt-896-x-fraction",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 84
+        },
+        {
+          "name": "cvt-896-y-integer",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 14
+        },
+        {
+          "name": "cvt-896-y-fraction",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 52
+        },
+        {
+          "name": "cvt-1077-x-integer",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 30
+        },
+        {
+          "name": "cvt-1077-x-fraction",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 28
+        },
+        {
+          "name": "cvt-1077-y-integer",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 16
+        },
+        {
+          "name": "cvt-1077-y-fraction",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 116
+        },
+        {
+          "name": "cvt-1360-x-integer",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 38
+        },
+        {
+          "name": "cvt-1360-x-fraction",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 26
+        },
+        {
+          "name": "cvt-1360-y-integer",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 22
+        },
+        {
+          "name": "cvt-1360-y-fraction",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 30
+        },
+        {
+          "name": "cvt-1536-x-integer",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 42
+        },
+        {
+          "name": "cvt-1536-x-fraction",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 90
+        },
+        {
+          "name": "cvt-1536-y-integer",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 24
+        },
+        {
+          "name": "cvt-1536-y-fraction",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 90
+        },
+        {
+          "name": "cvt-1685-x-integer",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 46
+        },
+        {
+          "name": "cvt-1685-x-fraction",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 102
+        },
+        {
+          "name": "cvt-1685-y-integer",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 26
+        },
+        {
+          "name": "cvt-1685-y-fraction",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 120
+        },
+        {
+          "name": "cvt-1730-x-integer",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 48
+        },
+        {
+          "name": "cvt-1730-x-fraction",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 56
+        },
+        {
+          "name": "cvt-1730-y-integer",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 28
+        },
+        {
+          "name": "cvt-1730-y-fraction",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 40
+        },
+        {
+          "name": "cvt-1775-x-integer",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 50
+        },
+        {
+          "name": "cvt-1775-x-fraction",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 10
+        },
+        {
+          "name": "cvt-1775-y-integer",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 28
+        },
+        {
+          "name": "cvt-1775-y-fraction",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 88
+        },
+        {
+          "name": "cvt-1821-x-integer",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 50
+        },
+        {
+          "name": "cvt-1821-x-fraction",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 92
+        },
+        {
+          "name": "cvt-1821-y-integer",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 30
+        },
+        {
+          "name": "cvt-1821-y-fraction",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 8
+        },
+        {
+          "name": "cvt-1866-x-integer",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 52
+        },
+        {
+          "name": "cvt-1866-x-fraction",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 46
+        },
+        {
+          "name": "cvt-1866-y-integer",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 30
+        },
+        {
+          "name": "cvt-1866-y-fraction",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 56
+        },
+        {
+          "name": "cvt-1911-x-integer",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 54
+        },
+        {
+          "name": "cvt-1911-x-fraction",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 0
+        },
+        {
+          "name": "cvt-1911-y-integer",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 30
+        },
+        {
+          "name": "cvt-1911-y-fraction",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 104
+        },
+        {
+          "name": "cvt-1944-x-integer",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 54
+        },
+        {
+          "name": "cvt-1944-x-fraction",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 58
+        },
+        {
+          "name": "cvt-1944-y-integer",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 32
+        },
+        {
+          "name": "cvt-1944-y-fraction",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 10
+        },
+        {
+          "name": "cvt-1957-x-integer",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 54
+        },
+        {
+          "name": "cvt-1957-x-fraction",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 82
+        },
+        {
+          "name": "cvt-1957-y-integer",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 32
+        },
+        {
+          "name": "cvt-1957-y-fraction",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 24
+        },
+        {
+          "name": "cvt-1989-x-integer",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 56
+        },
+        {
+          "name": "cvt-1989-x-fraction",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 12
+        },
+        {
+          "name": "cvt-1989-y-integer",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 32
+        },
+        {
+          "name": "cvt-1989-y-fraction",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 58
+        },
+        {
+          "name": "cvt-2002-x-integer",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 56
+        },
+        {
+          "name": "cvt-2002-x-fraction",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 36
+        },
+        {
+          "name": "cvt-2002-y-integer",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 32
+        },
+        {
+          "name": "cvt-2002-y-fraction",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 72
+        },
+        {
+          "name": "cvt-2034-x-integer",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 56
+        },
+        {
+          "name": "cvt-2034-x-fraction",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 94
+        },
+        {
+          "name": "cvt-2034-y-integer",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 32
+        },
+        {
+          "name": "cvt-2034-y-fraction",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 106
+        },
+        {
+          "name": "cvt-2048-x-integer",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 56
+        },
+        {
+          "name": "cvt-2048-x-fraction",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 118
+        },
+        {
+          "name": "cvt-2048-y-integer",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 32
+        },
+        {
+          "name": "cvt-2048-y-fraction",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 120
+        },
+        {
+          "name": "cvt-2080-x-integer",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 58
+        },
+        {
+          "name": "cvt-2080-x-fraction",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 48
+        },
+        {
+          "name": "cvt-2080-y-integer",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 34
+        },
+        {
+          "name": "cvt-2080-y-fraction",
+          "width": 29,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 26
+        }
+      ],
+      "under": 0,
+      "over": 0,
+      "xor": 0,
+      "union": 4342
+    }
+  ]
+}

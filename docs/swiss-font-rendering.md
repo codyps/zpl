@@ -12,6 +12,9 @@ Swiss is Swis721 BT Roman,
 `da20a4d8c58b3ed09fb9177e09378bd1b824894751add6c1267c64d58f026456`.
 External font bytes and Swiss outlines are not bundled in this repository.
 
+The [small-size follow-up](font-small-sizes.md) adds CVT axis calibration and
+reconstructed Font 0 hint programs, with mixed small-size validation results.
+
 ## What changed
 
 [`zpl::truetype`](../zpl/src/truetype/mod.rs) loads quadratic SFNT outlines and

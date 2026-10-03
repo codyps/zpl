@@ -59,9 +59,9 @@ def prepare(root):
     )
 
 
-def capture(root, host):
+def capture(root, host, schema="font0-outline-pilot-v1"):
     manifest = json.loads((root / "manifest.json").read_text())
-    assert manifest["schema"] == "font0-outline-pilot-v1"
+    assert manifest["schema"] == schema
     output = root / "zd621"
     output.mkdir(exist_ok=False)
     lock = Path("/tmp/zpl-font-probe-D7J211001302.lock")
