@@ -5,6 +5,7 @@
 //! In the bundled guide: ^FD/^FH pp. 190/193, ^GF p. 215, ^MC p. 300,
 //! ^WD p. 361, ^XF/^XG pp. 372–373. Framing success is not authorization.
 
+use serde::Deserialize;
 use std::{error::Error, fmt};
 use zpl::parse::{Element, ParseContext};
 
@@ -21,7 +22,16 @@ impl fmt::Display for ValidationError {
 }
 impl Error for ValidationError {}
 
-/// Only this privately constructed type can cross the proxy's cache/printer boundary.
+/// Operator-selected policy for a named preview endpoint. Requests cannot override it.
+#[derive(Clone, Copy, Debug, Default, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "snake_case")]
+pub enum AdmissionPolicy {
+    #[default]
+    Restricted,
+    Unrestricted,
+}
+
+/// A restricted rendering stream admitted independently of caching and recovery.
 pub struct RenderZpl(String);
 
 impl RenderZpl {
@@ -111,12 +121,22 @@ impl RenderZpl {
                     }
                     field = true;
                 }
-                b"CI" if matches!(data, b"0" | b"27" | b"28") => {}
                 _ => {
-                    let Some(schema) = schema(code) else {
+                    if !render_command(code) {
                         return Err(fail(offset, "command is not allowed for rendering"));
-                    };
-                    validate_parameters(data, schema).map_err(|reason| fail(offset, reason))?;
+                    }
+                    // Validate the command boundary, not firmware-specific operand
+                    // ranges, enum values or counts. No embedded control/SGD lines
+                    // or prefixes swallowed by a special parser rule (notably BX).
+                    if data
+                        .iter()
+                        .any(|b| b.is_ascii_control() || matches!(b, b'^' | b'~'))
+                    {
+                        return Err(fail(
+                            offset,
+                            "control characters or prefixes in command parameters",
+                        ));
+                    }
                     if matches!(code, b"GB" | b"GC" | b"GD" | b"GE") {
                         if field {
                             return Err(fail(offset, "field must end with ^FS"));
@@ -139,117 +159,77 @@ fn whitespace(bytes: &[u8]) -> bool {
         .all(|b| matches!(b, b' ' | b'\r' | b'\n' | b'\t'))
 }
 
-#[derive(Clone, Copy)]
-enum Parameter {
-    Integer(i32, i32),
-    Choice(&'static [u8]),
-    Ratio,
-}
-use Parameter::{Choice as C, Integer as I, Ratio};
-const DOTS: Parameter = I(0, 32000);
-const ORIENTATION: Parameter = C(b"NRIB");
-const YES_NO: Parameter = C(b"YN");
-const COLOR: Parameter = C(b"BW");
-const FONT: Parameter = C(b"0ABCDEFGH");
-
-// This positive list is deliberately independent of the local renderer. In
-// particular, rendering stored objects (^XG/^XF/^IM/^IL/^A@/^WD) is forbidden.
-// New mnemonics/parameter modes need an explicit policy review, not a wildcard.
-fn schema(code: &[u8]) -> Option<&'static [Parameter]> {
-    Some(match code {
-        b"A0" | b"AA" | b"AB" | b"AC" | b"AD" | b"AE" | b"AF" | b"AG" | b"AH" => {
-            &[ORIENTATION, DOTS, DOTS]
-        }
-        b"CF" => &[FONT, DOTS, DOTS],
-        b"FO" | b"FT" => &[DOTS, DOTS, I(0, 2)],
-        b"LH" => &[DOTS, DOTS],
-        b"PW" | b"LL" => &[I(1, 32000)],
-        b"LS" | b"LT" => &[I(-32000, 32000)],
-        b"FW" => &[ORIENTATION, I(0, 2)],
-        b"PO" => &[C(b"NI")],
-        b"PM" | b"LR" => &[YES_NO],
-        b"FR" => &[],
-        b"FB" => &[DOTS, I(1, 9999), I(-9999, 9999), C(b"LCRJ"), DOTS],
-        b"FP" => &[C(b"HV"), I(0, 9999)],
-        b"GB" => &[DOTS, DOTS, DOTS, COLOR, I(0, 8)],
-        b"GC" => &[DOTS, DOTS, COLOR],
-        b"GD" => &[DOTS, DOTS, DOTS, COLOR, C(b"LR")],
-        b"GE" => &[DOTS, DOTS, DOTS, COLOR],
-        b"GS" => &[ORIENTATION, DOTS, DOTS],
-        b"BY" => &[I(1, 10), Ratio, I(1, 32000)],
-        b"BC" => &[ORIENTATION, DOTS, YES_NO, YES_NO, YES_NO, C(b"NUAD")],
-        b"B1" | b"B3" => &[ORIENTATION, YES_NO, DOTS, YES_NO, YES_NO],
-        b"B2" => &[ORIENTATION, DOTS, YES_NO, YES_NO, YES_NO],
-        b"B8" | b"BE" => &[ORIENTATION, DOTS, YES_NO, YES_NO],
-        b"BU" | b"B9" => &[ORIENTATION, DOTS, YES_NO, YES_NO, YES_NO],
-        b"BA" => &[ORIENTATION, DOTS, YES_NO, YES_NO, YES_NO],
-        b"B7" => &[
-            ORIENTATION,
-            I(1, 32000),
-            I(0, 8),
-            I(1, 30),
-            I(3, 90),
-            YES_NO,
-        ],
-        b"BQ" => &[ORIENTATION, I(1, 2), I(1, 10), C(b"HQLM"), I(0, 7)],
-        b"BX" => &[
-            ORIENTATION,
-            I(1, 32000),
-            I(0, 200),
-            I(0, 144),
-            I(0, 144),
-            I(1, 6),
-            C(b"_"),
-            I(1, 2),
-        ],
-        _ => return None,
-    })
-}
-
-fn validate_parameters(data: &[u8], schema: &[Parameter]) -> Result<(), &'static str> {
-    if data.is_empty() {
-        return Ok(()); // Omitted parameters use the documented command defaults.
-    }
-    let parameters: Vec<_> = data.split(|b| *b == b',').collect();
-    if parameters.len() > schema.len() {
-        return Err("too many command parameters");
-    }
-    for (value, kind) in parameters.iter().zip(schema) {
-        if value.is_empty() {
-            continue;
-        }
-        let valid = match kind {
-            I(min, max) => {
-                let digits = value.strip_prefix(b"-").unwrap_or(value);
-                !digits.is_empty()
-                    && digits.iter().all(u8::is_ascii_digit)
-                    && std::str::from_utf8(value)
-                        .ok()
-                        .and_then(|v| v.parse::<i32>().ok())
-                        .is_some_and(|v| (*min..=*max).contains(&v))
-            }
-            C(choices) => value.len() == 1 && choices.contains(&value[0]),
-            Ratio => matches!(
-                *value,
-                b"2" | b"3"
-                    | b"2.0"
-                    | b"2.1"
-                    | b"2.2"
-                    | b"2.3"
-                    | b"2.4"
-                    | b"2.5"
-                    | b"2.6"
-                    | b"2.7"
-                    | b"2.8"
-                    | b"2.9"
-                    | b"3.0"
-            ),
-        };
-        if !valid {
-            return Err("invalid or unsupported command parameter");
-        }
-    }
-    Ok(())
+// Positive list independent of the local renderer. Zebra Programming Guide:
+// ^A/^A@ pp.60-62; barcodes pp.64-150; ^CI pp.155-159; fields pp.186-209;
+// ^IL/^IM pp.247-248; ^PA p.315; ^SF/^SN pp.335/341; ^TB p.356; ^XG p.373.
+// Stored-format recall (^XF) can execute commands and is not a read-only image.
+fn render_command(code: &[u8]) -> bool {
+    matches!(code, [b'A', b'0'..=b'9' | b'A'..=b'Z' | b'@'])
+        || matches!(
+            code,
+            b"CF"
+                | b"CI"
+                | b"FO"
+                | b"FT"
+                | b"FM"
+                | b"LH"
+                | b"PW"
+                | b"LL"
+                | b"LS"
+                | b"LT"
+                | b"FW"
+                | b"PO"
+                | b"PM"
+                | b"LR"
+                | b"FR"
+                | b"FB"
+                | b"FP"
+                | b"PA"
+                | b"TB"
+                | b"FC"
+                | b"FE"
+                | b"FN"
+                | b"SN"
+                | b"SF"
+                | b"GB"
+                | b"GC"
+                | b"GD"
+                | b"GE"
+                | b"GS"
+                | b"XG"
+                | b"IL"
+                | b"IM"
+                | b"BY"
+                | b"B0"
+                | b"B1"
+                | b"B2"
+                | b"B3"
+                | b"B4"
+                | b"B5"
+                | b"B7"
+                | b"B8"
+                | b"B9"
+                | b"BA"
+                | b"BB"
+                | b"BC"
+                | b"BD"
+                | b"BE"
+                | b"BF"
+                | b"BI"
+                | b"BJ"
+                | b"BK"
+                | b"BL"
+                | b"BM"
+                | b"BO"
+                | b"BP"
+                | b"BQ"
+                | b"BR"
+                | b"BS"
+                | b"BT"
+                | b"BU"
+                | b"BX"
+                | b"BZ"
+        )
 }
 
 fn validate_hex(mut data: &[u8], indicator: Option<u8>) -> Result<(), &'static str> {

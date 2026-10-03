@@ -1,7 +1,8 @@
 # Printer proxy cache and recovery
 
 The proxy exclusively owns configured printers. Public clients select a configured
-`name`; they cannot submit a printer address, management command, or reset request.
+`name`; they cannot submit a printer address. Each endpoint has an operator-selected
+`restricted` or `unrestricted` ZPL admission policy.
 `GET /api/printers` returns the names only. Submit JSON, URL-encoded forms, or
 multipart forms to `POST /api/printers/{name}/preview`, with `zpl` and optional
 `refresh`. The bundled page lists the same names.
@@ -31,10 +32,17 @@ Printer configuration is a map keyed by public printer name (there is no nested
     "url": "http://printer-two.local/",
     "control_address": "printer-two.local:9100",
     "width": 832,
-    "height": 1218
+    "height": 1218,
+    "admission": "unrestricted"
   }
 }
 ```
+
+`admission` defaults to `restricted`. Set it to `unrestricted` to forward arbitrary
+ZPL unchanged through that printer's preview service. This endpoint skips ZPL
+validation and defaults injected into user input. Both policies retain caching,
+retries, control previews, automatic resets/recovery, history and identity checks. Protect endpoint access in
+your reverse proxy. See the [policy details](proxy-validation.md).
 
 Names contain 1–80 ASCII letters, digits, dots, underscores or hyphens and are
 case-sensitive. Width and height are explicit default canvas sizes in native dots;
@@ -52,7 +60,7 @@ The named-printer configuration is required, including for a single printer.
 
 ## State, provenance, and cache
 
-The [admission policy](proxy-validation.md) runs before database or printer access,
+For restricted endpoints, the [admission policy](proxy-validation.md) runs before database or printer access,
 including cache hits and refresh. Accepted input/request rows are persisted before
 identity lookup. SGD `device.unique_id` and `appl.name` are read before cache lookup;
 if identity is unavailable, the request fails closed without issuing a preview.
@@ -62,9 +70,9 @@ No label preview/cache hit proceeds until a fresh identity is available. If the
 printer has never been identified, serial/firmware remain unknown, never invented
 from a model name.
 
-Each actual preview receives an explicit state prefix inside its `XA`/`XZ` format:
+Each restricted preview receives an explicit state prefix inside its `XA`/`XZ` format:
 bitmap clearing, canvas, origins/shifts, orientation/mirroring/reversal, default
-font, barcode defaults, encoding and field direction. Field-local block settings
+font, barcode defaults, encoding, advanced-text flags and field direction. Field-local block settings
 are terminated by the required field separators. User field
 bytes are preserved. This is a rendering-state reset, not a factory/network reset.
 Trusted resident-font mappings and standard ZPL syntax remain provisioning
@@ -85,7 +93,7 @@ SQLite stores:
   Preview timeouts are explicitly recorded as **`hang`**. Other categories are
   `rejected`, `unavailable`, and `recovery_failed`.
 - `render_cache`: successful mappings scoped by public name, printer URL/headers,
-  serial, firmware, configured dimensions, namespace, and reset/transport version.
+  serial, firmware, configured dimensions, namespace, admission policy, and reset/transport version.
 - `permanent_errors`: confirmed repeated label failures under that same scope.
 - `printer_recovery`: durable cooldown reservations to prevent restart storms.
 
@@ -102,7 +110,17 @@ changes automatically select a new cache scope; change `--cache-namespace` after
 other trusted font/configuration changes or to intentionally retest a quarantined
 label. Namespace changes are operator actions, not public request parameters.
 
+Caching and recovery apply to every accepted submission in both admission modes,
+including stored images/named fonts and clock/variable/serial fields. Use
+`refresh=true` when current device content or time should produce a fresh preview.
+A cache hit does not resend commands; a retry may replay state-changing commands.
+Unrestricted user input is forwarded unchanged on each actual attempt. Separate
+initialization and recovery controls retain their explicit rendering-state reset.
+Both modes return PNG previews, not raw command/query responses.
+
 ## Automatic recovery
+
+This section applies to both restricted and unrestricted endpoints.
 
 No user approval, button press, or refresh is needed to recover a preview hang.
 A preview timeout is recorded as `hang`, then the proxy sends SGD
@@ -112,7 +130,8 @@ After a settling delay it polls identity and a known-good control preview, with 
 8×8 black square on the configured white canvas. Blank, malformed or stale
 nonmatching controls are not evidence that preview works.
 
-Once healthy, the proxy retries the label once with a fresh state prefix. If the
+Once healthy, the proxy retries the label once. Restricted labels receive a fresh
+state prefix; unrestricted input is retried unchanged after the recovery control. If the
 same label hangs again, recovery waits for the cooldown and restores the printer
 before the label is quarantined. The original request receives a retryable 503
 while that background recovery is pending. Repeated completed responses without an image
@@ -140,7 +159,7 @@ hardware failures can prevent it from succeeding.
 Keep printers on a private management network reachable only by the proxy. Place
 TLS, request-rate limits, admission/access policy and connection/body deadlines at
 the public reverse proxy. Allow long enough upstream response time for automatic
-recovery. The application supplies strict ZPL admission, bounded per-printer work,
+recovery. The application supplies configured ZPL admission, bounded per-printer work,
 restart cooldowns, fixed configured targets and permanent-error quarantine; it
 has no built-in authentication or disk-retention quota. Accepted labels and
 results are retained, so size/monitor the database and protect its contents.
