@@ -27,12 +27,24 @@ def measure(binary, name, milliseconds):
     return nanos / count, raw
 
 
+def verify_pr_merge(base, head, pr_head):
+    if base is None or not pr_head:
+        raise ValueError('PR measurements require a target and PR head identity')
+    base_sha = command(['git', 'rev-parse', 'HEAD'], cwd=base)
+    parents = command(['git', 'show', '-s', '--format=%P', 'HEAD'], cwd=head).split()
+    if parents != [base_sha, pr_head]:
+        raise ValueError('Candidate must merge the measured target and PR head')
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--head', type=Path, required=True)
     parser.add_argument('--base', type=Path)
     parser.add_argument('--output', type=Path, required=True)
     args = parser.parse_args()
+    pr_head = os.getenv('PR_HEAD_SHA', '')
+    if os.getenv('GITHUB_EVENT_NAME') == 'pull_request':
+        verify_pr_merge(args.base, args.head, pr_head)
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=False)
     config = json.loads((HERE / 'config.json').read_text())
@@ -54,6 +66,8 @@ def main():
                   environment=dict(rust=command(['rustc', '-Vv']), os=platform.platform(), cpu=cpu,
                                    image=os.getenv('ImageVersion', 'unknown'),
                                    rustflags=os.getenv('RUSTFLAGS', ''), profile='release'))
+    if record['event'] == 'pull_request':
+        record['pr_head_sha'] = pr_head
     binaries = {}
     for label, checkout in (('base', args.base), ('head', args.head)):
         if checkout is None:
@@ -93,9 +107,13 @@ def summary(record):
     config = record['config']
     kind = comparison_kind(record) if 'base' in record['samples'] else None
     lines = ['## Rendering performance', '']
+    if record.get('pr_head_sha'):
+        lines += [f"Target `{record['commits']['base']}` → PR merge `{record['commits']['head']}` "
+                  f"(PR head `{record['pr_head_sha']}`).", '']
     if kind in COMPARISON_NOTES:
         lines += [COMPARISON_NOTES[kind], '']
-    lines += ['| Case/stage | Head ns/op | Observed paired timing change | Flag |',
+    candidate = 'PR merge' if record.get('pr_head_sha') else 'Head'
+    lines += [f'| Case/stage | {candidate} ns/op | Observed paired timing change | Flag |',
              '| --- | ---: | ---: | --- |']
     for name in NAMES:
         value = statistics.median(record['samples']['head'][name])

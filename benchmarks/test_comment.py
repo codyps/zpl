@@ -23,7 +23,8 @@ def comparison(factor=1.2):
     record, run = fixture()
     run.update(event='pull_request', conclusion='success', head_branch='speedup',
                head_repository={'full_name': 'contributor/zpl'}, path='.github/workflows/benchmarks.yml')
-    record.update(event='pull_request', pr=7, config=copy.deepcopy(CONFIG))
+    record.update(event='pull_request', pr=7, config=copy.deepcopy(CONFIG), pr_head_sha=run['head_sha'])
+    record['commits']['head'] = 'd' * 40
     record['commits']['base'] = 'c' * 40
     record['builds']['base'] = dict(inputs_sha256='f' * 64, binary_sha256='0' * 64)
     record['samples'] = {revision: {name: [10000 * multiplier] * 10 for name in NAMES}
@@ -32,7 +33,8 @@ def comparison(factor=1.2):
 
 
 def pull_request():
-    return {'state': 'open', 'head': {'sha': 'a' * 40, 'repo': {'full_name': 'contributor/zpl'},
+    return {'state': 'open', 'mergeable': True, 'merge_commit_sha': 'd' * 40,
+            'head': {'sha': 'a' * 40, 'repo': {'full_name': 'contributor/zpl'},
                                     'ref': 'speedup'},
             'base': {'sha': 'c' * 40, 'repo': {'full_name': REPO}}}
 
@@ -111,6 +113,8 @@ class Comments(unittest.TestCase):
             lambda r: r.update(pr=0), lambda r: r.update(pr=True),
             lambda r: r.update(run_attempt=2),
             lambda r: r['builds'].pop('base'),
+            lambda r: r.pop('pr_head_sha'),
+            lambda r: r.update(pr_head_sha='e' * 40),
         )
         for mutation in mutations:
             item = copy.deepcopy(record)
@@ -127,6 +131,9 @@ class Comments(unittest.TestCase):
             self.assertIn('10.000', body)  # Stored ns/op are displayed as µs/op.
             self.assertIn('https://codyps.github.io/zpl/perf/', body)
             self.assertIn('actions/runs/12', body)
+            self.assertIn('PR merge `dddddddddddd`', body)
+            self.assertIn('PR head `aaaaaaaaaaaa`', body)
+            self.assertIn('PR merge ns/op', summary(record))
             self.assertIn('| change |', summary(record))
 
     def test_quiet_first_run_does_not_post(self):
@@ -172,6 +179,8 @@ class Comments(unittest.TestCase):
             lambda p: p['head']['repo'].update(full_name='other/zpl'),
             lambda p: p['base'].update(sha='e' * 40),
             lambda p: p['base']['repo'].update(full_name='other/zpl'),
+            lambda p: p.update(mergeable=False), lambda p: p.update(mergeable=None),
+            lambda p: p.update(merge_commit_sha='e' * 40),
         )
         for mutation in mutations:
             pr = pull_request()
