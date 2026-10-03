@@ -14,6 +14,7 @@ enum Text {
     Alpha,
     Lower,
     Mixed,
+    Punctuation,
 }
 fn text_byte(c: u8) -> bool {
     c.is_ascii_graphic() || matches!(c, b' ' | b'\t' | b'\r' | b'\n')
@@ -26,10 +27,25 @@ fn text_run(data: &[u8], threshold: usize) -> usize {
         .find(|&i| !text_byte(data[i]) || digits(&data[i..]) >= threshold)
         .unwrap_or(data.len())
 }
-fn text(data: &[u8], state: &mut Text, out: &mut Vec<usize>, micro: bool) {
+fn text(
+    data: &[u8],
+    state: &mut Text,
+    out: &mut Vec<usize>,
+    micro: bool,
+    punctuation_latches: bool,
+) {
     let mut values = Vec::new();
     for (i, &c) in data.iter().enumerate() {
         loop {
+            if matches!(state, Text::Punctuation) {
+                if let Some(v) = PUNCT.iter().position(|&v| v == c) {
+                    values.push(v);
+                    break;
+                }
+                values.push(29); // Punctuation AL latch, USS PDF417 Table 3.
+                *state = Text::Alpha;
+                continue;
+            }
             if c == b' ' {
                 values.push(26);
                 break;
@@ -70,6 +86,20 @@ fn text(data: &[u8], state: &mut Text, out: &mut Vec<usize>, micro: bool) {
                 }
                 _ => {
                     if let Some(v) = PUNCT.iter().position(|&v| v == c) {
+                        // Native standalone controls keep shifts for 1–3
+                        // punctuation characters in Alpha/Lower/Mixed, and
+                        // latch for 4+. See pdf417-layout-zd621-v1. Enter via
+                        // Mixed's PL (25), USS PDF417 §2.2.4.4/Table 3.
+                        if punctuation_latches
+                            && data[i..].iter().take_while(|c| PUNCT.contains(c)).count() >= 4
+                        {
+                            if !matches!(state, Text::Mixed) {
+                                values.push(28);
+                            }
+                            values.push(25);
+                            *state = Text::Punctuation;
+                            continue;
+                        }
                         values.extend([29, v]);
                         break;
                     }
@@ -81,6 +111,12 @@ fn text(data: &[u8], state: &mut Text, out: &mut Vec<usize>, micro: bool) {
     }
     if values.len() % 2 != 0 {
         values.push(29);
+        // In Punctuation, the padding value is an Alpha latch, not a
+        // temporary shift. Keep the state in sync if a one-byte 913 shift
+        // separates this text run from the next (USS PDF417 Table 3).
+        if matches!(state, Text::Punctuation) {
+            *state = Text::Alpha;
+        }
     }
     out.extend(values.as_chunks::<2>().0.iter().map(|v| 30 * v[0] + v[1]));
 }
@@ -106,7 +142,7 @@ fn numeric(data: &[u8], out: &mut Vec<usize>) {
         out.extend(reversed.into_iter().rev());
     }
 }
-pub(super) fn encode(data: &[u8]) -> Vec<usize> {
+pub(super) fn encode(data: &[u8], punctuation_latches: bool) -> Vec<usize> {
     // USS PDF417 §2.2.4.4 permits Numeric compaction; these selection
     // thresholds are measured encoding choices, not validity constraints.
     // Printer controls: pdf417-numeric-zd621-v1, lengths 1–16 with prefixes
@@ -116,18 +152,18 @@ pub(super) fn encode(data: &[u8]) -> Vec<usize> {
     } else {
         14
     };
-    encode_initial(data, true, false, threshold, true)
+    encode_initial(data, true, false, threshold, true, punctuation_latches)
 }
 
 pub(super) fn encode_macro(data: &[u8]) -> Vec<usize> {
     // Preserve the independently captured ^FM encoding, including mixed
     // ten-digit runs in barcode-modes-zd621-v1/fm-B7-mixed.
-    encode_initial(data, true, false, 8, false)
+    encode_initial(data, true, false, 8, false, false)
 }
 
 // ISO/IEC 24728 §5.4: MicroPDF417 starts in Byte, not Text mode.
 pub(super) fn encode_micro(data: &[u8]) -> Vec<usize> {
-    encode_initial(data, false, true, 13, false)
+    encode_initial(data, false, true, 13, false, false)
 }
 
 pub(super) fn encode_tlc(data: &[u8]) -> Vec<usize> {
@@ -139,7 +175,7 @@ pub(super) fn encode_tlc(data: &[u8]) -> Vec<usize> {
     // TLC keeps the full-PDF text submode choices, but its mixed-data Numeric
     // threshold is fourteen digits. Captured size-4-13/14-numeric
     // controls distinguish this from the eight-digit Macro PDF417 threshold.
-    encode_initial(data, false, false, 14, false)
+    encode_initial(data, false, false, 14, false, false)
 }
 
 fn encode_initial(
@@ -148,6 +184,7 @@ fn encode_initial(
     micro: bool,
     threshold: usize,
     short_text_before_numeric: bool,
+    punctuation_latches: bool,
 ) -> Vec<usize> {
     let mut out = Vec::new();
     if micro && !data.is_empty() && data.iter().all(u8::is_ascii_digit) {
@@ -176,7 +213,13 @@ fn encode_initial(
                 out.push(900);
                 state = Text::Alpha;
             }
-            text(&remaining[..n], &mut state, &mut out, micro);
+            text(
+                &remaining[..n],
+                &mut state,
+                &mut out,
+                micro,
+                punctuation_latches,
+            );
             in_text = true;
             pos += n;
             continue;
@@ -207,15 +250,15 @@ mod tests {
         // Decoded raw ZD621 rows in pdf417-numeric-zd621-v1. USS PDF417
         // §2.2.4.4–6 defines the Text/Numeric latches and value packing.
         assert_eq!(
-            encode(b"A01234567890123B"),
+            encode(b"A01234567890123B", false),
             [29, 902, 154, 267, 648, 11, 223, 900, 59]
         );
         assert_eq!(
-            encode(b"ABCD01234567890123"),
+            encode(b"ABCD01234567890123", false),
             [1, 63, 902, 154, 267, 648, 11, 223]
         );
         assert_eq!(
-            encode(b"abcd01234567890123"),
+            encode(b"abcd01234567890123", false),
             [810, 32, 119, 902, 154, 267, 648, 11, 223]
         );
     }
@@ -287,14 +330,16 @@ mod tests {
                 vec![901, 1, 620, 89, 74, 846, 7],
             ),
         ] {
-            assert_eq!(encode(data), expected, "{data:?}");
+            for punctuation_latches in [false, true] {
+                assert_eq!(encode(data, punctuation_latches), expected, "{data:?}");
+            }
         }
     }
 
     #[test]
     fn independent_decoder_transitions_and_numeric_groups() {
         fn check(data: &[u8]) {
-            let encoded = encode(data);
+            let encoded = encode(data, true);
             // Explicit Latin-1 in the decoder adapter avoids charset guessing;
             // it is not inserted by the production encoder.
             let mut words = vec![(encoded.len() + 4) as u32, 927, 3];
