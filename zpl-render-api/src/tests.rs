@@ -110,3 +110,111 @@ fn service_keeps_field_graphic_and_format_budgets() {
         );
     }
 }
+
+// LabelZoom conversion parameters use exact DPI and source-defined dimensions.
+// https://docs.labelzoom.com/reference/conversion-parameters/#parameter-reference
+#[test]
+fn labelzoom_png_preserves_first_label_source_dimensions_and_exact_dpi() {
+    let input = b"^XA^PW8^LL1^FO0,0^GFB,1,1,1,\x80^FS^XZ^XA^PW2^LL2^XZ";
+    for dpi in [152, 203, 300, 600] {
+        let mut result = render_labelzoom(input, 0, 0, dpi, false);
+        assert_eq!(result.status, 200);
+        assert_eq!((result.width, result.height, result.labels), (8, 1, 2));
+        let body = result.take_body();
+        assert_eq!(
+            Raster::decode_png(&body).unwrap().pixels,
+            [0, 255, 255, 255, 255, 255, 255, 255]
+        );
+        let reader = png::Decoder::new(Cursor::new(&body)).read_info().unwrap();
+        assert_eq!(
+            reader.info().pixel_dims.unwrap().xppu,
+            (f64::from(dpi) / 0.0254).round() as u32
+        );
+        assert!(result.take_body().is_empty());
+    }
+    let result = render_labelzoom(input, 16, 0, 203, false);
+    assert_eq!((result.status, result.width, result.height), (200, 16, 1));
+    let result = render_labelzoom(input, 0, 4, 203, false);
+    assert_eq!((result.status, result.width, result.height), (200, 8, 4));
+    let fallback = render_labelzoom(b"^XA^XZ", 0, 0, 300, false);
+    assert_eq!((fallback.width, fallback.height), (1200, 1800));
+}
+
+// PDF includes all labels in source order, with physical page sizes from DPI.
+// https://docs.labelzoom.com/reference/supported-formats/#multi-label-jobs
+#[test]
+fn labelzoom_pdf_matches_scene_encoder_with_source_and_overridden_sizes() {
+    let input = b"^XA^PW300^LL600^FO2,3^GB30,60,5^FS^XZ^XA^PW600^LL300^FO4,5^GB20,10,10^FS^XZ";
+    for (width, height) in [(0, 0), (1200, 1800), (1200, 0), (0, 1800)] {
+        let mut response = render_labelzoom(input, width, height, 300, true);
+        assert_eq!(response.status, 200);
+        assert_eq!(response.labels, 2);
+        let mut expected = zpl::render(
+            input,
+            Options {
+                dpi: 300,
+                ..SPECIFICATION
+            },
+        )
+        .unwrap();
+        for scene in &mut expected.labels {
+            if width != 0 {
+                scene.width = width;
+            }
+            if height != 0 {
+                scene.height = height;
+            }
+        }
+        let body = response.take_body();
+        assert_eq!(body, Pdf.encode_pages(&expected.labels).unwrap());
+        let text = String::from_utf8_lossy(&body);
+        assert!(text.contains("/Type /Pages /Count 2"));
+        if width == 0 && height == 0 {
+            assert!(text.contains("/MediaBox [0 0 72.000000000000 144.000000000000]"));
+            assert!(text.contains("/MediaBox [0 0 144.000000000000 72.000000000000]"));
+        }
+    }
+}
+
+#[test]
+fn labelzoom_conversion_limits_apply_to_every_label_and_final_viewport() {
+    for pdf in [false, true] {
+        for input in [
+            b"^XA^PW10000^XZ".as_slice(),
+            b"^XA^XZ^XA^PW10000^XZ",
+            b"^XA^PW100^LL3000^XZ", // Combined with the width override below.
+        ] {
+            let response = render_labelzoom(input, 4000, 0, 300, pdf);
+            assert_eq!(response.status, 413, "{:?}", response.body);
+        }
+        assert_eq!(
+            render_labelzoom(b"^XA^PW3200^XZ", 0, 0, 203, pdf).status,
+            413
+        );
+        assert_eq!(render_labelzoom(b"", 0, 0, 203, pdf).status, 400);
+        assert_eq!(render_labelzoom(b"^XA^XZ", 0, 0, 304, pdf).status, 400);
+        assert_eq!(render_labelzoom(b"^XA^XZ", 4097, 1, 300, pdf).status, 400);
+        assert_eq!(
+            render_labelzoom(b"^XA^XZ", 4096, 4096, 300, pdf).status,
+            400
+        );
+        assert_eq!(
+            render_labelzoom(&vec![b' '; MAX_INPUT_BYTES + 1], 0, 0, 203, pdf).status,
+            413
+        );
+        assert_eq!(
+            render_labelzoom(b"^XA^XZ".repeat(51).as_slice(), 0, 0, 203, pdf).status,
+            413
+        );
+        assert_eq!(
+            render_labelzoom(b"^XA^XZ^XA^ZZ^XZ", 0, 0, 203, pdf).status,
+            400
+        );
+        let excessive = format!("^XA{}^XZ", "^FO2,2^GB10,10,10^FS".repeat(500)).repeat(50);
+        assert_eq!(
+            render_labelzoom(excessive.as_bytes(), 0, 0, 203, pdf).status,
+            413
+        );
+        assert_eq!(render_labelzoom(b"^XA^XZ", 0, 0, 203, pdf).status, 200);
+    }
+}

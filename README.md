@@ -107,7 +107,8 @@ browser tests and GitHub Pages deployment.
 
 [`zpl-render-api`](zpl-render-api/) runs the local renderer on Cloudflare Workers
 with public, rate-limited access. It implements Labelary-style POST URLs for PNG
-rendering, including binary uploads and label selection. See the
+rendering, including binary uploads and label selection, plus LabelZoom-compatible
+ZPL-to-PNG and multipage PDF conversion routes. See the
 [API and deployment guide](docs/worker-api.md) for compatibility, limits,
 hosting cost comparisons, and local testing.
 
@@ -156,7 +157,7 @@ and [telemetry](docs/telemetry.md).
 | [`zpl`](zpl/) | Command-stream parser, local renderer, bitmap font types, PNG/SVG/PDF output |
 | [`zpl-cmd`](zpl-cmd/) | Local command-line rendering with `zpl-cmd render` |
 | [`zpl-wasm`](zpl-wasm/) | WebAssembly bindings for the browser preview |
-| [`zpl-render-api`](zpl-render-api/) | Cloudflare Worker, Labelary-style HTTP endpoints, compressed PNG output |
+| [`zpl-render-api`](zpl-render-api/) | Cloudflare Worker, Labelary/LabelZoom HTTP subsets, compressed PNG and multipage PDF output |
 | [`zebra-http-api`](zebra-http-api/) | Printer HTTP client and rendering/comparison examples |
 | [`zpl-proxy-api`](zpl-proxy-api/) | Axum proxy, browser interface, SQLite cache and request history |
 | [`zpl-font-extract`](zpl-font-extract/) | Resident-font sampling, bitmap extraction, export, and verification |

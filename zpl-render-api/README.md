@@ -1,8 +1,9 @@
 # ZPL renderer API
 
 Public Cloudflare Worker serving the local Rust renderer through Labelary-style
-POST endpoints. The Rust Wasm adapter emits compressed PNGs; the JavaScript
-handler handles HTTP, binary uploads, CORS, and rate limits.
+PNG endpoints and LabelZoom-compatible `POST /api/v2/convert/zpl/to/{png|pdf}`
+endpoints. The Rust Wasm adapter emits compressed PNGs and multipage vector PDFs;
+the JavaScript handler handles HTTP, binary uploads, CORS, and rate limits.
 
 See the [API contract and deployment guide](../docs/worker-api.md) for limits,
 hosting costs, build/test commands, and Cloudflare deployment configuration.
