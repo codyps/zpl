@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0](https://github.com/codyps/zpl/compare/zpl-v0.1.1...zpl-v0.2.0) - 2026-10-04
+
+### Fixed
+
+- *(render)* match ZD621 QR segmentation and label caption ([#48](https://github.com/codyps/zpl/pull/48))
+- *(render)* accept public ZPL printer preview tolerances
+- *(render)* match ZD621 PDF417 layout and punctuation encoding
+- *(privacy)* remove printer identifiers from docs and capture defaults ([#40](https://github.com/codyps/zpl/pull/40))
+
 ## [0.1.1](https://github.com/codyps/zpl/compare/zpl-v0.1.0...zpl-v0.1.1) - 2026-09-30
 
 ### Added
