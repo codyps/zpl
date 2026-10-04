@@ -1,0 +1,585 @@
+{
+  "executed_evaluations": 4329,
+  "model_sha256": "327f4a4152765335de3d514e4cf8e8c2a822e55715d01963168d722b56cd8f5d",
+  "schema": "joint-font-optimization-v1",
+  "stages": [
+    {
+      "after": 0.097718453250829,
+      "before": 0.09772705968482333,
+      "glyph": "@",
+      "group_errors": {
+        "large": 0.018555826484107966,
+        "square": 0.08647408279149452,
+        "transformed": 0.11745338281387556
+      },
+      "iteration": 0,
+      "move": [
+        0,
+        [
+          82
+        ],
+        4
+      ],
+      "stage": "geometry"
+    },
+    {
+      "after": 0.097718453250829,
+      "before": 0.097718453250829,
+      "glyph": "H",
+      "group_errors": {
+        "large": 0.018555826484107966,
+        "square": 0.08647408279149452,
+        "transformed": 0.11745338281387556
+      },
+      "iteration": 0,
+      "move": null,
+      "stage": "geometry"
+    },
+    {
+      "after": 0.09770772449528473,
+      "before": 0.097718453250829,
+      "glyph": "O",
+      "group_errors": {
+        "large": 0.01847856623265951,
+        "square": 0.08647335341477506,
+        "transformed": 0.1174819861806578
+      },
+      "iteration": 0,
+      "move": [
+        0,
+        [
+          27
+        ],
+        -4
+      ],
+      "stage": "geometry"
+    },
+    {
+      "after": 0.09770772449528473,
+      "before": 0.09770772449528473,
+      "glyph": "S",
+      "group_errors": {
+        "large": 0.01847856623265951,
+        "square": 0.08647335341477506,
+        "transformed": 0.1174819861806578
+      },
+      "iteration": 0,
+      "move": null,
+      "stage": "geometry"
+    },
+    {
+      "after": 0.09770772449528473,
+      "before": 0.09770772449528473,
+      "glyph": "g",
+      "group_errors": {
+        "large": 0.01847856623265951,
+        "square": 0.08647335341477506,
+        "transformed": 0.1174819861806578
+      },
+      "iteration": 0,
+      "move": null,
+      "stage": "geometry"
+    },
+    {
+      "after": 0.09770772449528473,
+      "before": 0.09770772449528473,
+      "glyph": "j",
+      "group_errors": {
+        "large": 0.01847856623265951,
+        "square": 0.08647335341477506,
+        "transformed": 0.1174819861806578
+      },
+      "iteration": 0,
+      "move": null,
+      "stage": "geometry"
+    },
+    {
+      "after": 0.09718356054384801,
+      "before": 0.09770772449528473,
+      "group_errors": {
+        "large": 0.01847856623265951,
+        "square": 0.08647335341477506,
+        "transformed": 0.11649832162885684
+      },
+      "iteration": 0,
+      "move": "cutin:-8",
+      "stage": "shared-parameters"
+    },
+    {
+      "after": 0.09170420126773182,
+      "before": 0.09718356054384801,
+      "glyph": "@",
+      "group_errors": {
+        "large": 0.01847856623265951,
+        "square": 0.08128550032432584,
+        "transformed": 0.10946068116766974
+      },
+      "iteration": 0,
+      "stage": "hint-program"
+    },
+    {
+      "after": 0.09100238715812425,
+      "before": 0.09170420126773182,
+      "glyph": "H",
+      "group_errors": {
+        "large": 0.01847856623265951,
+        "square": 0.08070589145419725,
+        "transformed": 0.10851641025598593
+      },
+      "iteration": 0,
+      "stage": "hint-program"
+    },
+    {
+      "after": 0.09006789678858272,
+      "before": 0.09100238715812425,
+      "glyph": "O",
+      "group_errors": {
+        "large": 0.01847856623265951,
+        "square": 0.07554961501526745,
+        "transformed": 0.10999003858742669
+      },
+      "iteration": 0,
+      "stage": "hint-program"
+    },
+    {
+      "after": 0.08912556894582618,
+      "before": 0.09006789678858272,
+      "glyph": "S",
+      "group_errors": {
+        "large": 0.01847856623265951,
+        "square": 0.07499289997834652,
+        "transformed": 0.10856174578033374
+      },
+      "iteration": 0,
+      "stage": "hint-program"
+    },
+    {
+      "after": 0.08867895934538193,
+      "before": 0.08912556894582618,
+      "glyph": "g",
+      "group_errors": {
+        "large": 0.01847856623265951,
+        "square": 0.0741643699570251,
+        "transformed": 0.10824530904282664
+      },
+      "iteration": 0,
+      "stage": "hint-program"
+    },
+    {
+      "after": 0.08752881604309205,
+      "before": 0.08867895934538193,
+      "glyph": "j",
+      "group_errors": {
+        "large": 0.01847856623265951,
+        "square": 0.07405405639666843,
+        "transformed": 0.10615773632625605
+      },
+      "iteration": 0,
+      "stage": "hint-program"
+    },
+    {
+      "after": 0.08752881604309205,
+      "before": 0.08752881604309205,
+      "glyph": "@",
+      "group_errors": {
+        "large": 0.01847856623265951,
+        "square": 0.07405405639666843,
+        "transformed": 0.10615773632625605
+      },
+      "iteration": 1,
+      "move": null,
+      "stage": "geometry"
+    },
+    {
+      "after": 0.08718119940793877,
+      "before": 0.08752881604309205,
+      "glyph": "H",
+      "group_errors": {
+        "large": 0.018035535085631653,
+        "square": 0.07346800896031606,
+        "transformed": 0.10614911738286766
+      },
+      "iteration": 1,
+      "move": [
+        0,
+        [
+          0,
+          11
+        ],
+        -2
+      ],
+      "stage": "geometry"
+    },
+    {
+      "after": 0.08660857204333712,
+      "before": 0.08718119940793877,
+      "glyph": "O",
+      "group_errors": {
+        "large": 0.01772806420582595,
+        "square": 0.07295827885926125,
+        "transformed": 0.1055861679531002
+      },
+      "iteration": 1,
+      "move": [
+        0,
+        [
+          0,
+          30,
+          31,
+          32
+        ],
+        -2
+      ],
+      "stage": "geometry"
+    },
+    {
+      "after": 0.08660857204333712,
+      "before": 0.08660857204333712,
+      "glyph": "S",
+      "group_errors": {
+        "large": 0.01772806420582595,
+        "square": 0.07295827885926125,
+        "transformed": 0.1055861679531002
+      },
+      "iteration": 1,
+      "move": null,
+      "stage": "geometry"
+    },
+    {
+      "after": 0.0865204109476036,
+      "before": 0.08660857204333712,
+      "glyph": "g",
+      "group_errors": {
+        "large": 0.01772806420582595,
+        "square": 0.07292685771530098,
+        "transformed": 0.10544049224648643
+      },
+      "iteration": 1,
+      "move": [
+        1,
+        [
+          146,
+          147
+        ],
+        2
+      ],
+      "stage": "geometry"
+    },
+    {
+      "after": 0.08651035900174826,
+      "before": 0.0865204109476036,
+      "glyph": "j",
+      "group_errors": {
+        "large": 0.017652800963524867,
+        "square": 0.0729249067759713,
+        "transformed": 0.10546989184443828
+      },
+      "iteration": 1,
+      "move": [
+        1,
+        [
+          31,
+          32
+        ],
+        -2
+      ],
+      "stage": "geometry"
+    },
+    {
+      "after": 0.08589598037290556,
+      "before": 0.08651035900174826,
+      "group_errors": {
+        "large": 0.017652800963524867,
+        "square": 0.07206475118852419,
+        "transformed": 0.10485531487179833
+      },
+      "iteration": 1,
+      "move": "width-0-1:-4",
+      "stage": "shared-parameters"
+    },
+    {
+      "after": 0.08369346846999559,
+      "before": 0.08589598037290556,
+      "glyph": "@",
+      "group_errors": {
+        "large": 0.017652800963524867,
+        "square": 0.07008687829288962,
+        "transformed": 0.10195552561361376
+      },
+      "iteration": 1,
+      "stage": "hint-program"
+    },
+    {
+      "after": 0.08369346846999559,
+      "before": 0.08369346846999559,
+      "glyph": "H",
+      "group_errors": {
+        "large": 0.017652800963524867,
+        "square": 0.07008687829288962,
+        "transformed": 0.10195552561361376
+      },
+      "iteration": 1,
+      "stage": "hint-program"
+    },
+    {
+      "after": 0.0836323358349201,
+      "before": 0.08369346846999559,
+      "glyph": "O",
+      "group_errors": {
+        "large": 0.017652800963524867,
+        "square": 0.06990302950650096,
+        "transformed": 0.10195580741434013
+      },
+      "iteration": 1,
+      "stage": "hint-program"
+    },
+    {
+      "after": 0.0836323358349201,
+      "before": 0.0836323358349201,
+      "glyph": "S",
+      "group_errors": {
+        "large": 0.017652800963524867,
+        "square": 0.06990302950650096,
+        "transformed": 0.10195580741434013
+      },
+      "iteration": 1,
+      "stage": "hint-program"
+    },
+    {
+      "after": 0.0836323358349201,
+      "before": 0.0836323358349201,
+      "glyph": "g",
+      "group_errors": {
+        "large": 0.017652800963524867,
+        "square": 0.06990302950650096,
+        "transformed": 0.10195580741434013
+      },
+      "iteration": 1,
+      "stage": "hint-program"
+    },
+    {
+      "after": 0.0836323358349201,
+      "before": 0.0836323358349201,
+      "glyph": "j",
+      "group_errors": {
+        "large": 0.017652800963524867,
+        "square": 0.06990302950650096,
+        "transformed": 0.10195580741434013
+      },
+      "iteration": 1,
+      "stage": "hint-program"
+    },
+    {
+      "after": 0.08359478087089707,
+      "before": 0.0836323358349201,
+      "glyph": "@",
+      "group_errors": {
+        "large": 0.01764894094579909,
+        "square": 0.06984980168655307,
+        "transformed": 0.10192106878857086
+      },
+      "iteration": 2,
+      "move": [
+        0,
+        [
+          86,
+          87
+        ],
+        -1
+      ],
+      "stage": "geometry"
+    },
+    {
+      "after": 0.08314582172959406,
+      "before": 0.08359478087089707,
+      "glyph": "H",
+      "group_errors": {
+        "large": 0.01764894094579909,
+        "square": 0.06861366762331621,
+        "transformed": 0.10185185122137858
+      },
+      "iteration": 2,
+      "move": [
+        1,
+        [
+          2,
+          3
+        ],
+        -1
+      ],
+      "stage": "geometry"
+    },
+    {
+      "after": 0.08306538207617652,
+      "before": 0.08314582172959406,
+      "glyph": "O",
+      "group_errors": {
+        "large": 0.01763813933984702,
+        "square": 0.0684534601581272,
+        "transformed": 0.10180789864036743
+      },
+      "iteration": 2,
+      "move": [
+        0,
+        [
+          33,
+          34,
+          35,
+          36,
+          59,
+          60
+        ],
+        -1
+      ],
+      "stage": "geometry"
+    },
+    {
+      "after": 0.08304427820990051,
+      "before": 0.08306538207617652,
+      "glyph": "S",
+      "group_errors": {
+        "large": 0.01763813933984702,
+        "square": 0.06842606538183228,
+        "transformed": 0.10178544765951208
+      },
+      "iteration": 2,
+      "move": [
+        1,
+        [
+          25,
+          26
+        ],
+        -1
+      ],
+      "stage": "geometry"
+    },
+    {
+      "after": 0.08290356128711442,
+      "before": 0.08304427820990051,
+      "glyph": "g",
+      "group_errors": {
+        "large": 0.01759268201475214,
+        "square": 0.0676381564113694,
+        "transformed": 0.10204245143046746
+      },
+      "iteration": 2,
+      "move": [
+        0,
+        [
+          0,
+          1,
+          2,
+          297
+        ],
+        1
+      ],
+      "stage": "geometry"
+    },
+    {
+      "after": 0.08260724657842611,
+      "before": 0.08290356128711442,
+      "glyph": "j",
+      "group_errors": {
+        "large": 0.01759045358366948,
+        "square": 0.06745995477689126,
+        "transformed": 0.10159962717588021
+      },
+      "iteration": 2,
+      "move": [
+        1,
+        [
+          25,
+          26
+        ],
+        1
+      ],
+      "stage": "geometry"
+    },
+    {
+      "after": 0.08253329433982749,
+      "before": 0.08260724657842611,
+      "group_errors": {
+        "large": 0.01759045358366948,
+        "square": 0.0673311246091855,
+        "transformed": 0.10154164629760964
+      },
+      "iteration": 2,
+      "move": "width-0-1:2",
+      "stage": "shared-parameters"
+    },
+    {
+      "after": 0.08130714614641481,
+      "before": 0.08253329433982749,
+      "glyph": "@",
+      "group_errors": {
+        "large": 0.01759045358366948,
+        "square": 0.06660497351254539,
+        "transformed": 0.09969021287036095
+      },
+      "iteration": 2,
+      "stage": "hint-program"
+    },
+    {
+      "after": 0.08126819241046887,
+      "before": 0.08130714614641481,
+      "glyph": "H",
+      "group_errors": {
+        "large": 0.01759045358366948,
+        "square": 0.0665097587914925,
+        "transformed": 0.09967043381612035
+      },
+      "iteration": 2,
+      "stage": "hint-program"
+    },
+    {
+      "after": 0.08126819241046887,
+      "before": 0.08126819241046887,
+      "glyph": "O",
+      "group_errors": {
+        "large": 0.01759045358366948,
+        "square": 0.0665097587914925,
+        "transformed": 0.09967043381612035
+      },
+      "iteration": 2,
+      "stage": "hint-program"
+    },
+    {
+      "after": 0.08126819241046887,
+      "before": 0.08126819241046887,
+      "glyph": "S",
+      "group_errors": {
+        "large": 0.01759045358366948,
+        "square": 0.0665097587914925,
+        "transformed": 0.09967043381612035
+      },
+      "iteration": 2,
+      "stage": "hint-program"
+    },
+    {
+      "after": 0.0805378487949232,
+      "before": 0.08126819241046887,
+      "glyph": "g",
+      "group_errors": {
+        "large": 0.01759045358366948,
+        "square": 0.06557905871632408,
+        "transformed": 0.09887960208395251
+      },
+      "iteration": 2,
+      "stage": "hint-program"
+    },
+    {
+      "after": 0.0805378487949232,
+      "before": 0.0805378487949232,
+      "glyph": "j",
+      "group_errors": {
+        "large": 0.01759045358366948,
+        "square": 0.06557905871632408,
+        "transformed": 0.09887960208395251
+      },
+      "iteration": 2,
+      "stage": "hint-program"
+    }
+  ],
+  "status": "complete",
+  "unique_evaluations": 4329
+}

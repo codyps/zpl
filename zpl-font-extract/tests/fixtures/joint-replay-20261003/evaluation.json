@@ -1,0 +1,813 @@
+{
+  "printer": {
+    "model": "ZD621",
+    "serial": "D7J211001302",
+    "firmware": "V93.21.33Z",
+    "dpi": 203
+  },
+  "font_sha256": "5b42466359d2eabaacdb2bffaf9047f1f1ed2b0b8a78c1e7dc3610de9939253b",
+  "manifest_sha256": "e85bfd9b956f7063b3e14a1a5f813b5a2394d06b0d92b19c44bc79867bd9cb49",
+  "pages": [
+    {
+      "name": "00-state",
+      "cases": [
+        {
+          "name": "identity",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 26
+        },
+        {
+          "name": "instruction-witness",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 26
+        }
+      ],
+      "under": 0,
+      "over": 0,
+      "xor": 0,
+      "union": 52
+    },
+    {
+      "name": "set0-reconstruction-00",
+      "cases": [
+        {
+          "name": "H",
+          "width": 42,
+          "height": 42,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 412
+        },
+        {
+          "name": "O",
+          "width": 42,
+          "height": 42,
+          "under": 0,
+          "over": 1,
+          "xor": 1,
+          "union": 415
+        },
+        {
+          "name": "S",
+          "width": 42,
+          "height": 42,
+          "under": 3,
+          "over": 1,
+          "xor": 4,
+          "union": 383
+        },
+        {
+          "name": "g",
+          "width": 42,
+          "height": 42,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 389
+        },
+        {
+          "name": "j",
+          "width": 42,
+          "height": 42,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 222
+        },
+        {
+          "name": "@",
+          "width": 42,
+          "height": 42,
+          "under": 3,
+          "over": 7,
+          "xor": 10,
+          "union": 529
+        },
+        {
+          "name": "H",
+          "width": 44,
+          "height": 44,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 469
+        },
+        {
+          "name": "O",
+          "width": 44,
+          "height": 44,
+          "under": 1,
+          "over": 0,
+          "xor": 1,
+          "union": 431
+        },
+        {
+          "name": "S",
+          "width": 44,
+          "height": 44,
+          "under": 3,
+          "over": 1,
+          "xor": 4,
+          "union": 410
+        },
+        {
+          "name": "g",
+          "width": 44,
+          "height": 44,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 452
+        },
+        {
+          "name": "j",
+          "width": 44,
+          "height": 44,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 233
+        },
+        {
+          "name": "@",
+          "width": 44,
+          "height": 44,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 574
+        },
+        {
+          "name": "H",
+          "width": 46,
+          "height": 46,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 487
+        },
+        {
+          "name": "O",
+          "width": 46,
+          "height": 46,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 512
+        },
+        {
+          "name": "S",
+          "width": 46,
+          "height": 46,
+          "under": 1,
+          "over": 2,
+          "xor": 3,
+          "union": 457
+        },
+        {
+          "name": "g",
+          "width": 46,
+          "height": 46,
+          "under": 1,
+          "over": 0,
+          "xor": 1,
+          "union": 488
+        },
+        {
+          "name": "j",
+          "width": 46,
+          "height": 46,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 252
+        },
+        {
+          "name": "@",
+          "width": 46,
+          "height": 46,
+          "under": 1,
+          "over": 1,
+          "xor": 2,
+          "union": 641
+        },
+        {
+          "name": "H",
+          "width": 48,
+          "height": 48,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 558
+        },
+        {
+          "name": "O",
+          "width": 48,
+          "height": 48,
+          "under": 1,
+          "over": 0,
+          "xor": 1,
+          "union": 550
+        },
+        {
+          "name": "S",
+          "width": 48,
+          "height": 48,
+          "under": 0,
+          "over": 3,
+          "xor": 3,
+          "union": 501
+        },
+        {
+          "name": "g",
+          "width": 48,
+          "height": 48,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 486
+        },
+        {
+          "name": "j",
+          "width": 48,
+          "height": 48,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 252
+        },
+        {
+          "name": "@",
+          "width": 48,
+          "height": 48,
+          "under": 1,
+          "over": 2,
+          "xor": 3,
+          "union": 707
+        },
+        {
+          "name": "H",
+          "width": 50,
+          "height": 50,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 609
+        },
+        {
+          "name": "O",
+          "width": 50,
+          "height": 50,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 581
+        },
+        {
+          "name": "S",
+          "width": 50,
+          "height": 50,
+          "under": 0,
+          "over": 2,
+          "xor": 2,
+          "union": 518
+        },
+        {
+          "name": "g",
+          "width": 50,
+          "height": 50,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 561
+        },
+        {
+          "name": "j",
+          "width": 50,
+          "height": 50,
+          "under": 0,
+          "over": 2,
+          "xor": 2,
+          "union": 300
+        },
+        {
+          "name": "@",
+          "width": 50,
+          "height": 50,
+          "under": 5,
+          "over": 6,
+          "xor": 11,
+          "union": 748
+        },
+        {
+          "name": "H",
+          "width": 52,
+          "height": 52,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 645
+        },
+        {
+          "name": "O",
+          "width": 52,
+          "height": 52,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 675
+        },
+        {
+          "name": "S",
+          "width": 52,
+          "height": 52,
+          "under": 1,
+          "over": 7,
+          "xor": 8,
+          "union": 585
+        },
+        {
+          "name": "g",
+          "width": 52,
+          "height": 52,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 580
+        },
+        {
+          "name": "j",
+          "width": 52,
+          "height": 52,
+          "under": 0,
+          "over": 1,
+          "xor": 1,
+          "union": 321
+        },
+        {
+          "name": "@",
+          "width": 52,
+          "height": 52,
+          "under": 6,
+          "over": 6,
+          "xor": 12,
+          "union": 805
+        },
+        {
+          "name": "H",
+          "width": 10,
+          "height": 11,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 18
+        },
+        {
+          "name": "O",
+          "width": 10,
+          "height": 11,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 18
+        },
+        {
+          "name": "S",
+          "width": 10,
+          "height": 11,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 18
+        },
+        {
+          "name": "g",
+          "width": 10,
+          "height": 11,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 25
+        },
+        {
+          "name": "j",
+          "width": 10,
+          "height": 11,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 9
+        },
+        {
+          "name": "@",
+          "width": 10,
+          "height": 11,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 33
+        },
+        {
+          "name": "H",
+          "width": 11,
+          "height": 10,
+          "under": 2,
+          "over": 0,
+          "xor": 2,
+          "union": 32
+        },
+        {
+          "name": "O",
+          "width": 11,
+          "height": 10,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 28
+        },
+        {
+          "name": "S",
+          "width": 11,
+          "height": 10,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 25
+        },
+        {
+          "name": "g",
+          "width": 11,
+          "height": 10,
+          "under": 2,
+          "over": 0,
+          "xor": 2,
+          "union": 30
+        },
+        {
+          "name": "j",
+          "width": 11,
+          "height": 10,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 19
+        },
+        {
+          "name": "@",
+          "width": 11,
+          "height": 10,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 37
+        },
+        {
+          "name": "H",
+          "width": 12,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 44
+        },
+        {
+          "name": "O",
+          "width": 12,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 41
+        },
+        {
+          "name": "S",
+          "width": 12,
+          "height": 13,
+          "under": 0,
+          "over": 1,
+          "xor": 1,
+          "union": 30
+        },
+        {
+          "name": "g",
+          "width": 12,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 37
+        },
+        {
+          "name": "j",
+          "width": 12,
+          "height": 13,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 21
+        },
+        {
+          "name": "@",
+          "width": 12,
+          "height": 13,
+          "under": 2,
+          "over": 0,
+          "xor": 2,
+          "union": 54
+        },
+        {
+          "name": "H",
+          "width": 13,
+          "height": 12,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 38
+        },
+        {
+          "name": "O",
+          "width": 13,
+          "height": 12,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 36
+        },
+        {
+          "name": "S",
+          "width": 13,
+          "height": 12,
+          "under": 1,
+          "over": 0,
+          "xor": 1,
+          "union": 34
+        },
+        {
+          "name": "g",
+          "width": 13,
+          "height": 12,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 36
+        },
+        {
+          "name": "j",
+          "width": 13,
+          "height": 12,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 21
+        },
+        {
+          "name": "@",
+          "width": 13,
+          "height": 12,
+          "under": 1,
+          "over": 1,
+          "xor": 2,
+          "union": 45
+        },
+        {
+          "name": "H",
+          "width": 15,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 58
+        },
+        {
+          "name": "O",
+          "width": 15,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 53
+        },
+        {
+          "name": "S",
+          "width": 15,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 55
+        },
+        {
+          "name": "g",
+          "width": 15,
+          "height": 17,
+          "under": 1,
+          "over": 0,
+          "xor": 1,
+          "union": 60
+        }
+      ],
+      "under": 36,
+      "over": 44,
+      "xor": 80,
+      "union": 18693
+    },
+    {
+      "name": "set0-reconstruction-01",
+      "cases": [
+        {
+          "name": "j",
+          "width": 15,
+          "height": 17,
+          "under": 0,
+          "over": 1,
+          "xor": 1,
+          "union": 30
+        },
+        {
+          "name": "@",
+          "width": 15,
+          "height": 17,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 87
+        },
+        {
+          "name": "H",
+          "width": 17,
+          "height": 15,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 61
+        },
+        {
+          "name": "O",
+          "width": 17,
+          "height": 15,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 48
+        },
+        {
+          "name": "S",
+          "width": 17,
+          "height": 15,
+          "under": 0,
+          "over": 2,
+          "xor": 2,
+          "union": 55
+        },
+        {
+          "name": "g",
+          "width": 17,
+          "height": 15,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 66
+        },
+        {
+          "name": "j",
+          "width": 17,
+          "height": 15,
+          "under": 0,
+          "over": 1,
+          "xor": 1,
+          "union": 28
+        },
+        {
+          "name": "@",
+          "width": 17,
+          "height": 15,
+          "under": 0,
+          "over": 1,
+          "xor": 1,
+          "union": 74
+        },
+        {
+          "name": "H",
+          "width": 14,
+          "height": 14,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 43
+        },
+        {
+          "name": "O",
+          "width": 14,
+          "height": 14,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 45
+        },
+        {
+          "name": "S",
+          "width": 14,
+          "height": 14,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 42
+        },
+        {
+          "name": "g",
+          "width": 14,
+          "height": 14,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 55
+        },
+        {
+          "name": "j",
+          "width": 14,
+          "height": 14,
+          "under": 0,
+          "over": 1,
+          "xor": 1,
+          "union": 26
+        },
+        {
+          "name": "@",
+          "width": 14,
+          "height": 14,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 62
+        },
+        {
+          "name": "H",
+          "width": 31,
+          "height": 31,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 208
+        },
+        {
+          "name": "O",
+          "width": 31,
+          "height": 31,
+          "under": 0,
+          "over": 2,
+          "xor": 2,
+          "union": 219
+        },
+        {
+          "name": "S",
+          "width": 31,
+          "height": 31,
+          "under": 2,
+          "over": 1,
+          "xor": 3,
+          "union": 193
+        },
+        {
+          "name": "g",
+          "width": 31,
+          "height": 31,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 226
+        },
+        {
+          "name": "j",
+          "width": 31,
+          "height": 31,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 107
+        },
+        {
+          "name": "@",
+          "width": 31,
+          "height": 31,
+          "under": 0,
+          "over": 2,
+          "xor": 2,
+          "union": 289
+        }
+      ],
+      "under": 2,
+      "over": 11,
+      "xor": 13,
+      "union": 1964
+    }
+  ]
+}

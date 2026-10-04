@@ -1,0 +1,73 @@
+{
+  "schema": "font0-outline-capture-v1",
+  "started_utc": "2026-10-03T17:57:12.868559+00:00",
+  "host": "d7j211001302.bed.einic.org",
+  "manifest_sha256": "03afe12fcb6a5d6c0ea4ccf2978d5f1b8bd53e91e208d80aaa9f2b25e0416c17",
+  "pages": [
+    {
+      "name": "resident-start",
+      "zpl_sha256": "25a64b990aae299bb565ab55fa6effc916f09dce2e9ee847df0a4365db5e40d6",
+      "started_utc": "2026-10-03T17:57:12.919057+00:00",
+      "status": "captured",
+      "png_sha256": "618f1c5e64ca8784aee5277aa13cce5a5d79f853e9b50c5687e00b95e0b1aac0",
+      "dimensions": [
+        384,
+        192
+      ]
+    },
+    {
+      "name": "reconstruction-00",
+      "zpl_sha256": "09939913724871f176d33bc84a1943060d3bcbb888b7099b7926b21642cb639f",
+      "started_utc": "2026-10-03T17:57:18.010997+00:00",
+      "status": "captured",
+      "png_sha256": "0bbfa2abcbbc0237dedbe4e539e4a0c0f1caca4a6da4c2d918e0fd5d0aeeef94",
+      "dimensions": [
+        384,
+        1536
+      ]
+    },
+    {
+      "name": "reconstruction-01",
+      "zpl_sha256": "4fa604f9e0e1a79ec5277ee86f1b0348a4fa291b85a25072e7bb38a3be9d70f4",
+      "started_utc": "2026-10-03T17:57:23.692553+00:00",
+      "status": "captured",
+      "png_sha256": "fe78a2f589884ff286c584850bfba19b92d1247279e6f01bbfa580b54a8a2046",
+      "dimensions": [
+        384,
+        480
+      ]
+    },
+    {
+      "name": "outline-repeat",
+      "zpl_sha256": "09939913724871f176d33bc84a1943060d3bcbb888b7099b7926b21642cb639f",
+      "started_utc": "2026-10-03T17:57:28.947483+00:00",
+      "status": "captured",
+      "png_sha256": "0bbfa2abcbbc0237dedbe4e539e4a0c0f1caca4a6da4c2d918e0fd5d0aeeef94",
+      "dimensions": [
+        384,
+        1536
+      ]
+    },
+    {
+      "name": "resident-end",
+      "zpl_sha256": "25a64b990aae299bb565ab55fa6effc916f09dce2e9ee847df0a4365db5e40d6",
+      "started_utc": "2026-10-03T17:57:34.560446+00:00",
+      "status": "captured",
+      "png_sha256": "618f1c5e64ca8784aee5277aa13cce5a5d79f853e9b50c5687e00b95e0b1aac0",
+      "dimensions": [
+        384,
+        192
+      ]
+    }
+  ],
+  "status": "complete",
+  "printer": {
+    "model": "ZD621",
+    "serial": "D7J211001302",
+    "firmware": "V93.21.33Z",
+    "dpi": 203
+  },
+  "outline_repeat_exact": true,
+  "resident_repeat_exact": true,
+  "finished_utc": "2026-10-03T17:57:39.664716+00:00"
+}

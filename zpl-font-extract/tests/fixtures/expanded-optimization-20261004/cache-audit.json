@@ -1,0 +1,16 @@
+{
+  "cases": 108,
+  "engine_sha256": "4a02ea60aed8d4b8e5ad13a8b6b665f5ff355dc24d8450091a6180473c989537",
+  "models": [
+    {
+      "all_scores_exact": true,
+      "font_sha256": "2a6900b18eb210babd06a4ce184d41e9caf0bcda79da69147b655e7f69f81a3b",
+      "name": "seed"
+    },
+    {
+      "all_scores_exact": true,
+      "font_sha256": "1f13238221805d079bfad7215abf1ddcb7da3ba078bf92052d00384275fbd6c9",
+      "name": "prior-proposal"
+    }
+  ]
+}

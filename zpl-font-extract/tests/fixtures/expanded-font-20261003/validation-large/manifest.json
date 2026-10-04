@@ -1,0 +1,723 @@
+{
+  "schema": "small-font-probe-v1",
+  "characters": "HOSgj@",
+  "configurations": [
+    [
+      144,
+      144,
+      "N"
+    ],
+    [
+      208,
+      208,
+      "N"
+    ],
+    [
+      304,
+      304,
+      "N"
+    ],
+    [
+      400,
+      400,
+      "N"
+    ],
+    [
+      464,
+      464,
+      "N"
+    ]
+  ],
+  "pages": [
+    {
+      "name": "reconstruction-00",
+      "font": "0",
+      "group": "validation",
+      "canvas": [
+        768,
+        1408
+      ],
+      "probes": [
+        {
+          "text": "H",
+          "width": 144,
+          "height": 144,
+          "orientation": "N",
+          "origin": "FT",
+          "tile": [
+            0,
+            0,
+            704,
+            704
+          ],
+          "anchor": [
+            109,
+            253
+          ]
+        },
+        {
+          "text": "O",
+          "width": 144,
+          "height": 144,
+          "orientation": "N",
+          "origin": "FT",
+          "tile": [
+            0,
+            704,
+            704,
+            704
+          ],
+          "anchor": [
+            109,
+            253
+          ]
+        }
+      ],
+      "zpl_sha256": "bca289357e7c95f4693b67c132caef9fd76d6a3d2408ade5998004ba19b4b3a0"
+    },
+    {
+      "name": "reconstruction-01",
+      "font": "0",
+      "group": "validation",
+      "canvas": [
+        768,
+        1408
+      ],
+      "probes": [
+        {
+          "text": "S",
+          "width": 144,
+          "height": 144,
+          "orientation": "N",
+          "origin": "FT",
+          "tile": [
+            0,
+            0,
+            704,
+            704
+          ],
+          "anchor": [
+            109,
+            253
+          ]
+        },
+        {
+          "text": "g",
+          "width": 144,
+          "height": 144,
+          "orientation": "N",
+          "origin": "FT",
+          "tile": [
+            0,
+            704,
+            704,
+            704
+          ],
+          "anchor": [
+            109,
+            253
+          ]
+        }
+      ],
+      "zpl_sha256": "b1c7eaa8e0521db0bd8494d703aba3198d8bc8adb576f7a3a2565f88567cfe05"
+    },
+    {
+      "name": "reconstruction-02",
+      "font": "0",
+      "group": "validation",
+      "canvas": [
+        768,
+        1408
+      ],
+      "probes": [
+        {
+          "text": "j",
+          "width": 144,
+          "height": 144,
+          "orientation": "N",
+          "origin": "FT",
+          "tile": [
+            0,
+            0,
+            704,
+            704
+          ],
+          "anchor": [
+            109,
+            253
+          ]
+        },
+        {
+          "text": "@",
+          "width": 144,
+          "height": 144,
+          "orientation": "N",
+          "origin": "FT",
+          "tile": [
+            0,
+            704,
+            704,
+            704
+          ],
+          "anchor": [
+            109,
+            253
+          ]
+        }
+      ],
+      "zpl_sha256": "d4f0a012472a6fd3e915fddead152b0d3803024d45e1013ca9c53cf232067d0c"
+    },
+    {
+      "name": "reconstruction-03",
+      "font": "0",
+      "group": "validation",
+      "canvas": [
+        768,
+        1408
+      ],
+      "probes": [
+        {
+          "text": "H",
+          "width": 208,
+          "height": 208,
+          "orientation": "N",
+          "origin": "FT",
+          "tile": [
+            0,
+            0,
+            704,
+            704
+          ],
+          "anchor": [
+            109,
+            317
+          ]
+        },
+        {
+          "text": "O",
+          "width": 208,
+          "height": 208,
+          "orientation": "N",
+          "origin": "FT",
+          "tile": [
+            0,
+            704,
+            704,
+            704
+          ],
+          "anchor": [
+            109,
+            317
+          ]
+        }
+      ],
+      "zpl_sha256": "a32751c51eff912fb09b08337912b1629bcee397afa89b12b87a40e80317e35c"
+    },
+    {
+      "name": "reconstruction-04",
+      "font": "0",
+      "group": "validation",
+      "canvas": [
+        768,
+        1408
+      ],
+      "probes": [
+        {
+          "text": "S",
+          "width": 208,
+          "height": 208,
+          "orientation": "N",
+          "origin": "FT",
+          "tile": [
+            0,
+            0,
+            704,
+            704
+          ],
+          "anchor": [
+            109,
+            317
+          ]
+        },
+        {
+          "text": "g",
+          "width": 208,
+          "height": 208,
+          "orientation": "N",
+          "origin": "FT",
+          "tile": [
+            0,
+            704,
+            704,
+            704
+          ],
+          "anchor": [
+            109,
+            317
+          ]
+        }
+      ],
+      "zpl_sha256": "4146f469d122d714a2e3ebf93b0ef95aa5724a091cd1c2ec41512068bb6c66f2"
+    },
+    {
+      "name": "reconstruction-05",
+      "font": "0",
+      "group": "validation",
+      "canvas": [
+        768,
+        1408
+      ],
+      "probes": [
+        {
+          "text": "j",
+          "width": 208,
+          "height": 208,
+          "orientation": "N",
+          "origin": "FT",
+          "tile": [
+            0,
+            0,
+            704,
+            704
+          ],
+          "anchor": [
+            109,
+            317
+          ]
+        },
+        {
+          "text": "@",
+          "width": 208,
+          "height": 208,
+          "orientation": "N",
+          "origin": "FT",
+          "tile": [
+            0,
+            704,
+            704,
+            704
+          ],
+          "anchor": [
+            109,
+            317
+          ]
+        }
+      ],
+      "zpl_sha256": "9a78b462f4c86c699b66605c03ba32efb683e26614d117ddd747dc70ac0c432e"
+    },
+    {
+      "name": "reconstruction-06",
+      "font": "0",
+      "group": "validation",
+      "canvas": [
+        768,
+        1408
+      ],
+      "probes": [
+        {
+          "text": "H",
+          "width": 304,
+          "height": 304,
+          "orientation": "N",
+          "origin": "FT",
+          "tile": [
+            0,
+            0,
+            704,
+            704
+          ],
+          "anchor": [
+            109,
+            413
+          ]
+        },
+        {
+          "text": "O",
+          "width": 304,
+          "height": 304,
+          "orientation": "N",
+          "origin": "FT",
+          "tile": [
+            0,
+            704,
+            704,
+            704
+          ],
+          "anchor": [
+            109,
+            413
+          ]
+        }
+      ],
+      "zpl_sha256": "de866180294bb2adb53f0f7a5aa9f8c82440eab0ba534f18fb852e4aff38036a"
+    },
+    {
+      "name": "reconstruction-07",
+      "font": "0",
+      "group": "validation",
+      "canvas": [
+        768,
+        1408
+      ],
+      "probes": [
+        {
+          "text": "S",
+          "width": 304,
+          "height": 304,
+          "orientation": "N",
+          "origin": "FT",
+          "tile": [
+            0,
+            0,
+            704,
+            704
+          ],
+          "anchor": [
+            109,
+            413
+          ]
+        },
+        {
+          "text": "g",
+          "width": 304,
+          "height": 304,
+          "orientation": "N",
+          "origin": "FT",
+          "tile": [
+            0,
+            704,
+            704,
+            704
+          ],
+          "anchor": [
+            109,
+            413
+          ]
+        }
+      ],
+      "zpl_sha256": "ea19ddbed24632a43ee79ceda13d6c275fb9f421a2401c327b8b4eec0cced67c"
+    },
+    {
+      "name": "reconstruction-08",
+      "font": "0",
+      "group": "validation",
+      "canvas": [
+        768,
+        1408
+      ],
+      "probes": [
+        {
+          "text": "j",
+          "width": 304,
+          "height": 304,
+          "orientation": "N",
+          "origin": "FT",
+          "tile": [
+            0,
+            0,
+            704,
+            704
+          ],
+          "anchor": [
+            109,
+            413
+          ]
+        },
+        {
+          "text": "@",
+          "width": 304,
+          "height": 304,
+          "orientation": "N",
+          "origin": "FT",
+          "tile": [
+            0,
+            704,
+            704,
+            704
+          ],
+          "anchor": [
+            109,
+            413
+          ]
+        }
+      ],
+      "zpl_sha256": "d097d5d2898c197170aacf47311104aeaaf4652a20753e547b0f89588b884171"
+    },
+    {
+      "name": "reconstruction-09",
+      "font": "0",
+      "group": "validation",
+      "canvas": [
+        768,
+        1408
+      ],
+      "probes": [
+        {
+          "text": "H",
+          "width": 400,
+          "height": 400,
+          "orientation": "N",
+          "origin": "FT",
+          "tile": [
+            0,
+            0,
+            704,
+            704
+          ],
+          "anchor": [
+            109,
+            509
+          ]
+        },
+        {
+          "text": "O",
+          "width": 400,
+          "height": 400,
+          "orientation": "N",
+          "origin": "FT",
+          "tile": [
+            0,
+            704,
+            704,
+            704
+          ],
+          "anchor": [
+            109,
+            509
+          ]
+        }
+      ],
+      "zpl_sha256": "d3e89695bf72773219974468245353597bc4ef3dcd775bed45e33bfe2517f897"
+    },
+    {
+      "name": "reconstruction-10",
+      "font": "0",
+      "group": "validation",
+      "canvas": [
+        768,
+        1408
+      ],
+      "probes": [
+        {
+          "text": "S",
+          "width": 400,
+          "height": 400,
+          "orientation": "N",
+          "origin": "FT",
+          "tile": [
+            0,
+            0,
+            704,
+            704
+          ],
+          "anchor": [
+            109,
+            509
+          ]
+        },
+        {
+          "text": "g",
+          "width": 400,
+          "height": 400,
+          "orientation": "N",
+          "origin": "FT",
+          "tile": [
+            0,
+            704,
+            704,
+            704
+          ],
+          "anchor": [
+            109,
+            509
+          ]
+        }
+      ],
+      "zpl_sha256": "f4c2dd4d1508e8c7b73138004049c9cab4be84ebf1d9ef4a9073135452c65206"
+    },
+    {
+      "name": "reconstruction-11",
+      "font": "0",
+      "group": "validation",
+      "canvas": [
+        768,
+        1408
+      ],
+      "probes": [
+        {
+          "text": "j",
+          "width": 400,
+          "height": 400,
+          "orientation": "N",
+          "origin": "FT",
+          "tile": [
+            0,
+            0,
+            704,
+            704
+          ],
+          "anchor": [
+            109,
+            509
+          ]
+        },
+        {
+          "text": "@",
+          "width": 400,
+          "height": 400,
+          "orientation": "N",
+          "origin": "FT",
+          "tile": [
+            0,
+            704,
+            704,
+            704
+          ],
+          "anchor": [
+            109,
+            509
+          ]
+        }
+      ],
+      "zpl_sha256": "3235fc9d9e4915abd18c04dbe2b590d06619a00efd7aa11eca4344124f06bca0"
+    },
+    {
+      "name": "reconstruction-12",
+      "font": "0",
+      "group": "validation",
+      "canvas": [
+        768,
+        1408
+      ],
+      "probes": [
+        {
+          "text": "H",
+          "width": 464,
+          "height": 464,
+          "orientation": "N",
+          "origin": "FT",
+          "tile": [
+            0,
+            0,
+            704,
+            704
+          ],
+          "anchor": [
+            109,
+            573
+          ]
+        },
+        {
+          "text": "O",
+          "width": 464,
+          "height": 464,
+          "orientation": "N",
+          "origin": "FT",
+          "tile": [
+            0,
+            704,
+            704,
+            704
+          ],
+          "anchor": [
+            109,
+            573
+          ]
+        }
+      ],
+      "zpl_sha256": "c2a3e31fff74490ac30f4e97001c950ebff9f6ff8b5bb435c915656989126027"
+    },
+    {
+      "name": "reconstruction-13",
+      "font": "0",
+      "group": "validation",
+      "canvas": [
+        768,
+        1408
+      ],
+      "probes": [
+        {
+          "text": "S",
+          "width": 464,
+          "height": 464,
+          "orientation": "N",
+          "origin": "FT",
+          "tile": [
+            0,
+            0,
+            704,
+            704
+          ],
+          "anchor": [
+            109,
+            573
+          ]
+        },
+        {
+          "text": "g",
+          "width": 464,
+          "height": 464,
+          "orientation": "N",
+          "origin": "FT",
+          "tile": [
+            0,
+            704,
+            704,
+            704
+          ],
+          "anchor": [
+            109,
+            573
+          ]
+        }
+      ],
+      "zpl_sha256": "9c71125e4210add43225cca7512d37112f9246a7158c22494bb6e12faa8904d2"
+    },
+    {
+      "name": "reconstruction-14",
+      "font": "0",
+      "group": "validation",
+      "canvas": [
+        768,
+        1408
+      ],
+      "probes": [
+        {
+          "text": "j",
+          "width": 464,
+          "height": 464,
+          "orientation": "N",
+          "origin": "FT",
+          "tile": [
+            0,
+            0,
+            704,
+            704
+          ],
+          "anchor": [
+            109,
+            573
+          ]
+        },
+        {
+          "text": "@",
+          "width": 464,
+          "height": 464,
+          "orientation": "N",
+          "origin": "FT",
+          "tile": [
+            0,
+            704,
+            704,
+            704
+          ],
+          "anchor": [
+            109,
+            573
+          ]
+        }
+      ],
+      "zpl_sha256": "f2a75c6aa639bdac5d5d49a07bf85fff8660f8f590039a0594c8e511624e03e1"
+    }
+  ]
+}

@@ -5,6 +5,10 @@ the reconstruction experiment end to end: fit geometry, infer features, generate
 hints, freeze a TrueType font, and evaluate it against separate captures. It also
 prepares generated-font printer campaigns. Production font selection is unchanged.
 
+The follow-up [joint optimizer](joint-font-optimization.md) searches control-point
+coordinates, shared CVT parameters and per-feature hint programs together, using
+this automatic model as its seed.
+
 The first completed run improves some reserved cases, but fails the overall
 nonregression gate. This is a repeatable research pipeline, not a completed Font 0
 replacement. It currently reconstructs isolated visible ASCII glyphs; advances

@@ -1,0 +1,134 @@
+[
+  {
+    "evaluations": 280,
+    "glyph": "@",
+    "group_errors": {
+      "large": 0.01759045358366948,
+      "square": 0.06546014738562538,
+      "transformed": 0.0986433842894355
+    },
+    "objective": 0.08037389552761458,
+    "sweep": 0
+  },
+  {
+    "evaluations": 365,
+    "glyph": "H",
+    "group_errors": {
+      "large": 0.01759045358366948,
+      "square": 0.06542424332128528,
+      "transformed": 0.0986433842894355
+    },
+    "objective": 0.08036359417283453,
+    "sweep": 0
+  },
+  {
+    "evaluations": 457,
+    "glyph": "O",
+    "group_errors": {
+      "large": 0.01759045358366948,
+      "square": 0.06542424332128528,
+      "transformed": 0.0986433842894355
+    },
+    "objective": 0.08036359417283453,
+    "sweep": 0
+  },
+  {
+    "evaluations": 617,
+    "glyph": "S",
+    "group_errors": {
+      "large": 0.01759045358366948,
+      "square": 0.06496609680434962,
+      "transformed": 0.09767348416088278
+    },
+    "objective": 0.07969693193196122,
+    "sweep": 0
+  },
+  {
+    "evaluations": 765,
+    "glyph": "g",
+    "group_errors": {
+      "large": 0.01759045358366948,
+      "square": 0.06235020449088532,
+      "transformed": 0.09896703535867056
+    },
+    "objective": 0.07951319513295993,
+    "sweep": 0
+  },
+  {
+    "evaluations": 834,
+    "glyph": "j",
+    "group_errors": {
+      "large": 0.01759045358366948,
+      "square": 0.06233448850122865,
+      "transformed": 0.0988780175041095
+    },
+    "objective": 0.07946214694730847,
+    "sweep": 0
+  },
+  {
+    "evaluations": 1086,
+    "glyph": "@",
+    "group_errors": {
+      "large": 0.01759045358366948,
+      "square": 0.06049442700460069,
+      "transformed": 0.0965928699533492
+    },
+    "objective": 0.07763004775469366,
+    "sweep": 1
+  },
+  {
+    "evaluations": 1149,
+    "glyph": "H",
+    "group_errors": {
+      "large": 0.01759045358366948,
+      "square": 0.06049442700460069,
+      "transformed": 0.0965928699533492
+    },
+    "objective": 0.077628381088027,
+    "sweep": 1
+  },
+  {
+    "evaluations": 1149,
+    "glyph": "O",
+    "group_errors": {
+      "large": 0.01759045358366948,
+      "square": 0.06049442700460069,
+      "transformed": 0.0965928699533492
+    },
+    "objective": 0.077628381088027,
+    "sweep": 1
+  },
+  {
+    "evaluations": 1283,
+    "glyph": "S",
+    "group_errors": {
+      "large": 0.01759045358366948,
+      "square": 0.05994697440215272,
+      "transformed": 0.09596436676276777
+    },
+    "objective": 0.07711236185223425,
+    "sweep": 1
+  },
+  {
+    "evaluations": 1413,
+    "glyph": "g",
+    "group_errors": {
+      "large": 0.01759045358366948,
+      "square": 0.05988583567467911,
+      "transformed": 0.09587261275421027
+    },
+    "objective": 0.0770447134718457,
+    "sweep": 1
+  },
+  {
+    "evaluations": 1477,
+    "glyph": "j",
+    "group_errors": {
+      "large": 0.01759045358366948,
+      "square": 0.05988583567467911,
+      "transformed": 0.09587261275421027
+    },
+    "objective": 0.0770447134718457,
+    "sweep": 1
+  }
+]

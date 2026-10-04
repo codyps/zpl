@@ -1,0 +1,384 @@
+{
+  "campaigns": [
+    {
+      "capture": "validation-12",
+      "passes_seed_gate": true,
+      "totals": {
+        "expanded_proposal": {
+          "cases": 96,
+          "exact": 18,
+          "iou": 0.870739115761053,
+          "mean_error": 0.1330526398635257,
+          "over": 513,
+          "under": 636,
+          "union": 8889,
+          "xor": 1149
+        },
+        "previous_proposal": {
+          "cases": 96,
+          "exact": 18,
+          "iou": 0.8632942218286473,
+          "mean_error": 0.14180423001840436,
+          "over": 658,
+          "under": 577,
+          "union": 9034,
+          "xor": 1235
+        },
+        "seed": {
+          "cases": 96,
+          "exact": 15,
+          "iou": 0.8496290554755841,
+          "mean_error": 0.17228189507863775,
+          "over": 655,
+          "under": 703,
+          "union": 9031,
+          "xor": 1358
+        }
+      }
+    },
+    {
+      "capture": "validation-13",
+      "passes_seed_gate": true,
+      "totals": {
+        "expanded_proposal": {
+          "cases": 72,
+          "exact": 10,
+          "iou": 0.9253610131208283,
+          "mean_error": 0.07903612783805176,
+          "over": 1509,
+          "under": 1432,
+          "union": 39403,
+          "xor": 2941
+        },
+        "previous_proposal": {
+          "cases": 72,
+          "exact": 6,
+          "iou": 0.9155312665273125,
+          "mean_error": 0.08769246202790727,
+          "over": 1813,
+          "under": 1541,
+          "union": 39707,
+          "xor": 3354
+        },
+        "seed": {
+          "cases": 72,
+          "exact": 8,
+          "iou": 0.9163843236409608,
+          "mean_error": 0.08565551405824164,
+          "over": 1656,
+          "under": 1651,
+          "union": 39550,
+          "xor": 3307
+        }
+      }
+    },
+    {
+      "capture": "validation-14",
+      "passes_seed_gate": false,
+      "totals": {
+        "expanded_proposal": {
+          "cases": 84,
+          "exact": 2,
+          "iou": 0.9414594509745986,
+          "mean_error": 0.055283340094194354,
+          "over": 3304,
+          "under": 3036,
+          "union": 108301,
+          "xor": 6340
+        },
+        "previous_proposal": {
+          "cases": 84,
+          "exact": 1,
+          "iou": 0.9397174225398813,
+          "mean_error": 0.056750151285869986,
+          "over": 3575,
+          "under": 2970,
+          "union": 108572,
+          "xor": 6545
+        },
+        "seed": {
+          "cases": 84,
+          "exact": 4,
+          "iou": 0.9387905604719764,
+          "mean_error": 0.05806871021893666,
+          "over": 3483,
+          "under": 3157,
+          "union": 108480,
+          "xor": 6640
+        }
+      }
+    },
+    {
+      "capture": "validation-15",
+      "passes_seed_gate": true,
+      "totals": {
+        "expanded_proposal": {
+          "cases": 36,
+          "exact": 3,
+          "iou": 0.9489872795763499,
+          "mean_error": 0.047808524268048554,
+          "over": 2161,
+          "under": 2511,
+          "union": 91585,
+          "xor": 4672
+        },
+        "previous_proposal": {
+          "cases": 36,
+          "exact": 3,
+          "iou": 0.9469806130468955,
+          "mean_error": 0.05114704654008734,
+          "over": 2184,
+          "under": 2673,
+          "union": 91608,
+          "xor": 4857
+        },
+        "seed": {
+          "cases": 36,
+          "exact": 3,
+          "iou": 0.9480168039718478,
+          "mean_error": 0.048938494891309726,
+          "over": 2221,
+          "under": 2543,
+          "union": 91645,
+          "xor": 4764
+        }
+      }
+    },
+    {
+      "capture": "validation-16",
+      "passes_seed_gate": true,
+      "totals": {
+        "expanded_proposal": {
+          "cases": 6,
+          "exact": 1,
+          "iou": 0.9652919957102467,
+          "mean_error": 0.031208150318152144,
+          "over": 453,
+          "under": 259,
+          "union": 20514,
+          "xor": 712
+        },
+        "previous_proposal": {
+          "cases": 6,
+          "exact": 1,
+          "iou": 0.964120313947253,
+          "mean_error": 0.03240986398846312,
+          "over": 452,
+          "under": 284,
+          "union": 20513,
+          "xor": 736
+        },
+        "seed": {
+          "cases": 6,
+          "exact": 1,
+          "iou": 0.9619618157023183,
+          "mean_error": 0.034907130989978725,
+          "over": 471,
+          "under": 310,
+          "union": 20532,
+          "xor": 781
+        }
+      }
+    },
+    {
+      "capture": "validation-large",
+      "passes_seed_gate": false,
+      "totals": {
+        "expanded_proposal": {
+          "cases": 30,
+          "exact": 1,
+          "iou": 0.982902923378505,
+          "mean_error": 0.01896324975143899,
+          "over": 7534,
+          "under": 4502,
+          "union": 703980,
+          "xor": 12036
+        },
+        "previous_proposal": {
+          "cases": 30,
+          "exact": 1,
+          "iou": 0.9832305889980153,
+          "mean_error": 0.018594513561229674,
+          "over": 6918,
+          "under": 4877,
+          "union": 703364,
+          "xor": 11795
+        },
+        "seed": {
+          "cases": 30,
+          "exact": 1,
+          "iou": 0.9821507203063611,
+          "mean_error": 0.01931215745841621,
+          "over": 7560,
+          "under": 5006,
+          "union": 704006,
+          "xor": 12566
+        }
+      }
+    }
+  ],
+  "current_model_sha256": "327f4a4152765335de3d514e4cf8e8c2a822e55715d01963168d722b56cd8f5d",
+  "previous_model_sha256": "0e5ccf9e8e8e383244fdf15fd75a9a03236582720d71ce0e145f428d418de663",
+  "strata": {
+    "33_to_64": {
+      "expanded_proposal": {
+        "cases": 72,
+        "exact": 10,
+        "iou": 0.9253610131208283,
+        "mean_error": 0.07903612783805176,
+        "over": 1509,
+        "under": 1432,
+        "union": 39403,
+        "xor": 2941
+      },
+      "previous_proposal": {
+        "cases": 72,
+        "exact": 6,
+        "iou": 0.9155312665273125,
+        "mean_error": 0.08769246202790727,
+        "over": 1813,
+        "under": 1541,
+        "union": 39707,
+        "xor": 3354
+      },
+      "seed": {
+        "cases": 72,
+        "exact": 8,
+        "iou": 0.9163843236409608,
+        "mean_error": 0.08565551405824164,
+        "over": 1656,
+        "under": 1651,
+        "union": 39550,
+        "xor": 3307
+      }
+    },
+    "65_to_90": {
+      "expanded_proposal": {
+        "cases": 66,
+        "exact": 1,
+        "iou": 0.9429517397565449,
+        "mean_error": 0.05247739805081194,
+        "over": 2344,
+        "under": 2291,
+        "union": 81247,
+        "xor": 4635
+      },
+      "previous_proposal": {
+        "cases": 66,
+        "exact": 0,
+        "iou": 0.941232029831706,
+        "mean_error": 0.05389199908037308,
+        "over": 2621,
+        "under": 2170,
+        "union": 81524,
+        "xor": 4791
+      },
+      "seed": {
+        "cases": 66,
+        "exact": 3,
+        "iou": 0.9402075784560585,
+        "mean_error": 0.05536406252026763,
+        "over": 2512,
+        "under": 2356,
+        "union": 81415,
+        "xor": 4868
+      }
+    },
+    "91_plus": {
+      "expanded_proposal": {
+        "cases": 60,
+        "exact": 5,
+        "iou": 0.9490560749678412,
+        "mean_error": 0.05147746786862331,
+        "over": 3574,
+        "under": 3515,
+        "union": 139153,
+        "xor": 7089
+      },
+      "previous_proposal": {
+        "cases": 60,
+        "exact": 5,
+        "iou": 0.9472080707628854,
+        "mean_error": 0.05409822713470632,
+        "over": 3590,
+        "under": 3757,
+        "union": 139169,
+        "xor": 7347
+      },
+      "seed": {
+        "cases": 60,
+        "exact": 5,
+        "iou": 0.9474512000689447,
+        "mean_error": 0.05324953556800064,
+        "over": 3663,
+        "under": 3654,
+        "union": 139242,
+        "xor": 7317
+      }
+    },
+    "large": {
+      "expanded_proposal": {
+        "cases": 30,
+        "exact": 1,
+        "iou": 0.982902923378505,
+        "mean_error": 0.01896324975143899,
+        "over": 7534,
+        "under": 4502,
+        "union": 703980,
+        "xor": 12036
+      },
+      "previous_proposal": {
+        "cases": 30,
+        "exact": 1,
+        "iou": 0.9832305889980153,
+        "mean_error": 0.018594513561229674,
+        "over": 6918,
+        "under": 4877,
+        "union": 703364,
+        "xor": 11795
+      },
+      "seed": {
+        "cases": 30,
+        "exact": 1,
+        "iou": 0.9821507203063611,
+        "mean_error": 0.01931215745841621,
+        "over": 7560,
+        "under": 5006,
+        "union": 704006,
+        "xor": 12566
+      }
+    },
+    "up_to_32": {
+      "expanded_proposal": {
+        "cases": 96,
+        "exact": 18,
+        "iou": 0.870739115761053,
+        "mean_error": 0.1330526398635257,
+        "over": 513,
+        "under": 636,
+        "union": 8889,
+        "xor": 1149
+      },
+      "previous_proposal": {
+        "cases": 96,
+        "exact": 18,
+        "iou": 0.8632942218286473,
+        "mean_error": 0.14180423001840436,
+        "over": 658,
+        "under": 577,
+        "union": 9034,
+        "xor": 1235
+      },
+      "seed": {
+        "cases": 96,
+        "exact": 15,
+        "iou": 0.8496290554755841,
+        "mean_error": 0.17228189507863775,
+        "over": 655,
+        "under": 703,
+        "union": 9031,
+        "xor": 1358
+      }
+    }
+  }
+}

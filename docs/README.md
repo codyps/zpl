@@ -87,6 +87,20 @@ the large-outline Font 0 recovery pilot.
 [Small-size font results](font-small-sizes.md) records reconstructed hint programs,
 independent validation, generated-font printer replay, and the CVT axis correction.
 
+[Joint font optimization](joint-font-optimization.md) formulates reconstruction as
+a mixed coordinate, shared-parameter and hint-program search, with exact raster
+scoring, bounded beam search and separate printer validation.
+
+[Expanded font sampling](expanded-font-sampling.md) tests the same optimizer with
+1,536 additional samples spanning sizes, proportions, rotations and large outlines.
+
+[Font accuracy examination](font-accuracy-examination.md) separates renderer and
+reconstruction errors, tests deeper search and missing curve features, and audits
+the results on fresh printer captures. Its
+[structured-hint follow-up](font-accuracy-examination.md#structured-hint-follow-up)
+adds counter relationships, interpolation and a regression-aware objective,
+with a measured gain in paired printer previews and a retained historical regression.
+
 [Automatic font reconstruction](automatic-font-reconstruction.md) describes bounded geometry
 and hint fitting, resumable runs, frozen font export and independent validation.
 

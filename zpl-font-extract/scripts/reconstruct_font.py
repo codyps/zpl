@@ -479,6 +479,10 @@ def fit(source, development, output, binary, resume=False, budget=600):
 def frozen(root):
     model_data = (root / "model.json").read_bytes()
     model = json.loads(model_data)
+    if model["schema"] == "joint-font-optimization-v1":
+        from optimize_font import frozen as joint_frozen
+
+        return joint_frozen(root)
     require(model["schema"] == SCHEMA, "unknown reconstruction model")
     require(
         set(model["artifacts"]) == {"font.ttf", "geometry.ttf", "initial.ttf"},
@@ -510,6 +514,20 @@ def frozen(root):
     return model, sha(model_data)
 
 
+def compile_model(model, witnesses=False):
+    if model["schema"] == "joint-font-optimization-v1":
+        from joint_hint_program import build
+
+        return build(model["state"], witnesses=witnesses)
+    return hints.build(
+        model["shapes"],
+        model["inferred"],
+        model["policies"],
+        model["cutin"],
+        witnesses=witnesses,
+    )
+
+
 def totals(scored):
     result = {k: sum(p[k] for p in scored) for k in ("under", "over", "xor", "union")}
     result["iou"] = 1 - result["xor"] / result["union"] if result["union"] else 1
@@ -525,7 +543,9 @@ def evaluate(root, captures, binary, output, group="validation", renderer=None):
         sha(binary.read_bytes()) == seal["engine_sha256"],
         "evaluation engine differs from fitting engine",
     )
-    report = dict(schema=SCHEMA, model_sha256=digest, group=group, campaigns=[])
+    report = dict(
+        schema=model["schema"], model_sha256=digest, group=group, campaigns=[]
+    )
     require(
         output.resolve()
         not in {
@@ -552,7 +572,10 @@ def evaluate(root, captures, binary, output, group="validation", renderer=None):
         result = dict(
             capture=directory.name, provenance=provenance, fonts={}, totals={}
         )
-        for name in ("initial.ttf", "geometry.ttf", "font.ttf"):
+        fonts = ["initial.ttf", "geometry.ttf", "font.ttf"]
+        if "proposal.ttf" in model["artifacts"]:
+            fonts.append("proposal.ttf")
+        for name in fonts:
             rows = runner.render((root / name).read_bytes(), queries)
             scored = engine_api.score(pages, rows)
             result["fonts"][name] = scored
@@ -565,12 +588,12 @@ def evaluate(root, captures, binary, output, group="validation", renderer=None):
             result["totals"]["production"] = totals(scored)
 
         # Evaluation reports accept or reject; they never select another model.
-        def nonregression(name):
+        def nonregression(name, candidate="font.ttf"):
             return all(
                 totals([a])["iou"] >= totals([b])["iou"]
                 and totals([a])["exact"] >= totals([b])["exact"]
                 for a, b in zip(
-                    result["fonts"]["font.ttf"], result["fonts"][name], strict=True
+                    result["fonts"][candidate], result["fonts"][name], strict=True
                 )
             )
 
@@ -578,10 +601,23 @@ def evaluate(root, captures, binary, output, group="validation", renderer=None):
         result["passes_production_gate"] = (
             nonregression("production") if renderer is not None else None
         )
+        if "proposal.ttf" in fonts:
+            result["passes_proposal_outline_gate"] = nonregression(
+                "initial.ttf", "proposal.ttf"
+            )
+            result["passes_proposal_production_gate"] = (
+                nonregression("production", "proposal.ttf")
+                if renderer is not None
+                else None
+            )
         report["campaigns"].append(result)
     report["passes_outline_gate"] = all(
         p["passes_outline_gate"] for p in report["campaigns"]
     )
+    if "proposal.ttf" in model["artifacts"]:
+        report["passes_proposal_outline_gate"] = all(
+            p["passes_proposal_outline_gate"] for p in report["campaigns"]
+        )
     report["production_ready"] = False
     save(output, report)
     print(
@@ -591,6 +627,15 @@ def evaluate(root, captures, binary, output, group="validation", renderer=None):
                     capture=p["capture"],
                     totals=p["totals"],
                     passes_outline_gate=p["passes_outline_gate"],
+                    **(
+                        {
+                            "passes_proposal_outline_gate": p[
+                                "passes_proposal_outline_gate"
+                            ]
+                        }
+                        if "passes_proposal_outline_gate" in p
+                        else {}
+                    ),
                 )
                 for p in report["campaigns"]
             ],
@@ -599,20 +644,23 @@ def evaluate(root, captures, binary, output, group="validation", renderer=None):
     )
 
 
-def prepare_preview(root, captures, output, object_name, group="validation"):
+def prepare_preview(
+    root, captures, output, object_name, group="validation", variant="font"
+):
     """Prepare requests only; the existing guarded capture tool owns transport."""
     model, digest = frozen(root)
+    require(variant in ("font", "proposal"), "unknown preview variant")
+    if variant == "proposal":
+        require(
+            model["schema"] == "joint-font-optimization-v1",
+            "model has no joint proposal",
+        )
+        model = dict(model, state=model["proposal"], shapes=model["proposal"]["shapes"])
     require(
         re.fullmatch(r"R:ZP[0-9A-Z]{1,6}\.TTF", object_name),
         "unexpected RAM object name",
     )
-    data = hints.build(
-        model["shapes"],
-        model["inferred"],
-        model["policies"],
-        model["cutin"],
-        witnesses=True,
-    )
+    data = compile_model(model, witnesses=True)
     require(len(data) <= 65536, "constructed font exceeds upload budget")
     state = [
         dict(
@@ -666,6 +714,11 @@ def prepare_preview(root, captures, output, object_name, group="validation"):
             model_sha256=digest,
             sources=provenance,
             pages=pages,
+            **(
+                {"variant": variant}
+                if model["schema"] == "joint-font-optimization-v1"
+                else {}
+            ),
         ),
     )
 
@@ -708,6 +761,9 @@ def main():
     preview_parser.add_argument(
         "--group", choices=("development", "validation"), default="validation"
     )
+    preview_parser.add_argument(
+        "--variant", choices=("font", "proposal"), default="font"
+    )
     args = parser.parse_args()
     try:
         if args.action == "fit":
@@ -733,7 +789,12 @@ def main():
             )
         else:
             prepare_preview(
-                args.model, args.captures, args.output, args.object, args.group
+                args.model,
+                args.captures,
+                args.output,
+                args.object,
+                args.group,
+                args.variant,
             )
     except (ValueError, OSError) as error:
         parser.exit(1, f"reconstruct_font: {error}\n")

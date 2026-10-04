@@ -35,9 +35,11 @@ def prepare(root, characters, configurations, group):
     ):
         raise ValueError("invalid dimensions or rotation")
     size = max(max(w, h) for w, h, _ in configurations)
-    padding = 16 if size <= 64 else 64
+    # Large descenders need more than a fixed 64-dot bottom margin. Allocate
+    # their space in the native request, not by padding or aligning a capture.
+    padding = 16 if size <= 64 else math.ceil(size / 5) + 16
     tile = math.ceil((size + 2 * padding) / 32) * 32
-    width = 384 if tile <= 384 else 768
+    width = 384 if tile <= 128 else 768
     columns = width // tile
     per_page = columns * (1536 // tile)
     fields = [(w, h, r, c) for w, h, r in configurations for c in characters]

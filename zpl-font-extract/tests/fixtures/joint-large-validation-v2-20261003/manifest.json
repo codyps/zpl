@@ -1,0 +1,294 @@
+{
+  "schema": "small-font-probe-v1",
+  "characters": "HOSgj@",
+  "configurations": [
+    [
+      288,
+      288,
+      "N"
+    ],
+    [
+      416,
+      416,
+      "N"
+    ]
+  ],
+  "pages": [
+    {
+      "name": "reconstruction-00",
+      "font": "0",
+      "group": "validation",
+      "canvas": [
+        768,
+        1280
+      ],
+      "probes": [
+        {
+          "text": "H",
+          "width": 288,
+          "height": 288,
+          "orientation": "N",
+          "origin": "FT",
+          "tile": [
+            0,
+            0,
+            640,
+            640
+          ],
+          "anchor": [
+            100,
+            388
+          ]
+        },
+        {
+          "text": "O",
+          "width": 288,
+          "height": 288,
+          "orientation": "N",
+          "origin": "FT",
+          "tile": [
+            0,
+            640,
+            640,
+            640
+          ],
+          "anchor": [
+            100,
+            388
+          ]
+        }
+      ],
+      "zpl_sha256": "24fff1717d674c36b53fd99e4de713cc6909062dd0832f5cbb62d45be74e6540"
+    },
+    {
+      "name": "reconstruction-01",
+      "font": "0",
+      "group": "validation",
+      "canvas": [
+        768,
+        1280
+      ],
+      "probes": [
+        {
+          "text": "S",
+          "width": 288,
+          "height": 288,
+          "orientation": "N",
+          "origin": "FT",
+          "tile": [
+            0,
+            0,
+            640,
+            640
+          ],
+          "anchor": [
+            100,
+            388
+          ]
+        },
+        {
+          "text": "g",
+          "width": 288,
+          "height": 288,
+          "orientation": "N",
+          "origin": "FT",
+          "tile": [
+            0,
+            640,
+            640,
+            640
+          ],
+          "anchor": [
+            100,
+            388
+          ]
+        }
+      ],
+      "zpl_sha256": "b8959e1b89cc73d4d24430016dae5cb88122f91aa8fe45acc89b6c8bdb249cb9"
+    },
+    {
+      "name": "reconstruction-02",
+      "font": "0",
+      "group": "validation",
+      "canvas": [
+        768,
+        1280
+      ],
+      "probes": [
+        {
+          "text": "j",
+          "width": 288,
+          "height": 288,
+          "orientation": "N",
+          "origin": "FT",
+          "tile": [
+            0,
+            0,
+            640,
+            640
+          ],
+          "anchor": [
+            100,
+            388
+          ]
+        },
+        {
+          "text": "@",
+          "width": 288,
+          "height": 288,
+          "orientation": "N",
+          "origin": "FT",
+          "tile": [
+            0,
+            640,
+            640,
+            640
+          ],
+          "anchor": [
+            100,
+            388
+          ]
+        }
+      ],
+      "zpl_sha256": "7bb13a0f2b4876f08c79e59a384b12c3adec46cb11dfab4516e7b9e2eb6457fc"
+    },
+    {
+      "name": "reconstruction-03",
+      "font": "0",
+      "group": "validation",
+      "canvas": [
+        768,
+        1280
+      ],
+      "probes": [
+        {
+          "text": "H",
+          "width": 416,
+          "height": 416,
+          "orientation": "N",
+          "origin": "FT",
+          "tile": [
+            0,
+            0,
+            640,
+            640
+          ],
+          "anchor": [
+            100,
+            516
+          ]
+        },
+        {
+          "text": "O",
+          "width": 416,
+          "height": 416,
+          "orientation": "N",
+          "origin": "FT",
+          "tile": [
+            0,
+            640,
+            640,
+            640
+          ],
+          "anchor": [
+            100,
+            516
+          ]
+        }
+      ],
+      "zpl_sha256": "60116d9ee903d287423de85fa58ff3595a191781b6ad049c6c74325fbe540be5"
+    },
+    {
+      "name": "reconstruction-04",
+      "font": "0",
+      "group": "validation",
+      "canvas": [
+        768,
+        1280
+      ],
+      "probes": [
+        {
+          "text": "S",
+          "width": 416,
+          "height": 416,
+          "orientation": "N",
+          "origin": "FT",
+          "tile": [
+            0,
+            0,
+            640,
+            640
+          ],
+          "anchor": [
+            100,
+            516
+          ]
+        },
+        {
+          "text": "g",
+          "width": 416,
+          "height": 416,
+          "orientation": "N",
+          "origin": "FT",
+          "tile": [
+            0,
+            640,
+            640,
+            640
+          ],
+          "anchor": [
+            100,
+            516
+          ]
+        }
+      ],
+      "zpl_sha256": "7be2f3d44ff96b8d7682d172bb34d334642a3921bc8005d04fa8eb4749d1b9db"
+    },
+    {
+      "name": "reconstruction-05",
+      "font": "0",
+      "group": "validation",
+      "canvas": [
+        768,
+        1280
+      ],
+      "probes": [
+        {
+          "text": "j",
+          "width": 416,
+          "height": 416,
+          "orientation": "N",
+          "origin": "FT",
+          "tile": [
+            0,
+            0,
+            640,
+            640
+          ],
+          "anchor": [
+            100,
+            516
+          ]
+        },
+        {
+          "text": "@",
+          "width": 416,
+          "height": 416,
+          "orientation": "N",
+          "origin": "FT",
+          "tile": [
+            0,
+            640,
+            640,
+            640
+          ],
+          "anchor": [
+            100,
+            516
+          ]
+        }
+      ],
+      "zpl_sha256": "ac1be6b26b335224a9a4f3595fc72ec4c3efabf8afd96f9c7a5bcb8aa5f54a6f"
+    }
+  ]
+}

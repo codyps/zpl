@@ -414,6 +414,11 @@ fn zd621_point_quantization_rounding_and_spacing_match_native_canvases() {
         "cvt-axis-validation-v2-20261003",
         "font0-hints-20261003",
         "reconstruction-replay-20261003",
+        "joint-replay-20261003",
+        "expanded-replay-20261004",
+        "accuracy-feature-replay-20261004",
+        "structured-baseline-replay-20261004",
+        "structured-candidate-replay-20261004",
     ] {
         let root = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
             .join("../zpl-font-extract/tests/fixtures")
@@ -546,11 +551,63 @@ fn zd621_point_quantization_rounding_and_spacing_match_native_canvases() {
                 // same generated TTF on both sides, native unaligned canvases.
                 let expected = [(0, 0, 52), (43, 41, 20632), (4, 16, 990)];
                 assert_eq!(actual, expected[page_index], "{directory}/{name}");
+            } else if directory == "joint-replay-20261003" {
+                // Frozen joint-search proposal, retained despite rejection by
+                // reconstruction acceptance. This checks execution of that TTF,
+                // not its resemblance to resident Font 0 or production fitness.
+                assert_eq!(manifest["variant"], "proposal");
+                let expected = [(0, 0, 52), (36, 44, 18693), (2, 11, 1964)];
+                assert_eq!(actual, expected[page_index], "{directory}/{name}");
+            } else if directory == "expanded-replay-20261004" {
+                // Same generated font on 294 independently reserved square,
+                // stretched and rotated cases after expanding development data.
+                assert_eq!(manifest["variant"], "proposal");
+                let expected = [
+                    (0, 0, 52),
+                    (81, 103, 8334),
+                    (114, 178, 31750),
+                    (33, 31, 6368),
+                    (23, 69, 43383),
+                    (85, 156, 33988),
+                    (47, 71, 28049),
+                    (56, 42, 41219),
+                    (33, 44, 47944),
+                    (27, 18, 20282),
+                ];
+                assert_eq!(actual, expected[page_index], "{directory}/{name}");
+            } else if directory == "accuracy-feature-replay-20261004" {
+                // Additive local-curve feature experiment, frozen before these
+                // 96 Font 0 targets were captured. This measures execution of
+                // the same TTF, separately from its reconstruction accuracy.
+                let expected = [(0, 0, 52), (22, 37, 6808), (19, 53, 22212)];
+                assert_eq!(actual, expected[page_index], "{directory}/{name}");
+            } else if directory == "structured-baseline-replay-20261004" {
+                // Paired baseline on 240 fresh dimensions/rotations near the
+                // coarse hint branches. Keep every native pixel accounted for.
+                let expected = [
+                    (0, 0, 52),
+                    (87, 118, 9612),
+                    (73, 67, 11435),
+                    (58, 83, 14750),
+                    (46, 64, 6639),
+                ];
+                assert_eq!(actual, expected[page_index], "{directory}/{name}");
+            } else if directory == "structured-candidate-replay-20261004" {
+                // Relative counter links, IP anchor interpolation and MPPEM
+                // branches execute on the printer; Font 0 fit is scored apart.
+                let expected = [
+                    (0, 0, 52),
+                    (87, 108, 9627),
+                    (77, 74, 11452),
+                    (55, 85, 14764),
+                    (52, 65, 6659),
+                ];
+                assert_eq!(actual, expected[page_index], "{directory}/{name}");
             } else {
                 assert_eq!((actual.0, actual.1), (0, 0), "{directory}/{name}");
             }
         }
     }
-    assert_eq!(pages, 36);
-    assert_eq!(fields, 2264);
+    assert_eq!(pages, 62);
+    assert_eq!(fields, 3228);
 }

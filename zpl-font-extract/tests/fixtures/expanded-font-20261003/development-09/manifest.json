@@ -1,0 +1,127 @@
+{
+  "schema": "small-font-probe-v1",
+  "characters": "HOSgj@",
+  "configurations": [
+    [
+      128,
+      96,
+      "N"
+    ]
+  ],
+  "pages": [
+    {
+      "name": "reconstruction-00",
+      "font": "0",
+      "group": "development",
+      "canvas": [
+        768,
+        448
+      ],
+      "probes": [
+        {
+          "text": "H",
+          "width": 128,
+          "height": 96,
+          "orientation": "N",
+          "origin": "FT",
+          "tile": [
+            0,
+            0,
+            224,
+            224
+          ],
+          "anchor": [
+            42,
+            138
+          ]
+        },
+        {
+          "text": "O",
+          "width": 128,
+          "height": 96,
+          "orientation": "N",
+          "origin": "FT",
+          "tile": [
+            224,
+            0,
+            224,
+            224
+          ],
+          "anchor": [
+            42,
+            138
+          ]
+        },
+        {
+          "text": "S",
+          "width": 128,
+          "height": 96,
+          "orientation": "N",
+          "origin": "FT",
+          "tile": [
+            448,
+            0,
+            224,
+            224
+          ],
+          "anchor": [
+            42,
+            138
+          ]
+        },
+        {
+          "text": "g",
+          "width": 128,
+          "height": 96,
+          "orientation": "N",
+          "origin": "FT",
+          "tile": [
+            0,
+            224,
+            224,
+            224
+          ],
+          "anchor": [
+            42,
+            138
+          ]
+        },
+        {
+          "text": "j",
+          "width": 128,
+          "height": 96,
+          "orientation": "N",
+          "origin": "FT",
+          "tile": [
+            224,
+            224,
+            224,
+            224
+          ],
+          "anchor": [
+            42,
+            138
+          ]
+        },
+        {
+          "text": "@",
+          "width": 128,
+          "height": 96,
+          "orientation": "N",
+          "origin": "FT",
+          "tile": [
+            448,
+            224,
+            224,
+            224
+          ],
+          "anchor": [
+            42,
+            138
+          ]
+        }
+      ],
+      "zpl_sha256": "8579bdc4a31dec982ddda2aa796724a649233833a4f14f375f2158450c16a480"
+    }
+  ]
+}

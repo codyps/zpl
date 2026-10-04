@@ -1,0 +1,4 @@
+{
+  "status": "diagnostic-only",
+  "reason": "The fixed 64-dot margin clips large descenders at 416 dots. Excluded from accuracy evidence; recaptured on larger native tiles in joint-large-validation-v2-20261003."
+}
