@@ -234,3 +234,141 @@ Validation for this change passes 92 Python tests and the Rust `truetype`,
 `printer_accuracy` and `conformance_preview` targets (17 tests). The TrueType
 native-canvas regression now accounts for 119 pages and 6,501 fields. These
 checks preserve measured failures; passing tests do not imply meeting 90% IoU.
+
+## Weak-case diagnosis and repair (2026-10-05)
+
+The [native-coordinate diagnosis](../zpl-font-extract/tests/fixtures/repair-font-20261005/diagnosis.json)
+separates outline error, hint placement, search failure, and interpreter error.
+`diagnose_font_fit.py` reproduces it from the frozen development split, with
+unhinted controls, exact foreground counts, bounds and centroids. It performs
+no registration or per-size fitting. Examples explain why aggregate IoU hides
+important failures:
+
+- `(` at 11×11 has zero IoU: its ten ink pixels lie one column to the right.
+  The same outline without hints scores 83.33%. `|` at 20×20 similarly has its
+  entire one-dot stroke one column left. These are previously observed check
+  cases, not fresh validation or training inputs to this repair.
+- `<` at 17×17 has five missed and seventeen extra pixels, scoring 43.59%.
+  Its diagonals are too thick. The existing feature graph controls the inner
+  apex in X but omits it in Y: the shoulder detector stops at the union of
+  anchors, even when an anchor exists on only one axis.
+- Grid fitting creates plateaus. The old ±16/8/4 numerical search cannot cross
+  some of them; a necessary first edit can also violate a regression guard.
+  Identical error counts do not imply identical rasters or equivalent programs.
+
+[`repair_font_search.py`](../zpl-font-extract/scripts/repair_font_search.py)
+adds missing axis controls while preserving the initial font bytes, larger
+numerical moves, and a bounded beam. It keeps an acceptable incumbent separately
+from exploratory programs, including temporarily regressed programs that may
+lead to coordinated repairs. Final acceptance still requires all historical
+and incumbent exact-case, large-case, per-case-regret, size and transformation
+guards. The target objective remains native per-case IoU. Search identity uses
+the program rather than its error counts. Outlines, CVTs and all 95 advances
+remain unchanged; this introduces no size-specific bitmap tables.
+
+The [frozen experiment](../zpl-font-extract/tests/fixtures/repair-font-20261005/plan.json)
+selects the ten worst training glyphs, then runs four rounds with a beam of four
+and 128 sampled structural proposals per axis. Some accepted `g`, `[` and `;`
+repairs require intermediate regressions. These are **minimum training IoUs
+across all cases of each glyph**, not just improvements at a chosen size:
+
+| Glyph | Previous | Repaired |
+| --- | ---: | ---: |
+| `m` | 53.26% | 69.92% |
+| `[` | 47.17% | 56.52% |
+| `;` | 50.00% | 60.00% |
+| grave accent | 36.84% | 37.50% |
+
+The original worst `[` case, 17×17, improves from 47.17% to 97.30%; another
+case then becomes its minimum. Across the full font, training cases at ≥90%
+increase from 2,691 to 2,695 of 3,974; the old check rises from 1,098 to 1,099
+of 1,834. Its zero-IoU cases remain. The global training minimum only increases
+from 36.84% to 37.14%.
+
+### Alternatives and interpreter control
+
+Two separate ablations test whether different proposals solve the remaining
+barriers. Projection-guided search ranks row/column foreground distributions,
+then evaluates paired axis changes with actual two-dimensional IoU and the
+same guards. It improves `;` but leaves the other nine glyphs unchanged; it is
+available through `--strategy projection`, not the default.
+
+A geometry-derived diagonal primitive uses SFVTL[1]/SHPIX to move both edges
+along the normal of the scaled stroke, including anisotropic sizes. It has
+one bounded displacement over a coarse optical range. All 152 tested settings
+for each of `<` and `>` fail to produce an acceptable improvement. This
+`--strategy diagonal` experiment remains optional; no diagonal correction was
+selected for the repaired font. The
+[projection](../zpl-font-extract/tests/fixtures/repair-font-20261005/projection-ablation.json)
+and [diagonal](../zpl-font-extract/tests/fixtures/repair-font-20261005/diagonal-ablation.json)
+reports preserve the negative results and source hashes.
+
+The diagonal experiment also exposed an actual interpreter defect: the line
+vector instructions popped their two point operands in reverse order. The fix
+covers SPVTL, SFVTL and SDPVTL, including separate zones and original/current
+coordinates. The
+[original vector control font](../zpl-font-extract/tests/fixtures/line-vector-20261005/manifest.json)
+matches independent FreeType 2.13.2 outlines exactly on all 18 cases. On ten
+native printer canvases, same-font disagreements fall from 389 to 35 pixels;
+pooled IoU rises from 80.04% to 98.02%. The remaining `(under, over, union)` is
+`(0, 35, 1772)`, retained exactly in Rust tests. This measures execution of a
+known font, not reconstruction of Font 0. Both full repair fonts retain exactly
+the same rasters and metrics under the corrected engine on all 5,808 development
+queries, as recorded in
+[engine-migration.json](../zpl-font-extract/tests/fixtures/repair-font-20261005/engine-migration.json).
+
+### Fresh printer evidence and limits
+
+After candidate freeze, the
+[audit plan](../zpl-font-extract/tests/fixtures/repair-font-20261005/audit-plan.json)
+reserves 536 previously unused cases: 16 configurations for the ten weakest
+training glyphs and four for all 94 visible ASCII characters. The combined set
+covers N/R/I/B and stretched sizes. Spacing is unchanged and was not remeasured.
+Resident captures and both uploaded full-font previews retain native canvases,
+repeated controls, identity/execution witnesses and verified RAM-font cleanup.
+All evidence identifies ZD621 D7J211001302, 203 DPI, V93.21.33Z.
+
+| Both fonts rendered by the printer against resident Font 0 | Previous | Repaired |
+| --- | ---: | ---: |
+| Cases at ≥90% | 212 / 536 | 220 / 536 |
+| Mean IoU | 81.92% | 82.47% |
+| Pooled IoU | 81.39% | 82.04% |
+| Worst individual IoU | 28.00% | 31.03% |
+| Disagreement pixels | 9,210 | 8,857 |
+
+The [paired printer report](../zpl-font-extract/tests/fixtures/repair-font-20261005/paired-printer-evaluation.json)
+fails two of six page gates. In particular, `;` at width 13, height 17 loses
+exactness in R and I orientations, adding one missed and one extra pixel per
+case. No changes were fitted after observing this audit. The font remains an
+experimental candidate and is **not promoted to production**. The local audit
+predicts the aggregate improvement but is not substituted for printer evidence.
+
+The design needs more than a larger search budget. Missing axis controls and
+non-greedy exploration help, but independent point adjustments and constant
+stroke corrections still overfit scale transitions. The next model should
+coordinate stroke centerlines, widths, counters and contour placement, impose
+geometric validity across intervals, and fit outline and hint parameters
+jointly. Projection loss can guide proposals; only native two-dimensional
+foreground IoU should accept them. Existing observed checks must be labelled
+as development data if incorporated into a later fit, followed by new holdouts.
+
+Two preliminary control captures are retained as diagnostic-only: one referenced
+the generator's old hard-coded font object; the other used a state-page name
+that skipped the transport's witness check. Neither contributes positive accuracy
+evidence. The corrected generator uses each probe's font object, and its test
+requires `00-state` and byte-identical regeneration of the successful campaign.
+
+Reproduce the repair with `repair_font_search.py FIXTURES SEED OUTPUT --engine
+ENGINE --glyphs 10 --rounds 4 --beam 4 --structural-budget 128`. The seed is
+`ascii-reconstruction-20261004`. If the executable differs from the seed's
+pinned engine, supply `--previous-engine`: migration is accepted only after
+both seed fonts reproduce every development raster and metric exactly.
+`evaluate_font_experiment.py` evaluates the frozen fresh audit; no fitting occurs.
+The experiment's `source/` snapshot preserves the driver used for these numbers;
+the current driver additionally exposes the later projection/diagonal ablations.
+
+Validation passes 105 Python tests and 88 Rust tests across `zpl --lib`,
+`truetype`, `printer_accuracy` and `conformance_preview`. The native TrueType
+regression now pins 143 canvases and 7,606 fields. Rust formatting and diff
+whitespace checks pass. The captured failures above remain part of the evidence;
+passing regression tests do not mean that the candidate passes promotion gates.

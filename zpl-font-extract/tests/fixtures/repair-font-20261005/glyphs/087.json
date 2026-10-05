@@ -1,0 +1,547 @@
+{
+  "final": {
+    "at_least_90": 4,
+    "cases": 35,
+    "mean_iou": 0.7706687751124334,
+    "passes_target": false,
+    "pooled_iou": 0.9646090534979423,
+    "worst_iou": 0.49606299212598426
+  },
+  "glyph": "W",
+  "initial": {
+    "at_least_90": 4,
+    "cases": 35,
+    "mean_iou": 0.7535281384536963,
+    "passes_target": false,
+    "pooled_iou": 0.9615869190107091,
+    "worst_iou": 0.49606299212598426
+  },
+  "stages": [
+    {
+      "at_least_90": 4,
+      "cases": 35,
+      "counts": {
+        "0:case-regret": 405,
+        "0:glyph-size": 210,
+        "0:glyph-transform": 216,
+        "1:case-regret": 477,
+        "1:glyph-size": 709,
+        "1:glyph-transform": 722,
+        "accepted": 4,
+        "accepted_after_regression": 0,
+        "evaluated": 840
+      },
+      "depth": 0,
+      "evaluated_programs": 840,
+      "mean_iou": 0.7604401583311969,
+      "passes_target": false,
+      "pooled_iou": 0.9634758287860923,
+      "score": [
+        0.403937007874,
+        0.148015834196,
+        0.017025289495
+      ],
+      "worst_iou": 0.49606299212598426
+    },
+    {
+      "at_least_90": 4,
+      "cases": 35,
+      "counts": {
+        "0:case-regret": 2463,
+        "0:glyph-size": 841,
+        "0:glyph-transform": 1006,
+        "1:case-regret": 2522,
+        "1:glyph-size": 2935,
+        "1:glyph-transform": 2763,
+        "accepted": 6,
+        "accepted_after_regression": 0,
+        "evaluated": 3313
+      },
+      "depth": 1,
+      "evaluated_programs": 4153,
+      "mean_iou": 0.7672866544379823,
+      "passes_target": false,
+      "pooled_iou": 0.9635962266220589,
+      "score": [
+        0.403937007874,
+        0.13958150062,
+        0.016715300101
+      ],
+      "worst_iou": 0.49606299212598426
+    },
+    {
+      "at_least_90": 4,
+      "cases": 35,
+      "counts": {
+        "0:case-regret": 2395,
+        "0:glyph-size": 752,
+        "0:glyph-transform": 903,
+        "1:case-regret": 2410,
+        "1:glyph-size": 2779,
+        "1:glyph-transform": 2573,
+        "accepted": 2,
+        "accepted_after_regression": 0,
+        "evaluated": 3356
+      },
+      "depth": 2,
+      "evaluated_programs": 7509,
+      "mean_iou": 0.7690855058779732,
+      "passes_target": false,
+      "pooled_iou": 0.9641529874796012,
+      "score": [
+        0.403937007874,
+        0.134028326772,
+        0.016526794828
+      ],
+      "worst_iou": 0.49606299212598426
+    },
+    {
+      "at_least_90": 4,
+      "cases": 35,
+      "counts": {
+        "0:case-regret": 2475,
+        "0:glyph-size": 1913,
+        "0:glyph-transform": 491,
+        "1:case-regret": 2473,
+        "1:glyph-size": 2797,
+        "1:glyph-transform": 2504,
+        "accepted": 3,
+        "accepted_after_regression": 0,
+        "evaluated": 3399
+      },
+      "depth": 3,
+      "evaluated_programs": 10908,
+      "mean_iou": 0.7706687751124334,
+      "passes_target": false,
+      "pooled_iou": 0.9646090534979423,
+      "score": [
+        0.403937007874,
+        0.130506443388,
+        0.016324304565
+      ],
+      "worst_iou": 0.49606299212598426
+    }
+  ],
+  "stats": [
+    {
+      "over": 7,
+      "query": [
+        10,
+        10,
+        87,
+        0
+      ],
+      "under": 0,
+      "union": 29,
+      "xor": 7
+    },
+    {
+      "over": 8,
+      "query": [
+        10,
+        10,
+        87,
+        2
+      ],
+      "under": 1,
+      "union": 30,
+      "xor": 9
+    },
+    {
+      "over": 6,
+      "query": [
+        10,
+        10,
+        87,
+        3
+      ],
+      "under": 0,
+      "union": 29,
+      "xor": 6
+    },
+    {
+      "over": 2,
+      "query": [
+        12,
+        12,
+        87,
+        0
+      ],
+      "under": 8,
+      "union": 58,
+      "xor": 10
+    },
+    {
+      "over": 5,
+      "query": [
+        12,
+        18,
+        87,
+        0
+      ],
+      "under": 12,
+      "union": 89,
+      "xor": 17
+    },
+    {
+      "over": 7,
+      "query": [
+        14,
+        14,
+        87,
+        0
+      ],
+      "under": 7,
+      "union": 73,
+      "xor": 14
+    },
+    {
+      "over": 7,
+      "query": [
+        15,
+        15,
+        87,
+        0
+      ],
+      "under": 11,
+      "union": 81,
+      "xor": 18
+    },
+    {
+      "over": 17,
+      "query": [
+        16,
+        16,
+        87,
+        1
+      ],
+      "under": 14,
+      "union": 99,
+      "xor": 31
+    },
+    {
+      "over": 17,
+      "query": [
+        16,
+        16,
+        87,
+        2
+      ],
+      "under": 14,
+      "union": 99,
+      "xor": 31
+    },
+    {
+      "over": 29,
+      "query": [
+        16,
+        24,
+        87,
+        0
+      ],
+      "under": 16,
+      "union": 149,
+      "xor": 45
+    },
+    {
+      "over": 43,
+      "query": [
+        17,
+        17,
+        87,
+        0
+      ],
+      "under": 21,
+      "union": 127,
+      "xor": 64
+    },
+    {
+      "over": 32,
+      "query": [
+        18,
+        18,
+        87,
+        0
+      ],
+      "under": 10,
+      "union": 119,
+      "xor": 42
+    },
+    {
+      "over": 23,
+      "query": [
+        19,
+        19,
+        87,
+        0
+      ],
+      "under": 35,
+      "union": 164,
+      "xor": 58
+    },
+    {
+      "over": 10,
+      "query": [
+        21,
+        21,
+        87,
+        0
+      ],
+      "under": 16,
+      "union": 170,
+      "xor": 26
+    },
+    {
+      "over": 28,
+      "query": [
+        22,
+        22,
+        87,
+        0
+      ],
+      "under": 19,
+      "union": 183,
+      "xor": 47
+    },
+    {
+      "over": 11,
+      "query": [
+        24,
+        16,
+        87,
+        0
+      ],
+      "under": 8,
+      "union": 131,
+      "xor": 19
+    },
+    {
+      "over": 20,
+      "query": [
+        24,
+        24,
+        87,
+        0
+      ],
+      "under": 9,
+      "union": 200,
+      "xor": 29
+    },
+    {
+      "over": 21,
+      "query": [
+        24,
+        24,
+        87,
+        2
+      ],
+      "under": 9,
+      "union": 201,
+      "xor": 30
+    },
+    {
+      "over": 21,
+      "query": [
+        24,
+        24,
+        87,
+        3
+      ],
+      "under": 9,
+      "union": 201,
+      "xor": 30
+    },
+    {
+      "over": 36,
+      "query": [
+        25,
+        25,
+        87,
+        0
+      ],
+      "under": 34,
+      "union": 229,
+      "xor": 70
+    },
+    {
+      "over": 56,
+      "query": [
+        26,
+        26,
+        87,
+        0
+      ],
+      "under": 45,
+      "union": 252,
+      "xor": 101
+    },
+    {
+      "over": 18,
+      "query": [
+        28,
+        28,
+        87,
+        0
+      ],
+      "under": 37,
+      "union": 292,
+      "xor": 55
+    },
+    {
+      "over": 16,
+      "query": [
+        29,
+        29,
+        87,
+        0
+      ],
+      "under": 41,
+      "union": 304,
+      "xor": 57
+    },
+    {
+      "over": 50,
+      "query": [
+        31,
+        31,
+        87,
+        0
+      ],
+      "under": 61,
+      "union": 361,
+      "xor": 111
+    },
+    {
+      "over": 41,
+      "query": [
+        32,
+        24,
+        87,
+        0
+      ],
+      "under": 44,
+      "union": 287,
+      "xor": 85
+    },
+    {
+      "over": 86,
+      "query": [
+        32,
+        48,
+        87,
+        0
+      ],
+      "under": 87,
+      "union": 578,
+      "xor": 173
+    },
+    {
+      "over": 32,
+      "query": [
+        36,
+        36,
+        87,
+        0
+      ],
+      "under": 66,
+      "union": 482,
+      "xor": 98
+    },
+    {
+      "over": 113,
+      "query": [
+        40,
+        40,
+        87,
+        1
+      ],
+      "under": 115,
+      "union": 621,
+      "xor": 228
+    },
+    {
+      "over": 113,
+      "query": [
+        40,
+        40,
+        87,
+        2
+      ],
+      "under": 120,
+      "union": 627,
+      "xor": 233
+    },
+    {
+      "over": 54,
+      "query": [
+        48,
+        32,
+        87,
+        0
+      ],
+      "under": 32,
+      "union": 536,
+      "xor": 86
+    },
+    {
+      "over": 76,
+      "query": [
+        48,
+        48,
+        87,
+        0
+      ],
+      "under": 52,
+      "union": 799,
+      "xor": 128
+    },
+    {
+      "over": 12,
+      "query": [
+        80,
+        80,
+        87,
+        0
+      ],
+      "under": 110,
+      "union": 2178,
+      "xor": 122
+    },
+    {
+      "over": 10,
+      "query": [
+        96,
+        96,
+        87,
+        0
+      ],
+      "under": 96,
+      "union": 3086,
+      "xor": 106
+    },
+    {
+      "over": 18,
+      "query": [
+        192,
+        192,
+        87,
+        0
+      ],
+      "under": 264,
+      "union": 12238,
+      "xor": 282
+    },
+    {
+      "over": 85,
+      "query": [
+        384,
+        384,
+        87,
+        0
+      ],
+      "under": 27,
+      "union": 47798,
+      "xor": 112
+    }
+  ]
+}

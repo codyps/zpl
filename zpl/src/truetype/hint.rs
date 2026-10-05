@@ -429,8 +429,11 @@ impl Vm {
                         }
                     }
                     0x06..=0x09 | 0x86 | 0x87 => {
-                        let p2 = self.index()?;
+                        // OpenType SPVTL/SFVTL/SDPVTL pop p1 (zp2) first,
+                        // then p2 (zp1); the vector runs from p1 to p2.
+                        // https://learn.microsoft.com/en-us/typography/opentype/spec/tt_instructions#set-freedom_vector-to-line
                         let p1 = self.index()?;
+                        let p2 = self.index()?;
                         let vector = self.vector_line(p1, p2, op & 1 != 0, false)?;
                         if op == 8 || op == 9 {
                             self.state.fv = vector;
@@ -1285,6 +1288,54 @@ mod tests {
         vm.run(&[0x01, 0x4b, 0xb0, 0, 0x45, 0x00, 0x4b, 0xb0, 0, 0x45], 0)
             .unwrap();
         assert_eq!(vm.stack, vec![32, 128, 16, 64]);
+    }
+    #[test]
+    fn line_vectors_pop_point_one_first_and_preserve_zone_and_original_roles() {
+        // OpenType SPVTL/SFVTL/SDPVTL operand order and counter-clockwise
+        // perpendicular, independently exercised by FreeType outline fixtures.
+        // https://learn.microsoft.com/en-us/typography/opentype/spec/tt_instructions#set-projection_vector-to-line
+        for opcode in [0x06, 0x07, 0x08, 0x09, 0x86, 0x87] {
+            let mut vm = vm();
+            vm.state.zp[1] = 0;
+            vm.state.zp[2] = 1;
+            // Top operand is point 1 in the glyph zone: (320, 0).
+            // Lower operand is point 2 in twilight: current (320, 320),
+            // original (0, 0). Distinct indices/zones catch a sign-only fix.
+            vm.zones[0].current[2].x = 320;
+            vm.zones[0].current[2].y = 320;
+            vm.run(&[0xb1, 2, 1, opcode], 0).unwrap();
+            let expected = if opcode & 1 == 0 {
+                [0, 16384]
+            } else {
+                [-16384, 0]
+            };
+            if opcode == 8 || opcode == 9 {
+                assert_eq!(vm.state.fv, expected);
+                assert_eq!(vm.state.pv, [16384, 0]);
+            } else {
+                assert_eq!(vm.state.pv, expected);
+                assert_eq!(
+                    vm.state.dual,
+                    if opcode >= 0x86 {
+                        if opcode & 1 == 0 {
+                            [-16384, 0]
+                        } else {
+                            [0, -16384]
+                        }
+                    } else {
+                        expected
+                    }
+                );
+            }
+        }
+        let mut vm = vm();
+        // Push 0,1: perpendicular of point 1 -> point 0 is down. SHPIX moves
+        // point 2 down one pixel and does not alter its horizontal coordinate.
+        vm.run(&[0xb1, 0, 1, 0x09, 0xb1, 2, 64, 0x38], 0).unwrap();
+        assert_eq!(
+            (vm.zones[1].current[2].x, vm.zones[1].current[2].y),
+            (640, -64)
+        );
     }
     #[test]
     fn iup_interpolates_untouched_points_and_keeps_endpoints() {

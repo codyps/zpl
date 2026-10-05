@@ -467,9 +467,7 @@ def zpl(page):
         ax, ay = p["anchor"]
         text = "".join(f"_{ord(c):02X}" for c in p["text"])
         out += f"^FT{x+ax},{y+ay}" if p["origin"] == "FT" else f"^FO{x+ax},{y+ay}"
-        out += (
-            f"^A@{p['orientation']},{p['height']},{p['width']},{OBJECT}^FH^FD{text}^FS"
-        )
+        out += f"^A@{p['orientation']},{p['height']},{p['width']},{p.get('font', OBJECT)}^FH^FD{text}^FS"
     return (out + "^XZ").encode()
 
 

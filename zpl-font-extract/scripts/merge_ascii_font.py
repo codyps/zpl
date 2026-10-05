@@ -63,6 +63,10 @@ def merge(first, second):
         return result
 
     for c in second["shapes"]:
+        if c in second.get("diagonal_programs", {}):
+            state.setdefault("diagonal_programs", {})[c] = deepcopy(
+                second["diagonal_programs"][c]
+            )
         state["shapes"][c] = deepcopy(second["shapes"][c])
         state["graph"][c] = deepcopy(second["graph"][c])
         state["programs"][c] = [

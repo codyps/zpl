@@ -1,0 +1,9 @@
+{
+  "comparisons": {
+    "freetype-outlines.json": "c45b0de76a6a7d3ef6f4ab1682b5f1759c4d3ed7a4475052df2c58e82f6b45ed",
+    "local-comparison.json": "e975080e99e2117857ba0945b5f8f308381f207c9a1882b1a73519e7d395fdc9",
+    "previous-engine-comparison.json": "6886603caf9d65df65406b71b8b8b239ec2db846d9eb942e66de1baeec6dacfc"
+  },
+  "current": "c6631883984ae2fd00282e0b7412626a76547827da396c01afea14042ddcb27d",
+  "previous": "4a02ea60aed8d4b8e5ad13a8b6b665f5ff355dc24d8450091a6180473c989537"
+}

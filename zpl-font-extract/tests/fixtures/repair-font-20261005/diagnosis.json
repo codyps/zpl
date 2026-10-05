@@ -1,0 +1,4548 @@
+{
+  "candidates_sha256": "79de8ca1ede7669d4cc130fbae48f5c17c99ef2070353d7ce61eb78049acb8b4",
+  "captures": [
+    {
+      "manifest_sha256": "db8fd308f506588d432ee3e2f919288c1c776f93dad0b89c8e89dadd6a404ba0",
+      "pages": [
+        {
+          "name": "reconstruction-00",
+          "png_sha256": "c108916676387ffbfbf4eb706df4abbe19a9b3be619c3dcdafdd003762f24e49"
+        },
+        {
+          "name": "reconstruction-01",
+          "png_sha256": "a9c873518ad6f050f6c4b4a695177c4154475da04c225cef20464097bfd2bfd0"
+        },
+        {
+          "name": "reconstruction-02",
+          "png_sha256": "3c4447c9f3b03449ca995a29daa713257ac17556a24754d4eaa7626b2f129f03"
+        },
+        {
+          "name": "reconstruction-03",
+          "png_sha256": "c896f509b5d4ce8752337c8736ace485e0e60c90be969746c9cbd10cab4d9da1"
+        },
+        {
+          "name": "reconstruction-04",
+          "png_sha256": "7e3c3d6739a6cb29863dfb9c0375ece0a7d3d2d2523b7126ebe4566deabde464"
+        },
+        {
+          "name": "reconstruction-05",
+          "png_sha256": "bdfa6a4d0cb5bfc8d100860d40962d031e20e8aa0e54db7d9b447f1858548c86"
+        },
+        {
+          "name": "reconstruction-06",
+          "png_sha256": "fc26c3d0edabe66e8642536947baaea3e0211a9e1115299eb62fd27b29d1b933"
+        },
+        {
+          "name": "reconstruction-07",
+          "png_sha256": "1dc9af4cef9dd270867463e42724d336aaacfdfa7c6eca50e359e4efa587c4cf"
+        },
+        {
+          "name": "reconstruction-08",
+          "png_sha256": "c0c48a32e552d68402b8bcccc5694f11da99a5c724bbdb25e30c6f165ad392b6"
+        },
+        {
+          "name": "reconstruction-09",
+          "png_sha256": "6d0f3c556700a105c7c12c6ccd10ca30d5c7421860f78e95b3df6ee8f802349c"
+        },
+        {
+          "name": "reconstruction-10",
+          "png_sha256": "6bc14d00ba2df74f80d51f08fd0c52abc1e672faf7e3c6ba19beb5ea41b1a60e"
+        }
+      ],
+      "path": "development-outline-00",
+      "printer": {
+        "dpi": 203,
+        "firmware": "V93.21.33Z",
+        "model": "ZD621",
+        "serial": "D7J211001302"
+      },
+      "role": "outline"
+    },
+    {
+      "manifest_sha256": "b6c9fe8e0742328c335cce09d4ffef9b24fb6412421b2a57bc3a1f84634092e2",
+      "pages": [
+        {
+          "name": "reconstruction-00",
+          "png_sha256": "d9b9ab0847a7339e544a5053a676d8f2175e1c342664847738b6dd17d9f50bbd"
+        },
+        {
+          "name": "reconstruction-01",
+          "png_sha256": "bba2e4ed7fcfdee71d72dc5e3dea9fdd9c8887a8b7f77d4e630cee642261ed2f"
+        },
+        {
+          "name": "reconstruction-02",
+          "png_sha256": "f118b54086c62a1ac2037fbd822123edeced76838f13eb7f1ec8f8490d9ffc9c"
+        },
+        {
+          "name": "reconstruction-03",
+          "png_sha256": "2ee0ba95ca24b911b2d5199a036708253f3de4f55ea024c4d32ce36f1040e69a"
+        },
+        {
+          "name": "reconstruction-04",
+          "png_sha256": "89c18bebd3571824599832ac1b4d0fc0d2a069ef50a735dbb90b0dfb4c7e736c"
+        },
+        {
+          "name": "reconstruction-05",
+          "png_sha256": "ed0ad41c5576f3e75bf1d9e34c4899f4090e903c8c26cdd057d0b590194674a7"
+        },
+        {
+          "name": "reconstruction-06",
+          "png_sha256": "6f070c6ae7b31206fa88652057960eddecf3ea7d3aa257a030a8a99c888eb053"
+        },
+        {
+          "name": "reconstruction-07",
+          "png_sha256": "bb508cbb0a96e8c14f291b77c90ff80c532bfef60336f99d369a195713523d6b"
+        },
+        {
+          "name": "reconstruction-08",
+          "png_sha256": "f82983a627387414ae7022cc848f3654f0b5ebd9fbb8b61e1536d61a2c6d3c6c"
+        },
+        {
+          "name": "reconstruction-09",
+          "png_sha256": "223e6f217b451adbb41f92b8de6ed17dc73492d94015131be53013e02bedceee"
+        },
+        {
+          "name": "reconstruction-10",
+          "png_sha256": "34a50e8be660afe66e7f9af42a37820ce603cfb5c29b340411bc7b057a175aae"
+        },
+        {
+          "name": "reconstruction-11",
+          "png_sha256": "8f46ebba21e06ce5ca8c8723be0f28303ae4e9136af37cdc89f84a84c6553f94"
+        },
+        {
+          "name": "reconstruction-12",
+          "png_sha256": "9c06c2e3a3625b9da132741ebb2311afbe3bb40d43f84fd6b77e7083e7401319"
+        },
+        {
+          "name": "reconstruction-13",
+          "png_sha256": "d8d8feb8f44b7600b02a416775ed0d9a46edd77d5592183a02698aa0e41049d6"
+        },
+        {
+          "name": "reconstruction-14",
+          "png_sha256": "b67b249be6b98e4c2aea26a3b2bf9e26ff10fd0f20eae41831e761fbbb857274"
+        },
+        {
+          "name": "reconstruction-15",
+          "png_sha256": "d4502656d7b4b5731cb80895317411fafdf0831ed54527094556e96d494c8e6c"
+        },
+        {
+          "name": "reconstruction-16",
+          "png_sha256": "6c47e38099052faa36ba128b4dfc05dda8c47d66ce3d2c8e6bb39c96e5e75f85"
+        },
+        {
+          "name": "reconstruction-17",
+          "png_sha256": "342efe0db3e2cc6afd07e8513e27b67e6beaf1f4322e1ed4475aba0ed0cb03f6"
+        },
+        {
+          "name": "reconstruction-18",
+          "png_sha256": "9bc8a90472eb9ab1f4ec30203acd2b16eba263b1445490c5b7604995ea1feb52"
+        },
+        {
+          "name": "reconstruction-19",
+          "png_sha256": "f7d2e3e4ba43f82aed05b63217f335dcf8ac5b05b472aeef9a3cde745ded95be"
+        },
+        {
+          "name": "reconstruction-20",
+          "png_sha256": "17af2dd694122e384dd4658eb204b02ca9aeba53a30e214c25aea34af1f23f65"
+        },
+        {
+          "name": "reconstruction-21",
+          "png_sha256": "a59bf5e571c242b06d22f768248eeb95b520411026b929180dbb07efb08dcb5a"
+        },
+        {
+          "name": "reconstruction-22",
+          "png_sha256": "2b270c9d316b3d5dc397fa898d4013d128053e39e5810417ba5efce59b595ce0"
+        },
+        {
+          "name": "reconstruction-23",
+          "png_sha256": "76fdc031398c599010c5f8adad3a835010b2efbf5bf8686fd9f6510d4ee11155"
+        },
+        {
+          "name": "reconstruction-24",
+          "png_sha256": "02731ba8cc1a2f4560e8b8c6033ae125b576d0a44d372b257bcd65cceea1a542"
+        },
+        {
+          "name": "reconstruction-25",
+          "png_sha256": "4204bf9dcf448abb5bd9f05850940caea1a09a042367a9d88ad383c672808a7b"
+        },
+        {
+          "name": "reconstruction-26",
+          "png_sha256": "50238d28db52b0e022fc55f0eb62bd50abd8b0358820997fb7dbbf2fdb6c5172"
+        },
+        {
+          "name": "reconstruction-27",
+          "png_sha256": "32c5093af3b2b5ef2e13b6d889656da032e966918650e8b49546207e47c63bb2"
+        },
+        {
+          "name": "reconstruction-28",
+          "png_sha256": "c14715586b5cabd63b9e33d5aaee19cd5efa6e7336f89fed811ccc218485ee7a"
+        }
+      ],
+      "path": "development-outline-01",
+      "printer": {
+        "dpi": 203,
+        "firmware": "V93.21.33Z",
+        "model": "ZD621",
+        "serial": "D7J211001302"
+      },
+      "role": "outline"
+    },
+    {
+      "manifest_sha256": "7f5f360ddf81dadd588d2dc10fcb4adb15de8391c00e7600b10904fa4748ccae",
+      "pages": [
+        {
+          "name": "reconstruction-00",
+          "png_sha256": "483d240c0778cdbef18a6bae38b32974674c4927a50835973f09e60f9d9c7499"
+        },
+        {
+          "name": "reconstruction-01",
+          "png_sha256": "c8c2d834554094d886f8d39c9ccd0fb0722ec496badaac213bf7a3a2140ecaa2"
+        },
+        {
+          "name": "reconstruction-02",
+          "png_sha256": "80a7b434fb1d37cb7d9d6ab94ab7e3df8a5bd86cc3502621acae405575550f28"
+        },
+        {
+          "name": "reconstruction-03",
+          "png_sha256": "901daf42816bcbaaeb0e25e07e13550ab8c6b1ab1e9c55adcab883d5a54b0a25"
+        },
+        {
+          "name": "reconstruction-04",
+          "png_sha256": "e379d3c8df7f3848f94ddf5ba1dcb6970a48cd7e9b409cfe9d32cbc8a6f052d0"
+        },
+        {
+          "name": "reconstruction-05",
+          "png_sha256": "08c68803e7b8d25b80a8d65bf8c4f0c91ef22b57bf4f4a75d685a8680db70904"
+        },
+        {
+          "name": "reconstruction-06",
+          "png_sha256": "13580992101f7c17851e781d2c7f6d2504a7bf68b20e750504ce1d176fa60d18"
+        },
+        {
+          "name": "reconstruction-07",
+          "png_sha256": "bbf8d7bf92bf1ddf856621fe2068053ff6e4840a38eba1d2b29b93f086b998bd"
+        },
+        {
+          "name": "reconstruction-08",
+          "png_sha256": "b9656eae8f6de60a2a6459f4fe6540524bfe6a9e16f9e7a7198d70117c1fd97f"
+        },
+        {
+          "name": "reconstruction-09",
+          "png_sha256": "e7c0634265419ae5833a2ad53b2332e50410103f362e0b9e6be3a102910524f4"
+        },
+        {
+          "name": "reconstruction-10",
+          "png_sha256": "23e2659e6663c1cf468274c1604af717221887dd3c019aa851af1d31189ed8c3"
+        },
+        {
+          "name": "reconstruction-11",
+          "png_sha256": "1b4403f28330d48bd10c20181a792e64880f811c117854165d42fc6981b2651d"
+        },
+        {
+          "name": "reconstruction-12",
+          "png_sha256": "7d28c3fb837bbe11244efc67e3e0c5cdb273777365debe778a87e45789330274"
+        },
+        {
+          "name": "reconstruction-13",
+          "png_sha256": "2e6dca27ee2f00a694dcb2d3bf74ae70274457c0427e42c458048a71115d7f8b"
+        },
+        {
+          "name": "reconstruction-14",
+          "png_sha256": "76921135eb3c5c4d9d95dda7a9043dca0ec08e2c4b395f31bf5c8917bd6d63af"
+        }
+      ],
+      "path": "development-outline-02",
+      "printer": {
+        "dpi": 203,
+        "firmware": "V93.21.33Z",
+        "model": "ZD621",
+        "serial": "D7J211001302"
+      },
+      "role": "outline"
+    },
+    {
+      "manifest_sha256": "bc0129f351104bb98960ffa9234b44dcf23eaff5ee722f65ce39d2be53db800f",
+      "pages": [
+        {
+          "name": "reconstruction-00",
+          "png_sha256": "f67f0e004ce75ecc67d152171adc0bd849389b71359b76cd2cc9c964b426c8ee"
+        },
+        {
+          "name": "reconstruction-01",
+          "png_sha256": "077b349e07bebba4e5cbbcf56b9a35c76e1356e82ae75aacb1c45f7f1575b91f"
+        },
+        {
+          "name": "reconstruction-02",
+          "png_sha256": "15348a4fd0d57e1d9f793436fb84e8cdca920e2650c8be5aa8858ee7d7f0e32d"
+        },
+        {
+          "name": "reconstruction-03",
+          "png_sha256": "505049f1d7bfca3ec307abe4f65e2e5c23aa65f812fa42e8738800bdc07f6182"
+        },
+        {
+          "name": "reconstruction-04",
+          "png_sha256": "5faf1a65a4782396e212082bffe0e4badef177617e608c32138698e70c428a48"
+        },
+        {
+          "name": "reconstruction-05",
+          "png_sha256": "34bbd4d4279fd09ef4203e91b2b6bb4327a91fd7199f6d100d5ba0c5b73a9630"
+        },
+        {
+          "name": "reconstruction-06",
+          "png_sha256": "711acc1cf9d4f6a0cdcdd311be773b6fb4fc47ef67060f4fdac140d32668ea92"
+        },
+        {
+          "name": "reconstruction-07",
+          "png_sha256": "aa1a9d1d9137a281804bf78a3485538be8e3e0c7e7654067b908d75557547ec3"
+        },
+        {
+          "name": "reconstruction-08",
+          "png_sha256": "465ed1105c57691f14eb03041d80f0e0bc39470984f2ed0ab17ee8f8f8f6531d"
+        },
+        {
+          "name": "reconstruction-09",
+          "png_sha256": "b48ff5551df2ce760735769eed09069d7cc447e484cb9e5843ff223bba5c1726"
+        },
+        {
+          "name": "reconstruction-10",
+          "png_sha256": "06dbdc337a91a1823968da125369f283fafa4f10f6beb393ced0c7a3681c218f"
+        },
+        {
+          "name": "reconstruction-11",
+          "png_sha256": "45716b134598919f4274bb71c4a3d6671c3668a5bce2d539b3dff8bfdc490637"
+        },
+        {
+          "name": "reconstruction-12",
+          "png_sha256": "825f60acbddfa9adc154dbbe2b58b5df75670686d4a1afaa21f883f5c9f1e85b"
+        },
+        {
+          "name": "reconstruction-13",
+          "png_sha256": "4d866f7e7cb5bd27be742ce08ca4ebddb61e14ea5800cb1980e9cd0c3239ac7b"
+        },
+        {
+          "name": "reconstruction-14",
+          "png_sha256": "9e0897edf8cac51df3149e1d585e6865bdd9984065de091fc028a915cfb4b0e0"
+        }
+      ],
+      "path": "development-hints-03",
+      "printer": {
+        "dpi": 203,
+        "firmware": "V93.21.33Z",
+        "model": "ZD621",
+        "serial": "D7J211001302"
+      },
+      "role": "hints"
+    },
+    {
+      "manifest_sha256": "5a81f0f8a3ab73ef3bf60bab0abeab0757671ffa9811943e6ef7c073f9786c85",
+      "pages": [
+        {
+          "name": "reconstruction-00",
+          "png_sha256": "678149f05d947daa1d58070c7453941a7de7b6fecd4b54d50f106c89fdf0c77a"
+        },
+        {
+          "name": "reconstruction-01",
+          "png_sha256": "908b76d072dfc066be596e7bbb7cc111851dd8cb81322724892fb928e148eab2"
+        },
+        {
+          "name": "reconstruction-02",
+          "png_sha256": "28c331b0dd1d9ebb41a4284b9b5d38c460177472283786c2c291fcc7a677789a"
+        },
+        {
+          "name": "reconstruction-03",
+          "png_sha256": "03b969073ea27127347ccd9f3e0d61a2b3b70ba81cc9bf673a131e709badae63"
+        },
+        {
+          "name": "reconstruction-04",
+          "png_sha256": "5000fb3c9168eac991f1404b7a4fa88da2dba1216dff2c152f44de835529e582"
+        },
+        {
+          "name": "reconstruction-05",
+          "png_sha256": "53d6b59ab9f66899956b9f28e5e24d6a754a18b8d3591b009ea088c8da75ae2d"
+        },
+        {
+          "name": "reconstruction-06",
+          "png_sha256": "224e33b8aa9c0bc6028af763bc007102fffd5fc0365940da3cde58427a062526"
+        },
+        {
+          "name": "reconstruction-07",
+          "png_sha256": "0dfb798c86eccd2f3ac38c8ca8e88438fd2887acab98d3cd620b06ed479ef4ea"
+        },
+        {
+          "name": "reconstruction-08",
+          "png_sha256": "54fee5a199d1f09c60c6f75e580038b996806f626eaa5827e0ecb26366769058"
+        }
+      ],
+      "path": "development-hints-04",
+      "printer": {
+        "dpi": 203,
+        "firmware": "V93.21.33Z",
+        "model": "ZD621",
+        "serial": "D7J211001302"
+      },
+      "role": "hints"
+    },
+    {
+      "manifest_sha256": "2058ab1a80fd5331e2bb1367186613d7b21d9ea15729db231228c1fc8f5f234e",
+      "pages": [
+        {
+          "name": "reconstruction-00",
+          "png_sha256": "fc58f93f4d9f875c276627e7267553d57d6663c59d0b8c018bd511651096d518"
+        },
+        {
+          "name": "reconstruction-01",
+          "png_sha256": "265c6a2295ef46b009f7832e6d792af19862f5ae48c5989ce20548f13cde0c0c"
+        },
+        {
+          "name": "reconstruction-02",
+          "png_sha256": "e0d07cedb9caaf7aa4c6137dccf6a470ab2c6074b78c7eea3c65a01f2a3d3923"
+        },
+        {
+          "name": "reconstruction-03",
+          "png_sha256": "90146e6e5d0448988e25f652b5d7095ffd58bad271eb1fbc1e2c2c770576c802"
+        },
+        {
+          "name": "reconstruction-04",
+          "png_sha256": "b3e01ce1c278f97131b9bbec7adde83eedfe9ee7801ddd07eb71ecf939d28898"
+        },
+        {
+          "name": "reconstruction-05",
+          "png_sha256": "8d6bc22d03a3821d56c532f005b0202b11dbd1fe0ea9b9180b022ce87872486f"
+        },
+        {
+          "name": "reconstruction-06",
+          "png_sha256": "2422f8c14f5b5aa40ee3c6eb383c6d227d3bea207c06c63b7dcb86a5f16b7066"
+        },
+        {
+          "name": "reconstruction-07",
+          "png_sha256": "c49bdc1fe902e979991658c7b8f09cbb852e1dd40ff9b13a2fba3a7a3ae4ce8e"
+        },
+        {
+          "name": "reconstruction-08",
+          "png_sha256": "2ca176eb690de8642ea3f36a7dea2a687e3cb8de06ccf3785a85f6655817bf7e"
+        },
+        {
+          "name": "reconstruction-09",
+          "png_sha256": "f7325a31f14d47f2dcbefb4be240e58f39f178d6c2e249164479d2f91c472da9"
+        },
+        {
+          "name": "reconstruction-10",
+          "png_sha256": "7c30089dbaaf6358e3d99013d1c493dd79bb9ec9fb49490190df72b21a2fc17e"
+        },
+        {
+          "name": "reconstruction-11",
+          "png_sha256": "ef117714a1b27cc96c0e88ea564f5db45af07ffa4e07c3fb149d7d826c3bb8bf"
+        },
+        {
+          "name": "reconstruction-12",
+          "png_sha256": "17dbff92e9c3b80bd1c7a2dc1ebeb7e7063c71d4dc4faa5299b1cb8a5dd8b77f"
+        }
+      ],
+      "path": "development-hints-05",
+      "printer": {
+        "dpi": 203,
+        "firmware": "V93.21.33Z",
+        "model": "ZD621",
+        "serial": "D7J211001302"
+      },
+      "role": "hints"
+    },
+    {
+      "manifest_sha256": "9710442c182840193bff7d5de3ed2fc5a9d10c15ae8837f514117c3535976ea7",
+      "pages": [
+        {
+          "name": "reconstruction-00",
+          "png_sha256": "221d503e60590d8d4b0f583af196a6f82faad789825e92e7bdc94bba6b376b46"
+        },
+        {
+          "name": "reconstruction-01",
+          "png_sha256": "b8ebf5591361231959ab952f2937705e5c527ee19964dfcba17653baefe18394"
+        },
+        {
+          "name": "reconstruction-02",
+          "png_sha256": "4743cd36a044173c7c2b723a6de355b048e713aacee39a28bcf34a9e524fee54"
+        },
+        {
+          "name": "reconstruction-03",
+          "png_sha256": "a49eaded94d7d12233c32c8e753fdf8d358d45fdc434c0fce95a0b7be1c47b9e"
+        },
+        {
+          "name": "reconstruction-04",
+          "png_sha256": "2ae757f2a45a4c87bdda9a2ebe54299bd712bbc9044f5c84f358f7ea9ecc73d0"
+        },
+        {
+          "name": "reconstruction-05",
+          "png_sha256": "eabe9433c7f5ef21688b8e49b09e98b3cb3656f119442017d748b3d6e2f0f896"
+        }
+      ],
+      "path": "development-hints-06",
+      "printer": {
+        "dpi": 203,
+        "firmware": "V93.21.33Z",
+        "model": "ZD621",
+        "serial": "D7J211001302"
+      },
+      "role": "hints"
+    },
+    {
+      "manifest_sha256": "949af4b5c52e5e8addea3f74ef5180e92e6f4e22ad2735cd80b30a7a012653f5",
+      "pages": [
+        {
+          "name": "reconstruction-00",
+          "png_sha256": "c53dde351d57e497198a5a3ed1e0baf2053b841867ffe79a29bfba19ecbc930b"
+        }
+      ],
+      "path": "expanded-font-20261003/development-00",
+      "printer": {
+        "dpi": 203,
+        "firmware": "V93.21.33Z",
+        "model": "ZD621",
+        "serial": "D7J211001302"
+      }
+    },
+    {
+      "manifest_sha256": "0fe75d0b722cb8419aeeed9a8aac45c4526abf1e030955a989fca13cc01a6802",
+      "pages": [
+        {
+          "name": "reconstruction-00",
+          "png_sha256": "d17e6a1db598666cb2104e68ead0b47e15ebfb2829a93460b95566034292b38a"
+        }
+      ],
+      "path": "expanded-font-20261003/development-01",
+      "printer": {
+        "dpi": 203,
+        "firmware": "V93.21.33Z",
+        "model": "ZD621",
+        "serial": "D7J211001302"
+      }
+    },
+    {
+      "manifest_sha256": "1347c64181273d33f616393bbb0fdd9cc4e099824b4fe876b665d1db8b6bbaa0",
+      "pages": [
+        {
+          "name": "reconstruction-00",
+          "png_sha256": "0227be087150c2c12060f972ceb0e6681f16a0733a5ad8526e6241681df2d3b2"
+        }
+      ],
+      "path": "expanded-font-20261003/development-02",
+      "printer": {
+        "dpi": 203,
+        "firmware": "V93.21.33Z",
+        "model": "ZD621",
+        "serial": "D7J211001302"
+      }
+    },
+    {
+      "manifest_sha256": "b1f89e3ef37ff4c8593857826757f63aef0a71212ff46973526928fd03e16e47",
+      "pages": [
+        {
+          "name": "reconstruction-00",
+          "png_sha256": "7f5e053425ae0a98011a7bf5d020b8be515b0d0f26673dd3e2f82c32ba64700e"
+        },
+        {
+          "name": "reconstruction-01",
+          "png_sha256": "da92f257c80bb8e78fa60bb05fed476b980e9807113e6be797c1a0fbd88ead72"
+        },
+        {
+          "name": "reconstruction-02",
+          "png_sha256": "15a1175f0f68511477a50e4dbf18ec0780a1de8bd4425a139c2539e2bc6002f4"
+        }
+      ],
+      "path": "expanded-font-20261003/development-03",
+      "printer": {
+        "dpi": 203,
+        "firmware": "V93.21.33Z",
+        "model": "ZD621",
+        "serial": "D7J211001302"
+      }
+    },
+    {
+      "manifest_sha256": "0f6a6a246bc2f88da14c353c7dcf0efd6db308300ae10a53d46d48473a849e7e",
+      "pages": [
+        {
+          "name": "reconstruction-00",
+          "png_sha256": "b45ec59f6022b114479f2797d398da9e6a4818a2db959257c4ff2bfdb0168508"
+        },
+        {
+          "name": "reconstruction-01",
+          "png_sha256": "79a30cbc16a7c83f7ecdea1d88fbc9fdc75e8118dedfbf6f86973666d1216869"
+        },
+        {
+          "name": "reconstruction-02",
+          "png_sha256": "20285e8be206ecbebc842a76360f438233fd2c050315f99e3be27b2ff9b01d08"
+        }
+      ],
+      "path": "expanded-font-20261003/development-04",
+      "printer": {
+        "dpi": 203,
+        "firmware": "V93.21.33Z",
+        "model": "ZD621",
+        "serial": "D7J211001302"
+      }
+    },
+    {
+      "manifest_sha256": "52214a441880908d21ee219311448357b61564c0d684c6096acf8a49f305ccca",
+      "pages": [
+        {
+          "name": "reconstruction-00",
+          "png_sha256": "0892f372ce7eb302d1eef3afe30234c06e147986ea28f2a1410d8c6c72cd8ec2"
+        },
+        {
+          "name": "reconstruction-01",
+          "png_sha256": "70db621bbc69d79af636c61e9817c61322f04b5721525b2500d6430b501eba8d"
+        },
+        {
+          "name": "reconstruction-02",
+          "png_sha256": "6fa004c2901f496b75cb0f5d31467d1dcb3e9c6c30bd50d6f993a7dfbbedf7c9"
+        },
+        {
+          "name": "reconstruction-03",
+          "png_sha256": "a963b054ed11397c1bbfebaf0a123c2939adedd0c88dc8bb318e5b32e552b84c"
+        },
+        {
+          "name": "reconstruction-04",
+          "png_sha256": "06b17cb8302f038b3449b2652aa3774c1422a4721bfdb97590cb188743f4484f"
+        }
+      ],
+      "path": "expanded-font-20261003/development-05",
+      "printer": {
+        "dpi": 203,
+        "firmware": "V93.21.33Z",
+        "model": "ZD621",
+        "serial": "D7J211001302"
+      }
+    },
+    {
+      "manifest_sha256": "76e93cb866827ec51e6cecb1a409e68973e53def2b85a50768acf1a70799fa32",
+      "pages": [
+        {
+          "name": "reconstruction-00",
+          "png_sha256": "430a849b2de96a5af6ef2afb5012a38dd72de501ccb8af877333a8967095e0c1"
+        },
+        {
+          "name": "reconstruction-01",
+          "png_sha256": "f8315c0592e64f8fd6a94b821095f8861b018a4cb5584403dfcd002de29641c0"
+        },
+        {
+          "name": "reconstruction-02",
+          "png_sha256": "00ec027a96bae7ac1f5420377904f79ac0ff1e8523b05d8dd71e8a02f7da9281"
+        },
+        {
+          "name": "reconstruction-03",
+          "png_sha256": "4eedb837a49b6ec69252097352fc765df327ff9f4d780bfa37166f24b53e3387"
+        },
+        {
+          "name": "reconstruction-04",
+          "png_sha256": "3b435b0590f6a21abb56673f46273409c16194be1213b4d00ce5ec66ad2f22ae"
+        }
+      ],
+      "path": "expanded-font-20261003/development-06",
+      "printer": {
+        "dpi": 203,
+        "firmware": "V93.21.33Z",
+        "model": "ZD621",
+        "serial": "D7J211001302"
+      }
+    },
+    {
+      "manifest_sha256": "38400048ae019ac226d5bca51bded859eb540e1344249c33f4799717056f622c",
+      "pages": [
+        {
+          "name": "reconstruction-00",
+          "png_sha256": "f6b2c7b26d0d09834ef022e3b1ddc7c71e1ac9ee369851be89ec33f0edf244e6"
+        },
+        {
+          "name": "reconstruction-01",
+          "png_sha256": "0af047613db2b992268b0d7c71c6bd0a7cbedf7845fc0076faab37685491874b"
+        },
+        {
+          "name": "reconstruction-02",
+          "png_sha256": "926ee0f4521d2f10bbb98683cb6a21973c6379dfd1d2b50575b8aea54d361fa3"
+        }
+      ],
+      "path": "expanded-font-20261003/development-07",
+      "printer": {
+        "dpi": 203,
+        "firmware": "V93.21.33Z",
+        "model": "ZD621",
+        "serial": "D7J211001302"
+      }
+    },
+    {
+      "manifest_sha256": "0dc75f509d591b83eb43cb9fc0aa7b789ca66260b465403cef11b8dca034fb77",
+      "pages": [
+        {
+          "name": "reconstruction-00",
+          "png_sha256": "1ee83ed61add0ee57731fe83009df52eb82b9777c97e59efc5a01cf015d5474c"
+        },
+        {
+          "name": "reconstruction-01",
+          "png_sha256": "da404623fd57670a17f8e63cf1c88860dea007113bb5068eaf49c67cb7cae410"
+        },
+        {
+          "name": "reconstruction-02",
+          "png_sha256": "3ea30ba75ded86972451809f4c6aa5ce87d1614cdf5ce8f999833be78d8336f5"
+        },
+        {
+          "name": "reconstruction-03",
+          "png_sha256": "0f54d2066e898a838ef960ea7a7b0aa53836c2ed3c91b07c8d797e38f2f0c981"
+        },
+        {
+          "name": "reconstruction-04",
+          "png_sha256": "c11e2fb71573b03dcf4ac28ce0261943c94b7b4c3a030fbd171d967a8362adec"
+        },
+        {
+          "name": "reconstruction-05",
+          "png_sha256": "069bd7ace9f48bf3d29ba05c39ced8756b19e6b71f41cb437fc0f568093a297c"
+        },
+        {
+          "name": "reconstruction-06",
+          "png_sha256": "2aa66737570940385682ba87ac30eaaad0b37753377f15dbd0f0af35ebd82ff3"
+        },
+        {
+          "name": "reconstruction-07",
+          "png_sha256": "5f24933cfc6e55e39759fa0fa07252fb590e8ac40394e3d6c1a2f8fa99b25eab"
+        }
+      ],
+      "path": "expanded-font-20261003/development-08",
+      "printer": {
+        "dpi": 203,
+        "firmware": "V93.21.33Z",
+        "model": "ZD621",
+        "serial": "D7J211001302"
+      }
+    },
+    {
+      "manifest_sha256": "d64ba3ce6956a4d25e11da1e74244399988b20dc6bb6c3fc3556c13d40efe080",
+      "pages": [
+        {
+          "name": "reconstruction-00",
+          "png_sha256": "6b71e21fdcbfdf6c9d70e38269aefd7bfeb20c677247e8e4b98ca7979abde1dc"
+        }
+      ],
+      "path": "expanded-font-20261003/development-09",
+      "printer": {
+        "dpi": 203,
+        "firmware": "V93.21.33Z",
+        "model": "ZD621",
+        "serial": "D7J211001302"
+      }
+    },
+    {
+      "manifest_sha256": "ccac6d45d6b8c5b426aec6dacf8aca0a9951a2e42090de7e320d7767e9fec108",
+      "pages": [
+        {
+          "name": "reconstruction-00",
+          "png_sha256": "629b83d0d8566e6463dc30b4382e0e7b5d0e3804b0990cedd93785603a66c21e"
+        },
+        {
+          "name": "reconstruction-01",
+          "png_sha256": "6d2951533f14332f8e75f6e2ef10bf2a0ee5842260752862adf75c9977d3db2d"
+        },
+        {
+          "name": "reconstruction-02",
+          "png_sha256": "781d623ef3018af1f63b4ffffebf7737c2a31198175a89b09d08fee10a790673"
+        }
+      ],
+      "path": "expanded-font-20261003/development-10",
+      "printer": {
+        "dpi": 203,
+        "firmware": "V93.21.33Z",
+        "model": "ZD621",
+        "serial": "D7J211001302"
+      }
+    },
+    {
+      "manifest_sha256": "2f052ff79faa18bfa5a7d3a931861228f05038e58dce89a29169e8ea83b13144",
+      "pages": [
+        {
+          "name": "reconstruction-00",
+          "png_sha256": "5ae566be66a35e4fade53efa066223fbc578851b532e152bd06d155597e51e86"
+        },
+        {
+          "name": "reconstruction-01",
+          "png_sha256": "f5748dad33bb870e5af7bbc625671985510229e0b1d137a3a725257299cacaac"
+        },
+        {
+          "name": "reconstruction-02",
+          "png_sha256": "313742b9fd420a718b74a4ac755814150f1f1293415de7a3ac26b2ad2ae1b95d"
+        },
+        {
+          "name": "reconstruction-03",
+          "png_sha256": "01631df0386888d76c1091e84f4a81f86123bd45ec887e3f16da2a1d541391ca"
+        },
+        {
+          "name": "reconstruction-04",
+          "png_sha256": "c7bf2cc805646d3314dfac3876499ed3e6234afe14f3783f85789ef09c9af65e"
+        },
+        {
+          "name": "reconstruction-05",
+          "png_sha256": "b231e015cc521a6e17165749503c4d3c6ae21d501f00c098002b6b7adad8ac5b"
+        },
+        {
+          "name": "reconstruction-06",
+          "png_sha256": "70f14f5831b4f88fdf3fb47203ef317894a122f5e339ab6df67d119c41d3a467"
+        },
+        {
+          "name": "reconstruction-07",
+          "png_sha256": "68db8b90bea940f7fa8231172ea634b00e5473cc357a170305f50f5fb0594230"
+        },
+        {
+          "name": "reconstruction-08",
+          "png_sha256": "a2741e1b8cb6472edcd46a41bef6f17bf9ff274a8ecce3b8f818b8dc4ed69c13"
+        },
+        {
+          "name": "reconstruction-09",
+          "png_sha256": "49ffdd6be79d354b70f1b933a2a6d3bd56bb9e8e17b34c36ff4adfd2098a1a70"
+        },
+        {
+          "name": "reconstruction-10",
+          "png_sha256": "9d07d4cbfb7056b5c0c5aa463cdcf854f4306342e6513e8355da6074156997f5"
+        },
+        {
+          "name": "reconstruction-11",
+          "png_sha256": "1f0f1dba46361ee438646812b4e193efe750ac158be425e94cafec813b12e03e"
+        }
+      ],
+      "path": "expanded-font-20261003/development-large",
+      "printer": {
+        "dpi": 203,
+        "firmware": "V93.21.33Z",
+        "model": "ZD621",
+        "serial": "D7J211001302"
+      }
+    },
+    {
+      "manifest_sha256": "07f6dc3853a7885286419ae914841efe040b2222b4e6debd5835e88852dcfdfc",
+      "pages": [
+        {
+          "name": "outline-256-HO",
+          "png_sha256": "af2e1a0f7b1e8dd1c66894c1e27c83b4aa3723bac671504b1e186a23e0eb3095"
+        },
+        {
+          "name": "outline-256-Sg",
+          "png_sha256": "0818413d09dc5be3eee6514fc58dafd2c24cf32cedbe6361431b41fd172dfff2"
+        },
+        {
+          "name": "outline-256-jat",
+          "png_sha256": "9c5ae7f2ce0eae7a8ce266f71ce19320cce3103c445fed4593fd8000ca32775f"
+        },
+        {
+          "name": "outline-384-HO",
+          "png_sha256": "da4f541b64005a7c3350bb1af3d791bab889b37defd35b3d3e160723c94d4a8e"
+        },
+        {
+          "name": "outline-384-Sg",
+          "png_sha256": "4e35d589f39e89c80b75cafeeaafa5cd356816757fd7d4a0190317c924d50794"
+        },
+        {
+          "name": "outline-384-jat",
+          "png_sha256": "3347dd378945b4d544e75ae83e90d8f065732919e76748cbf9e9564a4dccf2f4"
+        },
+        {
+          "name": "outline-512-HO",
+          "png_sha256": "deace3d836889e2976c9a54ad8d23ea0483251d118657261ef630ac9452409a9"
+        },
+        {
+          "name": "outline-512-Sg",
+          "png_sha256": "eaea2edba1e895c6938f56bdfaa207e73b5fe46c923f0db0c8c050da16de4955"
+        },
+        {
+          "name": "outline-512-jat",
+          "png_sha256": "4d22dc2f6302097a1a27d3a0f3c64c89ac6beb477e00670268023465a5c7ee05"
+        }
+      ],
+      "path": "font0-outline-20261003",
+      "printer": {
+        "dpi": 203,
+        "firmware": "V93.21.33Z",
+        "model": "ZD621",
+        "serial": "D7J211001302"
+      }
+    },
+    {
+      "manifest_sha256": "f1fd7a3d2c7ccc9344b2587bddf0bf622844473412c14d5ac95a3b878c11b16c",
+      "pages": [
+        {
+          "name": "font0-small-development",
+          "png_sha256": "80582d225c832ec1246e6f8c8d6f92aacc3f61e6b7e873806ba402989ac8759d"
+        },
+        {
+          "name": "font0-transform-development",
+          "png_sha256": "c2daaef416647a59906abe59b3caff3424be7ceee9139639672e68f399f9a066"
+        }
+      ],
+      "path": "small-font-20261003",
+      "printer": {
+        "dpi": 203,
+        "firmware": "V93.21.33Z",
+        "model": "ZD621",
+        "serial": "D7J211001302"
+      }
+    }
+  ],
+  "engine_sha256": "c6631883984ae2fd00282e0b7412626a76547827da396c01afea14042ddcb27d",
+  "partitions": {
+    "previously_observed_check": {
+      "metrics": {
+        "baseline": {
+          "at_least_90": 1098,
+          "cases": 1834,
+          "mean_iou": 0.882193490356625,
+          "passes_target": false,
+          "pooled_iou": 0.9270625055857062,
+          "worst_iou": 0.0
+        },
+        "repaired": {
+          "at_least_90": 1099,
+          "cases": 1834,
+          "mean_iou": 0.8826601268420057,
+          "passes_target": false,
+          "pooled_iou": 0.9271730824505935,
+          "worst_iou": 0.0
+        },
+        "unhinted": {
+          "at_least_90": 772,
+          "cases": 1834,
+          "mean_iou": 0.826537718583947,
+          "passes_target": false,
+          "pooled_iou": 0.9093484960284735,
+          "worst_iou": 0.0
+        }
+      },
+      "worst": [
+        {
+          "glyph": "(",
+          "query": [
+            11,
+            11,
+            40,
+            0
+          ],
+          "reference": {
+            "bounds": [
+              1,
+              -8,
+              3,
+              2
+            ],
+            "centroid": [
+              1.4,
+              -3.5
+            ],
+            "ink": 10
+          },
+          "variants": {
+            "baseline": {
+              "bounds": [
+                2,
+                -8,
+                4,
+                2
+              ],
+              "centroid": [
+                2.4,
+                -3.5
+              ],
+              "ink": 10,
+              "over": 10,
+              "under": 10,
+              "union": 20,
+              "xor": 20
+            },
+            "repaired": {
+              "bounds": [
+                2,
+                -8,
+                4,
+                2
+              ],
+              "centroid": [
+                2.4,
+                -3.5
+              ],
+              "ink": 10,
+              "over": 10,
+              "under": 10,
+              "union": 20,
+              "xor": 20
+            },
+            "unhinted": {
+              "bounds": [
+                1,
+                -8,
+                3,
+                2
+              ],
+              "centroid": [
+                1.4166666666666667,
+                -3.5833333333333335
+              ],
+              "ink": 12,
+              "over": 2,
+              "under": 0,
+              "union": 12,
+              "xor": 2
+            }
+          }
+        },
+        {
+          "glyph": "|",
+          "query": [
+            20,
+            20,
+            124,
+            0
+          ],
+          "reference": {
+            "bounds": [
+              5,
+              -15,
+              6,
+              5
+            ],
+            "centroid": [
+              5.0,
+              -5.5
+            ],
+            "ink": 20
+          },
+          "variants": {
+            "baseline": {
+              "bounds": [
+                4,
+                -15,
+                5,
+                5
+              ],
+              "centroid": [
+                4.0,
+                -5.5
+              ],
+              "ink": 20,
+              "over": 20,
+              "under": 20,
+              "union": 40,
+              "xor": 40
+            },
+            "repaired": {
+              "bounds": [
+                4,
+                -15,
+                5,
+                5
+              ],
+              "centroid": [
+                4.0,
+                -5.5
+              ],
+              "ink": 20,
+              "over": 20,
+              "under": 20,
+              "union": 40,
+              "xor": 40
+            },
+            "unhinted": {
+              "bounds": [
+                4,
+                -15,
+                6,
+                5
+              ],
+              "centroid": [
+                4.5,
+                -5.5
+              ],
+              "ink": 40,
+              "over": 20,
+              "under": 0,
+              "union": 40,
+              "xor": 20
+            }
+          }
+        },
+        {
+          "glyph": "1",
+          "query": [
+            11,
+            11,
+            49,
+            0
+          ],
+          "reference": {
+            "bounds": [
+              0,
+              -8,
+              3,
+              0
+            ],
+            "centroid": [
+              1.7,
+              -5.0
+            ],
+            "ink": 10
+          },
+          "variants": {
+            "baseline": {
+              "bounds": [
+                1,
+                -8,
+                5,
+                0
+              ],
+              "centroid": [
+                3.2941176470588234,
+                -4.588235294117647
+              ],
+              "ink": 17,
+              "over": 15,
+              "under": 8,
+              "union": 25,
+              "xor": 23
+            },
+            "repaired": {
+              "bounds": [
+                1,
+                -8,
+                5,
+                0
+              ],
+              "centroid": [
+                3.2941176470588234,
+                -4.588235294117647
+              ],
+              "ink": 17,
+              "over": 15,
+              "under": 8,
+              "union": 25,
+              "xor": 23
+            },
+            "unhinted": {
+              "bounds": [
+                1,
+                -8,
+                4,
+                0
+              ],
+              "centroid": [
+                2.4375,
+                -4.4375
+              ],
+              "ink": 16,
+              "over": 8,
+              "under": 2,
+              "union": 18,
+              "xor": 10
+            }
+          }
+        },
+        {
+          "glyph": "}",
+          "query": [
+            11,
+            11,
+            125,
+            0
+          ],
+          "reference": {
+            "bounds": [
+              1,
+              -8,
+              5,
+              3
+            ],
+            "centroid": [
+              2.642857142857143,
+              -2.642857142857143
+            ],
+            "ink": 14
+          },
+          "variants": {
+            "baseline": {
+              "bounds": [
+                1,
+                -8,
+                4,
+                3
+              ],
+              "centroid": [
+                1.8666666666666667,
+                -2.7333333333333334
+              ],
+              "ink": 15,
+              "over": 11,
+              "under": 10,
+              "union": 25,
+              "xor": 21
+            },
+            "repaired": {
+              "bounds": [
+                1,
+                -8,
+                4,
+                3
+              ],
+              "centroid": [
+                1.8666666666666667,
+                -2.7333333333333334
+              ],
+              "ink": 15,
+              "over": 11,
+              "under": 10,
+              "union": 25,
+              "xor": 21
+            },
+            "unhinted": {
+              "bounds": [
+                1,
+                -8,
+                5,
+                3
+              ],
+              "centroid": [
+                2.066666666666667,
+                -3.1333333333333333
+              ],
+              "ink": 15,
+              "over": 10,
+              "under": 9,
+              "union": 24,
+              "xor": 19
+            }
+          }
+        },
+        {
+          "glyph": "*",
+          "query": [
+            11,
+            11,
+            42,
+            0
+          ],
+          "reference": {
+            "bounds": [
+              1,
+              -8,
+              4,
+              -5
+            ],
+            "centroid": [
+              2.0,
+              -7.166666666666667
+            ],
+            "ink": 6
+          },
+          "variants": {
+            "baseline": {
+              "bounds": [
+                1,
+                -7,
+                4,
+                -4
+              ],
+              "centroid": [
+                1.7142857142857142,
+                -6.142857142857143
+              ],
+              "ink": 7,
+              "over": 5,
+              "under": 4,
+              "union": 11,
+              "xor": 9
+            },
+            "repaired": {
+              "bounds": [
+                1,
+                -7,
+                4,
+                -4
+              ],
+              "centroid": [
+                1.7142857142857142,
+                -6.142857142857143
+              ],
+              "ink": 7,
+              "over": 5,
+              "under": 4,
+              "union": 11,
+              "xor": 9
+            },
+            "unhinted": {
+              "bounds": [
+                1,
+                -8,
+                4,
+                -5
+              ],
+              "centroid": [
+                2.0,
+                -6.833333333333333
+              ],
+              "ink": 6,
+              "over": 2,
+              "under": 2,
+              "union": 8,
+              "xor": 4
+            }
+          }
+        },
+        {
+          "glyph": "m",
+          "query": [
+            11,
+            11,
+            109,
+            0
+          ],
+          "reference": {
+            "bounds": [
+              1,
+              -6,
+              8,
+              0
+            ],
+            "centroid": [
+              4.0,
+              -3.9545454545454546
+            ],
+            "ink": 22
+          },
+          "variants": {
+            "baseline": {
+              "bounds": [
+                0,
+                -7,
+                7,
+                -1
+              ],
+              "centroid": [
+                2.6296296296296298,
+                -4.7407407407407405
+              ],
+              "ink": 27,
+              "over": 19,
+              "under": 14,
+              "union": 41,
+              "xor": 33
+            },
+            "repaired": {
+              "bounds": [
+                0,
+                -7,
+                7,
+                -1
+              ],
+              "centroid": [
+                2.6296296296296298,
+                -4.7407407407407405
+              ],
+              "ink": 27,
+              "over": 19,
+              "under": 14,
+              "union": 41,
+              "xor": 33
+            },
+            "unhinted": {
+              "bounds": [
+                1,
+                -6,
+                8,
+                0
+              ],
+              "centroid": [
+                4.064516129032258,
+                -3.5806451612903225
+              ],
+              "ink": 31,
+              "over": 10,
+              "under": 1,
+              "union": 32,
+              "xor": 11
+            }
+          }
+        },
+        {
+          "glyph": "<",
+          "query": [
+            11,
+            11,
+            60,
+            0
+          ],
+          "reference": {
+            "bounds": [
+              2,
+              -7,
+              9,
+              0
+            ],
+            "centroid": [
+              5.230769230769231,
+              -4.076923076923077
+            ],
+            "ink": 13
+          },
+          "variants": {
+            "baseline": {
+              "bounds": [
+                3,
+                -6,
+                9,
+                0
+              ],
+              "centroid": [
+                5.6,
+                -3.5
+              ],
+              "ink": 10,
+              "over": 5,
+              "under": 8,
+              "union": 18,
+              "xor": 13
+            },
+            "repaired": {
+              "bounds": [
+                3,
+                -6,
+                9,
+                0
+              ],
+              "centroid": [
+                5.6,
+                -3.5
+              ],
+              "ink": 10,
+              "over": 5,
+              "under": 8,
+              "union": 18,
+              "xor": 13
+            },
+            "unhinted": {
+              "bounds": [
+                2,
+                -7,
+                9,
+                0
+              ],
+              "centroid": [
+                5.428571428571429,
+                -4.0
+              ],
+              "ink": 14,
+              "over": 4,
+              "under": 3,
+              "union": 17,
+              "xor": 7
+            }
+          }
+        },
+        {
+          "glyph": ",",
+          "query": [
+            11,
+            11,
+            44,
+            0
+          ],
+          "reference": {
+            "bounds": [
+              1,
+              -1,
+              2,
+              2
+            ],
+            "centroid": [
+              1.0,
+              0.0
+            ],
+            "ink": 3
+          },
+          "variants": {
+            "baseline": {
+              "bounds": [
+                1,
+                -2,
+                3,
+                2
+              ],
+              "centroid": [
+                1.5,
+                -0.8333333333333334
+              ],
+              "ink": 6,
+              "over": 4,
+              "under": 1,
+              "union": 7,
+              "xor": 5
+            },
+            "repaired": {
+              "bounds": [
+                1,
+                -2,
+                3,
+                2
+              ],
+              "centroid": [
+                1.5,
+                -0.8333333333333334
+              ],
+              "ink": 6,
+              "over": 4,
+              "under": 1,
+              "union": 7,
+              "xor": 5
+            },
+            "unhinted": {
+              "bounds": [
+                1,
+                -1,
+                2,
+                2
+              ],
+              "centroid": [
+                1.0,
+                0.0
+              ],
+              "ink": 3,
+              "over": 0,
+              "under": 0,
+              "union": 3,
+              "xor": 0
+            }
+          }
+        },
+        {
+          "glyph": "v",
+          "query": [
+            11,
+            11,
+            118,
+            0
+          ],
+          "reference": {
+            "bounds": [
+              0,
+              -6,
+              3,
+              0
+            ],
+            "centroid": [
+              1.1818181818181819,
+              -3.727272727272727
+            ],
+            "ink": 11
+          },
+          "variants": {
+            "baseline": {
+              "bounds": [
+                0,
+                -7,
+                5,
+                0
+              ],
+              "centroid": [
+                1.8888888888888888,
+                -4.0
+              ],
+              "ink": 18,
+              "over": 11,
+              "under": 4,
+              "union": 22,
+              "xor": 15
+            },
+            "repaired": {
+              "bounds": [
+                0,
+                -7,
+                5,
+                0
+              ],
+              "centroid": [
+                1.8888888888888888,
+                -4.0
+              ],
+              "ink": 18,
+              "over": 11,
+              "under": 4,
+              "union": 22,
+              "xor": 15
+            },
+            "unhinted": {
+              "bounds": [
+                0,
+                -6,
+                5,
+                0
+              ],
+              "centroid": [
+                1.8125,
+                -3.8125
+              ],
+              "ink": 16,
+              "over": 10,
+              "under": 5,
+              "union": 21,
+              "xor": 15
+            }
+          }
+        },
+        {
+          "glyph": ";",
+          "query": [
+            11,
+            11,
+            59,
+            0
+          ],
+          "reference": {
+            "bounds": [
+              1,
+              -6,
+              2,
+              2
+            ],
+            "centroid": [
+              1.0,
+              -1.5
+            ],
+            "ink": 4
+          },
+          "variants": {
+            "baseline": {
+              "bounds": [
+                1,
+                -7,
+                3,
+                2
+              ],
+              "centroid": [
+                1.375,
+                -3.5
+              ],
+              "ink": 8,
+              "over": 5,
+              "under": 1,
+              "union": 9,
+              "xor": 6
+            },
+            "repaired": {
+              "bounds": [
+                1,
+                -7,
+                3,
+                2
+              ],
+              "centroid": [
+                1.25,
+                -3.5
+              ],
+              "ink": 8,
+              "over": 4,
+              "under": 0,
+              "union": 8,
+              "xor": 4
+            },
+            "unhinted": {
+              "bounds": [
+                1,
+                -6,
+                3,
+                2
+              ],
+              "centroid": [
+                1.25,
+                -1.5
+              ],
+              "ink": 4,
+              "over": 1,
+              "under": 1,
+              "union": 5,
+              "xor": 2
+            }
+          }
+        },
+        {
+          "glyph": "=",
+          "query": [
+            13,
+            13,
+            61,
+            0
+          ],
+          "reference": {
+            "bounds": [
+              2,
+              -5,
+              9,
+              -2
+            ],
+            "centroid": [
+              5.0,
+              -4.0
+            ],
+            "ink": 14
+          },
+          "variants": {
+            "baseline": {
+              "bounds": [
+                2,
+                -6,
+                9,
+                -2
+              ],
+              "centroid": [
+                5.0,
+                -4.5
+              ],
+              "ink": 14,
+              "over": 7,
+              "under": 7,
+              "union": 21,
+              "xor": 14
+            },
+            "repaired": {
+              "bounds": [
+                2,
+                -6,
+                9,
+                -2
+              ],
+              "centroid": [
+                5.0,
+                -4.5
+              ],
+              "ink": 14,
+              "over": 7,
+              "under": 7,
+              "union": 21,
+              "xor": 14
+            },
+            "unhinted": {
+              "bounds": [
+                2,
+                -6,
+                10,
+                -2
+              ],
+              "centroid": [
+                5.5,
+                -4.5
+              ],
+              "ink": 16,
+              "over": 9,
+              "under": 7,
+              "union": 23,
+              "xor": 16
+            }
+          }
+        },
+        {
+          "glyph": "6",
+          "query": [
+            13,
+            13,
+            54,
+            0
+          ],
+          "reference": {
+            "bounds": [
+              1,
+              -10,
+              7,
+              0
+            ],
+            "centroid": [
+              3.2777777777777777,
+              -5.194444444444445
+            ],
+            "ink": 36
+          },
+          "variants": {
+            "baseline": {
+              "bounds": [
+                0,
+                -10,
+                6,
+                0
+              ],
+              "centroid": [
+                2.1142857142857143,
+                -5.2
+              ],
+              "ink": 35,
+              "over": 17,
+              "under": 18,
+              "union": 53,
+              "xor": 35
+            },
+            "repaired": {
+              "bounds": [
+                0,
+                -10,
+                6,
+                0
+              ],
+              "centroid": [
+                2.1142857142857143,
+                -5.2
+              ],
+              "ink": 35,
+              "over": 17,
+              "under": 18,
+              "union": 53,
+              "xor": 35
+            },
+            "unhinted": {
+              "bounds": [
+                0,
+                -10,
+                6,
+                0
+              ],
+              "centroid": [
+                2.5714285714285716,
+                -5.114285714285714
+              ],
+              "ink": 35,
+              "over": 13,
+              "under": 14,
+              "union": 49,
+              "xor": 27
+            }
+          }
+        },
+        {
+          "glyph": "2",
+          "query": [
+            11,
+            11,
+            50,
+            0
+          ],
+          "reference": {
+            "bounds": [
+              0,
+              -8,
+              5,
+              0
+            ],
+            "centroid": [
+              1.9375,
+              -4.3125
+            ],
+            "ink": 16
+          },
+          "variants": {
+            "baseline": {
+              "bounds": [
+                -1,
+                -8,
+                4,
+                0
+              ],
+              "centroid": [
+                0.8888888888888888,
+                -4.481481481481482
+              ],
+              "ink": 27,
+              "over": 16,
+              "under": 5,
+              "union": 32,
+              "xor": 21
+            },
+            "repaired": {
+              "bounds": [
+                -1,
+                -8,
+                4,
+                0
+              ],
+              "centroid": [
+                0.8888888888888888,
+                -4.481481481481482
+              ],
+              "ink": 27,
+              "over": 16,
+              "under": 5,
+              "union": 32,
+              "xor": 21
+            },
+            "unhinted": {
+              "bounds": [
+                0,
+                -8,
+                5,
+                0
+              ],
+              "centroid": [
+                2.0952380952380953,
+                -4.523809523809524
+              ],
+              "ink": 21,
+              "over": 6,
+              "under": 1,
+              "union": 22,
+              "xor": 7
+            }
+          }
+        },
+        {
+          "glyph": "9",
+          "query": [
+            11,
+            11,
+            57,
+            0
+          ],
+          "reference": {
+            "bounds": [
+              0,
+              -8,
+              4,
+              0
+            ],
+            "centroid": [
+              1.588235294117647,
+              -4.352941176470588
+            ],
+            "ink": 17
+          },
+          "variants": {
+            "baseline": {
+              "bounds": [
+                0,
+                -8,
+                5,
+                0
+              ],
+              "centroid": [
+                2.28,
+                -4.8
+              ],
+              "ink": 25,
+              "over": 14,
+              "under": 6,
+              "union": 31,
+              "xor": 20
+            },
+            "repaired": {
+              "bounds": [
+                0,
+                -8,
+                5,
+                0
+              ],
+              "centroid": [
+                2.28,
+                -4.8
+              ],
+              "ink": 25,
+              "over": 14,
+              "under": 6,
+              "union": 31,
+              "xor": 20
+            },
+            "unhinted": {
+              "bounds": [
+                0,
+                -8,
+                5,
+                0
+              ],
+              "centroid": [
+                2.259259259259259,
+                -4.703703703703703
+              ],
+              "ink": 27,
+              "over": 12,
+              "under": 2,
+              "union": 29,
+              "xor": 14
+            }
+          }
+        },
+        {
+          "glyph": "o",
+          "query": [
+            11,
+            11,
+            111,
+            0
+          ],
+          "reference": {
+            "bounds": [
+              1,
+              -6,
+              5,
+              0
+            ],
+            "centroid": [
+              2.5,
+              -3.5
+            ],
+            "ink": 12
+          },
+          "variants": {
+            "baseline": {
+              "bounds": [
+                0,
+                -6,
+                6,
+                0
+              ],
+              "centroid": [
+                2.4444444444444446,
+                -3.5
+              ],
+              "ink": 18,
+              "over": 10,
+              "under": 4,
+              "union": 22,
+              "xor": 14
+            },
+            "repaired": {
+              "bounds": [
+                0,
+                -6,
+                6,
+                0
+              ],
+              "centroid": [
+                2.4444444444444446,
+                -3.5
+              ],
+              "ink": 18,
+              "over": 10,
+              "under": 4,
+              "union": 22,
+              "xor": 14
+            },
+            "unhinted": {
+              "bounds": [
+                0,
+                -6,
+                5,
+                0
+              ],
+              "centroid": [
+                2.2,
+                -3.5
+              ],
+              "ink": 20,
+              "over": 8,
+              "under": 0,
+              "union": 20,
+              "xor": 8
+            }
+          }
+        },
+        {
+          "glyph": "`",
+          "query": [
+            18,
+            12,
+            96,
+            0
+          ],
+          "reference": {
+            "bounds": [
+              1,
+              -10,
+              3,
+              -6
+            ],
+            "centroid": [
+              1.5,
+              -8.166666666666666
+            ],
+            "ink": 6
+          },
+          "variants": {
+            "baseline": {
+              "bounds": [
+                1,
+                -9,
+                4,
+                -5
+              ],
+              "centroid": [
+                2.0,
+                -7.111111111111111
+              ],
+              "ink": 9,
+              "over": 5,
+              "under": 2,
+              "union": 11,
+              "xor": 7
+            },
+            "repaired": {
+              "bounds": [
+                1,
+                -9,
+                4,
+                -5
+              ],
+              "centroid": [
+                2.0,
+                -7.111111111111111
+              ],
+              "ink": 9,
+              "over": 5,
+              "under": 2,
+              "union": 11,
+              "xor": 7
+            },
+            "unhinted": {
+              "bounds": [
+                1,
+                -9,
+                4,
+                -6
+              ],
+              "centroid": [
+                2.0,
+                -7.857142857142857
+              ],
+              "ink": 7,
+              "over": 3,
+              "under": 2,
+              "union": 9,
+              "xor": 5
+            }
+          }
+        },
+        {
+          "glyph": "?",
+          "query": [
+            11,
+            11,
+            63,
+            0
+          ],
+          "reference": {
+            "bounds": [
+              0,
+              -8,
+              4,
+              0
+            ],
+            "centroid": [
+              1.4545454545454546,
+              -5.545454545454546
+            ],
+            "ink": 11
+          },
+          "variants": {
+            "baseline": {
+              "bounds": [
+                1,
+                -8,
+                4,
+                0
+              ],
+              "centroid": [
+                2.090909090909091,
+                -5.2727272727272725
+              ],
+              "ink": 11,
+              "over": 5,
+              "under": 5,
+              "union": 16,
+              "xor": 10
+            },
+            "repaired": {
+              "bounds": [
+                1,
+                -8,
+                4,
+                0
+              ],
+              "centroid": [
+                2.090909090909091,
+                -5.2727272727272725
+              ],
+              "ink": 11,
+              "over": 5,
+              "under": 5,
+              "union": 16,
+              "xor": 10
+            },
+            "unhinted": {
+              "bounds": [
+                0,
+                -8,
+                5,
+                0
+              ],
+              "centroid": [
+                2.0,
+                -5.333333333333333
+              ],
+              "ink": 15,
+              "over": 6,
+              "under": 2,
+              "union": 17,
+              "xor": 8
+            }
+          }
+        },
+        {
+          "glyph": "U",
+          "query": [
+            11,
+            11,
+            85,
+            0
+          ],
+          "reference": {
+            "bounds": [
+              1,
+              -8,
+              6,
+              0
+            ],
+            "centroid": [
+              3.0,
+              -4.294117647058823
+            ],
+            "ink": 17
+          },
+          "variants": {
+            "baseline": {
+              "bounds": [
+                1,
+                -8,
+                5,
+                0
+              ],
+              "centroid": [
+                2.5,
+                -4.5
+              ],
+              "ink": 16,
+              "over": 7,
+              "under": 8,
+              "union": 24,
+              "xor": 15
+            },
+            "repaired": {
+              "bounds": [
+                1,
+                -8,
+                5,
+                0
+              ],
+              "centroid": [
+                2.5,
+                -4.5
+              ],
+              "ink": 16,
+              "over": 7,
+              "under": 8,
+              "union": 24,
+              "xor": 15
+            },
+            "unhinted": {
+              "bounds": [
+                1,
+                -8,
+                6,
+                0
+              ],
+              "centroid": [
+                3.1538461538461537,
+                -4.269230769230769
+              ],
+              "ink": 26,
+              "over": 9,
+              "under": 0,
+              "union": 26,
+              "xor": 9
+            }
+          }
+        },
+        {
+          "glyph": "<",
+          "query": [
+            20,
+            20,
+            60,
+            0
+          ],
+          "reference": {
+            "bounds": [
+              4,
+              -13,
+              16,
+              -1
+            ],
+            "centroid": [
+              9.833333333333334,
+              -7.5
+            ],
+            "ink": 48
+          },
+          "variants": {
+            "baseline": {
+              "bounds": [
+                4,
+                -12,
+                16,
+                0
+              ],
+              "centroid": [
+                9.86046511627907,
+                -6.5813953488372094
+              ],
+              "ink": 43,
+              "over": 18,
+              "under": 23,
+              "union": 66,
+              "xor": 41
+            },
+            "repaired": {
+              "bounds": [
+                4,
+                -12,
+                16,
+                0
+              ],
+              "centroid": [
+                9.86046511627907,
+                -6.5813953488372094
+              ],
+              "ink": 43,
+              "over": 18,
+              "under": 23,
+              "union": 66,
+              "xor": 41
+            },
+            "unhinted": {
+              "bounds": [
+                4,
+                -12,
+                16,
+                0
+              ],
+              "centroid": [
+                9.761904761904763,
+                -6.5
+              ],
+              "ink": 42,
+              "over": 17,
+              "under": 23,
+              "union": 65,
+              "xor": 40
+            }
+          }
+        },
+        {
+          "glyph": "c",
+          "query": [
+            11,
+            11,
+            99,
+            0
+          ],
+          "reference": {
+            "bounds": [
+              0,
+              -6,
+              3,
+              0
+            ],
+            "centroid": [
+              0.9230769230769231,
+              -3.4615384615384617
+            ],
+            "ink": 13
+          },
+          "variants": {
+            "baseline": {
+              "bounds": [
+                0,
+                -6,
+                4,
+                0
+              ],
+              "centroid": [
+                1.375,
+                -3.3125
+              ],
+              "ink": 16,
+              "over": 8,
+              "under": 5,
+              "union": 21,
+              "xor": 13
+            },
+            "repaired": {
+              "bounds": [
+                0,
+                -6,
+                4,
+                0
+              ],
+              "centroid": [
+                1.375,
+                -3.3125
+              ],
+              "ink": 16,
+              "over": 8,
+              "under": 5,
+              "union": 21,
+              "xor": 13
+            },
+            "unhinted": {
+              "bounds": [
+                0,
+                -6,
+                4,
+                0
+              ],
+              "centroid": [
+                1.5714285714285714,
+                -3.5
+              ],
+              "ink": 14,
+              "over": 8,
+              "under": 7,
+              "union": 21,
+              "xor": 15
+            }
+          }
+        },
+        {
+          "glyph": "h",
+          "query": [
+            11,
+            11,
+            104,
+            0
+          ],
+          "reference": {
+            "bounds": [
+              1,
+              -8,
+              5,
+              0
+            ],
+            "centroid": [
+              2.3125,
+              -4.3125
+            ],
+            "ink": 16
+          },
+          "variants": {
+            "baseline": {
+              "bounds": [
+                1,
+                -8,
+                4,
+                0
+              ],
+              "centroid": [
+                1.9,
+                -3.9
+              ],
+              "ink": 20,
+              "over": 10,
+              "under": 6,
+              "union": 26,
+              "xor": 16
+            },
+            "repaired": {
+              "bounds": [
+                1,
+                -8,
+                4,
+                0
+              ],
+              "centroid": [
+                1.9,
+                -3.9
+              ],
+              "ink": 20,
+              "over": 10,
+              "under": 6,
+              "union": 26,
+              "xor": 16
+            },
+            "unhinted": {
+              "bounds": [
+                1,
+                -8,
+                5,
+                0
+              ],
+              "centroid": [
+                2.4761904761904763,
+                -4.0
+              ],
+              "ink": 21,
+              "over": 5,
+              "under": 0,
+              "union": 21,
+              "xor": 5
+            }
+          }
+        },
+        {
+          "glyph": ">",
+          "query": [
+            20,
+            20,
+            62,
+            0
+          ],
+          "reference": {
+            "bounds": [
+              4,
+              -13,
+              16,
+              -1
+            ],
+            "centroid": [
+              9.166666666666666,
+              -7.5
+            ],
+            "ink": 48
+          },
+          "variants": {
+            "baseline": {
+              "bounds": [
+                4,
+                -12,
+                16,
+                0
+              ],
+              "centroid": [
+                9.142857142857142,
+                -6.5
+              ],
+              "ink": 42,
+              "over": 17,
+              "under": 23,
+              "union": 65,
+              "xor": 40
+            },
+            "repaired": {
+              "bounds": [
+                4,
+                -12,
+                16,
+                0
+              ],
+              "centroid": [
+                9.142857142857142,
+                -6.5
+              ],
+              "ink": 42,
+              "over": 17,
+              "under": 23,
+              "union": 65,
+              "xor": 40
+            },
+            "unhinted": {
+              "bounds": [
+                4,
+                -12,
+                16,
+                0
+              ],
+              "centroid": [
+                9.093023255813954,
+                -6.604651162790698
+              ],
+              "ink": 43,
+              "over": 17,
+              "under": 22,
+              "union": 65,
+              "xor": 39
+            }
+          }
+        },
+        {
+          "glyph": "A",
+          "query": [
+            11,
+            11,
+            65,
+            0
+          ],
+          "reference": {
+            "bounds": [
+              0,
+              -8,
+              5,
+              0
+            ],
+            "centroid": [
+              2.0625,
+              -3.875
+            ],
+            "ink": 16
+          },
+          "variants": {
+            "baseline": {
+              "bounds": [
+                0,
+                -8,
+                6,
+                0
+              ],
+              "centroid": [
+                2.4782608695652173,
+                -4.0
+              ],
+              "ink": 23,
+              "over": 12,
+              "under": 5,
+              "union": 28,
+              "xor": 17
+            },
+            "repaired": {
+              "bounds": [
+                0,
+                -8,
+                6,
+                0
+              ],
+              "centroid": [
+                2.4782608695652173,
+                -4.0
+              ],
+              "ink": 23,
+              "over": 12,
+              "under": 5,
+              "union": 28,
+              "xor": 17
+            },
+            "unhinted": {
+              "bounds": [
+                0,
+                -8,
+                6,
+                0
+              ],
+              "centroid": [
+                2.5,
+                -4.076923076923077
+              ],
+              "ink": 26,
+              "over": 12,
+              "under": 2,
+              "union": 28,
+              "xor": 14
+            }
+          }
+        },
+        {
+          "glyph": "'",
+          "query": [
+            11,
+            11,
+            39,
+            0
+          ],
+          "reference": {
+            "bounds": [
+              1,
+              -8,
+              2,
+              -5
+            ],
+            "centroid": [
+              1.0,
+              -7.0
+            ],
+            "ink": 3
+          },
+          "variants": {
+            "baseline": {
+              "bounds": [
+                1,
+                -8,
+                3,
+                -5
+              ],
+              "centroid": [
+                1.5,
+                -7.25
+              ],
+              "ink": 4,
+              "over": 2,
+              "under": 1,
+              "union": 5,
+              "xor": 3
+            },
+            "repaired": {
+              "bounds": [
+                1,
+                -8,
+                3,
+                -5
+              ],
+              "centroid": [
+                1.5,
+                -7.25
+              ],
+              "ink": 4,
+              "over": 2,
+              "under": 1,
+              "union": 5,
+              "xor": 3
+            },
+            "unhinted": {
+              "bounds": [
+                1,
+                -8,
+                3,
+                -5
+              ],
+              "centroid": [
+                1.3333333333333333,
+                -7.0
+              ],
+              "ink": 3,
+              "over": 1,
+              "under": 1,
+              "union": 4,
+              "xor": 2
+            }
+          }
+        }
+      ]
+    },
+    "training": {
+      "metrics": {
+        "baseline": {
+          "at_least_90": 2691,
+          "cases": 3974,
+          "mean_iou": 0.9148810812189438,
+          "passes_target": false,
+          "pooled_iou": 0.9765318433044691,
+          "worst_iou": 0.368421052631579
+        },
+        "repaired": {
+          "at_least_90": 2695,
+          "cases": 3974,
+          "mean_iou": 0.9157351310520625,
+          "passes_target": false,
+          "pooled_iou": 0.9766061094758413,
+          "worst_iou": 0.37142857142857144
+        },
+        "unhinted": {
+          "at_least_90": 1775,
+          "cases": 3974,
+          "mean_iou": 0.835441746295061,
+          "passes_target": false,
+          "pooled_iou": 0.9706216749592256,
+          "worst_iou": 0.0
+        }
+      },
+      "worst": [
+        {
+          "glyph": "`",
+          "query": [
+            21,
+            21,
+            96,
+            0
+          ],
+          "reference": {
+            "bounds": [
+              1,
+              -15,
+              4,
+              -9
+            ],
+            "centroid": [
+              2.0,
+              -12.0
+            ],
+            "ink": 13
+          },
+          "variants": {
+            "baseline": {
+              "bounds": [
+                2,
+                -16,
+                5,
+                -10
+              ],
+              "centroid": [
+                2.8461538461538463,
+                -12.923076923076923
+              ],
+              "ink": 13,
+              "over": 6,
+              "under": 6,
+              "union": 19,
+              "xor": 12
+            },
+            "repaired": {
+              "bounds": [
+                1,
+                -16,
+                5,
+                -10
+              ],
+              "centroid": [
+                2.411764705882353,
+                -12.823529411764707
+              ],
+              "ink": 17,
+              "over": 7,
+              "under": 3,
+              "union": 20,
+              "xor": 10
+            },
+            "unhinted": {
+              "bounds": [
+                2,
+                -16,
+                4,
+                -10
+              ],
+              "centroid": [
+                2.5,
+                -13.2
+              ],
+              "ink": 10,
+              "over": 3,
+              "under": 6,
+              "union": 16,
+              "xor": 9
+            }
+          }
+        },
+        {
+          "glyph": "(",
+          "query": [
+            15,
+            15,
+            40,
+            0
+          ],
+          "reference": {
+            "bounds": [
+              2,
+              -12,
+              5,
+              2
+            ],
+            "centroid": [
+              2.8333333333333335,
+              -5.5
+            ],
+            "ink": 24
+          },
+          "variants": {
+            "baseline": {
+              "bounds": [
+                1,
+                -11,
+                4,
+                3
+              ],
+              "centroid": [
+                2.0416666666666665,
+                -4.583333333333333
+              ],
+              "ink": 24,
+              "over": 11,
+              "under": 11,
+              "union": 35,
+              "xor": 22
+            },
+            "repaired": {
+              "bounds": [
+                1,
+                -11,
+                4,
+                3
+              ],
+              "centroid": [
+                2.0416666666666665,
+                -4.583333333333333
+              ],
+              "ink": 24,
+              "over": 11,
+              "under": 11,
+              "union": 35,
+              "xor": 22
+            },
+            "unhinted": {
+              "bounds": [
+                1,
+                -11,
+                4,
+                3
+              ],
+              "centroid": [
+                1.9583333333333333,
+                -4.875
+              ],
+              "ink": 24,
+              "over": 12,
+              "under": 12,
+              "union": 36,
+              "xor": 24
+            }
+          }
+        },
+        {
+          "glyph": "`",
+          "query": [
+            25,
+            25,
+            96,
+            0
+          ],
+          "reference": {
+            "bounds": [
+              3,
+              -18,
+              6,
+              -11
+            ],
+            "centroid": [
+              3.933333333333333,
+              -14.266666666666667
+            ],
+            "ink": 15
+          },
+          "variants": {
+            "baseline": {
+              "bounds": [
+                2,
+                -18,
+                6,
+                -12
+              ],
+              "centroid": [
+                3.2777777777777777,
+                -15.0
+              ],
+              "ink": 18,
+              "over": 9,
+              "under": 6,
+              "union": 24,
+              "xor": 15
+            },
+            "repaired": {
+              "bounds": [
+                2,
+                -18,
+                6,
+                -12
+              ],
+              "centroid": [
+                3.2777777777777777,
+                -15.0
+              ],
+              "ink": 18,
+              "over": 9,
+              "under": 6,
+              "union": 24,
+              "xor": 15
+            },
+            "unhinted": {
+              "bounds": [
+                2,
+                -19,
+                5,
+                -12
+              ],
+              "centroid": [
+                3.0,
+                -15.4375
+              ],
+              "ink": 16,
+              "over": 9,
+              "under": 8,
+              "union": 24,
+              "xor": 17
+            }
+          }
+        },
+        {
+          "glyph": ">",
+          "query": [
+            17,
+            17,
+            62,
+            0
+          ],
+          "reference": {
+            "bounds": [
+              3,
+              -10,
+              13,
+              1
+            ],
+            "centroid": [
+              7.590909090909091,
+              -5.0
+            ],
+            "ink": 22
+          },
+          "variants": {
+            "baseline": {
+              "bounds": [
+                3,
+                -10,
+                13,
+                0
+              ],
+              "centroid": [
+                7.0,
+                -5.580645161290323
+              ],
+              "ink": 31,
+              "over": 15,
+              "under": 6,
+              "union": 37,
+              "xor": 21
+            },
+            "repaired": {
+              "bounds": [
+                3,
+                -10,
+                13,
+                0
+              ],
+              "centroid": [
+                7.0,
+                -5.580645161290323
+              ],
+              "ink": 31,
+              "over": 15,
+              "under": 6,
+              "union": 37,
+              "xor": 21
+            },
+            "unhinted": {
+              "bounds": [
+                3,
+                -10,
+                13,
+                0
+              ],
+              "centroid": [
+                7.3125,
+                -5.4375
+              ],
+              "ink": 32,
+              "over": 16,
+              "under": 6,
+              "union": 38,
+              "xor": 22
+            }
+          }
+        },
+        {
+          "glyph": "<",
+          "query": [
+            17,
+            17,
+            60,
+            0
+          ],
+          "reference": {
+            "bounds": [
+              4,
+              -10,
+              14,
+              1
+            ],
+            "centroid": [
+              8.409090909090908,
+              -5.0
+            ],
+            "ink": 22
+          },
+          "variants": {
+            "baseline": {
+              "bounds": [
+                3,
+                -10,
+                14,
+                0
+              ],
+              "centroid": [
+                8.352941176470589,
+                -5.5
+              ],
+              "ink": 34,
+              "over": 17,
+              "under": 5,
+              "union": 39,
+              "xor": 22
+            },
+            "repaired": {
+              "bounds": [
+                3,
+                -10,
+                14,
+                0
+              ],
+              "centroid": [
+                8.352941176470589,
+                -5.5
+              ],
+              "ink": 34,
+              "over": 17,
+              "under": 5,
+              "union": 39,
+              "xor": 22
+            },
+            "unhinted": {
+              "bounds": [
+                3,
+                -10,
+                14,
+                0
+              ],
+              "centroid": [
+                8.34375,
+                -5.5
+              ],
+              "ink": 32,
+              "over": 17,
+              "under": 7,
+              "union": 39,
+              "xor": 24
+            }
+          }
+        },
+        {
+          "glyph": "g",
+          "query": [
+            7,
+            14,
+            103,
+            0
+          ],
+          "reference": {
+            "bounds": [
+              1,
+              -8,
+              5,
+              3
+            ],
+            "centroid": [
+              2.625,
+              -3.0416666666666665
+            ],
+            "ink": 24
+          },
+          "variants": {
+            "baseline": {
+              "bounds": [
+                1,
+                -8,
+                4,
+                3
+              ],
+              "centroid": [
+                2.1363636363636362,
+                -2.909090909090909
+              ],
+              "ink": 22,
+              "over": 8,
+              "under": 10,
+              "union": 32,
+              "xor": 18
+            },
+            "repaired": {
+              "bounds": [
+                1,
+                -8,
+                4,
+                3
+              ],
+              "centroid": [
+                2.1363636363636362,
+                -2.909090909090909
+              ],
+              "ink": 22,
+              "over": 8,
+              "under": 10,
+              "union": 32,
+              "xor": 18
+            },
+            "unhinted": {
+              "bounds": [
+                0,
+                -8,
+                4,
+                3
+              ],
+              "centroid": [
+                1.8148148148148149,
+                -3.5185185185185186
+              ],
+              "ink": 27,
+              "over": 15,
+              "under": 12,
+              "union": 39,
+              "xor": 27
+            }
+          }
+        },
+        {
+          "glyph": "g",
+          "query": [
+            10,
+            14,
+            103,
+            0
+          ],
+          "reference": {
+            "bounds": [
+              1,
+              -8,
+              5,
+              3
+            ],
+            "centroid": [
+              2.625,
+              -3.0416666666666665
+            ],
+            "ink": 24
+          },
+          "variants": {
+            "baseline": {
+              "bounds": [
+                1,
+                -8,
+                4,
+                3
+              ],
+              "centroid": [
+                2.1363636363636362,
+                -2.909090909090909
+              ],
+              "ink": 22,
+              "over": 8,
+              "under": 10,
+              "union": 32,
+              "xor": 18
+            },
+            "repaired": {
+              "bounds": [
+                1,
+                -8,
+                4,
+                3
+              ],
+              "centroid": [
+                2.1363636363636362,
+                -2.909090909090909
+              ],
+              "ink": 22,
+              "over": 8,
+              "under": 10,
+              "union": 32,
+              "xor": 18
+            },
+            "unhinted": {
+              "bounds": [
+                0,
+                -8,
+                4,
+                3
+              ],
+              "centroid": [
+                1.8148148148148149,
+                -3.5185185185185186
+              ],
+              "ink": 27,
+              "over": 15,
+              "under": 12,
+              "union": 39,
+              "xor": 27
+            }
+          }
+        },
+        {
+          "glyph": "[",
+          "query": [
+            17,
+            17,
+            91,
+            0
+          ],
+          "reference": {
+            "bounds": [
+              2,
+              -13,
+              5,
+              3
+            ],
+            "centroid": [
+              2.6666666666666665,
+              -5.5
+            ],
+            "ink": 36
+          },
+          "variants": {
+            "baseline": {
+              "bounds": [
+                1,
+                -13,
+                5,
+                3
+              ],
+              "centroid": [
+                1.9761904761904763,
+                -5.761904761904762
+              ],
+              "ink": 42,
+              "over": 17,
+              "under": 11,
+              "union": 53,
+              "xor": 28
+            },
+            "repaired": {
+              "bounds": [
+                2,
+                -13,
+                5,
+                3
+              ],
+              "centroid": [
+                2.7027027027027026,
+                -5.648648648648648
+              ],
+              "ink": 37,
+              "over": 1,
+              "under": 0,
+              "union": 37,
+              "xor": 1
+            },
+            "unhinted": {
+              "bounds": [
+                1,
+                -13,
+                5,
+                3
+              ],
+              "centroid": [
+                1.9,
+                -5.5
+              ],
+              "ink": 40,
+              "over": 16,
+              "under": 12,
+              "union": 52,
+              "xor": 28
+            }
+          }
+        },
+        {
+          "glyph": "(",
+          "query": [
+            25,
+            25,
+            40,
+            0
+          ],
+          "reference": {
+            "bounds": [
+              3,
+              -19,
+              8,
+              5
+            ],
+            "centroid": [
+              4.806451612903226,
+              -7.5
+            ],
+            "ink": 62
+          },
+          "variants": {
+            "baseline": {
+              "bounds": [
+                2,
+                -19,
+                7,
+                4
+              ],
+              "centroid": [
+                3.769230769230769,
+                -7.938461538461539
+              ],
+              "ink": 65,
+              "over": 24,
+              "under": 21,
+              "union": 86,
+              "xor": 45
+            },
+            "repaired": {
+              "bounds": [
+                2,
+                -19,
+                7,
+                4
+              ],
+              "centroid": [
+                3.769230769230769,
+                -7.938461538461539
+              ],
+              "ink": 65,
+              "over": 24,
+              "under": 21,
+              "union": 86,
+              "xor": 45
+            },
+            "unhinted": {
+              "bounds": [
+                2,
+                -19,
+                7,
+                4
+              ],
+              "centroid": [
+                3.769230769230769,
+                -7.938461538461539
+              ],
+              "ink": 65,
+              "over": 24,
+              "under": 21,
+              "union": 86,
+              "xor": 45
+            }
+          }
+        },
+        {
+          "glyph": ">",
+          "query": [
+            24,
+            16,
+            62,
+            0
+          ],
+          "reference": {
+            "bounds": [
+              5,
+              -9,
+              19,
+              0
+            ],
+            "centroid": [
+              11.344827586206897,
+              -5.0
+            ],
+            "ink": 29
+          },
+          "variants": {
+            "baseline": {
+              "bounds": [
+                5,
+                -10,
+                19,
+                0
+              ],
+              "centroid": [
+                11.19047619047619,
+                -5.5
+              ],
+              "ink": 42,
+              "over": 19,
+              "under": 6,
+              "union": 48,
+              "xor": 25
+            },
+            "repaired": {
+              "bounds": [
+                5,
+                -10,
+                19,
+                0
+              ],
+              "centroid": [
+                11.19047619047619,
+                -5.5
+              ],
+              "ink": 42,
+              "over": 19,
+              "under": 6,
+              "union": 48,
+              "xor": 25
+            },
+            "unhinted": {
+              "bounds": [
+                5,
+                -10,
+                19,
+                0
+              ],
+              "centroid": [
+                10.926829268292684,
+                -5.317073170731708
+              ],
+              "ink": 41,
+              "over": 14,
+              "under": 2,
+              "union": 43,
+              "xor": 16
+            }
+          }
+        },
+        {
+          "glyph": "^",
+          "query": [
+            22,
+            22,
+            94,
+            0
+          ],
+          "reference": {
+            "bounds": [
+              1,
+              -16,
+              10,
+              -10
+            ],
+            "centroid": [
+              5.0,
+              -13.235294117647058
+            ],
+            "ink": 17
+          },
+          "variants": {
+            "baseline": {
+              "bounds": [
+                1,
+                -16,
+                10,
+                -11
+              ],
+              "centroid": [
+                5.05,
+                -13.8
+              ],
+              "ink": 20,
+              "over": 8,
+              "under": 5,
+              "union": 25,
+              "xor": 13
+            },
+            "repaired": {
+              "bounds": [
+                1,
+                -16,
+                10,
+                -11
+              ],
+              "centroid": [
+                5.05,
+                -13.8
+              ],
+              "ink": 20,
+              "over": 8,
+              "under": 5,
+              "union": 25,
+              "xor": 13
+            },
+            "unhinted": {
+              "bounds": [
+                1,
+                -16,
+                10,
+                -11
+              ],
+              "centroid": [
+                5.0,
+                -13.68421052631579
+              ],
+              "ink": 19,
+              "over": 7,
+              "under": 5,
+              "union": 24,
+              "xor": 12
+            }
+          }
+        },
+        {
+          "glyph": "<",
+          "query": [
+            16,
+            16,
+            60,
+            1
+          ],
+          "reference": {
+            "bounds": [
+              0,
+              3,
+              9,
+              13
+            ],
+            "centroid": [
+              4.0,
+              7.681818181818182
+            ],
+            "ink": 22
+          },
+          "variants": {
+            "baseline": {
+              "bounds": [
+                0,
+                3,
+                10,
+                13
+              ],
+              "centroid": [
+                4.5,
+                7.866666666666666
+              ],
+              "ink": 30,
+              "over": 13,
+              "under": 5,
+              "union": 35,
+              "xor": 18
+            },
+            "repaired": {
+              "bounds": [
+                0,
+                3,
+                10,
+                13
+              ],
+              "centroid": [
+                4.5,
+                7.866666666666666
+              ],
+              "ink": 30,
+              "over": 13,
+              "under": 5,
+              "union": 35,
+              "xor": 18
+            },
+            "unhinted": {
+              "bounds": [
+                0,
+                3,
+                10,
+                13
+              ],
+              "centroid": [
+                4.241379310344827,
+                7.931034482758621
+              ],
+              "ink": 29,
+              "over": 10,
+              "under": 3,
+              "union": 32,
+              "xor": 13
+            }
+          }
+        },
+        {
+          "glyph": "<",
+          "query": [
+            16,
+            16,
+            60,
+            2
+          ],
+          "reference": {
+            "bounds": [
+              -13,
+              0,
+              -3,
+              9
+            ],
+            "centroid": [
+              -8.681818181818182,
+              4.0
+            ],
+            "ink": 22
+          },
+          "variants": {
+            "baseline": {
+              "bounds": [
+                -13,
+                0,
+                -3,
+                10
+              ],
+              "centroid": [
+                -8.866666666666667,
+                4.5
+              ],
+              "ink": 30,
+              "over": 13,
+              "under": 5,
+              "union": 35,
+              "xor": 18
+            },
+            "repaired": {
+              "bounds": [
+                -13,
+                0,
+                -3,
+                10
+              ],
+              "centroid": [
+                -8.866666666666667,
+                4.5
+              ],
+              "ink": 30,
+              "over": 13,
+              "under": 5,
+              "union": 35,
+              "xor": 18
+            },
+            "unhinted": {
+              "bounds": [
+                -13,
+                0,
+                -3,
+                10
+              ],
+              "centroid": [
+                -8.931034482758621,
+                4.241379310344827
+              ],
+              "ink": 29,
+              "over": 10,
+              "under": 3,
+              "union": 32,
+              "xor": 13
+            }
+          }
+        },
+        {
+          "glyph": "W",
+          "query": [
+            17,
+            17,
+            87,
+            0
+          ],
+          "reference": {
+            "bounds": [
+              0,
+              -13,
+              12,
+              0
+            ],
+            "centroid": [
+              5.5,
+              -7.285714285714286
+            ],
+            "ink": 84
+          },
+          "variants": {
+            "baseline": {
+              "bounds": [
+                0,
+                -13,
+                14,
+                0
+              ],
+              "centroid": [
+                6.330188679245283,
+                -7.018867924528302
+              ],
+              "ink": 106,
+              "over": 43,
+              "under": 21,
+              "union": 127,
+              "xor": 64
+            },
+            "repaired": {
+              "bounds": [
+                0,
+                -13,
+                14,
+                0
+              ],
+              "centroid": [
+                6.330188679245283,
+                -7.018867924528302
+              ],
+              "ink": 106,
+              "over": 43,
+              "under": 21,
+              "union": 127,
+              "xor": 64
+            },
+            "unhinted": {
+              "bounds": [
+                0,
+                -13,
+                14,
+                0
+              ],
+              "centroid": [
+                6.580645161290323,
+                -7.086021505376344
+              ],
+              "ink": 93,
+              "over": 45,
+              "under": 36,
+              "union": 129,
+              "xor": 81
+            }
+          }
+        },
+        {
+          "glyph": ";",
+          "query": [
+            17,
+            17,
+            59,
+            0
+          ],
+          "reference": {
+            "bounds": [
+              1,
+              -9,
+              4,
+              2
+            ],
+            "centroid": [
+              1.9,
+              -3.9
+            ],
+            "ink": 10
+          },
+          "variants": {
+            "baseline": {
+              "bounds": [
+                1,
+                -9,
+                4,
+                2
+              ],
+              "centroid": [
+                2.0714285714285716,
+                -4.214285714285714
+              ],
+              "ink": 14,
+              "over": 6,
+              "under": 2,
+              "union": 16,
+              "xor": 8
+            },
+            "repaired": {
+              "bounds": [
+                1,
+                -9,
+                4,
+                2
+              ],
+              "centroid": [
+                2.0,
+                -4.214285714285714
+              ],
+              "ink": 14,
+              "over": 5,
+              "under": 1,
+              "union": 15,
+              "xor": 6
+            },
+            "unhinted": {
+              "bounds": [
+                1,
+                -9,
+                4,
+                2
+              ],
+              "centroid": [
+                2.0714285714285716,
+                -4.214285714285714
+              ],
+              "ink": 14,
+              "over": 6,
+              "under": 2,
+              "union": 16,
+              "xor": 8
+            }
+          }
+        },
+        {
+          "glyph": "`",
+          "query": [
+            17,
+            17,
+            96,
+            0
+          ],
+          "reference": {
+            "bounds": [
+              2,
+              -12,
+              4,
+              -8
+            ],
+            "centroid": [
+              2.5,
+              -10.166666666666666
+            ],
+            "ink": 6
+          },
+          "variants": {
+            "baseline": {
+              "bounds": [
+                1,
+                -12,
+                4,
+                -8
+              ],
+              "centroid": [
+                1.8888888888888888,
+                -10.11111111111111
+              ],
+              "ink": 9,
+              "over": 4,
+              "under": 1,
+              "union": 10,
+              "xor": 5
+            },
+            "repaired": {
+              "bounds": [
+                1,
+                -12,
+                4,
+                -8
+              ],
+              "centroid": [
+                2.0,
+                -10.3
+              ],
+              "ink": 10,
+              "over": 4,
+              "under": 0,
+              "union": 10,
+              "xor": 4
+            },
+            "unhinted": {
+              "bounds": [
+                1,
+                -13,
+                4,
+                -8
+              ],
+              "centroid": [
+                2.0,
+                -10.333333333333334
+              ],
+              "ink": 9,
+              "over": 5,
+              "under": 2,
+              "union": 11,
+              "xor": 7
+            }
+          }
+        },
+        {
+          "glyph": "<",
+          "query": [
+            24,
+            16,
+            60,
+            0
+          ],
+          "reference": {
+            "bounds": [
+              5,
+              -9,
+              19,
+              0
+            ],
+            "centroid": [
+              11.655172413793103,
+              -5.0
+            ],
+            "ink": 29
+          },
+          "variants": {
+            "baseline": {
+              "bounds": [
+                5,
+                -10,
+                19,
+                0
+              ],
+              "centroid": [
+                12.116279069767442,
+                -5.511627906976744
+              ],
+              "ink": 43,
+              "over": 19,
+              "under": 5,
+              "union": 48,
+              "xor": 24
+            },
+            "repaired": {
+              "bounds": [
+                5,
+                -10,
+                19,
+                0
+              ],
+              "centroid": [
+                12.116279069767442,
+                -5.511627906976744
+              ],
+              "ink": 43,
+              "over": 19,
+              "under": 5,
+              "union": 48,
+              "xor": 24
+            },
+            "unhinted": {
+              "bounds": [
+                5,
+                -10,
+                19,
+                0
+              ],
+              "centroid": [
+                12.073170731707316,
+                -5.317073170731708
+              ],
+              "ink": 41,
+              "over": 14,
+              "under": 2,
+              "union": 43,
+              "xor": 16
+            }
+          }
+        },
+        {
+          "glyph": ">",
+          "query": [
+            16,
+            16,
+            62,
+            1
+          ],
+          "reference": {
+            "bounds": [
+              0,
+              3,
+              9,
+              13
+            ],
+            "centroid": [
+              4.0,
+              7.318181818181818
+            ],
+            "ink": 22
+          },
+          "variants": {
+            "baseline": {
+              "bounds": [
+                0,
+                3,
+                10,
+                13
+              ],
+              "centroid": [
+                4.516129032258065,
+                7.258064516129032
+              ],
+              "ink": 31,
+              "over": 13,
+              "under": 4,
+              "union": 35,
+              "xor": 17
+            },
+            "repaired": {
+              "bounds": [
+                0,
+                3,
+                10,
+                13
+              ],
+              "centroid": [
+                4.516129032258065,
+                7.258064516129032
+              ],
+              "ink": 31,
+              "over": 13,
+              "under": 4,
+              "union": 35,
+              "xor": 17
+            },
+            "unhinted": {
+              "bounds": [
+                0,
+                3,
+                9,
+                13
+              ],
+              "centroid": [
+                4.111111111111111,
+                7.074074074074074
+              ],
+              "ink": 27,
+              "over": 8,
+              "under": 3,
+              "union": 30,
+              "xor": 11
+            }
+          }
+        },
+        {
+          "glyph": ">",
+          "query": [
+            16,
+            16,
+            62,
+            2
+          ],
+          "reference": {
+            "bounds": [
+              -13,
+              0,
+              -3,
+              9
+            ],
+            "centroid": [
+              -8.318181818181818,
+              4.0
+            ],
+            "ink": 22
+          },
+          "variants": {
+            "baseline": {
+              "bounds": [
+                -13,
+                0,
+                -3,
+                10
+              ],
+              "centroid": [
+                -8.258064516129032,
+                4.516129032258065
+              ],
+              "ink": 31,
+              "over": 13,
+              "under": 4,
+              "union": 35,
+              "xor": 17
+            },
+            "repaired": {
+              "bounds": [
+                -13,
+                0,
+                -3,
+                10
+              ],
+              "centroid": [
+                -8.258064516129032,
+                4.516129032258065
+              ],
+              "ink": 31,
+              "over": 13,
+              "under": 4,
+              "union": 35,
+              "xor": 17
+            },
+            "unhinted": {
+              "bounds": [
+                -13,
+                0,
+                -3,
+                10
+              ],
+              "centroid": [
+                -7.928571428571429,
+                4.285714285714286
+              ],
+              "ink": 28,
+              "over": 9,
+              "under": 3,
+              "union": 31,
+              "xor": 12
+            }
+          }
+        },
+        {
+          "glyph": "m",
+          "query": [
+            18,
+            18,
+            109,
+            0
+          ],
+          "reference": {
+            "bounds": [
+              1,
+              -10,
+              11,
+              0
+            ],
+            "centroid": [
+              5.446153846153846,
+              -5.7846153846153845
+            ],
+            "ink": 65
+          },
+          "variants": {
+            "baseline": {
+              "bounds": [
+                1,
+                -10,
+                12,
+                0
+              ],
+              "centroid": [
+                5.815789473684211,
+                -5.802631578947368
+              ],
+              "ink": 76,
+              "over": 27,
+              "under": 16,
+              "union": 92,
+              "xor": 43
+            },
+            "repaired": {
+              "bounds": [
+                1,
+                -10,
+                12,
+                0
+              ],
+              "centroid": [
+                5.911764705882353,
+                -5.955882352941177
+              ],
+              "ink": 68,
+              "over": 11,
+              "under": 8,
+              "union": 76,
+              "xor": 19
+            },
+            "unhinted": {
+              "bounds": [
+                1,
+                -10,
+                13,
+                0
+              ],
+              "centroid": [
+                6.411764705882353,
+                -5.729411764705882
+              ],
+              "ink": 85,
+              "over": 36,
+              "under": 16,
+              "union": 101,
+              "xor": 52
+            }
+          }
+        },
+        {
+          "glyph": "*",
+          "query": [
+            26,
+            26,
+            42,
+            0
+          ],
+          "reference": {
+            "bounds": [
+              2,
+              -19,
+              10,
+              -11
+            ],
+            "centroid": [
+              5.5,
+              -15.928571428571429
+            ],
+            "ink": 28
+          },
+          "variants": {
+            "baseline": {
+              "bounds": [
+                2,
+                -19,
+                11,
+                -12
+              ],
+              "centroid": [
+                5.8,
+                -15.942857142857143
+              ],
+              "ink": 35,
+              "over": 13,
+              "under": 6,
+              "union": 41,
+              "xor": 19
+            },
+            "repaired": {
+              "bounds": [
+                2,
+                -19,
+                11,
+                -12
+              ],
+              "centroid": [
+                5.8,
+                -15.942857142857143
+              ],
+              "ink": 35,
+              "over": 13,
+              "under": 6,
+              "union": 41,
+              "xor": 19
+            },
+            "unhinted": {
+              "bounds": [
+                2,
+                -19,
+                10,
+                -12
+              ],
+              "centroid": [
+                5.666666666666667,
+                -15.969696969696969
+              ],
+              "ink": 33,
+              "over": 12,
+              "under": 7,
+              "union": 40,
+              "xor": 19
+            }
+          }
+        },
+        {
+          "glyph": "*",
+          "query": [
+            15,
+            15,
+            42,
+            0
+          ],
+          "reference": {
+            "bounds": [
+              1,
+              -11,
+              6,
+              -7
+            ],
+            "centroid": [
+              3.0,
+              -9.777777777777779
+            ],
+            "ink": 9
+          },
+          "variants": {
+            "baseline": {
+              "bounds": [
+                1,
+                -11,
+                6,
+                -7
+              ],
+              "centroid": [
+                3.0,
+                -9.454545454545455
+              ],
+              "ink": 11,
+              "over": 4,
+              "under": 2,
+              "union": 13,
+              "xor": 6
+            },
+            "repaired": {
+              "bounds": [
+                1,
+                -11,
+                6,
+                -7
+              ],
+              "centroid": [
+                3.0,
+                -9.454545454545455
+              ],
+              "ink": 11,
+              "over": 4,
+              "under": 2,
+              "union": 13,
+              "xor": 6
+            },
+            "unhinted": {
+              "bounds": [
+                1,
+                -11,
+                6,
+                -7
+              ],
+              "centroid": [
+                3.0,
+                -9.454545454545455
+              ],
+              "ink": 11,
+              "over": 4,
+              "under": 2,
+              "union": 13,
+              "xor": 6
+            }
+          }
+        },
+        {
+          "glyph": "`",
+          "query": [
+            18,
+            18,
+            96,
+            0
+          ],
+          "reference": {
+            "bounds": [
+              1,
+              -14,
+              3,
+              -9
+            ],
+            "centroid": [
+              1.4285714285714286,
+              -11.571428571428571
+            ],
+            "ink": 7
+          },
+          "variants": {
+            "baseline": {
+              "bounds": [
+                1,
+                -14,
+                4,
+                -9
+              ],
+              "centroid": [
+                2.0,
+                -11.76923076923077
+              ],
+              "ink": 13,
+              "over": 6,
+              "under": 0,
+              "union": 13,
+              "xor": 6
+            },
+            "repaired": {
+              "bounds": [
+                1,
+                -14,
+                4,
+                -9
+              ],
+              "centroid": [
+                2.0,
+                -11.76923076923077
+              ],
+              "ink": 13,
+              "over": 6,
+              "under": 0,
+              "union": 13,
+              "xor": 6
+            },
+            "unhinted": {
+              "bounds": [
+                1,
+                -13,
+                4,
+                -8
+              ],
+              "centroid": [
+                2.0833333333333335,
+                -10.666666666666666
+              ],
+              "ink": 12,
+              "over": 8,
+              "under": 3,
+              "union": 15,
+              "xor": 11
+            }
+          }
+        },
+        {
+          "glyph": ">",
+          "query": [
+            18,
+            18,
+            62,
+            0
+          ],
+          "reference": {
+            "bounds": [
+              4,
+              -11,
+              15,
+              0
+            ],
+            "centroid": [
+              9.115384615384615,
+              -6.0
+            ],
+            "ink": 26
+          },
+          "variants": {
+            "baseline": {
+              "bounds": [
+                4,
+                -11,
+                14,
+                0
+              ],
+              "centroid": [
+                8.0,
+                -5.967741935483871
+              ],
+              "ink": 31,
+              "over": 11,
+              "under": 6,
+              "union": 37,
+              "xor": 17
+            },
+            "repaired": {
+              "bounds": [
+                4,
+                -11,
+                14,
+                0
+              ],
+              "centroid": [
+                8.0,
+                -5.967741935483871
+              ],
+              "ink": 31,
+              "over": 11,
+              "under": 6,
+              "union": 37,
+              "xor": 17
+            },
+            "unhinted": {
+              "bounds": [
+                4,
+                -11,
+                14,
+                0
+              ],
+              "centroid": [
+                7.96875,
+                -6.03125
+              ],
+              "ink": 32,
+              "over": 12,
+              "under": 6,
+              "union": 38,
+              "xor": 18
+            }
+          }
+        }
+      ]
+    }
+  },
+  "schema": "font-fit-diagnosis-v1"
+}

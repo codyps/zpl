@@ -206,7 +206,7 @@ def copy_hint_state(state, char):
     Other glyphs' programs remain shared and are never edited by this proposal.
     """
     result = dict(state)
-    for key in ("programs", "regimes", "optical_programs"):
+    for key in ("programs", "regimes", "optical_programs", "diagonal_programs"):
         if key in state:
             result[key] = dict(state[key])
             if char in state[key]:
@@ -522,6 +522,7 @@ def fit(args):
     script_names = (
         Path(__file__).name,
         "joint_hint_program.py",
+        "diagonal_font_hints.py",
         "fit_structured_hints.py",
         "structured_font_hints.py",
         "reconstruct_geometry.py",

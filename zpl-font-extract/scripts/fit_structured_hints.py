@@ -43,6 +43,22 @@ def aggregate(stats):
     )
 
 
+def projection_error(reference, candidate, axis):
+    """Foreground multiset IoU after projection onto a native canvas axis.
+
+    Used only to nominate coordinated hint edits. A translation on the other
+    axis leaves this guide invariant; accepted scores still use every 2D pixel.
+    """
+    a, b = defaultdict(int), defaultdict(int)
+    for point in reference:
+        a[point[axis]] += 1
+    for point in candidate:
+        b[point[axis]] += 1
+    coordinates = a.keys() | b.keys()
+    union = sum(max(a[x], b[x]) for x in coordinates)
+    return sum(abs(a[x] - b[x]) for x in coordinates) / union if union else 0
+
+
 class Objective:
     def __init__(self, baseline, mode):
         self.baseline, self.mode = baseline, mode
@@ -123,9 +139,11 @@ class Oracle:
     Shapes and CVTs must be identical to the baseline throughout this experiment.
     """
 
-    def __init__(self, engine, references, baseline):
+    def __init__(self, engine, references, baseline, projections=False):
         self.engine, self.references, self.baseline = engine, references, baseline
         self.memo = {}
+        self.projections = {} if projections else None
+        self.last_projections = {}
         self.keys = {
             c: sorted(q for q in references if q[2] == ord(c))
             for c in baseline["shapes"]
@@ -139,6 +157,7 @@ class Oracle:
             "structured search changed fixed geometry or CVTs",
         )
         result = {}
+        self.last_projections = {}
         selected = set(queries) if queries is not None else None
         for char, all_keys in self.keys.items():
             keys = (
@@ -236,15 +255,43 @@ class Oracle:
                             sort_keys=True,
                         ).encode()
                     )
-                cachekeys[q] = (identity[active], q)
+                diagonal = state.get("diagonal_programs", {}).get(char)
+                diagonal_active = (
+                    diagonal
+                    if diagonal
+                    and min(projected) > diagonal["start"]
+                    and max(projected)
+                    <= min(diagonal["limit"], state["parameters"]["limit"])
+                    else None
+                )
+                cachekeys[q] = (
+                    identity[active],
+                    json.dumps(diagonal_active, sort_keys=True),
+                    q,
+                )
             missing = [q for q in keys if cachekeys[q] not in self.memo]
             if missing:
                 rows = self.engine.render(hints.build(state, [char]), missing)
                 for q in missing:
+                    pixels = pipeline.pixels(rows[q])
                     self.memo[cachekeys[q]] = pipeline.counts(
-                        self.references[q], pipeline.pixels(rows[q])
+                        self.references[q], pixels
                     )
+                    if self.projections is not None:
+                        self.projections[cachekeys[q]] = (
+                            [
+                                projection_error(
+                                    self.references[q], pixels, (axis + q[3]) % 2
+                                )
+                                for axis in (0, 1)
+                            ],
+                            sha(json.dumps(sorted(pixels)).encode()),
+                        )
             result.update((q, self.memo[cachekeys[q]]) for q in keys)
+            if self.projections is not None:
+                self.last_projections.update(
+                    (q, self.projections[cachekeys[q]]) for q in keys
+                )
         return result
 
 

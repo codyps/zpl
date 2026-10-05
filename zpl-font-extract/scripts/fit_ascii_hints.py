@@ -22,7 +22,14 @@ from reconstruct_font import require, save, sha
 import split_hint_features
 import structured_font_hints as structure
 
-GLYPH_MAPS = ("shapes", "graph", "programs", "regimes", "optical_programs")
+GLYPH_MAPS = (
+    "shapes",
+    "graph",
+    "programs",
+    "regimes",
+    "optical_programs",
+    "diagonal_programs",
+)
 
 
 def one_glyph(state, char):
@@ -237,6 +244,7 @@ def fit(
         "structured_font_hints",
         "split_hint_features",
         "joint_hint_program",
+        "diagonal_font_hints",
         "font_probe",
         "reconstruct_ascii_font",
         "reconstruct_font",

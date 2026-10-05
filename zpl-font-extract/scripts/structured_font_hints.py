@@ -299,6 +299,8 @@ def complexity(state, baseline):
         ^ set(baseline.get("independent_axes", []))
     )
     for c, axes in state["programs"].items():
+        if state.get("diagonal_programs", {}).get(c):
+            edits += 3  # Stroke displacement and the two coarse optical cutoffs.
         optical = state.get("optical_programs", {}).get(c)
         if optical:
             edits += sum(m != "max" for m in optical.get("measures", []))

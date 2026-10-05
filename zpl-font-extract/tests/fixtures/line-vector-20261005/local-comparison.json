@@ -1,0 +1,363 @@
+{
+  "printer": {
+    "model": "ZD621",
+    "serial": "D7J211001302",
+    "firmware": "V93.21.33Z",
+    "dpi": 203
+  },
+  "font_sha256": "0b165ad8b1f0edae7c18c666880a197ad08defcc1a6ff9415b8bf4a29ea37246",
+  "manifest_sha256": "5a8c66bbcc8da6a32f1216d307cfa3853acbd96afcdbe0a72420252577f18e6b",
+  "pages": [
+    {
+      "name": "00-state",
+      "cases": [
+        {
+          "name": "identity",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 26
+        },
+        {
+          "name": "instruction-witness",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 26
+        }
+      ],
+      "under": 0,
+      "over": 0,
+      "xor": 0,
+      "union": 52
+    },
+    {
+      "name": "01-vector",
+      "cases": [
+        {
+          "name": "plain",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 2,
+          "xor": 2,
+          "union": 17
+        },
+        {
+          "name": "contract",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 2,
+          "xor": 2,
+          "union": 9
+        },
+        {
+          "name": "expand",
+          "width": 16,
+          "height": 16,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 23
+        }
+      ],
+      "under": 0,
+      "over": 4,
+      "xor": 4,
+      "union": 49
+    },
+    {
+      "name": "02-vector",
+      "cases": [
+        {
+          "name": "plain",
+          "width": 24,
+          "height": 24,
+          "under": 0,
+          "over": 3,
+          "xor": 3,
+          "union": 37
+        },
+        {
+          "name": "contract",
+          "width": 24,
+          "height": 24,
+          "under": 0,
+          "over": 3,
+          "xor": 3,
+          "union": 37
+        },
+        {
+          "name": "expand",
+          "width": 24,
+          "height": 24,
+          "under": 0,
+          "over": 2,
+          "xor": 2,
+          "union": 48
+        }
+      ],
+      "under": 0,
+      "over": 8,
+      "xor": 8,
+      "union": 122
+    },
+    {
+      "name": "03-vector",
+      "cases": [
+        {
+          "name": "plain",
+          "width": 32,
+          "height": 32,
+          "under": 0,
+          "over": 3,
+          "xor": 3,
+          "union": 65
+        },
+        {
+          "name": "contract",
+          "width": 32,
+          "height": 32,
+          "under": 0,
+          "over": 2,
+          "xor": 2,
+          "union": 64
+        },
+        {
+          "name": "expand",
+          "width": 32,
+          "height": 32,
+          "under": 0,
+          "over": 2,
+          "xor": 2,
+          "union": 95
+        }
+      ],
+      "under": 0,
+      "over": 7,
+      "xor": 7,
+      "union": 224
+    },
+    {
+      "name": "04-vector",
+      "cases": [
+        {
+          "name": "plain",
+          "width": 48,
+          "height": 48,
+          "under": 0,
+          "over": 3,
+          "xor": 3,
+          "union": 164
+        },
+        {
+          "name": "contract",
+          "width": 48,
+          "height": 48,
+          "under": 0,
+          "over": 2,
+          "xor": 2,
+          "union": 140
+        },
+        {
+          "name": "expand",
+          "width": 48,
+          "height": 48,
+          "under": 0,
+          "over": 4,
+          "xor": 4,
+          "union": 188
+        }
+      ],
+      "under": 0,
+      "over": 9,
+      "xor": 9,
+      "union": 492
+    },
+    {
+      "name": "05-vector",
+      "cases": [
+        {
+          "name": "plain",
+          "width": 24,
+          "height": 32,
+          "under": 0,
+          "over": 1,
+          "xor": 1,
+          "union": 56
+        },
+        {
+          "name": "contract",
+          "width": 24,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 48
+        },
+        {
+          "name": "expand",
+          "width": 24,
+          "height": 32,
+          "under": 0,
+          "over": 1,
+          "xor": 1,
+          "union": 64
+        }
+      ],
+      "under": 0,
+      "over": 2,
+      "xor": 2,
+      "union": 168
+    },
+    {
+      "name": "06-vector",
+      "cases": [
+        {
+          "name": "plain",
+          "width": 32,
+          "height": 24,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 54
+        },
+        {
+          "name": "contract",
+          "width": 32,
+          "height": 24,
+          "under": 0,
+          "over": 2,
+          "xor": 2,
+          "union": 48
+        },
+        {
+          "name": "expand",
+          "width": 32,
+          "height": 24,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 62
+        }
+      ],
+      "under": 0,
+      "over": 2,
+      "xor": 2,
+      "union": 164
+    },
+    {
+      "name": "07-vector",
+      "cases": [
+        {
+          "name": "plain",
+          "width": 24,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 55
+        },
+        {
+          "name": "contract",
+          "width": 24,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 48
+        },
+        {
+          "name": "expand",
+          "width": 24,
+          "height": 32,
+          "under": 0,
+          "over": 1,
+          "xor": 1,
+          "union": 64
+        }
+      ],
+      "under": 0,
+      "over": 1,
+      "xor": 1,
+      "union": 167
+    },
+    {
+      "name": "08-vector",
+      "cases": [
+        {
+          "name": "plain",
+          "width": 24,
+          "height": 32,
+          "under": 0,
+          "over": 1,
+          "xor": 1,
+          "union": 56
+        },
+        {
+          "name": "contract",
+          "width": 24,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 48
+        },
+        {
+          "name": "expand",
+          "width": 24,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 63
+        }
+      ],
+      "under": 0,
+      "over": 1,
+      "xor": 1,
+      "union": 167
+    },
+    {
+      "name": "09-vector",
+      "cases": [
+        {
+          "name": "plain",
+          "width": 24,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 55
+        },
+        {
+          "name": "contract",
+          "width": 24,
+          "height": 32,
+          "under": 0,
+          "over": 0,
+          "xor": 0,
+          "union": 48
+        },
+        {
+          "name": "expand",
+          "width": 24,
+          "height": 32,
+          "under": 0,
+          "over": 1,
+          "xor": 1,
+          "union": 64
+        }
+      ],
+      "under": 0,
+      "over": 1,
+      "xor": 1,
+      "union": 167
+    }
+  ]
+}

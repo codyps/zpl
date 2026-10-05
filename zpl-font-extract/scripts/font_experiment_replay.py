@@ -22,7 +22,8 @@ from reconstruct_font import require, save, sha
 def prepare(fit, variant, fixtures, captures, output, object_name):
     report = json.loads((fit / "report.json").read_text())
     require(
-        report["schema"] == "structured-font-fit-v1", "unsupported experimental fit"
+        report["schema"] in ("structured-font-fit-v1", "font-repair-search-v1"),
+        "unsupported experimental fit",
     )
     data = (fit / "candidates.json").read_bytes()
     require(

@@ -17,22 +17,42 @@ const MANIFEST: &str =
 
 #[test]
 fn native_hint_outlines_and_advances_match_independent_reference() {
-    let reference: Value = serde_json::from_str(include_str!(
-        "../../zpl-font-extract/tests/fixtures/font-probes-20261002/freetype-outlines.json"
-    ))
-    .unwrap();
+    check_independent_outlines(
+        DATA,
+        include_str!(
+            "../../zpl-font-extract/tests/fixtures/font-probes-20261002/freetype-outlines.json"
+        ),
+        59,
+        464,
+    );
+}
+
+#[test]
+fn diagonal_freedom_vectors_match_independent_reference() {
+    check_independent_outlines(
+        include_bytes!("../../zpl-font-extract/tests/fixtures/line-vector-20261005/probe.ttf"),
+        include_str!(
+            "../../zpl-font-extract/tests/fixtures/line-vector-20261005/freetype-outlines.json"
+        ),
+        6,
+        18,
+    );
+}
+
+fn check_independent_outlines(data: &[u8], reference: &str, glyphs: u16, count: usize) {
+    let reference: Value = serde_json::from_str(reference).unwrap();
     use sha2::{Digest, Sha256};
     assert_eq!(
-        Sha256::digest(DATA)
+        Sha256::digest(data)
             .iter()
             .map(|b| format!("{b:02x}"))
             .collect::<String>(),
         reference["font_sha256"]
     );
-    let font = Font::parse(DATA).unwrap();
-    assert_eq!(font.glyph_count(), 59);
+    let font = Font::parse(data).unwrap();
+    assert_eq!(font.glyph_count(), glyphs);
     let cases = reference["cases"].as_array().unwrap();
-    assert_eq!(cases.len(), 464);
+    assert_eq!(cases.len(), count);
     for case in cases {
         let size = Size::new(
             case["x"].as_u64().unwrap() as u16,
@@ -423,6 +443,9 @@ fn zd621_point_quantization_rounding_and_spacing_match_native_canvases() {
         "target-training-replay-20261004",
         "ascii-baseline-replay-20261004",
         "ascii-candidate-replay-20261004",
+        "line-vector-20261005",
+        "repair-baseline-replay-20261005",
+        "repair-targeted-replay-20261005",
     ] {
         let root = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
             .join("../zpl-font-extract/tests/fixtures")
@@ -683,11 +706,47 @@ fn zd621_point_quantization_rounding_and_spacing_match_native_canvases() {
                     (89, 41, 4745),
                 ];
                 assert_eq!(actual, expected[page_index], "{directory}/{name}");
+            } else if directory == "line-vector-20261005" {
+                let expected = [
+                    (0, 0, 52),
+                    (0, 4, 49),
+                    (0, 8, 122),
+                    (0, 7, 224),
+                    (0, 9, 492),
+                    (0, 2, 168),
+                    (0, 2, 164),
+                    (0, 1, 167),
+                    (0, 1, 167),
+                    (0, 1, 167),
+                ];
+                assert_eq!(actual, expected[page_index], "{directory}/{name}");
+            } else if directory == "repair-baseline-replay-20261005" {
+                let expected = [
+                    (0, 0, 52),
+                    (13, 24, 4268),
+                    (28, 23, 10920),
+                    (22, 11, 8854),
+                    (73, 102, 10243),
+                    (64, 76, 7638),
+                    (25, 54, 3262),
+                ];
+                assert_eq!(actual, expected[page_index], "{directory}/{name}");
+            } else if directory == "repair-targeted-replay-20261005" {
+                let expected = [
+                    (0, 0, 52),
+                    (14, 29, 4262),
+                    (37, 27, 10943),
+                    (29, 11, 8857),
+                    (73, 105, 10237),
+                    (67, 78, 7646),
+                    (27, 55, 3264),
+                ];
+                assert_eq!(actual, expected[page_index], "{directory}/{name}");
             } else {
                 assert_eq!((actual.0, actual.1), (0, 0), "{directory}/{name}");
             }
         }
     }
-    assert_eq!(pages, 119);
-    assert_eq!(fields, 6501);
+    assert_eq!(pages, 143);
+    assert_eq!(fields, 7606);
 }

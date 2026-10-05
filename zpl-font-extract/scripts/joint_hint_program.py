@@ -11,6 +11,7 @@ import statistics
 import struct
 
 import font_probe
+import diagonal_font_hints
 
 ROUNDS = {"grid": 0x18, "half": 0x19, "floor": 0x7D, "ceil": 0x7C}
 
@@ -524,6 +525,22 @@ def build(state, characters=None, witnesses=False):
                     + bytes([0x59])
                 )
             program += axis_program
+        diagonal = state.get("diagonal_programs", {}).get(char)
+        if diagonal:
+            if (
+                diagonal.get("start") not in (10, 12, 16, 24)
+                or diagonal.get("limit") not in (24, 32, 48, 64, 90)
+                or not diagonal["start"] < diagonal["limit"] <= params["limit"]
+            ):
+                raise ValueError("invalid diagonal optical range")
+            program += (
+                condition(dict(limit=diagonal["start"], measure="min"), 0)
+                + bytes([0x5C])
+                + condition(dict(limit=diagonal["limit"], measure="max"), 0)
+                + bytes([0x5A, 0x58])
+                + diagonal_font_hints.compile(shapes[char], diagonal)
+                + bytes([0x59])
+            )
         if program and not independent:
             limit = font_probe.push(params["limit"])
             program = (
