@@ -16,6 +16,7 @@ import font_experiment_replay as replay
 import joint_hint_program as hints
 import reconstruct_font as pipeline
 import structured_font_hints as structure
+import split_hint_features
 
 ROOT = Path(__file__).resolve().parents[1] / "tests/fixtures"
 
@@ -94,6 +95,74 @@ class StructuredTests(unittest.TestCase):
         )
         self.assertEqual(points(state, 11, 11)[3][0], 344)
 
+    def test_rounding_phase_and_fractional_shift_execute_independently(self):
+        state = specimen()
+        state["programs"]["H"][0][1] = dict(op="anchor", round="grid")
+        self.assertEqual(points(state, 11, 11)[2][0], 128)
+        state["programs"]["H"][0][1]["phase"] = 24
+        self.assertEqual(points(state, 11, 11)[2][0], 192)
+        state["programs"]["H"][0][1]["shift"] = -16
+        self.assertEqual(points(state, 11, 11)[2][0], 176)
+
+    def test_fractional_interpolation_shift_is_applied_after_ip(self):
+        state = specimen()
+        state["programs"]["H"][0][1] = dict(op="interpolate", refs=[0, 2], round="none")
+        before = points(state, 11, 11)[2][0]
+        state["programs"]["H"][0][1]["shift"] = 12
+        self.assertEqual(points(state, 11, 11)[2][0], before + 12)
+
+    def test_numeric_hint_adjustments_are_bounded(self):
+        state = specimen()
+        for field, value in (("phase", 33), ("shift", -65), ("design", 65)):
+            nodes = deepcopy(state["programs"]["H"][0])
+            nodes[0][field] = value
+            with self.assertRaisesRegex(ValueError, "shared-size bound"):
+                hints.ordered(nodes, state["graph"]["H"][0])
+
+    def test_optical_correction_fades_and_restores_movement_axis(self):
+        baseline = specimen()
+        for sign in (-1, 1):
+            state = deepcopy(baseline)
+            state["programs"]["H"][0][0].update(
+                shift=sign * 64, fade=dict(end=16, measure="y")
+            )
+            for size, correction in ((8, 64), (10, 64), (13, 32), (16, 0), (24, 0)):
+                before, after = points(baseline, 30, size), points(state, 30, size)
+                self.assertEqual(after[0][0] - before[0][0], sign * correction)
+                self.assertEqual([p[1] for p in after], [p[1] for p in before])
+
+    def test_post_interpolation_adjustment_preserves_anchors_and_expires(self):
+        baseline = specimen()
+        state = deepcopy(baseline)
+        state["programs"]["H"][0][1] = dict(
+            op="adjust", round="none", shift=64, fade=dict(end=16, measure="y")
+        )
+        for size, correction in ((10, 64), (13, 32), (16, 0), (24, 0)):
+            before, after = points(baseline, 30, size), points(state, 30, size)
+            self.assertEqual(after[2][0] - before[2][0], correction)
+            for i in (0, 1, 3, 4):
+                self.assertEqual(after[i], before[i])
+            if not correction:
+                self.assertEqual(after, before)
+        state["programs"]["H"][0][0] = dict(op="adjust", round="none", shift=16)
+        state["programs"]["H"][0][1] = dict(op="interpolate", refs=[0, 2], round="none")
+        with self.assertRaisesRegex(ValueError, "later adjustment"):
+            hints.build(state)
+
+    def test_disconnected_feature_split_preserves_coordinates_and_references(self):
+        state = specimen()
+        state["programs"]["H"][0][1] = dict(op="interpolate", refs=[0, 2], round="none")
+        candidate = split_hint_features.split(state)
+        self.assertEqual(len(candidate["graph"]["H"][0]["groups"]), 4)
+        self.assertEqual(candidate["programs"]["H"][0][3]["refs"], [0, 2])
+        self.assertEqual(split_hint_features.split(candidate), candidate)
+        for size in (10, 13, 16, 24, 33, 90, 91):
+            self.assertEqual(points(candidate, size, 24), points(state, size, 24))
+        candidate["programs"]["H"][0][3]["shift"] = 16
+        before, after = points(state, 24, 24), points(candidate, 24, 24)
+        self.assertEqual(after[2], before[2])
+        self.assertEqual(after[5][0], before[5][0] + 16)
+
     def test_regime_uses_projection_axis_and_restores_fallback(self):
         state = specimen()
         baseline = deepcopy(state)
@@ -103,6 +172,73 @@ class StructuredTests(unittest.TestCase):
         self.assertNotEqual(points(state, 16, 30), points(baseline, 16, 30))
         self.assertEqual(points(state, 17, 30), points(baseline, 17, 30))
         self.assertEqual(points(state, 16, 100), points(baseline, 16, 100))
+
+    def test_independent_axis_guard_preserves_small_axis_of_stretched_glyph(self):
+        state = specimen()
+        baseline = deepcopy(state)
+        state["programs"]["H"][0][0]["round"] = "half"
+        state["independent_axes"] = ["H"]
+        self.assertEqual(points(state, 16, 100)[0][0], 32)
+        self.assertEqual(points(baseline, 16, 100)[0][0], 0)
+        self.assertEqual(points(state, 100, 100), points(baseline, 100, 100))
+
+    def test_second_coarse_regime_uses_both_boundaries(self):
+        state = specimen()
+        normal = deepcopy(state["programs"]["H"][0])
+        small = deepcopy(normal)
+        small[0]["shift"] = 16
+        tiny = deepcopy(normal)
+        tiny[0]["shift"] = 32
+        state["regimes"] = {
+            "H": [dict(limit=24, nodes=small, smaller=dict(limit=12, nodes=tiny)), None]
+        }
+        for size, expected in ((11, 32), (12, 32), (13, 16), (24, 16), (25, 0)):
+            self.assertEqual(points(state, size, 30)[0][0], expected)
+        state["regimes"]["H"][0]["smaller"]["limit"] = 24
+        with self.assertRaisesRegex(ValueError, "below its parent"):
+            hints.build(state)
+        # Equal numeric cutoffs still refine a region when max(X,Y) is used
+        # inside an X-only condition, preserving the stretched-size fallback.
+        state["regimes"]["H"][0]["smaller"]["measure"] = "max"
+        self.assertEqual(points(state, 24, 24)[0][0], 32)
+        self.assertEqual(points(state, 24, 30)[0][0], 16)
+
+    def test_hint_range_can_follow_height_or_both_dimensions(self):
+        state = specimen()
+        small = deepcopy(state["programs"]["H"][0])
+        small[0]["shift"] = 16
+        state["regimes"] = {"H": [dict(limit=16, nodes=small, measure="y"), None]}
+        self.assertEqual(points(state, 30, 16)[0][0], 16)
+        self.assertEqual(points(state, 16, 30)[0][0], 0)
+        state["regimes"]["H"][0]["measure"] = "max"
+        self.assertEqual(points(state, 16, 16)[0][0], 16)
+        self.assertEqual(points(state, 16, 30)[0][0], 0)
+        state["regimes"]["H"][0]["measure"] = "min"
+        self.assertEqual(points(state, 16, 30)[0][0], 16)
+
+    def test_optical_program_preserves_nested_fallback_for_stretched_sizes(self):
+        state = specimen()
+        small = deepcopy(state["programs"]["H"][0])
+        small[0]["shift"] = -16
+        tiny = deepcopy(small)
+        tiny[0]["shift"] = -32
+        state["regimes"] = {
+            "H": [dict(limit=24, nodes=small, smaller=dict(limit=16, nodes=tiny)), None]
+        }
+        baseline = deepcopy(state)
+        optical = deepcopy(small)
+        optical[0]["shift"] = 64
+        state["optical_programs"] = {"H": dict(limit=16, nodes=[optical, None])}
+        self.assertEqual(points(state, 16, 16)[0][0], 64)
+        for x, y in ((16, 17), (17, 16), (16, 40), (24, 40), (40, 16), (100, 100)):
+            self.assertEqual(points(state, x, y), points(baseline, x, y))
+        state["optical_programs"]["H"]["limit"] = 10
+        self.assertEqual(points(state, 10, 10)[0][0], 64)
+        self.assertEqual(points(state, 10, 11), points(baseline, 10, 11))
+        self.assertEqual(points(state, 11, 10), points(baseline, 11, 10))
+        state["optical_programs"]["H"]["measures"] = ["axis", "max"]
+        self.assertEqual(points(state, 10, 30)[0][0], 64)
+        self.assertEqual(points(state, 30, 10), points(baseline, 30, 10))
 
     def test_relations_reject_cycles_and_unbracketed_interpolation(self):
         state = specimen()
@@ -142,6 +278,40 @@ class StructuredTests(unittest.TestCase):
         self.assertEqual(hints.build(state), hints.build(model["state"]))
         self.assertTrue(state["graph"]["O"][0]["counters"])
         self.assertEqual(structure.complexity(state, model["state"]), 0)
+
+    def test_curved_stems_recover_asymmetric_g_bowl_relationships(self):
+        root = ROOT / "structured-hints-20261004"
+        state = json.loads((root / "candidates.json").read_text())["structured_robust"]
+        candidate = structure.curved_stems(state)
+        self.assertEqual(hints.build(candidate), hints.build(state))
+        self.assertEqual(candidate["programs"], state["programs"])
+        pairs = {
+            (p["low"], p["high"])
+            for p in candidate["graph"]["g"][1]["stems"]
+            if p.get("curved")
+        }
+        self.assertEqual(pairs, {(2, 3), (4, 6)})
+
+    def test_curve_shoulders_preserve_all_existing_programs_and_font_bytes(self):
+        root = ROOT / "structured-hints-20261004"
+        state = json.loads((root / "candidates.json").read_text())["structured_robust"]
+        candidate = structure.curve_shoulders(state)
+        self.assertEqual(hints.build(candidate), hints.build(state))
+        self.assertEqual(candidate["shapes"], state["shapes"])
+        self.assertEqual(candidate["graph"]["H"], state["graph"]["H"])
+        self.assertGreater(
+            len(candidate["graph"]["g"][0]["groups"]),
+            len(state["graph"]["g"][0]["groups"]),
+        )
+        for char, axes in state["programs"].items():
+            for axis, nodes in enumerate(axes):
+                self.assertEqual(candidate["programs"][char][axis][: len(nodes)], nodes)
+                self.assertTrue(
+                    all(
+                        n is None
+                        for n in candidate["programs"][char][axis][len(nodes) :]
+                    )
+                )
 
     def test_frozen_fonts_recompile_and_execute_across_branch_boundaries(self):
         root = ROOT / "structured-hints-20261004"

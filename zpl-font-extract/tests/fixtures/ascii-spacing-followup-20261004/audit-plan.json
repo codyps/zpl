@@ -1,0 +1,54 @@
+{
+  "candidates_sha256": "2da2b08831f2cf9879ef129d7cce637cc2653f78b018fd62d9c671f90b580f28",
+  "captures": [
+    {
+      "manifest_sha256": "725adff20d0f87180a93fd953510e1c3cc2ef33587c1ec437a16c4228d213785",
+      "name": "validation-spacing-23",
+      "role": "spacing"
+    },
+    {
+      "manifest_sha256": "4a88ba58b353ce411c10f834dd323eb042e1276c99b0fc86b350014e7803b3b2",
+      "name": "validation-spacing-53",
+      "role": "spacing"
+    },
+    {
+      "manifest_sha256": "a51c1bb075da8097d8692e82afd1634a6a0e9bf495bd726558a46f367bbb2d3f",
+      "name": "validation-spacing-101",
+      "role": "spacing"
+    },
+    {
+      "manifest_sha256": "96c6034c2e3fc3758b98aa29f16a948bbd3f0275c971afe91e35fdab579c22cf",
+      "name": "validation-spacing-157",
+      "role": "spacing"
+    }
+  ],
+  "designated": "midpoint",
+  "engine_sha256": "4a02ea60aed8d4b8e5ad13a8b6b665f5ff355dc24d8450091a6180473c989537",
+  "fit_sha256": "9509bf781cf92bd6af17f29436dc23047c7df004ad3a7910a61ed9baddffac6f",
+  "fonts": [
+    {
+      "file": "weighted.ttf",
+      "label": "weighted",
+      "sha256": "8b0a416e03038b9e0c9049c0763359aa0edbcf8b18f886ab5a54382b092e5356"
+    },
+    {
+      "file": "midpoint.ttf",
+      "label": "midpoint",
+      "sha256": "d31d54ed7abe7ce555fcab6a7b3903dbb32b95eab8402ad1ed4c863dd05d1a88"
+    }
+  ],
+  "frozen_at": "2026-10-04T20:01:36.322663+00:00",
+  "printer": {
+    "dpi": 203,
+    "firmware": "V93.21.33Z",
+    "model": "ZD621",
+    "serial": "D7J211001302"
+  },
+  "role": "new spacing validation after the original full-ASCII audit exposed interval-selection bias",
+  "schema": "ascii-spacing-audit-v1",
+  "source_scripts": {
+    "ascii_font_metrics.py": "5e9b1e5e0a5a275063437a11637a2d535a6bfb1af0385157d408251b7fc2718e",
+    "ascii_font_probe.py": "e807f76f66f4e09633914dd4a7fcb9a972350a687bb3819a2d9bbc60de4ee325",
+    "prepare.py": "45d134e3406d4ab061a8377161e4a7b20d4164d5b20ba4e0fe916ee70957625c"
+  }
+}

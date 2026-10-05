@@ -1,0 +1,58 @@
+{
+  "captures": [
+    {
+      "manifest_sha256": "0b47f1c62371d1157bfdce3672a72e5d61cb394099c6b9c0df712276014f3c67",
+      "name": "validation-hints-07",
+      "role": "hints"
+    },
+    {
+      "manifest_sha256": "c9da3a8b0a41cd6469bc360bb1b87c3477c433612ad93543ee60071ad7b9a9f7",
+      "name": "validation-outline-08",
+      "role": "outline"
+    },
+    {
+      "manifest_sha256": "a266e62e1139a63ff02611bbad1595ee4b63864d0fb79557291b0027f7bd7f2a",
+      "name": "validation-outline-09",
+      "role": "outline"
+    },
+    {
+      "manifest_sha256": "baed6affee91812af377d1fb16ace83616b66b322f6f8925ea0fd5d6da0234dd",
+      "name": "validation-spacing-19",
+      "role": "spacing"
+    },
+    {
+      "manifest_sha256": "9bc0825f87efe7069e350286ddfb00989390b00f4e20ef7903ae4ae47a36270b",
+      "name": "validation-spacing-37",
+      "role": "spacing"
+    },
+    {
+      "manifest_sha256": "bf3585cd5e2069820ea5c4410f7afa96c377eb6c7376663e59db422c5b70fc4d",
+      "name": "validation-spacing-112",
+      "role": "spacing"
+    }
+  ],
+  "engine_sha256": "4a02ea60aed8d4b8e5ad13a8b6b665f5ff355dc24d8450091a6180473c989537",
+  "fit_plan_sha256": "26bc66b177a55b4e58abe4bec2a1c9c42cda30fe58535db22d539360c7e06590",
+  "fit_report_sha256": "1816524d7602aebe0a097cce67f0513b620d28ffbbfc6090507dc767bb5354e5",
+  "fonts": [
+    {
+      "file": "baseline.ttf",
+      "label": "baseline",
+      "sha256": "58662adf57aab7a1202403f2120ded7d6c2e5bb623b81cb0853120355dd5a956"
+    },
+    {
+      "file": "targeted.ttf",
+      "label": "targeted",
+      "sha256": "8b0a416e03038b9e0c9049c0763359aa0edbcf8b18f886ab5a54382b092e5356"
+    }
+  ],
+  "frozen_at": "2026-10-04T19:46:51.804482+00:00",
+  "printer": {
+    "dpi": 203,
+    "firmware": "V93.21.33Z",
+    "model": "ZD621",
+    "serial": "D7J211001302"
+  },
+  "sampling_sha256": "10b46c9d21c95420f68aee74731f4d01f43837d21c5d16ec8cb5e626bec26ca2",
+  "schema": "ascii-font-audit-v1"
+}

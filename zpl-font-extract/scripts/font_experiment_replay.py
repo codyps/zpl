@@ -13,6 +13,8 @@ import re
 from analyze_font_probe import ink
 from examine_font_accuracy import breakdown, report_cases
 import joint_hint_program as hints
+from font_probe import witness_codepoints
+from capture_font_probe import MAX_FONT_BYTES
 import reconstruct_font as pipeline
 from reconstruct_font import require, save, sha
 
@@ -37,7 +39,7 @@ def prepare(fit, variant, fixtures, captures, output, object_name):
         re.fullmatch(r"R:ZP[0-9A-Z]{1,6}\.TTF", object_name), "unexpected RAM object"
     )
     font = hints.build(state, witnesses=True)
-    require(len(font) <= 65536, "constructed font exceeds upload budget")
+    require(len(font) <= MAX_FONT_BYTES, "constructed font exceeds upload budget")
     pages = [
         dict(
             name="00-state",
@@ -46,7 +48,7 @@ def prepare(fit, variant, fixtures, captures, output, object_name):
             probes=[
                 dict(
                     name=name,
-                    text=chr(33 + i),
+                    text=chr(witness_codepoints(state["shapes"])[i]),
                     tile=[i * 64, 0, 64, 64],
                     anchor=[16, 32],
                     width=16,
@@ -86,7 +88,7 @@ def prepare(fit, variant, fixtures, captures, output, object_name):
                 )
                 require(q not in fitted, "replay target overlaps fitting")
             pages.append(dict(page, name=f"set{index}-{page['name']}"))
-    require(len(pages) + 2 <= 32, "preview budget exceeded")
+    require(len(pages) + 4 <= 32, "preview budget exceeded")
     output.mkdir(parents=True, exist_ok=False)
     (output / "probe.ttf").write_bytes(font)
     for page in pages:

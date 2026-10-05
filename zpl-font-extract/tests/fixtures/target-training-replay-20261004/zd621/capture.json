@@ -1,0 +1,95 @@
+{
+  "schema": "constructed-font-capture-v1",
+  "started_utc": "2026-10-04T19:22:09.938896+00:00",
+  "host": "d7j211001302.bed.einic.org",
+  "manifest_sha256": "2465dfb6c87163f6504aad56b76680e17523457b696b4de8337296e68df7169f",
+  "pages": [
+    {
+      "name": "resident-start",
+      "started_utc": "2026-10-04T19:22:10.021177+00:00",
+      "prepared_zpl_sha256": "25a64b990aae299bb565ab55fa6effc916f09dce2e9ee847df0a4365db5e40d6",
+      "zpl_sha256": "25a64b990aae299bb565ab55fa6effc916f09dce2e9ee847df0a4365db5e40d6",
+      "status": "captured",
+      "png_sha256": "618f1c5e64ca8784aee5277aa13cce5a5d79f853e9b50c5687e00b95e0b1aac0",
+      "dimensions": [
+        384,
+        192
+      ]
+    },
+    {
+      "name": "00-state",
+      "started_utc": "2026-10-04T19:22:16.149509+00:00",
+      "prepared_zpl_sha256": "974f2d26830e3351fbe224b6ffedb42279ea180efbd516316721b752b5b079b6",
+      "zpl_sha256": "974f2d26830e3351fbe224b6ffedb42279ea180efbd516316721b752b5b079b6",
+      "status": "captured",
+      "png_sha256": "73ce6e49747cdc30483664fad770968aa3c337d3d8c591709fdc6e138e7e6e19",
+      "dimensions": [
+        384,
+        64
+      ]
+    },
+    {
+      "name": "reconstruction-00",
+      "started_utc": "2026-10-04T19:22:21.248904+00:00",
+      "prepared_zpl_sha256": "2ec4f5fef9edcb9ec4efdf4640a41a01ba65af1d80dcbd18be20e2107c910f93",
+      "zpl_sha256": "2ec4f5fef9edcb9ec4efdf4640a41a01ba65af1d80dcbd18be20e2107c910f93",
+      "status": "captured",
+      "png_sha256": "f55b7e115c0db4e259b4cc0ae171ae068de7eccbc7305a420b1185e2710e6b8b",
+      "dimensions": [
+        384,
+        1536
+      ]
+    },
+    {
+      "name": "reconstruction-01",
+      "started_utc": "2026-10-04T19:22:26.909197+00:00",
+      "prepared_zpl_sha256": "bcf444887e68283565c62fdc4849c3a365856e8712c84db87fd88e0af86117f0",
+      "zpl_sha256": "bcf444887e68283565c62fdc4849c3a365856e8712c84db87fd88e0af86117f0",
+      "status": "captured",
+      "png_sha256": "e88b3caf37c6e4268aa5d9f51f0b4a91d6a7a90473b4bfcb6ce944adcef31acd",
+      "dimensions": [
+        384,
+        1536
+      ]
+    },
+    {
+      "name": "reconstruction-02",
+      "started_utc": "2026-10-04T19:22:32.565994+00:00",
+      "prepared_zpl_sha256": "dc956c54f3e8190d0d2f070ecaeff67d6dddf6b867b2a4866b822a893c99bc68",
+      "zpl_sha256": "dc956c54f3e8190d0d2f070ecaeff67d6dddf6b867b2a4866b822a893c99bc68",
+      "status": "captured",
+      "png_sha256": "9e4174f882267012096c407e0af41ab98f6843658a44b9035bf45f93a09cadf6",
+      "dimensions": [
+        384,
+        672
+      ]
+    },
+    {
+      "name": "resident-end",
+      "started_utc": "2026-10-04T19:22:37.905424+00:00",
+      "prepared_zpl_sha256": "25a64b990aae299bb565ab55fa6effc916f09dce2e9ee847df0a4365db5e40d6",
+      "zpl_sha256": "25a64b990aae299bb565ab55fa6effc916f09dce2e9ee847df0a4365db5e40d6",
+      "status": "captured",
+      "png_sha256": "618f1c5e64ca8784aee5277aa13cce5a5d79f853e9b50c5687e00b95e0b1aac0",
+      "dimensions": [
+        384,
+        192
+      ]
+    }
+  ],
+  "status": "complete",
+  "printer": {
+    "model": "ZD621",
+    "serial": "D7J211001302",
+    "firmware": "V93.21.33Z",
+    "dpi": 203
+  },
+  "font_selection_and_execution_verified": true,
+  "resident_repeat_exact": true,
+  "cleanup": {
+    "object": "R:ZP26N.TTF",
+    "method": "SGD file.delete",
+    "confirmed_absent": true
+  },
+  "finished_utc": "2026-10-04T19:22:44.051993+00:00"
+}

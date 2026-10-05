@@ -1,0 +1,299 @@
+{
+  "captures": [
+    {
+      "manifest_sha256": "db8fd308f506588d432ee3e2f919288c1c776f93dad0b89c8e89dadd6a404ba0",
+      "pages": [
+        {
+          "name": "reconstruction-00",
+          "png_sha256": "c108916676387ffbfbf4eb706df4abbe19a9b3be619c3dcdafdd003762f24e49"
+        },
+        {
+          "name": "reconstruction-01",
+          "png_sha256": "a9c873518ad6f050f6c4b4a695177c4154475da04c225cef20464097bfd2bfd0"
+        },
+        {
+          "name": "reconstruction-02",
+          "png_sha256": "3c4447c9f3b03449ca995a29daa713257ac17556a24754d4eaa7626b2f129f03"
+        },
+        {
+          "name": "reconstruction-03",
+          "png_sha256": "c896f509b5d4ce8752337c8736ace485e0e60c90be969746c9cbd10cab4d9da1"
+        },
+        {
+          "name": "reconstruction-04",
+          "png_sha256": "7e3c3d6739a6cb29863dfb9c0375ece0a7d3d2d2523b7126ebe4566deabde464"
+        },
+        {
+          "name": "reconstruction-05",
+          "png_sha256": "bdfa6a4d0cb5bfc8d100860d40962d031e20e8aa0e54db7d9b447f1858548c86"
+        },
+        {
+          "name": "reconstruction-06",
+          "png_sha256": "fc26c3d0edabe66e8642536947baaea3e0211a9e1115299eb62fd27b29d1b933"
+        },
+        {
+          "name": "reconstruction-07",
+          "png_sha256": "1dc9af4cef9dd270867463e42724d336aaacfdfa7c6eca50e359e4efa587c4cf"
+        },
+        {
+          "name": "reconstruction-08",
+          "png_sha256": "c0c48a32e552d68402b8bcccc5694f11da99a5c724bbdb25e30c6f165ad392b6"
+        },
+        {
+          "name": "reconstruction-09",
+          "png_sha256": "6d0f3c556700a105c7c12c6ccd10ca30d5c7421860f78e95b3df6ee8f802349c"
+        },
+        {
+          "name": "reconstruction-10",
+          "png_sha256": "6bc14d00ba2df74f80d51f08fd0c52abc1e672faf7e3c6ba19beb5ea41b1a60e"
+        }
+      ],
+      "path": "development-outline-00",
+      "printer": {
+        "dpi": 203,
+        "firmware": "V93.21.33Z",
+        "model": "ZD621",
+        "serial": "D7J211001302"
+      },
+      "role": "outline"
+    },
+    {
+      "manifest_sha256": "b6c9fe8e0742328c335cce09d4ffef9b24fb6412421b2a57bc3a1f84634092e2",
+      "pages": [
+        {
+          "name": "reconstruction-00",
+          "png_sha256": "d9b9ab0847a7339e544a5053a676d8f2175e1c342664847738b6dd17d9f50bbd"
+        },
+        {
+          "name": "reconstruction-01",
+          "png_sha256": "bba2e4ed7fcfdee71d72dc5e3dea9fdd9c8887a8b7f77d4e630cee642261ed2f"
+        },
+        {
+          "name": "reconstruction-02",
+          "png_sha256": "f118b54086c62a1ac2037fbd822123edeced76838f13eb7f1ec8f8490d9ffc9c"
+        },
+        {
+          "name": "reconstruction-03",
+          "png_sha256": "2ee0ba95ca24b911b2d5199a036708253f3de4f55ea024c4d32ce36f1040e69a"
+        },
+        {
+          "name": "reconstruction-04",
+          "png_sha256": "89c18bebd3571824599832ac1b4d0fc0d2a069ef50a735dbb90b0dfb4c7e736c"
+        },
+        {
+          "name": "reconstruction-05",
+          "png_sha256": "ed0ad41c5576f3e75bf1d9e34c4899f4090e903c8c26cdd057d0b590194674a7"
+        },
+        {
+          "name": "reconstruction-06",
+          "png_sha256": "6f070c6ae7b31206fa88652057960eddecf3ea7d3aa257a030a8a99c888eb053"
+        },
+        {
+          "name": "reconstruction-07",
+          "png_sha256": "bb508cbb0a96e8c14f291b77c90ff80c532bfef60336f99d369a195713523d6b"
+        },
+        {
+          "name": "reconstruction-08",
+          "png_sha256": "f82983a627387414ae7022cc848f3654f0b5ebd9fbb8b61e1536d61a2c6d3c6c"
+        },
+        {
+          "name": "reconstruction-09",
+          "png_sha256": "223e6f217b451adbb41f92b8de6ed17dc73492d94015131be53013e02bedceee"
+        },
+        {
+          "name": "reconstruction-10",
+          "png_sha256": "34a50e8be660afe66e7f9af42a37820ce603cfb5c29b340411bc7b057a175aae"
+        },
+        {
+          "name": "reconstruction-11",
+          "png_sha256": "8f46ebba21e06ce5ca8c8723be0f28303ae4e9136af37cdc89f84a84c6553f94"
+        },
+        {
+          "name": "reconstruction-12",
+          "png_sha256": "9c06c2e3a3625b9da132741ebb2311afbe3bb40d43f84fd6b77e7083e7401319"
+        },
+        {
+          "name": "reconstruction-13",
+          "png_sha256": "d8d8feb8f44b7600b02a416775ed0d9a46edd77d5592183a02698aa0e41049d6"
+        },
+        {
+          "name": "reconstruction-14",
+          "png_sha256": "b67b249be6b98e4c2aea26a3b2bf9e26ff10fd0f20eae41831e761fbbb857274"
+        },
+        {
+          "name": "reconstruction-15",
+          "png_sha256": "d4502656d7b4b5731cb80895317411fafdf0831ed54527094556e96d494c8e6c"
+        },
+        {
+          "name": "reconstruction-16",
+          "png_sha256": "6c47e38099052faa36ba128b4dfc05dda8c47d66ce3d2c8e6bb39c96e5e75f85"
+        },
+        {
+          "name": "reconstruction-17",
+          "png_sha256": "342efe0db3e2cc6afd07e8513e27b67e6beaf1f4322e1ed4475aba0ed0cb03f6"
+        },
+        {
+          "name": "reconstruction-18",
+          "png_sha256": "9bc8a90472eb9ab1f4ec30203acd2b16eba263b1445490c5b7604995ea1feb52"
+        },
+        {
+          "name": "reconstruction-19",
+          "png_sha256": "f7d2e3e4ba43f82aed05b63217f335dcf8ac5b05b472aeef9a3cde745ded95be"
+        },
+        {
+          "name": "reconstruction-20",
+          "png_sha256": "17af2dd694122e384dd4658eb204b02ca9aeba53a30e214c25aea34af1f23f65"
+        },
+        {
+          "name": "reconstruction-21",
+          "png_sha256": "a59bf5e571c242b06d22f768248eeb95b520411026b929180dbb07efb08dcb5a"
+        },
+        {
+          "name": "reconstruction-22",
+          "png_sha256": "2b270c9d316b3d5dc397fa898d4013d128053e39e5810417ba5efce59b595ce0"
+        },
+        {
+          "name": "reconstruction-23",
+          "png_sha256": "76fdc031398c599010c5f8adad3a835010b2efbf5bf8686fd9f6510d4ee11155"
+        },
+        {
+          "name": "reconstruction-24",
+          "png_sha256": "02731ba8cc1a2f4560e8b8c6033ae125b576d0a44d372b257bcd65cceea1a542"
+        },
+        {
+          "name": "reconstruction-25",
+          "png_sha256": "4204bf9dcf448abb5bd9f05850940caea1a09a042367a9d88ad383c672808a7b"
+        },
+        {
+          "name": "reconstruction-26",
+          "png_sha256": "50238d28db52b0e022fc55f0eb62bd50abd8b0358820997fb7dbbf2fdb6c5172"
+        },
+        {
+          "name": "reconstruction-27",
+          "png_sha256": "32c5093af3b2b5ef2e13b6d889656da032e966918650e8b49546207e47c63bb2"
+        },
+        {
+          "name": "reconstruction-28",
+          "png_sha256": "c14715586b5cabd63b9e33d5aaee19cd5efa6e7336f89fed811ccc218485ee7a"
+        }
+      ],
+      "path": "development-outline-01",
+      "printer": {
+        "dpi": 203,
+        "firmware": "V93.21.33Z",
+        "model": "ZD621",
+        "serial": "D7J211001302"
+      },
+      "role": "outline"
+    },
+    {
+      "manifest_sha256": "7f5f360ddf81dadd588d2dc10fcb4adb15de8391c00e7600b10904fa4748ccae",
+      "pages": [
+        {
+          "name": "reconstruction-00",
+          "png_sha256": "483d240c0778cdbef18a6bae38b32974674c4927a50835973f09e60f9d9c7499"
+        },
+        {
+          "name": "reconstruction-01",
+          "png_sha256": "c8c2d834554094d886f8d39c9ccd0fb0722ec496badaac213bf7a3a2140ecaa2"
+        },
+        {
+          "name": "reconstruction-02",
+          "png_sha256": "80a7b434fb1d37cb7d9d6ab94ab7e3df8a5bd86cc3502621acae405575550f28"
+        },
+        {
+          "name": "reconstruction-03",
+          "png_sha256": "901daf42816bcbaaeb0e25e07e13550ab8c6b1ab1e9c55adcab883d5a54b0a25"
+        },
+        {
+          "name": "reconstruction-04",
+          "png_sha256": "e379d3c8df7f3848f94ddf5ba1dcb6970a48cd7e9b409cfe9d32cbc8a6f052d0"
+        },
+        {
+          "name": "reconstruction-05",
+          "png_sha256": "08c68803e7b8d25b80a8d65bf8c4f0c91ef22b57bf4f4a75d685a8680db70904"
+        },
+        {
+          "name": "reconstruction-06",
+          "png_sha256": "13580992101f7c17851e781d2c7f6d2504a7bf68b20e750504ce1d176fa60d18"
+        },
+        {
+          "name": "reconstruction-07",
+          "png_sha256": "bbf8d7bf92bf1ddf856621fe2068053ff6e4840a38eba1d2b29b93f086b998bd"
+        },
+        {
+          "name": "reconstruction-08",
+          "png_sha256": "b9656eae8f6de60a2a6459f4fe6540524bfe6a9e16f9e7a7198d70117c1fd97f"
+        },
+        {
+          "name": "reconstruction-09",
+          "png_sha256": "e7c0634265419ae5833a2ad53b2332e50410103f362e0b9e6be3a102910524f4"
+        },
+        {
+          "name": "reconstruction-10",
+          "png_sha256": "23e2659e6663c1cf468274c1604af717221887dd3c019aa851af1d31189ed8c3"
+        },
+        {
+          "name": "reconstruction-11",
+          "png_sha256": "1b4403f28330d48bd10c20181a792e64880f811c117854165d42fc6981b2651d"
+        },
+        {
+          "name": "reconstruction-12",
+          "png_sha256": "7d28c3fb837bbe11244efc67e3e0c5cdb273777365debe778a87e45789330274"
+        },
+        {
+          "name": "reconstruction-13",
+          "png_sha256": "2e6dca27ee2f00a694dcb2d3bf74ae70274457c0427e42c458048a71115d7f8b"
+        },
+        {
+          "name": "reconstruction-14",
+          "png_sha256": "76921135eb3c5c4d9d95dda7a9043dca0ec08e2c4b395f31bf5c8917bd6d63af"
+        }
+      ],
+      "path": "development-outline-02",
+      "printer": {
+        "dpi": 203,
+        "firmware": "V93.21.33Z",
+        "model": "ZD621",
+        "serial": "D7J211001302"
+      },
+      "role": "outline"
+    }
+  ],
+  "engine_sha256": "4a02ea60aed8d4b8e5ad13a8b6b665f5ff355dc24d8450091a6180473c989537",
+  "geometry_proposals": 24,
+  "geometry_steps": [
+    8,
+    4,
+    2,
+    1
+  ],
+  "point_penalty": 1e-05,
+  "sampling_sha256": "10b46c9d21c95420f68aee74731f4d01f43837d21c5d16ec8cb5e626bec26ca2",
+  "scale_candidates": [
+    "legacy",
+    "calibrated"
+  ],
+  "schema": "ascii-outline-reconstruction-v1",
+  "scripts": {
+    "ascii_font_metrics.py": "922ff046fa7f899f8eff645724ba5c1e67d8b476be2b70763e5a0d99f459d1fe",
+    "ascii_font_probe.py": "f2cf8e4e4b81a62b087f60dab77e5fd13e6ababb1340d308bfd5fe952407e54c",
+    "fit_font_target.py": "113e20d60207b43a56d73e15be6f3881362d6bf6077f3894c88e837230fa2a12",
+    "font0_hint_model.py": "39b32de2fd377da3d0ff98a9d49978d3fc0a70a986fc1c45b63715379587747a",
+    "font_probe.py": "699e07ad4cec99eca3058925ad74039380b95d4a3d30a825c8388b7d7951056e",
+    "joint_font_geometry.py": "7b19132a5bedbbbc14990a6c118703510cbd855ea59f4d1dc264eb9bb9959d81",
+    "joint_hint_program.py": "bf01a1e70c528fd2f583eb455060cf5e6f0d17853ac869f7df9d0ea058af4ce3",
+    "reconstruct_ascii_font.py": "7c41305f83fa0e53c83fd1ea7ba6f703cfa25bb44e6cfe06338a1b834c4dc803",
+    "reconstruct_font.py": "1b96230adf225182f8fc092714c7736ccb11b92e6b35a7e20ad9e07628955b09",
+    "reconstruct_geometry.py": "99fe8954bd4772dc73d8df2ec4c6123bacdc09f4f1921948fb8ee2dd7ff4ed29",
+    "reconstruct_hints.py": "0fcd5fd605615791bbe296ef196c16e1546858b5987b10f87050af6876f20154"
+  },
+  "shape_budget_from_initializer": 12,
+  "tolerances": [
+    0.4,
+    0.65,
+    0.9,
+    1.25,
+    1.75
+  ]
+}

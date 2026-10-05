@@ -12,6 +12,10 @@ those two improvements. Paired printer previews demonstrate a small-size gain
 from 83.478% to 85.153% IoU on 240 fresh cases spanning small and medium sizes.
 One previously exact historical case regresses, so this remains a research font.
 
+The [per-case target optimizer](font-target-optimization.md) continues this work
+with a worst-case objective, finer feature controls and coordinated hint search
+toward 90% foreground IoU for every case.
+
 ## Where the error is
 
 The expanded generated font matches the printer's rendering of those same

@@ -1,0 +1,83 @@
+{
+  "schema": "constructed-font-capture-v1",
+  "started_utc": "2026-10-04T19:19:54.587246+00:00",
+  "host": "d7j211001302.bed.einic.org",
+  "manifest_sha256": "307eb6adb89d25abecedc489db5a5e06e86814213cb40715ad0dc068f7cdb968",
+  "pages": [
+    {
+      "name": "resident-start",
+      "started_utc": "2026-10-04T19:19:54.677416+00:00",
+      "prepared_zpl_sha256": "25a64b990aae299bb565ab55fa6effc916f09dce2e9ee847df0a4365db5e40d6",
+      "zpl_sha256": "25a64b990aae299bb565ab55fa6effc916f09dce2e9ee847df0a4365db5e40d6",
+      "status": "captured",
+      "png_sha256": "618f1c5e64ca8784aee5277aa13cce5a5d79f853e9b50c5687e00b95e0b1aac0",
+      "dimensions": [
+        384,
+        192
+      ]
+    },
+    {
+      "name": "00-state",
+      "started_utc": "2026-10-04T19:20:00.822546+00:00",
+      "prepared_zpl_sha256": "05863776b5dc8c1b3b7b3113b1c480d80a5b3c5340ad46428080d178c6fffc38",
+      "zpl_sha256": "05863776b5dc8c1b3b7b3113b1c480d80a5b3c5340ad46428080d178c6fffc38",
+      "status": "captured",
+      "png_sha256": "73ce6e49747cdc30483664fad770968aa3c337d3d8c591709fdc6e138e7e6e19",
+      "dimensions": [
+        384,
+        64
+      ]
+    },
+    {
+      "name": "01-ascii",
+      "started_utc": "2026-10-04T19:20:05.919812+00:00",
+      "prepared_zpl_sha256": "314bef4e5659f705d806fa25ee59d5fb9ab994bbb7ae41415814dfab7b68d347",
+      "zpl_sha256": "314bef4e5659f705d806fa25ee59d5fb9ab994bbb7ae41415814dfab7b68d347",
+      "status": "captured",
+      "png_sha256": "617a2d3a4dba71be501b1abf224929cbb859b5c3340a2cb8d58e188d5e526884",
+      "dimensions": [
+        384,
+        256
+      ]
+    },
+    {
+      "name": "02-spacing",
+      "started_utc": "2026-10-04T19:20:11.736358+00:00",
+      "prepared_zpl_sha256": "aa72be59bd53c6ad949dd04e40a20491e5e08dc78abb36a705ce49ea49af3b80",
+      "zpl_sha256": "aa72be59bd53c6ad949dd04e40a20491e5e08dc78abb36a705ce49ea49af3b80",
+      "status": "captured",
+      "png_sha256": "1e5e6a079ee5f16e13fc3e1d1a7ee1c07649c1a5167ab36e69496cf29e7453e0",
+      "dimensions": [
+        384,
+        384
+      ]
+    },
+    {
+      "name": "resident-end",
+      "started_utc": "2026-10-04T19:20:16.867006+00:00",
+      "prepared_zpl_sha256": "25a64b990aae299bb565ab55fa6effc916f09dce2e9ee847df0a4365db5e40d6",
+      "zpl_sha256": "25a64b990aae299bb565ab55fa6effc916f09dce2e9ee847df0a4365db5e40d6",
+      "status": "captured",
+      "png_sha256": "618f1c5e64ca8784aee5277aa13cce5a5d79f853e9b50c5687e00b95e0b1aac0",
+      "dimensions": [
+        384,
+        192
+      ]
+    }
+  ],
+  "status": "complete",
+  "printer": {
+    "model": "ZD621",
+    "serial": "D7J211001302",
+    "firmware": "V93.21.33Z",
+    "dpi": 203
+  },
+  "font_selection_and_execution_verified": true,
+  "resident_repeat_exact": true,
+  "cleanup": {
+    "object": "R:ZP26M.TTF",
+    "method": "SGD file.delete",
+    "confirmed_absent": true
+  },
+  "finished_utc": "2026-10-04T19:20:23.017851+00:00"
+}

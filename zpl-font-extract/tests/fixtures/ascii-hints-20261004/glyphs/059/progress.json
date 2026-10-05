@@ -1,0 +1,222 @@
+[
+  {
+    "after": [
+      0.4,
+      0.072680859523,
+      0.009965203057
+    ],
+    "at_least_90": 24,
+    "axis": 0,
+    "before": [
+      0.4,
+      0.094971524186,
+      0.011195144861
+    ],
+    "cases": 35,
+    "local": 0,
+    "mean_iou": 0.8777766729667474,
+    "passes_target": false,
+    "pooled_iou": 0.9667289719626169,
+    "proposals": 512,
+    "sweep": 0,
+    "worst_iou": 0.5
+  },
+  {
+    "after": [
+      0.4,
+      0.067390189361,
+      0.009108413009
+    ],
+    "at_least_90": 27,
+    "axis": 0,
+    "before": [
+      0.4,
+      0.072680859523,
+      0.009965203057
+    ],
+    "cases": 35,
+    "local": 1,
+    "mean_iou": 0.8905305857206602,
+    "passes_target": false,
+    "pooled_iou": 0.9673618254933134,
+    "proposals": 512,
+    "sweep": 0,
+    "worst_iou": 0.5
+  },
+  {
+    "after": [
+      0.4,
+      0.062640591615,
+      0.008834147422
+    ],
+    "at_least_90": 27,
+    "axis": 1,
+    "before": [
+      0.4,
+      0.067390189361,
+      0.009108413009
+    ],
+    "cases": 35,
+    "local": 0,
+    "mean_iou": 0.8941396082770512,
+    "passes_target": false,
+    "pooled_iou": 0.9684840549892453,
+    "proposals": 512,
+    "sweep": 0,
+    "worst_iou": 0.5
+  },
+  {
+    "after": [
+      0.4,
+      0.059805087209,
+      0.008229510569
+    ],
+    "at_least_90": 27,
+    "axis": 1,
+    "before": [
+      0.4,
+      0.062640591615,
+      0.008834147422
+    ],
+    "cases": 35,
+    "local": 1,
+    "mean_iou": 0.9031227766432119,
+    "passes_target": false,
+    "pooled_iou": 0.9690277907738374,
+    "proposals": 512,
+    "sweep": 0,
+    "worst_iou": 0.5
+  },
+  {
+    "after": [
+      0.4,
+      0.059805087209,
+      0.008229510569
+    ],
+    "at_least_90": 27,
+    "axis": 0,
+    "before": [
+      0.4,
+      0.059805087209,
+      0.008229510569
+    ],
+    "cases": 35,
+    "local": 0,
+    "mean_iou": 0.9031227766432119,
+    "passes_target": false,
+    "pooled_iou": 0.9690277907738374,
+    "proposals": 512,
+    "sweep": 1,
+    "worst_iou": 0.5
+  },
+  {
+    "after": [
+      0.4,
+      0.057895364987,
+      0.008054294885
+    ],
+    "at_least_90": 27,
+    "axis": 1,
+    "before": [
+      0.4,
+      0.059805087209,
+      0.008229510569
+    ],
+    "cases": 35,
+    "local": 0,
+    "mean_iou": 0.9056227766432119,
+    "passes_target": false,
+    "pooled_iou": 0.9697820188979325,
+    "proposals": 512,
+    "sweep": 1,
+    "worst_iou": 0.5
+  },
+  {
+    "after": [
+      0.4,
+      0.056768643337,
+      0.008036435373
+    ],
+    "at_least_90": 27,
+    "axis": 1,
+    "before": [
+      0.4,
+      0.057895364987,
+      0.008054294885
+    ],
+    "cases": 35,
+    "local": 1,
+    "mean_iou": 0.9059726308706172,
+    "passes_target": false,
+    "pooled_iou": 0.969872754491018,
+    "proposals": 512,
+    "sweep": 1,
+    "worst_iou": 0.5
+  },
+  {
+    "after": [
+      0.4,
+      0.056768643337,
+      0.008036435373
+    ],
+    "at_least_90": 27,
+    "axis": 0,
+    "before": [
+      0.4,
+      0.056768643337,
+      0.008036435373
+    ],
+    "cases": 35,
+    "local": 0,
+    "mean_iou": 0.9059726308706172,
+    "passes_target": false,
+    "pooled_iou": 0.969872754491018,
+    "proposals": 512,
+    "sweep": 2,
+    "worst_iou": 0.5
+  },
+  {
+    "after": [
+      0.4,
+      0.056589592069,
+      0.007983005229
+    ],
+    "at_least_90": 28,
+    "axis": 1,
+    "before": [
+      0.4,
+      0.056768643337,
+      0.008036435373
+    ],
+    "cases": 35,
+    "local": 0,
+    "mean_iou": 0.9070595873923563,
+    "passes_target": false,
+    "pooled_iou": 0.969963507064658,
+    "proposals": 512,
+    "sweep": 2,
+    "worst_iou": 0.5
+  },
+  {
+    "after": [
+      0.4,
+      0.056589592069,
+      0.007982755229
+    ],
+    "at_least_90": 28,
+    "axis": 1,
+    "before": [
+      0.4,
+      0.056589592069,
+      0.007983005229
+    ],
+    "cases": 35,
+    "local": 1,
+    "mean_iou": 0.9070595873923563,
+    "passes_target": false,
+    "pooled_iou": 0.969963507064658,
+    "proposals": 512,
+    "sweep": 2,
+    "worst_iou": 0.5
+  }
+]

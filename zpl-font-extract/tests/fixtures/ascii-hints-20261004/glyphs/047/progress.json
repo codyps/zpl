@@ -1,0 +1,178 @@
+[
+  {
+    "after": [
+      0.14,
+      0.021395430209,
+      0.010426422817
+    ],
+    "at_least_90": 13,
+    "axis": 0,
+    "before": [
+      0.14,
+      0.021407408784,
+      0.009855080321
+    ],
+    "cases": 35,
+    "local": 0,
+    "mean_iou": 0.8736680038366973,
+    "passes_target": false,
+    "pooled_iou": 0.9781612557277957,
+    "proposals": 130,
+    "sweep": 0,
+    "worst_iou": 0.76
+  },
+  {
+    "after": [
+      0.14,
+      0.021395430209,
+      0.010426422817
+    ],
+    "at_least_90": 13,
+    "axis": 0,
+    "before": [
+      0.14,
+      0.021395430209,
+      0.010426422817
+    ],
+    "cases": 35,
+    "local": 1,
+    "mean_iou": 0.8736680038366973,
+    "passes_target": false,
+    "pooled_iou": 0.9781612557277957,
+    "proposals": 108,
+    "sweep": 0,
+    "worst_iou": 0.76
+  },
+  {
+    "after": [
+      0.14,
+      0.02102234797,
+      0.010088682197
+    ],
+    "at_least_90": 15,
+    "axis": 1,
+    "before": [
+      0.14,
+      0.021395430209,
+      0.010426422817
+    ],
+    "cases": 35,
+    "local": 0,
+    "mean_iou": 0.8771050296998285,
+    "passes_target": false,
+    "pooled_iou": 0.9788313335284362,
+    "proposals": 225,
+    "sweep": 0,
+    "worst_iou": 0.76
+  },
+  {
+    "after": [
+      0.14,
+      0.020997994682,
+      0.00989632188
+    ],
+    "at_least_90": 16,
+    "axis": 1,
+    "before": [
+      0.14,
+      0.02102234797,
+      0.010088682197
+    ],
+    "cases": 35,
+    "local": 1,
+    "mean_iou": 0.879484009460747,
+    "passes_target": false,
+    "pooled_iou": 0.9791209327284258,
+    "proposals": 225,
+    "sweep": 0,
+    "worst_iou": 0.76
+  },
+  {
+    "after": [
+      0.14,
+      0.020997994682,
+      0.00989632188
+    ],
+    "at_least_90": 16,
+    "axis": 0,
+    "before": [
+      0.14,
+      0.020997994682,
+      0.00989632188
+    ],
+    "cases": 35,
+    "local": 0,
+    "mean_iou": 0.879484009460747,
+    "passes_target": false,
+    "pooled_iou": 0.9791209327284258,
+    "proposals": 108,
+    "sweep": 1,
+    "worst_iou": 0.76
+  },
+  {
+    "after": [
+      0.14,
+      0.020997994682,
+      0.00989632188
+    ],
+    "at_least_90": 16,
+    "axis": 1,
+    "before": [
+      0.14,
+      0.020997994682,
+      0.00989632188
+    ],
+    "cases": 35,
+    "local": 0,
+    "mean_iou": 0.879484009460747,
+    "passes_target": false,
+    "pooled_iou": 0.9791209327284258,
+    "proposals": 225,
+    "sweep": 1,
+    "worst_iou": 0.76
+  },
+  {
+    "after": [
+      0.14,
+      0.020997994682,
+      0.00989632188
+    ],
+    "at_least_90": 16,
+    "axis": 0,
+    "before": [
+      0.14,
+      0.020997994682,
+      0.00989632188
+    ],
+    "cases": 35,
+    "local": 0,
+    "mean_iou": 0.879484009460747,
+    "passes_target": false,
+    "pooled_iou": 0.9791209327284258,
+    "proposals": 108,
+    "sweep": 2,
+    "worst_iou": 0.76
+  },
+  {
+    "after": [
+      0.14,
+      0.020997994682,
+      0.00989632188
+    ],
+    "at_least_90": 16,
+    "axis": 1,
+    "before": [
+      0.14,
+      0.020997994682,
+      0.00989632188
+    ],
+    "cases": 35,
+    "local": 0,
+    "mean_iou": 0.879484009460747,
+    "passes_target": false,
+    "pooled_iou": 0.9791209327284258,
+    "proposals": 225,
+    "sweep": 2,
+    "worst_iou": 0.76
+  }
+]

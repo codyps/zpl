@@ -419,6 +419,10 @@ fn zd621_point_quantization_rounding_and_spacing_match_native_canvases() {
         "accuracy-feature-replay-20261004",
         "structured-baseline-replay-20261004",
         "structured-candidate-replay-20261004",
+        "ascii-cmap-20261004",
+        "target-training-replay-20261004",
+        "ascii-baseline-replay-20261004",
+        "ascii-candidate-replay-20261004",
     ] {
         let root = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
             .join("../zpl-font-extract/tests/fixtures")
@@ -603,11 +607,87 @@ fn zd621_point_quantization_rounding_and_spacing_match_native_canvases() {
                     (52, 65, 6659),
                 ];
                 assert_eq!(actual, expected[page_index], "{directory}/{name}");
+            } else if directory == "ascii-cmap-20261004" {
+                // Distinct shapes for every visible ASCII codepoint, actual
+                // space advances, and private-use identity/instruction markers.
+                // Native printer canvases; this is same-font execution evidence.
+                let expected = [(0, 0, 52), (0, 0, 3476), (0, 0, 1254)];
+                assert_eq!(actual, expected[page_index], "{directory}/{name}");
+            } else if directory == "target-training-replay-20261004" {
+                // Fractional placement, optical programs, and disconnected
+                // feature controls on known training cases. This diagnoses
+                // execution; it is not an independent reconstruction holdout.
+                let expected = [(0, 0, 52), (19, 28, 3457), (21, 32, 6035), (26, 9, 4640)];
+                assert_eq!(actual, expected[page_index], "{directory}/{name}");
+            } else if directory == "ascii-baseline-replay-20261004" {
+                // Full ASCII, frozen before the 1,504 small/transformed
+                // resident holdouts. Same-font residuals remain independent
+                // of Font 0 fitting scores and preserve every native pixel.
+                let expected = [
+                    (0, 0, 52),
+                    (29, 48, 22185),
+                    (16, 24, 16360),
+                    (32, 5, 14692),
+                    (14, 18, 7893),
+                    (28, 21, 10314),
+                    (18, 21, 14337),
+                    (29, 51, 17395),
+                    (27, 23, 14131),
+                    (23, 17, 14378),
+                    (26, 27, 15896),
+                    (31, 45, 16561),
+                    (18, 23, 16195),
+                    (29, 20, 16911),
+                    (13, 13, 8711),
+                    (25, 22, 9511),
+                    (44, 30, 21151),
+                    (43, 33, 12030),
+                    (11, 19, 8084),
+                    (14, 20, 5497),
+                    (29, 27, 8644),
+                    (38, 105, 8901),
+                    (40, 21, 13790),
+                    (30, 49, 10862),
+                    (12, 8, 4627),
+                ];
+                assert_eq!(actual, expected[page_index], "{directory}/{name}");
+            } else if directory == "ascii-candidate-replay-20261004" {
+                // Full ASCII, frozen before the 1,504 small/transformed
+                // resident holdouts. Same-font residuals remain independent
+                // of Font 0 fitting scores and preserve every native pixel.
+                let expected = [
+                    (0, 0, 52),
+                    (64, 111, 22284),
+                    (89, 107, 16518),
+                    (88, 40, 14852),
+                    (53, 37, 7905),
+                    (80, 71, 10353),
+                    (60, 65, 14412),
+                    (70, 83, 17484),
+                    (64, 86, 14300),
+                    (55, 92, 14542),
+                    (54, 40, 16005),
+                    (68, 112, 16648),
+                    (75, 95, 16309),
+                    (51, 38, 16965),
+                    (84, 40, 8833),
+                    (56, 46, 9569),
+                    (52, 62, 21358),
+                    (51, 53, 12080),
+                    (75, 62, 8113),
+                    (50, 33, 5522),
+                    (57, 48, 8693),
+                    (126, 146, 9025),
+                    (93, 36, 13841),
+                    (51, 56, 10940),
+                    (89, 41, 4745),
+                ];
+                assert_eq!(actual, expected[page_index], "{directory}/{name}");
             } else {
                 assert_eq!((actual.0, actual.1), (0, 0), "{directory}/{name}");
             }
         }
     }
-    assert_eq!(pages, 62);
-    assert_eq!(fields, 3228);
+    assert_eq!(pages, 119);
+    assert_eq!(fields, 6501);
 }

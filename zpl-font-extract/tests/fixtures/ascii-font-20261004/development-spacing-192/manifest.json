@@ -1,0 +1,2440 @@
+{
+  "characters": " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~",
+  "kind": "spacing",
+  "pages": [
+    {
+      "canvas": [
+        768,
+        1440
+      ],
+      "font": "0",
+      "group": "development",
+      "name": "spacing-00",
+      "probes": [
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": null,
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "||",
+          "tile": [
+            0,
+            0,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": " ",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "| |",
+          "tile": [
+            0,
+            288,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "!",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|!|",
+          "tile": [
+            0,
+            576,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "\"",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|\"|",
+          "tile": [
+            0,
+            864,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "#",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|#|",
+          "tile": [
+            0,
+            1152,
+            448,
+            288
+          ],
+          "width": 192
+        }
+      ],
+      "zpl_sha256": "2f3b93ce50a519c34503cad3b3ca446e524d6b02cd4b0c97526debf62964bc30"
+    },
+    {
+      "canvas": [
+        768,
+        1440
+      ],
+      "font": "0",
+      "group": "development",
+      "name": "spacing-01",
+      "probes": [
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": null,
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "||",
+          "tile": [
+            0,
+            0,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "$",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|$|",
+          "tile": [
+            0,
+            288,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "%",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|%|",
+          "tile": [
+            0,
+            576,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "&",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|&|",
+          "tile": [
+            0,
+            864,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "'",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|'|",
+          "tile": [
+            0,
+            1152,
+            448,
+            288
+          ],
+          "width": 192
+        }
+      ],
+      "zpl_sha256": "ed0e19ee99540c9fe6d4873e3f958c0eeb68565682d3255f6a26ce260e9b0098"
+    },
+    {
+      "canvas": [
+        768,
+        1440
+      ],
+      "font": "0",
+      "group": "development",
+      "name": "spacing-02",
+      "probes": [
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": null,
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "||",
+          "tile": [
+            0,
+            0,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "(",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|(|",
+          "tile": [
+            0,
+            288,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": ")",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|)|",
+          "tile": [
+            0,
+            576,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "*",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|*|",
+          "tile": [
+            0,
+            864,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "+",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|+|",
+          "tile": [
+            0,
+            1152,
+            448,
+            288
+          ],
+          "width": 192
+        }
+      ],
+      "zpl_sha256": "216448a503c8563e94642d1aa55d946ded892528bb8247b78d8fe249efd2f23f"
+    },
+    {
+      "canvas": [
+        768,
+        1440
+      ],
+      "font": "0",
+      "group": "development",
+      "name": "spacing-03",
+      "probes": [
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": null,
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "||",
+          "tile": [
+            0,
+            0,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": ",",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|,|",
+          "tile": [
+            0,
+            288,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "-",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|-|",
+          "tile": [
+            0,
+            576,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": ".",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|.|",
+          "tile": [
+            0,
+            864,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "/",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|/|",
+          "tile": [
+            0,
+            1152,
+            448,
+            288
+          ],
+          "width": 192
+        }
+      ],
+      "zpl_sha256": "87b5078c27c25c8d3902c27bea5c9513600ffa478ee2cfd4a9eb89c07b947ef7"
+    },
+    {
+      "canvas": [
+        768,
+        1440
+      ],
+      "font": "0",
+      "group": "development",
+      "name": "spacing-04",
+      "probes": [
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": null,
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "||",
+          "tile": [
+            0,
+            0,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "0",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|0|",
+          "tile": [
+            0,
+            288,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "1",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|1|",
+          "tile": [
+            0,
+            576,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "2",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|2|",
+          "tile": [
+            0,
+            864,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "3",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|3|",
+          "tile": [
+            0,
+            1152,
+            448,
+            288
+          ],
+          "width": 192
+        }
+      ],
+      "zpl_sha256": "e8e1c2fb58361b1f24fdd62e83859336b0b1277ea2b25e0e92c0ba1dd0a0242d"
+    },
+    {
+      "canvas": [
+        768,
+        1440
+      ],
+      "font": "0",
+      "group": "development",
+      "name": "spacing-05",
+      "probes": [
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": null,
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "||",
+          "tile": [
+            0,
+            0,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "4",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|4|",
+          "tile": [
+            0,
+            288,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "5",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|5|",
+          "tile": [
+            0,
+            576,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "6",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|6|",
+          "tile": [
+            0,
+            864,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "7",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|7|",
+          "tile": [
+            0,
+            1152,
+            448,
+            288
+          ],
+          "width": 192
+        }
+      ],
+      "zpl_sha256": "7f4c73cfcb546ab34fe934e0f5beeaef52b91dc05f4423cf1251d163a8069171"
+    },
+    {
+      "canvas": [
+        768,
+        1440
+      ],
+      "font": "0",
+      "group": "development",
+      "name": "spacing-06",
+      "probes": [
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": null,
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "||",
+          "tile": [
+            0,
+            0,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "8",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|8|",
+          "tile": [
+            0,
+            288,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "9",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|9|",
+          "tile": [
+            0,
+            576,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": ":",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|:|",
+          "tile": [
+            0,
+            864,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": ";",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|;|",
+          "tile": [
+            0,
+            1152,
+            448,
+            288
+          ],
+          "width": 192
+        }
+      ],
+      "zpl_sha256": "81e6a8b9dfbe57808481bc07f2492e7aeb7e004c07c224b9b54e5ab97db13ed3"
+    },
+    {
+      "canvas": [
+        768,
+        1440
+      ],
+      "font": "0",
+      "group": "development",
+      "name": "spacing-07",
+      "probes": [
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": null,
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "||",
+          "tile": [
+            0,
+            0,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "<",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|<|",
+          "tile": [
+            0,
+            288,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "=",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|=|",
+          "tile": [
+            0,
+            576,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": ">",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|>|",
+          "tile": [
+            0,
+            864,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "?",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|?|",
+          "tile": [
+            0,
+            1152,
+            448,
+            288
+          ],
+          "width": 192
+        }
+      ],
+      "zpl_sha256": "23602716b46cf1f93b61d38707c5238a86e24829c5871b5287353bebc483255f"
+    },
+    {
+      "canvas": [
+        768,
+        1440
+      ],
+      "font": "0",
+      "group": "development",
+      "name": "spacing-08",
+      "probes": [
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": null,
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "||",
+          "tile": [
+            0,
+            0,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "@",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|@|",
+          "tile": [
+            0,
+            288,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "A",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|A|",
+          "tile": [
+            0,
+            576,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "B",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|B|",
+          "tile": [
+            0,
+            864,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "C",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|C|",
+          "tile": [
+            0,
+            1152,
+            448,
+            288
+          ],
+          "width": 192
+        }
+      ],
+      "zpl_sha256": "8906179018ec9d73c03d690853e14a846168df4a4f617ddbbc5bc9bbd08f34a0"
+    },
+    {
+      "canvas": [
+        768,
+        1440
+      ],
+      "font": "0",
+      "group": "development",
+      "name": "spacing-09",
+      "probes": [
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": null,
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "||",
+          "tile": [
+            0,
+            0,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "D",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|D|",
+          "tile": [
+            0,
+            288,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "E",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|E|",
+          "tile": [
+            0,
+            576,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "F",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|F|",
+          "tile": [
+            0,
+            864,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "G",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|G|",
+          "tile": [
+            0,
+            1152,
+            448,
+            288
+          ],
+          "width": 192
+        }
+      ],
+      "zpl_sha256": "69e165d59de471c3b605e1415d165505de23f307cdd7586da8fb4d4d3357863f"
+    },
+    {
+      "canvas": [
+        768,
+        1440
+      ],
+      "font": "0",
+      "group": "development",
+      "name": "spacing-10",
+      "probes": [
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": null,
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "||",
+          "tile": [
+            0,
+            0,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "H",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|H|",
+          "tile": [
+            0,
+            288,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "I",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|I|",
+          "tile": [
+            0,
+            576,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "J",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|J|",
+          "tile": [
+            0,
+            864,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "K",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|K|",
+          "tile": [
+            0,
+            1152,
+            448,
+            288
+          ],
+          "width": 192
+        }
+      ],
+      "zpl_sha256": "9f4eeb32663905ede01c633d69c381472bf870263e4cc07389a2e88a745723bd"
+    },
+    {
+      "canvas": [
+        768,
+        1440
+      ],
+      "font": "0",
+      "group": "development",
+      "name": "spacing-11",
+      "probes": [
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": null,
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "||",
+          "tile": [
+            0,
+            0,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "L",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|L|",
+          "tile": [
+            0,
+            288,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "M",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|M|",
+          "tile": [
+            0,
+            576,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "N",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|N|",
+          "tile": [
+            0,
+            864,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "O",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|O|",
+          "tile": [
+            0,
+            1152,
+            448,
+            288
+          ],
+          "width": 192
+        }
+      ],
+      "zpl_sha256": "f58bfeb3cb9787c600dcc75ab2912439fa6e750a513e92e5bdea3a00a8f77238"
+    },
+    {
+      "canvas": [
+        768,
+        1440
+      ],
+      "font": "0",
+      "group": "development",
+      "name": "spacing-12",
+      "probes": [
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": null,
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "||",
+          "tile": [
+            0,
+            0,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "P",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|P|",
+          "tile": [
+            0,
+            288,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "Q",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|Q|",
+          "tile": [
+            0,
+            576,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "R",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|R|",
+          "tile": [
+            0,
+            864,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "S",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|S|",
+          "tile": [
+            0,
+            1152,
+            448,
+            288
+          ],
+          "width": 192
+        }
+      ],
+      "zpl_sha256": "7c9c6440f31b8d3880a8757cb243f8e4a919114dedbf288e7d0cfaf75c188514"
+    },
+    {
+      "canvas": [
+        768,
+        1440
+      ],
+      "font": "0",
+      "group": "development",
+      "name": "spacing-13",
+      "probes": [
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": null,
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "||",
+          "tile": [
+            0,
+            0,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "T",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|T|",
+          "tile": [
+            0,
+            288,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "U",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|U|",
+          "tile": [
+            0,
+            576,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "V",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|V|",
+          "tile": [
+            0,
+            864,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "W",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|W|",
+          "tile": [
+            0,
+            1152,
+            448,
+            288
+          ],
+          "width": 192
+        }
+      ],
+      "zpl_sha256": "c6c38084a1fe65924d9cc0895b3f4e87352931c08726885ac73e34cf15a4edef"
+    },
+    {
+      "canvas": [
+        768,
+        1440
+      ],
+      "font": "0",
+      "group": "development",
+      "name": "spacing-14",
+      "probes": [
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": null,
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "||",
+          "tile": [
+            0,
+            0,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "X",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|X|",
+          "tile": [
+            0,
+            288,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "Y",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|Y|",
+          "tile": [
+            0,
+            576,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "Z",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|Z|",
+          "tile": [
+            0,
+            864,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "[",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|[|",
+          "tile": [
+            0,
+            1152,
+            448,
+            288
+          ],
+          "width": 192
+        }
+      ],
+      "zpl_sha256": "5aa19050aec11b9aa517b64cf837c801544586947d9b158d5e99f4f5e9275aa0"
+    },
+    {
+      "canvas": [
+        768,
+        1440
+      ],
+      "font": "0",
+      "group": "development",
+      "name": "spacing-15",
+      "probes": [
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": null,
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "||",
+          "tile": [
+            0,
+            0,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "\\",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|\\|",
+          "tile": [
+            0,
+            288,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "]",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|]|",
+          "tile": [
+            0,
+            576,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "^",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|^|",
+          "tile": [
+            0,
+            864,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "_",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|_|",
+          "tile": [
+            0,
+            1152,
+            448,
+            288
+          ],
+          "width": 192
+        }
+      ],
+      "zpl_sha256": "41d98efdccc6abd86b68d388fd9c21b0f405f1cf64d8ddd8fed584568e9a64a7"
+    },
+    {
+      "canvas": [
+        768,
+        1440
+      ],
+      "font": "0",
+      "group": "development",
+      "name": "spacing-16",
+      "probes": [
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": null,
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "||",
+          "tile": [
+            0,
+            0,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "`",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|`|",
+          "tile": [
+            0,
+            288,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "a",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|a|",
+          "tile": [
+            0,
+            576,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "b",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|b|",
+          "tile": [
+            0,
+            864,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "c",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|c|",
+          "tile": [
+            0,
+            1152,
+            448,
+            288
+          ],
+          "width": 192
+        }
+      ],
+      "zpl_sha256": "b0cc545d712d1b45ed435d6ecd2dc3b7efb9ab657e61ac2dcc3599f828f26704"
+    },
+    {
+      "canvas": [
+        768,
+        1440
+      ],
+      "font": "0",
+      "group": "development",
+      "name": "spacing-17",
+      "probes": [
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": null,
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "||",
+          "tile": [
+            0,
+            0,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "d",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|d|",
+          "tile": [
+            0,
+            288,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "e",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|e|",
+          "tile": [
+            0,
+            576,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "f",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|f|",
+          "tile": [
+            0,
+            864,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "g",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|g|",
+          "tile": [
+            0,
+            1152,
+            448,
+            288
+          ],
+          "width": 192
+        }
+      ],
+      "zpl_sha256": "eb79324bcb7e48b64a6e18842088b08e8321f7da06019df5dec639c303c44768"
+    },
+    {
+      "canvas": [
+        768,
+        1440
+      ],
+      "font": "0",
+      "group": "development",
+      "name": "spacing-18",
+      "probes": [
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": null,
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "||",
+          "tile": [
+            0,
+            0,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "h",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|h|",
+          "tile": [
+            0,
+            288,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "i",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|i|",
+          "tile": [
+            0,
+            576,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "j",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|j|",
+          "tile": [
+            0,
+            864,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "k",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|k|",
+          "tile": [
+            0,
+            1152,
+            448,
+            288
+          ],
+          "width": 192
+        }
+      ],
+      "zpl_sha256": "ec083dabe4fe62b0035efec5ce3a6077359b03cf9925fb35c912fa6e208bfc45"
+    },
+    {
+      "canvas": [
+        768,
+        1440
+      ],
+      "font": "0",
+      "group": "development",
+      "name": "spacing-19",
+      "probes": [
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": null,
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "||",
+          "tile": [
+            0,
+            0,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "l",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|l|",
+          "tile": [
+            0,
+            288,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "m",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|m|",
+          "tile": [
+            0,
+            576,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "n",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|n|",
+          "tile": [
+            0,
+            864,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "o",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|o|",
+          "tile": [
+            0,
+            1152,
+            448,
+            288
+          ],
+          "width": 192
+        }
+      ],
+      "zpl_sha256": "09ffb8ce7044f15e3de9ecfb9093f478ee4eca5a835d8cc62e17532d5b2b997e"
+    },
+    {
+      "canvas": [
+        768,
+        1440
+      ],
+      "font": "0",
+      "group": "development",
+      "name": "spacing-20",
+      "probes": [
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": null,
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "||",
+          "tile": [
+            0,
+            0,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "p",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|p|",
+          "tile": [
+            0,
+            288,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "q",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|q|",
+          "tile": [
+            0,
+            576,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "r",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|r|",
+          "tile": [
+            0,
+            864,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "s",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|s|",
+          "tile": [
+            0,
+            1152,
+            448,
+            288
+          ],
+          "width": 192
+        }
+      ],
+      "zpl_sha256": "4c6633126b4af9933757421367acf7d8cf3cd6bde89c17c223e78585debf5864"
+    },
+    {
+      "canvas": [
+        768,
+        1440
+      ],
+      "font": "0",
+      "group": "development",
+      "name": "spacing-21",
+      "probes": [
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": null,
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "||",
+          "tile": [
+            0,
+            0,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "t",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|t|",
+          "tile": [
+            0,
+            288,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "u",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|u|",
+          "tile": [
+            0,
+            576,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "v",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|v|",
+          "tile": [
+            0,
+            864,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "w",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|w|",
+          "tile": [
+            0,
+            1152,
+            448,
+            288
+          ],
+          "width": 192
+        }
+      ],
+      "zpl_sha256": "18b815c19e9c28cee705ba63ac7f9dcb825e0c2f1f838fcd87a3dc0d41905186"
+    },
+    {
+      "canvas": [
+        768,
+        1440
+      ],
+      "font": "0",
+      "group": "development",
+      "name": "spacing-22",
+      "probes": [
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": null,
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "||",
+          "tile": [
+            0,
+            0,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "x",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|x|",
+          "tile": [
+            0,
+            288,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "y",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|y|",
+          "tile": [
+            0,
+            576,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "z",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|z|",
+          "tile": [
+            0,
+            864,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "{",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|{|",
+          "tile": [
+            0,
+            1152,
+            448,
+            288
+          ],
+          "width": 192
+        }
+      ],
+      "zpl_sha256": "cdc01f7889db4804892748b07566b351149005ce8e9350e38bc3a519aae6934b"
+    },
+    {
+      "canvas": [
+        768,
+        1152
+      ],
+      "font": "0",
+      "group": "development",
+      "name": "spacing-23",
+      "probes": [
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": null,
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "||",
+          "tile": [
+            0,
+            0,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "|",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|||",
+          "tile": [
+            0,
+            288,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "}",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|}|",
+          "tile": [
+            0,
+            576,
+            448,
+            288
+          ],
+          "width": 192
+        },
+        {
+          "anchor": [
+            16,
+            208
+          ],
+          "character": "~",
+          "height": 192,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|~|",
+          "tile": [
+            0,
+            864,
+            448,
+            288
+          ],
+          "width": 192
+        }
+      ],
+      "zpl_sha256": "b7a710f12785817a0e891fb2a537a818724a0745d841cc74f855a81fa9321f3f"
+    }
+  ],
+  "schema": "small-font-probe-v1",
+  "sizes": [
+    192
+  ]
+}

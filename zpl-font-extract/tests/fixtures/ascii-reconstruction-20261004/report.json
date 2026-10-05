@@ -1,0 +1,17 @@
+{
+  "candidates_sha256": "bae0d2ff1942fb528484d702ba779ab030d88f87162fc82032e36913db7e3d3b",
+  "component_raster_audit_cases": 5808,
+  "component_raster_audit_exact": true,
+  "designated": "targeted",
+  "plan_sha256": "26bc66b177a55b4e58abe4bec2a1c9c42cda30fe58535db22d539360c7e06590",
+  "production_ready": false,
+  "schema": "structured-font-fit-v1",
+  "variants": {
+    "baseline": {
+      "font_sha256": "58662adf57aab7a1202403f2120ded7d6c2e5bb623b81cb0853120355dd5a956"
+    },
+    "targeted": {
+      "font_sha256": "8b0a416e03038b9e0c9049c0763359aa0edbcf8b18f886ab5a54382b092e5356"
+    }
+  }
+}

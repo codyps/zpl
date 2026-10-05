@@ -1,0 +1,1840 @@
+{
+  "characters": " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~",
+  "kind": "spacing",
+  "pages": [
+    {
+      "canvas": [
+        768,
+        1440
+      ],
+      "font": "0",
+      "group": "development",
+      "name": "spacing-00",
+      "probes": [
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": null,
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "||",
+          "tile": [
+            0,
+            0,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": " ",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "| |",
+          "tile": [
+            256,
+            0,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "!",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|!|",
+          "tile": [
+            512,
+            0,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "\"",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|\"|",
+          "tile": [
+            0,
+            160,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "#",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|#|",
+          "tile": [
+            256,
+            160,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "$",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|$|",
+          "tile": [
+            512,
+            160,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "%",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|%|",
+          "tile": [
+            0,
+            320,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "&",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|&|",
+          "tile": [
+            256,
+            320,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "'",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|'|",
+          "tile": [
+            512,
+            320,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "(",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|(|",
+          "tile": [
+            0,
+            480,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": ")",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|)|",
+          "tile": [
+            256,
+            480,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "*",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|*|",
+          "tile": [
+            512,
+            480,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "+",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|+|",
+          "tile": [
+            0,
+            640,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": ",",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|,|",
+          "tile": [
+            256,
+            640,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "-",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|-|",
+          "tile": [
+            512,
+            640,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": ".",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|.|",
+          "tile": [
+            0,
+            800,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "/",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|/|",
+          "tile": [
+            256,
+            800,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "0",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|0|",
+          "tile": [
+            512,
+            800,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "1",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|1|",
+          "tile": [
+            0,
+            960,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "2",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|2|",
+          "tile": [
+            256,
+            960,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "3",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|3|",
+          "tile": [
+            512,
+            960,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "4",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|4|",
+          "tile": [
+            0,
+            1120,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "5",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|5|",
+          "tile": [
+            256,
+            1120,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "6",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|6|",
+          "tile": [
+            512,
+            1120,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "7",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|7|",
+          "tile": [
+            0,
+            1280,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "8",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|8|",
+          "tile": [
+            256,
+            1280,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "9",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|9|",
+          "tile": [
+            512,
+            1280,
+            256,
+            160
+          ],
+          "width": 80
+        }
+      ],
+      "zpl_sha256": "9c937a7aee7b5c41a8976600a28d72b5e7274bd142dc14f8ebbe73ea0f0310ac"
+    },
+    {
+      "canvas": [
+        768,
+        1440
+      ],
+      "font": "0",
+      "group": "development",
+      "name": "spacing-01",
+      "probes": [
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": null,
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "||",
+          "tile": [
+            0,
+            0,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": ":",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|:|",
+          "tile": [
+            256,
+            0,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": ";",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|;|",
+          "tile": [
+            512,
+            0,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "<",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|<|",
+          "tile": [
+            0,
+            160,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "=",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|=|",
+          "tile": [
+            256,
+            160,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": ">",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|>|",
+          "tile": [
+            512,
+            160,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "?",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|?|",
+          "tile": [
+            0,
+            320,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "@",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|@|",
+          "tile": [
+            256,
+            320,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "A",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|A|",
+          "tile": [
+            512,
+            320,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "B",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|B|",
+          "tile": [
+            0,
+            480,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "C",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|C|",
+          "tile": [
+            256,
+            480,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "D",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|D|",
+          "tile": [
+            512,
+            480,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "E",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|E|",
+          "tile": [
+            0,
+            640,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "F",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|F|",
+          "tile": [
+            256,
+            640,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "G",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|G|",
+          "tile": [
+            512,
+            640,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "H",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|H|",
+          "tile": [
+            0,
+            800,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "I",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|I|",
+          "tile": [
+            256,
+            800,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "J",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|J|",
+          "tile": [
+            512,
+            800,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "K",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|K|",
+          "tile": [
+            0,
+            960,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "L",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|L|",
+          "tile": [
+            256,
+            960,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "M",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|M|",
+          "tile": [
+            512,
+            960,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "N",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|N|",
+          "tile": [
+            0,
+            1120,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "O",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|O|",
+          "tile": [
+            256,
+            1120,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "P",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|P|",
+          "tile": [
+            512,
+            1120,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "Q",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|Q|",
+          "tile": [
+            0,
+            1280,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "R",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|R|",
+          "tile": [
+            256,
+            1280,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "S",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|S|",
+          "tile": [
+            512,
+            1280,
+            256,
+            160
+          ],
+          "width": 80
+        }
+      ],
+      "zpl_sha256": "5aadbaf41f30752fc193b6d10302d088a0521b5630a5190b05f1516ecbdd495c"
+    },
+    {
+      "canvas": [
+        768,
+        1440
+      ],
+      "font": "0",
+      "group": "development",
+      "name": "spacing-02",
+      "probes": [
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": null,
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "||",
+          "tile": [
+            0,
+            0,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "T",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|T|",
+          "tile": [
+            256,
+            0,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "U",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|U|",
+          "tile": [
+            512,
+            0,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "V",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|V|",
+          "tile": [
+            0,
+            160,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "W",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|W|",
+          "tile": [
+            256,
+            160,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "X",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|X|",
+          "tile": [
+            512,
+            160,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "Y",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|Y|",
+          "tile": [
+            0,
+            320,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "Z",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|Z|",
+          "tile": [
+            256,
+            320,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "[",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|[|",
+          "tile": [
+            512,
+            320,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "\\",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|\\|",
+          "tile": [
+            0,
+            480,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "]",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|]|",
+          "tile": [
+            256,
+            480,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "^",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|^|",
+          "tile": [
+            512,
+            480,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "_",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|_|",
+          "tile": [
+            0,
+            640,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "`",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|`|",
+          "tile": [
+            256,
+            640,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "a",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|a|",
+          "tile": [
+            512,
+            640,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "b",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|b|",
+          "tile": [
+            0,
+            800,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "c",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|c|",
+          "tile": [
+            256,
+            800,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "d",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|d|",
+          "tile": [
+            512,
+            800,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "e",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|e|",
+          "tile": [
+            0,
+            960,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "f",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|f|",
+          "tile": [
+            256,
+            960,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "g",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|g|",
+          "tile": [
+            512,
+            960,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "h",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|h|",
+          "tile": [
+            0,
+            1120,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "i",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|i|",
+          "tile": [
+            256,
+            1120,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "j",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|j|",
+          "tile": [
+            512,
+            1120,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "k",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|k|",
+          "tile": [
+            0,
+            1280,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "l",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|l|",
+          "tile": [
+            256,
+            1280,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "m",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|m|",
+          "tile": [
+            512,
+            1280,
+            256,
+            160
+          ],
+          "width": 80
+        }
+      ],
+      "zpl_sha256": "485d24364b42627d0702c716505ac3fd3074f2e47bbbfa98bddc7d54d81fcb3e"
+    },
+    {
+      "canvas": [
+        768,
+        960
+      ],
+      "font": "0",
+      "group": "development",
+      "name": "spacing-03",
+      "probes": [
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": null,
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "||",
+          "tile": [
+            0,
+            0,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "n",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|n|",
+          "tile": [
+            256,
+            0,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "o",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|o|",
+          "tile": [
+            512,
+            0,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "p",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|p|",
+          "tile": [
+            0,
+            160,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "q",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|q|",
+          "tile": [
+            256,
+            160,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "r",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|r|",
+          "tile": [
+            512,
+            160,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "s",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|s|",
+          "tile": [
+            0,
+            320,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "t",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|t|",
+          "tile": [
+            256,
+            320,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "u",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|u|",
+          "tile": [
+            512,
+            320,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "v",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|v|",
+          "tile": [
+            0,
+            480,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "w",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|w|",
+          "tile": [
+            256,
+            480,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "x",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|x|",
+          "tile": [
+            512,
+            480,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "y",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|y|",
+          "tile": [
+            0,
+            640,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "z",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|z|",
+          "tile": [
+            256,
+            640,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "{",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|{|",
+          "tile": [
+            512,
+            640,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "|",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|||",
+          "tile": [
+            0,
+            800,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "}",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|}|",
+          "tile": [
+            256,
+            800,
+            256,
+            160
+          ],
+          "width": 80
+        },
+        {
+          "anchor": [
+            16,
+            96
+          ],
+          "character": "~",
+          "height": 80,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "|~|",
+          "tile": [
+            512,
+            800,
+            256,
+            160
+          ],
+          "width": 80
+        }
+      ],
+      "zpl_sha256": "cc3c81c2a4ed21d10ec1c1796b4ba901e339f27e7b6ed3624bcdae69d502c029"
+    }
+  ],
+  "schema": "small-font-probe-v1",
+  "sizes": [
+    80
+  ]
+}

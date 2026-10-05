@@ -22,6 +22,10 @@ import urllib.request
 
 from PIL import Image
 
+# A complete reconstructed ASCII font can exceed the original six-glyph 64 KiB
+# budget. Keep the expanded development upload bounded independently of pages.
+MAX_FONT_BYTES = 256 * 1024
+
 
 def now():
     return datetime.now(timezone.utc).isoformat()
@@ -138,7 +142,7 @@ def capture(root, output, host, model, serial, force_label_length=False):
     if not re.fullmatch(r"R:ZP[0-9A-Z]{1,6}\.TTF", obj):
         raise ValueError("Unexpected RAM object")
     font = (root / "probe.ttf").read_bytes()
-    if sha(font) != manifest["font_sha256"] or len(font) > 65536:
+    if sha(font) != manifest["font_sha256"] or len(font) > MAX_FONT_BYTES:
         raise ValueError("Font hash/size mismatch")
     for page in manifest["pages"]:
         if sha((root / (page["name"] + ".zpl")).read_bytes()) != page["zpl_sha256"]:

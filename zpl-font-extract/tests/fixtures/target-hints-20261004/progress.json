@@ -1,0 +1,1802 @@
+[
+  {
+    "after": [
+      0.4625,
+      0.007087635948,
+      0.007016995671
+    ],
+    "at_least_90": 740,
+    "axis": 0,
+    "before": [
+      0.4625,
+      0.007087722572,
+      0.007005540044
+    ],
+    "cases": 894,
+    "evaluations": 3217,
+    "glyph": "g",
+    "mean_iou": 0.9456666677745518,
+    "passes_target": false,
+    "pooled_iou": 0.9717490615666189,
+    "proposals": 4031,
+    "screened": 46,
+    "step": 16,
+    "sweep": 0,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.00708750388,
+      0.007036544778
+    ],
+    "at_least_90": 740,
+    "axis": 1,
+    "before": [
+      0.4625,
+      0.007087635948,
+      0.007016995671
+    ],
+    "cases": 894,
+    "evaluations": 8669,
+    "glyph": "g",
+    "mean_iou": 0.9456670232893889,
+    "passes_target": false,
+    "pooled_iou": 0.9717522585031334,
+    "proposals": 7463,
+    "screened": 3,
+    "step": 16,
+    "sweep": 0,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.007082800014,
+      0.007036574131
+    ],
+    "at_least_90": 740,
+    "axis": 0,
+    "before": [
+      0.4625,
+      0.00708750388,
+      0.007036544778
+    ],
+    "cases": 894,
+    "evaluations": 9890,
+    "glyph": "O",
+    "mean_iou": 0.9456665623161106,
+    "passes_target": false,
+    "pooled_iou": 0.9717522585031334,
+    "proposals": 1875,
+    "screened": 179,
+    "step": 16,
+    "sweep": 0,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.007082745542,
+      0.007057381241
+    ],
+    "at_least_90": 740,
+    "axis": 1,
+    "before": [
+      0.4625,
+      0.007082800014,
+      0.007036574131
+    ],
+    "cases": 894,
+    "evaluations": 10907,
+    "glyph": "O",
+    "mean_iou": 0.9456708607228017,
+    "passes_target": false,
+    "pooled_iou": 0.9717527620494586,
+    "proposals": 1764,
+    "screened": 127,
+    "step": 16,
+    "sweep": 0,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.007082745542,
+      0.007057381241
+    ],
+    "at_least_90": 740,
+    "axis": 0,
+    "before": [
+      0.4625,
+      0.007082745542,
+      0.007057381241
+    ],
+    "cases": 894,
+    "evaluations": 11619,
+    "glyph": "H",
+    "mean_iou": 0.9456708607228017,
+    "passes_target": false,
+    "pooled_iou": 0.9717527620494586,
+    "proposals": 1479,
+    "screened": 0,
+    "step": 16,
+    "sweep": 0,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.007082745542,
+      0.007057381241
+    ],
+    "at_least_90": 740,
+    "axis": 1,
+    "before": [
+      0.4625,
+      0.007082745542,
+      0.007057381241
+    ],
+    "cases": 894,
+    "evaluations": 11985,
+    "glyph": "H",
+    "mean_iou": 0.9456708607228017,
+    "passes_target": false,
+    "pooled_iou": 0.9717527620494586,
+    "proposals": 1089,
+    "screened": 0,
+    "step": 16,
+    "sweep": 0,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.006987323263,
+      0.007028891723
+    ],
+    "at_least_90": 743,
+    "axis": 0,
+    "before": [
+      0.4625,
+      0.007082745542,
+      0.007057381241
+    ],
+    "cases": 894,
+    "evaluations": 17531,
+    "glyph": "@",
+    "mean_iou": 0.9459783856573701,
+    "passes_target": false,
+    "pooled_iou": 0.9717833495179338,
+    "proposals": 7000,
+    "screened": 16,
+    "step": 16,
+    "sweep": 0,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.006978845478,
+      0.007035276776
+    ],
+    "at_least_90": 743,
+    "axis": 1,
+    "before": [
+      0.4625,
+      0.006987323263,
+      0.007028891723
+    ],
+    "cases": 894,
+    "evaluations": 19864,
+    "glyph": "@",
+    "mean_iou": 0.9460086229958311,
+    "passes_target": false,
+    "pooled_iou": 0.9717898812521893,
+    "proposals": 6875,
+    "screened": 0,
+    "step": 16,
+    "sweep": 0,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.006963445528,
+      0.007026917222
+    ],
+    "at_least_90": 744,
+    "axis": 0,
+    "before": [
+      0.4625,
+      0.006978845478,
+      0.007035276776
+    ],
+    "cases": 894,
+    "evaluations": 22238,
+    "glyph": "S",
+    "mean_iou": 0.9461263312808743,
+    "passes_target": false,
+    "pooled_iou": 0.9717929026768605,
+    "proposals": 4083,
+    "screened": 16,
+    "step": 16,
+    "sweep": 0,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.006954752503,
+      0.007036827696
+    ],
+    "at_least_90": 749,
+    "axis": 1,
+    "before": [
+      0.4625,
+      0.006963445528,
+      0.007026917222
+    ],
+    "cases": 894,
+    "evaluations": 23233,
+    "glyph": "S",
+    "mean_iou": 0.9464347600214981,
+    "passes_target": false,
+    "pooled_iou": 0.9717954205451051,
+    "proposals": 2328,
+    "screened": 10,
+    "step": 16,
+    "sweep": 0,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.006954752503,
+      0.007036827696
+    ],
+    "at_least_90": 749,
+    "axis": 0,
+    "before": [
+      0.4625,
+      0.006954752503,
+      0.007036827696
+    ],
+    "cases": 894,
+    "evaluations": 24110,
+    "glyph": "j",
+    "mean_iou": 0.9464347600214981,
+    "passes_target": false,
+    "pooled_iou": 0.9717954205451051,
+    "proposals": 1792,
+    "screened": 1604,
+    "step": 16,
+    "sweep": 0,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.006939613165,
+      0.007023199439
+    ],
+    "at_least_90": 750,
+    "axis": 1,
+    "before": [
+      0.4625,
+      0.006954752503,
+      0.007036827696
+    ],
+    "cases": 894,
+    "evaluations": 24877,
+    "glyph": "j",
+    "mean_iou": 0.9473465847976262,
+    "passes_target": false,
+    "pooled_iou": 0.9718595011558306,
+    "proposals": 1392,
+    "screened": 1018,
+    "step": 16,
+    "sweep": 0,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.006939613165,
+      0.007023199439
+    ],
+    "at_least_90": 750,
+    "axis": 0,
+    "before": [
+      0.4625,
+      0.006939613165,
+      0.007023199439
+    ],
+    "cases": 894,
+    "evaluations": 25037,
+    "glyph": "g",
+    "mean_iou": 0.9473465847976262,
+    "passes_target": false,
+    "pooled_iou": 0.9718595011558306,
+    "proposals": 178,
+    "screened": 11,
+    "step": 16,
+    "sweep": 1,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.006939613165,
+      0.007022949439
+    ],
+    "at_least_90": 750,
+    "axis": 1,
+    "before": [
+      0.4625,
+      0.006939613165,
+      0.007023199439
+    ],
+    "cases": 894,
+    "evaluations": 25157,
+    "glyph": "g",
+    "mean_iou": 0.9473465847976262,
+    "passes_target": false,
+    "pooled_iou": 0.9718595011558306,
+    "proposals": 526,
+    "screened": 0,
+    "step": 16,
+    "sweep": 1,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.006939613165,
+      0.007022949439
+    ],
+    "at_least_90": 750,
+    "axis": 0,
+    "before": [
+      0.4625,
+      0.006939613165,
+      0.007022949439
+    ],
+    "cases": 894,
+    "evaluations": 25221,
+    "glyph": "O",
+    "mean_iou": 0.9473465847976262,
+    "passes_target": false,
+    "pooled_iou": 0.9718595011558306,
+    "proposals": 73,
+    "screened": 58,
+    "step": 16,
+    "sweep": 1,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.006939613165,
+      0.007022949439
+    ],
+    "at_least_90": 750,
+    "axis": 1,
+    "before": [
+      0.4625,
+      0.006939613165,
+      0.007022949439
+    ],
+    "cases": 894,
+    "evaluations": 25221,
+    "glyph": "O",
+    "mean_iou": 0.9473465847976262,
+    "passes_target": false,
+    "pooled_iou": 0.9718595011558306,
+    "proposals": 74,
+    "screened": 38,
+    "step": 16,
+    "sweep": 1,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.006939613165,
+      0.007022949439
+    ],
+    "at_least_90": 750,
+    "axis": 0,
+    "before": [
+      0.4625,
+      0.006939613165,
+      0.007022949439
+    ],
+    "cases": 894,
+    "evaluations": 25221,
+    "glyph": "H",
+    "mean_iou": 0.9473465847976262,
+    "passes_target": false,
+    "pooled_iou": 0.9718595011558306,
+    "proposals": 60,
+    "screened": 11,
+    "step": 16,
+    "sweep": 1,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.006939613165,
+      0.007022949439
+    ],
+    "at_least_90": 750,
+    "axis": 1,
+    "before": [
+      0.4625,
+      0.006939613165,
+      0.007022949439
+    ],
+    "cases": 894,
+    "evaluations": 25221,
+    "glyph": "H",
+    "mean_iou": 0.9473465847976262,
+    "passes_target": false,
+    "pooled_iou": 0.9718595011558306,
+    "proposals": 74,
+    "screened": 21,
+    "step": 16,
+    "sweep": 1,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.006939613165,
+      0.007022949439
+    ],
+    "at_least_90": 750,
+    "axis": 0,
+    "before": [
+      0.4625,
+      0.006939613165,
+      0.007022949439
+    ],
+    "cases": 894,
+    "evaluations": 25644,
+    "glyph": "@",
+    "mean_iou": 0.9473465847976262,
+    "passes_target": false,
+    "pooled_iou": 0.9718595011558306,
+    "proposals": 133,
+    "screened": 3,
+    "step": 16,
+    "sweep": 1,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.006939613165,
+      0.007022949439
+    ],
+    "at_least_90": 750,
+    "axis": 1,
+    "before": [
+      0.4625,
+      0.006939613165,
+      0.007022949439
+    ],
+    "cases": 894,
+    "evaluations": 25644,
+    "glyph": "@",
+    "mean_iou": 0.9473465847976262,
+    "passes_target": false,
+    "pooled_iou": 0.9718595011558306,
+    "proposals": 68,
+    "screened": 0,
+    "step": 16,
+    "sweep": 1,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.006939613165,
+      0.007022949439
+    ],
+    "at_least_90": 750,
+    "axis": 0,
+    "before": [
+      0.4625,
+      0.006939613165,
+      0.007022949439
+    ],
+    "cases": 894,
+    "evaluations": 25712,
+    "glyph": "S",
+    "mean_iou": 0.9473465847976262,
+    "passes_target": false,
+    "pooled_iou": 0.9718595011558306,
+    "proposals": 196,
+    "screened": 3,
+    "step": 16,
+    "sweep": 1,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.006939613165,
+      0.007022949439
+    ],
+    "at_least_90": 750,
+    "axis": 1,
+    "before": [
+      0.4625,
+      0.006939613165,
+      0.007022949439
+    ],
+    "cases": 894,
+    "evaluations": 25712,
+    "glyph": "S",
+    "mean_iou": 0.9473465847976262,
+    "passes_target": false,
+    "pooled_iou": 0.9718595011558306,
+    "proposals": 35,
+    "screened": 1,
+    "step": 16,
+    "sweep": 1,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.006939613165,
+      0.007022949439
+    ],
+    "at_least_90": 750,
+    "axis": 0,
+    "before": [
+      0.4625,
+      0.006939613165,
+      0.007022949439
+    ],
+    "cases": 894,
+    "evaluations": 25746,
+    "glyph": "j",
+    "mean_iou": 0.9473465847976262,
+    "passes_target": false,
+    "pooled_iou": 0.9718595011558306,
+    "proposals": 24,
+    "screened": 24,
+    "step": 16,
+    "sweep": 1,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.006939613165,
+      0.007022949439
+    ],
+    "at_least_90": 750,
+    "axis": 1,
+    "before": [
+      0.4625,
+      0.006939613165,
+      0.007022949439
+    ],
+    "cases": 894,
+    "evaluations": 25746,
+    "glyph": "j",
+    "mean_iou": 0.9473465847976262,
+    "passes_target": false,
+    "pooled_iou": 0.9718595011558306,
+    "proposals": 62,
+    "screened": 35,
+    "step": 16,
+    "sweep": 1,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.006933842242,
+      0.007014165876
+    ],
+    "at_least_90": 750,
+    "axis": 0,
+    "before": [
+      0.4625,
+      0.006939613165,
+      0.007022949439
+    ],
+    "cases": 894,
+    "evaluations": 28097,
+    "glyph": "g",
+    "mean_iou": 0.9475215274420898,
+    "passes_target": false,
+    "pooled_iou": 0.9718452835292344,
+    "proposals": 4379,
+    "screened": 46,
+    "step": 8,
+    "sweep": 2,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.006933697586,
+      0.007031559577
+    ],
+    "at_least_90": 750,
+    "axis": 1,
+    "before": [
+      0.4625,
+      0.006933842242,
+      0.007014165876
+    ],
+    "cases": 894,
+    "evaluations": 32956,
+    "glyph": "g",
+    "mean_iou": 0.9475562687066598,
+    "passes_target": false,
+    "pooled_iou": 0.9718514511115879,
+    "proposals": 7492,
+    "screened": 3,
+    "step": 8,
+    "sweep": 2,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.006932226447,
+      0.007053046231
+    ],
+    "at_least_90": 750,
+    "axis": 0,
+    "before": [
+      0.4625,
+      0.006933697586,
+      0.007031559577
+    ],
+    "cases": 894,
+    "evaluations": 34009,
+    "glyph": "O",
+    "mean_iou": 0.9475580890031301,
+    "passes_target": false,
+    "pooled_iou": 0.9718518887009584,
+    "proposals": 2038,
+    "screened": 155,
+    "step": 8,
+    "sweep": 2,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.00693167734,
+      0.007053985196
+    ],
+    "at_least_90": 750,
+    "axis": 1,
+    "before": [
+      0.4625,
+      0.006932226447,
+      0.007053046231
+    ],
+    "cases": 894,
+    "evaluations": 34861,
+    "glyph": "O",
+    "mean_iou": 0.9475647371162814,
+    "passes_target": false,
+    "pooled_iou": 0.9718635816930873,
+    "proposals": 1922,
+    "screened": 126,
+    "step": 8,
+    "sweep": 2,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.00693167734,
+      0.007053985196
+    ],
+    "at_least_90": 750,
+    "axis": 0,
+    "before": [
+      0.4625,
+      0.00693167734,
+      0.007053985196
+    ],
+    "cases": 894,
+    "evaluations": 34921,
+    "glyph": "H",
+    "mean_iou": 0.9475647371162814,
+    "passes_target": false,
+    "pooled_iou": 0.9718635816930873,
+    "proposals": 1479,
+    "screened": 0,
+    "step": 8,
+    "sweep": 2,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.00693167734,
+      0.007053985196
+    ],
+    "at_least_90": 750,
+    "axis": 1,
+    "before": [
+      0.4625,
+      0.00693167734,
+      0.007053985196
+    ],
+    "cases": 894,
+    "evaluations": 34995,
+    "glyph": "H",
+    "mean_iou": 0.9475647371162814,
+    "passes_target": false,
+    "pooled_iou": 0.9718635816930873,
+    "proposals": 1089,
+    "screened": 0,
+    "step": 8,
+    "sweep": 2,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.006879421204,
+      0.007091876407
+    ],
+    "at_least_90": 747,
+    "axis": 0,
+    "before": [
+      0.4625,
+      0.00693167734,
+      0.007053985196
+    ],
+    "cases": 894,
+    "evaluations": 40455,
+    "glyph": "@",
+    "mean_iou": 0.947415104957328,
+    "passes_target": false,
+    "pooled_iou": 0.9717677001100525,
+    "proposals": 7129,
+    "screened": 16,
+    "step": 8,
+    "sweep": 2,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.006787089899,
+      0.007061217476
+    ],
+    "at_least_90": 750,
+    "axis": 1,
+    "before": [
+      0.4625,
+      0.006879421204,
+      0.007091876407
+    ],
+    "cases": 894,
+    "evaluations": 42819,
+    "glyph": "@",
+    "mean_iou": 0.9476370912336922,
+    "passes_target": false,
+    "pooled_iou": 0.9718275484697367,
+    "proposals": 6943,
+    "screened": 0,
+    "step": 8,
+    "sweep": 2,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.006761809659,
+      0.007075565636
+    ],
+    "at_least_90": 748,
+    "axis": 0,
+    "before": [
+      0.4625,
+      0.006787089899,
+      0.007061217476
+    ],
+    "cases": 894,
+    "evaluations": 44692,
+    "glyph": "S",
+    "mean_iou": 0.947692023853452,
+    "passes_target": false,
+    "pooled_iou": 0.9718333505192834,
+    "proposals": 4289,
+    "screened": 16,
+    "step": 8,
+    "sweep": 2,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.006760288693,
+      0.007120562124
+    ],
+    "at_least_90": 750,
+    "axis": 1,
+    "before": [
+      0.4625,
+      0.006761809659,
+      0.007075565636
+    ],
+    "cases": 894,
+    "evaluations": 46796,
+    "glyph": "S",
+    "mean_iou": 0.947471183285181,
+    "passes_target": false,
+    "pooled_iou": 0.9717913627274136,
+    "proposals": 2454,
+    "screened": 10,
+    "step": 8,
+    "sweep": 2,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.006760288693,
+      0.007120562124
+    ],
+    "at_least_90": 750,
+    "axis": 0,
+    "before": [
+      0.4625,
+      0.006760288693,
+      0.007120562124
+    ],
+    "cases": 894,
+    "evaluations": 47695,
+    "glyph": "j",
+    "mean_iou": 0.947471183285181,
+    "passes_target": false,
+    "pooled_iou": 0.9717913627274136,
+    "proposals": 1792,
+    "screened": 1577,
+    "step": 8,
+    "sweep": 2,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.006756842487,
+      0.007111373472
+    ],
+    "at_least_90": 755,
+    "axis": 1,
+    "before": [
+      0.4625,
+      0.006760288693,
+      0.007120562124
+    ],
+    "cases": 894,
+    "evaluations": 48674,
+    "glyph": "j",
+    "mean_iou": 0.9480926100811045,
+    "passes_target": false,
+    "pooled_iou": 0.9717939536708227,
+    "proposals": 1024,
+    "screened": 279,
+    "step": 8,
+    "sweep": 2,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.006756842487,
+      0.007111248472
+    ],
+    "at_least_90": 755,
+    "axis": 0,
+    "before": [
+      0.4625,
+      0.006756842487,
+      0.007111373472
+    ],
+    "cases": 894,
+    "evaluations": 48881,
+    "glyph": "g",
+    "mean_iou": 0.9480926100811045,
+    "passes_target": false,
+    "pooled_iou": 0.9717939536708227,
+    "proposals": 356,
+    "screened": 5,
+    "step": 8,
+    "sweep": 3,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.006756842487,
+      0.007110640032
+    ],
+    "at_least_90": 755,
+    "axis": 1,
+    "before": [
+      0.4625,
+      0.006756842487,
+      0.007111248472
+    ],
+    "cases": 894,
+    "evaluations": 49372,
+    "glyph": "g",
+    "mean_iou": 0.9481018761657095,
+    "passes_target": false,
+    "pooled_iou": 0.9717991647843482,
+    "proposals": 1096,
+    "screened": 0,
+    "step": 8,
+    "sweep": 3,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.006756842487,
+      0.007109294377
+    ],
+    "at_least_90": 755,
+    "axis": 0,
+    "before": [
+      0.4625,
+      0.006756842487,
+      0.007110640032
+    ],
+    "cases": 894,
+    "evaluations": 49567,
+    "glyph": "O",
+    "mean_iou": 0.9481106149800272,
+    "passes_target": false,
+    "pooled_iou": 0.971799682972493,
+    "proposals": 152,
+    "screened": 63,
+    "step": 8,
+    "sweep": 3,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.006756842487,
+      0.007109294377
+    ],
+    "at_least_90": 755,
+    "axis": 1,
+    "before": [
+      0.4625,
+      0.006756842487,
+      0.007109294377
+    ],
+    "cases": 894,
+    "evaluations": 49677,
+    "glyph": "O",
+    "mean_iou": 0.9481106149800272,
+    "passes_target": false,
+    "pooled_iou": 0.971799682972493,
+    "proposals": 76,
+    "screened": 29,
+    "step": 8,
+    "sweep": 3,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.006756842487,
+      0.007109294377
+    ],
+    "at_least_90": 755,
+    "axis": 0,
+    "before": [
+      0.4625,
+      0.006756842487,
+      0.007109294377
+    ],
+    "cases": 894,
+    "evaluations": 49677,
+    "glyph": "H",
+    "mean_iou": 0.9481106149800272,
+    "passes_target": false,
+    "pooled_iou": 0.971799682972493,
+    "proposals": 60,
+    "screened": 7,
+    "step": 8,
+    "sweep": 3,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.006756842487,
+      0.007109294377
+    ],
+    "at_least_90": 755,
+    "axis": 1,
+    "before": [
+      0.4625,
+      0.006756842487,
+      0.007109294377
+    ],
+    "cases": 894,
+    "evaluations": 49677,
+    "glyph": "H",
+    "mean_iou": 0.9481106149800272,
+    "passes_target": false,
+    "pooled_iou": 0.971799682972493,
+    "proposals": 74,
+    "screened": 21,
+    "step": 8,
+    "sweep": 3,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.006756842487,
+      0.007109044377
+    ],
+    "at_least_90": 755,
+    "axis": 0,
+    "before": [
+      0.4625,
+      0.006756842487,
+      0.007109294377
+    ],
+    "cases": 894,
+    "evaluations": 50182,
+    "glyph": "@",
+    "mean_iou": 0.9481106149800272,
+    "passes_target": false,
+    "pooled_iou": 0.971799682972493,
+    "proposals": 269,
+    "screened": 0,
+    "step": 8,
+    "sweep": 3,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.006755545479,
+      0.007106310697
+    ],
+    "at_least_90": 756,
+    "axis": 1,
+    "before": [
+      0.4625,
+      0.006756842487,
+      0.007109044377
+    ],
+    "cases": 894,
+    "evaluations": 50583,
+    "glyph": "@",
+    "mean_iou": 0.9481432845128024,
+    "passes_target": false,
+    "pooled_iou": 0.9718227165647707,
+    "proposals": 272,
+    "screened": 0,
+    "step": 8,
+    "sweep": 3,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.006755545479,
+      0.007104065966
+    ],
+    "at_least_90": 756,
+    "axis": 0,
+    "before": [
+      0.4625,
+      0.006755545479,
+      0.007106310697
+    ],
+    "cases": 894,
+    "evaluations": 50897,
+    "glyph": "S",
+    "mean_iou": 0.9481581693064204,
+    "passes_target": false,
+    "pooled_iou": 0.9718237529705982,
+    "proposals": 590,
+    "screened": 1,
+    "step": 8,
+    "sweep": 3,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.006755545479,
+      0.007104065966
+    ],
+    "at_least_90": 756,
+    "axis": 1,
+    "before": [
+      0.4625,
+      0.006755545479,
+      0.007104065966
+    ],
+    "cases": 894,
+    "evaluations": 50937,
+    "glyph": "S",
+    "mean_iou": 0.9481581693064204,
+    "passes_target": false,
+    "pooled_iou": 0.9718237529705982,
+    "proposals": 41,
+    "screened": 0,
+    "step": 8,
+    "sweep": 3,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.006755545479,
+      0.007104065966
+    ],
+    "at_least_90": 756,
+    "axis": 0,
+    "before": [
+      0.4625,
+      0.006755545479,
+      0.007104065966
+    ],
+    "cases": 894,
+    "evaluations": 50937,
+    "glyph": "j",
+    "mean_iou": 0.9481581693064204,
+    "passes_target": false,
+    "pooled_iou": 0.9718237529705982,
+    "proposals": 24,
+    "screened": 24,
+    "step": 8,
+    "sweep": 3,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.006755545479,
+      0.007104065966
+    ],
+    "at_least_90": 756,
+    "axis": 1,
+    "before": [
+      0.4625,
+      0.006755545479,
+      0.007104065966
+    ],
+    "cases": 894,
+    "evaluations": 50937,
+    "glyph": "j",
+    "mean_iou": 0.9481581693064204,
+    "passes_target": false,
+    "pooled_iou": 0.9718237529705982,
+    "proposals": 90,
+    "screened": 18,
+    "step": 8,
+    "sweep": 3,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.006755493218,
+      0.007120291666
+    ],
+    "at_least_90": 757,
+    "axis": 0,
+    "before": [
+      0.4625,
+      0.006755545479,
+      0.007104065966
+    ],
+    "cases": 894,
+    "evaluations": 53239,
+    "glyph": "g",
+    "mean_iou": 0.9481967593516872,
+    "passes_target": false,
+    "pooled_iou": 0.9718407518806343,
+    "proposals": 4350,
+    "screened": 46,
+    "step": 4,
+    "sweep": 4,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.006755437499,
+      0.007138989671
+    ],
+    "at_least_90": 757,
+    "axis": 1,
+    "before": [
+      0.4625,
+      0.006755493218,
+      0.007120291666
+    ],
+    "cases": 894,
+    "evaluations": 58123,
+    "glyph": "g",
+    "mean_iou": 0.9482237049431924,
+    "passes_target": false,
+    "pooled_iou": 0.9718543715583636,
+    "proposals": 7520,
+    "screened": 6,
+    "step": 4,
+    "sweep": 4,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.006700618462,
+      0.007095365002
+    ],
+    "at_least_90": 759,
+    "axis": 0,
+    "before": [
+      0.4625,
+      0.006755437499,
+      0.007138989671
+    ],
+    "cases": 894,
+    "evaluations": 59149,
+    "glyph": "O",
+    "mean_iou": 0.948759922478494,
+    "passes_target": false,
+    "pooled_iou": 0.9720350109182359,
+    "proposals": 2035,
+    "screened": 148,
+    "step": 4,
+    "sweep": 4,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.006650851503,
+      0.007094647762
+    ],
+    "at_least_90": 759,
+    "axis": 1,
+    "before": [
+      0.4625,
+      0.006700618462,
+      0.007095365002
+    ],
+    "cases": 894,
+    "evaluations": 60027,
+    "glyph": "O",
+    "mean_iou": 0.9487596406266784,
+    "passes_target": false,
+    "pooled_iou": 0.9720174829832193,
+    "proposals": 1958,
+    "screened": 121,
+    "step": 4,
+    "sweep": 4,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.006650851503,
+      0.007094647762
+    ],
+    "at_least_90": 759,
+    "axis": 0,
+    "before": [
+      0.4625,
+      0.006650851503,
+      0.007094647762
+    ],
+    "cases": 894,
+    "evaluations": 60087,
+    "glyph": "H",
+    "mean_iou": 0.9487596406266784,
+    "passes_target": false,
+    "pooled_iou": 0.9720174829832193,
+    "proposals": 1479,
+    "screened": 0,
+    "step": 4,
+    "sweep": 4,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.006650851503,
+      0.007094647762
+    ],
+    "at_least_90": 759,
+    "axis": 1,
+    "before": [
+      0.4625,
+      0.006650851503,
+      0.007094647762
+    ],
+    "cases": 894,
+    "evaluations": 60161,
+    "glyph": "H",
+    "mean_iou": 0.9487596406266784,
+    "passes_target": false,
+    "pooled_iou": 0.9720174829832193,
+    "proposals": 1089,
+    "screened": 0,
+    "step": 4,
+    "sweep": 4,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.006640316628,
+      0.007109642899
+    ],
+    "at_least_90": 759,
+    "axis": 0,
+    "before": [
+      0.4625,
+      0.006650851503,
+      0.007094647762
+    ],
+    "cases": 894,
+    "evaluations": 65741,
+    "glyph": "@",
+    "mean_iou": 0.9488378045956447,
+    "passes_target": false,
+    "pooled_iou": 0.9720513071697244,
+    "proposals": 7173,
+    "screened": 16,
+    "step": 4,
+    "sweep": 4,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.006626501413,
+      0.007192959543
+    ],
+    "at_least_90": 760,
+    "axis": 1,
+    "before": [
+      0.4625,
+      0.006640316628,
+      0.007109642899
+    ],
+    "cases": 894,
+    "evaluations": 68111,
+    "glyph": "@",
+    "mean_iou": 0.9488623294563533,
+    "passes_target": false,
+    "pooled_iou": 0.972052775207781,
+    "proposals": 7054,
+    "screened": 0,
+    "step": 4,
+    "sweep": 4,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.006602848501,
+      0.007237030671
+    ],
+    "at_least_90": 762,
+    "axis": 0,
+    "before": [
+      0.4625,
+      0.006626501413,
+      0.007192959543
+    ],
+    "cases": 894,
+    "evaluations": 70469,
+    "glyph": "S",
+    "mean_iou": 0.9487397583605348,
+    "passes_target": false,
+    "pooled_iou": 0.9720221724387091,
+    "proposals": 4290,
+    "screened": 16,
+    "step": 4,
+    "sweep": 4,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.006602264384,
+      0.007227078252
+    ],
+    "at_least_90": 762,
+    "axis": 1,
+    "before": [
+      0.4625,
+      0.006602848501,
+      0.007237030671
+    ],
+    "cases": 894,
+    "evaluations": 72607,
+    "glyph": "S",
+    "mean_iou": 0.9488629135344362,
+    "passes_target": false,
+    "pooled_iou": 0.9720548132659425,
+    "proposals": 2495,
+    "screened": 10,
+    "step": 4,
+    "sweep": 4,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.006593569827,
+      0.007225975846
+    ],
+    "at_least_90": 766,
+    "axis": 0,
+    "before": [
+      0.4625,
+      0.006602264384,
+      0.007227078252
+    ],
+    "cases": 894,
+    "evaluations": 72938,
+    "glyph": "j",
+    "mean_iou": 0.9493597220153392,
+    "passes_target": false,
+    "pooled_iou": 0.9721641617730002,
+    "proposals": 1837,
+    "screened": 1545,
+    "step": 4,
+    "sweep": 4,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.006593569827,
+      0.007181376037
+    ],
+    "at_least_90": 766,
+    "axis": 1,
+    "before": [
+      0.4625,
+      0.006593569827,
+      0.007225975846
+    ],
+    "cases": 894,
+    "evaluations": 73711,
+    "glyph": "j",
+    "mean_iou": 0.949972516456958,
+    "passes_target": false,
+    "pooled_iou": 0.9722256350918338,
+    "proposals": 1105,
+    "screened": 265,
+    "step": 4,
+    "sweep": 4,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.006593569827,
+      0.007181126037
+    ],
+    "at_least_90": 766,
+    "axis": 0,
+    "before": [
+      0.4625,
+      0.006593569827,
+      0.007181376037
+    ],
+    "cases": 894,
+    "evaluations": 73978,
+    "glyph": "g",
+    "mean_iou": 0.949972516456958,
+    "passes_target": false,
+    "pooled_iou": 0.9722256350918338,
+    "proposals": 728,
+    "screened": 4,
+    "step": 4,
+    "sweep": 5,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.006593569827,
+      0.007180626037
+    ],
+    "at_least_90": 766,
+    "axis": 1,
+    "before": [
+      0.4625,
+      0.006593569827,
+      0.007181126037
+    ],
+    "cases": 894,
+    "evaluations": 74473,
+    "glyph": "g",
+    "mean_iou": 0.949972516456958,
+    "passes_target": false,
+    "pooled_iou": 0.9722256350918338,
+    "proposals": 1122,
+    "screened": 0,
+    "step": 4,
+    "sweep": 5,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.006592594507,
+      0.007180872623
+    ],
+    "at_least_90": 766,
+    "axis": 0,
+    "before": [
+      0.4625,
+      0.006593569827,
+      0.007180626037
+    ],
+    "cases": 894,
+    "evaluations": 74786,
+    "glyph": "O",
+    "mean_iou": 0.9499766347487629,
+    "passes_target": false,
+    "pooled_iou": 0.9722256350918338,
+    "proposals": 302,
+    "screened": 36,
+    "step": 4,
+    "sweep": 5,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.00659258485,
+      0.007191674389
+    ],
+    "at_least_90": 766,
+    "axis": 1,
+    "before": [
+      0.4625,
+      0.006592594507,
+      0.007180872623
+    ],
+    "cases": 894,
+    "evaluations": 75065,
+    "glyph": "O",
+    "mean_iou": 0.9499647712781676,
+    "passes_target": false,
+    "pooled_iou": 0.9722233022341732,
+    "proposals": 324,
+    "screened": 12,
+    "step": 4,
+    "sweep": 5,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.00659258485,
+      0.007191674389
+    ],
+    "at_least_90": 766,
+    "axis": 0,
+    "before": [
+      0.4625,
+      0.00659258485,
+      0.007191674389
+    ],
+    "cases": 894,
+    "evaluations": 75065,
+    "glyph": "H",
+    "mean_iou": 0.9499647712781676,
+    "passes_target": false,
+    "pooled_iou": 0.9722233022341732,
+    "proposals": 60,
+    "screened": 5,
+    "step": 4,
+    "sweep": 5,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.00659258485,
+      0.007191674389
+    ],
+    "at_least_90": 766,
+    "axis": 1,
+    "before": [
+      0.4625,
+      0.00659258485,
+      0.007191674389
+    ],
+    "cases": 894,
+    "evaluations": 75065,
+    "glyph": "H",
+    "mean_iou": 0.9499647712781676,
+    "passes_target": false,
+    "pooled_iou": 0.9722233022341732,
+    "proposals": 74,
+    "screened": 17,
+    "step": 4,
+    "sweep": 5,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.00659258485,
+      0.007191424389
+    ],
+    "at_least_90": 766,
+    "axis": 0,
+    "before": [
+      0.4625,
+      0.00659258485,
+      0.007191674389
+    ],
+    "cases": 894,
+    "evaluations": 75625,
+    "glyph": "@",
+    "mean_iou": 0.9499647712781676,
+    "passes_target": false,
+    "pooled_iou": 0.9722233022341732,
+    "proposals": 544,
+    "screened": 0,
+    "step": 4,
+    "sweep": 5,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.006592241461,
+      0.007200642633
+    ],
+    "at_least_90": 766,
+    "axis": 1,
+    "before": [
+      0.4625,
+      0.00659258485,
+      0.007191424389
+    ],
+    "cases": 894,
+    "evaluations": 76116,
+    "glyph": "@",
+    "mean_iou": 0.9499743330383279,
+    "passes_target": false,
+    "pooled_iou": 0.9722343475398277,
+    "proposals": 412,
+    "screened": 0,
+    "step": 4,
+    "sweep": 5,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.006592237972,
+      0.007181975523
+    ],
+    "at_least_90": 767,
+    "axis": 0,
+    "before": [
+      0.4625,
+      0.006592241461,
+      0.007200642633
+    ],
+    "cases": 894,
+    "evaluations": 76602,
+    "glyph": "S",
+    "mean_iou": 0.9501364510990592,
+    "passes_target": false,
+    "pooled_iou": 0.9722619957303816,
+    "proposals": 808,
+    "screened": 0,
+    "step": 4,
+    "sweep": 5,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.006592237972,
+      0.007178465198
+    ],
+    "at_least_90": 767,
+    "axis": 1,
+    "before": [
+      0.4625,
+      0.006592237972,
+      0.007181975523
+    ],
+    "cases": 894,
+    "evaluations": 76800,
+    "glyph": "S",
+    "mean_iou": 0.9501813326291147,
+    "passes_target": false,
+    "pooled_iou": 0.9722793187948323,
+    "proposals": 118,
+    "screened": 0,
+    "step": 4,
+    "sweep": 5,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.006592237972,
+      0.007178465198
+    ],
+    "at_least_90": 767,
+    "axis": 0,
+    "before": [
+      0.4625,
+      0.006592237972,
+      0.007178465198
+    ],
+    "cases": 894,
+    "evaluations": 76902,
+    "glyph": "j",
+    "mean_iou": 0.9501813326291147,
+    "passes_target": false,
+    "pooled_iou": 0.9722793187948323,
+    "proposals": 48,
+    "screened": 24,
+    "step": 4,
+    "sweep": 5,
+    "worst_iou": 0.4375
+  },
+  {
+    "after": [
+      0.4625,
+      0.006592237972,
+      0.007178465198
+    ],
+    "at_least_90": 767,
+    "axis": 1,
+    "before": [
+      0.4625,
+      0.006592237972,
+      0.007178465198
+    ],
+    "cases": 894,
+    "evaluations": 76902,
+    "glyph": "j",
+    "mean_iou": 0.9501813326291147,
+    "passes_target": false,
+    "pooled_iou": 0.9722793187948323,
+    "proposals": 98,
+    "screened": 12,
+    "step": 4,
+    "sweep": 5,
+    "worst_iou": 0.4375
+  }
+]

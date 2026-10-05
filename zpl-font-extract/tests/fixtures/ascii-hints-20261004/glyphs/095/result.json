@@ -1,0 +1,442 @@
+{
+  "baseline": {
+    "at_least_90": 30,
+    "cases": 35,
+    "mean_iou": 0.9466666666666667,
+    "passes_target": false,
+    "pooled_iou": 0.9783424283765347,
+    "worst_iou": 0.5
+  },
+  "glyph": "_",
+  "state_sha256": "20055bbfbb85e3956e01953c34445e49ad599dbd3b12bc7beda50f7786431457",
+  "stats": [
+    {
+      "over": 0,
+      "query": [
+        10,
+        10,
+        95,
+        0
+      ],
+      "under": 0,
+      "union": 5,
+      "xor": 0
+    },
+    {
+      "over": 0,
+      "query": [
+        10,
+        10,
+        95,
+        2
+      ],
+      "under": 0,
+      "union": 5,
+      "xor": 0
+    },
+    {
+      "over": 0,
+      "query": [
+        10,
+        10,
+        95,
+        3
+      ],
+      "under": 0,
+      "union": 5,
+      "xor": 0
+    },
+    {
+      "over": 0,
+      "query": [
+        12,
+        12,
+        95,
+        0
+      ],
+      "under": 0,
+      "union": 6,
+      "xor": 0
+    },
+    {
+      "over": 0,
+      "query": [
+        12,
+        18,
+        95,
+        0
+      ],
+      "under": 0,
+      "union": 6,
+      "xor": 0
+    },
+    {
+      "over": 0,
+      "query": [
+        14,
+        14,
+        95,
+        0
+      ],
+      "under": 0,
+      "union": 7,
+      "xor": 0
+    },
+    {
+      "over": 0,
+      "query": [
+        15,
+        15,
+        95,
+        0
+      ],
+      "under": 0,
+      "union": 7,
+      "xor": 0
+    },
+    {
+      "over": 0,
+      "query": [
+        16,
+        16,
+        95,
+        1
+      ],
+      "under": 0,
+      "union": 8,
+      "xor": 0
+    },
+    {
+      "over": 0,
+      "query": [
+        16,
+        16,
+        95,
+        2
+      ],
+      "under": 0,
+      "union": 8,
+      "xor": 0
+    },
+    {
+      "over": 0,
+      "query": [
+        16,
+        24,
+        95,
+        0
+      ],
+      "under": 0,
+      "union": 8,
+      "xor": 0
+    },
+    {
+      "over": 0,
+      "query": [
+        17,
+        17,
+        95,
+        0
+      ],
+      "under": 0,
+      "union": 8,
+      "xor": 0
+    },
+    {
+      "over": 0,
+      "query": [
+        18,
+        18,
+        95,
+        0
+      ],
+      "under": 0,
+      "union": 9,
+      "xor": 0
+    },
+    {
+      "over": 0,
+      "query": [
+        19,
+        19,
+        95,
+        0
+      ],
+      "under": 0,
+      "union": 9,
+      "xor": 0
+    },
+    {
+      "over": 0,
+      "query": [
+        21,
+        21,
+        95,
+        0
+      ],
+      "under": 0,
+      "union": 10,
+      "xor": 0
+    },
+    {
+      "over": 0,
+      "query": [
+        22,
+        22,
+        95,
+        0
+      ],
+      "under": 0,
+      "union": 11,
+      "xor": 0
+    },
+    {
+      "over": 0,
+      "query": [
+        24,
+        16,
+        95,
+        0
+      ],
+      "under": 0,
+      "union": 12,
+      "xor": 0
+    },
+    {
+      "over": 0,
+      "query": [
+        24,
+        24,
+        95,
+        0
+      ],
+      "under": 0,
+      "union": 12,
+      "xor": 0
+    },
+    {
+      "over": 0,
+      "query": [
+        24,
+        24,
+        95,
+        2
+      ],
+      "under": 0,
+      "union": 12,
+      "xor": 0
+    },
+    {
+      "over": 0,
+      "query": [
+        24,
+        24,
+        95,
+        3
+      ],
+      "under": 0,
+      "union": 12,
+      "xor": 0
+    },
+    {
+      "over": 0,
+      "query": [
+        25,
+        25,
+        95,
+        0
+      ],
+      "under": 0,
+      "union": 24,
+      "xor": 0
+    },
+    {
+      "over": 0,
+      "query": [
+        26,
+        26,
+        95,
+        0
+      ],
+      "under": 0,
+      "union": 26,
+      "xor": 0
+    },
+    {
+      "over": 0,
+      "query": [
+        28,
+        28,
+        95,
+        0
+      ],
+      "under": 0,
+      "union": 28,
+      "xor": 0
+    },
+    {
+      "over": 0,
+      "query": [
+        29,
+        29,
+        95,
+        0
+      ],
+      "under": 0,
+      "union": 28,
+      "xor": 0
+    },
+    {
+      "over": 0,
+      "query": [
+        31,
+        31,
+        95,
+        0
+      ],
+      "under": 0,
+      "union": 30,
+      "xor": 0
+    },
+    {
+      "over": 0,
+      "query": [
+        32,
+        24,
+        95,
+        0
+      ],
+      "under": 0,
+      "union": 16,
+      "xor": 0
+    },
+    {
+      "over": 0,
+      "query": [
+        32,
+        48,
+        95,
+        0
+      ],
+      "under": 0,
+      "union": 48,
+      "xor": 0
+    },
+    {
+      "over": 0,
+      "query": [
+        36,
+        36,
+        95,
+        0
+      ],
+      "under": 0,
+      "union": 36,
+      "xor": 0
+    },
+    {
+      "over": 0,
+      "query": [
+        40,
+        40,
+        95,
+        1
+      ],
+      "under": 0,
+      "union": 40,
+      "xor": 0
+    },
+    {
+      "over": 0,
+      "query": [
+        40,
+        40,
+        95,
+        2
+      ],
+      "under": 0,
+      "union": 40,
+      "xor": 0
+    },
+    {
+      "over": 0,
+      "query": [
+        48,
+        32,
+        95,
+        0
+      ],
+      "under": 0,
+      "union": 48,
+      "xor": 0
+    },
+    {
+      "over": 0,
+      "query": [
+        48,
+        48,
+        95,
+        0
+      ],
+      "under": 0,
+      "union": 72,
+      "xor": 0
+    },
+    {
+      "over": 0,
+      "query": [
+        80,
+        80,
+        95,
+        0
+      ],
+      "under": 0,
+      "union": 200,
+      "xor": 0
+    },
+    {
+      "over": 0,
+      "query": [
+        96,
+        96,
+        95,
+        0
+      ],
+      "under": 48,
+      "union": 288,
+      "xor": 48
+    },
+    {
+      "over": 0,
+      "query": [
+        192,
+        192,
+        95,
+        0
+      ],
+      "under": 0,
+      "union": 960,
+      "xor": 0
+    },
+    {
+      "over": 0,
+      "query": [
+        384,
+        384,
+        95,
+        0
+      ],
+      "under": 0,
+      "union": 3820,
+      "xor": 0
+    }
+  ],
+  "targeted": {
+    "at_least_90": 34,
+    "cases": 35,
+    "mean_iou": 0.9952380952380953,
+    "passes_target": false,
+    "pooled_iou": 0.9918144611186903,
+    "worst_iou": 0.8333333333333334
+  }
+}

@@ -1,0 +1,2001 @@
+{
+  "advances": {
+    " ": 612,
+    "!": 612,
+    "\"": 985,
+    "#": 985,
+    "$": 985,
+    "%": 1858,
+    "&": 1246,
+    "'": 612,
+    "(": 612,
+    ")": 612,
+    "*": 985,
+    "+": 1858,
+    ",": 612,
+    "-": 1858,
+    ".": 612,
+    "/": 612,
+    "0": 985,
+    "1": 985,
+    "2": 985,
+    "3": 985,
+    "4": 985,
+    "5": 985,
+    "6": 985,
+    "7": 985,
+    "8": 985,
+    "9": 985,
+    ":": 612,
+    ";": 612,
+    "<": 2044,
+    "=": 1858,
+    ">": 2044,
+    "?": 910,
+    "@": 1858,
+    "A": 1135,
+    "B": 1135,
+    "C": 1093,
+    "D": 1209,
+    "E": 1022,
+    "F": 1022,
+    "G": 1209,
+    "H": 1246,
+    "I": 561,
+    "J": 910,
+    "K": 1135,
+    "L": 985,
+    "M": 1550,
+    "N": 1246,
+    "O": 1173,
+    "P": 1135,
+    "Q": 1173,
+    "R": 1209,
+    "S": 1093,
+    "T": 1022,
+    "U": 1246,
+    "V": 1093,
+    "W": 1667,
+    "X": 1135,
+    "Y": 1135,
+    "Z": 1022,
+    "[": 612,
+    "\\": 985,
+    "]": 612,
+    "^": 1022,
+    "_": 1022,
+    "`": 612,
+    "a": 949,
+    "b": 1022,
+    "c": 910,
+    "d": 1022,
+    "e": 985,
+    "f": 561,
+    "g": 1022,
+    "h": 1022,
+    "i": 528,
+    "j": 528,
+    "k": 910,
+    "l": 528,
+    "m": 1550,
+    "n": 1022,
+    "o": 985,
+    "p": 1022,
+    "q": 1022,
+    "r": 679,
+    "s": 870,
+    "t": 561,
+    "u": 1022,
+    "v": 910,
+    "w": 1364,
+    "x": 910,
+    "y": 910,
+    "z": 797,
+    "{": 1022,
+    "|": 1022,
+    "}": 1022,
+    "~": 2044
+  },
+  "graph": {
+    "9": [
+      {
+        "counters": [
+          {
+            "high": 3,
+            "low": 2,
+            "support": 176,
+            "width": 277
+          },
+          {
+            "high": 8,
+            "low": 2,
+            "support": 176,
+            "width": 272
+          },
+          {
+            "high": 22,
+            "low": 2,
+            "support": 176,
+            "width": 272
+          }
+        ],
+        "groups": [
+          {
+            "points": [
+              0,
+              1,
+              2,
+              125,
+              126,
+              127
+            ],
+            "span": [
+              875,
+              1168
+            ],
+            "value": 73
+          },
+          {
+            "points": [
+              89,
+              90
+            ],
+            "span": [
+              261,
+              325
+            ],
+            "value": 96
+          },
+          {
+            "points": [
+              128,
+              129
+            ],
+            "span": [
+              949,
+              1125
+            ],
+            "value": 352
+          },
+          {
+            "points": [
+              147,
+              148
+            ],
+            "span": [
+              901,
+              1125
+            ],
+            "value": 629
+          },
+          {
+            "points": [
+              102,
+              103
+            ],
+            "span": [
+              411,
+              592
+            ],
+            "value": 635
+          },
+          {
+            "hint_origin": 912,
+            "points": [
+              45,
+              46
+            ],
+            "span": [
+              1024,
+              1093
+            ],
+            "split_from": 5,
+            "value": 912
+          },
+          {
+            "points": [
+              47,
+              48
+            ],
+            "span": [
+              587,
+              1024
+            ],
+            "value": 917
+          },
+          {
+            "points": [
+              3,
+              5
+            ],
+            "span": [
+              1168,
+              1181
+            ],
+            "value": 80
+          },
+          {
+            "hint_origin": 624,
+            "points": [
+              143,
+              145
+            ],
+            "span": [
+              864,
+              879
+            ],
+            "split_from": 8,
+            "value": 624
+          },
+          {
+            "points": [
+              60
+            ],
+            "shoulder": true,
+            "span": [
+              112,
+              112
+            ],
+            "value": 805
+          },
+          {
+            "points": [
+              34
+            ],
+            "shoulder": true,
+            "span": [
+              1440,
+              1440
+            ],
+            "value": 785
+          },
+          {
+            "points": [
+              10
+            ],
+            "shoulder": true,
+            "span": [
+              1375,
+              1375
+            ],
+            "value": 113
+          },
+          {
+            "points": [
+              121
+            ],
+            "shoulder": true,
+            "span": [
+              662,
+              662
+            ],
+            "value": 111
+          },
+          {
+            "points": [
+              80
+            ],
+            "shoulder": true,
+            "span": [
+              57,
+              57
+            ],
+            "value": 187
+          },
+          {
+            "points": [
+              98
+            ],
+            "shoulder": true,
+            "span": [
+              240,
+              240
+            ],
+            "value": 620
+          },
+          {
+            "points": [
+              154
+            ],
+            "shoulder": true,
+            "span": [
+              1280,
+              1280
+            ],
+            "value": 611
+          },
+          {
+            "points": [
+              163
+            ],
+            "shoulder": true,
+            "span": [
+              1259,
+              1259
+            ],
+            "value": 369
+          },
+          {
+            "points": [
+              93
+            ],
+            "shoulder": true,
+            "span": [
+              235,
+              235
+            ],
+            "value": 400
+          },
+          {
+            "points": [
+              141
+            ],
+            "shoulder": true,
+            "span": [
+              771,
+              771
+            ],
+            "value": 610
+          },
+          {
+            "points": [
+              134
+            ],
+            "shoulder": true,
+            "span": [
+              784,
+              784
+            ],
+            "value": 389
+          },
+          {
+            "points": [
+              106
+            ],
+            "shoulder": true,
+            "span": [
+              516,
+              516
+            ],
+            "value": 540
+          },
+          {
+            "hint_origin": 912,
+            "points": [
+              49,
+              50
+            ],
+            "span": [
+              496,
+              587
+            ],
+            "split_from": 5,
+            "value": 912
+          },
+          {
+            "hint_origin": 624,
+            "points": [
+              150,
+              152
+            ],
+            "span": [
+              1156,
+              1173
+            ],
+            "split_from": 8,
+            "value": 624
+          }
+        ],
+        "stems": [
+          {
+            "high": 5,
+            "low": 4,
+            "support": 96,
+            "width": 277
+          },
+          {
+            "high": 21,
+            "low": 4,
+            "support": 96,
+            "width": 277
+          },
+          {
+            "high": 2,
+            "low": 0,
+            "support": 176,
+            "width": 279
+          },
+          {
+            "high": 6,
+            "low": 3,
+            "support": 123,
+            "width": 288
+          },
+          {
+            "high": 5,
+            "low": 8,
+            "support": 229,
+            "width": 288
+          },
+          {
+            "high": 21,
+            "low": 8,
+            "support": 229,
+            "width": 288
+          },
+          {
+            "high": 5,
+            "low": 22,
+            "support": 229,
+            "width": 288
+          },
+          {
+            "high": 21,
+            "low": 22,
+            "support": 229,
+            "width": 288
+          },
+          {
+            "high": 6,
+            "low": 8,
+            "support": 160,
+            "width": 293
+          },
+          {
+            "high": 6,
+            "low": 22,
+            "support": 160,
+            "width": 293
+          },
+          {
+            "corridor": true,
+            "curved": false,
+            "high": 5,
+            "low": 3,
+            "support": 192,
+            "width": 283
+          },
+          {
+            "corridor": true,
+            "curved": false,
+            "high": 21,
+            "low": 3,
+            "support": 192,
+            "width": 283
+          },
+          {
+            "corridor": true,
+            "curved": false,
+            "high": 6,
+            "low": 4,
+            "support": 5,
+            "width": 282
+          },
+          {
+            "corridor": true,
+            "curved": true,
+            "high": 2,
+            "low": 7,
+            "support": 1,
+            "width": 272
+          }
+        ]
+      },
+      {
+        "counters": [
+          {
+            "high": 2,
+            "low": 1,
+            "support": 6,
+            "width": 181
+          },
+          {
+            "high": 4,
+            "low": 3,
+            "support": 43,
+            "width": 592
+          }
+        ],
+        "groups": [
+          {
+            "points": [
+              72,
+              73
+            ],
+            "span": [
+              416,
+              528
+            ],
+            "value": -32
+          },
+          {
+            "points": [
+              90,
+              91
+            ],
+            "span": [
+              96,
+              379
+            ],
+            "value": 325
+          },
+          {
+            "points": [
+              108,
+              109
+            ],
+            "span": [
+              373,
+              453
+            ],
+            "value": 506
+          },
+          {
+            "points": [
+              137,
+              138
+            ],
+            "span": [
+              469,
+              517
+            ],
+            "value": 731
+          },
+          {
+            "points": [
+              157,
+              158
+            ],
+            "span": [
+              464,
+              512
+            ],
+            "value": 1323
+          },
+          {
+            "points": [
+              22,
+              23
+            ],
+            "span": [
+              427,
+              544
+            ],
+            "value": 1547
+          },
+          {
+            "points": [
+              95
+            ],
+            "span": [
+              517,
+              517
+            ],
+            "value": 192
+          },
+          {
+            "points": [
+              103
+            ],
+            "span": [
+              635,
+              635
+            ],
+            "value": 592
+          },
+          {
+            "points": [
+              60
+            ],
+            "shoulder": true,
+            "span": [
+              805,
+              805
+            ],
+            "value": 112
+          },
+          {
+            "points": [
+              34
+            ],
+            "shoulder": true,
+            "span": [
+              785,
+              785
+            ],
+            "value": 1440
+          },
+          {
+            "points": [
+              10
+            ],
+            "shoulder": true,
+            "span": [
+              113,
+              113
+            ],
+            "value": 1375
+          },
+          {
+            "points": [
+              121
+            ],
+            "shoulder": true,
+            "span": [
+              111,
+              111
+            ],
+            "value": 662
+          },
+          {
+            "points": [
+              80
+            ],
+            "shoulder": true,
+            "span": [
+              187,
+              187
+            ],
+            "value": 57
+          },
+          {
+            "points": [
+              98
+            ],
+            "shoulder": true,
+            "span": [
+              620,
+              620
+            ],
+            "value": 240
+          },
+          {
+            "points": [
+              154
+            ],
+            "shoulder": true,
+            "span": [
+              611,
+              611
+            ],
+            "value": 1280
+          },
+          {
+            "points": [
+              163
+            ],
+            "shoulder": true,
+            "span": [
+              369,
+              369
+            ],
+            "value": 1259
+          },
+          {
+            "points": [
+              93
+            ],
+            "shoulder": true,
+            "span": [
+              400,
+              400
+            ],
+            "value": 235
+          },
+          {
+            "points": [
+              141
+            ],
+            "shoulder": true,
+            "span": [
+              610,
+              610
+            ],
+            "value": 771
+          },
+          {
+            "points": [
+              134
+            ],
+            "shoulder": true,
+            "span": [
+              389,
+              389
+            ],
+            "value": 784
+          },
+          {
+            "points": [
+              106
+            ],
+            "shoulder": true,
+            "span": [
+              540,
+              540
+            ],
+            "value": 516
+          }
+        ],
+        "stems": [
+          {
+            "high": 5,
+            "low": 4,
+            "support": 48,
+            "width": 224
+          },
+          {
+            "high": 3,
+            "low": 2,
+            "support": 1,
+            "width": 225
+          },
+          {
+            "high": 6,
+            "low": 0,
+            "support": 1,
+            "width": 224
+          },
+          {
+            "corridor": true,
+            "curved": true,
+            "high": 1,
+            "low": 0,
+            "support": 1,
+            "width": 357
+          }
+        ]
+      }
+    ]
+  },
+  "parameters": {
+    "cutin": 24,
+    "limit": 90,
+    "widths": [
+      [
+        103,
+        190,
+        229,
+        266,
+        283
+      ],
+      [
+        176,
+        198,
+        240,
+        282,
+        293,
+        398
+      ]
+    ],
+    "zones": [
+      -490,
+      -362,
+      -290,
+      -178,
+      -101,
+      0,
+      186,
+      229,
+      282,
+      386,
+      491,
+      519,
+      591,
+      661,
+      720,
+      784,
+      858,
+      917,
+      955,
+      1020,
+      1067,
+      1146,
+      1178,
+      1258,
+      1303,
+      1369,
+      1468,
+      1531,
+      1563
+    ]
+  },
+  "programs": {
+    "9": [
+      [
+        {
+          "op": "anchor",
+          "round": "grid"
+        },
+        {
+          "op": "anchor",
+          "round": "grid"
+        },
+        {
+          "minimum": true,
+          "op": "relative",
+          "ref": 0,
+          "round": "grid"
+        },
+        {
+          "design": 8,
+          "op": "anchor",
+          "round": "grid"
+        },
+        {
+          "op": "anchor",
+          "round": "grid"
+        },
+        {
+          "op": "anchor",
+          "round": "grid"
+        },
+        {
+          "op": "anchor",
+          "round": "grid"
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "op": "anchor",
+          "round": "floor"
+        },
+        {
+          "op": "anchor",
+          "round": "grid"
+        },
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "fade": {
+            "end": 24,
+            "measure": "max"
+          },
+          "op": "adjust",
+          "round": "none",
+          "shift": -8
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "fade": {
+            "end": 32,
+            "measure": "axis"
+          },
+          "op": "adjust",
+          "round": "none",
+          "shift": 8
+        },
+        {
+          "fade": {
+            "end": 16,
+            "measure": "min"
+          },
+          "op": "adjust",
+          "round": "none",
+          "shift": -4
+        },
+        null,
+        null,
+        null,
+        null
+      ]
+    ]
+  },
+  "regimes": {
+    "9": [
+      {
+        "limit": 16,
+        "nodes": [
+          {
+            "op": "anchor",
+            "round": "grid"
+          },
+          {
+            "op": "anchor",
+            "round": "grid"
+          },
+          {
+            "op": "anchor",
+            "round": "grid"
+          },
+          {
+            "op": "anchor",
+            "round": "grid"
+          },
+          {
+            "op": "link",
+            "ref": 5,
+            "round": "grid",
+            "stem": null
+          },
+          {
+            "op": "anchor",
+            "round": "grid"
+          },
+          {
+            "op": "anchor",
+            "round": "grid"
+          },
+          {
+            "op": "link",
+            "ref": 2,
+            "round": "grid",
+            "stem": null
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "op": "anchor",
+            "round": "grid"
+          },
+          null
+        ],
+        "smaller": {
+          "limit": 10,
+          "nodes": [
+            {
+              "op": "anchor",
+              "round": "grid"
+            },
+            {
+              "op": "anchor",
+              "round": "grid"
+            },
+            {
+              "op": "link",
+              "ref": 0,
+              "round": "grid",
+              "stem": 4
+            },
+            {
+              "op": "anchor",
+              "round": "grid"
+            },
+            {
+              "op": "anchor",
+              "round": "grid"
+            },
+            {
+              "op": "link",
+              "ref": 8,
+              "round": "grid",
+              "stem": 4
+            },
+            {
+              "op": "anchor",
+              "round": "grid"
+            },
+            {
+              "op": "link",
+              "ref": 2,
+              "round": "grid",
+              "stem": null
+            },
+            {
+              "minimum": true,
+              "op": "relative",
+              "ref": 2,
+              "round": "none"
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            {
+              "op": "anchor",
+              "round": "grid"
+            },
+            null
+          ]
+        }
+      },
+      {
+        "limit": 12,
+        "nodes": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "op": "anchor",
+            "round": "half"
+          },
+          null
+        ],
+        "smaller": {
+          "limit": 10,
+          "nodes": [
+            {
+              "op": "center",
+              "other": 1,
+              "round": "grid",
+              "shift": -4,
+              "stem": null
+            },
+            {
+              "op": "link",
+              "ref": 0,
+              "round": "grid",
+              "stem": null
+            },
+            {
+              "op": "center",
+              "other": 3,
+              "round": "grid",
+              "shift": -4,
+              "stem": 2
+            },
+            {
+              "op": "link",
+              "ref": 2,
+              "round": "grid",
+              "stem": 2
+            },
+            {
+              "op": "center",
+              "other": 5,
+              "round": "grid",
+              "shift": -4,
+              "stem": 2
+            },
+            {
+              "op": "link",
+              "ref": 4,
+              "round": "grid",
+              "stem": 2
+            },
+            {
+              "op": "link",
+              "ref": 0,
+              "round": "grid",
+              "stem": 2
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        }
+      }
+    ]
+  },
+  "shapes": {
+    "9": [
+      [
+        [
+          71,
+          1104,
+          true
+        ],
+        [
+          75,
+          1104,
+          true
+        ],
+        [
+          75,
+          1168,
+          true
+        ],
+        [
+          80,
+          1168,
+          true
+        ],
+        [
+          79,
+          1175,
+          false
+        ],
+        [
+          79,
+          1181,
+          true
+        ],
+        [
+          79,
+          1195,
+          false
+        ],
+        [
+          85,
+          1200,
+          true
+        ],
+        [
+          85,
+          1232,
+          true
+        ],
+        [
+          91,
+          1232,
+          true
+        ],
+        [
+          113,
+          1375,
+          false
+        ],
+        [
+          203,
+          1451,
+          true
+        ],
+        [
+          219,
+          1472,
+          true
+        ],
+        [
+          245,
+          1483,
+          true
+        ],
+        [
+          251,
+          1493,
+          true
+        ],
+        [
+          283,
+          1504,
+          true
+        ],
+        [
+          293,
+          1515,
+          true
+        ],
+        [
+          363,
+          1531,
+          true
+        ],
+        [
+          363,
+          1536,
+          true
+        ],
+        [
+          389,
+          1536,
+          true
+        ],
+        [
+          389,
+          1541,
+          true
+        ],
+        [
+          427,
+          1541,
+          true
+        ],
+        [
+          427,
+          1547,
+          true
+        ],
+        [
+          544,
+          1547,
+          true
+        ],
+        [
+          544,
+          1541,
+          true
+        ],
+        [
+          629,
+          1531,
+          true
+        ],
+        [
+          629,
+          1525,
+          true
+        ],
+        [
+          661,
+          1520,
+          true
+        ],
+        [
+          683,
+          1504,
+          true
+        ],
+        [
+          725,
+          1488,
+          true
+        ],
+        [
+          731,
+          1477,
+          true
+        ],
+        [
+          741,
+          1477,
+          true
+        ],
+        [
+          757,
+          1456,
+          true
+        ],
+        [
+          768,
+          1456,
+          true
+        ],
+        [
+          785,
+          1440,
+          false
+        ],
+        [
+          795,
+          1419,
+          true
+        ],
+        [
+          816,
+          1395,
+          true
+        ],
+        [
+          816,
+          1392,
+          true
+        ],
+        [
+          827,
+          1387,
+          true
+        ],
+        [
+          827,
+          1376,
+          true
+        ],
+        [
+          837,
+          1371,
+          true
+        ],
+        [
+          875,
+          1296,
+          false
+        ],
+        [
+          891,
+          1200,
+          true
+        ],
+        [
+          896,
+          1200,
+          true
+        ],
+        [
+          907,
+          1093,
+          true
+        ],
+        [
+          912,
+          1093,
+          true
+        ],
+        [
+          912,
+          1024,
+          true
+        ],
+        [
+          917,
+          1024,
+          true
+        ],
+        [
+          917,
+          587,
+          true
+        ],
+        [
+          912,
+          587,
+          true
+        ],
+        [
+          912,
+          496,
+          true
+        ],
+        [
+          907,
+          496,
+          true
+        ],
+        [
+          903,
+          412,
+          false
+        ],
+        [
+          891,
+          336,
+          true
+        ],
+        [
+          885,
+          336,
+          true
+        ],
+        [
+          869,
+          227,
+          false
+        ],
+        [
+          827,
+          144,
+          true
+        ],
+        [
+          816,
+          139,
+          true
+        ],
+        [
+          816,
+          128,
+          true
+        ],
+        [
+          805,
+          123,
+          true
+        ],
+        [
+          805,
+          112,
+          true
+        ],
+        [
+          779,
+          91,
+          true
+        ],
+        [
+          779,
+          80,
+          true
+        ],
+        [
+          757,
+          69,
+          true
+        ],
+        [
+          736,
+          43,
+          true
+        ],
+        [
+          709,
+          32,
+          true
+        ],
+        [
+          704,
+          21,
+          true
+        ],
+        [
+          672,
+          11,
+          true
+        ],
+        [
+          661,
+          0,
+          true
+        ],
+        [
+          645,
+          0,
+          true
+        ],
+        [
+          598,
+          -25,
+          false
+        ],
+        [
+          528,
+          -27,
+          true
+        ],
+        [
+          528,
+          -32,
+          true
+        ],
+        [
+          416,
+          -32,
+          true
+        ],
+        [
+          416,
+          -27,
+          true
+        ],
+        [
+          317,
+          -20,
+          false
+        ],
+        [
+          245,
+          16,
+          true
+        ],
+        [
+          240,
+          27,
+          true
+        ],
+        [
+          219,
+          32,
+          true
+        ],
+        [
+          208,
+          48,
+          true
+        ],
+        [
+          187,
+          57,
+          false
+        ],
+        [
+          171,
+          75,
+          true
+        ],
+        [
+          171,
+          85,
+          true
+        ],
+        [
+          149,
+          101,
+          true
+        ],
+        [
+          144,
+          123,
+          true
+        ],
+        [
+          128,
+          139,
+          true
+        ],
+        [
+          117,
+          181,
+          true
+        ],
+        [
+          107,
+          197,
+          true
+        ],
+        [
+          101,
+          261,
+          true
+        ],
+        [
+          96,
+          261,
+          true
+        ],
+        [
+          96,
+          325,
+          true
+        ],
+        [
+          379,
+          325,
+          true
+        ],
+        [
+          381,
+          273,
+          false
+        ],
+        [
+          400,
+          235,
+          true
+        ],
+        [
+          448,
+          197,
+          true
+        ],
+        [
+          517,
+          192,
+          true
+        ],
+        [
+          517,
+          197,
+          true
+        ],
+        [
+          539,
+          197,
+          true
+        ],
+        [
+          620,
+          240,
+          false
+        ],
+        [
+          624,
+          357,
+          true
+        ],
+        [
+          629,
+          357,
+          true
+        ],
+        [
+          629,
+          411,
+          true
+        ],
+        [
+          635,
+          411,
+          true
+        ],
+        [
+          635,
+          592,
+          true
+        ],
+        [
+          614,
+          571,
+          false
+        ],
+        [
+          587,
+          556,
+          true
+        ],
+        [
+          540,
+          516,
+          false
+        ],
+        [
+          453,
+          512,
+          true
+        ],
+        [
+          453,
+          506,
+          true
+        ],
+        [
+          373,
+          506,
+          true
+        ],
+        [
+          373,
+          512,
+          true
+        ],
+        [
+          341,
+          512,
+          true
+        ],
+        [
+          341,
+          517,
+          true
+        ],
+        [
+          272,
+          533,
+          true
+        ],
+        [
+          256,
+          542,
+          false
+        ],
+        [
+          245,
+          555,
+          true
+        ],
+        [
+          235,
+          555,
+          true
+        ],
+        [
+          229,
+          565,
+          true
+        ],
+        [
+          219,
+          565,
+          true
+        ],
+        [
+          208,
+          581,
+          true
+        ],
+        [
+          197,
+          581,
+          true
+        ],
+        [
+          111,
+          662,
+          false
+        ],
+        [
+          91,
+          805,
+          true
+        ],
+        [
+          85,
+          805,
+          true
+        ],
+        [
+          80,
+          875,
+          true
+        ],
+        [
+          75,
+          875,
+          true
+        ],
+        [
+          75,
+          939,
+          true
+        ],
+        [
+          71,
+          939,
+          true
+        ]
+      ],
+      [
+        [
+          352,
+          1125,
+          true
+        ],
+        [
+          352,
+          949,
+          true
+        ],
+        [
+          357,
+          949,
+          true
+        ],
+        [
+          357,
+          949,
+          false
+        ],
+        [
+          357,
+          948,
+          true
+        ],
+        [
+          357,
+          850,
+          false
+        ],
+        [
+          389,
+          784,
+          true
+        ],
+        [
+          405,
+          773,
+          true
+        ],
+        [
+          405,
+          763,
+          true
+        ],
+        [
+          469,
+          731,
+          true
+        ],
+        [
+          517,
+          731,
+          true
+        ],
+        [
+          517,
+          736,
+          true
+        ],
+        [
+          539,
+          736,
+          true
+        ],
+        [
+          610,
+          771,
+          false
+        ],
+        [
+          619,
+          864,
+          true
+        ],
+        [
+          624,
+          864,
+          true
+        ],
+        [
+          623,
+          872,
+          false
+        ],
+        [
+          623,
+          879,
+          true
+        ],
+        [
+          623,
+          894,
+          false
+        ],
+        [
+          629,
+          901,
+          true
+        ],
+        [
+          629,
+          1125,
+          true
+        ],
+        [
+          623,
+          1137,
+          false
+        ],
+        [
+          623,
+          1156,
+          true
+        ],
+        [
+          623,
+          1164,
+          false
+        ],
+        [
+          624,
+          1173,
+          true
+        ],
+        [
+          619,
+          1173,
+          true
+        ],
+        [
+          611,
+          1280,
+          false
+        ],
+        [
+          533,
+          1317,
+          true
+        ],
+        [
+          512,
+          1317,
+          true
+        ],
+        [
+          512,
+          1323,
+          true
+        ],
+        [
+          464,
+          1323,
+          true
+        ],
+        [
+          464,
+          1317,
+          true
+        ],
+        [
+          432,
+          1312,
+          true
+        ],
+        [
+          427,
+          1301,
+          true
+        ],
+        [
+          416,
+          1301,
+          true
+        ],
+        [
+          369,
+          1259,
+          false
+        ],
+        [
+          363,
+          1179,
+          true
+        ],
+        [
+          357,
+          1179,
+          true
+        ],
+        [
+          357,
+          1125,
+          true
+        ]
+      ]
+    ]
+  },
+  "zone_origins": [
+    -490,
+    -362,
+    -290,
+    -178,
+    -101,
+    0,
+    186,
+    229,
+    282,
+    386,
+    491,
+    519,
+    591,
+    661,
+    720,
+    784,
+    858,
+    917,
+    955,
+    1020,
+    1067,
+    1146,
+    1178,
+    1258,
+    1303,
+    1369,
+    1468,
+    1531,
+    1563
+  ]
+}
