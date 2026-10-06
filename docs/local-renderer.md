@@ -74,8 +74,46 @@ Unregistered faces continue to use resident behavior. Font sets belong to the
 caller, with no global installation or filesystem/network access by rendering.
 The same set can be reused across render calls. Invalid assignments leave the
 previous face intact. A registered face's missing glyphs return an error instead
-of mixing in resident glyphs. This API does not implement ZPL font downloads,
-`^CW` aliases, or filename-based `^A@` selection.
+of mixing in resident glyphs. This API does not implement ZPL font downloads.
+
+Register a virtual printer filename with `insert_named_truetype`,
+`insert_named_bitmap`, or `insert_named_zbf`. Both `^A@` and `^CW` resolve only
+these caller-registered faces:
+
+```rust
+fonts.insert_named_truetype("R:BRAND.TTF", &font_bytes, Hinting::Native)?;
+let direct = render_with_fonts(
+    b"^XA^FO20,20^A@N,32,24,R:BRAND.TTF^FDHello^FS^XZ",
+    SPECIFICATION,
+    &fonts,
+)?;
+let aliased = render_with_fonts(
+    b"^CWZ,R:BRAND.TTF^XA^FO20,20^AZN,32,24^FDHello^FS^XZ",
+    SPECIFICATION,
+    &fonts,
+)?;
+```
+
+Names are case-insensitive; omitting the device selects `R:`. Supported devices
+are `R:`, `E:`, `B:`, and `A:`. Require an explicit `.FNT`, `.TTF`, or `.TTE`
+extension and a basename of 1–255 ASCII letters, digits, underscores or hyphens.
+These are registry keys, not host filesystem paths; the extension does not
+convert the supplied font data or enable additional outline formats.
+
+`^CW` requires a single `0`–`9` or `A`–`Z` ID and a registered filename. It
+replaces that ID's mapping for the remainder of the render call, including
+subsequent labels, and works with both `^A` and `^CF`. It does not mutate the
+caller's font collection. Each render starts with the caller's original mapping.
+`^A@` with an omitted filename reuses the last named selection in that call;
+before the first named selection it uses the current default font. Other font
+selections and `^CW` assignments do not clear the remembered `^A@` name.
+
+Explicit unknown filenames return `RenderError` at the referencing command,
+rather than silently using a different face. This is deliberately stricter than
+firmware's missing-name fallback. Named selections retain the custom sizing
+rules below; this does not claim native downloaded-bitmap magnification parity.
+See the Zebra Programming Guide [^A@](https://docs.zebra.com/us/en/printers/software/zpl-pg/zpl-commands/%5Ea-.html)
+and ^CW (p. 168) for the command conventions.
 
 For bitmap fonts, use `insert_bitmap(id, settings, glyphs, baseline)` or
 `insert_zbf(id, bytes, baseline)`. The baseline is measured from the strike's

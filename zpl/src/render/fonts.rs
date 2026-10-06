@@ -4,9 +4,10 @@ use crate::{
     output::raster::truetype::{rasterize, ScanMode},
     truetype::{Environment, Font, Hinting, Size},
 };
-use std::{borrow::Cow, collections::BTreeMap};
+use std::{borrow::Cow, collections::BTreeMap, sync::Arc};
 
-/// Fonts assigned to ZPL IDs (`0`–`9`, `A`–`Z`, or `@` for `^GS`).
+/// Fonts assigned to ZPL IDs (`0`–`9`, `A`–`Z`, or `@` for `^GS`) or
+/// virtual printer filenames selected through `^CW` and `^A@`.
 /// Unregistered IDs retain the renderer's resident-font behavior. Registered
 /// faces replace the entire face: missing characters return an error rather
 /// than silently mixing the caller's font with a resident font.
@@ -24,9 +25,10 @@ use std::{borrow::Cow, collections::BTreeMap};
 /// # Ok(())
 /// # }
 /// ```
-#[derive(Default)]
+#[derive(Clone, Default)]
 pub struct Fonts<'a> {
-    faces: BTreeMap<char, Face<'a>>,
+    faces: BTreeMap<char, Arc<Face<'a>>>,
+    named: BTreeMap<String, Arc<Face<'a>>>,
 }
 
 enum Source<'a> {
@@ -51,32 +53,12 @@ impl<'a> Fonts<'a> {
         &mut self,
         id: char,
         settings: Settings,
-        mut glyphs: Vec<Glyph>,
+        glyphs: Vec<Glyph>,
         baseline: f64,
     ) -> Result<(), String> {
         validate_id(id)?;
-        settings.validate()?;
-        bitmap_font::validate_glyphs(&glyphs)?;
-        if glyphs.is_empty()
-            || !baseline.is_finite()
-            || !(0. ..=settings.height as f64).contains(&baseline)
-        {
-            return Err("invalid bitmap font baseline or empty glyph set".into());
-        }
-        glyphs.sort_by_key(|g| g.codepoint);
-        if glyphs
-            .windows(2)
-            .any(|pair| pair[0].codepoint == pair[1].codepoint)
-        {
-            return Err("duplicate bitmap font codepoint".into());
-        }
-        self.faces.insert(
-            id,
-            Face {
-                baseline: baseline / settings.height as f64,
-                source: Source::Bitmap(settings, glyphs),
-            },
-        );
+        self.faces
+            .insert(id, Arc::new(Face::bitmap(settings, glyphs, baseline)?));
         Ok(())
     }
 
@@ -100,6 +82,137 @@ impl<'a> Fonts<'a> {
         hinting: Hinting,
     ) -> Result<(), String> {
         validate_id(id)?;
+        self.faces
+            .insert(id, Arc::new(Face::truetype(data, hinting)?));
+        Ok(())
+    }
+
+    /// Register a bitmap face under a virtual printer filename for `^CW`/`^A@`.
+    /// Names are case-insensitive; an omitted device means `R:`. This never
+    /// reads a host file. Supported devices are R/E/B/A, extensions FNT/TTF/TTE,
+    /// and basenames contain 1–255 ASCII letters, digits, underscores or hyphens.
+    /// See [`Self::insert_bitmap`] for bitmap metrics.
+    pub fn insert_named_bitmap(
+        &mut self,
+        name: &str,
+        settings: Settings,
+        glyphs: Vec<Glyph>,
+        baseline: f64,
+    ) -> Result<(), String> {
+        let name = font_name(name)?;
+        let face = Face::bitmap(settings, glyphs, baseline)?;
+        self.named.insert(name, Arc::new(face));
+        Ok(())
+    }
+
+    /// Register a ZBF1/ZBF2 strike under a virtual printer filename.
+    pub fn insert_named_zbf(
+        &mut self,
+        name: &str,
+        data: &[u8],
+        baseline: f64,
+    ) -> Result<(), String> {
+        let (settings, glyphs) = bitmap_font::unpack(data)?;
+        self.insert_named_bitmap(name, settings, glyphs, baseline)
+    }
+
+    /// Register a TrueType face under a virtual printer filename.
+    /// See [`Self::insert_truetype`] for format and hinting limits, and
+    /// [`Self::insert_named_bitmap`] for filename rules. Unknown names in ZPL
+    /// return errors; rendering never opens files automatically.
+    ///
+    /// ```no_run
+    /// # use zpl::render::{fonts::Fonts, profiles::SPECIFICATION, render_with_fonts};
+    /// # use zpl::truetype::Hinting;
+    /// # fn main() -> Result<(), Box<dyn std::error::Error>> {
+    /// let bytes = std::fs::read("brand.ttf")?;
+    /// let mut fonts = Fonts::new();
+    /// fonts.insert_named_truetype("R:BRAND.TTF", &bytes, Hinting::Native)?;
+    /// let document = render_with_fonts(
+    ///     b"^CWZ,R:BRAND.TTF^XA^FO20,20^AZN,32,24^FDHello^FS^XZ",
+    ///     SPECIFICATION, &fonts,
+    /// )?;
+    /// # Ok(())
+    /// # }
+    /// ```
+    pub fn insert_named_truetype(
+        &mut self,
+        name: &str,
+        data: &'a [u8],
+        hinting: Hinting,
+    ) -> Result<(), String> {
+        let name = font_name(name)?;
+        let face = Face::truetype(data, hinting)?;
+        self.named.insert(name, Arc::new(face));
+        Ok(())
+    }
+
+    pub(super) fn alias(&mut self, id: char, name: &str) -> Result<(), String> {
+        let name = font_name(name)?;
+        let face = self
+            .named
+            .get(&name)
+            .ok_or_else(|| format!("unresolved named font {name:?}"))?
+            .clone();
+        self.faces.insert(id, face);
+        Ok(())
+    }
+
+    pub(super) fn get(&self, id: char) -> Option<&Face<'a>> {
+        self.faces.get(&id).map(Arc::as_ref)
+    }
+}
+
+// Virtual filenames only: Zebra Programming Guide ^CW p. 168 / ^A@ p. 62.
+// https://www.zebra.com/content/dam/support-dam/en/documentation/unrestricted/guide/software/zpl-zbi2-pg-en.pdf
+// Restrict this implementation to explicit FNT/TTF/TTE names on supported drives.
+fn font_name(name: &str) -> Result<String, String> {
+    let name = name.trim().to_ascii_uppercase();
+    let (device, file) = name.split_once(':').unwrap_or(("R", &name));
+    if !matches!(device, "R" | "E" | "B" | "A") {
+        return Err("unsupported named font device".into());
+    }
+    let (base, extension) = file
+        .rsplit_once('.')
+        .ok_or("named font requires FNT, TTF or TTE extension")?;
+    if base.is_empty()
+        || base.len() > 255
+        || !base
+            .bytes()
+            .all(|b| b.is_ascii_alphanumeric() || matches!(b, b'_' | b'-'))
+        || !matches!(extension, "FNT" | "TTF" | "TTE")
+    {
+        return Err("invalid named font filename or extension".into());
+    }
+    Ok(format!("{device}:{file}"))
+}
+
+// A direct ^A@ selection has its own slot, distinct from ^GS and all public IDs.
+pub(super) const NAMED_FONT: char = '\0';
+
+impl<'a> Face<'a> {
+    fn bitmap(settings: Settings, mut glyphs: Vec<Glyph>, baseline: f64) -> Result<Self, String> {
+        settings.validate()?;
+        bitmap_font::validate_glyphs(&glyphs)?;
+        if glyphs.is_empty()
+            || !baseline.is_finite()
+            || !(0. ..=settings.height as f64).contains(&baseline)
+        {
+            return Err("invalid bitmap font baseline or empty glyph set".into());
+        }
+        glyphs.sort_by_key(|g| g.codepoint);
+        if glyphs
+            .windows(2)
+            .any(|pair| pair[0].codepoint == pair[1].codepoint)
+        {
+            return Err("duplicate bitmap font codepoint".into());
+        }
+        Ok(Self {
+            baseline: baseline / settings.height as f64,
+            source: Source::Bitmap(settings, glyphs),
+        })
+    }
+    fn truetype(data: &'a [u8], hinting: Hinting) -> Result<Self, String> {
         let font = Font::parse(data).map_err(|e| e.to_string())?;
         // OpenType hhea ascender (offset 4), in design units:
         // https://learn.microsoft.com/en-us/typography/opentype/spec/hhea
@@ -111,18 +224,10 @@ impl<'a> Fonts<'a> {
                 .unwrap(),
         );
         let baseline = f64::from(ascent) / f64::from(font.units_per_em());
-        self.faces.insert(
-            id,
-            Face {
-                source: Source::TrueType(font, hinting),
-                baseline,
-            },
-        );
-        Ok(())
-    }
-
-    pub(super) fn get(&self, id: char) -> Option<&Face<'a>> {
-        self.faces.get(&id)
+        Ok(Self {
+            source: Source::TrueType(font, hinting),
+            baseline,
+        })
     }
 }
 

@@ -246,6 +246,9 @@ fn render_expanded(
     allow_empty: bool,
     fonts: &fonts::Fonts<'_>,
 ) -> Result<Document, RenderError> {
+    // Request-local aliases; cheap Arc clones retain caller-owned face data.
+    let mut fonts = fonts.clone();
+    let mut named_font_selected = false;
     let number = |p: &[&str], i, default| number(p, i, default, limits.number_abs);
     let numbered = numbered::plan(input, options.compatibility, limits.field_bytes)?;
     let mut pending_terminator = None;
@@ -385,6 +388,7 @@ fn render_expanded(
                         | "PW"
                         | "LL"
                         | "CF"
+                        | "CW"
                         | "LH"
                         | "LS"
                         | "LT"
@@ -445,11 +449,11 @@ fn render_expanded(
             let max = match name {
                 "XA" | "XZ" | "FS" | "FR" => Some(0),
                 "PW" | "LL" | "LS" | "LT" | "LR" | "PO" | "FH" => Some(1),
-                "LH" | "FW" | "FP" | "SF" => Some(2),
+                "LH" | "FW" | "FP" | "SF" | "CW" => Some(2),
                 "FO" | "FT" | "CF" | "BY" | "XG" | "TB" | "SN" => Some(3),
                 "GB" | "GD" | "B3" | "FB" => Some(5),
                 "BC" => Some(6),
-                "GE" | "PA" => Some(4),
+                "GE" | "PA" | "A@" => Some(4),
                 "GC" => Some(3),
                 "CI" => Some(513),
                 n if n.starts_with('A') => Some(3),
@@ -734,6 +738,20 @@ fn render_expanded(
                     field.justification =
                         justification(&p, 2, default_justification, limits.number_abs)?;
                 }
+                "CW" => {
+                    // ^CW assigns a font ID to a registered virtual printer filename.
+                    let [id] = p[0].as_bytes() else {
+                        return Err("CW requires a single font ID".into());
+                    };
+                    if !id.is_ascii_uppercase() && !id.is_ascii_digit() {
+                        return Err("CW font ID must be 0–9 or A–Z".into());
+                    }
+                    let name = p
+                        .get(1)
+                        .filter(|name| !name.trim().is_empty())
+                        .ok_or("CW requires a font filename")?;
+                    fonts.alias(char::from(*id), name)?;
+                }
                 "CF" => {
                     font_id = match p[0] {
                         value
@@ -792,7 +810,7 @@ fn render_expanded(
                         (default_requested_w, default_requested_h)
                     };
                     (font_w, font_h) = supplied_font_dimensions(
-                        fonts,
+                        &fonts,
                         &p,
                         (dw, dh),
                         font_id,
@@ -810,6 +828,19 @@ fn render_expanded(
                     }
                     field.explicit_font = true;
                     font_id = match n {
+                        "A@" => {
+                            // ^A@ p. 62: omitted names reuse the last ^A@ face;
+                            // before any named selection, use the current ^CF face.
+                            if let Some(name) = p.get(3).filter(|name| !name.trim().is_empty()) {
+                                fonts.alias(fonts::NAMED_FONT, name)?;
+                                named_font_selected = true;
+                            }
+                            if named_font_selected {
+                                fonts::NAMED_FONT
+                            } else {
+                                default_font_id
+                            }
+                        }
                         value
                             if value.len() == 2
                                 && value != "A@"
@@ -854,7 +885,7 @@ fn render_expanded(
                         (default_requested_w, default_requested_h)
                     };
                     (font_w, font_h) = supplied_font_dimensions(
-                        fonts,
+                        &fonts,
                         &p,
                         (dw, dh),
                         font_id,
@@ -875,7 +906,7 @@ fn render_expanded(
                         rotation(p[0])?
                     };
                     (font_w, font_h) = supplied_font_dimensions(
-                        fonts,
+                        &fonts,
                         &p,
                         (default_requested_w, default_requested_h),
                         font_id,
@@ -1147,7 +1178,7 @@ fn render_expanded(
                                 return Ok(Path::default());
                             }
                             let rendered = b.render_with_fonts(
-                                fonts,
+                                &fonts,
                                 &bytes,
                                 field.explicit_font.then_some((font_id, font_w, font_h)),
                                 field.rotation,
@@ -1173,7 +1204,7 @@ fn render_expanded(
                                     || (encoding == 28
                                         && options.compatibility.utf8_uses_legacy_backslash),
                             )
-                            .with_fonts(fonts)
+                            .with_fonts(&fonts)
                             .with_control_glyphs(
                                 options.compatibility.text_esc_del_processing
                                     && matches!(encoding, 0 | 13),

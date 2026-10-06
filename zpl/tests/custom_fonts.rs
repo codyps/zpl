@@ -260,7 +260,7 @@ fn true_type_sizes_and_assignment_ids_are_checked() {
 }
 
 #[test]
-fn symbol_registration_does_not_enable_filename_font_lookup() {
+fn symbol_registration_is_not_a_named_font() {
     let custom = fonts('@', 4);
     assert!(render_with_fonts(
         b"^XA^A@N,10,10,R:FONT.TTF^FDA^FS^XZ",
@@ -269,4 +269,167 @@ fn symbol_registration_does_not_enable_filename_font_lookup() {
     )
     .is_err());
     assert!(render_with_fonts(b"^XA^CF@,10,10^FDA^FS^XZ", SPECIFICATION, &custom).is_err());
+}
+
+fn named_fonts() -> Fonts<'static> {
+    let mut custom = fonts('Z', 4);
+    let (settings, glyphs) = bitmap(4);
+    custom
+        .insert_named_bitmap("R:brand.fnt", settings, glyphs, 7.)
+        .unwrap();
+    let (settings, glyphs) = bitmap(8);
+    custom
+        .insert_named_bitmap("E:brand.fnt", settings, glyphs, 7.)
+        .unwrap();
+    custom
+}
+
+#[test]
+fn named_bitmap_alias_and_direct_selection_match_registered_ids() {
+    // ^CW p.168 and ^A@ p.62: aliases and device-qualified names select a face.
+    let custom = named_fonts();
+    let inline = "^XA^PW100^LL100^FO40,40^AZN,10,10^FDAA^FS^XZ";
+    let expected = image(inline, &custom);
+    for selection in [
+        "^A@N,10,10,R:BRAND.FNT",
+        "^A@N,10,10,brand.fnt",
+        "^CWQ,R:BRAND.FNT^AQN,10,10",
+        "^CWQ,R:BRAND.FNT^CFQ,10,10",
+    ] {
+        assert!(
+            expected == image(&inline.replace("^AZN,10,10", selection), &custom),
+            "{selection}"
+        );
+    }
+    for rotation in ['N', 'R', 'I', 'B'] {
+        let selected = inline.replace("AZN", &format!("AZ{rotation}"));
+        let direct = selected.replace(
+            &format!("^AZ{rotation},10,10"),
+            &format!("^A@{rotation},10,10,R:BRAND.FNT"),
+        );
+        assert!(
+            image(&selected, &custom) == image(&direct, &custom),
+            "{rotation}"
+        );
+    }
+    let disk = inline.replace("^AZN,10,10", "^A@N,10,10,E:BRAND.FNT");
+    assert!(image(&disk, &custom) == image(inline, &fonts('Z', 8)));
+    assert!(image(&disk, &custom) != expected);
+}
+
+#[test]
+fn named_selections_persist_within_jobs_and_leave_the_caller_unchanged() {
+    let custom = named_fonts();
+    let one = "^XA^PW100^LL100^FO10,10^AZN,10,10^FDAA^FS^XZ";
+    let input = "^CWQ,R:BRAND.FNT^XA^PW100^LL100^FO10,10^AQN,10,10^FDAA^FS^XZ^XA^FO10,10^AQN,10,10^FDAA^FS^XZ";
+    let doc = render_with_fonts(input.as_bytes(), SPECIFICATION, &custom).unwrap();
+    assert_eq!(doc.labels.len(), 2);
+    for label in &doc.labels {
+        assert!(zpl::output::raster::rasterize(label).unwrap() == image(one, &custom));
+    }
+    // Rebinding an alias is request-local and cannot rewrite direct ^A@ selection.
+    let input = "^XA^PW100^LL100^FO10,10^A@N,10,10,R:BRAND.FNT^FDAA^FS^CWQ,E:BRAND.FNT^FO10,20^A@N,10,10^FDAA^FS^XZ";
+    let expected = "^XA^PW100^LL100^FO10,10^AZN,10,10^FDAA^FS^FO10,20^AZN,10,10^FDAA^FS^XZ";
+    assert!(image(input, &custom) == image(expected, &custom));
+    let aliased = "^CWZ,E:BRAND.FNT^XA^PW100^LL100^FO10,10^AZN,10,10^FDAA^FS^XZ";
+    assert!(image(aliased, &custom) == image(one, &fonts('Z', 8)));
+    assert!(image(one, &custom) == image(one, &fonts('Z', 4)));
+    // ^A@ without any previous name uses ^CF, not another call's selected face.
+    let unnamed = "^XA^CFZ,10,10^PW100^LL100^FO10,10^A@N,10,10^FDAA^FS^XZ";
+    assert!(image(unnamed, &custom) == image(one, &custom));
+}
+
+#[test]
+fn named_truetype_and_zbf_registration_feed_the_existing_font_engines() {
+    let mut custom = Fonts::new();
+    custom.insert_truetype('Z', TTF, Hinting::Native).unwrap();
+    custom
+        .insert_named_truetype("probe.ttf", TTF, Hinting::Native)
+        .unwrap();
+    let source = "^XA^PW150^LL150^FO50,50^AZN,24,31^FD!!^FS^XZ";
+    assert!(
+        image(source, &custom)
+            == image(
+                &source.replace("^AZN,24,31", "^A@N,24,31,PROBE.TTF"),
+                &custom
+            )
+    );
+    custom
+        .insert_named_zbf("CAPTURE.FNT", include_bytes!("../assets/font0-32.zbf"), 24.)
+        .unwrap();
+    custom
+        .insert_zbf('Z', include_bytes!("../assets/font0-32.zbf"), 24.)
+        .unwrap();
+    let source = "^XA^PW150^LL150^FO20,20^AZN,32,32^FDABC^FS^XZ";
+    assert!(
+        image(source, &custom)
+            == image(
+                &source.replace("^AZN,32,32", "^CWZ,CAPTURE.FNT^AZN,32,32"),
+                &custom
+            )
+    );
+}
+
+#[test]
+fn named_fonts_work_in_stored_formats_captions_and_changed_syntax() {
+    let custom = named_fonts();
+    let inline = "^XA^PW100^LL100^FO10,10^AZN,10,10^FDAA^FS^XZ";
+    let stored = "^XA^DFR:LABEL.ZPL^FO10,10^A@N,10,10,R:BRAND.FNT^FDAA^FS^XZ^XA^PW100^LL100^XFR:LABEL.ZPL^XZ";
+    assert!(image(inline, &custom) == image(stored, &custom));
+    let changed = "^CD;^CWQ;R:BRAND.FNT^CC!!XA!PW100!LL100!FO10;10!AQN;10;10!FDAA!FS!XZ";
+    assert!(image(inline, &custom) == image(changed, &custom));
+    let changed = "^CD;^CC!!XA!PW100!LL100!FO10;10!A@N;10;10;R:BRAND.FNT!FDAA!FS!XZ";
+    assert!(image(inline, &custom) == image(changed, &custom));
+    let caption = "^XA^PW200^LL100^FO10,10^AZN,10,10^BCN,30,Y,N,N^FDAA^FS^XZ";
+    assert!(
+        image(caption, &custom)
+            == image(
+                &caption.replace("^AZN,10,10", "^A@N,10,10,R:BRAND.FNT"),
+                &custom
+            )
+    );
+}
+
+#[test]
+fn invalid_and_unresolved_names_keep_offsets_and_do_not_touch_registration() {
+    let mut custom = named_fonts();
+    for name in [
+        "",
+        "../font.ttf",
+        "/tmp/font.ttf",
+        "C:FONT.TTF",
+        "R:FONT",
+        "R:FONT.OTF",
+        "R:FO/NT.TTF",
+    ] {
+        assert!(
+            custom
+                .insert_named_truetype(name, TTF, Hinting::None)
+                .is_err(),
+            "{name}"
+        );
+    }
+    assert!(custom
+        .insert_named_truetype("R:BRAND.FNT", b"bad", Hinting::None)
+        .is_err());
+    for (command, expected) in [
+        ("^CWQ,R:MISSING.TTF", "unresolved named font"),
+        ("^A@N,10,10,R:MISSING.TTF", "unresolved named font"),
+        ("^CW@,R:BRAND.FNT", "font ID"),
+        ("^CWZZ,R:BRAND.FNT", "single font ID"),
+        ("^CWQ", "requires a font filename"),
+        ("^CWQ,R:BRAND.FNT,extra", "unexpected command parameters"),
+        (
+            "^A@N,10,10,R:BRAND.FNT,extra",
+            "unexpected command parameters",
+        ),
+    ] {
+        let input = format!("^XA{command}^XZ");
+        let error = render_with_fonts(input.as_bytes(), SPECIFICATION, &custom).unwrap_err();
+        assert_eq!(error.offset, 3, "{command}");
+        assert!(error.message.contains(expected), "{error}");
+    }
+    let before = "^XA^PW100^LL100^FO10,10^AZN,10,10^FDAA^FS^XZ";
+    let named = before.replace("^AZN,10,10", "^A@N,10,10,R:BRAND.FNT");
+    assert!(image(before, &custom) == image(&named, &custom));
 }
