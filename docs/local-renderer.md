@@ -104,6 +104,9 @@ convert the supplied font data or enable additional outline formats.
 replaces that ID's mapping for the remainder of the render call, including
 subsequent labels, and works with both `^A` and `^CF`. It does not mutate the
 caller's font collection. Each render starts with the caller's original mapping.
+Aliases retain normalized filenames and resolve them against the font resources
+when used; they do not capture a particular face. The remembered `^A@` filename
+is stored separately from the ID aliases.
 `^A@` with an omitted filename reuses the last named selection in that call;
 before the first named selection it uses the current default font. Other font
 selections and `^CW` assignments do not clear the remembered `^A@` name.

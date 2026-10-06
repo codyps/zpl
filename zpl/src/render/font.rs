@@ -119,7 +119,7 @@ impl<'a> Font<'a> {
             control_spaces: false,
         }
     }
-    pub(super) fn with_fonts(mut self, fonts: &'a super::fonts::Fonts<'a>) -> Self {
+    pub(super) fn with_fonts(mut self, fonts: &'a super::fonts::RenderFonts<'_, 'a>) -> Self {
         self.custom = fonts.get(self.id);
         self
     }

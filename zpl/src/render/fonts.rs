@@ -147,19 +147,58 @@ impl<'a> Fonts<'a> {
         Ok(())
     }
 
-    pub(super) fn alias(&mut self, id: char, name: &str) -> Result<(), String> {
+    fn checked_name(&self, name: &str) -> Result<String, String> {
         let name = font_name(name)?;
-        let face = self
-            .named
-            .get(&name)
-            .ok_or_else(|| format!("unresolved named font {name:?}"))?
-            .clone();
-        self.faces.insert(id, face);
+        if !self.named.contains_key(&name) {
+            return Err(format!("unresolved named font {name:?}"));
+        }
+        Ok(name)
+    }
+}
+
+/// Request-local ZPL selections, separate from caller-owned font resources.
+/// ^CW retains a filename, not a snapshot of the face stored under that name.
+pub(super) struct RenderFonts<'r, 'a> {
+    resources: &'r Fonts<'a>,
+    aliases: BTreeMap<char, String>,
+    selected_name: Option<String>,
+}
+
+impl<'r, 'a> RenderFonts<'r, 'a> {
+    pub(super) fn new(resources: &'r Fonts<'a>) -> Self {
+        Self {
+            resources,
+            aliases: BTreeMap::new(),
+            selected_name: None,
+        }
+    }
+
+    pub(super) fn alias(&mut self, id: char, name: &str) -> Result<(), String> {
+        let name = self.resources.checked_name(name)?;
+        self.aliases.insert(id, name);
         Ok(())
     }
 
+    pub(super) fn select_named(&mut self, name: &str) -> Result<(), String> {
+        self.selected_name = Some(self.resources.checked_name(name)?);
+        Ok(())
+    }
+
+    pub(super) fn has_named_selection(&self) -> bool {
+        self.selected_name.is_some()
+    }
+
     pub(super) fn get(&self, id: char) -> Option<&Face<'a>> {
-        self.faces.get(&id).map(Arc::as_ref)
+        let name = if id == NAMED_FONT {
+            self.selected_name.as_ref()
+        } else {
+            self.aliases.get(&id)
+        };
+        match name {
+            Some(name) => self.resources.named.get(name),
+            None => self.resources.faces.get(&id),
+        }
+        .map(Arc::as_ref)
     }
 }
 

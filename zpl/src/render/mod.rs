@@ -246,9 +246,8 @@ fn render_expanded(
     allow_empty: bool,
     fonts: &fonts::Fonts<'_>,
 ) -> Result<Document, RenderError> {
-    // Request-local aliases; cheap Arc clones retain caller-owned face data.
-    let mut fonts = fonts.clone();
-    let mut named_font_selected = false;
+    // Request-local names resolve against the caller-owned font resources.
+    let mut fonts = fonts::RenderFonts::new(fonts);
     let number = |p: &[&str], i, default| number(p, i, default, limits.number_abs);
     let numbered = numbered::plan(input, options.compatibility, limits.field_bytes)?;
     let mut pending_terminator = None;
@@ -832,10 +831,9 @@ fn render_expanded(
                             // ^A@ p. 62: omitted names reuse the last ^A@ face;
                             // before any named selection, use the current ^CF face.
                             if let Some(name) = p.get(3).filter(|name| !name.trim().is_empty()) {
-                                fonts.alias(fonts::NAMED_FONT, name)?;
-                                named_font_selected = true;
+                                fonts.select_named(name)?;
                             }
-                            if named_font_selected {
+                            if fonts.has_named_selection() {
                                 fonts::NAMED_FONT
                             } else {
                                 default_font_id
@@ -2423,7 +2421,7 @@ fn text_block(
     })
 }
 fn supplied_font_dimensions(
-    fonts: &fonts::Fonts<'_>,
+    fonts: &fonts::RenderFonts<'_, '_>,
     p: &[&str],
     default_size: (f64, f64),
     id: char,
