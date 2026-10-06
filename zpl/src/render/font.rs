@@ -4,7 +4,7 @@
 //! https://www.zebra.com/content/dam/support-dam/en/documentation/unrestricted/guide/software/zpl-zbi2-pg-en.pdf
 use crate::{
     bitmap_font::{self, Glyph, Settings, GRAPHIC_SYMBOLS},
-    output::Path,
+    output::{Path, Point, Segment},
 };
 use std::{collections::BTreeMap, sync::OnceLock};
 
@@ -13,7 +13,10 @@ use std::{collections::BTreeMap, sync::OnceLock};
 /// fractional scales whose adjacent row boundaries can differ by an ULP.
 #[derive(Default)]
 struct RowPath {
-    path: Path,
+    // Keep rectangles small while joining rows. Expanding every intermediate
+    // rectangle to five general segments makes buffer growth depend heavily
+    // on allocator fragmentation, including the font initialization history.
+    rectangles: Vec<(Point, Point)>,
     previous: Vec<usize>,
     current: Vec<usize>,
     row: Option<f64>,
@@ -21,7 +24,6 @@ struct RowPath {
 }
 impl RowPath {
     fn rect(&mut self, x: f64, y: f64, width: f64, height: f64) {
-        use crate::output::{Point, Segment};
         if width <= 0. || height <= 0. {
             return;
         }
@@ -34,27 +36,38 @@ impl RowPath {
         let right = x + width;
         let bottom = y + height;
         while let Some(&index) = self.previous.get(self.next) {
-            let Segment::Move(a) = self.path.segments[index] else {
-                unreachable!()
-            };
+            let (a, c) = self.rectangles[index];
             if a.x < x {
                 self.next += 1;
                 continue;
             }
-            let Segment::Line(c) = self.path.segments[index + 2] else {
-                unreachable!()
-            };
             if a.x == x && c.x == right && c.y == y {
-                self.path.segments[index + 2] = Segment::Line(Point::new(right, bottom));
-                self.path.segments[index + 3] = Segment::Line(Point::new(x, bottom));
+                self.rectangles[index].1.y = bottom;
                 self.current.push(index);
                 self.next += 1;
                 return;
             }
             break;
         }
-        self.current.push(self.path.segments.len());
-        self.path.rect(x, y, width, height);
+        self.current.push(self.rectangles.len());
+        self.rectangles
+            .push((Point::new(x, y), Point::new(right, bottom)));
+    }
+
+    fn into_path(self) -> Path {
+        let mut segments = Vec::with_capacity(self.rectangles.len() * 5);
+        for (a, c) in self.rectangles {
+            // Preserve computed endpoints exactly, including fractional row
+            // boundaries; do not subtract and re-add widths or heights.
+            segments.extend([
+                Segment::Move(a),
+                Segment::Line(Point::new(c.x, a.y)),
+                Segment::Line(c),
+                Segment::Line(Point::new(a.x, c.y)),
+                Segment::Close,
+            ]);
+        }
+        Path { segments }
     }
 }
 
@@ -969,7 +982,7 @@ pub(super) fn text_parts_for(
                 sy,
             );
         });
-        let mut path = path.path;
+        let mut path = path.into_path();
         path.transform(|p| crate::output::Point::new(p.x + pen, p.y));
         pen += g.advance as f64 * sx;
         if !path.segments.is_empty() {
@@ -1057,7 +1070,7 @@ pub(super) fn text_for(
             path.rect(left * sx, baseline + y as f64 * sy, (right - left) * sx, sy);
         }
     }
-    Ok(path.path)
+    Ok(path.into_path())
 }
 /// Union rectangular ink from multiple lines. Descenders and rounded glyph
 /// overshoots can touch the next line even with zero line spacing.
@@ -1277,8 +1290,9 @@ mod tests {
                     original.rect(args.0, args.1, args.2, args.3);
                 }
             }
+            let rows = rows.into_path();
             if scale == 1. {
-                assert!(rows.path.segments.len() < original.segments.len() / 2);
+                assert!(rows.segments.len() < original.segments.len() / 2);
             }
             for paint in [Paint::Black, Paint::White, Paint::Invert] {
                 let mut background = Path::default();
@@ -1293,7 +1307,7 @@ mod tests {
                     paint,
                 });
                 let expected = rasterize(&scene).unwrap();
-                scene.draws[1].path = rows.path.clone();
+                scene.draws[1].path = rows.clone();
                 assert_eq!(
                     rasterize(&scene).unwrap(),
                     expected,
@@ -1305,7 +1319,7 @@ mod tests {
         path.rect(0., 0., 1., 1.);
         path.rect(0., 1f64.next_up(), 1., 1.);
         assert_eq!(
-            path.path.segments.len(),
+            path.into_path().segments.len(),
             10,
             "do not fill even a subpixel gap"
         );
