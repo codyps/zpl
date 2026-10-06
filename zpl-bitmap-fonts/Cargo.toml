@@ -1,0 +1,11 @@
+[package]
+name = "zpl-bitmap-fonts"
+version = "0.1.0"
+edition = "2021"
+license.workspace = true
+publish = false
+description = "Allocation-free embedded bitmap fonts recovered from ZPL previews"
+
+[features]
+default = []
+zd621 = []
