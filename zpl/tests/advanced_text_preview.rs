@@ -1,6 +1,6 @@
 //! Unmodified ZD621 advanced text controls; see the fixture README.
 use std::{fs, path::Path};
-#[path = "../../zebra-http-api/examples/font_support/mod.rs"]
+#[path = "support/digest.rs"]
 mod digest;
 #[test]
 fn raw_advanced_text_frames_pin_every_pixel_and_meet_text_goal() {

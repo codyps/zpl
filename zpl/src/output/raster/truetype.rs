@@ -17,7 +17,8 @@ pub enum ScanMode {
     #[default]
     Center,
     /// Nonzero winding, positive edge tie, horizontal dropout. This is the
-    /// shared research hypothesis from docs/font-refinement-results.md.
+    /// shared research hypothesis documented at
+    /// https://github.com/codyps/zpl-font-extract/blob/main/docs/font-refinement-results.md.
     ZebraExperimental,
     /// ZD621 V93 curve-subdivision hypothesis, paired with its explicit font environment.
     Zd621V93,

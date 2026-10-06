@@ -10,18 +10,15 @@ use zpl::{
     truetype::{Environment, Font, Hinting, Size},
 };
 
-const DATA: &[u8] =
-    include_bytes!("../../zpl-font-extract/tests/fixtures/font-probes-20261002/probe.ttf");
+const DATA: &[u8] = include_bytes!("fixtures/truetype-regression/font-probes-20261002/probe.ttf");
 const MANIFEST: &str =
-    include_str!("../../zpl-font-extract/tests/fixtures/font-probes-20261002/manifest.json");
+    include_str!("fixtures/truetype-regression/font-probes-20261002/manifest.json");
 
 #[test]
 fn native_hint_outlines_and_advances_match_independent_reference() {
     check_independent_outlines(
         DATA,
-        include_str!(
-            "../../zpl-font-extract/tests/fixtures/font-probes-20261002/freetype-outlines.json"
-        ),
+        include_str!("fixtures/truetype-regression/font-probes-20261002/freetype-outlines.json"),
         59,
         464,
     );
@@ -30,12 +27,81 @@ fn native_hint_outlines_and_advances_match_independent_reference() {
 #[test]
 fn diagonal_freedom_vectors_match_independent_reference() {
     check_independent_outlines(
-        include_bytes!("../../zpl-font-extract/tests/fixtures/line-vector-20261005/probe.ttf"),
-        include_str!(
-            "../../zpl-font-extract/tests/fixtures/line-vector-20261005/freetype-outlines.json"
-        ),
+        include_bytes!("fixtures/truetype-regression/line-vector-20261005/probe.ttf"),
+        include_str!("fixtures/truetype-regression/line-vector-20261005/freetype-outlines.json"),
         6,
         18,
+    );
+}
+
+#[test]
+fn shared_stem_counter_allocation_matches_independent_reference() {
+    // Original connected-stem programs: equal CVT widths and integer counter
+    // remainder allocation using GC, MUL, DIV, ROUND and SCFS. FreeType
+    // references include odd counter totals and floor/ceil allocation policies.
+    for (font, reference) in [
+        (
+            include_bytes!("fixtures/truetype-regression/balanced-hint-programs-20261005/grid.ttf")
+                .as_slice(),
+            include_str!(
+                "fixtures/truetype-regression/balanced-hint-programs-20261005/grid-freetype.json"
+            ),
+        ),
+        (
+            include_bytes!(
+                "fixtures/truetype-regression/balanced-hint-programs-20261005/floor.ttf"
+            )
+            .as_slice(),
+            include_str!(
+                "fixtures/truetype-regression/balanced-hint-programs-20261005/floor-freetype.json"
+            ),
+        ),
+        (
+            include_bytes!("fixtures/truetype-regression/balanced-hint-programs-20261005/ceil.ttf")
+                .as_slice(),
+            include_str!(
+                "fixtures/truetype-regression/balanced-hint-programs-20261005/ceil-freetype.json"
+            ),
+        ),
+    ] {
+        check_independent_outlines(font, reference, 42, 5);
+    }
+}
+
+#[test]
+fn curve_first_grid_hints_preserve_independent_interpolation_residuals() {
+    let mut reference: Value = serde_json::from_str(include_str!(
+        "fixtures/truetype-regression/curve-first-experiment-20261005/freetype-outlines.json"
+    ))
+    .unwrap();
+    // 62 of 64 nonempty glyph cases match FreeType 2.13.2 exactly. Pin the two
+    // measured +1/64-pixel IUP Y residuals rather than claiming exact parity
+    // or applying a blanket coordinate tolerance. Advances and all other
+    // points, including fractional quadratic controls, must remain exact.
+    let mut residuals = 0;
+    for case in reference["cases"].as_array_mut().unwrap() {
+        let query = (
+            case["x"].as_u64(),
+            case["y"].as_u64(),
+            case["codepoint"].as_u64(),
+        );
+        let point = match query {
+            (Some(11), Some(11), Some(83)) => Some(36),
+            (Some(320), Some(448), Some(103)) => Some(27),
+            _ => None,
+        };
+        if let Some(point) = point {
+            let y = case["contours"][0][point][1].as_i64().unwrap();
+            case["contours"][0][point][1] = (y + 1).into();
+            residuals += 1;
+        }
+    }
+    assert_eq!(residuals, 2);
+    check_independent_outlines(
+        include_bytes!("fixtures/truetype-regression/curve-grid-hints-20261005/curve.ttf"),
+        &reference.to_string(),
+        85,
+        64,
     );
 }
 
@@ -99,7 +165,7 @@ fn check_native_printer_probe_canvases(calibrated: bool) {
     let manifest: Value = serde_json::from_str(MANIFEST).unwrap();
     let font = Font::parse(DATA).unwrap();
     let capture: Value = serde_json::from_str(include_str!(
-        "../../zpl-font-extract/tests/fixtures/font-probes-20261002/zd621/capture.json"
+        "fixtures/truetype-regression/font-probes-20261002/zd621/capture.json"
     ))
     .unwrap();
     // ZD621, 203 DPI, V93.21.33Z: full native canvases, shared experimental
@@ -153,7 +219,7 @@ fn check_native_printer_probe_canvases(calibrated: bool) {
     {
         let name = page["name"].as_str().unwrap();
         let filename = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
-            .join("../zpl-font-extract/tests/fixtures/font-probes-20261002/zd621")
+            .join("tests/fixtures/truetype-regression/font-probes-20261002/zd621")
             .join(format!("{name}.png"));
         let bytes = std::fs::read(filename).unwrap();
         use sha2::{Digest, Sha256};
@@ -446,9 +512,11 @@ fn zd621_point_quantization_rounding_and_spacing_match_native_canvases() {
         "line-vector-20261005",
         "repair-baseline-replay-20261005",
         "repair-targeted-replay-20261005",
+        "curve-first-experiment-20261005/baseline-replay",
+        "curve-first-experiment-20261005/curve-replay",
     ] {
         let root = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
-            .join("../zpl-font-extract/tests/fixtures")
+            .join("tests/fixtures/truetype-regression")
             .join(directory);
         let data = std::fs::read(root.join("probe.ttf")).unwrap();
         let manifest_bytes = std::fs::read(root.join("manifest.json")).unwrap();
@@ -742,11 +810,65 @@ fn zd621_point_quantization_rounding_and_spacing_match_native_canvases() {
                     (27, 55, 3264),
                 ];
                 assert_eq!(actual, expected[page_index], "{directory}/{name}");
+            } else if directory == "curve-first-experiment-20261005/baseline-replay" {
+                let expected = [
+                    (0, 0, 52),
+                    (0, 0, 23357),
+                    (13, 11, 17702),
+                    (0, 20, 27707),
+                    (5, 19, 24955),
+                    (2, 0, 70409),
+                    (9, 22, 53112),
+                    (30, 16, 82923),
+                    (32, 7, 74761),
+                    (0, 0, 95534),
+                    (14, 30, 72429),
+                    (34, 24, 113109),
+                    (24, 22, 101739),
+                    (4, 189, 57305),
+                    (36, 22, 43649),
+                    (681, 24, 68477),
+                    (40, 18, 61338),
+                    (12, 4, 57617),
+                    (10, 51, 43568),
+                    (12, 18, 68037),
+                    (29, 27, 61276),
+                    (20, 44, 5289),
+                ];
+                assert_eq!(actual, expected[page_index], "{directory}/{name}");
+            } else if directory == "curve-first-experiment-20261005/curve-replay" {
+                // Compact curves and integer stem/counter chains. These are
+                // same-font interpreter/raster residuals, not Font 0 IoUs.
+                let expected = [
+                    (0, 0, 52),
+                    (6, 8, 23294),
+                    (5, 37, 17669),
+                    (0, 14, 27869),
+                    (12, 42, 24905),
+                    (4, 8, 69238),
+                    (20, 5, 53325),
+                    (8, 6, 82731),
+                    (13, 22, 74831),
+                    (3, 16, 94639),
+                    (21, 10, 72260),
+                    (18, 3, 113059),
+                    (26, 29, 101728),
+                    (4, 10, 57150),
+                    (25, 24, 43390),
+                    (44, 7, 67914),
+                    (28, 57, 61471),
+                    (5, 15, 56818),
+                    (17, 26, 43625),
+                    (11, 15, 67987),
+                    (13, 39, 61325),
+                    (18, 55, 5429),
+                ];
+                assert_eq!(actual, expected[page_index], "{directory}/{name}");
             } else {
                 assert_eq!((actual.0, actual.1), (0, 0), "{directory}/{name}");
             }
         }
     }
-    assert_eq!(pages, 143);
-    assert_eq!(fields, 7606);
+    assert_eq!(pages, 187);
+    assert_eq!(fields, 7818);
 }

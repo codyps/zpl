@@ -1,7 +1,7 @@
 //! Captured resident font strikes and independent text/caption controls.
 //! See fixtures/resident-fonts-zd621-v1/README.md for capture provenance.
 use std::{fs, path::Path};
-#[path = "../../zebra-http-api/examples/font_support/mod.rs"]
+#[path = "support/digest.rs"]
 mod digest;
 #[test]
 fn captured_strikes_and_interpretation_match_printer_pixels() {

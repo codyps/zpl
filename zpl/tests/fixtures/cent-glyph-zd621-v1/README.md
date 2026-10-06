@@ -20,3 +20,7 @@ Capture uses the repository extract-font example with --characters ¢,
 some bitmap fonts' native CI0 backslash replacement. The separate
 legacy-backslash-zd621-v1 suite covers that mapping; the glyphs here do not
 substitute for those native samples.
+
+Font extraction commands and extraction-only tests in this document now run
+from the separate [private font research repository](https://github.com/codyps/zpl-font-extract).
+The runtime assertions and captured bytes remain in ZPL.

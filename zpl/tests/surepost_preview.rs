@@ -1,6 +1,6 @@
 //! Native SurePost regressions; source, capture provenance and standards in the fixture README.
 use std::{fs, path::Path};
-#[path = "../../zebra-http-api/examples/font_support/mod.rs"]
+#[path = "support/digest.rs"]
 mod digest;
 
 #[test]

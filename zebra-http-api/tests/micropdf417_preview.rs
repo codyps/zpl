@@ -1,5 +1,5 @@
 //! Offline, exact comparisons against real ZD621 HTTP previews.
-#[path = "../examples/font_support/mod.rs"]
+#[path = "../../zpl/tests/support/digest.rs"]
 mod digest;
 use raster_diff::{compare_stats, Raster};
 

@@ -12,7 +12,6 @@ rustPlatform.buildRustPackage {
       ../LICENSE
       ../zpl
       ../zpl-cmd
-      ../zpl-font-extract
       ../zpl-wasm
       ../raster-diff
       ../zebra-firmware

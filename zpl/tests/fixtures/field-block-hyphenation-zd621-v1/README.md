@@ -44,3 +44,7 @@ Reference: [Zebra ZPL II Programming Guide](https://www.zebra.com/content/dam/su
 word break; the CI27 eth substitution is observed printer behavior. Soft-hyphen
 escape sequences, blocks too narrow for a character plus hyphen, and arbitrary
 unsampled text sizes remain outside this coverage.
+
+Font extraction commands and extraction-only tests in this document now run
+from the separate [private font research repository](https://github.com/codyps/zpl-font-extract).
+The runtime assertions and captured bytes remain in ZPL.

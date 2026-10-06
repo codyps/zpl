@@ -2,7 +2,7 @@
 //! Capture provenance: fixtures/barcode-modes-zd621-v1/README.md.
 use std::{fs, path::PathBuf};
 use zpl::{output::raster::rasterize, render, render::profiles::ZD621_203_DPI};
-#[path = "../../zebra-http-api/examples/font_support/mod.rs"]
+#[path = "support/digest.rs"]
 mod digest;
 fn root() -> PathBuf {
     PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("tests/fixtures/barcode-modes-zd621-v1")

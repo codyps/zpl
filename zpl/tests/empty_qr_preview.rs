@@ -1,6 +1,6 @@
 //! Diagnostic native repeatability evidence; see the fixture README.
 use std::{collections::BTreeMap, fs, path::Path};
-#[path = "../../zebra-http-api/examples/font_support/mod.rs"]
+#[path = "support/digest.rs"]
 mod digest;
 #[test]
 fn identical_empty_qr_requests_have_unstable_native_previews() {

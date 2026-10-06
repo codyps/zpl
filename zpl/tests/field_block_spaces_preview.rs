@@ -1,6 +1,6 @@
 //! ZD621 preview regressions. Raw captures and provenance are in the fixture README.
 use std::{fs, path::Path};
-#[path = "../../zebra-http-api/examples/font_support/mod.rs"]
+#[path = "support/digest.rs"]
 mod digest;
 #[test]
 fn spaces_and_narrow_runs_pin_every_pixel() {

@@ -1,5 +1,5 @@
 //! Exact comparisons against pre-fix ZD621 captures at PW832 (no padding).
-#[path = "../examples/font_support/mod.rs"]
+#[path = "../../zpl/tests/support/digest.rs"]
 mod digest;
 use raster_diff::{compare_stats, Raster};
 

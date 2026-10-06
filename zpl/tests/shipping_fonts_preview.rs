@@ -1,6 +1,6 @@
 //! Unmodified ZD621 shipping-label font controls; see the fixture README.
 use std::{fs, path::Path};
-#[path = "../../zebra-http-api/examples/font_support/mod.rs"]
+#[path = "support/digest.rs"]
 mod digest;
 #[test]
 fn raw_shipping_font_frames_pin_pixels_and_field_accuracy() {

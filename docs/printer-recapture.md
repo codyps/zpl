@@ -48,8 +48,12 @@ client against the printer, since the underlying temporary image is shared.
 
 ## Coverage and width policy
 
+Font research is now a separate private checkout. Pass `--fonts /path/to/zpl-font-extract`
+to include it explicitly; normal ZPL inventory does not require private repository access.
+
 The inventory uses tracked PNGs in `zpl/tests/fixtures`,
-`zebra-http-api/tests/fixtures`, `zpl-font-extract/tests/fixtures`, and comparison's
+`zebra-http-api/tests/fixtures`, the separate private font repository's
+`zpl-font-extract/tests/fixtures`, and comparison's
 `benchmarks/accuracy` and `references`. Generated website renderings and diff
 images outside those roots are not printer inputs. Original duplicate paths and
 historical diagnostic records remain separate cases. Source-less historical audit

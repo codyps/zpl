@@ -5,7 +5,7 @@ use std::{
     path::Path,
     time::{Duration, Instant},
 };
-#[path = "../../zebra-http-api/examples/font_support/mod.rs"]
+#[path = "support/digest.rs"]
 mod digest;
 
 #[test]

@@ -4,7 +4,7 @@ use zpl::{
     output::raster::rasterize,
     render::profiles::{SPECIFICATION, ZD621_203_DPI},
 };
-#[path = "../../zebra-http-api/examples/font_support/mod.rs"]
+#[path = "support/digest.rs"]
 mod digest;
 #[test]
 fn native_legacy_control_frames_are_pixel_exact() {

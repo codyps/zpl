@@ -1,4 +1,0 @@
-{
-  "status": "diagnostic-only",
-  "reason": "Probe generator hard-coded R:ZP26A.TTF while upload used R:ZP26R.TTF; blank output is not rendering evidence. Cleanup confirmed."
-}

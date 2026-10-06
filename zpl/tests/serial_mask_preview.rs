@@ -1,6 +1,6 @@
 //! Unmodified ZD621 serial-mask controls; see the fixture README.
 use std::{fs, path::Path};
-#[path = "../../zebra-http-api/examples/font_support/mod.rs"]
+#[path = "support/digest.rs"]
 mod digest;
 #[test]
 fn raw_serial_mask_frames_pin_every_pixel_and_meet_text_goal() {

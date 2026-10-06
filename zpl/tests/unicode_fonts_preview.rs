@@ -1,6 +1,6 @@
 //! Unmodified ZD621 Unicode font controls; see the fixture README.
 use std::{fs, path::Path};
-#[path = "../../zebra-http-api/examples/font_support/mod.rs"]
+#[path = "support/digest.rs"]
 mod digest;
 #[test]
 fn raw_unicode_font_frames_pin_every_pixel_and_meet_text_goal() {

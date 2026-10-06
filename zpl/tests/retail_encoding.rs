@@ -1,6 +1,6 @@
 //! Native evidence and source references in fixtures/retail-font-zd621-v1/README.md.
 use std::{fs, path::Path};
-#[path = "../../zebra-http-api/examples/font_support/mod.rs"]
+#[path = "support/digest.rs"]
 mod digest;
 
 fn pixels(body: &[u8], options: zpl::Options) -> raster_diff::Raster {

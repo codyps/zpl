@@ -3,7 +3,7 @@
 New captures: 2026-09-19 UTC, HTTP Preview Label at
 `http://printer.local/`, ZD621 203 dpi, V93.21.33Z. No printing.
 The 20/64-dot font-0 strikes reuse the original September 14 font-study captures
-in `zebra-http-api/tests/fixtures/font-study`, including their separate held-out
+in the fixed local `font-study/` subset, including their separate held-out
 verification strings. Other strikes were captured with the repository's
 `extract-font` example. Each directory includes capture settings. Source and
 original PNG hashes are pinned by the manifests; embedded ZBF hashes are in
@@ -37,3 +37,9 @@ contains é only and does not claim complete Latin-1 or Unicode coverage.
 
 These are discrete raster strikes, not recovered outlines or printer font files.
 Unsampled scalable sizes still use the original 32-dot strike as a fallback.
+
+The original font-study corpus and capture tools now live in the
+[private font research repository](https://github.com/codyps/zpl-font-extract).
+`font-study-sources.json` pins these 52 retained request/PNG files to their
+archival source commit; manifest paths changed, but captured bytes and expected
+hashes are unchanged.

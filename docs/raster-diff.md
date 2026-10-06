@@ -69,7 +69,7 @@ lengths are checked. Each input is limited to 16 MiB and 16 Mi pixels; the diff
 canvas and magnified output are limited to 32 Mi pixels. PNG output uses stored
 DEFLATE blocks, so diagnostic files can be large.
 
-The [font extractor](font-extraction.md) uses this same comparison implementation
+The [font extractor](https://github.com/codyps/zpl-font-extract/blob/main/docs/font-extraction.md) uses this same comparison implementation
 for its optional text verification and saves `verification-diff.png`.
 
 ## Validation

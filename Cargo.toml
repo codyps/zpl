@@ -1,7 +1,6 @@
 [workspace]
 members = [
     "zebra-firmware",
-    "zpl-font-extract",
     "raster-diff",
     "zpl-wasm",
     "zpl-cmd",

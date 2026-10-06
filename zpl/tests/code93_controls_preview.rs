@@ -1,6 +1,6 @@
 //! Unmodified ZD621 Code 93 payload-control controls; see the fixture README.
 use std::{fs, path::Path};
-#[path = "../../zebra-http-api/examples/font_support/mod.rs"]
+#[path = "support/digest.rs"]
 mod digest;
 #[test]
 fn raw_code93_control_frames_are_pixel_exact() {

@@ -1,6 +1,6 @@
 //! Raw ZD621 extended Model 1 controls; see the fixture README for provenance.
 use std::{fs, path::Path};
-#[path = "../../zebra-http-api/examples/font_support/mod.rs"]
+#[path = "support/digest.rs"]
 mod digest;
 
 #[test]

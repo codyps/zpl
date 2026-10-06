@@ -1,0 +1,2086 @@
+{
+  "candidates_sha256": "79de8ca1ede7669d4cc130fbae48f5c17c99ef2070353d7ce61eb78049acb8b4",
+  "font_sha256": "7a14dbf4e90b0a6240a1895e9d4335da1306ee42b140799d9a8fc1ef7cbdd0c7",
+  "object": "R:ZP26U.TTF",
+  "pages": [
+    {
+      "canvas": [
+        384,
+        64
+      ],
+      "group": "state",
+      "name": "00-state",
+      "probes": [
+        {
+          "anchor": [
+            16,
+            32
+          ],
+          "height": 16,
+          "name": "identity",
+          "orientation": "N",
+          "origin": "FT",
+          "text": "\ue000",
+          "tile": [
+            0,
+            0,
+            64,
+            64
+          ],
+          "width": 16
+        },
+        {
+          "anchor": [
+            16,
+            32
+          ],
+          "height": 16,
+          "name": "instruction-witness",
+          "orientation": "N",
+          "origin": "FT",
+          "text": "\ue001",
+          "tile": [
+            64,
+            0,
+            64,
+            64
+          ],
+          "width": 16
+        }
+      ],
+      "zpl_sha256": "6a49ce11a14fd3dee23fda9a82895adca7c172f6db5b391b257123d8f7cc056e"
+    },
+    {
+      "canvas": [
+        768,
+        1472
+      ],
+      "font": "0",
+      "group": "validation",
+      "name": "set0-reconstruction-00",
+      "probes": [
+        {
+          "anchor": [
+            114,
+            355
+          ],
+          "height": 241,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "m",
+          "tile": [
+            0,
+            0,
+            736,
+            736
+          ],
+          "width": 241
+        },
+        {
+          "anchor": [
+            114,
+            355
+          ],
+          "height": 241,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "n",
+          "tile": [
+            0,
+            736,
+            736,
+            736
+          ],
+          "width": 241
+        }
+      ],
+      "zpl_sha256": "2b73381fb05d6baa7e032c1e0fb133b6d84d8cac8a56e551d7053a2dba02c659"
+    },
+    {
+      "canvas": [
+        768,
+        1472
+      ],
+      "font": "0",
+      "group": "validation",
+      "name": "set0-reconstruction-01",
+      "probes": [
+        {
+          "anchor": [
+            114,
+            355
+          ],
+          "height": 241,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "o",
+          "tile": [
+            0,
+            0,
+            736,
+            736
+          ],
+          "width": 241
+        },
+        {
+          "anchor": [
+            114,
+            355
+          ],
+          "height": 241,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "s",
+          "tile": [
+            0,
+            736,
+            736,
+            736
+          ],
+          "width": 241
+        }
+      ],
+      "zpl_sha256": "1d294eeb8f58f4fdf24207afe58f6c849cec870457fc1cdc0cd8c69c66238458"
+    },
+    {
+      "canvas": [
+        768,
+        1472
+      ],
+      "font": "0",
+      "group": "validation",
+      "name": "set0-reconstruction-02",
+      "probes": [
+        {
+          "anchor": [
+            114,
+            355
+          ],
+          "height": 241,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "H",
+          "tile": [
+            0,
+            0,
+            736,
+            736
+          ],
+          "width": 241
+        },
+        {
+          "anchor": [
+            114,
+            355
+          ],
+          "height": 241,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "O",
+          "tile": [
+            0,
+            736,
+            736,
+            736
+          ],
+          "width": 241
+        }
+      ],
+      "zpl_sha256": "86c5398350f080b073f43cee0bd28c0d2a81eff1672817a1f95959e9598ee6ef"
+    },
+    {
+      "canvas": [
+        768,
+        1472
+      ],
+      "font": "0",
+      "group": "validation",
+      "name": "set0-reconstruction-03",
+      "probes": [
+        {
+          "anchor": [
+            114,
+            355
+          ],
+          "height": 241,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "S",
+          "tile": [
+            0,
+            0,
+            736,
+            736
+          ],
+          "width": 241
+        },
+        {
+          "anchor": [
+            114,
+            355
+          ],
+          "height": 241,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "g",
+          "tile": [
+            0,
+            736,
+            736,
+            736
+          ],
+          "width": 241
+        }
+      ],
+      "zpl_sha256": "51be93e84af36c17baa5d7b54285743087918836205da7124ad667e00fbb6af9"
+    },
+    {
+      "canvas": [
+        768,
+        1472
+      ],
+      "font": "0",
+      "group": "validation",
+      "name": "set0-reconstruction-04",
+      "probes": [
+        {
+          "anchor": [
+            114,
+            531
+          ],
+          "height": 417,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "m",
+          "tile": [
+            0,
+            0,
+            736,
+            736
+          ],
+          "width": 417
+        },
+        {
+          "anchor": [
+            114,
+            531
+          ],
+          "height": 417,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "n",
+          "tile": [
+            0,
+            736,
+            736,
+            736
+          ],
+          "width": 417
+        }
+      ],
+      "zpl_sha256": "bf888d0596f8bf86dc7fcb667237a464e2daeb1a137d61728a273d55b3e41410"
+    },
+    {
+      "canvas": [
+        768,
+        1472
+      ],
+      "font": "0",
+      "group": "validation",
+      "name": "set0-reconstruction-05",
+      "probes": [
+        {
+          "anchor": [
+            114,
+            531
+          ],
+          "height": 417,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "o",
+          "tile": [
+            0,
+            0,
+            736,
+            736
+          ],
+          "width": 417
+        },
+        {
+          "anchor": [
+            114,
+            531
+          ],
+          "height": 417,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "s",
+          "tile": [
+            0,
+            736,
+            736,
+            736
+          ],
+          "width": 417
+        }
+      ],
+      "zpl_sha256": "026abbc836de563ae34e56ed6e29d90762cd6babd6afb55808fdf5bf459b38f6"
+    },
+    {
+      "canvas": [
+        768,
+        1472
+      ],
+      "font": "0",
+      "group": "validation",
+      "name": "set0-reconstruction-06",
+      "probes": [
+        {
+          "anchor": [
+            114,
+            531
+          ],
+          "height": 417,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "H",
+          "tile": [
+            0,
+            0,
+            736,
+            736
+          ],
+          "width": 417
+        },
+        {
+          "anchor": [
+            114,
+            531
+          ],
+          "height": 417,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "O",
+          "tile": [
+            0,
+            736,
+            736,
+            736
+          ],
+          "width": 417
+        }
+      ],
+      "zpl_sha256": "dfa956987ff0576a61af180a26fa5eae8ffad3de95c1e378b7b03ce3e9d1413c"
+    },
+    {
+      "canvas": [
+        768,
+        1472
+      ],
+      "font": "0",
+      "group": "validation",
+      "name": "set0-reconstruction-07",
+      "probes": [
+        {
+          "anchor": [
+            114,
+            531
+          ],
+          "height": 417,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "S",
+          "tile": [
+            0,
+            0,
+            736,
+            736
+          ],
+          "width": 417
+        },
+        {
+          "anchor": [
+            114,
+            531
+          ],
+          "height": 417,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "g",
+          "tile": [
+            0,
+            736,
+            736,
+            736
+          ],
+          "width": 417
+        }
+      ],
+      "zpl_sha256": "338ff38ce1b2af2adc2308c8b609c29621b745f92970e413521bc2f1e31a7929"
+    },
+    {
+      "canvas": [
+        768,
+        1472
+      ],
+      "font": "0",
+      "group": "validation",
+      "name": "set0-reconstruction-08",
+      "probes": [
+        {
+          "anchor": [
+            114,
+            601
+          ],
+          "height": 487,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "m",
+          "tile": [
+            0,
+            0,
+            736,
+            736
+          ],
+          "width": 487
+        },
+        {
+          "anchor": [
+            114,
+            601
+          ],
+          "height": 487,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "n",
+          "tile": [
+            0,
+            736,
+            736,
+            736
+          ],
+          "width": 487
+        }
+      ],
+      "zpl_sha256": "e7fb48d132bbbc8f0e74dc7b2c5e345405485d1931583b7fced7112560bdf494"
+    },
+    {
+      "canvas": [
+        768,
+        1472
+      ],
+      "font": "0",
+      "group": "validation",
+      "name": "set0-reconstruction-09",
+      "probes": [
+        {
+          "anchor": [
+            114,
+            601
+          ],
+          "height": 487,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "o",
+          "tile": [
+            0,
+            0,
+            736,
+            736
+          ],
+          "width": 487
+        },
+        {
+          "anchor": [
+            114,
+            601
+          ],
+          "height": 487,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "s",
+          "tile": [
+            0,
+            736,
+            736,
+            736
+          ],
+          "width": 487
+        }
+      ],
+      "zpl_sha256": "40fd2c169b95a436fecb98b5108db0ae2092b88e5a087745267526206e0f3363"
+    },
+    {
+      "canvas": [
+        768,
+        1472
+      ],
+      "font": "0",
+      "group": "validation",
+      "name": "set0-reconstruction-10",
+      "probes": [
+        {
+          "anchor": [
+            114,
+            601
+          ],
+          "height": 487,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "H",
+          "tile": [
+            0,
+            0,
+            736,
+            736
+          ],
+          "width": 487
+        },
+        {
+          "anchor": [
+            114,
+            601
+          ],
+          "height": 487,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "O",
+          "tile": [
+            0,
+            736,
+            736,
+            736
+          ],
+          "width": 487
+        }
+      ],
+      "zpl_sha256": "abb6ebd7538119123035d456d399b898cd605b11c601ee9da2afece277416c06"
+    },
+    {
+      "canvas": [
+        768,
+        1472
+      ],
+      "font": "0",
+      "group": "validation",
+      "name": "set0-reconstruction-11",
+      "probes": [
+        {
+          "anchor": [
+            114,
+            601
+          ],
+          "height": 487,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "S",
+          "tile": [
+            0,
+            0,
+            736,
+            736
+          ],
+          "width": 487
+        },
+        {
+          "anchor": [
+            114,
+            601
+          ],
+          "height": 487,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "g",
+          "tile": [
+            0,
+            736,
+            736,
+            736
+          ],
+          "width": 487
+        }
+      ],
+      "zpl_sha256": "bff7f5b684e6c46dd6dc43f22c1309facce58a1a143ef962b4aed7c4ab07a8ea"
+    },
+    {
+      "canvas": [
+        768,
+        1472
+      ],
+      "font": "0",
+      "group": "validation",
+      "name": "set0-reconstruction-12",
+      "probes": [
+        {
+          "anchor": [
+            175,
+            114
+          ],
+          "height": 447,
+          "orientation": "R",
+          "origin": "FT",
+          "text": "m",
+          "tile": [
+            0,
+            0,
+            736,
+            736
+          ],
+          "width": 319
+        },
+        {
+          "anchor": [
+            175,
+            114
+          ],
+          "height": 447,
+          "orientation": "R",
+          "origin": "FT",
+          "text": "n",
+          "tile": [
+            0,
+            736,
+            736,
+            736
+          ],
+          "width": 319
+        }
+      ],
+      "zpl_sha256": "8f5cfe44fedbb2491bb64881f76011306997a25d853e14ef3c4769ebe1e8f5c2"
+    },
+    {
+      "canvas": [
+        768,
+        1472
+      ],
+      "font": "0",
+      "group": "validation",
+      "name": "set0-reconstruction-13",
+      "probes": [
+        {
+          "anchor": [
+            175,
+            114
+          ],
+          "height": 447,
+          "orientation": "R",
+          "origin": "FT",
+          "text": "o",
+          "tile": [
+            0,
+            0,
+            736,
+            736
+          ],
+          "width": 319
+        },
+        {
+          "anchor": [
+            175,
+            114
+          ],
+          "height": 447,
+          "orientation": "R",
+          "origin": "FT",
+          "text": "s",
+          "tile": [
+            0,
+            736,
+            736,
+            736
+          ],
+          "width": 319
+        }
+      ],
+      "zpl_sha256": "f5b473fbe3ac64f26177e297f12377fd98aa2f022abec6637068f1e6ccc7bc9d"
+    },
+    {
+      "canvas": [
+        768,
+        1472
+      ],
+      "font": "0",
+      "group": "validation",
+      "name": "set0-reconstruction-14",
+      "probes": [
+        {
+          "anchor": [
+            175,
+            114
+          ],
+          "height": 447,
+          "orientation": "R",
+          "origin": "FT",
+          "text": "H",
+          "tile": [
+            0,
+            0,
+            736,
+            736
+          ],
+          "width": 319
+        },
+        {
+          "anchor": [
+            175,
+            114
+          ],
+          "height": 447,
+          "orientation": "R",
+          "origin": "FT",
+          "text": "O",
+          "tile": [
+            0,
+            736,
+            736,
+            736
+          ],
+          "width": 319
+        }
+      ],
+      "zpl_sha256": "d3be5a878f4b3ad7923dcaed1a6ad2d86508d709f9e98862ac56a3a4691d828a"
+    },
+    {
+      "canvas": [
+        768,
+        1472
+      ],
+      "font": "0",
+      "group": "validation",
+      "name": "set0-reconstruction-15",
+      "probes": [
+        {
+          "anchor": [
+            175,
+            114
+          ],
+          "height": 447,
+          "orientation": "R",
+          "origin": "FT",
+          "text": "S",
+          "tile": [
+            0,
+            0,
+            736,
+            736
+          ],
+          "width": 319
+        },
+        {
+          "anchor": [
+            175,
+            114
+          ],
+          "height": 447,
+          "orientation": "R",
+          "origin": "FT",
+          "text": "g",
+          "tile": [
+            0,
+            736,
+            736,
+            736
+          ],
+          "width": 319
+        }
+      ],
+      "zpl_sha256": "2243be77d4bbc4ddb559c95bfcbea9ba13a52ade102a60dae1761bf2dcb06558"
+    },
+    {
+      "canvas": [
+        768,
+        1472
+      ],
+      "font": "0",
+      "group": "validation",
+      "name": "set0-reconstruction-16",
+      "probes": [
+        {
+          "anchor": [
+            114,
+            433
+          ],
+          "height": 319,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "m",
+          "tile": [
+            0,
+            0,
+            736,
+            736
+          ],
+          "width": 447
+        },
+        {
+          "anchor": [
+            114,
+            433
+          ],
+          "height": 319,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "n",
+          "tile": [
+            0,
+            736,
+            736,
+            736
+          ],
+          "width": 447
+        }
+      ],
+      "zpl_sha256": "807f2987acf8a06360afc2358933f4616f7601f4bebe0aca274bda3539e2ca92"
+    },
+    {
+      "canvas": [
+        768,
+        1472
+      ],
+      "font": "0",
+      "group": "validation",
+      "name": "set0-reconstruction-17",
+      "probes": [
+        {
+          "anchor": [
+            114,
+            433
+          ],
+          "height": 319,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "o",
+          "tile": [
+            0,
+            0,
+            736,
+            736
+          ],
+          "width": 447
+        },
+        {
+          "anchor": [
+            114,
+            433
+          ],
+          "height": 319,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "s",
+          "tile": [
+            0,
+            736,
+            736,
+            736
+          ],
+          "width": 447
+        }
+      ],
+      "zpl_sha256": "a8d1432d09d66b29b53a3a9738721e867c442002c1217522cb802c2784f09195"
+    },
+    {
+      "canvas": [
+        768,
+        1472
+      ],
+      "font": "0",
+      "group": "validation",
+      "name": "set0-reconstruction-18",
+      "probes": [
+        {
+          "anchor": [
+            114,
+            433
+          ],
+          "height": 319,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "H",
+          "tile": [
+            0,
+            0,
+            736,
+            736
+          ],
+          "width": 447
+        },
+        {
+          "anchor": [
+            114,
+            433
+          ],
+          "height": 319,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "O",
+          "tile": [
+            0,
+            736,
+            736,
+            736
+          ],
+          "width": 447
+        }
+      ],
+      "zpl_sha256": "9b10da9cde676d89766b1060db2aea4e382a05bf3505c11738523aff9866ca90"
+    },
+    {
+      "canvas": [
+        768,
+        1472
+      ],
+      "font": "0",
+      "group": "validation",
+      "name": "set0-reconstruction-19",
+      "probes": [
+        {
+          "anchor": [
+            114,
+            433
+          ],
+          "height": 319,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "S",
+          "tile": [
+            0,
+            0,
+            736,
+            736
+          ],
+          "width": 447
+        },
+        {
+          "anchor": [
+            114,
+            433
+          ],
+          "height": 319,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "g",
+          "tile": [
+            0,
+            736,
+            736,
+            736
+          ],
+          "width": 447
+        }
+      ],
+      "zpl_sha256": "227b1f2e307d801c9e92de9b7cbd4b960c98db2d583b58bc75089465b7e0cffa"
+    },
+    {
+      "canvas": [
+        384,
+        704
+      ],
+      "font": "0",
+      "group": "validation",
+      "name": "set1-reconstruction-00",
+      "probes": [
+        {
+          "anchor": [
+            16,
+            33
+          ],
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "m",
+          "tile": [
+            0,
+            0,
+            64,
+            64
+          ],
+          "width": 14
+        },
+        {
+          "anchor": [
+            16,
+            33
+          ],
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "n",
+          "tile": [
+            64,
+            0,
+            64,
+            64
+          ],
+          "width": 14
+        },
+        {
+          "anchor": [
+            16,
+            33
+          ],
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "o",
+          "tile": [
+            128,
+            0,
+            64,
+            64
+          ],
+          "width": 14
+        },
+        {
+          "anchor": [
+            16,
+            33
+          ],
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "s",
+          "tile": [
+            192,
+            0,
+            64,
+            64
+          ],
+          "width": 14
+        },
+        {
+          "anchor": [
+            16,
+            33
+          ],
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "H",
+          "tile": [
+            256,
+            0,
+            64,
+            64
+          ],
+          "width": 14
+        },
+        {
+          "anchor": [
+            16,
+            33
+          ],
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "O",
+          "tile": [
+            320,
+            0,
+            64,
+            64
+          ],
+          "width": 14
+        },
+        {
+          "anchor": [
+            16,
+            33
+          ],
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "S",
+          "tile": [
+            0,
+            64,
+            64,
+            64
+          ],
+          "width": 14
+        },
+        {
+          "anchor": [
+            16,
+            33
+          ],
+          "height": 17,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "g",
+          "tile": [
+            64,
+            64,
+            64,
+            64
+          ],
+          "width": 14
+        },
+        {
+          "anchor": [
+            31,
+            16
+          ],
+          "height": 17,
+          "orientation": "R",
+          "origin": "FT",
+          "text": "m",
+          "tile": [
+            128,
+            64,
+            64,
+            64
+          ],
+          "width": 14
+        },
+        {
+          "anchor": [
+            31,
+            16
+          ],
+          "height": 17,
+          "orientation": "R",
+          "origin": "FT",
+          "text": "n",
+          "tile": [
+            192,
+            64,
+            64,
+            64
+          ],
+          "width": 14
+        },
+        {
+          "anchor": [
+            31,
+            16
+          ],
+          "height": 17,
+          "orientation": "R",
+          "origin": "FT",
+          "text": "o",
+          "tile": [
+            256,
+            64,
+            64,
+            64
+          ],
+          "width": 14
+        },
+        {
+          "anchor": [
+            31,
+            16
+          ],
+          "height": 17,
+          "orientation": "R",
+          "origin": "FT",
+          "text": "s",
+          "tile": [
+            320,
+            64,
+            64,
+            64
+          ],
+          "width": 14
+        },
+        {
+          "anchor": [
+            31,
+            16
+          ],
+          "height": 17,
+          "orientation": "R",
+          "origin": "FT",
+          "text": "H",
+          "tile": [
+            0,
+            128,
+            64,
+            64
+          ],
+          "width": 14
+        },
+        {
+          "anchor": [
+            31,
+            16
+          ],
+          "height": 17,
+          "orientation": "R",
+          "origin": "FT",
+          "text": "O",
+          "tile": [
+            64,
+            128,
+            64,
+            64
+          ],
+          "width": 14
+        },
+        {
+          "anchor": [
+            31,
+            16
+          ],
+          "height": 17,
+          "orientation": "R",
+          "origin": "FT",
+          "text": "S",
+          "tile": [
+            128,
+            128,
+            64,
+            64
+          ],
+          "width": 14
+        },
+        {
+          "anchor": [
+            31,
+            16
+          ],
+          "height": 17,
+          "orientation": "R",
+          "origin": "FT",
+          "text": "g",
+          "tile": [
+            192,
+            128,
+            64,
+            64
+          ],
+          "width": 14
+        },
+        {
+          "anchor": [
+            48,
+            34
+          ],
+          "height": 14,
+          "orientation": "I",
+          "origin": "FT",
+          "text": "m",
+          "tile": [
+            256,
+            128,
+            64,
+            64
+          ],
+          "width": 17
+        },
+        {
+          "anchor": [
+            48,
+            34
+          ],
+          "height": 14,
+          "orientation": "I",
+          "origin": "FT",
+          "text": "n",
+          "tile": [
+            320,
+            128,
+            64,
+            64
+          ],
+          "width": 17
+        },
+        {
+          "anchor": [
+            48,
+            34
+          ],
+          "height": 14,
+          "orientation": "I",
+          "origin": "FT",
+          "text": "o",
+          "tile": [
+            0,
+            192,
+            64,
+            64
+          ],
+          "width": 17
+        },
+        {
+          "anchor": [
+            48,
+            34
+          ],
+          "height": 14,
+          "orientation": "I",
+          "origin": "FT",
+          "text": "s",
+          "tile": [
+            64,
+            192,
+            64,
+            64
+          ],
+          "width": 17
+        },
+        {
+          "anchor": [
+            48,
+            34
+          ],
+          "height": 14,
+          "orientation": "I",
+          "origin": "FT",
+          "text": "H",
+          "tile": [
+            128,
+            192,
+            64,
+            64
+          ],
+          "width": 17
+        },
+        {
+          "anchor": [
+            48,
+            34
+          ],
+          "height": 14,
+          "orientation": "I",
+          "origin": "FT",
+          "text": "O",
+          "tile": [
+            192,
+            192,
+            64,
+            64
+          ],
+          "width": 17
+        },
+        {
+          "anchor": [
+            48,
+            34
+          ],
+          "height": 14,
+          "orientation": "I",
+          "origin": "FT",
+          "text": "S",
+          "tile": [
+            256,
+            192,
+            64,
+            64
+          ],
+          "width": 17
+        },
+        {
+          "anchor": [
+            48,
+            34
+          ],
+          "height": 14,
+          "orientation": "I",
+          "origin": "FT",
+          "text": "g",
+          "tile": [
+            320,
+            192,
+            64,
+            64
+          ],
+          "width": 17
+        },
+        {
+          "anchor": [
+            30,
+            48
+          ],
+          "height": 14,
+          "orientation": "B",
+          "origin": "FT",
+          "text": "m",
+          "tile": [
+            0,
+            256,
+            64,
+            64
+          ],
+          "width": 17
+        },
+        {
+          "anchor": [
+            30,
+            48
+          ],
+          "height": 14,
+          "orientation": "B",
+          "origin": "FT",
+          "text": "n",
+          "tile": [
+            64,
+            256,
+            64,
+            64
+          ],
+          "width": 17
+        },
+        {
+          "anchor": [
+            30,
+            48
+          ],
+          "height": 14,
+          "orientation": "B",
+          "origin": "FT",
+          "text": "o",
+          "tile": [
+            128,
+            256,
+            64,
+            64
+          ],
+          "width": 17
+        },
+        {
+          "anchor": [
+            30,
+            48
+          ],
+          "height": 14,
+          "orientation": "B",
+          "origin": "FT",
+          "text": "s",
+          "tile": [
+            192,
+            256,
+            64,
+            64
+          ],
+          "width": 17
+        },
+        {
+          "anchor": [
+            30,
+            48
+          ],
+          "height": 14,
+          "orientation": "B",
+          "origin": "FT",
+          "text": "H",
+          "tile": [
+            256,
+            256,
+            64,
+            64
+          ],
+          "width": 17
+        },
+        {
+          "anchor": [
+            30,
+            48
+          ],
+          "height": 14,
+          "orientation": "B",
+          "origin": "FT",
+          "text": "O",
+          "tile": [
+            320,
+            256,
+            64,
+            64
+          ],
+          "width": 17
+        },
+        {
+          "anchor": [
+            30,
+            48
+          ],
+          "height": 14,
+          "orientation": "B",
+          "origin": "FT",
+          "text": "S",
+          "tile": [
+            0,
+            320,
+            64,
+            64
+          ],
+          "width": 17
+        },
+        {
+          "anchor": [
+            30,
+            48
+          ],
+          "height": 14,
+          "orientation": "B",
+          "origin": "FT",
+          "text": "g",
+          "tile": [
+            64,
+            320,
+            64,
+            64
+          ],
+          "width": 17
+        },
+        {
+          "anchor": [
+            16,
+            43
+          ],
+          "height": 27,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "m",
+          "tile": [
+            128,
+            320,
+            64,
+            64
+          ],
+          "width": 22
+        },
+        {
+          "anchor": [
+            16,
+            43
+          ],
+          "height": 27,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "n",
+          "tile": [
+            192,
+            320,
+            64,
+            64
+          ],
+          "width": 22
+        },
+        {
+          "anchor": [
+            16,
+            43
+          ],
+          "height": 27,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "o",
+          "tile": [
+            256,
+            320,
+            64,
+            64
+          ],
+          "width": 22
+        },
+        {
+          "anchor": [
+            16,
+            43
+          ],
+          "height": 27,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "s",
+          "tile": [
+            320,
+            320,
+            64,
+            64
+          ],
+          "width": 22
+        },
+        {
+          "anchor": [
+            16,
+            43
+          ],
+          "height": 27,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "H",
+          "tile": [
+            0,
+            384,
+            64,
+            64
+          ],
+          "width": 22
+        },
+        {
+          "anchor": [
+            16,
+            43
+          ],
+          "height": 27,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "O",
+          "tile": [
+            64,
+            384,
+            64,
+            64
+          ],
+          "width": 22
+        },
+        {
+          "anchor": [
+            16,
+            43
+          ],
+          "height": 27,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "S",
+          "tile": [
+            128,
+            384,
+            64,
+            64
+          ],
+          "width": 22
+        },
+        {
+          "anchor": [
+            16,
+            43
+          ],
+          "height": 27,
+          "orientation": "N",
+          "origin": "FT",
+          "text": "g",
+          "tile": [
+            192,
+            384,
+            64,
+            64
+          ],
+          "width": 22
+        },
+        {
+          "anchor": [
+            21,
+            16
+          ],
+          "height": 27,
+          "orientation": "R",
+          "origin": "FT",
+          "text": "m",
+          "tile": [
+            256,
+            384,
+            64,
+            64
+          ],
+          "width": 22
+        },
+        {
+          "anchor": [
+            21,
+            16
+          ],
+          "height": 27,
+          "orientation": "R",
+          "origin": "FT",
+          "text": "n",
+          "tile": [
+            320,
+            384,
+            64,
+            64
+          ],
+          "width": 22
+        },
+        {
+          "anchor": [
+            21,
+            16
+          ],
+          "height": 27,
+          "orientation": "R",
+          "origin": "FT",
+          "text": "o",
+          "tile": [
+            0,
+            448,
+            64,
+            64
+          ],
+          "width": 22
+        },
+        {
+          "anchor": [
+            21,
+            16
+          ],
+          "height": 27,
+          "orientation": "R",
+          "origin": "FT",
+          "text": "s",
+          "tile": [
+            64,
+            448,
+            64,
+            64
+          ],
+          "width": 22
+        },
+        {
+          "anchor": [
+            21,
+            16
+          ],
+          "height": 27,
+          "orientation": "R",
+          "origin": "FT",
+          "text": "H",
+          "tile": [
+            128,
+            448,
+            64,
+            64
+          ],
+          "width": 22
+        },
+        {
+          "anchor": [
+            21,
+            16
+          ],
+          "height": 27,
+          "orientation": "R",
+          "origin": "FT",
+          "text": "O",
+          "tile": [
+            192,
+            448,
+            64,
+            64
+          ],
+          "width": 22
+        },
+        {
+          "anchor": [
+            21,
+            16
+          ],
+          "height": 27,
+          "orientation": "R",
+          "origin": "FT",
+          "text": "S",
+          "tile": [
+            256,
+            448,
+            64,
+            64
+          ],
+          "width": 22
+        },
+        {
+          "anchor": [
+            21,
+            16
+          ],
+          "height": 27,
+          "orientation": "R",
+          "origin": "FT",
+          "text": "g",
+          "tile": [
+            320,
+            448,
+            64,
+            64
+          ],
+          "width": 22
+        },
+        {
+          "anchor": [
+            48,
+            26
+          ],
+          "height": 22,
+          "orientation": "I",
+          "origin": "FT",
+          "text": "m",
+          "tile": [
+            0,
+            512,
+            64,
+            64
+          ],
+          "width": 27
+        },
+        {
+          "anchor": [
+            48,
+            26
+          ],
+          "height": 22,
+          "orientation": "I",
+          "origin": "FT",
+          "text": "n",
+          "tile": [
+            64,
+            512,
+            64,
+            64
+          ],
+          "width": 27
+        },
+        {
+          "anchor": [
+            48,
+            26
+          ],
+          "height": 22,
+          "orientation": "I",
+          "origin": "FT",
+          "text": "o",
+          "tile": [
+            128,
+            512,
+            64,
+            64
+          ],
+          "width": 27
+        },
+        {
+          "anchor": [
+            48,
+            26
+          ],
+          "height": 22,
+          "orientation": "I",
+          "origin": "FT",
+          "text": "s",
+          "tile": [
+            192,
+            512,
+            64,
+            64
+          ],
+          "width": 27
+        },
+        {
+          "anchor": [
+            48,
+            26
+          ],
+          "height": 22,
+          "orientation": "I",
+          "origin": "FT",
+          "text": "H",
+          "tile": [
+            256,
+            512,
+            64,
+            64
+          ],
+          "width": 27
+        },
+        {
+          "anchor": [
+            48,
+            26
+          ],
+          "height": 22,
+          "orientation": "I",
+          "origin": "FT",
+          "text": "O",
+          "tile": [
+            320,
+            512,
+            64,
+            64
+          ],
+          "width": 27
+        },
+        {
+          "anchor": [
+            48,
+            26
+          ],
+          "height": 22,
+          "orientation": "I",
+          "origin": "FT",
+          "text": "S",
+          "tile": [
+            0,
+            576,
+            64,
+            64
+          ],
+          "width": 27
+        },
+        {
+          "anchor": [
+            48,
+            26
+          ],
+          "height": 22,
+          "orientation": "I",
+          "origin": "FT",
+          "text": "g",
+          "tile": [
+            64,
+            576,
+            64,
+            64
+          ],
+          "width": 27
+        },
+        {
+          "anchor": [
+            38,
+            48
+          ],
+          "height": 22,
+          "orientation": "B",
+          "origin": "FT",
+          "text": "m",
+          "tile": [
+            128,
+            576,
+            64,
+            64
+          ],
+          "width": 27
+        },
+        {
+          "anchor": [
+            38,
+            48
+          ],
+          "height": 22,
+          "orientation": "B",
+          "origin": "FT",
+          "text": "n",
+          "tile": [
+            192,
+            576,
+            64,
+            64
+          ],
+          "width": 27
+        },
+        {
+          "anchor": [
+            38,
+            48
+          ],
+          "height": 22,
+          "orientation": "B",
+          "origin": "FT",
+          "text": "o",
+          "tile": [
+            256,
+            576,
+            64,
+            64
+          ],
+          "width": 27
+        },
+        {
+          "anchor": [
+            38,
+            48
+          ],
+          "height": 22,
+          "orientation": "B",
+          "origin": "FT",
+          "text": "s",
+          "tile": [
+            320,
+            576,
+            64,
+            64
+          ],
+          "width": 27
+        },
+        {
+          "anchor": [
+            38,
+            48
+          ],
+          "height": 22,
+          "orientation": "B",
+          "origin": "FT",
+          "text": "H",
+          "tile": [
+            0,
+            640,
+            64,
+            64
+          ],
+          "width": 27
+        },
+        {
+          "anchor": [
+            38,
+            48
+          ],
+          "height": 22,
+          "orientation": "B",
+          "origin": "FT",
+          "text": "O",
+          "tile": [
+            64,
+            640,
+            64,
+            64
+          ],
+          "width": 27
+        },
+        {
+          "anchor": [
+            38,
+            48
+          ],
+          "height": 22,
+          "orientation": "B",
+          "origin": "FT",
+          "text": "S",
+          "tile": [
+            128,
+            640,
+            64,
+            64
+          ],
+          "width": 27
+        },
+        {
+          "anchor": [
+            38,
+            48
+          ],
+          "height": 22,
+          "orientation": "B",
+          "origin": "FT",
+          "text": "g",
+          "tile": [
+            192,
+            640,
+            64,
+            64
+          ],
+          "width": 27
+        }
+      ],
+      "zpl_sha256": "1ad0a398cd45c092b7e137af173b5a5c4a8e45a2e72751e3a58cd4a5ebeab1c7"
+    }
+  ],
+  "schema": "constructed-font-live-v1",
+  "sources": [
+    {
+      "manifest_sha256": "fd85d56070987e26f8331ef0717653ffec6cbf69da7f1e0e3fbce67d0900fd9b",
+      "path": "curve-first-holdout-20261005"
+    },
+    {
+      "manifest_sha256": "327a9e44794c3542a7397d221fe0e2de732b2641112edcfb1d89e00d00c4054c",
+      "path": "curve-first-small-20261005"
+    }
+  ],
+  "variant": "baseline"
+}

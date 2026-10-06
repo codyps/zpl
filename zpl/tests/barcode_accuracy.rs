@@ -7,7 +7,7 @@ use std::{
     path::{Path, PathBuf},
 };
 use zpl::parse::{Element, ParseContext};
-#[path = "../../zebra-http-api/examples/font_support/mod.rs"]
+#[path = "support/digest.rs"]
 mod digest;
 mod support;
 

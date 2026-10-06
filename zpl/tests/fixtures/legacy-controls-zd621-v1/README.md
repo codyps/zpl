@@ -51,3 +51,7 @@ References: [Zebra Programming Guide](https://www.zebra.com/content/dam/support-
 ^FO/^FT pp. 201/205, ^PA p. 315, ^TB pp. 356–357 and font matrices/baselines
 pp. 1582–1584. The encoding/layout-specific control behavior is empirical and
 remains a selectable compatibility departure.
+
+Font extraction commands and extraction-only tests in this document now run
+from the separate [private font research repository](https://github.com/codyps/zpl-font-extract).
+The runtime assertions and captured bytes remain in ZPL.

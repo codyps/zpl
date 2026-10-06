@@ -1,6 +1,6 @@
 //! Unmodified ZD621 font-0 40x22 controls; see the fixture README.
 use std::{fs, path::Path};
-#[path = "../../zebra-http-api/examples/font_support/mod.rs"]
+#[path = "support/digest.rs"]
 mod digest;
 #[test]
 fn raw_font0_40_22_frames_match_every_pixel() {

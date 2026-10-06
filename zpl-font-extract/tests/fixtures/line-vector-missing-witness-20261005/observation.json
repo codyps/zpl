@@ -1,4 +1,0 @@
-{
-  "status": "diagnostic-only",
-  "reason": "The state page was named 00-vector, bypassing the transport witness check which requires 00-state. Excluded from positive accuracy evidence."
-}

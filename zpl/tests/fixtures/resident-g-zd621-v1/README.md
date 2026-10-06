@@ -35,3 +35,7 @@ Reference: Zebra [ZPL II Programming Guide](https://www.zebra.com/content/dam/su
 Tables 29/31 (pp. 1582–1583), ^A pp. 60–61, ^BC p. 94, ^CF p. 154,
 ^FB pp. 185–187, ^FO p. 201, and ^FT p. 205. Coverage here is printable ASCII
 at 203 DPI, not arbitrary encodings or resolutions.
+
+Font extraction commands and extraction-only tests in this document now run
+from the separate [private font research repository](https://github.com/codyps/zpl-font-extract).
+The runtime assertions and captured bytes remain in ZPL.

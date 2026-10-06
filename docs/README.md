@@ -63,64 +63,14 @@ This requires `pdftotext`. The generator intentionally checks the pinned revisio
 See [Local renderer](local-renderer.md) for the path-based intermediate output,
 PNG/SVG adapters, supported command subset, limitations, and CLI examples.
 
-## Font sampling
+## Font research
 
-[Font extraction](font-extraction.md) documents the Rust preview API
-sampler, bitmap font exports, resumable captures, and pixel-level verification.
-
-[Arbitrary-size font rendering](font-scaling-options.md) compares original-font
-hinting, font engines, and reconstruction options, with a staged recommendation
-that avoids capturing a bitmap strike for every size.
-
-[Constructed font probes](font-probe-plan.md) examines calibration through
-downloaded fonts, records a new offline engine comparison, and proposes
-discriminating geometry, hint-state, and metrics experiments.
-
-[October 2 live font probes](font-probe-results-20261002.md) records constructed
-font uploads to the ZD621 and ZQ610 Plus, independent X/Y hinting, spacing and
-scan-conversion findings, native comparisons, and verified cleanup.
-
-[Swiss TrueType calibration](swiss-font-rendering.md) records the original
-interpreter, shared device scaling/spacing rules, reserved-size accuracy, and
-the large-outline Font 0 recovery pilot.
-
-[Small-size font results](font-small-sizes.md) records reconstructed hint programs,
-independent validation, generated-font printer replay, and the CVT axis correction.
-
-[Joint font optimization](joint-font-optimization.md) formulates reconstruction as
-a mixed coordinate, shared-parameter and hint-program search, with exact raster
-scoring, bounded beam search and separate printer validation.
-
-[Expanded font sampling](expanded-font-sampling.md) tests the same optimizer with
-1,536 additional samples spanning sizes, proportions, rotations and large outlines.
-
-[Font accuracy examination](font-accuracy-examination.md) separates renderer and
-reconstruction errors, tests deeper search and missing curve features, and audits
-the results on fresh printer captures. Its
-[structured-hint follow-up](font-accuracy-examination.md#structured-hint-follow-up)
-adds counter relationships, interpolation and a regression-aware objective,
-with a measured gain in paired printer previews and a retained historical regression.
-
-[Automatic font reconstruction](automatic-font-reconstruction.md) describes bounded geometry
-and hint fitting, resumable runs, frozen font export and independent validation.
+Font extraction, sampling, fitting, research reports and the growing capture
+corpus live in the [private font research repository](https://github.com/codyps/zpl-font-extract).
+See [the repository split](font-research-repository.md) for ownership, preservation
+and the fixed runtime regression subset retained here.
 
 ## Rendering comparisons
 
 [Binary PNG image diff](raster-diff.md) describes the Rust `png-diff` tool,
 its directional colors, pixel statistics, and CI exit codes.
-
-[Font reconstruction study](font-reconstruction.md) measures size and rotation
-accuracy and assesses recovery of scalable outlines and rasterization rules.
-
-[Font parameter fitting](font-fitting.md) describes the offline Rust optimizer,
-fitted outlines, and training-versus-validation results.
-
-[Stroke-width parameter fitting](font-stroke-fitting.md) extends the outline
-experiment with size-dependent quantization and reports held-out accuracy.
-
-[Font refinement plan](font-refinement-plan.md) prioritizes pipeline calibration,
-TrueType parameter recovery, fresh validation, and structured hint fitting.
-
-[Font refinement execution](font-refinement-results.md) records the new capture
-campaign, calibration results, recovered spacing constraints, and the gate that
-keeps the experimental model out of the renderer.
