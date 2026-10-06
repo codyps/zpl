@@ -666,6 +666,45 @@ struct GlyphView {
     pixels: Pixels,
 }
 impl GlyphView {
+    // Select the storage format once per glyph, so retained scalable strikes
+    // do not pay for compact-font dispatch at every pixel. The scan visits
+    // only in-bounds pixels and flushes a trailing span at the row edge.
+    fn for_each_span(&self, mut emit: impl FnMut(usize, usize, usize)) {
+        fn scan(
+            width: usize,
+            height: usize,
+            pixel: impl Fn(usize, usize) -> bool,
+            emit: &mut impl FnMut(usize, usize, usize),
+        ) {
+            for y in 0..height {
+                let mut start = None;
+                for x in 0..width {
+                    match (start, pixel(x, y)) {
+                        (None, true) => start = Some(x),
+                        (Some(left), false) => {
+                            emit(y, left, x);
+                            start = None;
+                        }
+                        _ => {}
+                    }
+                }
+                if let Some(left) = start {
+                    emit(y, left, width);
+                }
+            }
+        }
+        let (width, height) = (self.width as usize, self.height as usize);
+        match self.pixels {
+            Pixels::Captured(g) => scan(
+                width,
+                height,
+                |x, y| g.bitmap[y][x / 8] & (128 >> (x % 8)) != 0,
+                &mut emit,
+            ),
+            Pixels::Compact(g) => scan(width, height, |x, y| g.pixel(x as u8, y as u8), &mut emit),
+        }
+    }
+    #[cfg(test)]
     fn pixel(&self, x: usize, y: usize) -> bool {
         if x >= self.width as usize || y >= self.height as usize {
             return false;
@@ -919,25 +958,14 @@ pub(super) fn text_parts_for(
         // complete proportional string, it needs no BTreeMap or union/sort
         // pass to prevent even-odd cancellation of overlapping glyph ink.
         let mut path = RowPath::default();
-        for y in 0..g.height as usize {
-            let mut start = None;
-            for x in 0..=g.width as usize {
-                let black = g.pixel(x, y);
-                match (start, black) {
-                    (None, true) => start = Some(x),
-                    (Some(left), false) => {
-                        path.rect(
-                            (g.left as f64 + left as f64) * sx,
-                            baseline + (g.top + y as i32) as f64 * sy,
-                            (x - left) as f64 * sx,
-                            sy,
-                        );
-                        start = None;
-                    }
-                    _ => {}
-                }
-            }
-        }
+        g.for_each_span(|y, left, right| {
+            path.rect(
+                (g.left as f64 + left as f64) * sx,
+                baseline + (g.top + y as i32) as f64 * sy,
+                (right - left) as f64 * sx,
+                sy,
+            );
+        });
         let mut path = path.path;
         path.transform(|p| crate::output::Point::new(p.x + pen, p.y));
         pen += g.advance as f64 * sx;
@@ -996,25 +1024,14 @@ pub(super) fn text_for(
             continue;
         }
         let g = glyph_from(glyphs, font.map_char(c)?)?;
-        for y in 0..g.height as usize {
-            let mut start = None;
-            for x in 0..=g.width as usize {
-                let black = g.pixel(x, y);
-                match (start, black) {
-                    (None, true) => start = Some(x),
-                    (Some(a), false) => {
-                        rows.entry(g.top + y as i32)
-                            .or_insert_with(|| Vec::with_capacity(row_capacity))
-                            .push((
-                                pen + g.left as f64 + a as f64,
-                                pen + g.left as f64 + x as f64,
-                            ));
-                        start = None
-                    }
-                    _ => {}
-                }
-            }
-        }
+        g.for_each_span(|y, left, right| {
+            rows.entry(g.top + y as i32)
+                .or_insert_with(|| Vec::with_capacity(row_capacity))
+                .push((
+                    pen + g.left as f64 + left as f64,
+                    pen + g.left as f64 + right as f64,
+                ));
+        });
         pen += g.advance as f64;
     }
     let mut path = RowPath::default();
