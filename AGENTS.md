@@ -4,7 +4,6 @@
 
 This Rust 2021 Cargo workspace contains these crates:
 
-- `zpl-font-extract/`: Resident-font sampling, bitmap extraction, export, and verification. Uses the bitmap strike types and decoder in `zpl::bitmap_font`.
 - `raster-diff/`: Raster image decoding and comparison.
 - `zpl-wasm/`: Browser rendering bindings.
 - `zpl-cmd/`: Local CLI with `zpl-cmd render` for PNG, SVG, and multipage PDF output.
@@ -46,7 +45,7 @@ Preserve the flake's conditional `mbx` Cargo-shim precedence and separate unstab
 - Keep `render` and `Options` as the root convenience exports; supporting APIs belong in modules. Parsing frames lossless byte streams, including unknown commands and binary data; it is not parameter validation or authorization. See [parser coverage](docs/parser-coverage.md).
 - Rendering produces an output-independent scene; adapters consume scenes rather than interpreting ZPL. Keep rasterization under `output::raster`, with `rasterize()` wrapping `rasterize_into()`. Preserve ordered black/white/invert compositing and validation before destination mutation. See [local renderer](docs/local-renderer.md).
 - Barcode encoders must be original implementations, each in its own module. Do not copy, adapt, or vendor another encoder to satisfy “no dependencies.” Independent decoder libraries belong in dev-dependencies only. Cite specifications and distinguish unsupported modes with explicit errors. See [barcode coverage](docs/barcodes.md).
-- Keep sampling, fitting, extraction, and verification tooling in `zpl-font-extract`; retain only rendering-required bitmap types/data/decoding in `zpl`. Browser bindings belong in `zpl-wasm`. Avoid adding runtime dependencies to core rendering without a task-specific reason consistent with the user's original-implementation constraint.
+- Keep sampling, fitting, extraction, verification tooling and growing research data in the separate private [zpl-font-extract repository](https://github.com/codyps/zpl-font-extract); retain rendering-required bitmap types/data/decoding and a fixed regression corpus in `zpl`. Do not add a private-repository dependency to this workspace. Browser bindings belong in `zpl-wasm`. Avoid adding runtime dependencies to core rendering without a task-specific reason consistent with the user's original-implementation constraint.
 
 ## Dependency Updates
 
@@ -73,7 +72,7 @@ For renderer work, also follow these evidence rules:
 - Use `render::profiles::SPECIFICATION` explicitly in specification tests and `ZD621_203_DPI` in printer-capture tests. `Options::default()` intentionally selects the ZD621 profile. Put measured firmware deviations behind independently selectable compatibility options, leaving the specification profile strict.
 - Run `cargo test --locked -p zpl --test printer_accuracy --test conformance_preview` for accuracy changes, plus affected feature tests. Preserve exact underpaint/overpaint counts, dimensions, hashes, and error diagnostics. Inspect each changed baseline; never loosen it just to pass. Compare native canvases at their original origin without alignment, padding, cropping, or rescaling. See [accuracy contracts](docs/printer-accuracy.md).
 - Distinguish full-image parity, symbol geometry, and decoded payload correctness. Non-text regions should be pixel-exact; text uses foreground IoU, not white-background agreement. IoU is better when higher; if error is defined as `1 - IoU`, 20% error means 80% IoU. Preserve stronger existing baselines rather than reducing them to a broad target.
-- Capture with known printer state, native width, repeated controls, and provenance. Blank or nondeterministic previews are diagnostic observations, not positive correctness evidence. Validate font changes across sizes, rotations, and independent holdouts; do not replace captured strikes with a fitted or recovered outline font until calibration and measured accuracy justify it. See [font refinement](docs/font-refinement-results.md) and [Font 0 comparison](docs/font0-ttf.md).
+- Capture with known printer state, native width, repeated controls, and provenance. Blank or nondeterministic previews are diagnostic observations, not positive correctness evidence. Validate font changes across sizes, rotations, and independent holdouts; do not replace captured strikes with a fitted or recovered outline font until calibration and measured accuracy justify it. See [font refinement](https://github.com/codyps/zpl-font-extract/blob/main/docs/font-refinement-results.md) and [Font 0 comparison](https://github.com/codyps/zpl-font-extract/blob/main/docs/font0-ttf.md).
 
 For dependency changes, finish resolution and compatibility edits before starting expensive validation. Serialize Cargo commands sharing a target directory. If editor builds contend for its lock, use an isolated `CARGO_TARGET_DIR` rather than repeatedly stopping or pausing the user's background processes. If the `mbx` wrapper is implicated, compare with the underlying Cargo executable before starting another full rebuild.
 

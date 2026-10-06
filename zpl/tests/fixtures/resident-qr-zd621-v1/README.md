@@ -39,3 +39,7 @@ References: Zebra [ZPL II Programming Guide](https://www.zebra.com/content/dam/s
 Table 31 p. 1584, ^A pp. 60–61, ^CF p. 154, ^FO p. 201, ^FT p. 205.
 Table 29 p. 1582 omits the preset baselines; these are measured from independent
 normal FO/FT controls, then validated with alphabet and rotated holdouts.
+
+Font extraction commands and extraction-only tests in this document now run
+from the separate [private font research repository](https://github.com/codyps/zpl-font-extract).
+The runtime assertions and captured bytes remain in ZPL.

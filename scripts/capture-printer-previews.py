@@ -20,8 +20,9 @@ from datetime import datetime, timezone
 
 LIMIT = 16 * 1024 * 1024
 SCOPES = {
-    "zpl": ("zpl/tests/fixtures/", "zebra-http-api/tests/fixtures/",
-            "zpl-font-extract/tests/fixtures/"),
+    "zpl": ("zpl/tests/fixtures/", "zebra-http-api/tests/fixtures/"),
+    "zpl-font-extract": ("zpl-font-extract/tests/fixtures/",
+                         "zebra-http-api/tests/fixtures/"),
     "zpl-comparison": ("benchmarks/accuracy/", "references/"),
 }
 
@@ -255,6 +256,7 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--zpl", type=Path, default=Path(__file__).resolve().parents[1])
     ap.add_argument("--comparison", type=Path)
+    ap.add_argument("--fonts", type=Path, help="optional separate private font research checkout")
     ap.add_argument("--output", type=Path, required=True)
     ap.add_argument("--width", type=int, default=384)
     ap.add_argument("--host", help="printer origin; required with --capture")
@@ -273,6 +275,8 @@ def main():
     if not 1 <= args.width <= 384 or args.interval < 0 or (args.limit is not None and args.limit < 1):
         ap.error("width must be 1..384, interval nonnegative, limit positive")
     roots = {"zpl": args.zpl.resolve(), "zpl-comparison": (args.comparison or args.zpl.parent / "zpl-comparison").resolve()}
+    if args.fonts:
+        roots["zpl-font-extract"] = args.fonts.resolve()
     plan = inventory(roots, args.width)
     args.output.mkdir(parents=True, exist_ok=args.resume)
     plan_file = args.output / "plan.json"

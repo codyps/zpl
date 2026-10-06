@@ -35,3 +35,7 @@ the renderer's native-comparison test. No printer is needed by the tests.
 
 References: Zebra [ZPL II Programming Guide](https://www.zebra.com/content/dam/support-dam/en/documentation/unrestricted/guide/software/zpl-zbi2-pg-en.pdf),
 Table 31 p. 1584, ^A pp. 60–61, ^CF p. 154, ^FO p. 201, ^FT p. 205.
+
+Font extraction commands and extraction-only tests in this document now run
+from the separate [private font research repository](https://github.com/codyps/zpl-font-extract).
+The runtime assertions and captured bytes remain in ZPL.

@@ -5,7 +5,7 @@ use zpl::{
     output::raster::rasterize,
     render::profiles::{SPECIFICATION, ZD621_203_DPI},
 };
-#[path = "../../zebra-http-api/examples/font_support/mod.rs"]
+#[path = "support/digest.rs"]
 mod digest;
 
 #[test]

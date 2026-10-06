@@ -1,6 +1,6 @@
 //! Unmodified ZD621 CR/LF/SOH text controls; see the fixture README.
 use std::{fs, path::Path};
-#[path = "../../zebra-http-api/examples/font_support/mod.rs"]
+#[path = "support/digest.rs"]
 mod digest;
 #[test]
 fn raw_control_frames_pin_paint_counts_and_text_floor() {

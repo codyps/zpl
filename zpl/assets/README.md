@@ -16,15 +16,18 @@ other DPI values, and rotation are explicitly marked as approximations.
 
 ## Regenerate
 
-From the repository root, using a fresh output directory:
+Run the extractor from a separate checkout of the
+[private font research repository](https://github.com/codyps/zpl-font-extract),
+using a fresh output directory:
 
 ```sh
-direnv exec . cargo run -p zebra-http-api --example extract-font -- \
+cargo run --locked -p zebra-http-api --example extract-font -- \
   --host http://printer.local/ --font 0 --height 32 --width 0 --dpi 203 \
   --verify-text 'AVATAR Agj Wavy 123 _^~|!' _font-0-32
-cp _font-0-32/font.zbf zpl/assets/font0-32.zbf
-direnv exec . cargo test -p zpl --lib --test render
 ```
+
+Copy the verified `font.zbf` into this repository's `zpl/assets/font0-32.zbf`,
+then run `cargo test --locked -p zpl --lib --test render` here.
 
 The extractor always exports ZBF alongside JSON and BDF. Existing captures can
 be repacked with `--offline`. Keep the provenance hashes and reference fixtures
@@ -70,7 +73,7 @@ this embedded asset's metadata and completeness are checked in unit tests.
 
 ## Size and rotation study
 
-See the [font reconstruction study](../../docs/font-reconstruction.md) for live captures across 14 size
+See the [font reconstruction study](https://github.com/codyps/zpl-font-extract/blob/main/docs/font-reconstruction.md) for live captures across 14 size
 configurations, all four rotations, larger-strike scaling, and the assessment
 of outline and hint-parameter fitting.
 

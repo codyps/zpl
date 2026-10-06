@@ -63,3 +63,7 @@ native replacement was sampled. Mixed text keeps native ASCII metrics and
 composes fallback ink in output coordinates. Unit tests cover all ten sizes
 and encoding/default-glyph variants; these approximations are not new native
 accuracy claims for extended characters.
+
+Font extraction commands and extraction-only tests in this document now run
+from the separate [private font research repository](https://github.com/codyps/zpl-font-extract).
+The runtime assertions and captured bytes remain in ZPL.

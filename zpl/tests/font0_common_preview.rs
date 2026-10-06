@@ -1,6 +1,6 @@
 //! Raw native controls and provenance: fixtures/font0-common-zd621-v1/README.md.
 use std::{fs, path::Path};
-#[path = "../../zebra-http-api/examples/font_support/mod.rs"]
+#[path = "support/digest.rs"]
 mod digest;
 use zpl::render::profiles::ZD621_203_DPI;
 #[test]

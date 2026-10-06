@@ -1,6 +1,6 @@
 //! Unmodified ZD621 character remapping controls; see the fixture README.
 use std::{fs, path::Path};
-#[path = "../../zebra-http-api/examples/font_support/mod.rs"]
+#[path = "support/digest.rs"]
 mod digest;
 #[test]
 fn raw_remap_frames_are_pixel_exact() {

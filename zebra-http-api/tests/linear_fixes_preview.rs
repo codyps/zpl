@@ -1,5 +1,5 @@
 //! Fixed, original printer captures; no network calls during tests.
-#[path = "../examples/font_support/mod.rs"]
+#[path = "../../zpl/tests/support/digest.rs"]
 mod digest;
 use raster_diff::{compare_stats, Raster};
 

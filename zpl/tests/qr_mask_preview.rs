@@ -1,6 +1,6 @@
 //! Unmodified ZD621 QR mask holdouts; see the fixture README.
 use std::{fs, path::Path};
-#[path = "../../zebra-http-api/examples/font_support/mod.rs"]
+#[path = "support/digest.rs"]
 mod digest;
 #[test]
 fn fresh_holdouts_are_pixel_exact() {

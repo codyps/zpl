@@ -1,0 +1,264 @@
+{
+  "schema": "original-truetype-engine-v1",
+  "font_source": {
+    "host": "d7j211001302.bed.einic.org",
+    "remote": "E:TT0003M_.TTF",
+    "sha256": "da20a4d8c58b3ed09fb9177e09378bd1b824894751add6c1267c64d58f026456",
+    "bytes": 169188,
+    "utc": "2026-10-02T23:25:00.730006+00:00"
+  },
+  "swiss_ascii": {
+    "font_sha256": "da20a4d8c58b3ed09fb9177e09378bd1b824894751add6c1267c64d58f026456",
+    "freetype_version": [
+      2,
+      13,
+      2
+    ],
+    "load_flags": 163968,
+    "sizes": [
+      [
+        16,
+        16
+      ],
+      [
+        32,
+        32
+      ],
+      [
+        24,
+        40
+      ],
+      [
+        64,
+        64
+      ]
+    ],
+    "all_cmap": false,
+    "counts": {
+      "cases": 380,
+      "exact_outlines": 309,
+      "exact_advances": 380
+    },
+    "max_coordinate_error_26_6_histogram": {
+      "0": 309,
+      "1": 71
+    },
+    "failures": []
+  },
+  "swiss_all_cmap": {
+    "font_sha256": "da20a4d8c58b3ed09fb9177e09378bd1b824894751add6c1267c64d58f026456",
+    "freetype_version": [
+      2,
+      13,
+      2
+    ],
+    "load_flags": 163968,
+    "sizes": [
+      [
+        16,
+        16
+      ],
+      [
+        32,
+        32
+      ],
+      [
+        24,
+        40
+      ],
+      [
+        64,
+        64
+      ]
+    ],
+    "all_cmap": true,
+    "counts": {
+      "cases": 3932,
+      "exact_outlines": 2438,
+      "exact_advances": 3932
+    },
+    "max_coordinate_error_26_6_histogram": {
+      "0": 2438,
+      "1": 748,
+      "7": 25,
+      "17": 19,
+      "4": 35,
+      "14": 34,
+      "13": 24,
+      "20": 45,
+      "11": 22,
+      "23": 29,
+      "31": 21,
+      "15": 21,
+      "22": 46,
+      "28": 29,
+      "3": 17,
+      "29": 17,
+      "21": 6,
+      "8": 31,
+      "12": 10,
+      "10": 32,
+      "9": 12,
+      "19": 25,
+      "24": 23,
+      "5": 9,
+      "27": 14,
+      "16": 37,
+      "32": 3,
+      "26": 22,
+      "25": 16,
+      "30": 30,
+      "6": 45,
+      "18": 28,
+      "2": 18,
+      "33": 1
+    },
+    "failures": []
+  },
+  "probe_pages": [
+    {
+      "page": "00-state",
+      "under": 0,
+      "over": 0,
+      "xor": 0,
+      "union": 164,
+      "exact": 7,
+      "count": 7
+    },
+    {
+      "page": "01-state",
+      "under": 0,
+      "over": 0,
+      "xor": 0,
+      "union": 508,
+      "exact": 7,
+      "count": 7
+    },
+    {
+      "page": "02-state",
+      "under": 0,
+      "over": 0,
+      "xor": 0,
+      "union": 1736,
+      "exact": 7,
+      "count": 7
+    },
+    {
+      "page": "03-state",
+      "under": 0,
+      "over": 0,
+      "xor": 0,
+      "union": 432,
+      "exact": 7,
+      "count": 7
+    },
+    {
+      "page": "04-state",
+      "under": 0,
+      "over": 0,
+      "xor": 0,
+      "union": 756,
+      "exact": 7,
+      "count": 7
+    },
+    {
+      "page": "05-state",
+      "under": 0,
+      "over": 0,
+      "xor": 0,
+      "union": 416,
+      "exact": 7,
+      "count": 7
+    },
+    {
+      "page": "06-state",
+      "under": 0,
+      "over": 0,
+      "xor": 0,
+      "union": 432,
+      "exact": 7,
+      "count": 7
+    },
+    {
+      "page": "07-state",
+      "under": 0,
+      "over": 0,
+      "xor": 0,
+      "union": 416,
+      "exact": 7,
+      "count": 7
+    },
+    {
+      "page": "08-geometry",
+      "under": 152,
+      "over": 68,
+      "xor": 220,
+      "union": 2444,
+      "exact": 24,
+      "count": 46
+    },
+    {
+      "page": "09-geometry",
+      "under": 252,
+      "over": 134,
+      "xor": 386,
+      "union": 2515,
+      "exact": 19,
+      "count": 46
+    },
+    {
+      "page": "10-geometry",
+      "under": 181,
+      "over": 97,
+      "xor": 278,
+      "union": 2506,
+      "exact": 24,
+      "count": 46
+    },
+    {
+      "page": "11-geometry",
+      "under": 139,
+      "over": 89,
+      "xor": 228,
+      "union": 2439,
+      "exact": 27,
+      "count": 46
+    },
+    {
+      "page": "12-geometry",
+      "under": 58,
+      "over": 19,
+      "xor": 77,
+      "union": 743,
+      "exact": 23,
+      "count": 29
+    },
+    {
+      "page": "13-geometry",
+      "under": 134,
+      "over": 49,
+      "xor": 183,
+      "union": 863,
+      "exact": 10,
+      "count": 29
+    },
+    {
+      "page": "14-geometry",
+      "under": 128,
+      "over": 128,
+      "xor": 256,
+      "union": 2784,
+      "exact": 25,
+      "count": 29
+    },
+    {
+      "page": "15-geometry",
+      "under": 160,
+      "over": 144,
+      "xor": 304,
+      "union": 1654,
+      "exact": 19,
+      "count": 46
+    }
+  ]
+}

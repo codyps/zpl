@@ -1,0 +1,167 @@
+{
+  "schema": "constructed-font-capture-v1",
+  "started_utc": "2026-10-05T00:39:28.449607+00:00",
+  "host": "d7j211001302.bed.einic.org",
+  "manifest_sha256": "5a8c66bbcc8da6a32f1216d307cfa3853acbd96afcdbe0a72420252577f18e6b",
+  "pages": [
+    {
+      "name": "resident-start",
+      "started_utc": "2026-10-05T00:39:28.526623+00:00",
+      "prepared_zpl_sha256": "25a64b990aae299bb565ab55fa6effc916f09dce2e9ee847df0a4365db5e40d6",
+      "zpl_sha256": "25a64b990aae299bb565ab55fa6effc916f09dce2e9ee847df0a4365db5e40d6",
+      "status": "captured",
+      "png_sha256": "618f1c5e64ca8784aee5277aa13cce5a5d79f853e9b50c5687e00b95e0b1aac0",
+      "dimensions": [
+        384,
+        192
+      ]
+    },
+    {
+      "name": "00-state",
+      "started_utc": "2026-10-05T00:39:34.655078+00:00",
+      "prepared_zpl_sha256": "1a881cc15ce9595c2572c5b47882ac3fca4e53b44777b4ff547b3b57c31f9df9",
+      "zpl_sha256": "1a881cc15ce9595c2572c5b47882ac3fca4e53b44777b4ff547b3b57c31f9df9",
+      "status": "captured",
+      "png_sha256": "b17d026b73a1490f3917f615882983b17ee1d1777c755a51e18aa16bf31f187a",
+      "dimensions": [
+        384,
+        128
+      ]
+    },
+    {
+      "name": "01-vector",
+      "started_utc": "2026-10-05T00:39:39.767865+00:00",
+      "prepared_zpl_sha256": "b15de71306fe9f4cdb4032af817ca48ae46d709672300e715d1836788e359d27",
+      "zpl_sha256": "b15de71306fe9f4cdb4032af817ca48ae46d709672300e715d1836788e359d27",
+      "status": "captured",
+      "png_sha256": "3b779f9af5ccb51d00c0884ee9c6e60986d422b4e93f9c197689c10117ec8c75",
+      "dimensions": [
+        384,
+        128
+      ]
+    },
+    {
+      "name": "02-vector",
+      "started_utc": "2026-10-05T00:39:44.876939+00:00",
+      "prepared_zpl_sha256": "4d3ab1092f564a147f2c845e8f1bf636f93990140fc3a9572182c6f8e587a1f8",
+      "zpl_sha256": "4d3ab1092f564a147f2c845e8f1bf636f93990140fc3a9572182c6f8e587a1f8",
+      "status": "captured",
+      "png_sha256": "c141317c2732486ac1b75e52ea021c3043790dc80b8b1fce0008fd8a4fe040ee",
+      "dimensions": [
+        384,
+        128
+      ]
+    },
+    {
+      "name": "03-vector",
+      "started_utc": "2026-10-05T00:39:49.984776+00:00",
+      "prepared_zpl_sha256": "f01c4fcee8bb9fe80fe3b97044390c14cd9041968b40befd5f321fc782686631",
+      "zpl_sha256": "f01c4fcee8bb9fe80fe3b97044390c14cd9041968b40befd5f321fc782686631",
+      "status": "captured",
+      "png_sha256": "6a2261d2841d5fd876a6ea04f26f4841a7d30c980eb67460989db4a8e4a67163",
+      "dimensions": [
+        384,
+        128
+      ]
+    },
+    {
+      "name": "04-vector",
+      "started_utc": "2026-10-05T00:39:55.092677+00:00",
+      "prepared_zpl_sha256": "f1c54cd34ce2766f117a89c1afa4cc207717caa23c27efde59137569810b368e",
+      "zpl_sha256": "f1c54cd34ce2766f117a89c1afa4cc207717caa23c27efde59137569810b368e",
+      "status": "captured",
+      "png_sha256": "a60094813439cc9289f1de52ede16fde59c389ae0e0b629ce02c7b56ed642ae5",
+      "dimensions": [
+        384,
+        128
+      ]
+    },
+    {
+      "name": "05-vector",
+      "started_utc": "2026-10-05T00:40:00.200053+00:00",
+      "prepared_zpl_sha256": "194d4ffc29c2ba2d4fe5c7724e7b5b22e2bf62106205fd3c9ba5a115de1453cd",
+      "zpl_sha256": "194d4ffc29c2ba2d4fe5c7724e7b5b22e2bf62106205fd3c9ba5a115de1453cd",
+      "status": "captured",
+      "png_sha256": "394279fdd3f2fd26aa098741d8ab4f0bd1d087732972f66b68207804dfb64a71",
+      "dimensions": [
+        384,
+        128
+      ]
+    },
+    {
+      "name": "06-vector",
+      "started_utc": "2026-10-05T00:40:05.308902+00:00",
+      "prepared_zpl_sha256": "12acbc535b5929bcb9fd87853d7a2cb4289416861cdfcca3628008cb7d76e322",
+      "zpl_sha256": "12acbc535b5929bcb9fd87853d7a2cb4289416861cdfcca3628008cb7d76e322",
+      "status": "captured",
+      "png_sha256": "c5f324a7b175430eb53010fb96c2bcde9807a9400b5221a85ed389fb63e15189",
+      "dimensions": [
+        384,
+        128
+      ]
+    },
+    {
+      "name": "07-vector",
+      "started_utc": "2026-10-05T00:40:10.417761+00:00",
+      "prepared_zpl_sha256": "9a860c3b94fb382979d0d3bf1de8e405b76c6671669d5cc89f57151da4ba252c",
+      "zpl_sha256": "9a860c3b94fb382979d0d3bf1de8e405b76c6671669d5cc89f57151da4ba252c",
+      "status": "captured",
+      "png_sha256": "165ec2ce8b36bee8017e844fc7c652c3083545653ccb8ae45e995451afe7cc05",
+      "dimensions": [
+        384,
+        128
+      ]
+    },
+    {
+      "name": "08-vector",
+      "started_utc": "2026-10-05T00:40:15.524614+00:00",
+      "prepared_zpl_sha256": "065416556e45df8d5606d8392cc6f97c756f6050ec82c63496f3387a0fa66fc4",
+      "zpl_sha256": "065416556e45df8d5606d8392cc6f97c756f6050ec82c63496f3387a0fa66fc4",
+      "status": "captured",
+      "png_sha256": "85747efddeb6d5807d89c181b71b97b99d47a457a5e2db66ce1d97d4492512a6",
+      "dimensions": [
+        384,
+        128
+      ]
+    },
+    {
+      "name": "09-vector",
+      "started_utc": "2026-10-05T00:40:20.633074+00:00",
+      "prepared_zpl_sha256": "5c3b5b886bd08046e27b54bdf55a41b2352804a6e54aa1b3067da43e48deebe2",
+      "zpl_sha256": "5c3b5b886bd08046e27b54bdf55a41b2352804a6e54aa1b3067da43e48deebe2",
+      "status": "captured",
+      "png_sha256": "a1a1a6785aa58fe9eaa008ad36f9fb63a146919d53ac320412240302bbf78c99",
+      "dimensions": [
+        384,
+        128
+      ]
+    },
+    {
+      "name": "resident-end",
+      "started_utc": "2026-10-05T00:40:25.739500+00:00",
+      "prepared_zpl_sha256": "25a64b990aae299bb565ab55fa6effc916f09dce2e9ee847df0a4365db5e40d6",
+      "zpl_sha256": "25a64b990aae299bb565ab55fa6effc916f09dce2e9ee847df0a4365db5e40d6",
+      "status": "captured",
+      "png_sha256": "618f1c5e64ca8784aee5277aa13cce5a5d79f853e9b50c5687e00b95e0b1aac0",
+      "dimensions": [
+        384,
+        192
+      ]
+    }
+  ],
+  "status": "complete",
+  "printer": {
+    "model": "ZD621",
+    "serial": "D7J211001302",
+    "firmware": "V93.21.33Z",
+    "dpi": 203
+  },
+  "font_selection_and_execution_verified": true,
+  "resident_repeat_exact": true,
+  "cleanup": {
+    "object": "R:ZP26R.TTF",
+    "method": "SGD file.delete",
+    "confirmed_absent": true
+  },
+  "finished_utc": "2026-10-05T00:40:31.881253+00:00"
+}

@@ -63,28 +63,14 @@ This requires `pdftotext`. The generator intentionally checks the pinned revisio
 See [Local renderer](local-renderer.md) for the path-based intermediate output,
 PNG/SVG adapters, supported command subset, limitations, and CLI examples.
 
-## Font sampling
+## Font research
 
-[Font extraction](font-extraction.md) documents the Rust preview API
-sampler, bitmap font exports, resumable captures, and pixel-level verification.
+Font extraction, sampling, fitting, research reports and the growing capture
+corpus live in the [private font research repository](https://github.com/codyps/zpl-font-extract).
+See [the repository split](font-research-repository.md) for ownership, preservation
+and the fixed runtime regression subset retained here.
 
 ## Rendering comparisons
 
 [Binary PNG image diff](raster-diff.md) describes the Rust `png-diff` tool,
 its directional colors, pixel statistics, and CI exit codes.
-
-[Font reconstruction study](font-reconstruction.md) measures size and rotation
-accuracy and assesses recovery of scalable outlines and rasterization rules.
-
-[Font parameter fitting](font-fitting.md) describes the offline Rust optimizer,
-fitted outlines, and training-versus-validation results.
-
-[Stroke-width parameter fitting](font-stroke-fitting.md) extends the outline
-experiment with size-dependent quantization and reports held-out accuracy.
-
-[Font refinement plan](font-refinement-plan.md) prioritizes pipeline calibration,
-TrueType parameter recovery, fresh validation, and structured hint fitting.
-
-[Font refinement execution](font-refinement-results.md) records the new capture
-campaign, calibration results, recovered spacing constraints, and the gate that
-keeps the experimental model out of the renderer.

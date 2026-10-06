@@ -1,7 +1,7 @@
 //! Offline ZD621 preview regressions. Capture provenance and source hashes are in
 //! fixtures/printer-accuracy/provenance.json; see docs/printer-accuracy.md.
 use std::{fs, path::Path};
-#[path = "../../zebra-http-api/examples/font_support/mod.rs"]
+#[path = "support/digest.rs"]
 mod digest;
 mod support;
 

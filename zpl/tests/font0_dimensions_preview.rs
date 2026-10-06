@@ -1,6 +1,6 @@
 //! Unmodified ZD621 font-0 dimension controls; see the fixture README.
 use std::{fs, path::Path};
-#[path = "../../zebra-http-api/examples/font_support/mod.rs"]
+#[path = "support/digest.rs"]
 mod digest;
 #[test]
 fn raw_font0_dimensions_frames_pin_pixels_and_text_floor() {

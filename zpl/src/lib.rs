@@ -29,6 +29,7 @@ pub mod bitmap_font;
 pub mod output;
 pub mod parse;
 pub mod render;
+pub mod truetype;
 pub mod version;
 
 pub use render::{render, Options};

@@ -1,6 +1,6 @@
 //! Unmodified ZD621 retail input and CV controls; see the fixture README.
 use std::{fs, path::Path};
-#[path = "../../zebra-http-api/examples/font_support/mod.rs"]
+#[path = "support/digest.rs"]
 mod digest;
 #[test]
 fn raw_retail_data_frames_match_every_pixel() {

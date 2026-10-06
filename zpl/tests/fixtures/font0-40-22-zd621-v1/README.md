@@ -24,3 +24,7 @@ Tests are offline. This covers the sampled size, not arbitrary font-0 sizes.
 
 References: Zebra [ZPL II Programming Guide](https://www.zebra.com/content/dam/support-dam/en/documentation/unrestricted/guide/software/zpl-zbi2-pg-en.pdf),
 ^A pp. 60–61, ^FO p. 201, ^FT p. 205 and scalable-font behavior p. 1583.
+
+Font extraction commands and extraction-only tests in this document now run
+from the separate [private font research repository](https://github.com/codyps/zpl-font-extract).
+The runtime assertions and captured bytes remain in ZPL.

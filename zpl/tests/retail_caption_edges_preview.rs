@@ -1,6 +1,6 @@
 //! Unmodified ZD621 retail caption edge controls; see the fixture README.
 use std::{fs, path::Path};
-#[path = "../../zebra-http-api/examples/font_support/mod.rs"]
+#[path = "support/digest.rs"]
 mod digest;
 #[test]
 fn raw_retail_edge_frames_are_pixel_exact() {

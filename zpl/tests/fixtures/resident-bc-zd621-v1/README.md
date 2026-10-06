@@ -55,3 +55,7 @@ Reference: Zebra [ZPL II Programming Guide](https://www.zebra.com/content/dam/su
 Table 29 (gap/baseline, p. 1582), Table 31 (203-DPI matrices and C/D alias,
 p. 1583), ^A pp. 60–61, ^CF p. 154, and ^FT p. 205 Table 7. Exact raster placement comes from the
 preserved printer controls.
+
+Font extraction commands and extraction-only tests in this document now run
+from the separate [private font research repository](https://github.com/codyps/zpl-font-extract).
+The runtime assertions and captured bytes remain in ZPL.

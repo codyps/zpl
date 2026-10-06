@@ -5,6 +5,7 @@ use std::ops::Range;
 use crate::output::{Limits, OutputError, Paint, Path, Point, Scene, Segment};
 pub use raster_diff::Raster;
 mod packed;
+pub mod truetype;
 pub(crate) use packed::PackedRaster;
 
 /// Destination for monochrome rasterization, independent of pixel storage.

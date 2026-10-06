@@ -1,0 +1,1894 @@
+{
+  "schema": "constructed-font-live-v1",
+  "object": "R:ZP26M.TTF",
+  "font_sha256": "e400231a9b446a9300a49e952f112a1126585b702c4eba49d7ab39d6099af714",
+  "pages": [
+    {
+      "name": "00-state",
+      "canvas": [
+        384,
+        64
+      ],
+      "group": "state",
+      "probes": [
+        {
+          "name": "identity",
+          "text": "\ue000",
+          "tile": [
+            0,
+            0,
+            64,
+            64
+          ],
+          "anchor": [
+            16,
+            32
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "instruction-witness",
+          "text": "\ue001",
+          "tile": [
+            64,
+            0,
+            64,
+            64
+          ],
+          "anchor": [
+            16,
+            32
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        }
+      ],
+      "zpl_sha256": "05863776b5dc8c1b3b7b3113b1c480d80a5b3c5340ad46428080d178c6fffc38"
+    },
+    {
+      "name": "01-ascii",
+      "canvas": [
+        384,
+        256
+      ],
+      "group": "mapping",
+      "probes": [
+        {
+          "name": "code-32",
+          "text": " ",
+          "tile": [
+            0,
+            0,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-33",
+          "text": "!",
+          "tile": [
+            32,
+            0,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-34",
+          "text": "\"",
+          "tile": [
+            64,
+            0,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-35",
+          "text": "#",
+          "tile": [
+            96,
+            0,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-36",
+          "text": "$",
+          "tile": [
+            128,
+            0,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-37",
+          "text": "%",
+          "tile": [
+            160,
+            0,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-38",
+          "text": "&",
+          "tile": [
+            192,
+            0,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-39",
+          "text": "'",
+          "tile": [
+            224,
+            0,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-40",
+          "text": "(",
+          "tile": [
+            256,
+            0,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-41",
+          "text": ")",
+          "tile": [
+            288,
+            0,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-42",
+          "text": "*",
+          "tile": [
+            320,
+            0,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-43",
+          "text": "+",
+          "tile": [
+            352,
+            0,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-44",
+          "text": ",",
+          "tile": [
+            0,
+            32,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-45",
+          "text": "-",
+          "tile": [
+            32,
+            32,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-46",
+          "text": ".",
+          "tile": [
+            64,
+            32,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-47",
+          "text": "/",
+          "tile": [
+            96,
+            32,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-48",
+          "text": "0",
+          "tile": [
+            128,
+            32,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-49",
+          "text": "1",
+          "tile": [
+            160,
+            32,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-50",
+          "text": "2",
+          "tile": [
+            192,
+            32,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-51",
+          "text": "3",
+          "tile": [
+            224,
+            32,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-52",
+          "text": "4",
+          "tile": [
+            256,
+            32,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-53",
+          "text": "5",
+          "tile": [
+            288,
+            32,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-54",
+          "text": "6",
+          "tile": [
+            320,
+            32,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-55",
+          "text": "7",
+          "tile": [
+            352,
+            32,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-56",
+          "text": "8",
+          "tile": [
+            0,
+            64,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-57",
+          "text": "9",
+          "tile": [
+            32,
+            64,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-58",
+          "text": ":",
+          "tile": [
+            64,
+            64,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-59",
+          "text": ";",
+          "tile": [
+            96,
+            64,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-60",
+          "text": "<",
+          "tile": [
+            128,
+            64,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-61",
+          "text": "=",
+          "tile": [
+            160,
+            64,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-62",
+          "text": ">",
+          "tile": [
+            192,
+            64,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-63",
+          "text": "?",
+          "tile": [
+            224,
+            64,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-64",
+          "text": "@",
+          "tile": [
+            256,
+            64,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-65",
+          "text": "A",
+          "tile": [
+            288,
+            64,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-66",
+          "text": "B",
+          "tile": [
+            320,
+            64,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-67",
+          "text": "C",
+          "tile": [
+            352,
+            64,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-68",
+          "text": "D",
+          "tile": [
+            0,
+            96,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-69",
+          "text": "E",
+          "tile": [
+            32,
+            96,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-70",
+          "text": "F",
+          "tile": [
+            64,
+            96,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-71",
+          "text": "G",
+          "tile": [
+            96,
+            96,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-72",
+          "text": "H",
+          "tile": [
+            128,
+            96,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-73",
+          "text": "I",
+          "tile": [
+            160,
+            96,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-74",
+          "text": "J",
+          "tile": [
+            192,
+            96,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-75",
+          "text": "K",
+          "tile": [
+            224,
+            96,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-76",
+          "text": "L",
+          "tile": [
+            256,
+            96,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-77",
+          "text": "M",
+          "tile": [
+            288,
+            96,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-78",
+          "text": "N",
+          "tile": [
+            320,
+            96,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-79",
+          "text": "O",
+          "tile": [
+            352,
+            96,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-80",
+          "text": "P",
+          "tile": [
+            0,
+            128,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-81",
+          "text": "Q",
+          "tile": [
+            32,
+            128,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-82",
+          "text": "R",
+          "tile": [
+            64,
+            128,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-83",
+          "text": "S",
+          "tile": [
+            96,
+            128,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-84",
+          "text": "T",
+          "tile": [
+            128,
+            128,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-85",
+          "text": "U",
+          "tile": [
+            160,
+            128,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-86",
+          "text": "V",
+          "tile": [
+            192,
+            128,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-87",
+          "text": "W",
+          "tile": [
+            224,
+            128,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-88",
+          "text": "X",
+          "tile": [
+            256,
+            128,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-89",
+          "text": "Y",
+          "tile": [
+            288,
+            128,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-90",
+          "text": "Z",
+          "tile": [
+            320,
+            128,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-91",
+          "text": "[",
+          "tile": [
+            352,
+            128,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-92",
+          "text": "\\",
+          "tile": [
+            0,
+            160,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-93",
+          "text": "]",
+          "tile": [
+            32,
+            160,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-94",
+          "text": "^",
+          "tile": [
+            64,
+            160,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-95",
+          "text": "_",
+          "tile": [
+            96,
+            160,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-96",
+          "text": "`",
+          "tile": [
+            128,
+            160,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-97",
+          "text": "a",
+          "tile": [
+            160,
+            160,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-98",
+          "text": "b",
+          "tile": [
+            192,
+            160,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-99",
+          "text": "c",
+          "tile": [
+            224,
+            160,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-100",
+          "text": "d",
+          "tile": [
+            256,
+            160,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-101",
+          "text": "e",
+          "tile": [
+            288,
+            160,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-102",
+          "text": "f",
+          "tile": [
+            320,
+            160,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-103",
+          "text": "g",
+          "tile": [
+            352,
+            160,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-104",
+          "text": "h",
+          "tile": [
+            0,
+            192,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-105",
+          "text": "i",
+          "tile": [
+            32,
+            192,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-106",
+          "text": "j",
+          "tile": [
+            64,
+            192,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-107",
+          "text": "k",
+          "tile": [
+            96,
+            192,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-108",
+          "text": "l",
+          "tile": [
+            128,
+            192,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-109",
+          "text": "m",
+          "tile": [
+            160,
+            192,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-110",
+          "text": "n",
+          "tile": [
+            192,
+            192,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-111",
+          "text": "o",
+          "tile": [
+            224,
+            192,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-112",
+          "text": "p",
+          "tile": [
+            256,
+            192,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-113",
+          "text": "q",
+          "tile": [
+            288,
+            192,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-114",
+          "text": "r",
+          "tile": [
+            320,
+            192,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-115",
+          "text": "s",
+          "tile": [
+            352,
+            192,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-116",
+          "text": "t",
+          "tile": [
+            0,
+            224,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-117",
+          "text": "u",
+          "tile": [
+            32,
+            224,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-118",
+          "text": "v",
+          "tile": [
+            64,
+            224,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-119",
+          "text": "w",
+          "tile": [
+            96,
+            224,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-120",
+          "text": "x",
+          "tile": [
+            128,
+            224,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-121",
+          "text": "y",
+          "tile": [
+            160,
+            224,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-122",
+          "text": "z",
+          "tile": [
+            192,
+            224,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-123",
+          "text": "{",
+          "tile": [
+            224,
+            224,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-124",
+          "text": "|",
+          "tile": [
+            256,
+            224,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-125",
+          "text": "}",
+          "tile": [
+            288,
+            224,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "code-126",
+          "text": "~",
+          "tile": [
+            320,
+            224,
+            32,
+            32
+          ],
+          "anchor": [
+            8,
+            20
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        }
+      ],
+      "zpl_sha256": "314bef4e5659f705d806fa25ee59d5fb9ab994bbb7ae41415814dfab7b68d347"
+    },
+    {
+      "name": "02-spacing",
+      "canvas": [
+        384,
+        384
+      ],
+      "group": "layout",
+      "probes": [
+        {
+          "name": "text-0",
+          "text": "A A",
+          "tile": [
+            0,
+            0,
+            384,
+            64
+          ],
+          "anchor": [
+            16,
+            40
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "text-1",
+          "text": "A  A",
+          "tile": [
+            0,
+            64,
+            384,
+            64
+          ],
+          "anchor": [
+            16,
+            40
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "text-2",
+          "text": "| |",
+          "tile": [
+            0,
+            128,
+            384,
+            64
+          ],
+          "anchor": [
+            16,
+            40
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "text-3",
+          "text": "!\"#~_^",
+          "tile": [
+            0,
+            192,
+            384,
+            64
+          ],
+          "anchor": [
+            16,
+            40
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "text-4",
+          "text": "0123456789",
+          "tile": [
+            0,
+            256,
+            384,
+            64
+          ],
+          "anchor": [
+            16,
+            40
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        },
+        {
+          "name": "text-5",
+          "text": "abcdefghijklmnop",
+          "tile": [
+            0,
+            320,
+            384,
+            64
+          ],
+          "anchor": [
+            16,
+            40
+          ],
+          "width": 16,
+          "height": 16,
+          "orientation": "N",
+          "origin": "FT"
+        }
+      ],
+      "zpl_sha256": "aa72be59bd53c6ad949dd04e40a20491e5e08dc78abb36a705ce49ea49af3b80"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 //! Unmodified ZD621 QR module-state controls; see the fixture README.
 use std::{fs, path::Path};
-#[path = "../../zebra-http-api/examples/font_support/mod.rs"]
+#[path = "support/digest.rs"]
 mod digest;
 #[test]
 fn raw_module_state_frames_are_pixel_exact() {

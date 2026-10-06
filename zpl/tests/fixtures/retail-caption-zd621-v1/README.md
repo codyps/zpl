@@ -45,3 +45,7 @@ Sources: Zebra [ZPL II Programming Guide](https://www.zebra.com/content/dam/supp
 selection), ^FT p. 205 Table 7, resident-font Table 29 p. 1582; retail
 structure follows ISO/IEC 15420:2009. Exact dot placement comes from the
 preserved printer controls rather than an inferred outline font.
+
+Font extraction commands and extraction-only tests in this document now run
+from the separate [private font research repository](https://github.com/codyps/zpl-font-extract).
+The runtime assertions and captured bytes remain in ZPL.

@@ -2,7 +2,7 @@
 //! See fixtures/zq610-plus-v1/README.md for acquisition, scope and limitations.
 use std::{fs, path::Path};
 use zpl::render::profiles::{SPECIFICATION, ZD621_203_DPI, ZQ610_PLUS_203_DPI};
-#[path = "../../zebra-http-api/examples/font_support/mod.rs"]
+#[path = "support/digest.rs"]
 mod digest;
 
 #[test]

@@ -569,7 +569,8 @@ ASCII inputs, including the 27 blanks (space and lowercase).
 
 Controls cover sizing, scaling, all origins/orientations/justifications,
 wrapping, margins and wide Code 128 captions. Run `cargo test -p zpl
---test resident_h_preview --test profiles` and `cargo test -p zpl-font-extract`.
+--test resident_h_preview --test profiles` and `cargo test -p zpl-font-extract` in the separate
+[private font research repository](https://github.com/codyps/zpl-font-extract).
 The existing printer options cover H. QR mask selection, unsampled font-0
 sizes and broader unverified command/encoding coverage still leave the overall
 accuracy goal open.
@@ -587,7 +588,8 @@ and `graphic_symbol_ignores_justification`. SPECIFICATION disables both,
 using Table 29's three-quarter-height baseline and honoring FO/FT justification.
 Tests cover the options independently, GS/barcode command ordering, dimensions,
 all rotations/origins, reverse fields and label reversal. Run `cargo test -p zpl
---test graphic_symbols_preview --test profiles` and `cargo test -p zpl-font-extract`.
+--test graphic_symbols_preview --test profiles` and `cargo test -p zpl-font-extract` in the separate
+[private font research repository](https://github.com/codyps/zpl-font-extract).
 QR mask selection, justified-text spacing and broader unverified sizes,
 commands and encodings still leave the overall accuracy goal open.
 
@@ -1051,7 +1053,7 @@ for exact source/PNG hashes, standards, and the historical failed literal
 composition retained in capture metadata.
 
 The recovered resident TTF also provides a useful independent font reference.
-[Font 0 TTF comparison](font0-ttf.md) records the offline method and measured
+[Font 0 TTF comparison](https://github.com/codyps/zpl-font-extract/blob/main/docs/font0-ttf.md) records the offline method and measured
 remaining differences; exact captured strikes remain the renderer's source.
 
 ## Single-byte code pages

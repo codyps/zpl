@@ -1,7 +1,7 @@
 //! Native ZD621 V93.21.33Z controls; fixture README records provenance and specs.
 use std::{fs, path::Path};
 use zpl::render::profiles::{SPECIFICATION, ZD621_203_DPI};
-#[path = "../../zebra-http-api/examples/font_support/mod.rs"]
+#[path = "support/digest.rs"]
 mod digest;
 
 const FIXTURES: &str = "tests/fixtures/pdf417-layout-zd621-v1";

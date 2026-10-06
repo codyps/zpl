@@ -1,7 +1,7 @@
 //! Complete comparison corpus, with aligned native barcode replacements.
 //! See fixtures/conformance-zd621-v1/README.md for provenance and field regions.
 use std::{collections::BTreeSet, fs, path::Path};
-#[path = "../../zebra-http-api/examples/font_support/mod.rs"]
+#[path = "support/digest.rs"]
 mod digest;
 mod support;
 

@@ -9,7 +9,7 @@ use zpl::{
     render::profiles::{SPECIFICATION, ZD621_203_DPI},
     Options,
 };
-#[path = "../../zebra-http-api/examples/font_support/mod.rs"]
+#[path = "support/digest.rs"]
 mod digest;
 
 fn raster(source: &str, options: Options) -> Raster {

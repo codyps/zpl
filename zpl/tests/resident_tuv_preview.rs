@@ -1,6 +1,6 @@
 //! Unmodified ZD621 resident T/U/V controls; see the fixture README.
 use std::{fs, path::Path};
-#[path = "../../zebra-http-api/examples/font_support/mod.rs"]
+#[path = "support/digest.rs"]
 mod digest;
 #[test]
 fn raw_resident_tuv_frames_pin_pixels_and_text_floor() {

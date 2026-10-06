@@ -3,7 +3,7 @@ use eyre::{ensure, eyre, Result};
 use raster_diff::{compare, Raster};
 use serde_json::{json, Value};
 use std::path::Path;
-#[path = "../../examples/font_support/mod.rs"]
+#[path = "../../../zpl/tests/support/digest.rs"]
 pub mod digest;
 
 pub struct Case {

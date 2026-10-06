@@ -4,7 +4,8 @@
 
 Rust tools for parsing Zebra Programming Language (ZPL), rendering labels locally
 to PNG, SVG and PDF, and comparing previews from Zebra printers. The workspace also
-includes a browser editor, a printer-backed HTTP proxy, and font extraction tools.
+includes a browser editor and a printer-backed HTTP proxy. Font research and
+extraction tools live in a [separate private repository](https://github.com/codyps/zpl-font-extract).
 
 Use the [firmware update CLI](docs/firmware-updates.md) to inspect network Zebra
 printers and apply local firmware files with model and serial checks.
@@ -160,7 +161,6 @@ and [telemetry](docs/telemetry.md).
 | [`zpl-render-api`](zpl-render-api/) | Cloudflare Worker, Labelary/LabelZoom HTTP subsets, compressed PNG and multipage PDF output |
 | [`zebra-http-api`](zebra-http-api/) | Printer HTTP client and rendering/comparison examples |
 | [`zpl-proxy-api`](zpl-proxy-api/) | Axum proxy, browser interface, SQLite cache and request history |
-| [`zpl-font-extract`](zpl-font-extract/) | Resident-font sampling, bitmap extraction, export, and verification |
 | [`raster-diff`](raster-diff/) | Raster decoding, pixel comparisons, and the `png-diff` CLI |
 
 Shared fixtures live in [`test-data/`](test-data/). The

@@ -40,3 +40,7 @@ wrapping, alignment, per-glyph edge clamping, and inverted margins as well
 as painting. The FO/R right-justified controls also establish that the printer
 preserves line alignment inside the block; this is selected by
 `block_fo_right_justification_printer_layout`.
+
+Font extraction commands and extraction-only tests in this document now run
+from the separate [private font research repository](https://github.com/codyps/zpl-font-extract).
+The runtime assertions and captured bytes remain in ZPL.

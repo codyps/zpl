@@ -1,7 +1,7 @@
 //! ^BR retail layout and input validation against unmodified ZD621 captures.
 //! See fixture README for capture provenance and GS1/Zebra references.
 use std::{fs, path::Path};
-#[path = "../../zebra-http-api/examples/font_support/mod.rs"]
+#[path = "support/digest.rs"]
 mod digest;
 
 #[test]
