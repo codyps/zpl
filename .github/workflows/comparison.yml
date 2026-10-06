@@ -1,0 +1,32 @@
+# Cross-repository dispatch needs Actions write access on the target repository.
+# https://docs.github.com/en/rest/actions/workflows#create-a-workflow-dispatch-event
+name: Refresh comparison site
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: refresh-comparison-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  dispatch:
+    if: github.repository == 'codyps/zpl' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Trigger comparison against latest ZPL main
+        env:
+          GH_TOKEN: ${{ secrets.ZPL_COMPARISON_ACTIONS_TOKEN }}
+        run: |
+          if [ -z "$GH_TOKEN" ]; then
+            echo '::error::Configure ZPL_COMPARISON_ACTIONS_TOKEN with Actions write access to codyps/zpl-comparison. See docs/render-performance.md#automatic-comparison-refresh.'
+            exit 1
+          fi
+          gh api --method POST \
+            repos/codyps/zpl-comparison/actions/workflows/benchmarks.yml/dispatches \
+            -f ref=main

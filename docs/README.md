@@ -16,8 +16,8 @@ GitHub Pages deployment.
 [Renderer HTTP API](worker-api.md) documents the public Cloudflare Worker,
 Labelary compatibility, rate limits, hosting comparison, and deployment.
 
-[Release PR automation](releases.md) documents release-plz setup and the separate
-crates.io publishing prerequisites.
+[Release automation](releases.md) documents release-plz setup, crates.io trusted
+publishing, and release verification after merging a release PR.
 
 ## Vendor specification
 

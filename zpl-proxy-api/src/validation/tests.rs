@@ -51,17 +51,10 @@ fn rejects_unparseable_unknown_and_unterminated_streams() {
         "^XA^XZgarbage",
         "^XA^ZZ^XZ",
         "^xa^xz",
-        "^XA^FOnope,20^XZ",
-        "^XA^FO1,2,0,4^XZ",
-        "^XA^PW999999999999999999^XZ",
-        "^XA^FO1e2,0^XZ",
-        "^XA^POZ^XZ",
         "^XA^FSgarbage^XZ",
         "^XA^FH^FD_0^FS^XZ",
         "^XA^FH^FD_GG^FS^XZ",
         "^XA^FHabc^FDx^FS^XZ",
-        "^XA^CI14^XZ",
-        "^XA^CI28,65,66^XZ",
         "^XA^GFA,2,2,1,FF^FS^XZ",
         "^XA^GFA,1,2,1,FF00^FS^XZ",
         "^XA^GFA,2,2,1,:B64:/wA=:0000^FS^XZ",
@@ -74,19 +67,15 @@ fn rejects_unparseable_unknown_and_unterminated_streams() {
 }
 
 #[test]
-fn rejects_non_rendering_commands_and_printer_content_access() {
+fn rejects_device_operations_queries_and_executable_stored_formats() {
     // Guide: object/directory inspection ^WD/^XF/^XG pp.361/372/373,
     // named/persistent fonts ^A@/^CW pp.62/168, retained bitmap ^MC p.300.
     for command in [
         "^WD*:*.*",
         "^XFR:PRIVATE.ZPL",
-        "^XGR:PRIVATE.GRF,1,1",
-        "^ILR:OLD.GRF",
-        "^IMR:OLD.GRF",
         "^ISR:OLD.GRF",
         "^IDR:*.*",
         "^DFFILE.ZPL",
-        "^A@N,30,30,R:PRIVATE.TTF",
         "^CW0,R:PRIVATE.TTF",
         "^FL0,1,2",
         "^LF",
@@ -116,11 +105,6 @@ fn rejects_non_rendering_commands_and_printer_content_access() {
         "^PN10",
         "^PH",
         "^MCN",
-        "^FN1",
-        "^FE",
-        "^FC",
-        "^SN1",
-        "^SF",
         "~DGSECRET,1,1,FF",
         "~DYSECRET,A,G,1,1,FF",
         "~DB",
@@ -161,4 +145,62 @@ fn rejects_bad_suffix_before_authorizing_any_prefix() {
     for suffix in ["^", "^X", "~HS", "^WD", "garbage", "\x1b", "^XA^XZ"] {
         rejects(&format!("^XA^FO20,20^FDvalid field^FS^XZ{suffix}"));
     }
+}
+
+#[test]
+fn rendering_operands_are_left_to_firmware() {
+    // Admission checks command effects and framing, not firmware's operand grammar.
+    for input in [
+        "^XA^FOnope,20^XZ",
+        "^XA^FO1,2,0,4^XZ",
+        "^XA^PW999999999999999999^XZ",
+        "^XA^FO1e2,0^XZ",
+        "^XA^POZ^XZ",
+        "^XA^CI14^XZ",
+        "^XA^CI28,65,66^XZ",
+        "^XA^BXN,4,200,0,0,6,!^FD!d065^FS^XZ",
+        "^XA^PA1,1,1,1^FM10,20,30,40^TB N,100,100^FDtext^FS^XZ",
+        "^XA^AZN,32,32^FDtext^FS^XZ",
+    ] {
+        accepts(input);
+    }
+    // Guide barcodes pp.64-150: explicit known list, not a B* wildcard.
+    for code in [
+        "B0", "B4", "B5", "BB", "BD", "BF", "BI", "BJ", "BK", "BL", "BM", "BO", "BP", "BR", "BS",
+        "BT", "BZ",
+    ] {
+        accepts(&format!("^XA^{code}N^FD123456^FS^XZ"));
+    }
+    rejects("^XA^B6^XZ");
+    rejects("^XA^BXN,4,200,0,0,6,~^FDx^FS^XZ");
+    rejects("^XA^FO1,2\n! U1 getvar \"allcv\"\n^XZ");
+}
+
+#[test]
+fn external_content_and_variable_fields_are_accepted() {
+    // Guide ^A@ p.62, ^IL/^IM pp.247-248, ^XG p.373; clock/serial fields
+    // are rendering commands regardless of the shared cache/recovery policy.
+    for command in [
+        "^A@N,30,30,R:FONT.TTF",
+        "^XGR:IMAGE.GRF,1,1",
+        "^ILR:IMAGE.GRF",
+        "^IMR:IMAGE.GRF",
+        "^FC",
+        "^FE",
+        "^FN1",
+        "^SN1",
+        "^SF",
+    ] {
+        let input = format!("^XA{command}^FS^XZ");
+        accepts(&input);
+    }
+}
+
+#[test]
+fn rendering_resource_limits_remain_bounded() {
+    rejects(&format!("^XA^FD{}^FS^XZ", "x".repeat(1_048_576)));
+    rejects("^XA^GFA,25001,25001,1,:^FS^XZ");
+    let graphic = format!("^GFA,25000,25000,100,{}^FS", "00".repeat(25_000));
+    accepts(&format!("^XA{}^XZ", graphic.repeat(10)));
+    rejects(&format!("^XA{}^XZ", graphic.repeat(11)));
 }

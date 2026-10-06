@@ -13,6 +13,24 @@
 /// initial value: the renderer does not reapply it after you change an option.
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct Compatibility {
+    /// Finish an inline GF field before FO, FT or BY without an explicit FS.
+    /// ZD621 V93.21.33Z public Example2; disabled: require FS (^GF p. 215).
+    pub inline_graphic_implicit_separator: bool,
+    /// Consume three QR switch bytes with an invalid correction selector and
+    /// encode the remainder with automatic input and level M. Public Example4's
+    /// `Package...` becomes `kage...` on ZD621 V93.21.33Z. Valid/manual/append
+    /// headers remain strict (^BQ pp. 129–134). See public-zpl-zd621-v1.
+    pub qr_malformed_header_uses_defaults: bool,
+    /// Uppercase Code 39 ASCII letters and discard bytes outside its alphabet.
+    /// Public Example5 `%s` encodes `%S`, Example8 `{0}` encodes `0` on ZD621
+    /// V93.21.33Z. Disabled: reject invalid input (^B3 pp. 70–72).
+    pub code39_normalize_input: bool,
+    /// Accept BY module widths through 12 dots, as observed in public Example6
+    /// on ZD621 V93.21.33Z. Disabled: the documented 1–10 range (^BY p. 148).
+    pub barcode_module_width_through_12: bool,
+    /// Treat GB thickness zero as one dot, observed in public Example4 on
+    /// ZD621 V93.21.33Z. Disabled: reject zero (^GB p. 210).
+    pub box_zero_thickness_as_one: bool,
     /// Round the preview canvas width up to this dot quantum and center its
     /// printable content. Native ZQ610/ZD621 controls use 64 dots. None keeps
     /// exact requested widths. See tests/fixtures/zq610-plus-v1.
@@ -32,9 +50,21 @@ pub struct Compatibility {
     /// Ignore the requested QR mask and select using the printer's staged
     /// penalty evaluation. See docs/qr-mask-selection.md and native holdouts.
     pub qr_printer_mask_selection: bool,
+    /// Merge automatic QR character runs in printer order rather than choosing
+    /// the globally shortest bitstream. Can change symbol version and mask.
+    /// ZD621 V93.21.33Z: tests/fixtures/qr-segmentation-zd621-v1.
+    pub qr_printer_segmentation: bool,
     /// Let ^BQ magnification replace the shared barcode module width, including
     /// later fields, until ^BY changes it. Native qr-module-state-zd621-v1.
     pub qr_updates_barcode_module_width: bool,
+    /// Select automatic PDF417 columns by comparing integer grids at nominal
+    /// Y=3X, minimizing |width - 2*height|. Disabled: round the continuous
+    /// aspect-ratio estimate. ^B7 pp. 79–82; pdf417-layout-zd621-v1 controls.
+    pub pdf417_integer_grid_layout: bool,
+    /// Latch standalone PDF417 Text into Punctuation for runs of at least four
+    /// punctuation characters. Disabled: use individual punctuation shifts.
+    /// USS PDF417 §2.2.4.4; pdf417-layout-zd621-v1 native compaction controls.
+    pub pdf417_punctuation_latches: bool,
     /// Clamp off-label retail caption groups along the reading axis. N/R use
     /// nominal origins, I/B visible edges; retail-caption-edges-zd621-v1.
     pub retail_caption_clamps_negative_inline_origin: bool,

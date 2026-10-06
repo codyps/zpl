@@ -76,6 +76,7 @@ struct Field {
     barcode: Option<barcode::Barcode>,
     barcode_error: Option<String>,
     path: Option<Path>,
+    inline_graphic: bool,
     origins: Option<Vec<Option<(f64, f64)>>>,
     multiple_paths: Option<Vec<(f64, f64, Path)>>,
     block: Option<(f64, usize, f64, u8, f64)>,
@@ -127,26 +128,27 @@ impl Default for Field {
             center_overflow: Vec::new(),
             graphic_size: None,
             graphic_bitmap: false,
+            inline_graphic: false,
             direction: (b'H', 0.),
             direction_metrics: font::DirectionMetrics::default(),
         }
     }
 }
-fn justification(p: &[&str], i: usize, default: u8) -> Result<u8, String> {
-    let n = number(p, i, default as f64)?;
+fn justification(p: &[&str], i: usize, default: u8, number_abs: f64) -> Result<u8, String> {
+    let n = number(p, i, default as f64, number_abs)?;
     if !matches!(n, 0. | 1. | 2.) {
         return Err("invalid field justification".into());
     }
     Ok(n as u8)
 }
-fn number(p: &[&str], i: usize, default: f64) -> Result<f64, String> {
+fn number(p: &[&str], i: usize, default: f64, number_abs: f64) -> Result<f64, String> {
     match p.get(i).filter(|s| !s.is_empty()) {
         None => Ok(default),
         Some(s) => {
             let n = s
                 .parse::<f64>()
                 .map_err(|_| format!("invalid number {s:?}"))?;
-            if !n.is_finite() || n.abs() > 1_000_000. {
+            if !n.is_finite() || n.abs() > number_abs {
                 return Err("number out of range".into());
             }
             Ok(n)
@@ -165,14 +167,14 @@ pub fn render(input: &[u8], options: Options) -> Result<Document, RenderError> {
     render_with_limits(input, options, Limits::default())
 }
 
-/// Render with tighter service budgets, including expanded formats and all labels.
-/// These limits supplement the renderer's existing per-field and raster budgets.
+/// Render with caller-selected budgets, including expanded formats and all labels.
+/// Use [`Limits::unlimited`] to disable resource-policy ceilings. Output adapters
+/// are configured separately with [`crate::output::Limits`].
 pub fn render_with_limits(
     input: &[u8],
     options: Options,
     limits: Limits,
 ) -> Result<Document, RenderError> {
-    let limits = limits.bounded();
     for dimension in [
         options.compatibility.preview_width_quantum,
         options.compatibility.preview_max_width,
@@ -180,26 +182,25 @@ pub fn render_with_limits(
     .into_iter()
     .flatten()
     {
-        if dimension == 0 || dimension > 4096 {
+        if dimension == 0 {
             return Err(RenderError {
                 offset: 0,
-                message: "preview width settings must be in 1..=4096".into(),
+                message: "preview width settings must be positive".into(),
             });
         }
-    }
-    if input.len() > 1_048_576 {
-        return Err(RenderError {
-            offset: 0,
-            message: "input exceeds 1 MiB renderer limit".into(),
-        });
     }
     if input.len() > limits.input_bytes {
         return Err(RenderError {
             offset: 0,
-            message: "input exceeds configured renderer limit".into(),
+            message: if limits.input_bytes == Limits::DEFAULT.input_bytes {
+                "input exceeds 1 MiB renderer limit"
+            } else {
+                "input exceeds configured renderer limit"
+            }
+            .into(),
         });
     }
-    let expanded = stored::expand(input)?;
+    let expanded = stored::expand(input, limits)?;
     if let Some(expanded) = expanded {
         if expanded.bytes.len() > limits.input_bytes {
             return Err(RenderError {
@@ -220,7 +221,8 @@ fn render_expanded(
     limits: Limits,
     allow_empty: bool,
 ) -> Result<Document, RenderError> {
-    let numbered = numbered::plan(input, options.compatibility)?;
+    let number = |p: &[&str], i, default| number(p, i, default, limits.number_abs);
+    let numbered = numbered::plan(input, options.compatibility, limits.field_bytes)?;
     let mut pending_terminator = None;
     // Dimensions can change after a field. Cull only beyond every declared
     // canvas, so a later PW/LL cannot reveal text discarded at an earlier FS.
@@ -291,6 +293,17 @@ fn render_expanded(
                 })?;
                 (syntax, offset, item, false)
             };
+        // Public ZD621 Example2 omits FS after both inline graphics. Replay
+        // the following setup command after the ordinary FS placement/reset,
+        // preserving compositing, field state and resource accounting.
+        if options.compatibility.inline_graphic_implicit_separator
+            && field.inline_graphic
+            && matches!(item, Element::FormatCommand(_))
+            && matches!(item.as_bytes().get(1..3), Some(b"FO" | b"FT" | b"BY"))
+        {
+            pending_terminator = Some((syntax, offset, item));
+            item = Element::FormatCommand(b"^FS");
+        }
         let replacement = if replayed {
             None
         } else {
@@ -384,9 +397,11 @@ fn render_expanded(
                     row,
                     true,
                     limits.segments,
+                    limits.graphic_bytes,
                 )?);
                 field.graphic_size = Some(((row * 8) as f64, (count / row) as f64));
                 field.graphic_bitmap = true;
+                field.inline_graphic = true;
                 return Ok(());
             }
             if !syntax.delimiter.is_ascii() {
@@ -472,7 +487,7 @@ fn render_expanded(
                     if scene.is_some() {
                         return Err("nested label".into());
                     }
-                    if limits.labels < 64 && labels.len() >= limits.labels {
+                    if labels.len() >= limits.labels {
                         return Err(format!("too many labels (maximum {})", limits.labels));
                     }
                     scene = Some(limits.scene(width, height, options.dpi)?);
@@ -504,17 +519,26 @@ fn render_expanded(
                                     if invert { h - p.y } else { p.y },
                                 )
                             });
+                            d.path
+                                .validate(limits.coordinate_abs)
+                                .map_err(|e| e.to_string())?;
                         }
                     }
                     if let Some(quantum) = options.compatibility.preview_width_quantum {
                         let logical_width = sc.width;
-                        let rounded_width = logical_width.div_ceil(quantum) * quantum;
+                        let rounded_width = logical_width
+                            .div_ceil(quantum)
+                            .checked_mul(quantum)
+                            .ok_or("rounded preview width overflows u32")?;
                         let offset = (rounded_width - logical_width) / 2;
                         limits.scene(rounded_width, sc.height, options.dpi)?;
                         sc.width = rounded_width;
                         for draw in &mut sc.draws {
                             draw.path
                                 .transform(|p| Point::new(p.x + offset as f64, p.y));
+                            draw.path
+                                .validate(limits.coordinate_abs)
+                                .map_err(|e| e.to_string())?;
                         }
                         // The firmware clips against the rounded canvas, not
                         // the requested PW: width-boundary-1/65 retain ink in
@@ -529,6 +553,9 @@ fn render_expanded(
                     let n = number(&p, 0, 0.)?;
                     if n < 1. || n.fract() != 0. {
                         return Err("label dimension must be a positive integer".into());
+                    }
+                    if n > u32::MAX as f64 {
+                        return Err("label dimension overflows u32".into());
                     }
                     if name == "PW" {
                         width = (n as u32)
@@ -574,7 +601,7 @@ fn render_expanded(
                 "FW" => {
                     default_rotation = rotation(p[0])?;
                     field.rotation = default_rotation;
-                    default_justification = justification(&p, 1, 2)?;
+                    default_justification = justification(&p, 1, 2, limits.number_abs)?;
                     field.justification = default_justification;
                 }
                 "FP" => {
@@ -679,7 +706,8 @@ fn render_expanded(
                     {
                         return Err("FT requires explicit coordinates".into());
                     }
-                    field.justification = justification(&p, 2, default_justification)?;
+                    field.justification =
+                        justification(&p, 2, default_justification, limits.number_abs)?;
                 }
                 "CF" => {
                     font_id = match p[0] {
@@ -738,6 +766,7 @@ fn render_expanded(
                         font_id,
                         options.compatibility.font0_minimum_dimensions,
                         options.compatibility.bitmap_font_maximum_dimensions,
+                        limits.number_abs,
                     )?;
                     field.requested_text_height = Some(number(&p, 1, dh)?);
                     default_w = font_w;
@@ -792,6 +821,7 @@ fn render_expanded(
                         font_id,
                         options.compatibility.font0_minimum_dimensions,
                         options.compatibility.bitmap_font_maximum_dimensions,
+                        limits.number_abs,
                     )?;
                     field.requested_text_height = Some(number(&p, 1, dh)?);
                 }
@@ -812,6 +842,7 @@ fn render_expanded(
                         font_id,
                         options.compatibility.font0_minimum_dimensions,
                         options.compatibility.bitmap_font_maximum_dimensions,
+                        limits.number_abs,
                     )?;
                 }
                 "FH" => {
@@ -825,7 +856,14 @@ fn render_expanded(
                     module = number(&p, 0, module)?;
                     ratio = number(&p, 1, ratio)?;
                     bar_h = number(&p, 2, bar_h)?;
-                    if !(1. ..=10.).contains(&module) || !(2. ..=3.).contains(&ratio) || bar_h <= 0.
+                    let max_module = if options.compatibility.barcode_module_width_through_12 {
+                        12.
+                    } else {
+                        10.
+                    };
+                    if !(1. ..=max_module).contains(&module)
+                        || !(2. ..=3.).contains(&ratio)
+                        || bar_h <= 0.
                     {
                         return Err("invalid barcode dimensions".into());
                     }
@@ -933,8 +971,11 @@ fn render_expanded(
                     {
                         warnings.push("Resident fonts use captured bitmap strikes; unsampled sizes, resolutions or rotations can differ from printer rasterization.".into());
                     }
-                    if bytes.len() > 4096 {
-                        return Err("field data exceeds 4096-byte renderer limit".into());
+                    if bytes.len() > limits.field_bytes {
+                        return Err(format!(
+                            "field data exceeds {}-byte renderer limit",
+                            limits.field_bytes
+                        ));
                     }
                     // Native ^FH NUL ends plain/TB text, while FB removes it.
                     // ^FD/^FH pp. 190/193 do not specify C-string truncation;
@@ -1341,6 +1382,14 @@ fn render_expanded(
                 "GB" | "GE" | "GC" => {
                     let ti = if name == "GC" { 1 } else { 2 };
                     let t = number(&p, ti, 1.)?;
+                    let t = if name == "GB"
+                        && t == 0.
+                        && options.compatibility.box_zero_thickness_as_one
+                    {
+                        1.
+                    } else {
+                        t
+                    };
                     // Zebra Programming Guide, ^GB, p. 210: omitted dimensions
                     // default to thickness; adjust dimensions to at least t
                     // before calculating rounding (including the zero-width example).
@@ -1393,6 +1442,7 @@ fn render_expanded(
                                 w,
                                 h,
                                 quantize(radius),
+                                limits.segments,
                             )?;
                             printer_shapes::rounded_rect(
                                 &mut path,
@@ -1401,16 +1451,17 @@ fn render_expanded(
                                 w - 2. * t,
                                 h - 2. * t,
                                 quantize(inner_radius),
+                                limits.segments,
                             )?;
                         } else {
                             path.rounded_rect(0., 0., w, h, radius);
                             path.rounded_rect(t, t, w - 2. * t, h - 2. * t, inner_radius);
                         }
                     } else if w == h && options.compatibility.circle_printer_curve {
-                        printer_shapes::circle(&mut path, w, t)?;
+                        printer_shapes::circle(&mut path, w, t, limits.segments)?;
                     } else if name == "GE" && w != h && options.compatibility.ellipse_printer_curve
                     {
-                        printer_shapes::ellipse(&mut path, w, h, t)?;
+                        printer_shapes::ellipse(&mut path, w, h, t, limits.segments)?;
                     } else {
                         path.ellipse(0., 0., w, h);
                         if w > 2. * t && h > 2. * t {
@@ -1423,8 +1474,8 @@ fn render_expanded(
                     if p.len() < 4 {
                         return Err("invalid graphic download".into());
                     }
-                    let n = count(&p, 1)?;
-                    let row = count(&p, 2)?;
+                    let n = count(&p, 1, limits.number_abs)?;
+                    let row = count(&p, 2, limits.number_abs)?;
                     graphics.insert(
                         p[0].to_string(),
                         (
@@ -1434,6 +1485,7 @@ fn render_expanded(
                                 row,
                                 false,
                                 limits.stored_graphic_segments,
+                                limits.graphic_bytes,
                             )?,
                             ((row * 8) as f64, (n / row) as f64),
                         ),
@@ -1443,17 +1495,19 @@ fn render_expanded(
                     if p.first() != Some(&"A") || p.len() < 5 {
                         return Err("unsupported GF mode (use A or B)".into());
                     }
-                    let n = count(&p, 2)?;
-                    let row = count(&p, 3)?;
+                    let n = count(&p, 2, limits.number_abs)?;
+                    let row = count(&p, 3, limits.number_abs)?;
                     field.path = Some(graphics::decode(
                         p[4..].join(&delim.to_string()).as_bytes(),
                         n,
                         row,
                         false,
                         limits.segments,
+                        limits.graphic_bytes,
                     )?);
                     field.graphic_size = Some(((row * 8) as f64, (n / row) as f64));
                     field.graphic_bitmap = true;
+                    field.inline_graphic = true;
                 }
                 "XG" => {
                     let (mut path, graphic_size) = graphics
@@ -1985,19 +2039,23 @@ fn render_expanded(
                                 &field.barcode_split,
                                 field.reverse || reverse,
                                 field.rotation,
+                                limits.segments,
                             )?;
                         }
                         if field.text_size.is_some() {
                             font::cull_outside(&mut path, cull_width, cull_height);
                         }
-                        total_segments += path.segments.len();
+                        total_segments = total_segments
+                            .checked_add(path.segments.len())
+                            .ok_or("document path count overflow")?;
                         if total_segments > limits.segments {
                             return Err("document path limit exceeded".into());
                         }
                         // Dimensions are checked at XA/PW/LL, and the document
                         // segment budget above also bounds each scene. Earlier
                         // draws are immutable here; validate only this new path.
-                        path.validate().map_err(|e| e.to_string())?;
+                        path.validate(limits.coordinate_abs)
+                            .map_err(|e| e.to_string())?;
                         sc.draws.push(Draw {
                             path,
                             paint: if field.reverse || reverse {
@@ -2281,9 +2339,10 @@ fn font_dimensions(
     id: char,
     clamp_minimum: bool,
     clamp_maximum: bool,
+    number_abs: f64,
 ) -> Result<(f64, f64), String> {
-    let h = number(p, 1, 0.)?;
-    let w = number(p, 2, 0.)?;
+    let h = number(p, 1, 0., number_abs)?;
+    let w = number(p, 2, 0., number_abs)?;
     if id != '0' {
         // ZPL Programming Guide Table 31, pp. 1583–1584: native bitmap matrices.
         let (nh, nw) = match id {
@@ -2355,9 +2414,9 @@ fn font_dimensions(
     Ok((w, h))
 }
 
-fn count(p: &[&str], i: usize) -> Result<usize, String> {
-    let n = number(p, i, 0.)?;
-    if n < 1. || n.fract() != 0. {
+fn count(p: &[&str], i: usize, number_abs: f64) -> Result<usize, String> {
+    let n = number(p, i, 0., number_abs)?;
+    if n < 1. || n >= usize::MAX as f64 || n.fract() != 0. {
         return Err("invalid graphic count".into());
     }
     Ok(n as usize)

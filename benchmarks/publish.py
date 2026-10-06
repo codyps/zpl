@@ -17,6 +17,7 @@ import subprocess
 import tempfile
 
 from common import NAMES, RUNNERS
+from build import METHOD
 
 
 def command(*args, cwd=None):
@@ -30,7 +31,9 @@ def validate(record, run):
             or record.get('run_attempt') != run['run_attempt']
             or record.get('event') != run['event']
             or record.get('runner') not in RUNNERS
-            or set(commits) != labels or commits.get('head') != run['head_sha']
+            or set(commits) != labels
+            or (record.get('pr_head_sha') if run['event'] == 'pull_request'
+                else commits.get('head')) != run['head_sha']
             or any(not isinstance(sha, str) or not re.fullmatch('[0-9a-f]{40}', sha)
                    for sha in commits.values())):
         raise ValueError('Unexpected benchmark identity')
@@ -45,6 +48,18 @@ def validate(record, run):
             isinstance(record['environment'].get(key), str)
             for key in ('rust', 'os', 'cpu', 'image', 'rustflags', 'profile')):
         raise ValueError('Missing environment')
+    # Schema 1 history remains readable. New provenance is additive, but must
+    # be complete when supplied; never trust a producer's comparison verdict.
+    if 'builds' in record or 'build_method' in record:
+        builds = record.get('builds')
+        if (record.get('build_method') != METHOD or not isinstance(builds, dict)
+                or set(builds) != labels):
+            raise ValueError('Invalid build provenance')
+        for build in builds.values():
+            if not isinstance(build, dict) or set(build) != {'inputs_sha256', 'binary_sha256'} or any(
+                    not isinstance(value, str) or not re.fullmatch('[0-9a-f]{64}', value)
+                    for value in build.values()):
+                raise ValueError('Invalid build hashes')
     if set(record.get('samples', {})) != labels:
         raise ValueError('Missing benchmarks')
     for revision in labels:

@@ -2,11 +2,12 @@
 
 The first API runs the local Rust renderer as WebAssembly inside a Cloudflare
 Worker. It accepts public requests, applies rate and resource limits, and returns
-compressed PNGs through a subset of Labelary's HTTP interface. It needs no printer,
+compressed PNGs through a subset of Labelary's HTTP interface, plus PNG and PDF
+through a subset of LabelZoom's conversion API. It needs no printer,
 database, storage bucket, or rendering backend.
 
-The deployment configuration selects account
-`5d458fdc03e990ef9fa1144bd1a7f30e` and Worker name `zpl-render-api`.
+The Worker name is `zpl-render-api`. Select the target account through the
+`CLOUDFLARE_ACCOUNT_ID` environment variable; account identifiers are not checked in.
 The implementation and local runtime checks are complete. A public deployment
 and its URL still require Cloudflare authentication and verification.
 
@@ -69,6 +70,8 @@ measure actual regional bursts before raising it.
 
 ## HTTP contract
 
+### Labelary
+
 ```text
 POST /v1/printers/{6|8|12|24}dpmm/labels/{width}x{height}/{index}/
 GET /health
@@ -126,6 +129,68 @@ endpoint or missing label, `405` unsupported method, `406` unsupported output,
 rate limit, and `503` unavailable limiter or busy isolate. Unexpected failures
 return a generic `500`. `X-Rotation` and `X-Linter` are explicitly rejected.
 
+### LabelZoom
+
+```text
+POST /api/v2/convert/zpl/to/png
+POST /api/v2/convert/zpl/to/pdf
+```
+
+A trailing slash is optional. Send raw ZPL with `Content-Type: text/plain` or
+`application/octet-stream`. The [live OpenAPI convert contract](https://api.labelzoom.com/v3/api-docs)
+also permits `text/*`. Bytes are preserved, including binary graphics; charset
+transcoding is not implemented. Form uploads and conflicting content types return
+`400` on these routes. Set a LabelZoom client's base URL to the Worker origin;
+no API key is required. An `Authorization` header is accepted but unused and does
+not change rate limits. Browser preflight permits that header.
+
+```sh
+api_origin=http://localhost:8787
+curl --fail-with-body --silent --show-error \
+  "$api_origin/api/v2/convert/zpl/to/pdf?label.width=4&label.height=6&dpi=203" \
+  --header 'Content-Type: text/plain' --header 'Accept: application/pdf' \
+  --data-binary @docs/examples/local-label.zpl --output /tmp/label.pdf
+
+# Equivalent JSON parameters; change /pdf to /png for the first label as PNG.
+curl --fail-with-body --silent --show-error \
+  "$api_origin/api/v2/convert/zpl/to/pdf" \
+  --url-query 'params={"label":{"width":4,"height":6},"dpi":203}' \
+  --header 'Content-Type: text/plain' \
+  --data-binary @docs/examples/local-label.zpl --output /tmp/label.pdf
+```
+
+The supported subset follows LabelZoom's [conversion parameters](https://docs.labelzoom.com/reference/conversion-parameters/)
+and [format contract](https://docs.labelzoom.com/reference/supported-formats/),
+checked on 2026-10-03:
+
+| Setting | Worker behavior |
+| --- | --- |
+| Parameters | URL-encoded JSON `params` object or dot query parameters; dot values override matching JSON values |
+| `dpi` | Exact integer 152, 203 (default), 300, or 600; separate from Labelary's density classes |
+| `label.width`, `label.height` | Optional inch dimensions; floor inches × DPI to dots, independently overriding each output axis |
+| Omitted dimensions | Follow source `^PW`/`^LL`; Worker fallback is 4×6 inches at the requested DPI |
+| PNG | First label, compressed grayscale; physical resolution is the requested DPI rounded to integer pixels/meter |
+| PDF | All labels in order, one vector page per label, including differing source-defined sizes |
+| `Accept` | Optional; exact target media type, subtype wildcard, or `*/*`; parameters including `q` ignored as in LabelZoom |
+| Errors | Plain text; a mismatched supported `Accept` type returns `400`, an unsupported media type `406` |
+
+Only ZPL-to-PNG/PDF conversion is supported. Other conversions, template `data`,
+rotation, scaling, position, color controls, watermarking, PDF-source options,
+and command filtering return `400`; they are not silently ignored. Explicit
+neutral `rotation=0`, `scaling=100`, and `watermark=false` are accepted. Unknown
+parameters, duplicate query keys, malformed JSON, wrong types, and query strings
+over 8 KiB also return `400`. This is a documented HTTP subset, not full LabelZoom
+feature or pixel parity; it uses the repository's specification rendering profile
+and ZPL command coverage. It does not emulate LabelZoom accounts, billing,
+watermarks, or its error response schema.
+
+Both routes share the rate limits, bounded body reader, concurrency allowance,
+rendering budgets, no-store/CORS headers, and diagnostic headers described above.
+Every label is validated before output, including unselected labels in PNG
+requests. Source dimensions and final overridden viewports must fit service
+limits. PDF uses the existing scene encoder with the same page and total path
+budgets; it does not rasterize or buffer a bitmap for every page.
+
 ## Public access and resource limits
 
 No API key is required. The Worker checks Cloudflare rate-limit bindings before
@@ -149,13 +214,15 @@ include `Retry-After` (10 or 60 seconds); clients should back off with jitter.
 The CPU cap is enforced by Cloudflare, not local workerd. A Free-plan deployment
 is unsuitable because some measured labels exceed its 10 ms CPU allowance.
 
-The API uses `render::render_with_limits` to tighten existing renderer budgets.
+The API uses `render::render_with_limits` to set service-specific budgets,
+retaining `render::Limits::DEFAULT` for the remaining fields. These service
+settings are independent of the CLI, which renders without resource ceilings.
 Graphic expansion is checked before growing paths; `^PW`, `^LL`, recalled
 formats, and all labels remain subject to the limits. The first limit reached
 wins, so complex batches may fail below 50 labels. Raster scan-work and other
 existing renderer budgets still apply. The root `render` API keeps its defaults.
 
-The service does not persist submitted ZPL, PNGs, or client addresses. The IP is
+The service does not persist submitted ZPL, output files, or client addresses. The IP is
 used transiently as Cloudflare's rate-limit key. There are no cache/database
 bindings and no application request logs; Worker observability logs are disabled.
 Cloudflare still processes requests and maintains its platform usage metrics.
@@ -180,9 +247,15 @@ npm run dev
 ```
 
 HTTP tests cover byte preservation, negotiation, streaming limits, timeout,
-concurrency, CORS, and fail-closed throttling. Miniflare loads the compiled Wasm
-under workerd and checks real PNGs, binary multipart, density/canvas limits,
-graphic expansion, recovery, and Cloudflare rate limiting. Native adapter tests
+concurrency, CORS, fail-closed throttling, and LabelZoom parameter merging and
+validation. Native and workerd checks cover LabelZoom PNG/PDF output, exact DPI,
+source/overridden dimensions, multiple labels, and resource limits. Wrangler's documented
+[`createTestHarness()`](https://developers.cloudflare.com/workers/testing/test-harness/)
+loads `wrangler.jsonc`, builds the production Worker bundle, and runs the compiled
+Wasm under workerd. It checks real PNGs, binary multipart, density/canvas limits,
+graphic expansion, recovery, and Cloudflare rate limiting, resetting the harness
+between tests. Wrangler manages Miniflare internally; the tests do not pin or
+configure Miniflare separately. Native adapter tests
 compare decoded pixels with the specification raster. The renderer regression
 suite also covers printer captures and conformance fixtures.
 
@@ -214,11 +287,12 @@ Measure deployed CPU percentiles, memory errors, and 429s before increasing limi
 
 ## Deployment and verification
 
-Use Workers Paid in the configured account. Authenticate securely with
+Use Workers Paid in the target account and set `CLOUDFLARE_ACCOUNT_ID` through
+your shell environment or secret store. Authenticate securely with
 `npx wrangler login` or provide `CLOUDFLARE_API_TOKEN` through the environment or
-secret store. Do not put tokens in the repository. A token scoped to this account
-needs Workers Scripts edit access; use Cloudflare's Workers deployment token
-template and restrict its account resources.
+secret store. Keep account IDs and tokens out of the repository. A token scoped
+to this account needs Workers Scripts edit access; use Cloudflare's Workers
+deployment token template and restrict its account resources.
 
 From `zpl-render-api/`:
 
@@ -234,9 +308,9 @@ other rate-limit policies in the account. Wrangler supplies the `workers.dev`
 hostname; the account ID alone does not determine it. No custom domain is needed.
 
 The [Renderer API workflow](../.github/workflows/worker.yml) builds and tests on
-pushes and pull requests. After configuring the `CLOUDFLARE_API_TOKEN` repository
-secret, a manual run on `main` with `deploy=true` deploys the tested build. It
-does not deploy automatically on pushes.
+pushes and pull requests. Configure both `CLOUDFLARE_ACCOUNT_ID` and
+`CLOUDFLARE_API_TOKEN` as repository secrets. A manual run on `main` with
+`deploy=true` deploys the tested build. It does not deploy automatically on pushes.
 
 Verify the printed public URL with `GET /health`, then run the two curl examples
 above against it. Confirm PNG dimensions 812×1218, `Content-Type: image/png`,

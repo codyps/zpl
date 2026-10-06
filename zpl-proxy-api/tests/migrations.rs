@@ -107,3 +107,38 @@ fn fresh_database_accepts_request_after_migrations() {
     )
     .unwrap();
 }
+
+#[test]
+fn printer_management_migration_preserves_legacy_history_and_round_trips() {
+    let mut db = SqliteConnection::establish(":memory:").unwrap();
+    for migration in [
+        INITIAL,
+        FIX,
+        include_str!("../migrations/2026-09-15-220000_persist-render-results/up.sql"),
+        include_str!("../migrations/2026-09-15-230000_remove-client-ips/up.sql"),
+    ] {
+        db.batch_execute(migration).unwrap();
+    }
+    db.batch_execute("INSERT INTO inputs(id,hash,data) VALUES(1,X'01',X'02'); INSERT INTO png_requests(rowid,timestamp,input_id,error,completed_at) VALUES(42,'before',1,'old error','done');").unwrap();
+    for _ in 0..2 {
+        db.batch_execute(include_str!(
+            "../migrations/2026-09-29-120000_printer-management/up.sql"
+        ))
+        .unwrap();
+        use zpl_proxy_api::schema::{png_requests as r, printer_requests as p};
+        assert_eq!(
+            r::table
+                .find(42)
+                .select(r::error)
+                .first::<Option<String>>(&mut db)
+                .unwrap()
+                .as_deref(),
+            Some("old error")
+        );
+        assert_eq!(p::table.count().get_result::<i64>(&mut db).unwrap(), 0);
+        db.batch_execute(include_str!(
+            "../migrations/2026-09-29-120000_printer-management/down.sql"
+        ))
+        .unwrap();
+    }
+}

@@ -25,7 +25,7 @@ Run these commands from the repository root. With Nix and direnv installed, ente
 the development environment:
 
 ```sh
-direnv exec . "$SHELL"
+direnv allow
 cargo build --workspace
 ```
 
@@ -108,7 +108,8 @@ browser tests and GitHub Pages deployment.
 
 [`zpl-render-api`](zpl-render-api/) runs the local renderer on Cloudflare Workers
 with public, rate-limited access. It implements Labelary-style POST URLs for PNG
-rendering, including binary uploads and label selection. See the
+rendering, including binary uploads and label selection, plus LabelZoom-compatible
+ZPL-to-PNG and multipage PDF conversion routes. See the
 [API and deployment guide](docs/worker-api.md) for compatibility, limits,
 hosting cost comparisons, and local testing.
 
@@ -136,17 +137,18 @@ the development shell:
 ```sh
 mkdir -p _db
 cd zpl-proxy-api
-diesel migration run
-cargo run -- --zd621-url http://printer.local/ --bind-addr 127.0.0.1:3000
+cargo run -- --printers printers.json --bind-addr 127.0.0.1:3000
 ```
 
-Open <http://127.0.0.1:3000/>. Run the proxy from `zpl-proxy-api/` because its
+Create `printers.json` from the [named-printer configuration example](docs/proxy-cache.md),
+then open <http://127.0.0.1:3000/>. Run the proxy from `zpl-proxy-api/` because its
 static asset paths are relative to that directory. Outside the development shell,
-set `DATABASE_URL` to an absolute SQLite database path before running migrations.
+set `DATABASE_URL` to an absolute SQLite database path. Pending Diesel migrations
+are embedded in the executable and applied automatically before requests are served.
 
-The proxy exposes `POST /api/zpl-zd621` and stores submitted ZPL, PNG results,
-errors, and request history in SQLite. Run one proxy instance per printer because
-the printer preview object is shared. See [cache behavior and refresh controls](docs/proxy-cache.md)
+The proxy exposes `POST /api/printers/{name}/preview` and stores submitted ZPL, PNG results,
+errors, and request history in SQLite. One proxy can manage multiple named printers; each physical printer must have
+only one owning proxy instance. See [cache behavior and refresh controls](docs/proxy-cache.md)
 and [telemetry](docs/telemetry.md).
 
 ## Workspace
@@ -156,7 +158,7 @@ and [telemetry](docs/telemetry.md).
 | [`zpl`](zpl/) | Command-stream parser, local renderer, bitmap font types, PNG/SVG/PDF output |
 | [`zpl-cmd`](zpl-cmd/) | Local command-line rendering with `zpl-cmd render` |
 | [`zpl-wasm`](zpl-wasm/) | WebAssembly bindings for the browser preview |
-| [`zpl-render-api`](zpl-render-api/) | Cloudflare Worker, Labelary-style HTTP endpoints, compressed PNG output |
+| [`zpl-render-api`](zpl-render-api/) | Cloudflare Worker, Labelary/LabelZoom HTTP subsets, compressed PNG and multipage PDF output |
 | [`zebra-http-api`](zebra-http-api/) | Printer HTTP client and rendering/comparison examples |
 | [`zpl-proxy-api`](zpl-proxy-api/) | Axum proxy, browser interface, SQLite cache and request history |
 | [`raster-diff`](raster-diff/) | Raster decoding, pixel comparisons, and the `png-diff` CLI |

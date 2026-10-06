@@ -402,7 +402,10 @@ impl Barcode {
         character_map: Option<[u8; 256]>,
     ) -> Result<Rendered, String> {
         let normalized;
-        let bytes = if let Some(n) = match self.name.as_str() {
+        let bytes = if self.name == "B3" && self.compatibility.code39_normalize_input {
+            normalized = code39::normalize(bytes);
+            normalized.as_slice()
+        } else if let Some(n) = match self.name.as_str() {
             "B8" => Some(8),
             "BE" => Some(13),
             "BU" => Some(12),

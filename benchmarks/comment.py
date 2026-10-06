@@ -11,7 +11,7 @@ import re
 import statistics
 import subprocess
 
-from common import NAMES, compare
+from common import COMPARISON_NOTES, NAMES, compare, comparison_kind
 from publish import read_records
 
 MARKER = '<!-- zpl-benchmarks -->'
@@ -29,14 +29,21 @@ def api(path, method='GET', body=None):
 def comment_body(records, run, repo, config):
     lines = [MARKER, f"<!-- benchmark-run: {run['id']} attempt: {run['run_attempt']} -->",
              '## Rendering performance', '',
-             f"Base `{records[0]['commits']['base'][:12]}` → head `{run['head_sha'][:12]}`.", '',
+             f"Target `{records[0]['commits']['base'][:12]}` → "
+             f"PR merge `{records[0]['commits']['head'][:12]}` "
+             f"(PR head `{run['head_sha'][:12]}`).", '',
              'Both revisions use the same harness and compiler on a GitHub-hosted Linux worker, '
              'with ten alternating paired rounds.',
              f"Flags require ≥{config['threshold_percent']}% and ≥{config['threshold_ns'] / 1000:g} µs/op "
              'median paired change, with a 99% paired-bootstrap interval excluding zero. '
              'Positive means slower; negative means faster.', '']
     rows = []
+    notes = []
     for record in records:
+        kind = comparison_kind(record)
+        if kind != 'measured':
+            notes.append(COMPARISON_NOTES[kind])
+            continue
         for name in NAMES:
             before = record['samples']['base'][name]
             after = record['samples']['head'][name]
@@ -47,10 +54,15 @@ def comment_body(records, run, repo, config):
                             f"{statistics.median(after) / 1000:.3f} | {change['percent']:+.1f}% | "
                             f"{low:+.1f}% to {high:+.1f}% |")
     if rows:
-        lines += ['| Case/stage | Base µs/op | Head µs/op | Change | Interval |',
+        lines += ['| Case/stage | Target µs/op | PR merge µs/op | Change | Interval |',
                   '| --- | ---: | ---: | ---: | ---: |', *rows]
-    else:
+    elif not notes:
         lines += ['No measured stage crosses the reporting thresholds in this run.']
+    lines += notes
+    for record in records:
+        for label, build in record.get('builds', {}).items():
+            lines += ['', f"{label} executable SHA-256: `{build['binary_sha256']}`; "
+                      f"package inputs SHA-256: `{build['inputs_sha256']}`."]
     lines += ['', 'Informational only. Same-worker pairing reduces drift but does not eliminate noise; '
               'the interval is not a correction for multiple comparisons. PNG encoding is excluded.',
               f"[All measurements and raw samples](https://github.com/{repo}/actions/runs/{run['id']}) · "
@@ -69,11 +81,13 @@ def update_comment(records, run, repo, config):
     pr = api(f'repos/{repo}/pulls/{number}')
     # Fork runs can omit pull_requests. Validate live identity even when GitHub
     # does supply an association; artifact metadata alone never selects a PR.
-    if (pr['state'] != 'open' or pr['base']['repo']['full_name'] != repo
+    if (pr['state'] != 'open' or pr.get('mergeable') is not True
+            or pr['base']['repo']['full_name'] != repo
             or pr['head']['sha'] != run['head_sha'] or not pr['head']['repo']
             or pr['head']['repo']['full_name'] != run['head_repository']['full_name']
             or pr['head']['ref'] != run['head_branch']
-            or any(record['commits']['base'] != pr['base']['sha'] for record in records)):
+            or any(record['commits']['base'] != pr['base']['sha']
+                   or record['commits']['head'] != pr['merge_commit_sha'] for record in records)):
         print('Skipping closed, obsolete or mismatched PR comparison')
         return
     previous = None

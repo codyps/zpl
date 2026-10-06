@@ -5,6 +5,7 @@ import tempfile
 import unittest
 
 from common import NAMES, compare
+from build import METHOD
 from publish import archive, read_records, validate
 
 CONFIG = json.loads(Path(__file__).with_name('config.json').read_text())
@@ -14,12 +15,31 @@ def fixture():
     run = dict(id=12, run_attempt=1, head_sha='a' * 40, event='push')
     record = dict(schema=1, run_id=12, run_attempt=1, event='push', runner='ubuntu-24.04',
                   commits={'head': 'a' * 40}, harness='b' * 64, timestamp='2026-09-29T00:00:00Z',
+                  build_method=METHOD,
+                  builds={'head': dict(inputs_sha256='d' * 64, binary_sha256='e' * 64)},
                   environment={key: 'test' for key in ('rust', 'os', 'cpu', 'image', 'rustflags', 'profile')},
                   samples={'head': {name: [10000] * 10 for name in NAMES}})
     return record, run
 
 
 class Benchmarks(unittest.TestCase):
+    def test_legacy_history_and_strict_optional_build_provenance(self):
+        record, run = fixture()
+        legacy = copy.deepcopy(record)
+        del legacy['builds'], legacy['build_method']
+        validate(legacy, run)
+        for mutation in (
+            lambda r: r.pop('builds'), lambda r: r.pop('build_method'),
+            lambda r: r.update(build_method='separate-paths'),
+            lambda r: r.update(builds=[]), lambda r: r['builds'].pop('head'),
+            lambda r: r['builds']['head'].update(inputs_sha256=True),
+            lambda r: r['builds']['head'].update(binary_sha256='invalid'),
+        ):
+            candidate = copy.deepcopy(record)
+            mutation(candidate)
+            with self.subTest(record=candidate), self.assertRaises(ValueError):
+                validate(candidate, run)
+
     def test_paired_thresholds_and_noise(self):
         self.assertFalse(compare([10000] * 10, [10000] * 10, CONFIG)['alert'])
         self.assertTrue(compare([10000] * 10, [12000] * 10, CONFIG)['alert'])

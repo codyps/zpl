@@ -1,7 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "zpl-render-api",
-  "account_id": "5d458fdc03e990ef9fa1144bd1a7f30e",
   "main": "worker/index.mjs",
   "compatibility_date": "2026-07-30",
   "workers_dev": true,

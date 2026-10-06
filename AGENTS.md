@@ -31,12 +31,11 @@ To run the proxy, enter `direnv exec .`, create the database directory with `mkd
 
 ```sh
 cd zpl-proxy-api
-diesel migration run
-cargo run -- --zd621-url http://printer.local/ --bind-addr 127.0.0.1:3000
+cargo run -- --printers printers.json --bind-addr 127.0.0.1:3000
 ```
 
-Replace the printer URL with your device address. Run from this crate directory because static assets use a relative path.
-The proxy requires `DATABASE_URL` and current migrations. It stores submitted ZPL,
+Create `printers.json` using the named-printer example in `docs/proxy-cache.md`. Run from this crate directory because static assets use a relative path.
+The proxy requires `DATABASE_URL` and automatically applies its embedded Diesel migrations on startup. It stores submitted ZPL,
 PNG results, errors, and request history; see `docs/proxy-cache.md`.
 
 Preserve the flake's conditional `mbx` Cargo-shim precedence and separate unstable/Intel-Darwin Nixpkgs inputs. Check the resolved input tree when changing overrides. Keep CI job timeouts, bounded download retries, and cancellation of superseded builds; do not automatically retry failing tests to obtain a green result.
@@ -81,7 +80,7 @@ Distinguish compilation from test execution. A successful `--no-run` build, inte
 
 ## Proxy, Browser & Printer Boundaries
 
-- Preserve the proxy's separate positive rendering allowlist and parameter validation before cache lookup, persistence, or printer access, including refresh and historical cache hits. Parser or local-renderer support must not automatically authorize commands. Reject printer queries, stored-content access, configuration, downloads, and syntax/binary bypasses. See [admission policy](docs/proxy-validation.md).
+- Keep proxy admission operator-configured per named endpoint. Restricted endpoints apply a separate positive rendering list and boundary/resource checks before cache lookup, persistence, or printer access; leave ordinary rendering operands to firmware. Allow stored image/font reads, but reject queries, executable stored formats, device changes, downloads, and syntax/binary bypasses. Parser/local-renderer support must not automatically authorize commands. Unrestricted endpoints forward user input unchanged without ZPL validation. Both modes retain caching, retries, control previews, automatic resets/recovery, persistence, and identity checks; admission policy must not disable that lifecycle. See [admission policy](docs/proxy-validation.md).
 - Persist accepted submissions and every outcome, including cache hits; keep errors retryable and invalidate mappings on failed refresh. Keep blocking SQLite work off the async executor and serialize printer preview operations. Use one proxy per printer because its preview object is shared. Preserve printer/configuration-scoped cache keys and namespace invalidation. See [cache contract](docs/proxy-cache.md).
 - Use native fastrace with `log`/Logforth and propagate context across async/blocking tasks. Keep trace IDs in telemetry, not SQLite or response headers; do not reintroduce client-IP persistence. Exclude raw ZPL, image bytes, headers, credentials, and other request contents from telemetry. See [telemetry](docs/telemetry.md).
 - Preserve TCP/Unix socket activation and minimal filesystem visibility in the NixOS module, including migration/runtime requirements. Read-only mounts are not read isolation. Validate confinement in the Linux VM test; proposals for outbound filtering are not evidence of implemented enforcement. See [NixOS hosting](docs/nixos.md).
@@ -108,7 +107,7 @@ The scope, `!`, and breaking-change footer are optional; use `!` or a `BREAKING 
 - `chore(deps): update compatible workspace dependencies` for routine upgrades; use `fix(deps): ...` when the upgrade addresses a concrete runtime bug or vulnerability.
 - `ci: update pinned GitHub Actions`, `docs: clarify release preparation`, `test(code49): verify numeric decoder round trips`, or `refactor(render): simplify span handling` for the corresponding maintenance work.
 
-Use a component as the scope, not the type: write `fix(render): ...`, not `render: ...`. Do not use an untyped subject such as `Update dependencies`. Release-plz uses `fix`, `feat`, and breaking-change markers to infer release intent; do not assume maintenance types prevent releases, and consult `release-plz.toml` for versioning policy. The current workflow prepares release PRs only; it does not publish crates. See `docs/releases.md`.
+Use a component as the scope, not the type: write `fix(render): ...`, not `render: ...`. Do not use an untyped subject such as `Update dependencies`. Release-plz uses `fix`, `feat`, and breaking-change markers to infer release intent; do not assume maintenance types prevent releases, and consult `release-plz.toml` for versioning policy. The workflow prepares release PRs and publishes `raster-diff` and `zpl` through crates.io trusted publishing when a release PR merges. See `docs/releases.md`.
 
 Before committing, inspect the staged diff and validate the subject format. Preserve unrelated dirty/untracked work, using partial staging when a manifest contains another task's edits. Keep commits focused and explain their reason in the body. Use the same format for squash-merge PR titles. Do not rewrite already-pushed history merely to normalize old subjects. When a push is requested, verify the remote branch points to the intended commit.
 

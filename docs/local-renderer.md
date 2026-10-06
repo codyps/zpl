@@ -97,6 +97,7 @@ overridable. It targets a 203-DPI ZD621 running V93.21.33Z, with initial dimensi
 | --- | --- | --- |
 | `qr_fo_uses_by_height` | QR ink begins at `^FO` | Offset by `^BY` height minus one dot |
 | `qr_ft_includes_margin` | QR base at `^FT` | Include three modules minus one dot below symbol |
+| `qr_printer_segmentation` | Minimum-bit automatic QR encoding | Forward run merging measured on ZD621; can change symbol size and modules |
 | `diagonal_dot_runs` | Diagonal band clipped to `^GD` box | Firmware horizontal runs, possibly outside box |
 | `postal_fixed_pitch` | Use `^BY` ratio | Truncated 2.5-module pitch |
 | `intelligent_mail_outward_rounding` | Fractional tracker thirds | Round tracker edges outward |
@@ -164,23 +165,81 @@ Examples of explicit errors include Code 128 extended-byte FNC4, downloaded font
 compressed binary `GFC`, and printer configuration commands.
 The parser still frames these commands; rendering coverage is separate from
 command-stream parsing coverage. Configuration persists only within one `render`
-call. Each field must end with `FS` before another drawing command.
+call. Fields require `FS`; the ZD621 profile also ends inline `GF` fields before
+`FO`, `FT`, or `BY` through `inline_graphic_implicit_separator`.
+
+The [public-document regressions](../zpl/tests/fixtures/public-zpl-zd621-v1/README.md)
+cover all 22 labels from the October 2026 comparison. Five independent tolerances
+are enabled in `ZD621_203_DPI` (and therefore `Options::default()`), while
+`SPECIFICATION` and the mobile-printer profile retain strict behavior:
+
+| Compatibility field | ZD621 behavior |
+| --- | --- |
+| `inline_graphic_implicit_separator` | Finish inline `GF` before `FO`/`FT`/`BY` without `FS` |
+| `qr_malformed_header_uses_defaults` | An invalid correction selector consumes three switch bytes, then uses automatic input and level M |
+| `code39_normalize_input` | Uppercase ASCII letters and discard bytes outside the Code 39 alphabet before checksums and captions |
+| `barcode_module_width_through_12` | Accept `BY` module widths through 12 dots |
+| `box_zero_thickness_as_one` | Treat `GB` thickness zero as one dot |
+
+These settings reproduce acceptance, including data loss: the malformed QR
+`Package…` encodes `kage…`, and Code 39 `{0}` encodes `0`. Valid QR headers,
+manual segments and structured append remain strictly parsed. Successful rendering
+does not establish intended barcode payload correctness or full-image printer parity.
+All 22 native canvases have pinned regression counts and hashes; the affected
+graphics/barcode regions in the five formerly rejected labels are pixel-exact.
 
 ## Limits and validation
 
-Limits: 1 MiB input, 64 labels, one million total scene segments, one million
-stored-graphic segments, 4,096 bytes per text field, 25,000 decoded bytes per
-graphic, and 32 Mi pixels per image. PNG also limits scan work and curve
-flattening. Limit violations return errors. These are resource bounds, not a
-claim that rendering arbitrary hostile inputs is constant-time.
+`zpl-cmd render` is unlimited by default for resource-policy budgets, including
+input, decoded fields/graphics, labels, geometry, raster work, and PDF pages.
+Use its optional `--max-*` flags to set budgets; `render --help` lists them.
+The numeric operand ceiling is configurable too.
 
-`Pdf.encode_pages` requires 1–64 scenes and at most one million total path
-segments, validating every scene before encoding. Pages can have different
-dimensions and DPIs. Large physical pages use PDF `UserUnit` to keep page-box
-coordinates within 14,400 units; pages needing a unit above 75,000 are rejected.
-PDF follows [ISO 32000-1:2008](https://pdfa.org/resource/pdf-specification-archive/),
-§§7.5–7.7 (file structure and pages), 8.3.2 (units), 8.5 (paths),
-11.3.5 and 11.6.6 (blending and page groups), and Annex C (limits).
+Library convenience entry points retain bounded defaults. Use
+`render::render_with_limits(input, options, render::Limits { ... })` to raise or
+lower any interpretation budget; values are no longer clamped to the defaults.
+`render::Limits::unlimited()` disables all of these policy ceilings:
+
+| Interpretation budget | Library default |
+| --- | --- |
+| Input and expanded stored-format bytes, each | 1 MiB |
+| Labels | 64 |
+| Scene segments across all labels | 1,000,000 |
+| Retained downloaded-graphic segments | 1,000,000 |
+| Decoded bytes per field / concatenated field | 4,096 |
+| Decoded bytes per graphic | 25,000 |
+| Pixels per label | 32 Mi pixels |
+| Width / height | `u32::MAX` |
+| Absolute numeric operand | 1,000,000 |
+| Stored formats / recall depth / total recalls | 256 / 8 / 4,096 |
+| Absolute scene coordinate | 1,000,000,000 dots |
+
+Output budgets are separate from ZPL interpretation. Pass `output::Limits` to
+`Scene::new_with_limits`, `Scene::validate_with_limits`,
+`Svg.encode_with_limits`, `Png.encode_with_limits`,
+`Pdf.encode_pages_with_limits`, `raster::rasterize_with_limits`, or
+`raster::rasterize_into_with_limits`. Defaults are 32 Mi pixels per image,
+1,000,000 scene segments (across all pages for PDF), 1,000,000 flattened edges
+per draw, 100,000,000 edge/scanline visits per raster, 64 PDF pages, and the same
+coordinate ceiling. `output::Limits::unlimited()` disables these ceilings.
+A raised render budget needs a corresponding output budget when applicable:
+
+```rust
+use zpl::{render::{render_with_limits, Limits, profiles::SPECIFICATION}, output};
+let document = render_with_limits(input, SPECIFICATION, Limits::unlimited())?;
+let pdf = output::Pdf.encode_pages_with_limits(
+    &document.labels, output::Limits::unlimited(),
+)?;
+```
+
+Unlimited mode still validates ZPL semantics, finite coordinates, representable
+dimensions, and output-format constraints. Stored-format cycles are errors;
+acyclic expansion uses a heap stack. PNG dimensions and chunk lengths follow
+the format's 31-bit bounds. PDF requires at least one page and uses `UserUnit`
+for large physical pages, up to the format's 75,000 limit; classic cross-reference
+offsets must fit ten decimal digits. Available memory still bounds rendering.
+Limit errors are not a claim that arbitrary hostile inputs take constant time.
+The browser preview and Cloudflare service retain their bounded policies.
 
 Run `direnv exec . cargo test -p zpl`. Tests cover geometry, clipping, inversion,
 rotation, framing changes, multiple labels, barcode modules, malformed commands,
@@ -262,8 +321,9 @@ through separate options. FP with FB remains an explicit unsupported combination
 the same render request. Existing `^FN` planning binds its variable fields.
 R/E/B/A names refer only to in-memory namespaces; no printer or filesystem
 storage is accessed. Omitted recall devices search R, E, B, A. Definitions can
-be replaced, and recalls can be nested within bounded limits (8 levels, 4096
-recalls, 256 objects, and 1 MiB of expanded input). Error offsets point back to
+be replaced. Recall depth, total recalls, stored-object count, and expanded bytes
+are configurable through `render::Limits`; defaults are 8 levels, 4096 recalls,
+256 objects, and 1 MiB of expanded input. Cycles are always rejected. Error offsets point back to
 the original source. Syntax changes inside stored templates and recalls under
 a different syntax are explicit errors. Proxy admission remains unchanged.
 

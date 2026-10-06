@@ -1,0 +1,430 @@
+{
+  "schema": 1,
+  "status": "complete",
+  "device": "ZTC ZD621-203dpi ZPL",
+  "firmware": "V93.21.33Z",
+  "dpi": 203,
+  "host": "http://printer.local/",
+  "captured_utc": "2026-10-02T13:31:22Z",
+  "method": "printer HTTP Preview Label; not physical print/scan",
+  "cases": [
+    {
+      "name": "labelixa-carrier-style-shipping-4x6",
+      "group": "logistics",
+      "command": "^B7 ^BC ^BY ^CF ^FD ^FO ^FS ^GB ^LL ^PW ^XA ^XZ",
+      "arguments": "Labelixa carrier style shipping 4x6",
+      "width": 832,
+      "height": 1218,
+      "submission_mode": "inline-reset-canvas",
+      "object_name": "CMPPUB26",
+      "submitted_sha256": "fee17b5f6b2bff26e78d45215a40fd3c3e4c1b3d55838fb4c6820f5c18573317",
+      "captured_utc": "2026-10-02T13:31:23Z",
+      "zpl_sha256": "862c054ae82e3d439e8e21503920f8105c9170265cc2677af843996b865316c0",
+      "png_sha256": "ddec21cecbb88e211ac71117efd5f7df194ce9c23fde24715d07884ccf63635f",
+      "printer_dimensions": [
+        832,
+        1218
+      ]
+    },
+    {
+      "name": "labelixa-datamatrix-serial-1x1",
+      "group": "identification",
+      "command": "^BX ^CF ^FD ^FO ^FS ^LL ^PW ^XA ^XZ",
+      "arguments": "Labelixa datamatrix serial 1x1",
+      "width": 256,
+      "height": 203,
+      "submission_mode": "inline-reset-canvas",
+      "object_name": "CMPPUB26",
+      "submitted_sha256": "e784f34e0ca32cc67645b92eba7e66b78b070bad492e234f0311113df4855041",
+      "captured_utc": "2026-10-02T13:31:25Z",
+      "zpl_sha256": "704add2a4c92acd3e5359e8e8c3fa9afbcc5ea2ced4f7c1a82b76d9872b9973a",
+      "png_sha256": "2711bb9674b5e759342062865c24c4df02acc627c90312cafde1005985b0f05b",
+      "printer_dimensions": [
+        256,
+        203
+      ]
+    },
+    {
+      "name": "labelixa-fba-fnsku-product-2x1",
+      "group": "retail",
+      "command": "^BC ^BY ^CF ^FD ^FO ^FS ^LL ^PW ^XA ^XZ",
+      "arguments": "Labelixa fba fnsku product 2x1",
+      "width": 448,
+      "height": 203,
+      "submission_mode": "inline-reset-canvas",
+      "object_name": "CMPPUB26",
+      "submitted_sha256": "c7ad0ef6b8fc5f4d6696a0d8ad682198c0794d2fa27416b626f5a0ba6126cd78",
+      "captured_utc": "2026-10-02T13:31:26Z",
+      "zpl_sha256": "1215e98a54e8184946661ac2412ad85f1893dc69df0c982b61e806f283a6e3d8",
+      "png_sha256": "af3c636f0955a7c57da7db1c77275ddcde41ad99c5bfabbc3b394c896fbca937",
+      "printer_dimensions": [
+        448,
+        203
+      ]
+    },
+    {
+      "name": "labelixa-gs1-128-sscc-shipping-4x6",
+      "group": "logistics",
+      "command": "^BC ^BY ^CF ^FD ^FO ^FS ^GB ^LL ^PW ^XA ^XZ",
+      "arguments": "Labelixa gs1 128 sscc shipping 4x6",
+      "width": 832,
+      "height": 1218,
+      "submission_mode": "inline-reset-canvas",
+      "object_name": "CMPPUB26",
+      "submitted_sha256": "c3d08da527c7db9619108e7675b6929de4a9efb48be8538174e571ef4838e36a",
+      "captured_utc": "2026-10-02T13:31:27Z",
+      "zpl_sha256": "5be30339139c99060e376b6a8a2d71805c92705283ba1d2d6195d7a06bfad5f0",
+      "png_sha256": "cc3cc20cf4ee76eb93fc0901c0e2ed7722d019cd1837950001f058e88bc28e02",
+      "printer_dimensions": [
+        832,
+        1218
+      ]
+    },
+    {
+      "name": "labelixa-multi-label-batch-2x1-page-1",
+      "group": "logistics",
+      "command": "^BC ^BY ^CF ^FD ^FO ^FS ^LL ^PW ^XA ^XZ",
+      "arguments": "Labelixa multi label batch 2x1",
+      "width": 448,
+      "height": 203,
+      "submission_mode": "inline-reset-canvas",
+      "object_name": "CMPPUB26",
+      "submitted_sha256": "01f4b7699c02bfe62ab1470a10cc2d679b7f3156be936e89444993291129777d",
+      "captured_utc": "2026-10-02T13:31:28Z",
+      "zpl_sha256": "8d1eb5583c1eecf8ad58b65d40fce872d97822cd28ef17cb57f62a104ac32371",
+      "png_sha256": "cd938edcbe06565f403310a77cf87261409749881daa886b4c91c7a8a6d66770",
+      "printer_dimensions": [
+        448,
+        203
+      ]
+    },
+    {
+      "name": "labelixa-multi-label-batch-2x1-page-2",
+      "group": "logistics",
+      "command": "^BC ^BY ^CF ^FD ^FO ^FS ^LL ^PW ^XA ^XZ",
+      "arguments": "Labelixa multi label batch 2x1",
+      "width": 448,
+      "height": 203,
+      "submission_mode": "inline-reset-canvas",
+      "object_name": "CMPPUB26",
+      "submitted_sha256": "002ecffc6a4c97d8190face99c5ffa97ed0ef98609b572acf0306b0244b11167",
+      "captured_utc": "2026-10-02T13:31:29Z",
+      "zpl_sha256": "8d87c2ee15b5a23504a4aafcc2187691c67d95e4139eeb9c51d4bf20194608a1",
+      "png_sha256": "acfd7ad6f6768215753018fdbee47596a52fc7bc4f2dacbf528d3985ce206278",
+      "printer_dimensions": [
+        448,
+        203
+      ]
+    },
+    {
+      "name": "labelixa-multi-label-batch-2x1-page-3",
+      "group": "logistics",
+      "command": "^BC ^BY ^CF ^FD ^FO ^FS ^LL ^PW ^XA ^XZ",
+      "arguments": "Labelixa multi label batch 2x1",
+      "width": 448,
+      "height": 203,
+      "submission_mode": "inline-reset-canvas",
+      "object_name": "CMPPUB26",
+      "submitted_sha256": "232aea70bd9d22e9de74c1774605534a72127e867e84642ba2666525fde7641a",
+      "captured_utc": "2026-10-02T13:31:31Z",
+      "zpl_sha256": "ddb3f997599d65804acace600ef46037093c92b8f199bdb4065b3256b6154576",
+      "png_sha256": "36ebc55fe943f6c1296f84dbcef1953a1f571b3f714496488e3e11d3e6dda888",
+      "printer_dimensions": [
+        448,
+        203
+      ]
+    },
+    {
+      "name": "labelixa-pallet-license-plate-4x3",
+      "group": "logistics",
+      "command": "^BC ^BY ^CF ^FD ^FO ^FS ^GB ^LL ^PW ^XA ^XZ",
+      "arguments": "Labelixa pallet license plate 4x3",
+      "width": 832,
+      "height": 609,
+      "submission_mode": "inline-reset-canvas",
+      "object_name": "CMPPUB26",
+      "submitted_sha256": "c8a060fba328629943386d58563f139360919fd0e8812054ff886999a0820796",
+      "captured_utc": "2026-10-02T13:31:32Z",
+      "zpl_sha256": "e88294b4a8d935278c244539c7f1b94edbe8cfcd392567135413aa2bf5114d6c",
+      "png_sha256": "3b08c8631dcf94d781c317225cebb5884cb878fa062eb638a2c308e0bc523285",
+      "printer_dimensions": [
+        832,
+        609
+      ]
+    },
+    {
+      "name": "labelixa-product-label-ean13-2x1",
+      "group": "retail",
+      "command": "^BE ^BY ^CF ^FD ^FO ^FS ^LL ^PW ^XA ^XZ",
+      "arguments": "Labelixa product label ean13 2x1",
+      "width": 448,
+      "height": 203,
+      "submission_mode": "inline-reset-canvas",
+      "object_name": "CMPPUB26",
+      "submitted_sha256": "ee252154f7f97daaa62826dbb2be496e29b2f5204e6001b8540ee8ea430091f3",
+      "captured_utc": "2026-10-02T13:31:33Z",
+      "zpl_sha256": "3e4ac7f52414d3d4886984838c2b79ff8c79e1a17722122f4f68cf39d46e8846",
+      "png_sha256": "54b3ad5d5f358bcada65a5bcb4edf89fda629330cf4c030882cbfc4e96ed9093",
+      "printer_dimensions": [
+        448,
+        203
+      ]
+    },
+    {
+      "name": "labelixa-qr-url-2x2",
+      "group": "identification",
+      "command": "^BQ ^CF ^FD ^FO ^FS ^LL ^PW ^XA ^XZ",
+      "arguments": "Labelixa qr url 2x2",
+      "width": 448,
+      "height": 406,
+      "submission_mode": "inline-reset-canvas",
+      "object_name": "CMPPUB26",
+      "submitted_sha256": "5f84eaf80c1c80c6d8c755d52f5b8df4e6b9ac80dcb06f63cdf0a83b9be5aaa8",
+      "captured_utc": "2026-10-02T13:31:34Z",
+      "zpl_sha256": "2d5bc9cb604db786f4490e33726da888708eb827342ed234c5c5c546d1e557ff",
+      "png_sha256": "84e37247d27fc7728b2d5d3a8f764d35874fb4819578587712995cc5915ea9c6",
+      "printer_dimensions": [
+        448,
+        406
+      ]
+    },
+    {
+      "name": "labelixa-shelf-label-3x1",
+      "group": "retail",
+      "command": "^BC ^BY ^CF ^FD ^FO ^FS ^GB ^LL ^PW ^XA ^XZ",
+      "arguments": "Labelixa shelf label 3x1",
+      "width": 640,
+      "height": 203,
+      "submission_mode": "inline-reset-canvas",
+      "object_name": "CMPPUB26",
+      "submitted_sha256": "a8a07e94783b6e31e720331c8159039c402ed21bb7893a9dce6814a78beb7730",
+      "captured_utc": "2026-10-02T13:31:35Z",
+      "zpl_sha256": "9cf2b965ef3b4dc869d9ff88fbb0370682966a31e273b808be445ce2aacc5e4f",
+      "png_sha256": "077a259bfe6bf3c118e0954c60721d61db2e74c1906a1911af72c69c86bf5728",
+      "printer_dimensions": [
+        640,
+        203
+      ]
+    },
+    {
+      "name": "labelixa-shipping-label-4x6",
+      "group": "logistics",
+      "command": "^BC ^BY ^CF ^FD ^FO ^FS ^GB ^LL ^PW ^XA ^XZ",
+      "arguments": "Labelixa shipping label 4x6",
+      "width": 832,
+      "height": 1218,
+      "submission_mode": "inline-reset-canvas",
+      "object_name": "CMPPUB26",
+      "submitted_sha256": "85a5d90a5f650f9a8d67948e238b3cdd70c995a008d82b63ab412c94631652ba",
+      "captured_utc": "2026-10-02T13:31:36Z",
+      "zpl_sha256": "73b95b1e4fe0166ff0480be800094ef966d23e53db14d06039df294830c2cfbb",
+      "png_sha256": "90086accc0c78b0b35c80102da016c142b1f6b467d5ffb1970753befc99df46d",
+      "printer_dimensions": [
+        832,
+        1218
+      ]
+    },
+    {
+      "name": "labelixa-shopify-product-label-2x1",
+      "group": "retail",
+      "command": "^BC ^BY ^CF ^FD ^FO ^FS ^LL ^PW ^XA ^XZ",
+      "arguments": "Labelixa shopify product label 2x1",
+      "width": 448,
+      "height": 203,
+      "submission_mode": "inline-reset-canvas",
+      "object_name": "CMPPUB26",
+      "submitted_sha256": "279d7cddfec677505f2f0e782e8a5944b48e51743a17e6b50c7f8caedfd446e8",
+      "captured_utc": "2026-10-02T13:31:38Z",
+      "zpl_sha256": "1827db45e26e2dc4bc5b659cd82d0692897ba64c05d62921075e285364a5fde4",
+      "png_sha256": "be945b7aec165722f5a041123412f9bc9ad18d4ab065099433a5d497cdd84e96",
+      "printer_dimensions": [
+        448,
+        203
+      ]
+    },
+    {
+      "name": "binarykits-example1-102x152",
+      "group": "shipping",
+      "command": "^A ^B3 ^BY ^FD ^FO ^FR ^FS ^FX ^GB ^GF ^LH ^LL ^PW ^XA ^XZ",
+      "arguments": "Postal layout with inline graphic and Code 39",
+      "width": 832,
+      "height": 1216,
+      "submission_mode": "inline-reset-canvas",
+      "object_name": "CMPPUB26",
+      "submitted_sha256": "b078ef1e927d58e71f1a98f3dc393f2c6db61a444fe28badfcd67f5dd4dc36a6",
+      "captured_utc": "2026-10-02T13:31:39Z",
+      "zpl_sha256": "89945e0139bd0815b7bdfbb819a97b60fe0127dc8efd79ca5a9412e0eb21ff4a",
+      "png_sha256": "1192f1f3833ac44fd99fd14384498a4465124584bb907dd7bd8f0eea9e53d4c5",
+      "printer_dimensions": [
+        832,
+        1216
+      ]
+    },
+    {
+      "name": "binarykits-example1-54x86",
+      "group": "shipping",
+      "command": "^A ^B3 ^BY ^FD ^FO ^FR ^FS ^FX ^GB ^GD ^GF ^LH ^LL ^PW ^XA ^XZ",
+      "arguments": "Postal layout with inline graphic and Code 39",
+      "width": 448,
+      "height": 688,
+      "submission_mode": "inline-reset-canvas",
+      "object_name": "CMPPUB26",
+      "submitted_sha256": "1f6b19903243cfd82bcdef1e1cf4a4ba914ebde110c181a0ae439daecdba801d",
+      "captured_utc": "2026-10-02T13:31:40Z",
+      "zpl_sha256": "e341cf9402a70e2be182c11f2861874cde702bdc4af7f7b7dd5b8a0b375514df",
+      "png_sha256": "4926e6731d3780ec71f0c58e71f8eb6857393ee8e2e21de27be3c445845528e5",
+      "printer_dimensions": [
+        448,
+        688
+      ]
+    },
+    {
+      "name": "binarykits-example2-102x170",
+      "group": "shipping",
+      "command": "^A ^B2 ^BC ^BY ^CI ^FD ^FS ^FT ^GB ^GF ^LH ^LL ^PO ^PW ^XA ^XZ",
+      "arguments": "DPD layout with rotated text, graphics and multiple barcodes",
+      "width": 832,
+      "height": 1360,
+      "submission_mode": "inline-reset-canvas",
+      "object_name": "CMPPUB26",
+      "submitted_sha256": "07d5323635814c7790a2129ad1d0931f2fbcc49faa1c2f737dee207fc8e298c0",
+      "captured_utc": "2026-10-02T13:31:41Z",
+      "zpl_sha256": "1ad9f0ea6deefe9ee72782d1b7b51fdf84b0ece038e322251e5d7c60b59db09e",
+      "png_sha256": "ba094ac09a82df6dfca944de46257597ba27c2ef360c3a82cb8138f362ad7336",
+      "printer_dimensions": [
+        832,
+        1360
+      ]
+    },
+    {
+      "name": "binarykits-example3-54x86",
+      "group": "ticket",
+      "command": "^A ^B3 ^BY ^FD ^FO ^FR ^FS ^FX ^GB ^GF ^LH ^LL ^PW ^XA ^XZ",
+      "arguments": "Event ticket with inline graphics and Code 39",
+      "width": 448,
+      "height": 688,
+      "submission_mode": "inline-reset-canvas",
+      "object_name": "CMPPUB26",
+      "submitted_sha256": "fb3cb0fbc68aea939c5d33e955718dc8b2f51e938144ba0c8ba3e6ca0e0d8d68",
+      "captured_utc": "2026-10-02T13:31:43Z",
+      "zpl_sha256": "a464086867ee42aaa65c60abd6bf402d6a79f25f8d62ac780b8cc1aab54e5cba",
+      "png_sha256": "02a9821b02456873394b1065704268b1dbf19b5bc0364a8d024b34f825fca44e",
+      "printer_dimensions": [
+        448,
+        688
+      ]
+    },
+    {
+      "name": "binarykits-example4-102x152",
+      "group": "packing",
+      "command": "^A ^BQ ^CF ^FD ^FO ^FR ^FS ^FX ^GB ^LL ^PW ^XA ^XZ",
+      "arguments": "Packing list with reversed text and QR",
+      "width": 832,
+      "height": 1216,
+      "submission_mode": "inline-reset-canvas",
+      "object_name": "CMPPUB26",
+      "submitted_sha256": "4b0e9dd79d7eb8930565f7a7f8b04369e1dbc7def1dd04db74563b757acd8925",
+      "captured_utc": "2026-10-02T13:31:44Z",
+      "zpl_sha256": "962cabf8c4ad73d0ef088b06be41a96243bdf7699cb798ee9b7225f46d92cb5d",
+      "png_sha256": "b17943b3f5c721a212059399849daa42d3fd829095d3b2226e9e71b4b577c15e",
+      "printer_dimensions": [
+        832,
+        1216
+      ]
+    },
+    {
+      "name": "binarykits-example5-75x202",
+      "group": "industrial",
+      "command": "^A ^B3 ^BY ^FD ^FH ^FO ^FS ^FX ^GB ^LL ^PW ^XA ^XZ",
+      "arguments": "Industrial carton template with rotated text",
+      "width": 640,
+      "height": 1616,
+      "submission_mode": "inline-reset-canvas",
+      "object_name": "CMPPUB26",
+      "submitted_sha256": "4979addfb8c093101ce03f277aefef9912600ccc6c3b9458c694181c40e1081c",
+      "captured_utc": "2026-10-02T13:31:46Z",
+      "zpl_sha256": "6ee767ac4ee286c913aa8f475e9902d8706e621db715580e46a3c295aaaa0c1d",
+      "png_sha256": "5a317787d8b38007b67eac30fe6eb5481da45b0c30fe54fbbda671f7b87803e5",
+      "printer_dimensions": [
+        640,
+        1616
+      ]
+    },
+    {
+      "name": "binarykits-example6-75x254",
+      "group": "industrial",
+      "command": "^A ^B3 ^BY ^FD ^FO ^FS ^FX ^GB ^LL ^PW ^XA ^XZ",
+      "arguments": "Industrial spool label with rotated Code 39",
+      "width": 640,
+      "height": 2032,
+      "submission_mode": "inline-reset-canvas",
+      "object_name": "CMPPUB26",
+      "submitted_sha256": "3437747d7a3cead308e813311b8707c2b1dc90ad26bf1c0d3ade163d5fc7e861",
+      "captured_utc": "2026-10-02T13:31:47Z",
+      "zpl_sha256": "ee37840eb4f6a990e6fb8364ba4b32d9bb1f7463a463a4f24ca78d68bb90fa4f",
+      "png_sha256": "9e7fffad6b17dff6e4422b8872f1a9768916f2db5704974423532883362af7c4",
+      "printer_dimensions": [
+        640,
+        2032
+      ]
+    },
+    {
+      "name": "binarykits-example8-64x152",
+      "group": "industrial",
+      "command": "^A ^B3 ^BY ^FD ^FH ^FO ^FS ^GB ^LL ^PW ^XA ^XZ",
+      "arguments": "Industrial yarn template with mixed resident fonts",
+      "width": 512,
+      "height": 1216,
+      "submission_mode": "inline-reset-canvas",
+      "object_name": "CMPPUB26",
+      "submitted_sha256": "c8f30e37516fe41ba3a8a5a937d15bbab4d22ecfa4baf28c05b4aa8df2c7eaa2",
+      "captured_utc": "2026-10-02T13:31:48Z",
+      "zpl_sha256": "d3f17cf6d3bd5cd0b02d1481ab0389c5d230a51931d29cbc945568c6fbed4b59",
+      "png_sha256": "95414edc667bba5c26a13400ad5f274878d92424657db23bdd53a6aeb89de9f5",
+      "printer_dimensions": [
+        512,
+        1216
+      ]
+    },
+    {
+      "name": "binarykits-example9-102x152",
+      "group": "shipping",
+      "command": "^BC ^BY ^CF ^FD ^FO ^FR ^FS ^FX ^GB ^LL ^PW ^XA ^XZ",
+      "arguments": "Shipping layout with reversed boxes and Code 128",
+      "width": 832,
+      "height": 1216,
+      "submission_mode": "inline-reset-canvas",
+      "object_name": "CMPPUB26",
+      "submitted_sha256": "5cddf4b1d0d681fb030b162a3dd43c2c1d75cd23b737002a6014653606abe41d",
+      "captured_utc": "2026-10-02T13:31:50Z",
+      "zpl_sha256": "6dce336c9fe7757ddb81fbe68cb34b175f73e6de3d37d6aba9396198ab46a0f5",
+      "png_sha256": "b7c514f7f7ca03aea0db360997a09e1c30164c601f2089da470078bf62a72d50",
+      "printer_dimensions": [
+        832,
+        1216
+      ]
+    },
+    {
+      "name": "repeat-end",
+      "group": "repeatability",
+      "command": "^B7 ^BC ^BY ^CF ^FD ^FO ^FS ^GB ^LL ^PW ^XA ^XZ",
+      "arguments": "Labelixa carrier style shipping 4x6",
+      "width": 832,
+      "height": 1218,
+      "submission_mode": "inline-reset-canvas",
+      "object_name": "CMPPUB26",
+      "submitted_sha256": "fee17b5f6b2bff26e78d45215a40fd3c3e4c1b3d55838fb4c6820f5c18573317",
+      "captured_utc": "2026-10-02T13:31:51Z",
+      "zpl_sha256": "862c054ae82e3d439e8e21503920f8105c9170265cc2677af843996b865316c0",
+      "png_sha256": "ddec21cecbb88e211ac71117efd5f7df194ce9c23fde24715d07884ccf63635f",
+      "printer_dimensions": [
+        832,
+        1218
+      ]
+    }
+  ],
+  "failures": [],
+  "preview_reset_zpl": "^XA^CI0,0,0,1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11,12,12,13,13,14,14,15,15,16,16,17,17,18,18,19,19,20,20,21,21,22,22,23,23,24,24,25,25,26,26,27,27,28,28,29,29,30,30,31,31,32,32,33,33,34,34,35,35,36,36,37,37,38,38,39,39,40,40,41,41,42,42,43,43,44,44,45,45,46,46,47,47,48,48,49,49,50,50,51,51,52,52,53,53,54,54,55,55,56,56,57,57,58,58,59,59,60,60,61,61,62,62,63,63,64,64,65,65,66,66,67,67,68,68,69,69,70,70,71,71,72,72,73,73,74,74,75,75,76,76,77,77,78,78,79,79,80,80,81,81,82,82,83,83,84,84,85,85,86,86,87,87,88,88,89,89,90,90,91,91,92,92,93,93,94,94,95,95,96,96,97,97,98,98,99,99,100,100,101,101,102,102,103,103,104,104,105,105,106,106,107,107,108,108,109,109,110,110,111,111,112,112,113,113,114,114,115,115,116,116,117,117,118,118,119,119,120,120,121,121,122,122,123,123,124,124,125,125,126,126,127,127,128,128,129,129,130,130,131,131,132,132,133,133,134,134,135,135,136,136,137,137,138,138,139,139,140,140,141,141,142,142,143,143,144,144,145,145,146,146,147,147,148,148,149,149,150,150,151,151,152,152,153,153,154,154,155,155,156,156,157,157,158,158,159,159,160,160,161,161,162,162,163,163,164,164,165,165,166,166,167,167,168,168,169,169,170,170,171,171,172,172,173,173,174,174,175,175,176,176,177,177,178,178,179,179,180,180,181,181,182,182,183,183,184,184,185,185,186,186,187,187,188,188,189,189,190,190,191,191,192,192,193,193,194,194,195,195,196,196,197,197,198,198,199,199,200,200,201,201,202,202,203,203,204,204,205,205,206,206,207,207,208,208,209,209,210,210,211,211,212,212,213,213,214,214,215,215,216,216,217,217,218,218,219,219,220,220,221,221,222,222,223,223,224,224,225,225,226,226,227,227,228,228,229,229,230,230,231,231,232,232,233,233,234,234,235,235,236,236,237,237,238,238,239,239,240,240,241,241,242,242,243,243,244,244,245,245,246,246,247,247,248,248,249,249,250,250,251,251,252,252,253,253,254,254,255,255^CI13,0,0,1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11,12,12,13,13,14,14,15,15,16,16,17,17,18,18,19,19,20,20,21,21,22,22,23,23,24,24,25,25,26,26,27,27,28,28,29,29,30,30,31,31,32,32,33,33,34,34,35,35,36,36,37,37,38,38,39,39,40,40,41,41,42,42,43,43,44,44,45,45,46,46,47,47,48,48,49,49,50,50,51,51,52,52,53,53,54,54,55,55,56,56,57,57,58,58,59,59,60,60,61,61,62,62,63,63,64,64,65,65,66,66,67,67,68,68,69,69,70,70,71,71,72,72,73,73,74,74,75,75,76,76,77,77,78,78,79,79,80,80,81,81,82,82,83,83,84,84,85,85,86,86,87,87,88,88,89,89,90,90,91,91,92,92,93,93,94,94,95,95,96,96,97,97,98,98,99,99,100,100,101,101,102,102,103,103,104,104,105,105,106,106,107,107,108,108,109,109,110,110,111,111,112,112,113,113,114,114,115,115,116,116,117,117,118,118,119,119,120,120,121,121,122,122,123,123,124,124,125,125,126,126,127,127,128,128,129,129,130,130,131,131,132,132,133,133,134,134,135,135,136,136,137,137,138,138,139,139,140,140,141,141,142,142,143,143,144,144,145,145,146,146,147,147,148,148,149,149,150,150,151,151,152,152,153,153,154,154,155,155,156,156,157,157,158,158,159,159,160,160,161,161,162,162,163,163,164,164,165,165,166,166,167,167,168,168,169,169,170,170,171,171,172,172,173,173,174,174,175,175,176,176,177,177,178,178,179,179,180,180,181,181,182,182,183,183,184,184,185,185,186,186,187,187,188,188,189,189,190,190,191,191,192,192,193,193,194,194,195,195,196,196,197,197,198,198,199,199,200,200,201,201,202,202,203,203,204,204,205,205,206,206,207,207,208,208,209,209,210,210,211,211,212,212,213,213,214,214,215,215,216,216,217,217,218,218,219,219,220,220,221,221,222,222,223,223,224,224,225,225,226,226,227,227,228,228,229,229,230,230,231,231,232,232,233,233,234,234,235,235,236,236,237,237,238,238,239,239,240,240,241,241,242,242,243,243,244,244,245,245,246,246,247,247,248,248,249,249,250,250,251,251,252,252,253,253,254,254,255,255^PMN^PA0,0,0,0^FPH,0^CVN^BY2,3,10^CI27^CF0,32,0^FWN^LH0,0^LS0^LT0^PON^LRN^XZ",
+  "corpus_sha256": "bfe55656962142c67bee7fb7e888bf4ab3dfa7550c3e6ef2d2d896227443e78c",
+  "repeat_pixels_equal": true
+}

@@ -60,7 +60,12 @@ fn number(data: &[u8], offset: usize) -> Result<u16, RenderError> {
     }
     Ok(number)
 }
-fn decoded(data: &[u8], hex: Option<u8>, offset: usize) -> Result<Arc<Vec<u8>>, RenderError> {
+fn decoded(
+    data: &[u8],
+    hex: Option<u8>,
+    offset: usize,
+    field_limit: usize,
+) -> Result<Arc<Vec<u8>>, RenderError> {
     let mut result = Vec::new();
     let mut i = 0;
     while i < data.len() {
@@ -77,8 +82,11 @@ fn decoded(data: &[u8], hex: Option<u8>, offset: usize) -> Result<Arc<Vec<u8>>, 
             i += 1;
         }
     }
-    if result.len() > 4096 {
-        return Err(error(offset, "field data exceeds 4096-byte renderer limit"));
+    if result.len() > field_limit {
+        return Err(error(
+            offset,
+            format!("field data exceeds {field_limit}-byte renderer limit"),
+        ));
     }
     Ok(Arc::new(result))
 }
@@ -116,6 +124,7 @@ fn finish(fields: &mut Vec<Field>, printer: bool, plan: &mut Plan) {
 pub(super) fn plan(
     input: &[u8],
     compatibility: super::compatibility::Compatibility,
+    field_limit: usize,
 ) -> Result<Plan, RenderError> {
     let mut plan = Plan::new();
     if !input.windows(2).any(|b| b == b"FN" || b == b"FE") {
@@ -207,7 +216,7 @@ pub(super) fn plan(
                 if data.is_some() {
                     return Err(error(offset, "multiple data commands in numbered field"));
                 }
-                let mut value = decoded(operands, hex, offset)?;
+                let mut value = decoded(operands, hex, offset, field_limit)?;
                 if let Some(marker) = marker {
                     value = Arc::new(
                         super::concatenation::expand(
@@ -217,6 +226,7 @@ pub(super) fn plan(
                             encoding == 28,
                             compatibility.concatenation_backward_reads_forward,
                             compatibility.concatenation_printer_syntax,
+                            field_limit,
                         )
                         .map_err(|e| error(offset, e))?,
                     );

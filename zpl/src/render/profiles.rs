@@ -12,12 +12,21 @@ pub const SPECIFICATION: Options = Options {
     height: 1218,
     dpi: 203,
     compatibility: Compatibility {
+        inline_graphic_implicit_separator: false,
+        qr_malformed_header_uses_defaults: false,
+        code39_normalize_input: false,
+        barcode_module_width_through_12: false,
+        box_zero_thickness_as_one: false,
+
         preview_width_quantum: None,
         preview_max_width: None,
         preview_width_latched_at_first_draw: false,
         preview_ignores_label_length: false,
         qr_printer_mask_selection: false,
+        qr_printer_segmentation: false,
         qr_updates_barcode_module_width: false,
+        pdf417_integer_grid_layout: false,
+        pdf417_punctuation_latches: false,
         font0_fo_floor_baseline: false,
         font0_minimum_dimensions: false,
         block_preserves_extra_spaces: false,
@@ -156,12 +165,21 @@ pub const ZD621_203_DPI: Options = Options {
     height: 1218,
     dpi: 203,
     compatibility: Compatibility {
+        inline_graphic_implicit_separator: true,
+        qr_malformed_header_uses_defaults: true,
+        code39_normalize_input: true,
+        barcode_module_width_through_12: true,
+        box_zero_thickness_as_one: true,
+
         preview_width_quantum: None,
         preview_max_width: None,
         preview_width_latched_at_first_draw: false,
         preview_ignores_label_length: false,
         qr_printer_mask_selection: true,
+        qr_printer_segmentation: true,
         qr_updates_barcode_module_width: true,
+        pdf417_integer_grid_layout: true,
+        pdf417_punctuation_latches: true,
         font0_fo_floor_baseline: true,
         font0_minimum_dimensions: true,
         block_preserves_extra_spaces: true,
@@ -296,12 +314,24 @@ pub const ZQ610_PLUS_203_DPI: Options = Options {
     width: 384,
     height: 2030,
     compatibility: Compatibility {
+        // Public-document tolerances have only been observed on the ZD621.
+        inline_graphic_implicit_separator: false,
+        qr_malformed_header_uses_defaults: false,
+        code39_normalize_input: false,
+        barcode_module_width_through_12: false,
+        box_zero_thickness_as_one: false,
+
         preview_width_quantum: Some(64),
         preview_max_width: Some(384),
         preview_width_latched_at_first_draw: true,
         preview_ignores_label_length: true,
+        // Automatic QR segmentation evidence is ZD621-only.
+        qr_printer_segmentation: false,
         // SurePost run-boundary evidence is ZD621-only.
         maxicode_printer_run_boundaries: false,
+        // Integer-grid and punctuation-run controls were captured on ZD621.
+        pdf417_integer_grid_layout: false,
+        pdf417_punctuation_latches: false,
         ..ZD621_203_DPI.compatibility
     },
     ..ZD621_203_DPI

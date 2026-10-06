@@ -26,13 +26,45 @@ Existing renderer correctness and printer-capture tests remain separate CI check
 
 The runner builds a standalone harness against each revision's `zpl` path using
 that revision's locked dependency versions. It rejects unexpected dependency
-resolution changes. Both binaries use the same harness and compiler and separate
-build directories. PR revisions are the event's exact base and head, not the
-synthetic merge commit. There are ten rounds of at least 200 ms per case/revision,
+resolution changes. Both binaries use the same harness and compiler. Each revision
+is exported from Git into the **same physical source path**, with the harness and
+target directory also recreated at the same paths. A clean build between revisions
+prevents stale outputs from hiding changes. Separate checkout paths used to change
+Cargo's crate metadata and binary layout even for identical sources, producing
+false performance alerts; see [Cargo issue 7645](https://github.com/rust-lang/cargo/issues/7645).
+PR revisions are the current target commit and GitHub's test merge of the PR into
+that target. A preflight job reads the live PR, requires confirmed mergeability,
+and checks that the test merge's parents are exactly that target and the event's
+PR head. It pins both checkouts by SHA, so an advanced target is included even
+when rerunning an older event. The runner verifies the checked-out merge parents
+before building. Conflicting, closed, superseded, or retargeted PRs skip the timing
+job; unknown mergeability or a stale test merge is polled at most six times, two
+seconds apart, then skipped. A new PR synchronization event after resolving
+conflicts can run benchmarks again. GitHub itself does not start `pull_request`
+workflows for conflicting PRs; see [pull request events](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#pull_request).
+There are ten rounds of at least 200 ms per case/revision,
 with both case and revision order reversed every round. Every process warms its
 renderer while validating before timing; results describe warm operations.
 
-PR job summaries and `summary.md` show paired head/base percentage changes.
+Each build saves its executable, SHA-256 hashes, resolved lockfile, and input
+inventory. The inventory covers the resolved dependency graph and features, every
+file in local dependency packages (including fonts and manifests), ancestor workspace
+manifests, and the standalone harness/lockfile. It excludes unrelated workspace
+members such as `zpl-cmd`; it does **not** strip version numbers from benchmarked
+packages. These can affect generated code through `env!("CARGO_PKG_VERSION")`.
+
+When both inputs and independently built executables match, the report says
+**No relevant input changes**. Matching executables with different inputs are also
+reported as an A/A noise control. All ten paired rounds and observed timing changes
+are retained, but cannot produce source regression or improvement flags. Matching
+inventoried inputs with different executables produce an explicit **inconclusive**
+result: investigate build nondeterminism or inputs outside the inventory. Ordinary
+comparisons require changed inputs and changed executables. This check does not
+prove reproducibility for every possible build script or external input.
+
+PR job summaries and `summary.md` show paired merge/target percentage changes.
+Artifacts retain `base`/`head` sample keys for the target/merge and record the
+original PR head separately as `pr_head_sha`.
 Informational flags require at least 10% and 1 µs median paired change, with a
 99% percentile-bootstrap interval excluding zero (5,000 deterministic resamples).
 Both improvements and regressions are flagged; positive means slower. These are
@@ -49,11 +81,19 @@ one sticky `github-actions[bot]` comment when a stage crosses the thresholds.
 Both improvements and regressions are reported. Later runs update that comment,
 including clearing old alerts when no stage qualifies; an initial quiet run does
 not post. The comment links the raw evidence and historical dashboard.
+An A/A or inconclusive result also clears an existing alert. Legacy artifacts
+without build provenance remain readable for history, but the updated publisher
+does not turn their path-biased timings into PR alerts. The new comment behavior
+starts after the publisher changes reach `main`; the PR's job summary uses the
+updated runner immediately. The additive artifact fields retain schema 1 compatibility.
 
 The publisher validates the run/attempt, both revisions and their samples, PR
-association when available, current head/base SHAs, and fork/branch identities.
-Closed PRs, stale heads/bases and results older than the existing comment are
-skipped. Rebase or trigger a new PR event if the base advances during measurement.
+association when available, current head/target/merge SHAs, mergeability, and
+fork/branch identities. Closed or conflicting PRs, stale heads/targets/merges and
+results older than the existing comment are skipped. Rerun or trigger a new PR
+event if the target advances during measurement. Skipped timing jobs do not
+download artifacts or update comments. Old PR artifacts that measured an unmerged
+head are rejected; main history remains compatible.
 Reporting thresholds come from `main`; a PR cannot lower its own alert threshold.
 Changes to the round count or measurement duration require the trusted protocol
 to be updated too. Measurement workers explicitly select stable Rust for both
@@ -72,7 +112,9 @@ it will have benchmark artifacts and job summaries, but no automatic comment.
 A separate GitHub-hosted Linux job tests the dashboard under the `/zpl/perf/`
 project path and saves a browser screenshot; it does not run on the timing worker.
 Workers have read-only permissions and retain JSON, raw iteration/nanosecond logs,
-and summaries as artifacts for 30 days, including partial logs on failure.
+summaries, input inventories, resolved locks, and both executables as artifacts
+for 30 days, including partial evidence on failure. Publishers never execute the
+saved binaries or consume inventories as scripts.
 The trusted `Publish rendering benchmarks` workflow runs main-branch code only
 and validates successful main artifacts, exact run/attempt/commit identities,
 finite samples, and the expected Linux runner. PR results never enter history.
@@ -113,8 +155,10 @@ rustfmt --edition 2021 --check benchmarks/harness.rs
 python3 benchmarks/run.py --base /path/to/base --head /path/to/head --output /tmp/zpl-perf-new
 ```
 
-The output directory must not already exist. Use the same checkout for both paths
-to run an A/A noise check. Local measurements are not automatically published.
+The output directory must not already exist and needs room for the exported source
+tree and clean release build. Checkouts must have no tracked edits; commit local
+changes before measuring, since snapshots come from Git. Use the same checkout for
+both paths to run an A/A noise check. Local measurements are not automatically published.
 See [web preview checks](../docs/web-preview.md) for combined site validation.
 
 ## Remaining differences from coarsetime

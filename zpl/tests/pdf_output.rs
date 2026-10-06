@@ -235,3 +235,45 @@ fn rendered_zpl_produces_one_pdf_page_per_label() {
         assert!(!scene.draws.is_empty());
     }
 }
+
+#[test]
+fn configured_pdf_limits_allow_more_pages_and_coordinates() {
+    use zpl::output::Limits;
+    let mut scene = Scene::new(20, 30, 203).unwrap();
+    scene.draws.push(Draw {
+        path: Path {
+            segments: vec![Segment::Move(Point::new(1e10, 0.))],
+        },
+        paint: Paint::Black,
+    });
+    let scenes = vec![scene; 65];
+    let bytes = Pdf
+        .encode_pages_with_limits(&scenes, Limits::unlimited())
+        .unwrap();
+    let doc = Document::load_mem(&bytes).unwrap();
+    assert_eq!(doc.get_pages().len(), 65);
+    for limits in [
+        Limits {
+            pages: 64,
+            ..Limits::unlimited()
+        },
+        Limits {
+            segments: 64,
+            ..Limits::unlimited()
+        },
+        Limits {
+            coordinate_abs: 1e9,
+            ..Limits::unlimited()
+        },
+    ] {
+        assert!(Pdf.encode_pages_with_limits(&scenes, limits).is_err());
+    }
+    assert!(Pdf
+        .encode_pages_with_limits(&[], Limits::unlimited())
+        .is_err());
+    // ISO 32000-1 Annex C's UserUnit ceiling remains a format constraint.
+    let huge = Scene::new_with_limits(u32::MAX, 1, 1, Limits::unlimited()).unwrap();
+    assert!(Pdf
+        .encode_pages_with_limits(&[huge], Limits::unlimited())
+        .is_err());
+}

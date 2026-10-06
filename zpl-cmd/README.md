@@ -24,5 +24,19 @@ includes one page per label, preserving physical size using the scene DPI.
 masks using printer compatibility behavior. Options can precede or follow the
 file paths. Warnings and errors go to stderr; failures return a nonzero exit code.
 
+Resource budgets are unlimited by default for every output format. To opt in,
+use `--max-input-bytes`, `--max-labels`, `--max-segments`,
+`--max-stored-graphic-segments`, `--max-pixels`, `--max-dimension`,
+`--max-number`, `--max-field-bytes`, `--max-graphic-bytes`, `--max-stored-formats`,
+`--max-recall-depth`, `--max-recall-calls`, `--max-coordinate`,
+`--max-flattened-segments`, or `--max-scan-work`. For example:
+
+```sh
+zpl-cmd render input.zpl output.pdf --max-labels 1000 --max-input-bytes 16777216
+```
+
+ZPL semantics, numeric representation, memory availability and PNG/PDF format
+constraints still apply. Stored-format cycles are rejected even without budgets.
+
 See [local rendering](../docs/local-renderer.md) for supported ZPL, profiles,
 resource limits, and output behavior. Licensed under [OSL-3.0](LICENSE).

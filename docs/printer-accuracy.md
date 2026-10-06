@@ -14,6 +14,15 @@ symbols and extended Model 1 versions; see [the algorithm](qr-mask-selection.md)
 Earlier entries below are a chronological record and may describe gaps that
 subsequent sections resolve.
 
+The public Labelixa QR URL label is also full-frame pixel-exact. The ZD621
+`qr_printer_segmentation` option reproduces its 33×33-module QR encoding, and
+a complete captured 28-dot font-0 strike supplies its caption. Thirteen new
+native frames include 296 QR diagnostic/holdout symbols, repeated original
+controls, and four-orientation text. See the
+[captures and provenance](../zpl/tests/fixtures/qr-segmentation-zd621-v1/README.md).
+SPECIFICATION retains minimum-bit segmentation; both encodings independently
+decode to the same URL.
+
 Run `cargo test -p zpl --test printer_accuracy -- --nocapture` for the offline
 accuracy gate, or `cargo test --workspace` to include it with all existing tests.
 No printer or external renderer is contacted by these tests.

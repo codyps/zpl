@@ -7,6 +7,29 @@ NAMES = tuple(f"{case}/{stage}" for case in ("text", "barcodes", "graphics")
               for stage in ("scene", "raster", "total"))
 RUNNERS = {"ubuntu-24.04"}
 
+COMPARISON_NOTES = {
+    'unchanged': 'No relevant input changes: the resolved package inputs and independently built '
+                 'executables are identical. Timings are an A/A noise control; '
+                 'no source performance change is reported.',
+    'identical': 'The package inputs changed, but the independently built executables are identical. '
+                 'Timings are an A/A noise control; no source performance change is reported.',
+    'unreproducible': 'Inconclusive comparison: the inventoried package inputs match, but the '
+                      'executables differ. Investigate untracked build inputs or nondeterminism '
+                      'before attributing timing differences to this change.',
+    'legacy': 'This run has no comparable-build provenance. Its timing differences cannot '
+              'establish a source performance change; collect a run with the current tooling.',
+}
+
+
+def comparison_kind(record):
+    if not record.get('builds'):
+        return 'legacy'
+    base, head = (record['builds'][label] for label in ('base', 'head'))
+    same_inputs = base['inputs_sha256'] == head['inputs_sha256']
+    if base['binary_sha256'] == head['binary_sha256']:
+        return 'unchanged' if same_inputs else 'identical'
+    return 'unreproducible' if same_inputs else 'measured'
+
 
 def compare(before, after, config):
     if len(before) != 10 or len(after) != 10:

@@ -28,7 +28,9 @@ pub(super) fn expand(
     utf8: bool,
     backward_reads_forward: bool,
     printer_syntax: bool,
+    field_limit: usize,
 ) -> Result<Vec<u8>, String> {
+    let append = |output: &mut Vec<u8>, value: &[u8]| append(output, value, field_limit);
     let mut output = Vec::new();
     let mut remaining = data;
     while let Some(start) = remaining.iter().position(|&c| c == marker) {
@@ -111,9 +113,15 @@ pub(super) fn expand(
     append(&mut output, remaining)?;
     Ok(output)
 }
-fn append(output: &mut Vec<u8>, value: &[u8]) -> Result<(), String> {
-    if output.len().saturating_add(value.len()) > 4096 {
-        return Err("concatenated field exceeds 4096-byte renderer limit".into());
+fn append(output: &mut Vec<u8>, value: &[u8], field_limit: usize) -> Result<(), String> {
+    if output
+        .len()
+        .checked_add(value.len())
+        .is_none_or(|n| n > field_limit)
+    {
+        return Err(format!(
+            "concatenated field exceeds {field_limit}-byte renderer limit"
+        ));
     }
     output.extend_from_slice(value);
     Ok(())
