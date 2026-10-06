@@ -4015,6 +4015,7 @@ version = "0.1.0"
 dependencies = [
  "clap",
  "eyre",
+ "getrandom 0.4.3",
  "htmlize",
  "memchr",
  "raster-diff",

@@ -349,6 +349,7 @@ impl Server {
         let task = thread::spawn(move || {
             let mut png = vec![];
             let mut calls = 0;
+            let mut object_name: Option<String> = None;
             while !done.load(Ordering::Relaxed) {
                 let (mut stream, _) = match listener.accept() {
                     Ok(s) => s,
@@ -392,6 +393,14 @@ impl Server {
                     let url = reqwest::Url::parse(&format!("http://localhost/?{form}")).unwrap();
                     let fields = url.query_pairs().collect::<BTreeMap<_, _>>();
                     assert_eq!(fields["prev"], "Preview Label");
+                    let name = fields["oname"].as_ref();
+                    assert_eq!(name.len(), 8);
+                    assert_ne!(name, "TEST1");
+                    if let Some(previous) = &object_name {
+                        assert_eq!(previous, name);
+                    } else {
+                        object_name = Some(name.to_owned());
+                    }
                     png = printer_png(&fields["data"]).unwrap();
                     calls += 1;
                     b"<IMG SRC=\"/preview.png\">".to_vec()

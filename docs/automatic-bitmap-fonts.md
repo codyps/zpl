@@ -13,9 +13,11 @@ cargo run --locked -p zpl-font-extract -- recover \
 This samples printable ASCII from A–H and the separate `^GS` face (`@`). Use
 `--font A` to start with one face. Credentials, when needed, come from
 `ZPL_USERNAME` and `ZPL_PASSWORD`. Requests use the printer's HTTP **Preview Label**
-form and its shared `R:TEST1` object; no job is submitted to raw TCP printing.
-Avoid concurrent preview clients. The CLI locks its local cache and printer
-origin, rejects redirects and cross-origin image URLs, bounds responses/timeouts,
+form with a random eight-character RAM object name per capture instance, reused
+across its requests; no job is submitted to raw TCP printing. The name is separate
+from cache identity, so restarting still reuses cached images. Avoid concurrent
+preview clients: the firmware may share other preview state. The CLI locks its
+local cache and printer origin, rejects redirects and cross-origin image URLs, bounds responses/timeouts,
 and spaces requests five seconds apart by default. It has no automatic retries.
 
 Inspect initial requests before capture:

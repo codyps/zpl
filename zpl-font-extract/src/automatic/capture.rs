@@ -27,6 +27,7 @@ struct Receipt {
 }
 pub struct Printer {
     client: reqwest::Client,
+    preview_object: Option<zebra_http_api::PreviewObject>,
     host: reqwest::Url,
     cache: PathBuf,
     offline: bool,
@@ -68,6 +69,7 @@ impl Printer {
             .build()?;
         Ok(Self {
             client,
+            preview_object: None,
             host,
             cache: cache.into(),
             offline,
@@ -133,12 +135,16 @@ impl Capture for Printer {
             if repeat { " repeat" } else { "" }
         );
         self.last = Some(std::time::Instant::now());
-        let png = zebra_http_api::zpl_to_png_with_credentials(
+        if self.preview_object.is_none() {
+            self.preview_object = Some(zebra_http_api::PreviewObject::new()?);
+        }
+        let png = zebra_http_api::zpl_to_png_with_object(
             self.client.clone(),
             self.host.clone(),
             &zpl,
             &self.username,
             &self.password,
+            self.preview_object.as_ref().unwrap(),
         )
         .await?;
         ensure!(
