@@ -1,0 +1,207 @@
+//! Caller-supplied fonts, scoped to a render call; no filesystem or printer access.
+use crate::{
+    bitmap_font::{self, Glyph, Settings},
+    output::raster::truetype::{rasterize, ScanMode},
+    truetype::{Environment, Font, Hinting, Size},
+};
+use std::{borrow::Cow, collections::BTreeMap};
+
+/// Fonts assigned to ZPL IDs (`0`–`9`, `A`–`Z`, or `@` for `^GS`).
+/// Unregistered IDs retain the renderer's resident-font behavior. Registered
+/// faces replace the entire face: missing characters return an error rather
+/// than silently mixing the caller's font with a resident font.
+///
+/// ```no_run
+/// use zpl::render::{fonts::Fonts, profiles::SPECIFICATION, render_with_fonts};
+/// use zpl::truetype::Hinting;
+/// # fn main() -> Result<(), Box<dyn std::error::Error>> {
+/// let bytes = std::fs::read("my-font.ttf")?;
+/// let mut fonts = Fonts::new();
+/// fonts.insert_truetype('Z', &bytes, Hinting::Native)?;
+/// let document = render_with_fonts(
+///     b"^XA^FO20,20^AZN,32,24^FDHello^FS^XZ", SPECIFICATION, &fonts,
+/// )?;
+/// # Ok(())
+/// # }
+/// ```
+#[derive(Default)]
+pub struct Fonts<'a> {
+    faces: BTreeMap<char, Face<'a>>,
+}
+
+enum Source<'a> {
+    Bitmap(Settings, Vec<Glyph>),
+    TrueType(Font<'a>, Hinting),
+}
+pub(super) struct Face<'a> {
+    source: Source<'a>,
+    baseline: f64,
+}
+
+impl<'a> Fonts<'a> {
+    pub fn new() -> Self {
+        Self::default()
+    }
+
+    /// Assign a decoded bitmap strike. `baseline` is the distance from the
+    /// cell top to the baseline in native strike dots; glyph tops are relative
+    /// to that baseline. Glyphs may be unsorted, but duplicates are rejected.
+    /// The assignment ID is independent of the strike's resident-font tag.
+    pub fn insert_bitmap(
+        &mut self,
+        id: char,
+        settings: Settings,
+        mut glyphs: Vec<Glyph>,
+        baseline: f64,
+    ) -> Result<(), String> {
+        validate_id(id)?;
+        settings.validate()?;
+        bitmap_font::validate_glyphs(&glyphs)?;
+        if glyphs.is_empty()
+            || !baseline.is_finite()
+            || !(0. ..=settings.height as f64).contains(&baseline)
+        {
+            return Err("invalid bitmap font baseline or empty glyph set".into());
+        }
+        glyphs.sort_by_key(|g| g.codepoint);
+        if glyphs
+            .windows(2)
+            .any(|pair| pair[0].codepoint == pair[1].codepoint)
+        {
+            return Err("duplicate bitmap font codepoint".into());
+        }
+        self.faces.insert(
+            id,
+            Face {
+                baseline: baseline / settings.height as f64,
+                source: Source::Bitmap(settings, glyphs),
+            },
+        );
+        Ok(())
+    }
+
+    /// Decode and assign a ZBF1/ZBF2 strike with an explicit native baseline.
+    pub fn insert_zbf(&mut self, id: char, data: &[u8], baseline: f64) -> Result<(), String> {
+        let (settings, glyphs) = bitmap_font::unpack(data)?;
+        self.insert_bitmap(id, settings, glyphs, baseline)
+    }
+
+    /// Assign a TrueType/OpenType font with quadratic `glyf` outlines.
+    /// CFF/CFF2 outlines, collections and unsupported hint instructions return
+    /// errors through the existing TrueType engine. Data must outlive this set.
+    /// Sizes are dots per em, rounded to whole dots (1..=4096); width and height
+    /// scale independently. Uses standard hinting/scan semantics, independently
+    /// of the resident printer compatibility profile. No kerning or shaping is
+    /// added beyond the renderer's existing Unicode processing.
+    pub fn insert_truetype(
+        &mut self,
+        id: char,
+        data: &'a [u8],
+        hinting: Hinting,
+    ) -> Result<(), String> {
+        validate_id(id)?;
+        let font = Font::parse(data).map_err(|e| e.to_string())?;
+        // OpenType hhea ascender (offset 4), in design units:
+        // https://learn.microsoft.com/en-us/typography/opentype/spec/hhea
+        let hhea = font.table(b"hhea").ok_or("missing TrueType hhea")?;
+        let ascent = i16::from_be_bytes(
+            hhea.get(4..6)
+                .ok_or("truncated TrueType hhea")?
+                .try_into()
+                .unwrap(),
+        );
+        let baseline = f64::from(ascent) / f64::from(font.units_per_em());
+        self.faces.insert(
+            id,
+            Face {
+                source: Source::TrueType(font, hinting),
+                baseline,
+            },
+        );
+        Ok(())
+    }
+
+    pub(super) fn get(&self, id: char) -> Option<&Face<'a>> {
+        self.faces.get(&id)
+    }
+}
+
+fn validate_id(id: char) -> Result<(), String> {
+    if id.is_ascii_uppercase() || id.is_ascii_digit() || id == bitmap_font::GRAPHIC_SYMBOLS {
+        Ok(())
+    } else {
+        Err("font ID must be 0–9, A–Z, or @".into())
+    }
+}
+
+impl Face<'_> {
+    pub(super) fn baseline(&self, h: f64) -> f64 {
+        self.baseline
+            * match self.source {
+                Source::TrueType(..) => h.round(),
+                _ => h,
+            }
+    }
+
+    pub(super) fn dimensions(&self, w: f64, h: f64) -> Result<(f64, f64), String> {
+        let (nw, nh) = match &self.source {
+            Source::Bitmap(s, _) => (
+                if s.width == 0 { s.height } else { s.width } as f64,
+                s.height as f64,
+            ),
+            Source::TrueType(..) => (1., 1.),
+        };
+        let (w, h) = match (w, h) {
+            (0., 0.) => (nw, nh),
+            (0., h) => (h * nw / nh, h),
+            (w, 0.) => (w, w * nh / nw),
+            pair => pair,
+        };
+        if !w.is_finite() || !h.is_finite() || w <= 0. || h <= 0. {
+            return Err("font dimensions must be positive".into());
+        }
+        if matches!(self.source, Source::TrueType(..))
+            && (!(1. ..=4096.).contains(&w.round()) || !(1. ..=4096.).contains(&h.round()))
+        {
+            return Err("TrueType size must be in 1..=4096 dots per em".into());
+        }
+        Ok((w, h))
+    }
+
+    pub(super) fn glyph(
+        &self,
+        c: char,
+        w: f64,
+        h: f64,
+    ) -> Result<(Cow<'_, Glyph>, f64, f64), String> {
+        self.dimensions(w, h)?;
+        match &self.source {
+            Source::Bitmap(s, glyphs) => {
+                let index = glyphs
+                    .binary_search_by_key(&(c as u32), |g| g.codepoint)
+                    .map_err(|_| format!("unsupported custom font glyph {c:?}"))?;
+                let width = if s.width == 0 { s.height } else { s.width };
+                Ok((
+                    Cow::Borrowed(&glyphs[index]),
+                    w / width as f64,
+                    h / s.height as f64,
+                ))
+            }
+            Source::TrueType(font, hinting) => {
+                let index = font
+                    .glyph_index(c)
+                    .ok_or_else(|| format!("unsupported custom font glyph {c:?}"))?;
+                let size =
+                    Size::new(w.round() as u16, h.round() as u16).map_err(|e| e.to_string())?;
+                let instance = font
+                    .instance(size, *hinting, Environment::Standard)
+                    .map_err(|e| e.to_string())?;
+                let outline = instance.outline(index).map_err(|e| e.to_string())?;
+                let advance = instance.layout_advance(index).map_err(|e| e.to_string())?;
+                let glyph = rasterize(&outline, c as u32, advance, 0, ScanMode::Center)
+                    .map_err(|e| e.to_string())?;
+                Ok((Cow::Owned(glyph), 1., 1.))
+            }
+        }
+    }
+}

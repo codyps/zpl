@@ -12,8 +12,8 @@ struct Part<'a> {
     text: &'a str,
     hyphen: bool,
 }
-struct Layout {
-    font: font::Font,
+struct Layout<'a> {
+    font: font::Font<'a>,
     w: f64,
     h: f64,
     width: f64,
@@ -23,7 +23,7 @@ struct Layout {
     line: String,
     overflow_line: bool,
 }
-impl Layout {
+impl Layout<'_> {
     fn measure(&self, text: &str) -> Result<f64, String> {
         font::width_for(self.font, text, self.w, self.h)
     }

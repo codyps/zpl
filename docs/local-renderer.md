@@ -48,6 +48,60 @@ for scene in &document.labels {
 let multipage_pdf = Pdf.encode_pages(&document.labels)?;
 ```
 
+### Caller-supplied fonts
+
+Use `render::fonts::Fonts` with `render::render_with_fonts`, or
+`render_with_fonts_and_limits` when setting renderer budgets. Existing `render`
+and `render_with_limits` calls keep their embedded resident fonts.
+
+```rust
+use zpl::render::{fonts::Fonts, profiles::SPECIFICATION, render_with_fonts};
+use zpl::truetype::Hinting;
+
+let font_bytes = std::fs::read("my-font.ttf")?;
+let mut fonts = Fonts::new();
+fonts.insert_truetype('Z', &font_bytes, Hinting::Native)?;
+let document = render_with_fonts(
+    b"^XA^FO20,20^AZN,32,24^FDHello^FS^XZ",
+    SPECIFICATION,
+    &fonts,
+)?;
+```
+
+Assignments accept `0`–`9` and `A`–`Z`, selected with `^A` or `^CF`; `@`
+selects the separate `^GS` symbol face. Registering `0` replaces the default face.
+Unregistered faces continue to use resident behavior. Font sets belong to the
+caller, with no global installation or filesystem/network access by rendering.
+The same set can be reused across render calls. Invalid assignments leave the
+previous face intact. A registered face's missing glyphs return an error instead
+of mixing in resident glyphs. This API does not implement ZPL font downloads,
+`^CW` aliases, or filename-based `^A@` selection.
+
+For bitmap fonts, use `insert_bitmap(id, settings, glyphs, baseline)` or
+`insert_zbf(id, bytes, baseline)`. The baseline is measured from the strike's
+cell top in native dots; glyph `top` values are relative to it. The caller's
+advances and ink metrics drive wrapping and placement. Requested width/height
+scale the native strike independently, without resident-matrix quantization;
+an omitted axis preserves its aspect ratio. DPI metadata is validated but does
+not rescale dot-based requests. The registration ID may differ from the strike's
+resident tag. A new registration replaces the prior face rather than adding a
+size-specific strike.
+
+TrueType uses the existing original engine and scan converter, adding no runtime
+dependencies. It supports TrueType/OpenType **quadratic `glyf` outlines**, not
+CFF/CFF2 outlines or font collections. Dimensions are dots per em, independently
+rounded to whole dots in `1..=4096`; the baseline uses the `hhea` ascender.
+`Hinting::None` skips hint execution; `Hinting::Native` reports unsupported
+instructions instead of silently ignoring them. Standard font-engine and scan
+semantics apply, even with a printer compatibility profile. Existing Unicode
+processing still applies, but this adds no OpenType shaping or kerning.
+
+Custom text, field blocks, bounded text, and ordinary barcode captions resolve
+into the same scene paths consumed by PNG/SVG/PDF. Barcode-specific built-in
+interpretation symbols and retail digit artwork remain barcode geometry.
+Use `SPECIFICATION` for custom-font layout without printer compatibility
+adjustments; font customization does not assert physical-printer parity.
+
 The library returns all labels and preview warnings. Options default to
 832 × 1218 dots at 203 DPI; `^PW` and `^LL` override dimensions. The `zpl-cmd render` command takes
 one label for PNG/SVG, or one or more labels for PDF, and selects the adapter

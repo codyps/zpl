@@ -394,8 +394,9 @@ impl Barcode {
         }
         retail::checked(bytes, n).map(|_| ())
     }
-    pub fn render(
+    pub(super) fn render_with_fonts(
         &self,
+        fonts: &super::fonts::Fonts<'_>,
         bytes: &[u8],
         font: Option<(char, f64, f64)>,
         rotation: u8,
@@ -509,7 +510,9 @@ impl Barcode {
             // ^BC p. 94 permits an explicit preceding font command. Without
             // one, resident A scales with ^BY, independently of ^CF.
             let (id, fw, fh) = font.unwrap_or(('A', 5. * self.module, 9. * self.module));
-            let caption_font = super::font::Font::from(id).with_character_map(character_map);
+            let caption_font = super::font::Font::from(id)
+                .with_fonts(fonts)
+                .with_character_map(character_map);
             let cap_caption = font.is_none()
                 && self.compatibility.bitmap_font_maximum_dimensions
                 && self.module > 10.;
