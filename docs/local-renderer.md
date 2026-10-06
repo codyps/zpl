@@ -132,7 +132,8 @@ Text uses [embedded resident font 0](../zpl/assets/README.md), captured from the
 ZD621 preview at 32 dots and 203 DPI. All 95 printable ASCII glyphs, including
 lowercase, retain their measured advances, bearings and baseline offsets. The
 renderer defaults to font 0 at 20 dots. `^CF0,32` or `^A0N,32,0` selects the
-captured size; omitted/zero width is proportional to height. Resident A/B/C/D/E/F/G/H use native bitmap matrices with integer magnification; C shares D's matrix, B renders lowercase input as uppercase, and H renders lowercase as advancing blanks. A single bitmap dimension determines the other proportionally; omitted A
+captured size; omitted/zero width is proportional to height. Resident A/B/C/D/E/F/G/H and GS read their native bitmap matrices directly from
+the shared `zpl-bitmap-fonts` crate with integer magnification; C shares D's matrix, B renders lowercase input as uppercase, and H renders lowercase as advancing blanks. A single bitmap dimension determines the other proportionally; omitted A
 dimensions inherit the CF request. The printer profile's
 `bitmap_cf_font_only_resets_size` option resets a font-only bitmap CF command
 to native size; SPECIFICATION retains the previous size. Other resident font

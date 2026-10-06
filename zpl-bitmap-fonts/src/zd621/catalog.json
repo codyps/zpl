@@ -1,0 +1,9 @@
+{
+  "bitmaps_sha256": "8225ff813cdc52ec67e04c9b56884b2c107d0d750ad52cd78ebcfa279b0e1b2e",
+  "data_bytes": 391680,
+  "module_sha256": "432a2d424ffcfbf3be0d024ab1480a873045faa16dbad8a974965a4b766eee38",
+  "schema": "zpl-compact-fonts-v1",
+  "source_content_sha256": "c649c6b462dd5e2028dfdc8eabdc7c0cd3eeea95dbcdc61edfcefc425ba816e8",
+  "unique_payloads": 5597,
+  "unique_records": 6127
+}

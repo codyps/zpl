@@ -11,12 +11,22 @@ rendering service.
 
 ## Workloads and interpretation
 
-Nine cases cover text, Code 128/QR barcodes, and composited shapes. Each workload
+Twelve case/stage measurements cover scalable text, native bitmap text,
+Code 128/QR barcodes, and composited shapes. Each workload
 uses an explicit `ZD621_203_DPI` profile on an 812 × 600 canvas:
 
 - `scene`: parsing and scene construction, including barcode encoding.
 - `raster`: rasterization of an already prepared scene into a newly allocated buffer.
 - `total`: scene construction and rasterization together.
+
+`text` uses retained scalable font-0 strikes. `bitmap-text` uses all native
+bitmap faces A–H (including the C/D alias) and GS at native and 2x dimensions,
+with letters, digits, punctuation and spaces. This exercises source lookup,
+packed bit scans, joined text paths, scaling, and rasterization through the
+renderer. Preflight checks require ink in each of the 18 face/size regions,
+outside the timed loop. Both revisions run the identical workload through public
+renderer APIs, allowing comparisons between old assets and the shared font crate.
+These are warm rendering measurements, not extraction or cold font-loading timings.
 
 These are fixed synthetic workloads, not printer accuracy evidence or a complete
 model of real labels. PNG encoding, filesystem access, fixture decoding, network,
@@ -95,6 +105,13 @@ event if the target advances during measurement. Skipped timing jobs do not
 download artifacts or update comments. Old PR artifacts that measured an unmerged
 head are rejected; main history remains compatible.
 Reporting thresholds come from `main`; a PR cannot lower its own alert threshold.
+Adding `bitmap-text` changes the harness/protocol hash and starts a new history
+series. Older records remain visible without fabricated bitmap samples, and the
+dashboard discovers workloads across the full history. The trusted comment
+publisher on `main` must include the expanded workload list before it can accept
+12-stage artifacts; until this change merges, use the PR measurement job summary
+and raw artifacts rather than the older sticky comment.
+
 Changes to the round count or measurement duration require the trusted protocol
 to be updated too. Measurement workers explicitly select stable Rust for both
 checkouts and retain read-only repository permissions.

@@ -1,6 +1,10 @@
+export function operations(records) {
+  return [...new Set(records.flatMap(record => Object.keys(record.medians)))];
+}
+
 export function series(records, runner, operation) {
   const groups = new Map();
-  for (const record of records.filter(r => r.runner === runner)) {
+  for (const record of records.filter(r => r.runner === runner && Number.isFinite(r.medians[operation]))) {
     // Never connect points from different compilers, protocols, CPUs or images.
     const key = JSON.stringify([record.harness, record.environment]);
     if (!groups.has(key)) groups.set(key, []);
@@ -67,7 +71,7 @@ if (typeof document !== 'undefined') {
     const runner = document.querySelector('#runner');
     const operation = document.querySelector('#operation');
     for (const name of [...new Set(records.map(r => r.runner))]) runner.add(new Option(name, name));
-    for (const name of Object.keys(records[0]?.medians ?? {})) operation.add(new Option(name, name));
+    for (const name of operations(records)) operation.add(new Option(name, name));
     const update = () => draw(records, runner.value, operation.value, document);
     runner.addEventListener('change', update);
     operation.addEventListener('change', update);

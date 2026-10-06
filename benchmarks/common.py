@@ -3,7 +3,7 @@ import math
 import random
 import statistics
 
-NAMES = tuple(f"{case}/{stage}" for case in ("text", "barcodes", "graphics")
+NAMES = tuple(f"{case}/{stage}" for case in ("text", "bitmap-text", "barcodes", "graphics")
               for stage in ("scene", "raster", "total"))
 RUNNERS = {"ubuntu-24.04"}
 

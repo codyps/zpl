@@ -1,4 +1,6 @@
 //! ZD621 preview regressions. Raw captures and provenance are in the fixture README.
+#[path = "support/compact_font.rs"]
+mod compact_font;
 use std::{fs, path::Path};
 #[path = "support/digest.rs"]
 mod digest;
@@ -50,12 +52,12 @@ fn printer_controls_pin_every_painted_pixel() {
 
 #[test]
 fn native_font_f_asset_is_pinned_to_the_capture() {
-    let asset = include_bytes!("../assets/fontF-26-13.zbf");
+    let asset = compact_font::asset("fontF-26-13.zbf").unwrap();
     assert_eq!(
-        digest::sha256(asset),
+        digest::sha256(&asset),
         include_str!("fixtures/resident-f-zd621-v1/asset.sha256").trim()
     );
-    let (settings, glyphs) = zpl::bitmap_font::unpack(asset).unwrap();
+    let (settings, glyphs) = zpl::bitmap_font::unpack(&asset).unwrap();
     assert_eq!(
         (settings.font, settings.height, settings.width, settings.dpi),
         ('F', 26, 13, 203)

@@ -81,8 +81,10 @@ of outline and hint-parameter fitting.
 
 `font0-16-0`, `font0-20-0`, `font0-64-0`, and `font0-32-{16,24,64}`
 provide complete printable ASCII strikes at those requested height/width pairs.
-`fontA-9-5` and `fontD-18-10` contain native bitmap matrices, enlarged by integer
-multipliers. `font0-32-latin1` supplements the natural-width 32-dot strike with é.
+Native bitmap faces A–H and GS are supplied by the
+[`zpl-bitmap-fonts` crate](../../zpl-bitmap-fonts/README.md); their former ZBF
+assets and supplements have been removed. `font0-32-latin1` supplements the
+natural-width 32-dot strike with é.
 Capture provenance, source/image hashes, asset hashes and regression controls
 are in `tests/fixtures/resident-fonts-zd621-v1`. ZBF1's one-byte codepoint also
 supports U+00A0–00FF; counts are bounded at 191 and C0/C1/DEL remain excluded.
@@ -93,45 +95,14 @@ The 3,584-byte strike, raw sampling pages, exact independent text verification,
 four-orientation FO/FT controls, and full Labelixa QR label comparisons are
 documented in [qr-segmentation-zd621-v1](../tests/fixtures/qr-segmentation-zd621-v1/README.md).
 
-`fontE-28-15.zbf` supplies all 95 printable ASCII OCR-B glyphs, including the
-ten unchanged digits used for UPC/EAN captions.
-It is a native 203-DPI printer strike, with a 20-dot advance and zero-based
-baseline 22. Raw sampling pages, extractor metadata and an independent exact
-verification are preserved in
-[retail-caption-zd621-v1](../tests/fixtures/retail-caption-zd621-v1/README.md).
-The full strike replaces the original digit-only asset and enables general
-resident E text. Its complete sampling, independent verification and asset
-hash are in [resident-e-zd621-v1](../tests/fixtures/resident-e-zd621-v1/README.md).
+The compact bitmap collection supplies A–H and GS, including native baselines,
+advances, CI0 source positions, and the distinct Unicode/legacy backslash designs.
+C aliases D; E and H select the 203-dpi E8/H8 faces. Printer-capture fixtures and
+historical asset hashes remain in `tests/fixtures/resident-*-zd621-v1` and
+`graphic-symbols-zd621-v1`. Tests reconstruct the original ASCII strike encoding
+from the compact reader and verify those hashes, without retaining duplicate
+font assets.
 
-`fontB-11-7.zbf` adds all 95 printable ASCII inputs for uppercase resident B,
-with nine-dot advance and zero-based native baseline 10. Extraction pages,
-metadata, an independent composition verification and the asset hash are in
-[resident-bc-zd621-v1](../tests/fixtures/resident-bc-zd621-v1/README.md).
-Font C reuses the captured D matrix, as specified by the ZPL Programming Guide
-Table 31 (p. 1583) and verified by full-ASCII printer controls.
-
-`fontF-26-13.zbf` contains all 95 printable ASCII inputs for resident F,
-with 16-dot advance and zero-based native baseline 20. Raw extraction pages,
-metadata, an independent exact composition verification and the asset hash
-are preserved in
-[resident-f-zd621-v1](../tests/fixtures/resident-f-zd621-v1/README.md).
-Native dimensions, baseline and gap follow Tables 29/31 of the ZPL Guide
-(pp. 1582–1583); magnified placement is checked against independent previews.
-
-`fontG-60-40.zbf` contains all 95 printable ASCII resident G glyphs, with
-48-dot advance and zero-based native baseline 47. Raw sampling uses four
-glyphs per page; the 24 pages, independent exact verification, metadata and
-asset hash are in
-[resident-g-zd621-v1](../tests/fixtures/resident-g-zd621-v1/README.md).
-Dimensions, gap and baseline follow Tables 29/31 of the ZPL Guide
-(pp. 1582–1583); independent printer controls verify magnification and placement.
-
-`fontH-21-13.zbf` contains all 95 printable ASCII inputs for resident H (OCR-A),
-with 19-dot advance and zero-based native baseline 20. Space and lowercase
-letters have empty bitmaps with their full advance, as measured on the printer.
-Extraction, independent verification, asset hash and blank-versus-space controls
-are in [resident-h-zd621-v1](../tests/fixtures/resident-h-zd621-v1/README.md).
-Dimensions, gap and baseline follow Tables 29/31 of the ZPL Guide (pp. 1582–1583).
 
 ## Font 0 at 28 by 14 dots
 
@@ -219,6 +190,6 @@ are reproduced from `tests/fixtures/resident-tuv-zd621-v1`. The independent
 origin atlas measures their baselines; these are distinct resident faces.
 
 `fontS-40-35.zbf` and `fontS-80-70.zbf` are native resident-S ASCII strikes.
-They are independent of `fontGS-24-24.zbf`, whose explicit `@` face tag replaces
-its historical S tag. Offline tests reproduce both resident assets and the
-retagged graphic-symbol asset from unchanged native sampling pages.
+These scalable-font strikes remain separate from GS, which now comes from
+`zpl-bitmap-fonts` under the explicit `@` resident alias. Printer-capture
+regressions continue to distinguish the two faces.

@@ -4015,6 +4015,7 @@ version = "0.1.0"
 dependencies = [
  "clap",
  "eyre",
+ "getrandom 0.4.3",
  "htmlize",
  "memchr",
  "raster-diff",
@@ -4134,7 +4135,12 @@ dependencies = [
  "toml 1.1.6+spec-1.1.0",
  "unicode-bidi",
  "unicode-normalization",
+ "zpl-bitmap-fonts",
 ]
+
+[[package]]
+name = "zpl-bitmap-fonts"
+version = "0.1.0"
 
 [[package]]
 name = "zpl-cmd"
@@ -4142,6 +4148,22 @@ version = "0.1.0"
 dependencies = [
  "clap",
  "zpl",
+]
+
+[[package]]
+name = "zpl-font-extract"
+version = "0.1.0"
+dependencies = [
+ "clap",
+ "eyre",
+ "raster-diff",
+ "reqwest",
+ "serde",
+ "serde_json",
+ "sha2",
+ "tokio",
+ "zebra-http-api",
+ "zpl-bitmap-fonts",
 ]
 
 [[package]]

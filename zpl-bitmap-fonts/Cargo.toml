@@ -1,0 +1,14 @@
+[package]
+name = "zpl-bitmap-fonts"
+version = "0.1.0"
+edition = "2021"
+license.workspace = true
+description = "Allocation-free embedded bitmap fonts recovered from ZPL previews"
+readme = "README.md"
+repository = "https://github.com/codyps/zpl"
+documentation = "https://docs.rs/zpl-bitmap-fonts"
+include = ["src/**", "data/**", "LICENSE", "README.md"]
+
+[features]
+default = []
+zd621 = []

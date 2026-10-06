@@ -29,3 +29,19 @@ test('performance fetch failures are visible', async ({page}) => {
   await page.goto('perf/');
   await expect(page.getByRole('alert')).toContainText('Could not load performance history: HTTP 503');
 });
+
+test('bitmap workloads added after the first history record can be selected', async ({page}) => {
+  const old = {run_id: 1, run_attempt: 1, runner: 'ubuntu-24.04', harness: 'old',
+    environment: {rust: 'rustc test', cpu: 'test CPU', os: 'Linux', image: 'test'},
+    timestamp: '2026-09-29T00:00:00Z', commits: {head: 'a'.repeat(40)},
+    medians: {'text/scene': 10000}, file: '1-1-ubuntu-24.04.json'};
+  const recent = {...old, run_id: 2, harness: 'new', file: '2-1-ubuntu-24.04.json',
+    medians: {'text/scene': 11000, 'bitmap-text/scene': 30000}};
+  await page.route('**/perf/data/index.json', route => route.fulfill({json: [old, recent]}));
+  await page.goto('perf/');
+  await page.getByLabel('Workload and stage').selectOption('bitmap-text/scene');
+  await expect(page.locator('tbody tr')).toHaveCount(1);
+  await expect(page.locator('svg circle')).toHaveCount(1);
+  await expect(page.locator('tbody')).toContainText('30.00');
+  await expect(page.getByRole('link', {name: 'Raw', exact: true})).toHaveAttribute('href', 'data/2-1-ubuntu-24.04.txt');
+});

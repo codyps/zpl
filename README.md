@@ -7,6 +7,9 @@ to PNG, SVG and PDF, and comparing previews from Zebra printers. The workspace a
 includes a browser editor and a printer-backed HTTP proxy. Font research and
 extraction tools live in a [separate private repository](https://github.com/codyps/zpl-font-extract).
 
+Recover bitmap fonts end to end with the [automatic font CLI](docs/automatic-bitmap-fonts.md),
+including cached printer previews, verified JSON and compact Rust font tables.
+
 Use the [firmware update CLI](docs/firmware-updates.md) to inspect network Zebra
 printers and apply local firmware files with model and serial checks.
 

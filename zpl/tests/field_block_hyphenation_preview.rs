@@ -1,4 +1,6 @@
 //! ZD621 preview regressions. Raw captures and provenance are in the fixture README.
+#[path = "support/compact_font.rs"]
+mod compact_font;
 use std::{fs, path::Path};
 #[path = "support/digest.rs"]
 mod digest;
@@ -101,7 +103,8 @@ fn native_hyphen_supplements_are_pinned_and_c_d_are_identical() {
         .skip(1)
     {
         let c: Vec<_> = row.split('\t').collect();
-        let bytes = fs::read(root.join("assets").join(c[0])).unwrap();
+        let bytes = compact_font::asset(c[0])
+            .unwrap_or_else(|| fs::read(root.join("assets").join(c[0])).unwrap());
         assert_eq!(digest::sha256(&bytes), c[1], "{} asset", c[0]);
         let (settings, glyphs) = zpl::bitmap_font::unpack(&bytes).unwrap();
         assert_eq!(
