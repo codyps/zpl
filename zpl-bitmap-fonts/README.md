@@ -21,8 +21,9 @@ application, or retained as a module in this crate. Keep generated `fonts.rs` an
 ## Included capture provenance
 
 The `zd621` collection contains 45 named fonts, each with 237 composable CI0 source
-positions, measured through ZD621 203-dpi print previews. The source collection
-uses schema `zebra-bitmap-fonts` v1, with verified content SHA-256:
+positions, measured through ZD621 203-dpi print previews. The tracked source
+collection is [`data/zd621/fonts.json`](data/zd621/fonts.json). It uses schema
+`zebra-bitmap-fonts` v1, with verified content SHA-256:
 
 `c649c6b462dd5e2028dfdc8eabdc7c0cd3eeea95dbcdc61edfcefc425ba816e8`
 
@@ -33,13 +34,17 @@ tables. These observations apply to that capture, not to other printer models,
 DPI settings or firmware versions.
 
 The generated `src/zd621/catalog.json` records the source content hash and output
-hashes. To compile a newly recovered collection, use a new directory and then
-replace the generated module:
+hashes. From the workspace root, regenerate the bundled tables from the tracked
+JSON into a new directory:
 
 ```sh
 cargo run --locked -p zpl-font-extract -- compile \
-  _recovered-fonts/fonts.json --out _zd621-generated
+  zpl-bitmap-fonts/data/zd621/fonts.json --out _zd621-generated
 ```
+
+The JSON retains the capture lineage and verification hashes. Referenced raw
+capture paths identify the original evidence; those PNGs are not included here
+and are not required to regenerate the compact tables.
 
 Font content retains its original licensing. The crate's code is OSL-3.0.
 Keys are CI0 source positions, not Unicode. Glyph bearings are signed dots relative
