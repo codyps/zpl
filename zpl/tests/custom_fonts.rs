@@ -433,3 +433,15 @@ fn invalid_and_unresolved_names_keep_offsets_and_do_not_touch_registration() {
     let named = before.replace("^AZN,10,10", "^A@N,10,10,R:BRAND.FNT");
     assert!(image(before, &custom) == image(&named, &custom));
 }
+
+#[test]
+fn overridden_resident_ids_remap_to_custom_unicode_glyphs() {
+    // ^CI image 66 (B) -> source 65 (A). Compact resident source-slot tags
+    // must not reach the Unicode glyph lookup of a caller-supplied face.
+    let source = "^XA^PW100^LL100^CI0,65,66^FO10,10^AAN,10,10^FDB^FS^XZ";
+    let expected = "^XA^PW100^LL100^FO10,10^AZN,10,10^FDA^FS^XZ";
+    assert_eq!(
+        image(source, &fonts('A', 4)),
+        image(expected, &fonts('Z', 4))
+    );
+}

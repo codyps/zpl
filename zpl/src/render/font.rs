@@ -152,7 +152,7 @@ impl<'a> Font<'a> {
         } else {
             Some(c as usize)
         };
-        if resident(self.id).is_some() {
+        if self.custom.is_none() && resident(self.id).is_some() {
             if let Some(source) = self
                 .character_map
                 .and_then(|map| image.and_then(|i| map.get(i).copied()))
