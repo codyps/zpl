@@ -52,6 +52,12 @@ The method uses the following steps:
 
 1. Probe two visible glyphs with both `^FO` and `^FT` to measure a one-based
    baseline. Measure repeated glyphs and a space-separated pair for advances.
+
+   > Aside: `^FO` (Field Origin) positions unrotated text by the top-left of its
+   > nominal font cell; `^FT` (Field Typeset) positions it by its baseline.
+   > “One-based baseline” counts rows from 1 at the top of that cell, so a
+   > baseline value of 7 means an offset of 6 dots from the top.
+
 2. Request different heights and widths independently. Require exact integer
    replication of native pixels. Fit the documented nearest-integer 1–10 bitmap
    magnification model, then choose further requests that distinguish remaining
@@ -61,6 +67,7 @@ The method uses the following steps:
 4. Recheck reference glyphs, space, baseline and doubled dimensions. Serialize
    and reparse the font JSON. Capture fresh, differently ordered text that includes
    every surviving glyph and require exact full-canvas recomposition from that JSON.
+
 
 All stages check canvas dimensions, clipping, page-specific registration marks,
 stray ink, and a separately requested repeat of the first page. These checks reject
@@ -109,7 +116,7 @@ dependencies or unsafe code. The optional `zd621` feature exposes the bundled,
 previously verified ZD621 CI0 source fonts as `zpl_bitmap_fonts::zd621::FONTS`.
 See that crate's README for the dataset provenance.
 
-Compile an existing verified JSON collection independently:
+Compile verified JSON independently:
 
 ```sh
 cargo run --locked -p zpl-font-extract -- compile _recovered-fonts/fonts.json \
