@@ -38,6 +38,7 @@ enum Source<'a> {
 pub(super) struct Face<'a> {
     source: Source<'a>,
     baseline: f64,
+    missing_advance: Option<u32>,
 }
 
 impl<'a> Fonts<'a> {
@@ -89,7 +90,7 @@ impl<'a> Fonts<'a> {
 
     /// Register a bitmap face under a virtual printer filename for `^CW`/`^A@`.
     /// Names are case-insensitive; an omitted device means `R:`. This never
-    /// reads a host file. Supported devices are R/E/B/A, extensions FNT/TTF/TTE,
+    /// reads a host file. Supported devices are R/E/B/A, extensions FNT/TTF/TTE/OTF/DAT,
     /// and basenames contain 1–255 ASCII letters, digits, underscores or hyphens.
     /// See [`Self::insert_bitmap`] for bitmap metrics.
     pub fn insert_named_bitmap(
@@ -162,6 +163,7 @@ pub(super) struct RenderFonts<'r, 'a> {
     resources: &'r Fonts<'a>,
     aliases: BTreeMap<char, String>,
     selected_name: Option<String>,
+    downloaded: BTreeMap<String, Face<'a>>,
 }
 
 impl<'r, 'a> RenderFonts<'r, 'a> {
@@ -170,17 +172,50 @@ impl<'r, 'a> RenderFonts<'r, 'a> {
             resources,
             aliases: BTreeMap::new(),
             selected_name: None,
+            downloaded: BTreeMap::new(),
         }
     }
 
+    fn checked_name(&self, name: &str) -> Result<String, String> {
+        let normalized = font_name(name)?;
+        if self.downloaded.contains_key(&normalized) {
+            Ok(normalized)
+        } else {
+            self.resources.checked_name(name)
+        }
+    }
+
+    pub(super) fn install(
+        &mut self,
+        download: &'a super::font_downloads::Download,
+    ) -> Result<(), String> {
+        use super::font_downloads::Download;
+        let (name, face) = match download {
+            Download::TrueType { name, data } => (name, Face::truetype(data, Hinting::Native)?),
+            Download::Bitmap {
+                name,
+                settings,
+                glyphs,
+                baseline,
+                space,
+            } => {
+                let mut face = Face::bitmap_metrics(*settings, glyphs.clone(), *baseline)?;
+                face.missing_advance = Some(*space);
+                (name, face)
+            }
+        };
+        self.downloaded.insert(name.clone(), face);
+        Ok(())
+    }
+
     pub(super) fn alias(&mut self, id: char, name: &str) -> Result<(), String> {
-        let name = self.resources.checked_name(name)?;
+        let name = self.checked_name(name)?;
         self.aliases.insert(id, name);
         Ok(())
     }
 
     pub(super) fn select_named(&mut self, name: &str) -> Result<(), String> {
-        self.selected_name = Some(self.resources.checked_name(name)?);
+        self.selected_name = Some(self.checked_name(name)?);
         Ok(())
     }
 
@@ -195,17 +230,19 @@ impl<'r, 'a> RenderFonts<'r, 'a> {
             self.aliases.get(&id)
         };
         match name {
-            Some(name) => self.resources.named.get(name),
-            None => self.resources.faces.get(&id),
+            Some(name) => self
+                .downloaded
+                .get(name)
+                .or_else(|| self.resources.named.get(name).map(Arc::as_ref)),
+            None => self.resources.faces.get(&id).map(Arc::as_ref),
         }
-        .map(Arc::as_ref)
     }
 }
 
 // Virtual filenames only: Zebra Programming Guide ^CW p. 168 / ^A@ p. 62.
 // https://www.zebra.com/content/dam/support-dam/en/documentation/unrestricted/guide/software/zpl-zbi2-pg-en.pdf
-// Restrict this implementation to explicit FNT/TTF/TTE names on supported drives.
-fn font_name(name: &str) -> Result<String, String> {
+// Restrict lookup to explicit font extensions on supported drives.
+pub(super) fn font_name(name: &str) -> Result<String, String> {
     let name = name.trim().to_ascii_uppercase();
     let (device, file) = name.split_once(':').unwrap_or(("R", &name));
     if !matches!(device, "R" | "E" | "B" | "A") {
@@ -213,13 +250,13 @@ fn font_name(name: &str) -> Result<String, String> {
     }
     let (base, extension) = file
         .rsplit_once('.')
-        .ok_or("named font requires FNT, TTF or TTE extension")?;
+        .ok_or("named font requires FNT, TTF, TTE, OTF or DAT extension")?;
     if base.is_empty()
         || base.len() > 255
         || !base
             .bytes()
             .all(|b| b.is_ascii_alphanumeric() || matches!(b, b'_' | b'-'))
-        || !matches!(extension, "FNT" | "TTF" | "TTE")
+        || !matches!(extension, "FNT" | "TTF" | "TTE" | "OTF" | "DAT")
     {
         return Err("invalid named font filename or extension".into());
     }
@@ -230,8 +267,15 @@ fn font_name(name: &str) -> Result<String, String> {
 pub(super) const NAMED_FONT: char = '\0';
 
 impl<'a> Face<'a> {
-    fn bitmap(settings: Settings, mut glyphs: Vec<Glyph>, baseline: f64) -> Result<Self, String> {
+    fn bitmap(settings: Settings, glyphs: Vec<Glyph>, baseline: f64) -> Result<Self, String> {
         settings.validate()?;
+        Self::bitmap_metrics(settings, glyphs, baseline)
+    }
+    fn bitmap_metrics(
+        settings: Settings,
+        mut glyphs: Vec<Glyph>,
+        baseline: f64,
+    ) -> Result<Self, String> {
         bitmap_font::validate_glyphs(&glyphs)?;
         if glyphs.is_empty()
             || !baseline.is_finite()
@@ -249,6 +293,7 @@ impl<'a> Face<'a> {
         Ok(Self {
             baseline: baseline / settings.height as f64,
             source: Source::Bitmap(settings, glyphs),
+            missing_advance: None,
         })
     }
     fn truetype(data: &'a [u8], hinting: Hinting) -> Result<Self, String> {
@@ -265,6 +310,7 @@ impl<'a> Face<'a> {
         let baseline = f64::from(ascent) / f64::from(font.units_per_em());
         Ok(Self {
             source: Source::TrueType(font, hinting),
+            missing_advance: None,
             baseline,
         })
     }
@@ -321,10 +367,28 @@ impl Face<'_> {
         self.dimensions(w, h)?;
         match &self.source {
             Source::Bitmap(s, glyphs) => {
-                let index = glyphs
-                    .binary_search_by_key(&(c as u32), |g| g.codepoint)
-                    .map_err(|_| format!("unsupported custom font glyph {c:?}"))?;
                 let width = if s.width == 0 { s.height } else { s.width };
+                let index = match glyphs.binary_search_by_key(&(c as u32), |g| g.codepoint) {
+                    Ok(index) => index,
+                    Err(_) => {
+                        let advance = self
+                            .missing_advance
+                            .ok_or_else(|| format!("unsupported custom font glyph {c:?}"))?;
+                        return Ok((
+                            Cow::Owned(Glyph {
+                                codepoint: c as u32,
+                                advance,
+                                left: 0,
+                                top: 0,
+                                width: 0,
+                                height: 0,
+                                bitmap: vec![],
+                            }),
+                            w / width as f64,
+                            h / s.height as f64,
+                        ));
+                    }
+                };
                 Ok((
                     Cow::Borrowed(&glyphs[index]),
                     w / width as f64,

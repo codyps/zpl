@@ -399,7 +399,7 @@ fn invalid_and_unresolved_names_keep_offsets_and_do_not_touch_registration() {
         "/tmp/font.ttf",
         "C:FONT.TTF",
         "R:FONT",
-        "R:FONT.OTF",
+        "R:FONT.WOFF",
         "R:FO/NT.TTF",
     ] {
         assert!(

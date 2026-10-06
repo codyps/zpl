@@ -74,7 +74,7 @@ Unregistered faces continue to use resident behavior. Font sets belong to the
 caller, with no global installation or filesystem/network access by rendering.
 The same set can be reused across render calls. Invalid assignments leave the
 previous face intact. A registered face's missing glyphs return an error instead
-of mixing in resident glyphs. This API does not implement ZPL font downloads.
+of mixing in resident glyphs. ZPL downloads use the same engines (see below).
 
 Register a virtual printer filename with `insert_named_truetype`,
 `insert_named_bitmap`, or `insert_named_zbf`. Both `^A@` and `^CW` resolve only
@@ -95,7 +95,7 @@ let aliased = render_with_fonts(
 ```
 
 Names are case-insensitive; omitting the device selects `R:`. Supported devices
-are `R:`, `E:`, `B:`, and `A:`. Require an explicit `.FNT`, `.TTF`, or `.TTE`
+are `R:`, `E:`, `B:`, and `A:`. Require an explicit `.FNT`, `.TTF`, `.TTE`, `.OTF`, or `.DAT`
 extension and a basename of 1–255 ASCII letters, digits, underscores or hyphens.
 These are registry keys, not host filesystem paths; the extension does not
 convert the supplied font data or enable additional outline formats.
@@ -117,6 +117,58 @@ firmware's missing-name fallback. Named selections retain the custom sizing
 rules below; this does not claim native downloaded-bitmap magnification parity.
 See the Zebra Programming Guide [^A@](https://docs.zebra.com/us/en/printers/software/zpl-pg/zpl-commands/%5Ea-.html)
 and ^CW (p. 168) for the command conventions.
+
+### Font downloads in ZPL
+
+Downloads register virtual resources for the current render call. They work
+before `^XA`, within labels, and in recalled stored formats. `^CW`/`^A@` resolve
+these resources using the same namespace as caller-provided fonts. Downloading
+an existing filename replaces it for subsequent fields, including existing ID
+aliases and remembered `^A@` selections. Earlier fields retain their rendered
+appearance. Caller registrations and later render calls are unaffected.
+
+| Command | Supported payload | Default extension |
+| --- | --- | --- |
+| `~DB` | Structured bitmap glyphs; each glyph accepts hex, B64, or Z64 | `.FNT` |
+| `~DT` | Quadratic TrueType SFNT in hex, B64, or Z64 | `.DAT` |
+| `~DU` | Quadratic TrueType SFNT in hex, B64, or Z64 | `.FNT` |
+| `~DY` | Font types `T` (TTF/OTF) and `E` (TTE); mode `A` for hex/B64/Z64, `B` for binary | `.TTF` / `.TTE` |
+
+For example, this downloads a two-row bitmap character and selects it by name:
+
+```zpl
+~DBR:TEST.FNT,N,10,10,7,4,1,Example,#0041.2.8.1.7.9.FF81
+^XA^FO20,20^A@N,20,20,R:TEST.FNT^FDA A^FS^XZ
+```
+
+`~DB` preserves glyph offsets, advances and the cell baseline. Its `space`
+operand supplies blank advances for absent characters; caller-supplied bitmap
+fonts still report missing glyphs. Cell dimensions are bounded to 32000 dots;
+glyph dimensions, advances and offsets use the bitmap engine's 4096-dot bounds.
+Glyph codes must be supported printable Unicode scalars. Downloads use the same
+custom sizing rules described above, without a claim of native printer parity.
+
+TrueType downloads use native hinting. All downloaded payloads must decode to
+formats supported by the existing engine: the legacy **ZTools-specific
+containers** mentioned for `~DT`/`~DU` are not decoded. An unrecognized container
+produces an explicit error; accepting the command does not imply support for
+every historical printer font format. CFF/CFF2, collections, `~DS`, `~DL`, and
+`~DY` AR compression/non-font objects remain unsupported.
+
+Declared lengths, CRCs, glyph counts and font metrics are validated. The
+`Limits::font_bytes` budget defaults to 16 MiB across downloads, including
+replacements; bitmap row/glyph allocation overhead also counts against it.
+Code that constructs `Limits` with every field explicitly must add `font_bytes`
+or use `..Limits::default()`. The existing input/expanded-format budgets still apply, and an individual
+TrueType SFNT remains bounded to 16 MiB. Unknown names fail at selection, so
+fonts must be downloaded before their `^CW`/`^A@` reference. Font data is never
+written to a host file or sent to a printer. Proxy admission remains unchanged.
+
+References: Zebra Programming Guide ~DB pp. 169–170, ~DT/~DU pp. 179–180,
+~DY pp. 181–183 and the
+[B64/Z64 appendix](https://docs.zebra.com/content/tcm/us/en/printers/software/zpl-pg/zb64-encoding-and-compression/b64-and-z64-encoding.html).
+
+### Font metrics and engine limits
 
 For bitmap fonts, use `insert_bitmap(id, settings, glyphs, baseline)` or
 `insert_zbf(id, bytes, baseline)`. The baseline is measured from the strike's

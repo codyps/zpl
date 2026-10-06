@@ -12,6 +12,7 @@ mod bounded_text;
 mod concatenation;
 mod field_block;
 mod font;
+mod font_downloads;
 pub mod fonts;
 mod graphics;
 mod numbered;
@@ -247,6 +248,7 @@ fn render_expanded(
     fonts: &fonts::Fonts<'_>,
 ) -> Result<Document, RenderError> {
     // Request-local names resolve against the caller-owned font resources.
+    let downloads = font_downloads::prepare(input, limits);
     let mut fonts = fonts::RenderFonts::new(fonts);
     let number = |p: &[&str], i, default| number(p, i, default, limits.number_abs);
     let numbered = numbered::plan(input, options.compatibility, limits.field_bytes)?;
@@ -371,6 +373,21 @@ fn render_expanded(
                     )
                 }
             };
+            if matches!(name, "DB" | "DT" | "DU" | "DY") {
+                if !matches!(item, Element::ControlCommand(_)) {
+                    return Err(format!("{name} requires control prefix"));
+                }
+                if field.path.is_some() {
+                    return Err("drawing must end with FS before another command".into());
+                }
+                let download = downloads
+                    .get(&offset)
+                    .ok_or("missing font download")?
+                    .as_ref()
+                    .map_err(Clone::clone)?;
+                fonts.install(download)?;
+                return Ok(());
+            }
             if matches!(item, Element::ControlCommand(_))
                 && !matches!(name, "DG" | "CC" | "CT" | "CD")
             {
