@@ -10,6 +10,7 @@ documentation = "https://docs.rs/zpl"
 include = ["src/**", "assets/*.zbf", "LICENSE", "README.md", "CHANGELOG.md"]
 
 [dependencies]
+zpl-bitmap-fonts = { version = "0.1.0", path = "../zpl-bitmap-fonts", features = ["zd621"] }
 encoding_rs = "0.8.41"
 unicode-normalization = "0.1.25"
 unicode-bidi = "0.3.18"

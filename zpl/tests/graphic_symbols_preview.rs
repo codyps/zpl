@@ -1,4 +1,6 @@
 //! ZD621 preview regressions. Raw captures and provenance are in the fixture README.
+#[path = "support/compact_font.rs"]
+mod compact_font;
 use std::{fs, path::Path};
 #[path = "support/digest.rs"]
 mod digest;
@@ -51,9 +53,10 @@ fn printer_controls_pin_every_painted_pixel() {
 
 #[test]
 fn captured_symbol_and_text_assets_are_pinned() {
+    let symbols = compact_font::asset("fontGS-24-24.zbf").unwrap();
     for (asset, hash, font) in [
         (
-            include_bytes!("../assets/fontGS-24-24.zbf").as_slice(),
+            symbols.as_slice(),
             include_str!("fixtures/graphic-symbols-zd621-v1/asset.sha256"),
             zpl::bitmap_font::GRAPHIC_SYMBOLS,
         ),

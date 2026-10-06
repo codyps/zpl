@@ -2345,22 +2345,22 @@ fn font_dimensions(
     let w = number(p, 2, 0., number_abs)?;
     if id != '0' {
         // ZPL Programming Guide Table 31, pp. 1583–1584: native bitmap matrices.
-        let (nh, nw) = match id {
-            'A' => (9., 5.),
-            'B' => (11., 7.),
-            'E' => (28., 15.),
-            'F' => (26., 13.),
-            'G' => (60., 40.),
-            'H' => (21., 13.),
-            'P' => (20., 18.),
-            'Q' => (28., 24.),
-            'R' => (35., 31.),
-            'S' => (40., 35.),
-            'T' => (48., 42.),
-            'U' => (59., 53.),
-            'V' => (80., 71.),
-            GRAPHIC_SYMBOLS => (24., 24.),
-            _ => (18., 10.),
+        let (nh, nw) = if let Some(face) = zpl_bitmap_fonts::resident(id) {
+            (
+                f64::from(face.metrics.cell_height),
+                f64::from(face.metrics.cell_width),
+            )
+        } else {
+            match id {
+                'P' => (20., 18.),
+                'Q' => (28., 24.),
+                'R' => (35., 31.),
+                'S' => (40., 35.),
+                'T' => (48., 42.),
+                'U' => (59., 53.),
+                'V' => (80., 71.),
+                _ => (18., 10.),
+            }
         };
         // ^A p. 61 and ^CF p. 154: one supplied dimension determines
         // the other from the native matrix. With neither, use the last CF pair.

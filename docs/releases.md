@@ -13,10 +13,10 @@ The [Release-plz workflow](../.github/workflows/release-plz.yml) runs on pushes 
    published crates.io versions as the baseline. A failed publication stops
    release preparation so it cannot race ahead of the registry.
 
-Only `raster-diff` and `zpl` are publishable and managed by release-plz. The
-remaining workspace packages set `publish = false`. Release-plz derives the
-dependency order and publishes `raster-diff` before `zpl`. Their tags and GitHub
-releases are named `raster-diff-v<version>` and `zpl-v<version>`.
+`raster-diff`, `zpl-bitmap-fonts`, and `zpl` are publishable and managed by
+release-plz. The remaining workspace packages set `publish = false`. Release-plz
+derives dependency order and publishes the raster and bitmap-font dependencies
+before `zpl`. Tags and GitHub releases use `<crate>-v<version>`.
 
 The action and Rust/checkout actions are pinned to commit SHAs; the release-plz
 binary is pinned separately. Publishing jobs are serialized, and an active publish
@@ -29,8 +29,9 @@ release PR, and `main` retain their normal CI checks.
 
 ## Trusted publishing setup
 
-Configure a GitHub trusted publisher in the crates.io settings for **both**
-[`raster-diff`](https://crates.io/crates/raster-diff/settings) and
+Configure a GitHub trusted publisher in the crates.io settings for
+[`raster-diff`](https://crates.io/crates/raster-diff/settings),
+[`zpl-bitmap-fonts`](https://crates.io/crates/zpl-bitmap-fonts/settings), and
 [`zpl`](https://crates.io/crates/zpl/settings), with these exact values:
 
 | Field | Value |
@@ -70,15 +71,16 @@ it. Its push to `main` runs `release`, publishing any unpublished prepared
 versions and creating their tags/releases. Merging only a workflow or feature PR
 prepares a release PR; it does not itself publish a release.
 
-Review `cargo package --list -p raster-diff -p zpl` before publication. To verify
-both archives locally without uploading, run:
+Review `cargo package --list -p raster-diff -p zpl-bitmap-fonts -p zpl` before
+publication. To verify the archives locally without uploading, run:
 
 ```sh
-cargo package --locked -p raster-diff -p zpl
+cargo package --locked -p raster-diff -p zpl-bitmap-fonts -p zpl
 ```
 
-Packaging both crates together lets Cargo verify `zpl` against the prepared
-`raster-diff` archive before that version is available on crates.io. A
+Packaging the crates together lets Cargo verify `zpl` against the prepared
+`raster-diff` and `zpl-bitmap-fonts` archives before those versions are available
+on crates.io. A
 `release-plz release --dry-run` on an ordinary commit only tests the merge gate;
 it does not prove packaging or OIDC authentication. A release-plz dry run on a
 release commit publishes nothing, so its separate per-crate Cargo invocations

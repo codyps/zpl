@@ -1,4 +1,5 @@
-//! Embedded, captured resident fonts. Bitmap pixels become output-neutral paths.
+//! Shared native bitmap fonts and captured scalable-font strikes.
+//! Bitmap pixels become output-neutral paths.
 //! Metrics: ZPL Programming Guide Tables 29/31, pp. 1582–1583:
 //! https://www.zebra.com/content/dam/support-dam/en/documentation/unrestricted/guide/software/zpl-zbi2-pg-en.pdf
 use crate::{
@@ -132,6 +133,16 @@ impl Font {
         } else {
             Some(c as usize)
         };
+        if resident(self.id).is_some() {
+            if let Some(source) = self
+                .character_map
+                .and_then(|map| image.and_then(|i| map.get(i).copied()))
+            {
+                if Some(source as usize) != image {
+                    return Ok(char::from_u32(0xf0000 + u32::from(source)).unwrap());
+                }
+            }
+        }
         let c = match self
             .character_map
             .and_then(|map| image.and_then(|image| map.get(image).copied()))
@@ -274,13 +285,6 @@ fn extend_cent(settings: Settings, glyphs: &mut Vec<Glyph>) {
         ('0', 32, 24) => include_bytes!("../../assets/font0-32-24-cent.zbf"),
         ('0', 32, 64) => include_bytes!("../../assets/font0-32-64-cent.zbf"),
         ('0', 64, 0) => include_bytes!("../../assets/font0-64-0-cent.zbf"),
-        ('A', 9, 5) => include_bytes!("../../assets/fontA-9-5-cent.zbf"),
-        ('B', 11, 7) => include_bytes!("../../assets/fontB-11-7-cent.zbf"),
-        ('D', 18, 10) => include_bytes!("../../assets/fontD-18-10-cent.zbf"),
-        ('E', 28, 15) => include_bytes!("../../assets/fontE-28-15-cent.zbf"),
-        ('F', 26, 13) => include_bytes!("../../assets/fontF-26-13-cent.zbf"),
-        ('G', 60, 40) => include_bytes!("../../assets/fontG-60-40-cent.zbf"),
-        ('H', 21, 13) => include_bytes!("../../assets/fontH-21-13-cent.zbf"),
         _ => return,
     };
     glyphs.extend(
@@ -296,7 +300,6 @@ fn extend_hyphens(settings: Settings, glyphs: &mut Vec<Glyph>) {
     let data: &[u8] = match (settings.font, settings.height, settings.width) {
         ('0', 28, 14) => include_bytes!("../../assets/font0-28-14-hyphen.zbf"),
         ('0', 24, 24) => include_bytes!("../../assets/font0-24-24-hyphen.zbf"),
-        ('A', 9, 5) => include_bytes!("../../assets/fontA-9-5-hyphen.zbf"),
         ('0', 32, 0) => include_bytes!("../../assets/font0-32-0-hyphen.zbf"),
         ('0', 16, 0) => include_bytes!("../../assets/font0-16-0-hyphen.zbf"),
         ('0', 20, 0) => include_bytes!("../../assets/font0-20-0-hyphen.zbf"),
@@ -304,12 +307,6 @@ fn extend_hyphens(settings: Settings, glyphs: &mut Vec<Glyph>) {
         ('0', 32, 16) => include_bytes!("../../assets/font0-32-16-hyphen.zbf"),
         ('0', 32, 24) => include_bytes!("../../assets/font0-32-24-hyphen.zbf"),
         ('0', 32, 64) => include_bytes!("../../assets/font0-32-64-hyphen.zbf"),
-        ('B', 11, 7) => include_bytes!("../../assets/fontB-11-7-hyphen.zbf"),
-        ('D', 18, 10) => include_bytes!("../../assets/fontD-18-10-hyphen.zbf"),
-        ('E', 28, 15) => include_bytes!("../../assets/fontE-28-15-hyphen.zbf"),
-        ('F', 26, 13) => include_bytes!("../../assets/fontF-26-13-hyphen.zbf"),
-        ('G', 60, 40) => include_bytes!("../../assets/fontG-60-40-hyphen.zbf"),
-        ('H', 21, 13) => include_bytes!("../../assets/fontH-21-13-hyphen.zbf"),
         _ => return,
     };
     glyphs.extend(
@@ -378,16 +375,8 @@ fn strikes() -> &'static Vec<(Settings, Vec<Glyph>)> {
             include_bytes!("../../assets/font0-32-24.zbf").as_slice(),
             include_bytes!("../../assets/font0-32-20.zbf").as_slice(),
             include_bytes!("../../assets/font0-32-64.zbf").as_slice(),
-            include_bytes!("../../assets/fontA-9-5.zbf").as_slice(),
-            include_bytes!("../../assets/fontB-11-7.zbf").as_slice(),
-            include_bytes!("../../assets/fontD-18-10.zbf").as_slice(),
-            include_bytes!("../../assets/fontF-26-13.zbf").as_slice(),
-            include_bytes!("../../assets/fontG-60-40.zbf").as_slice(),
-            include_bytes!("../../assets/fontH-21-13.zbf").as_slice(),
-            include_bytes!("../../assets/fontGS-24-24.zbf").as_slice(),
             include_bytes!("../../assets/fontS-40-35.zbf").as_slice(),
             include_bytes!("../../assets/fontS-80-70.zbf").as_slice(),
-            include_bytes!("../../assets/fontE-28-15.zbf").as_slice(),
             include_bytes!("../../assets/fontP-20-18.zbf").as_slice(),
             include_bytes!("../../assets/fontP-40-18.zbf").as_slice(),
             include_bytes!("../../assets/fontP-40-36.zbf").as_slice(),
@@ -444,27 +433,6 @@ fn legacy_strikes() -> &'static Vec<(Settings, Vec<Glyph>)> {
                 )),
                 ('0', 64, 0) => Some(include_bytes!(
                     "../../assets/font0-64-0-legacy-backslash.zbf"
-                )),
-                ('A', 9, 5) => Some(include_bytes!(
-                    "../../assets/fontA-9-5-legacy-backslash.zbf"
-                )),
-                ('B', 11, 7) => Some(include_bytes!(
-                    "../../assets/fontB-11-7-legacy-backslash.zbf"
-                )),
-                ('D', 18, 10) => Some(include_bytes!(
-                    "../../assets/fontD-18-10-legacy-backslash.zbf"
-                )),
-                ('E', 28, 15) => Some(include_bytes!(
-                    "../../assets/fontE-28-15-legacy-backslash.zbf"
-                )),
-                ('F', 26, 13) => Some(include_bytes!(
-                    "../../assets/fontF-26-13-legacy-backslash.zbf"
-                )),
-                ('G', 60, 40) => Some(include_bytes!(
-                    "../../assets/fontG-60-40-legacy-backslash.zbf"
-                )),
-                ('H', 21, 13) => Some(include_bytes!(
-                    "../../assets/fontH-21-13-legacy-backslash.zbf"
                 )),
                 _ => None,
             };
@@ -556,7 +524,6 @@ fn control_strikes(
                 ('0', 16, 0, false) => {
                     include_bytes!("../../assets/font0-16-0-legacy-controls.zbf")
                 }
-                ('A', 9, 5, _) => include_bytes!("../../assets/fontA-9-5-legacy-controls.zbf"),
                 _ => continue,
             };
             for glyph in bitmap_font::unpack(data)
@@ -572,11 +539,18 @@ fn control_strikes(
         faces
     })
 }
-fn selected(id: impl Into<Font> + Copy, w: f64, h: f64) -> (&'static [Glyph], f64, f64) {
+fn selected(id: impl Into<Font> + Copy, w: f64, h: f64) -> (GlyphSet, f64, f64) {
     // C and D share the 18x10 matrix (ZPL Programming Guide Table 31,
     // p. 1583); resident-bc-zd621-v1 verifies the alias across all ASCII.
     let font = id.into();
-    let id = if font.id == 'C' { 'D' } else { font.id };
+    if let Some(face) = resident(font.id) {
+        return (
+            GlyphSet::Compact(face, font.legacy_backslash),
+            w / f64::from(face.metrics.cell_width),
+            h / f64::from(face.metrics.cell_height),
+        );
+    }
+    let id = font.id;
     let faces = if font.legacy_controls {
         control_strikes(font.legacy_backslash, font.default_glyph)
     } else if font.default_glyph {
@@ -592,7 +566,7 @@ fn selected(id: impl Into<Font> + Copy, w: f64, h: f64) -> (&'static [Glyph], f6
             && (!matches!(id, '0' | 'P' | 'Q' | 'R' | 'S' | 'T' | 'U' | 'V')
                 || (s.height as f64 == h && sw == w))
         {
-            return (glyphs, w / sw, h / s.height as f64);
+            return (GlyphSet::Captured(glyphs), w / sw, h / s.height as f64);
         }
     }
     if matches!(id, 'P' | 'Q' | 'R' | 'S' | 'T' | 'U' | 'V') {
@@ -606,11 +580,15 @@ fn selected(id: impl Into<Font> + Copy, w: f64, h: f64) -> (&'static [Glyph], f6
             .filter(|(s, _)| s.font == id)
             .min_by(|(a, _), (b, _)| distance(a).total_cmp(&distance(b)))
             .expect("embedded preset font");
-        return (glyphs, w / s.width as f64, h / s.height as f64);
+        return (
+            GlyphSet::Captured(glyphs),
+            w / s.width as f64,
+            h / s.height as f64,
+        );
     }
     fallback(font, w, h)
 }
-fn fallback(font: Font, w: f64, h: f64) -> (&'static [Glyph], f64, f64) {
+fn fallback(font: Font, w: f64, h: f64) -> (GlyphSet, f64, f64) {
     let fallback = if font.legacy_controls {
         &control_strikes(font.legacy_backslash, font.default_glyph)
             .last()
@@ -626,11 +604,11 @@ fn fallback(font: Font, w: f64, h: f64) -> (&'static [Glyph], f64, f64) {
     } else {
         &strike().1
     };
-    (fallback, w / 32., h / 32.)
+    (GlyphSet::Captured(fallback), w / 32., h / 32.)
 }
 // Native strikes may cover only ASCII. Keep the enriched base strike's
 // Unicode, legacy and default glyphs available with their original scale.
-fn selected_for_char(font: Font, c: char, w: f64, h: f64) -> (&'static [Glyph], f64, f64) {
+fn selected_for_char(font: Font, c: char, w: f64, h: f64) -> (GlyphSet, f64, f64) {
     let face = selected(font, w, h);
     if font.id == '0' && glyph_from(face.0, c).is_err() {
         static RETAIL: OnceLock<Vec<(Settings, Vec<Glyph>)>> = OnceLock::new();
@@ -651,7 +629,11 @@ fn selected_for_char(font: Font, c: char, w: f64, h: f64) -> (&'static [Glyph], 
             if glyph_from(glyphs, c).is_ok()
                 && ((w == sw && h == settings.height as f64) || settings.width == 0)
             {
-                return (glyphs, w / sw, h / settings.height as f64);
+                return (
+                    GlyphSet::Captured(glyphs),
+                    w / sw,
+                    h / settings.height as f64,
+                );
             }
         }
         fallback(font, w, h)
@@ -659,31 +641,114 @@ fn selected_for_char(font: Font, c: char, w: f64, h: f64) -> (&'static [Glyph], 
         face
     }
 }
-fn glyph_from(glyphs: &'static [Glyph], c: char) -> Result<&'static Glyph, String> {
-    let index = glyphs
-        .binary_search_by_key(&(c as u32), |g| g.codepoint)
-        .map_err(|_| format!("unsupported embedded font glyph {c:?}"))?;
-    Ok(&glyphs[index])
+// Read compact pixels directly; do not expand the shared pool into heap-backed strikes.
+#[derive(Clone, Copy)]
+enum GlyphSet {
+    Captured(&'static [Glyph]),
+    Compact(&'static zpl_bitmap_fonts::Font, bool),
+}
+impl From<&'static Vec<Glyph>> for GlyphSet {
+    fn from(glyphs: &'static Vec<Glyph>) -> Self {
+        Self::Captured(glyphs)
+    }
+}
+#[derive(Clone, Copy)]
+enum Pixels {
+    Captured(&'static Glyph),
+    Compact(zpl_bitmap_fonts::Glyph),
+}
+struct GlyphView {
+    advance: u32,
+    left: i32,
+    top: i32,
+    width: u32,
+    height: u32,
+    pixels: Pixels,
+}
+impl GlyphView {
+    fn pixel(&self, x: usize, y: usize) -> bool {
+        if x >= self.width as usize || y >= self.height as usize {
+            return false;
+        }
+        match self.pixels {
+            Pixels::Captured(g) => g.bitmap[y][x / 8] & (128 >> (x % 8)) != 0,
+            Pixels::Compact(g) => g.pixel(x as u8, y as u8),
+        }
+    }
+}
+fn resident(id: char) -> Option<&'static zpl_bitmap_fonts::Font> {
+    zpl_bitmap_fonts::resident(id)
+}
+fn source_key(c: char, face: &zpl_bitmap_fonts::Font, legacy_backslash: bool) -> Option<u8> {
+    // CI0 source positions are not Unicode. The character-map path uses a private
+    // internal tag to preserve an explicit source slot through text layout.
+    if (0xf0000..=0xf00ff).contains(&(c as u32)) {
+        return Some((c as u32 - 0xf0000) as u8);
+    }
+    match c {
+        '\\' if !legacy_backslash && !matches!(face.name, "Z:E8.FNT" | "Z:H8.FNT" | "Z:GS.FNT") => {
+            Some(31)
+        }
+        '€' => Some(21),
+        '\u{2190}' => Some(27),
+        '\u{2302}' => Some(127),
+        _ if (' '..='~').contains(&c) => Some(c as u8),
+        _ => CP850
+            .iter()
+            .position(|&key| key == c)
+            .map(|i| (i + 128) as u8),
+    }
+}
+fn glyph_from(glyphs: impl Into<GlyphSet>, c: char) -> Result<GlyphView, String> {
+    let missing = || format!("unsupported embedded font glyph {c:?}");
+    match glyphs.into() {
+        GlyphSet::Captured(glyphs) => {
+            let index = glyphs
+                .binary_search_by_key(&(c as u32), |g| g.codepoint)
+                .map_err(|_| missing())?;
+            let g = &glyphs[index];
+            Ok(GlyphView {
+                advance: g.advance,
+                left: g.left,
+                top: g.top,
+                width: g.width,
+                height: g.height,
+                pixels: Pixels::Captured(g),
+            })
+        }
+        GlyphSet::Compact(face, legacy) => {
+            let key = source_key(c, face, legacy).ok_or_else(missing)?;
+            let g = face.glyph(key).ok_or_else(missing)?;
+            Ok(GlyphView {
+                advance: u32::from(g.advance),
+                left: i32::from(g.left),
+                top: i32::from(g.top),
+                width: u32::from(g.width),
+                height: u32::from(g.height),
+                pixels: Pixels::Compact(g),
+            })
+        }
+    }
 }
 #[cfg(test)]
 fn glyph(c: char) -> Result<&'static Glyph, String> {
-    glyph_from(&strike().1, c)
+    let glyphs = &strike().1;
+    glyphs
+        .binary_search_by_key(&(c as u32), |g| g.codepoint)
+        .map(|i| &glyphs[i])
+        .map_err(|_| "missing glyph".into())
 }
 #[cfg(test)]
 fn baseline(h: f64) -> f64 {
     baseline_for('0', h)
 }
 pub(super) fn baseline_for(id: impl Into<Font> + Copy, h: f64) -> f64 {
-    // Zebra guide p. 1582: one-based baselines 7 (A), 11 (B), 14 (C/D),
-    // 23 (E), 21 (F), 48 (G), 21 (H). These zero-based offsets locate native glyph ink in its cell.
-    h * match id.into().id {
-        'A' => 6. / 9.,
-        'B' => 10. / 11.,
-        'C' | 'D' => 13. / 18.,
-        'E' => 22. / 28.,
-        'F' => 20. / 26.,
-        'G' => 47. / 60.,
-        'H' => 20. / 21.,
+    let id = id.into().id;
+    if let Some(face) = resident(id) {
+        return h * (f64::from(face.metrics.baseline) - 1.) / f64::from(face.metrics.cell_height);
+    }
+    // Scalable preset strikes retain their independently measured baselines.
+    h * match id {
         // Native Q/R FO-to-FT controls locate these face baselines; Table 29
         // omits the presets (their matrices are in Table 31, p. 1584).
         'Q' => 22. / 28.,
@@ -692,9 +757,6 @@ pub(super) fn baseline_for(id: impl Into<Font> + Copy, h: f64) -> f64 {
         'T' => 36. / 48.,
         'U' => 46. / 59.,
         'V' => 62. / 80.,
-        // Captured GS metrics use baseline 23; the specification FT anchor
-        // is selected separately by graphic_symbol_last_row_baseline.
-        GRAPHIC_SYMBOLS => 23. / 24.,
         _ => 0.75,
     }
 }
@@ -857,10 +919,10 @@ pub(super) fn text_parts_for(
         // complete proportional string, it needs no BTreeMap or union/sort
         // pass to prevent even-odd cancellation of overlapping glyph ink.
         let mut path = RowPath::default();
-        for (y, row) in g.bitmap.iter().enumerate() {
+        for y in 0..g.height as usize {
             let mut start = None;
             for x in 0..=g.width as usize {
-                let black = x < g.width as usize && row[x / 8] & (128 >> (x % 8)) != 0;
+                let black = g.pixel(x, y);
                 match (start, black) {
                     (None, true) => start = Some(x),
                     (Some(left), false) => {
@@ -934,10 +996,10 @@ pub(super) fn text_for(
             continue;
         }
         let g = glyph_from(glyphs, font.map_char(c)?)?;
-        for (y, row) in g.bitmap.iter().enumerate() {
+        for y in 0..g.height as usize {
             let mut start = None;
             for x in 0..=g.width as usize {
-                let black = x < g.width as usize && row[x / 8] & (128 >> (x % 8)) != 0;
+                let black = g.pixel(x, y);
                 match (start, black) {
                     (None, true) => start = Some(x),
                     (Some(a), false) => {
@@ -1091,6 +1153,55 @@ pub(super) fn cull_outside(path: &mut Path, width: u32, height: u32) {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn resident_bitmap_faces_read_shared_pool_and_preserve_source_mapping() {
+        for id in ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', GRAPHIC_SYMBOLS] {
+            let native = resident(id).unwrap();
+            let font = Font::new(id, false);
+            let (set, sx, sy) = selected(
+                font,
+                f64::from(native.metrics.cell_width),
+                f64::from(native.metrics.cell_height),
+            );
+            assert!(matches!(set, GlyphSet::Compact(..)));
+            assert_eq!((sx, sy), (1., 1.));
+            assert_eq!(
+                baseline_for(font, f64::from(native.metrics.cell_height)),
+                f64::from(native.metrics.baseline) - 1.
+            );
+            for (c, key) in [
+                ('A', 65),
+                ('¢', 189),
+                ('é', 130),
+                ('\u{ad}', 240),
+                ('ð', 208),
+            ] {
+                let g = glyph_from(set, c).unwrap();
+                let expected = native.glyph(key).unwrap();
+                assert_eq!(g.advance, u32::from(expected.advance));
+                for y in 0..g.height as usize {
+                    for x in 0..g.width as usize {
+                        assert_eq!(g.pixel(x, y), expected.pixel(x as u8, y as u8));
+                    }
+                }
+            }
+        }
+        let mut map = std::array::from_fn(|i| i as u8);
+        map[usize::from(b'A')] = b'\\';
+        let f = Font::new('A', false).with_character_map(Some(map));
+        let (set, _, _) = selected(f, 5., 9.);
+        let remapped = glyph_from(set, f.map_char('A').unwrap()).unwrap();
+        let legacy = resident('A').unwrap().glyph(92).unwrap();
+        assert_eq!(
+            (remapped.width, remapped.height),
+            (u32::from(legacy.width), u32::from(legacy.height))
+        );
+        assert_eq!(source_key('\\', resident('A').unwrap(), false), Some(31));
+        assert_eq!(source_key('\\', resident('A').unwrap(), true), Some(92));
+        assert!(matches!(selected('0', 32., 32.).0, GlyphSet::Captured(..)));
+        assert!(matches!(selected('P', 18., 20.).0, GlyphSet::Captured(..)));
+    }
 
     #[test]
     fn joined_rows_preserve_exact_edges_and_even_odd_pixels() {

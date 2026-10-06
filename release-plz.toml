@@ -1,7 +1,7 @@
 # https://release-plz.dev/docs/config
 [workspace]
 repo_url = "https://github.com/codyps/zpl"
-# Only the renderer and its runtime dependency are public crates.
+# The renderer and its runtime font/raster dependencies are public crates.
 release = false
 # Track published crates.io versions when preparing the next release PR.
 git_only = false
@@ -17,6 +17,10 @@ pr_name = "chore: prepare release"
 
 [[package]]
 name = "raster-diff"
+release = true
+
+[[package]]
+name = "zpl-bitmap-fonts"
 release = true
 
 [[package]]

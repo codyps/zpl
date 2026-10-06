@@ -137,8 +137,10 @@ bearings must fit i8; advance/ink dimensions must fit u8. Oversize values fail
 explicitly instead of truncating. Font-level metrics retain u16 precision. The
 catalog reports array payload sizes, excluding names, references and alignment.
 
-This adds a font dataset crate without changing the renderer's existing font
-selection or compatibility profiles.
+The renderer uses this crate by default for native bitmap faces A–H and GS.
+The former native bitmap assets are removed; sampled scalable font-0 and P–V
+strikes remain. Source-key translation preserves the existing encoding and
+compatibility behavior.
 
 ## Tests
 
