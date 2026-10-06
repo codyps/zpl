@@ -21,27 +21,24 @@ application, or retained as a module in this crate. Keep generated `fonts.rs` an
 ## Included capture provenance
 
 The `zd621` collection contains 45 named fonts, each with 237 composable CI0 source
-positions, from the existing ZD621 203-dpi preview experiment in the sibling
-`zebra-firmware` repository. It is generated from
-`artifacts/bitmap-json-v1/fonts.json` (schema `zebra-bitmap-fonts` v1), with verified
-content SHA-256:
+positions, measured through ZD621 203-dpi print previews. The source collection
+uses schema `zebra-bitmap-fonts` v1, with verified content SHA-256:
 
 `c649c6b462dd5e2028dfdc8eabdc7c0cd3eeea95dbcdc61edfcefc425ba816e8`
 
-That dataset records 13 independently verified full pages, zero differing pixels,
-exact first-page repeats and independent coverage of every exported glyph. The
-method and evidence report are `docs/preview-reconstruction.md` and
-`reports/expanded-preview-reconstruction.json` at zebra-firmware commit
-`a9317aa2e3818fffc59d453a487a42c1029db128`. The Rust compiler validated the existing
-JSON's content hash before generating these tables; this is not a new live
-printer run or a claim about other models, DPI settings or firmware versions.
+The source dataset records 13 independently verified full pages, zero differing
+pixels, exact first-page repeats and independent coverage of every exported glyph.
+The compiler validated the collection's content hash before generating these
+tables. These observations apply to that capture, not to other printer models,
+DPI settings or firmware versions.
 
 The generated `src/zd621/catalog.json` records the source content hash and output
-hashes. Regenerate in a new directory, then replace the generated directory:
+hashes. To compile a newly recovered collection, use a new directory and then
+replace the generated module:
 
 ```sh
 cargo run --locked -p zpl-font-extract -- compile \
-  ../zebra-firmware/artifacts/bitmap-json-v1/fonts.json --out _zd621-generated
+  _recovered-fonts/fonts.json --out _zd621-generated
 ```
 
 Font content retains its original licensing. The crate's code is OSL-3.0.

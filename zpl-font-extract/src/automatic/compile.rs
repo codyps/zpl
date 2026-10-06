@@ -1,5 +1,5 @@
-//! Native tables match the Python shared bitmap scheme: deduplicate records and
-//! payloads separately, trim the key range, densely pack bits across row edges.
+//! Compact native tables: deduplicate records and payloads separately, trim the
+//! key range, and densely pack bits across row edges.
 use super::model::*;
 use eyre::{ensure, Result};
 use serde_json::json;

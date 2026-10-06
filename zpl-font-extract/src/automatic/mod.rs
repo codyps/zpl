@@ -1,5 +1,6 @@
 //! Automatic bitmap discovery from printer previews, with no resident metric table.
-//! Port of zebra-firmware/tools/bitmap_preview.py and share_bitmap_fonts.py.
+//! Infer native metrics from magnification transitions and verify recovered glyphs
+//! against independently composed preview pages.
 //! Sampling is independent of the renderer and never reads firmware font files.
 pub mod capture;
 pub mod compile;

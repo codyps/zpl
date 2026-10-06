@@ -1,9 +1,10 @@
 # Automatic bitmap font recovery
 
-`zpl-font-extract` can discover bitmap font metrics, request printer previews,
-cache the original PNGs, extract and independently verify `fonts.json`, and
-compile it into compact Rust tables. It requires no Python, font files, firmware
-image, resident metric table, or renderer-generated reference images.
+`zpl-font-extract` uses the printer's print preview mechanism to calculate a
+bitmap font representation. It requests sample glyphs, caches the original PNGs,
+measures font metrics, and extracts glyph bitmaps into `fonts.json`. It then
+independently verifies the representation against fresh printer previews and
+compiles it into compact Rust tables.
 
 ```sh
 cargo run --locked -p zpl-font-extract -- recover \
@@ -47,7 +48,7 @@ A successful run writes `fonts.json` and `rust/{fonts.rs,bitmaps.bin,catalog.jso
 
 ## Measurement and verification
 
-The method follows `zebra-firmware/tools/bitmap_preview.py`:
+The method uses the following steps:
 
 1. Probe two visible glyphs with both `^FO` and `^FT` to measure a one-based
    baseline. Measure repeated glyphs and a space-separated pair for advances.
@@ -94,12 +95,12 @@ visible keys, such as `--probes 48,49`; this CLI does not automatically survey
 unknown font files or stored graphics. Multiple fonts share those probe choices;
 run separate jobs if faces need different controls.
 
-JSON schema `zebra-bitmap-fonts`, version 1, is compatible with the Python
-intermediary. The content hash covers canonical sorted-key JSON for schema,
-version, mapping and fonts. It detects edits after verification; it is not a
-signature authenticating the printer. Keys describe the declared input/source
-mapping, not an inferred Unicode cmap. Invisible padding, original file layout,
-unused slots and non-observable metadata cannot be recovered.
+The JSON uses schema `zebra-bitmap-fonts`, version 1. The content hash covers
+canonical sorted-key JSON for schema, version, mapping and fonts. It detects edits
+after verification; it is not a signature authenticating the printer. Keys describe
+the declared input/source mapping, not an inferred Unicode cmap. Invisible padding,
+original file layout, unused slots and non-observable metadata cannot be recovered.
+
 
 ## Compact fonts in a separate crate
 
@@ -108,7 +109,7 @@ dependencies or unsafe code. The optional `zd621` feature exposes the bundled,
 previously verified ZD621 CI0 source fonts as `zpl_bitmap_fonts::zd621::FONTS`.
 See that crate's README for the dataset provenance.
 
-Compile verified JSON independently, including JSON from the Python workflow:
+Compile an existing verified JSON collection independently:
 
 ```sh
 cargo run --locked -p zpl-font-extract -- compile _recovered-fonts/fonts.json \

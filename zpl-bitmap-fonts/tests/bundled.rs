@@ -1,5 +1,5 @@
 #![cfg(feature = "zd621")]
-// Golden FNV-1a computed independently from the Python-verified fonts.json.
+// Golden FNV-1a computed independently from the verified fonts.json.
 // Covers every name, metric, missing key, bearing, advance and individual pixel;
 // excludes storage layout so deduplication can evolve without changing the font.
 #[test]
