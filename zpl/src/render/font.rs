@@ -666,42 +666,45 @@ struct GlyphView {
     pixels: Pixels,
 }
 impl GlyphView {
-    // Select the storage format once per glyph, so retained scalable strikes
-    // do not pay for compact-font dispatch at every pixel. The scan visits
-    // only in-bounds pixels and flushes a trailing span at the row edge.
+    // Select storage once per glyph and scan packed bytes by runs. Skip
+    // uniform bits together instead of dispatching and tracking span state
+    // at every pixel, including for the retained scalable strikes.
     fn for_each_span(&self, mut emit: impl FnMut(usize, usize, usize)) {
-        fn scan(
-            width: usize,
-            height: usize,
-            pixel: impl Fn(usize, usize) -> bool,
-            emit: &mut impl FnMut(usize, usize, usize),
-        ) {
-            for y in 0..height {
-                let mut start = None;
-                for x in 0..width {
-                    match (start, pixel(x, y)) {
-                        (None, true) => start = Some(x),
-                        (Some(left), false) => {
-                            emit(y, left, x);
-                            start = None;
-                        }
-                        _ => {}
+        fn row_spans(bits: &[u8], offset: usize, width: usize, mut emit: impl FnMut(usize, usize)) {
+            let mut x = 0;
+            let mut start = None;
+            while x < width {
+                let bit = offset + x;
+                let byte = bits[bit / 8] << (bit % 8);
+                let remaining = (8 - bit % 8).min(width - x);
+                if byte & 128 != 0 {
+                    start.get_or_insert(x);
+                    x += (byte.leading_ones() as usize).min(remaining);
+                } else {
+                    if let Some(left) = start.take() {
+                        emit(left, x);
                     }
-                }
-                if let Some(left) = start {
-                    emit(y, left, width);
+                    x += (byte.leading_zeros() as usize).min(remaining);
                 }
             }
+            if let Some(left) = start {
+                emit(left, width);
+            }
         }
-        let (width, height) = (self.width as usize, self.height as usize);
+        let width = self.width as usize;
         match self.pixels {
-            Pixels::Captured(g) => scan(
-                width,
-                height,
-                |x, y| g.bitmap[y][x / 8] & (128 >> (x % 8)) != 0,
-                &mut emit,
-            ),
-            Pixels::Compact(g) => scan(width, height, |x, y| g.pixel(x as u8, y as u8), &mut emit),
+            Pixels::Captured(g) => {
+                for (y, row) in g.bitmap.iter().enumerate() {
+                    row_spans(row, 0, width, |left, right| emit(y, left, right));
+                }
+            }
+            Pixels::Compact(g) => {
+                for y in 0..self.height as usize {
+                    row_spans(g.bitmap(), y * width, width, |left, right| {
+                        emit(y, left, right)
+                    });
+                }
+            }
         }
     }
     #[cfg(test)]
@@ -1170,6 +1173,42 @@ pub(super) fn cull_outside(path: &mut Path, width: u32, height: u32) {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn packed_span_scans_preserve_every_glyph_pixel() {
+        let check = |g: GlyphView| {
+            let mut pixels = vec![vec![false; g.width as usize]; g.height as usize];
+            g.for_each_span(|y, left, right| {
+                assert!(left < right);
+                for pixel in &mut pixels[y][left..right] {
+                    assert!(!*pixel, "spans must not overlap");
+                    *pixel = true;
+                }
+            });
+            for (y, row) in pixels.iter().enumerate() {
+                for (x, &pixel) in row.iter().enumerate() {
+                    assert_eq!(pixel, g.pixel(x, y), "pixel {x},{y}");
+                }
+            }
+        };
+        for id in ['A', 'B', 'D', 'E', 'F', 'G', 'H', GRAPHIC_SYMBOLS] {
+            let face = resident(id).unwrap();
+            for key in 0..=255 {
+                let c = char::from_u32(0xf0000 + key).unwrap();
+                if let Ok(g) = glyph_from(GlyphSet::Compact(face, false), c) {
+                    check(g);
+                }
+            }
+        }
+        for id in ['0', 'P', 'Q', 'R', 'S', 'T', 'U', 'V'] {
+            for size in [18., 28., 32., 40., 64.] {
+                let (set, _, _) = selected(id, size, size);
+                for c in ' '..='~' {
+                    check(glyph_from(set, c).unwrap());
+                }
+            }
+        }
+    }
 
     #[test]
     fn resident_bitmap_faces_read_shared_pool_and_preserve_source_mapping() {

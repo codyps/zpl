@@ -92,6 +92,13 @@ impl Font {
     }
 }
 impl Glyph {
+    /// Packed row-major MSB-first bitmap, without padding between rows.
+    /// Only the first `width * height` bits are pixels; the final byte may
+    /// contain unused trailing bits. Empty glyphs return an empty slice.
+    pub fn bitmap(&self) -> &'static [u8] {
+        self.bits
+    }
+
     /// Continuous row-major MSB-first bits; rows have no byte padding.
     pub fn pixel(&self, x: u8, y: u8) -> bool {
         if x >= self.width || y >= self.height {
