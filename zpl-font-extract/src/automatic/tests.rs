@@ -219,7 +219,7 @@ fn config() -> Config {
 #[tokio::test]
 async fn automatic_metrics_variable_advances_and_fresh_holdout() {
     let mut printer = Fake::default();
-    let d = recover(&config(), &mut printer).await.unwrap();
+    let d = calibrate(&config(), &mut printer).await.unwrap();
     assert!(printer.calls > 5);
     let face = &d.fonts[0];
     assert_eq!(
@@ -251,7 +251,7 @@ async fn utf8_and_source_keys_do_not_become_unicode_by_accident() {
         if source {
             c.codes.extend([0, 9]);
         }
-        let d = recover(&c, &mut Fake::default()).await.unwrap();
+        let d = calibrate(&c, &mut Fake::default()).await.unwrap();
         for g in &d.fonts[0].glyphs {
             assert_eq!(*g, fixture(g.key));
         }
@@ -264,7 +264,7 @@ async fn utf8_and_source_keys_do_not_become_unicode_by_accident() {
 #[tokio::test]
 async fn rejects_changed_holdouts_unstable_repeats_and_wrong_registration() {
     for corrupt in ["verification", "repeat", "identity"] {
-        let error = recover(
+        let error = calibrate(
             &config(),
             &mut Fake {
                 corrupt: Some(corrupt),
@@ -315,15 +315,23 @@ fn bitmap_model_rejects_non_replication() {
 }
 #[tokio::test]
 async fn json_tampering_and_compact_export() {
-    let mut d = recover(&config(), &mut Fake::default()).await.unwrap();
+    let mut d = calibrate(&config(), &mut Fake::default()).await.unwrap();
     let t = Temp::new();
-    compile::compile(&d, &t.0.join("rust")).unwrap();
-    assert!(compile::compile(&d, &t.0.join("rust")).is_err());
+    compile::compile(
+        &crate::collection::Collection::from_verified(&d).unwrap(),
+        &t.0.join("rust"),
+    )
+    .unwrap();
+    assert!(compile::compile(
+        &crate::collection::Collection::from_verified(&d).unwrap(),
+        &t.0.join("rust")
+    )
+    .is_err());
     let module = fs::read_to_string(t.0.join("rust/fonts.rs")).unwrap();
     assert!(module.contains("zpl_bitmap_fonts"));
     d.fonts[0].glyphs[0].advance += 1;
     assert!(d.validate().is_err());
-    assert!(compile::compile(&d, &t.0.join("bad")).is_err());
+    assert!(crate::collection::Collection::from_verified(&d).is_err());
     assert!(!t.0.join("bad").exists());
 }
 
@@ -437,12 +445,12 @@ async fn http_end_to_end_cache_replay_and_integrity() {
     let t = Temp::new();
     let mut printer = capture::Printer::new(&server.host, &t.0, false, 0.0, 5).unwrap();
     assert!(capture::Printer::new(&server.host, &t.0, false, 0.0, 5).is_err());
-    let online = recover(&config(), &mut printer).await.unwrap();
+    let online = calibrate(&config(), &mut printer).await.unwrap();
     drop(printer);
     let host = server.host.clone();
     drop(server);
     let mut offline = capture::Printer::new(&host, &t.0, true, 0.0, 5).unwrap();
-    let replay = recover(&config(), &mut offline).await.unwrap();
+    let replay = calibrate(&config(), &mut offline).await.unwrap();
     assert_eq!(
         online.content_hash().unwrap(),
         replay.content_hash().unwrap()
@@ -453,7 +461,7 @@ async fn http_end_to_end_cache_replay_and_integrity() {
             fs::write(path, b"corrupt").unwrap();
         }
     }
-    let error = recover(&config(), &mut offline).await.unwrap_err();
+    let error = calibrate(&config(), &mut offline).await.unwrap_err();
     assert!(format!("{error:?}").contains("integrity mismatch"));
 }
 
@@ -461,13 +469,13 @@ async fn http_end_to_end_cache_replay_and_integrity() {
 async fn incomplete_offline_cache_never_falls_back_to_network() {
     let t = Temp::new();
     let mut printer = capture::Printer::new("http://127.0.0.1:1/", &t.0, true, 0.0, 1).unwrap();
-    let error = recover(&config(), &mut printer).await.unwrap_err();
+    let error = calibrate(&config(), &mut printer).await.unwrap_err();
     assert!(format!("{error:?}").contains("missing cached preview"));
 }
 
 #[tokio::test]
 async fn compact_full_key_span_and_metric_limits() {
-    let mut d = recover(&config(), &mut Fake::default()).await.unwrap();
+    let mut d = calibrate(&config(), &mut Fake::default()).await.unwrap();
     d.mapping = Mapping {
         kind: "ci0-source".into(),
         encoding: 0,
@@ -482,12 +490,187 @@ async fn compact_full_key_span_and_metric_limits() {
     ];
     d.verification["content_sha256"] = json!(d.content_hash().unwrap());
     let t = Temp::new();
-    compile::compile(&d, &t.0.join("all-keys")).unwrap();
+    compile::compile(
+        &crate::collection::Collection::from_verified(&d).unwrap(),
+        &t.0.join("all-keys"),
+    )
+    .unwrap();
     let catalog: Value =
         serde_json::from_slice(&fs::read(t.0.join("all-keys/catalog.json")).unwrap()).unwrap();
     assert_eq!(catalog["unique_records"], 2);
     d.fonts[0].glyphs[0].advance = 256;
     d.verification["content_sha256"] = json!(d.content_hash().unwrap());
-    assert!(compile::compile(&d, &t.0.join("oversize")).is_err());
-    assert!(!t.0.join("oversize").exists());
+    compile::compile(
+        &crate::collection::Collection::from_verified(&d).unwrap(),
+        &t.0.join("wide-metrics"),
+    )
+    .unwrap();
+}
+
+#[tokio::test]
+async fn cached_capture_is_scoped_to_printer_identity() {
+    let server = Server::new();
+    let temp = Temp::new();
+    let identity = json!({"device.unique_id":"serial","appl.name":"firmware-1"});
+    let mut printer = capture::Printer::new(&server.host, &temp.0, false, 0.0, 5)
+        .unwrap()
+        .with_identity(identity.clone());
+    calibrate(&config(), &mut printer).await.unwrap();
+    drop(printer);
+    let host = server.host.clone();
+    drop(server);
+    let mut wrong = capture::Printer::new(&host, &temp.0, true, 0.0, 5)
+        .unwrap()
+        .with_identity(json!({"device.unique_id":"serial","appl.name":"firmware-2"}));
+    let error = calibrate(&config(), &mut wrong).await.unwrap_err();
+    assert!(format!("{error:?}").contains("missing cached preview"));
+    drop(wrong);
+    let mut right = capture::Printer::new(&host, &temp.0, true, 0.0, 5)
+        .unwrap()
+        .with_identity(identity);
+    calibrate(&config(), &mut right).await.unwrap();
+}
+
+#[tokio::test]
+async fn unified_recovery_keeps_calibration_and_multiple_encodings() {
+    use crate::collection::Encoding;
+    let options = RecoveryConfig {
+        inspect_new_fonts: false,
+        missing_only: false,
+        probes: config(),
+        encodings: vec![Encoding::Input { ci: 27 }, Encoding::Input { ci: 28 }],
+        codes: vec![32, 65, 66, 67, 200],
+        seed: None,
+    };
+    let c = recover(&options, &mut Fake::default()).await.unwrap();
+    c.validate().unwrap();
+    assert_eq!(c.fonts[0].metrics, Some([7, 11, 9, 4]));
+    assert_eq!(c.fonts[0].encodings.len(), 2);
+    let t = Temp::new();
+    compile::compile(&c, &t.0.join("rust")).unwrap();
+}
+
+#[tokio::test]
+async fn unified_http_recovery_replays_all_encodings_offline() {
+    let server = Server::new();
+    let t = Temp::new();
+    let options = RecoveryConfig {
+        inspect_new_fonts: false,
+        missing_only: false,
+        probes: config(),
+        encodings: vec![
+            crate::collection::Encoding::Input { ci: 27 },
+            crate::collection::Encoding::Input { ci: 28 },
+        ],
+        codes: vec![32, 65, 66, 67, 200],
+        seed: None,
+    };
+    let mut printer = capture::Printer::new(&server.host, &t.0, false, 0.0, 5).unwrap();
+    let online = recover(&options, &mut printer).await.unwrap();
+    drop(printer);
+    let mut offline = capture::Printer::new(&server.host, &t.0, true, 0.0, 5).unwrap();
+    let replay = recover(&options, &mut offline).await.unwrap();
+    assert_eq!(
+        serde_json::to_vec(&online).unwrap(),
+        serde_json::to_vec(&replay).unwrap()
+    );
+}
+
+#[tokio::test]
+async fn automatic_restart_does_not_retry_http_status_errors() {
+    use std::{
+        io::{Read, Write},
+        net::TcpListener,
+    };
+    let listener = TcpListener::bind("127.0.0.1:0").unwrap();
+    let host = format!("http://{}/", listener.local_addr().unwrap());
+    let task = std::thread::spawn(move || {
+        let (mut socket, _) = listener.accept().unwrap();
+        let mut request = [0; 8192];
+        assert!(socket.read(&mut request).unwrap() > 0);
+        socket
+            .write_all(
+                b"HTTP/1.1 401 Unauthorized\r\nContent-Length: 0\r\nConnection: close\r\n\r\n",
+            )
+            .unwrap();
+    });
+    let temp = Temp::new();
+    let mut printer = capture::Printer::new(&host, &temp.0, false, 0.0, 1)
+        .unwrap()
+        .with_restart(1, 10)
+        .unwrap()
+        .with_identity(serde_json::json!({"device.unique_id":"test","appl.name":"test"}));
+    let error = calibrate(&config(), &mut printer).await.unwrap_err();
+    assert!(format!("{error:?}").contains("401"));
+    assert!(!temp.0.join("last-reset.json").exists());
+    let requests = std::fs::read_dir(&temp.0)
+        .unwrap()
+        .filter_map(|p| {
+            let p = p.unwrap().path();
+            p.join("request.zpl").exists().then_some(p)
+        })
+        .collect::<Vec<_>>();
+    assert_eq!(requests.len(), 1);
+    assert!(requests[0].join("plan.json").exists());
+    assert!(!requests[0].join("capture.json").exists());
+    task.join().unwrap();
+}
+
+#[tokio::test]
+async fn checkpoints_are_atomic_and_replaceable() {
+    let temp = Temp::new();
+    let mut printer = capture::Printer::new("http://localhost/", &temp.0, true, 0.0, 1).unwrap();
+    let mut c = crate::collection::Collection::new(
+        vec![crate::collection::Font {
+            name: "A".into(),
+            source_sha256: "a".repeat(64),
+            metrics: None,
+            records: vec![],
+            encodings: vec![],
+        }],
+        serde_json::json!({}),
+    )
+    .unwrap();
+    use capture::Capture;
+    printer.checkpoint(&c).unwrap();
+    c.provenance = serde_json::json!({"stage":2});
+    printer.checkpoint(&c).unwrap();
+    let saved = crate::collection::Collection::load(&temp.0.join("recovery.json")).unwrap();
+    assert_eq!(saved.provenance["stage"], 2);
+}
+
+#[tokio::test]
+async fn discovered_named_bitmaps_are_calibrated_from_previews() {
+    let (face, report) = discover_native(&config(), "Z:NEW.FNT", &mut Fake::default())
+        .await
+        .unwrap();
+    let face = face.unwrap();
+    assert_eq!(face.name, "Z:NEW.FNT");
+    assert_eq!(face.metrics.unwrap()[..2], [7, 11]);
+    assert_eq!(report["status"], "calibrated-native-bitmap");
+    assert!(!face.records.is_empty());
+}
+
+#[tokio::test]
+async fn directory_names_do_not_authorize_default_font_fallback_as_data() {
+    struct Fallback;
+    impl Capture for Fallback {
+        async fn png(&mut self, page: &Page, _repeat: bool) -> Result<Vec<u8>> {
+            let mut raster = decode(&printer_png(&page.zpl()?)?)?;
+            for tile in &page.tiles {
+                if tile.key.starts_with("fallback-") && tile.key.ends_with("-B") {
+                    let index =
+                        ((tile.y + tile.oy - 7) * raster.width + tile.x + tile.ox + 1) as usize;
+                    raster.pixels[index] ^= 255;
+                }
+            }
+            Ok(Png::encode_gray(&raster, 203)?)
+        }
+    }
+    let (face, report) = discover_native(&config(), "Z:UNSELECTABLE.FNT", &mut Fallback)
+        .await
+        .unwrap();
+    assert!(face.is_none());
+    assert_eq!(report["reason"], "filename follows the default font");
+    assert!(report["lineage"].as_array().unwrap().len() >= 2);
 }

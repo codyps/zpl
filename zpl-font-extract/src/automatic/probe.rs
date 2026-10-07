@@ -90,6 +90,9 @@ impl Config {
 pub struct Tile {
     pub key: String,
     pub text: Vec<u8>,
+    /// Explicit field bytes for collection surveys (including UTF-8 above U+00FF).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub field_bytes: Option<Vec<u8>>,
     pub h: u16,
     pub w: u16,
     pub fo: bool,
@@ -121,6 +124,7 @@ impl Tile {
             ox: 16,
             oy: 16 + if fo { 0 } else { bh },
             text,
+            field_bytes: None,
             h,
             w,
             fo,
@@ -136,6 +140,8 @@ pub struct Page {
     pub stage: String,
     pub number: usize,
     pub config: Config,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub wire_encoding: Option<u8>,
     pub tiles: Vec<Tile>,
 }
 impl Page {
@@ -180,11 +186,17 @@ impl Page {
     }
     pub fn zpl(&self) -> Result<String> {
         let c = &self.config;
+        let encoding = self.wire_encoding.unwrap_or(c.encoding);
+        ensure!(
+            (0..=13).contains(&encoding) || [27, 28, 31, 33, 34, 35, 36].contains(&encoding),
+            "unsupported preview encoding"
+        );
+        ensure!(!c.source || encoding == 0, "source remapping requires CI0");
         let mut s = format!(
             "^XA^PW{}^LL{}^LH0,0^LS0^LT0^PON^LRN^FWN^CI{}",
-            c.width, c.height, c.encoding
+            c.width, c.height, encoding
         );
-        if c.encoding == 28 {
+        if encoding == 28 {
             s.push_str("^PA0,0,0,0");
         }
         for (x, y, w, h) in self.markers()? {
@@ -208,7 +220,10 @@ impl Page {
                     }
                 }
                 bytes.extend(t.text.iter().map(|c| mapping[c]));
-            } else if c.encoding == 28 {
+            } else if let Some(explicit) = &t.field_bytes {
+                ensure!(explicit.len() <= 16384, "field byte budget exceeded");
+                bytes.extend_from_slice(explicit);
+            } else if encoding == 28 {
                 for &code in &t.text {
                     let mut buf = [0; 4];
                     bytes.extend_from_slice(char::from(code).encode_utf8(&mut buf).as_bytes());
@@ -280,6 +295,7 @@ pub fn pack(c: &Config, font: &str, stage: &str, mut tiles: Vec<Tile>) -> Result
                 stage: stage.into(),
                 number: pages.len(),
                 config: c.clone(),
+                wire_encoding: None,
                 tiles: current,
             });
             current = Vec::new();
@@ -297,6 +313,7 @@ pub fn pack(c: &Config, font: &str, stage: &str, mut tiles: Vec<Tile>) -> Result
             stage: stage.into(),
             number: pages.len(),
             config: c.clone(),
+            wire_encoding: None,
             tiles: current,
         });
     }

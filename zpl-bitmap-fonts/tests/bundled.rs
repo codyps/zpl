@@ -8,14 +8,16 @@ fn bundled_fonts_match_verified_json_pixels_and_metrics() {
     let mut add = |byte: u8| {
         digest = (digest ^ u64::from(byte)).wrapping_mul(0x100000001b3);
     };
-    let fonts = zpl_bitmap_fonts::zd621::FONTS;
+    let fonts = zpl_bitmap_fonts::zd621::FONTS
+        .iter()
+        .filter(|f| f.metrics.is_some())
+        .collect::<Vec<_>>();
     assert_eq!(fonts.len(), 45);
     for font in fonts {
-        assert_eq!(font.mapping, zpl_bitmap_fonts::Mapping::Ci0Source);
         for b in font.name.bytes().chain([0]) {
             add(b);
         }
-        let m = font.metrics;
+        let m = font.cell_metrics().unwrap();
         for v in [m.cell_height, m.cell_width, m.baseline, m.space_advance] {
             for b in v.to_le_bytes() {
                 add(b);
@@ -24,7 +26,13 @@ fn bundled_fonts_match_verified_json_pixels_and_metrics() {
         for key in 0..=255 {
             if let Some(g) = font.glyph(key) {
                 add(1);
-                for b in [g.advance, g.left as u8, g.top as u8, g.width, g.height] {
+                for b in [
+                    u8::try_from(g.advance).unwrap(),
+                    i8::try_from(g.left).unwrap() as u8,
+                    i8::try_from(g.top).unwrap() as u8,
+                    u8::try_from(g.width).unwrap(),
+                    u8::try_from(g.height).unwrap(),
+                ] {
                     add(b);
                 }
                 for y in 0..g.height {

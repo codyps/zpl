@@ -13,14 +13,13 @@ pair and both resets are pixel-identical, establishing that SF leaves initial
 field data unchanged. Mask/increment metadata is validated; subsequent-label
 iteration using PQ remains an explicit unsupported-command error.
 
-Ten frames match every pixel. Four text frames retain 168 overpaint pixels
-and zero underpaint: the captured CI13 font-A zero is unslashed, whereas the
-embedded strike has a slash. This is independently present without SF and
-is an existing character-encoding/font gap, not a mask transformation.
-All 18 separate text regions meet the 80% foreground-IoU requirement; the
-minimum is 88.6792453%. Source, native PNG, local raster hashes and exact
-paint counts are pinned. The barcode frame has a separate zero-difference
-requirement, so a future baseline cannot relax its non-text accuracy.
+All 14 frames match every pixel. The preview-derived CI13 mapping resolves
+font A's unslashed zero, removing the previous 168 overpaint pixels across
+four text frames. This behavior is independently present without SF and is
+also covered by the bitmap-ci13-zd621-v1 controls. Source and printer PNG
+hashes remain unchanged; rendered raster hashes and zero paint counts are
+pinned. The test requires exact native pixel equality for every frame and
+retains foreground-IoU checks for all 18 separate text regions.
 
 The printer controls additionally tested PQ1 and PQ3 outside this fixture
 set: their native previews were identical. Those captures are evidence for

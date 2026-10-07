@@ -20,9 +20,11 @@ fn raw_serial_mask_frames_pin_every_pixel_and_meet_text_goal() {
         assert_eq!(doc.labels.len(), 1);
         let actual = zpl::output::raster::rasterize(&doc.labels[0]).unwrap();
         let diff = raster_diff::compare_stats(&reference, &actual, false).unwrap();
-        if c[0] == "controls-barcode" {
-            assert_eq!((diff.reference_only, diff.candidate_only), (0, 0));
-        }
+        assert!(
+            actual.pixels == reference.pixels,
+            "{} must match every native printer pixel",
+            c[0]
+        );
         assert_eq!(
             (diff.reference_only, diff.candidate_only),
             (

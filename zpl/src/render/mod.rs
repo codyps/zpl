@@ -301,6 +301,7 @@ fn render_expanded(
     let (mut shift, mut top) = (0., 0.);
     let mut encoding = 0;
     let mut character_maps: [Option<[u8; 256]>; 14] = [None; 14];
+    let mut explicit_sources: [Option<[u8; 32]>; 14] = [None; 14];
     let mut advanced = [false; 4];
     let mut default_rotation = b'N';
     let mut default_justification = 2;
@@ -525,6 +526,8 @@ fn render_expanded(
                             character_maps[encoding as usize]
                                 .get_or_insert_with(|| std::array::from_fn(|i| i as u8))
                                 [destination as usize] = source;
+                            explicit_sources[encoding as usize].get_or_insert([0; 32])
+                                [usize::from(destination) / 8] |= 1 << (destination % 8);
                         }
                     }
                 }
@@ -1104,17 +1107,7 @@ fn render_expanded(
                     let decoded;
                     let value = if field.barcode.is_some() || field.barcode_error.is_some() {
                         ""
-                    } else if let Some(code_page) = match encoding {
-                        // Zebra Programming Guide ^CI, pp. 156–159:
-                        // https://www.zebra.com/content/dam/support-dam/en/documentation/unrestricted/guide/software/zpl-zbi2-pg-en.pdf
-                        27 => Some(encoding_rs::WINDOWS_1252),
-                        31 => Some(encoding_rs::WINDOWS_1250),
-                        33 => Some(encoding_rs::WINDOWS_1251),
-                        34 => Some(encoding_rs::WINDOWS_1253),
-                        35 => Some(encoding_rs::WINDOWS_1254),
-                        36 => Some(encoding_rs::WINDOWS_1255),
-                        _ => None,
-                    } {
+                    } else if let Some(code_page) = font::code_page(encoding) {
                         decoded = code_page
                             .decode_without_bom_handling_and_without_replacement(&bytes)
                             .ok_or("undefined code page byte")?;
@@ -1227,11 +1220,18 @@ fn render_expanded(
                                     && (field.block.is_some() || matches!(encoding, 33..=36))
                                     && !matches!(encoding, 0 | 13),
                             )
+                            .with_encoding(encoding)
                             .with_legacy_codepage(matches!(encoding, 0 | 13))
+                            .with_serial_zero_source(
+                                name == "SN" && options.compatibility.serial_ci13_zero_uses_source,
+                            )
                             .with_tab_stops(options.compatibility.text_tab_stops)
                             .with_default_glyph(advanced[0])
                             .with_character_map(
                                 character_maps.get(encoding as usize).copied().flatten(),
+                            )
+                            .with_explicit_sources(
+                                explicit_sources.get(encoding as usize).copied().flatten(),
                             );
                             // ^FB p. 186 permits negative line spacing. The
                             // printer clamps the resulting pitch at zero.
@@ -2482,9 +2482,10 @@ fn font_dimensions(
     if id != '0' {
         // ZPL Programming Guide Table 31, pp. 1583–1584: native bitmap matrices.
         let (nh, nw) = if let Some(face) = zpl_bitmap_fonts::resident(id) {
+            let metrics = face.cell_metrics().expect("resident cell metrics");
             (
-                f64::from(face.metrics.cell_height),
-                f64::from(face.metrics.cell_width),
+                f64::from(metrics.cell_height),
+                f64::from(metrics.cell_width),
             )
         } else {
             match id {

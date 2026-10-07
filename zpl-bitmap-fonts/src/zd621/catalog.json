@@ -1,9 +1,341 @@
 {
-  "bitmaps_sha256": "8225ff813cdc52ec67e04c9b56884b2c107d0d750ad52cd78ebcfa279b0e1b2e",
-  "data_bytes": 391680,
-  "module_sha256": "432a2d424ffcfbf3be0d024ab1480a873045faa16dbad8a974965a4b766eee38",
-  "schema": "zpl-compact-fonts-v1",
-  "source_content_sha256": "c649c6b462dd5e2028dfdc8eabdc7c0cd3eeea95dbcdc61edfcefc425ba816e8",
-  "unique_payloads": 5597,
-  "unique_records": 6127
+  "array_bytes": 4318055,
+  "bitmaps_sha256": "414c83365a937d5d743bdab00da7d8dc583505c15ef847fdda7ec62074fad73e",
+  "coverage": [
+    {
+      "archived_records": 254,
+      "font": "Z:A.FNT",
+      "observed_equivalent_records": 252,
+      "unresolved_visible_record_ids": [],
+      "visible_records": 252
+    },
+    {
+      "archived_records": 249,
+      "font": "Z:B.FNT",
+      "observed_equivalent_records": 247,
+      "unresolved_visible_record_ids": [],
+      "visible_records": 247
+    },
+    {
+      "archived_records": 249,
+      "font": "Z:D.FNT",
+      "observed_equivalent_records": 247,
+      "unresolved_visible_record_ids": [],
+      "visible_records": 247
+    },
+    {
+      "archived_records": 253,
+      "font": "Z:E12.FNT",
+      "observed_equivalent_records": 145,
+      "unresolved_visible_record_ids": [],
+      "visible_records": 145
+    },
+    {
+      "archived_records": 253,
+      "font": "Z:E24.FNT",
+      "observed_equivalent_records": 145,
+      "unresolved_visible_record_ids": [],
+      "visible_records": 145
+    },
+    {
+      "archived_records": 228,
+      "font": "Z:E6.FNT",
+      "observed_equivalent_records": 145,
+      "unresolved_visible_record_ids": [],
+      "visible_records": 145
+    },
+    {
+      "archived_records": 229,
+      "font": "Z:E8.FNT",
+      "observed_equivalent_records": 145,
+      "unresolved_visible_record_ids": [],
+      "visible_records": 145
+    },
+    {
+      "archived_records": 283,
+      "font": "Z:EPL1.FNT",
+      "observed_equivalent_records": 257,
+      "unresolved_visible_record_ids": [],
+      "visible_records": 257
+    },
+    {
+      "archived_records": 283,
+      "font": "Z:EPL2.FNT",
+      "observed_equivalent_records": 257,
+      "unresolved_visible_record_ids": [],
+      "visible_records": 257
+    },
+    {
+      "archived_records": 283,
+      "font": "Z:EPL3.FNT",
+      "observed_equivalent_records": 257,
+      "unresolved_visible_record_ids": [],
+      "visible_records": 257
+    },
+    {
+      "archived_records": 280,
+      "font": "Z:EPL300-1.FNT",
+      "observed_equivalent_records": 254,
+      "unresolved_visible_record_ids": [],
+      "visible_records": 254
+    },
+    {
+      "archived_records": 279,
+      "font": "Z:EPL300-2.FNT",
+      "observed_equivalent_records": 253,
+      "unresolved_visible_record_ids": [],
+      "visible_records": 253
+    },
+    {
+      "archived_records": 280,
+      "font": "Z:EPL300-3.FNT",
+      "observed_equivalent_records": 254,
+      "unresolved_visible_record_ids": [],
+      "visible_records": 254
+    },
+    {
+      "archived_records": 275,
+      "font": "Z:EPL300-4.FNT",
+      "observed_equivalent_records": 274,
+      "unresolved_visible_record_ids": [],
+      "visible_records": 274
+    },
+    {
+      "archived_records": 194,
+      "font": "Z:EPL300-5.FNT",
+      "observed_equivalent_records": 173,
+      "unresolved_visible_record_ids": [],
+      "visible_records": 173
+    },
+    {
+      "archived_records": 276,
+      "font": "Z:EPL4.FNT",
+      "observed_equivalent_records": 275,
+      "unresolved_visible_record_ids": [],
+      "visible_records": 275
+    },
+    {
+      "archived_records": 194,
+      "font": "Z:EPL5.FNT",
+      "observed_equivalent_records": 173,
+      "unresolved_visible_record_ids": [],
+      "visible_records": 173
+    },
+    {
+      "archived_records": 10,
+      "font": "Z:EPL6.FNT",
+      "observed_equivalent_records": 10,
+      "unresolved_visible_record_ids": [],
+      "visible_records": 10
+    },
+    {
+      "archived_records": 10,
+      "font": "Z:EPL7.FNT",
+      "observed_equivalent_records": 10,
+      "unresolved_visible_record_ids": [],
+      "visible_records": 10
+    },
+    {
+      "archived_records": 249,
+      "font": "Z:F.FNT",
+      "observed_equivalent_records": 247,
+      "unresolved_visible_record_ids": [],
+      "visible_records": 247
+    },
+    {
+      "archived_records": 96,
+      "font": "Z:FONT0.FNT",
+      "observed_equivalent_records": 95,
+      "unresolved_visible_record_ids": [],
+      "visible_records": 95
+    },
+    {
+      "archived_records": 147,
+      "font": "Z:FONT1.FNT",
+      "observed_equivalent_records": 146,
+      "unresolved_visible_record_ids": [],
+      "visible_records": 146
+    },
+    {
+      "archived_records": 143,
+      "font": "Z:FONT2.FNT",
+      "observed_equivalent_records": 142,
+      "unresolved_visible_record_ids": [],
+      "visible_records": 142
+    },
+    {
+      "archived_records": 88,
+      "font": "Z:FONT3.FNT",
+      "observed_equivalent_records": 87,
+      "unresolved_visible_record_ids": [],
+      "visible_records": 87
+    },
+    {
+      "archived_records": 88,
+      "font": "Z:FONT4.FNT",
+      "observed_equivalent_records": 87,
+      "unresolved_visible_record_ids": [],
+      "visible_records": 87
+    },
+    {
+      "archived_records": 88,
+      "font": "Z:FONT5.FNT",
+      "observed_equivalent_records": 87,
+      "unresolved_visible_record_ids": [],
+      "visible_records": 87
+    },
+    {
+      "archived_records": 88,
+      "font": "Z:FONT6.FNT",
+      "observed_equivalent_records": 87,
+      "unresolved_visible_record_ids": [],
+      "visible_records": 87
+    },
+    {
+      "archived_records": 95,
+      "font": "Z:FONT7.FNT",
+      "observed_equivalent_records": 94,
+      "unresolved_visible_record_ids": [],
+      "visible_records": 94
+    },
+    {
+      "archived_records": 22,
+      "font": "Z:FONT8.FNT",
+      "observed_equivalent_records": 21,
+      "unresolved_visible_record_ids": [],
+      "visible_records": 21
+    },
+    {
+      "archived_records": 249,
+      "font": "Z:G.FNT",
+      "observed_equivalent_records": 247,
+      "unresolved_visible_record_ids": [],
+      "visible_records": 247
+    },
+    {
+      "archived_records": 6,
+      "font": "Z:GS.FNT",
+      "observed_equivalent_records": 5,
+      "unresolved_visible_record_ids": [],
+      "visible_records": 5
+    },
+    {
+      "archived_records": 254,
+      "font": "Z:H12.FNT",
+      "observed_equivalent_records": 70,
+      "unresolved_visible_record_ids": [],
+      "visible_records": 70
+    },
+    {
+      "archived_records": 254,
+      "font": "Z:H24.FNT",
+      "observed_equivalent_records": 70,
+      "unresolved_visible_record_ids": [],
+      "visible_records": 70
+    },
+    {
+      "archived_records": 229,
+      "font": "Z:H6.FNT",
+      "observed_equivalent_records": 69,
+      "unresolved_visible_record_ids": [],
+      "visible_records": 69
+    },
+    {
+      "archived_records": 229,
+      "font": "Z:H8.FNT",
+      "observed_equivalent_records": 70,
+      "unresolved_visible_record_ids": [],
+      "visible_records": 70
+    },
+    {
+      "archived_records": 17,
+      "font": "Z:LMU.FNT",
+      "observed_equivalent_records": 16,
+      "unresolved_visible_record_ids": [],
+      "visible_records": 16
+    },
+    {
+      "archived_records": 119,
+      "font": "Z:LMV.FNT",
+      "observed_equivalent_records": 118,
+      "unresolved_visible_record_ids": [],
+      "visible_records": 118
+    },
+    {
+      "archived_records": 119,
+      "font": "Z:LMW.FNT",
+      "observed_equivalent_records": 118,
+      "unresolved_visible_record_ids": [],
+      "visible_records": 118
+    },
+    {
+      "archived_records": 119,
+      "font": "Z:LMX.FNT",
+      "observed_equivalent_records": 118,
+      "unresolved_visible_record_ids": [],
+      "visible_records": 118
+    },
+    {
+      "archived_records": 162,
+      "font": "Z:LMY.FNT",
+      "observed_equivalent_records": 161,
+      "unresolved_visible_record_ids": [],
+      "visible_records": 161
+    },
+    {
+      "archived_records": 88,
+      "font": "Z:LMZ.FNT",
+      "observed_equivalent_records": 87,
+      "unresolved_visible_record_ids": [],
+      "visible_records": 87
+    },
+    {
+      "archived_records": 252,
+      "font": "Z:T0000.FNT",
+      "observed_equivalent_records": 162,
+      "unresolved_visible_record_ids": [],
+      "visible_records": 162
+    },
+    {
+      "archived_records": 252,
+      "font": "Z:T0001.FNT",
+      "observed_equivalent_records": 162,
+      "unresolved_visible_record_ids": [],
+      "visible_records": 162
+    },
+    {
+      "archived_records": 252,
+      "font": "Z:T0002.FNT",
+      "observed_equivalent_records": 162,
+      "unresolved_visible_record_ids": [],
+      "visible_records": 162
+    },
+    {
+      "archived_records": 252,
+      "font": "Z:T0007.FNT",
+      "observed_equivalent_records": 157,
+      "unresolved_visible_record_ids": [],
+      "visible_records": 157
+    },
+    {
+      "archived_records": 256,
+      "font": "Z:T0023.FNT",
+      "observed_equivalent_records": 105,
+      "unresolved_visible_record_ids": [],
+      "visible_records": 105
+    },
+    {
+      "archived_records": 256,
+      "font": "Z:T0024.FNT",
+      "observed_equivalent_records": 119,
+      "unresolved_visible_record_ids": [],
+      "visible_records": 119
+    }
+  ],
+  "module_sha256": "43170ed71adbf023aa5359b971213b1ef36bcb8a7371ad092f92400853439a7c",
+  "schema": "zpl-compact-collection-v4",
+  "source_content_sha256": "60f0a27d354b9c18c7675c1cee561f91c8d9027b5da2a96af315af7d4e6b6dae",
+  "unique_maps": 654,
+  "unique_payloads": 6404,
+  "unique_records": 6604
 }

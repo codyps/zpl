@@ -3,7 +3,10 @@
 //! against independently composed preview pages.
 //! Sampling is independent of the renderer and never reads firmware font files.
 pub mod capture;
-pub mod compile;
+mod restart;
+pub use crate::collection::compile;
+mod recovery;
+pub use recovery::{recover, RecoveryConfig};
 pub mod model;
 pub mod probe;
 use capture::Capture;
@@ -351,7 +354,7 @@ async fn recover_face(
 }
 /// Run calibration, adaptive refinement, sampling and fresh independent holdouts.
 /// Cached Capture implementations make the same function usable completely offline.
-pub async fn recover(c: &Config, capture: &mut impl Capture) -> Result<Document> {
+async fn calibrate(c: &Config, capture: &mut impl Capture) -> Result<Document> {
     c.validate()?;
     let mut lineage = vec![];
     let mut fonts = vec![];
@@ -383,3 +386,74 @@ pub async fn recover(c: &Config, capture: &mut impl Capture) -> Result<Document>
 }
 #[cfg(test)]
 mod tests;
+
+/// Inspect newly discovered selectors through previews before treating them as
+/// native bitmap faces. Directory extensions alone do not establish a font type.
+async fn discover_native(
+    config: &Config,
+    font: &str,
+    capture: &mut impl Capture,
+) -> Result<(Option<crate::collection::Font>, Value)> {
+    let mut lineage = vec![];
+    for probes in [config.probes, [48, 49], [33, 34]] {
+        let mut c = config.clone();
+        c.fonts = vec![font.into()];
+        c.probes = probes;
+        let pages = initial_pages(&c)?;
+        let (observed, _) = batch(capture, &pages, &mut lineage).await?;
+        let native = at(&observed, "native")?;
+        let reason = if probes.iter().any(|code| {
+            observed[&format!("fallback-{code}-A")] != observed[&format!("fallback-{code}-B")]
+        }) {
+            Some("filename follows the default font")
+        } else if native.width == 0 {
+            if observed.iter().any(|(key, g)| {
+                (key.starts_with("width:") || key.starts_with("height:")) && g.width > 0
+            }) {
+                Some("blank at size one but visible at larger requested sizes")
+            } else {
+                None
+            }
+        } else if !["width", "height"].iter().all(|axis| {
+            (1..=c.bound).any(|cell| {
+                observed.iter().all(|(key, g)| {
+                    key.strip_prefix(&format!("{axis}:")).is_none_or(|q| {
+                        stretch(native, g, *axis == "height")
+                            .is_ok_and(|scale| scale == zoom(q.parse().unwrap(), cell))
+                    })
+                })
+            })
+        }) {
+            Some("requested sizes do not follow exact native bitmap magnification")
+        } else {
+            None
+        };
+        if let Some(reason) = reason {
+            eprintln!("{font}: native bitmap model not established: {reason}");
+            return Ok((
+                None,
+                json!({"font":font,"status":"native-bitmap-model-not-established", "reason":reason,"search_bound":c.bound,"probes":probes,"printer":capture.identity(),"lineage":lineage}),
+            ));
+        }
+        if native.width > 0 && at(&observed, "second")?.width > 0 {
+            let calibrated = calibrate(&c, capture).await?;
+            let mut collection = crate::collection::Collection::from_verified(&calibrated)?;
+            return Ok((
+                Some(collection.fonts.remove(0)),
+                json!({"font":font,"status":"calibrated-native-bitmap","probes":probes,"printer":capture.identity(),"lineage":lineage}),
+            ));
+        }
+    }
+    // Absence of these ASCII probes is not proof that a face has no glyphs.
+    // Keep it for the broader input survey, with its metrics still unknown.
+    Ok((
+        Some(crate::collection::Font {
+            name: font.into(),
+            source_sha256: hash(&serde_json::to_vec(&(font, capture.identity()))?),
+            metrics: None,
+            records: vec![],
+            encodings: vec![],
+        }),
+        json!({"font":font,"status":"no-visible-calibration-probes","printer":capture.identity(),"lineage":lineage}),
+    ))
+}

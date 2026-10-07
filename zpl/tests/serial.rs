@@ -58,3 +58,22 @@ fn serial_overlong_number_requires_explicit_compatibility() {
 fn serial_does_not_silently_accept_print_quantity_iteration() {
     assert!(zpl::render(b"^XA^FO20,20^SN001,1,Y^FS^PQ2^XZ", SPECIFICATION).is_err());
 }
+
+#[test]
+fn serial_ci13_zero_departure_is_independent() {
+    let ordinary = pixels("^CI13^FD0", SPECIFICATION);
+    assert_eq!(ordinary, pixels("^CI13^SN0,1,Y", SPECIFICATION));
+    let mut enabled = SPECIFICATION;
+    enabled.compatibility.serial_ci13_zero_uses_source = true;
+    assert_eq!(
+        pixels("^CI13^SN0,1,Y", enabled),
+        pixels("^CI0^FD0", SPECIFICATION)
+    );
+    assert_ne!(pixels("^CI13^SN0,1,Y", enabled), ordinary);
+    assert_eq!(pixels("^CI13^FD0", enabled), ordinary);
+    assert_eq!(pixels("^CI13^FD0^SFd,1", enabled), ordinary);
+    assert_eq!(pixels("^CI13,26,48^SN0,1,Y", enabled), ordinary);
+    let mut disabled = ZD621_203_DPI;
+    disabled.compatibility.serial_ci13_zero_uses_source = false;
+    assert_eq!(pixels("^CI13^SN0,1,Y", disabled), ordinary);
+}
