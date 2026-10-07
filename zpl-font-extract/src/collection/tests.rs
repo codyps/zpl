@@ -32,7 +32,6 @@ fn record(id: u16) -> Record {
         top: -2,
         width: 3,
         height: 2,
-        flags: 0,
         bitmap_hex: "a040".into(),
     }
 }
@@ -40,12 +39,6 @@ fn font() -> Font {
     Font {
         name: "Z:TEST.FNT".into(),
         source_sha256: "a".repeat(64),
-        header_hex: "00".repeat(116),
-        slot_count: 302,
-        absent_slots: (0..302)
-            .filter(|id| ![17, 18, 300, 301].contains(id))
-            .collect(),
-        zero_record_slots: vec![301],
         records: vec![
             record(17),
             record(18),
@@ -58,51 +51,16 @@ fn font() -> Font {
     }
 }
 #[test]
-fn complete_inventory_and_hash_validation() {
+fn duplicate_ids_and_hash_validation() {
     let mut c = Collection::new(vec![font()], json!({})).unwrap();
-    c.fonts[0].absent_slots.pop();
+    c.fonts[0].records[1].id = 17;
     c.seal().unwrap();
     assert!(c.validate().is_err());
     let mut c = Collection::new(vec![font()], json!({})).unwrap();
     c.fonts[0].records[0].advance += 1;
     assert!(c.validate().is_err());
 }
-#[test]
-fn raw_fnt_preserves_ids_bearings_padding_and_absent_slots() {
-    let mut data = vec![0; 116 + 302 * 20 + 2];
-    data[4..8].copy_from_slice(&[1, 1, 0, 3]);
-    data[76..78].copy_from_slice(&116u16.to_be_bytes());
-    data[92..96].copy_from_slice(&116u32.to_be_bytes());
-    data[96..100].copy_from_slice(&(116u32 + 302 * 20).to_be_bytes());
-    data[100..102].copy_from_slice(&302u16.to_be_bytes());
-    data[116..116 + 20].fill(255);
-    let p = 116 + 300 * 20;
-    for (off, value) in [
-        (0, 300u16),
-        (2, 2),
-        (4, 3),
-        (6, 2),
-        (8, 65535),
-        (10, 2),
-        (12, 5),
-        (14, 7),
-    ] {
-        data[p + off..p + off + 2].copy_from_slice(&value.to_be_bytes());
-    }
-    let end = data.len();
-    data[end - 2..].copy_from_slice(&[0xa1, 0x40]);
-    let f = fnt::decode("Z:T.FNT", &data).unwrap();
-    assert_eq!(f.records.len(), 1);
-    let r = &f.records[0];
-    assert_eq!((r.id, r.left, r.top, r.flags), (300, -1, -2, 7));
-    assert_eq!(r.glyph().unwrap().width, 8);
-    assert_eq!(r.bitmap_hex, "a140");
-    assert_eq!(f.absent_slots, vec![0]);
-    assert_eq!(f.zero_record_slots.len(), 300);
-    assert!(fnt::decode("Z:T.FNT", &data[..end - 1]).is_err());
-    data[p..p + 2].copy_from_slice(&299u16.to_be_bytes());
-    assert!(fnt::decode("Z:T.FNT", &data).is_err());
-}
+
 struct Printer {
     unstable: bool,
 }
@@ -188,19 +146,7 @@ async fn unicode_mapping_ambiguity_blank_and_repeat() {
     .is_err());
     assert!(survey::pages(&f, Encoding::Input { ci: 29 }, &[65], 832, 1024).is_err());
 }
-#[test]
-fn directory_validation_and_unknown_font_types() {
-    assert_eq!(
-        transport::directory(
-            b"\"\r\n- DIR Z:*.*\r\n* Z:A.FNT 123 P A\r\n* Z:0.TTF 999 P 0\r\n\"",
-            'Z'
-        )
-        .unwrap(),
-        vec![("Z:A.FNT".into(), 123)]
-    );
-    assert!(transport::directory(b"* E:A.FNT 123", 'Z').is_err());
-    assert!(transport::directory(b"* Z:A.FNT 123\n* Z:A.FNT 123", 'Z').is_err());
-}
+
 #[test]
 fn conflicting_maps_are_rejected() {
     let mut f = font();
@@ -247,7 +193,6 @@ fn generated_tables_compile_and_preserve_raw_ids_and_evidence() {
         }],
         provenance: json!({"source":"test"}),
     });
-    f.slot_count = 303;
     f.records.push(Record {
         id: 302,
         advance: 500,
@@ -255,7 +200,6 @@ fn generated_tables_compile_and_preserve_raw_ids_and_evidence() {
         top: -250,
         width: 257,
         height: 1,
-        flags: 7,
         bitmap_hex: "ff".repeat(33),
     });
     let mut c = Collection::new(vec![f], json!({})).unwrap();
@@ -274,7 +218,7 @@ fn generated_tables_compile_and_preserve_raw_ids_and_evidence() {
         r#"extern crate self as zpl_bitmap_fonts;
 #[path={:?}] pub mod collection;
 #[path={:?}] mod fonts;
-fn main(){{let f=fonts::font_by_name("Z:TEST.FNT").unwrap();let wide=f.record(302).unwrap();assert_eq!((wide.width,wide.advance,wide.left,wide.top,wide.flags),(257,500,-300,-250,7));assert!(wide.pixel(256,0));assert!(!wide.pixel(263,0));assert!(wide.storage_pixel(263,0));assert_eq!(fonts::CANDIDATE_CODE_PAGES[0].candidate(f,128).unwrap().candidates,&[17]);assert!(f.record(301).is_none());let r=f.record(300).unwrap();assert_eq!(r.bitmap(),&[0xe0,0x80]);assert_eq!((r.left,r.top),(-1,-2));assert!(r.pixel(2,0));let m=f.encoding(collection::Encoding::Input{{ci:28}}).unwrap();assert_eq!(m.lookup(65).unwrap().candidates,&[17,18]);assert_eq!(m.lookup(0x39b).unwrap().candidates,&[300]);assert!(m.lookup(0x3a9).is_none());assert_eq!(f.encoding(collection::Encoding::CandidateCharacters).unwrap().lookup(66).unwrap().status,collection::Status::UnverifiedCandidate);}}
+fn main(){{let f=fonts::font_by_name("Z:TEST.FNT").unwrap();let wide=f.record(302).unwrap();assert_eq!((wide.width,wide.advance,wide.left,wide.top),(257,500,-300,-250));assert!(wide.pixel(256,0));assert!(!wide.pixel(263,0));assert!(wide.storage_pixel(263,0));assert_eq!(fonts::CANDIDATE_CODE_PAGES[0].candidate(f,128).unwrap().candidates,&[17]);assert!(f.record(301).is_none());let r=f.record(300).unwrap();assert_eq!(r.bitmap(),&[0xe0,0x80]);assert_eq!((r.left,r.top),(-1,-2));assert!(r.pixel(2,0));let m=f.encoding(collection::Encoding::Input{{ci:28}}).unwrap();assert_eq!(m.lookup(65).unwrap().candidates,&[17,18]);assert_eq!(m.lookup(0x39b).unwrap().candidates,&[300]);assert!(m.lookup(0x3a9).is_none());assert_eq!(f.encoding(collection::Encoding::CandidateCharacters).unwrap().lookup(66).unwrap().status,collection::Status::UnverifiedCandidate);}}
 "#,
         PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../zpl-bitmap-fonts/src/collection.rs"),
         out.join("fonts.rs")
@@ -295,41 +239,6 @@ fn main(){{let f=fonts::font_by_name("Z:TEST.FNT").unwrap();let wide=f.record(30
 }
 
 #[test]
-fn sgd_download_enforces_exact_sizes_and_read_only_commands() {
-    use std::{
-        io::{Read, Write},
-        net::TcpListener,
-    };
-    fn server(payload: Vec<u8>) -> (String, std::thread::JoinHandle<()>) {
-        let listener = TcpListener::bind("127.0.0.1:0").unwrap();
-        let addr = listener.local_addr().unwrap().to_string();
-        let worker = std::thread::spawn(move || {
-            let (mut stream, _) = listener.accept().unwrap();
-            let mut command = vec![];
-            let mut byte = [0];
-            while !command.ends_with(b"\r\n") {
-                stream.read_exact(&mut byte).unwrap();
-                command.push(byte[0]);
-            }
-            assert_eq!(command, b"! U1 do \"file.type\" \"Z:A.FNT.\"\r\n");
-            stream.write_all(&payload).unwrap();
-        });
-        (addr, worker)
-    }
-    let (addr, thread) = server(vec![1, 2, 3]);
-    assert_eq!(
-        transport::exchange(&addr, "! U1 do \"file.type\" \"Z:A.FNT.\"\r\n", Some(3)).unwrap(),
-        [1, 2, 3]
-    );
-    thread.join().unwrap();
-    let (addr, thread) = server(vec![1, 2]);
-    assert!(transport::exchange(&addr, "! U1 do \"file.type\" \"Z:A.FNT.\"\r\n", Some(3)).is_err());
-    thread.join().unwrap();
-    let (addr, thread) = server(vec![1, 2, 3, 4]);
-    assert!(transport::exchange(&addr, "! U1 do \"file.type\" \"Z:A.FNT.\"\r\n", Some(3)).is_err());
-    thread.join().unwrap();
-}
-#[test]
 fn unverified_candidates_cannot_become_measured_or_lose_codepages() {
     let mut c = Collection::new(vec![font()], json!({})).unwrap();
     let report = json!({"schema":"zebra-font-mapping-candidates-v1","code_pages":[{"id":27,"byte_to_character":(0..256).collect::<Vec<_>>(),"provenance":{"label":"test page"}}],"font_candidates":{"Z:TEST.FNT":{"reference_sha256":"a".repeat(64),"provenance":{"label":"test font"},"entries":[{"raw_record_id":300,"character_codes":[923]}]}}});
@@ -348,10 +257,6 @@ fn unverified_candidates_cannot_become_measured_or_lose_codepages() {
     c.fonts[0].encodings[0].entries[0].status = Status::Matched;
     c.seal().unwrap();
     assert!(c.validate().is_err());
-}
-#[test]
-fn truncated_directory_is_not_a_complete_inventory() {
-    assert!(transport::directory(b"\"\r\n- DIR Z:*.*\r\n* Z:A.FNT 123", 'Z').is_err());
 }
 
 #[test]
@@ -374,4 +279,54 @@ fn collection_io_has_its_own_bounded_budget() {
         .unwrap_err()
         .to_string()
         .contains("256 MiB"));
+}
+
+#[test]
+fn identity_query_is_bounded_and_read_only() {
+    use std::{
+        io::{Read, Write},
+        net::TcpListener,
+    };
+    for (payload, valid) in [
+        (
+            br#"{"device.unique_id":"test-printer","appl.name":"test-version"}"#.to_vec(),
+            true,
+        ),
+        (br#"{"device.unique_id":"test-printer"}"#.to_vec(), false),
+        (vec![b' '; 65537], false),
+    ] {
+        let listener = TcpListener::bind("127.0.0.1:0").unwrap();
+        let port = listener.local_addr().unwrap().port();
+        let thread = std::thread::spawn(move || {
+            let (mut stream, _) = listener.accept().unwrap();
+            let mut request = Vec::new();
+            let mut byte = [0];
+            while !request.ends_with(b"\r\n") {
+                stream.read_exact(&mut byte).unwrap();
+                request.push(byte[0]);
+            }
+            assert_eq!(
+                request,
+                b"{}{\"device.unique_id\":null,\"appl.name\":null}\r\n"
+            );
+            stream.write_all(&payload).unwrap();
+        });
+        assert_eq!(identity::identity("127.0.0.1", port).is_ok(), valid);
+        thread.join().unwrap();
+    }
+}
+
+#[test]
+fn portable_collection_rejects_internal_metadata_and_old_schema() {
+    let mut c = Collection::new(vec![font()], json!({})).unwrap();
+    let mut value = serde_json::to_value(&c).unwrap();
+    value["fonts"][0]["header_hex"] = json!("00".repeat(116));
+    assert!(serde_json::from_value::<Collection>(value).is_err());
+    c.version = 2;
+    c.seal().unwrap();
+    assert!(c
+        .validate()
+        .unwrap_err()
+        .to_string()
+        .contains("schema/version"));
 }

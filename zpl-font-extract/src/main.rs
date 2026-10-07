@@ -19,7 +19,7 @@ struct Cli {
 }
 #[derive(Subcommand)]
 enum Command {
-    /// Complete raw font inventory and multiple encoding maps (v2 JSON).
+    /// Survey and compile glyph collections with multiple encoding maps (v3 JSON).
     Collection {
         #[command(subcommand)]
         command: zpl_font_extract::collection::cli::Command,

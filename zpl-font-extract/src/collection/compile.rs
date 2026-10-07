@@ -14,14 +14,7 @@ pub fn compile(c: &Collection, out: &Path) -> Result<()> {
     for f in &c.fonts {
         let mut indices = vec![];
         for r in &f.records {
-            let m = [
-                r.advance,
-                r.left as u16,
-                r.top as u16,
-                r.width,
-                r.height,
-                r.flags,
-            ];
+            let m = [r.advance, r.left as u16, r.top as u16, r.width, r.height];
             let bytes = unhex(&r.bitmap_hex)?;
             let key = (m, bytes.clone());
             let index = if let Some(&i) = pool.get(&key) {
@@ -102,8 +95,12 @@ pub fn compile(c: &Collection, out: &Path) -> Result<()> {
     let mut lookup_bytes = 0;
     for ((f, indices), maps) in c.fonts.iter().zip(fonts).zip(map_names) {
         let ids = f.records.iter().map(|r| r.id).collect::<Vec<_>>();
-        lookup_bytes += 116 + ids.len() * 4 + f.zero_record_slots.len() * 2;
-        writeln!(rust,"Font{{name:{:?},header:&{:?},slot_count:{},zero_record_slots:&{:?},ids:&{ids:?},records:&{indices:?},pool:&POOL,encodings:&[{maps}]}},",f.name,unhex(&f.header_hex)?,f.slot_count,f.zero_record_slots)?;
+        lookup_bytes += ids.len() * 4;
+        writeln!(
+            rust,
+            "Font{{name:{:?},ids:&{ids:?},records:&{indices:?},pool:&POOL,encodings:&[{maps}]}},",
+            f.name
+        )?;
     }
     rust.push_str("];\npub fn font_by_name(name:&str)->Option<&'static Font>{FONTS.iter().find(|f|f.name==name)}\n");
     writeln!(
@@ -118,7 +115,7 @@ pub fn compile(c: &Collection, out: &Path) -> Result<()> {
         )?;
     }
     rust.push_str("];\n");
-    let catalog = json!({"schema":"zpl-compact-collection-v2","source_content_sha256":c.content_sha256,"unique_records":metrics.len(),"unique_payloads":payloads.len(),"unique_maps":shared_maps.len(),"coverage":c.coverage,"candidate_code_pages":c.candidate_code_pages.len(),"array_bytes":c.candidate_code_pages.len()*512+bits.len()+metrics.len()*16+map_bytes+candidate_pool.len()*2+lookup_bytes,"bitmaps_sha256":hash(&bits),"module_sha256":hash(rust.as_bytes())});
+    let catalog = json!({"schema":"zpl-compact-collection-v3","source_content_sha256":c.content_sha256,"unique_records":metrics.len(),"unique_payloads":payloads.len(),"unique_maps":shared_maps.len(),"coverage":c.coverage,"candidate_code_pages":c.candidate_code_pages.len(),"array_bytes":c.candidate_code_pages.len()*512+bits.len()+metrics.len()*14+map_bytes+candidate_pool.len()*2+lookup_bytes,"bitmaps_sha256":hash(&bits),"module_sha256":hash(rust.as_bytes())});
     fs::create_dir_all(out)?;
     fs::write(out.join("fonts.rs"), rust)?;
     fs::write(out.join("bitmaps.bin"), bits)?;

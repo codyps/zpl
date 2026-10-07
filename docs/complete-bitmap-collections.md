@@ -1,55 +1,44 @@
 # Complete bitmap records and encoding mappings
 
-`zpl-font-extract collection` adds a stored-font and mapping pipeline alongside
-the existing preview-only `recover` command. Font glyphs and input encodings
-are separate: a 16-bit raw FNT record ID is not a Unicode code point, and an
-encoding observation may match several indistinguishable records.
+`zpl-font-extract collection` surveys input-to-glyph mappings and compiles
+format-independent glyph JSON for `zpl-bitmap-fonts`. Glyph IDs are opaque
+16-bit keys, separate from byte inputs and Unicode code points. An observation
+can match several indistinguishable glyphs.
 
-The v2 JSON can represent every record in a supported stored bitmap FNT,
-including records that previews cannot currently select. It does **not** claim
-that every encoding mapping can be discovered through ZPL previews. Tested
-inputs, unresolved inputs, duplicate candidates and untested inputs remain
-separate. UTF-16 HTTP previews remain disabled because they caused the tested
-ZD621 to stop responding. Imported candidate mappings remain distinct from
-measured printer observations.
+The existing `plan`, `recover`, and `compile` commands remain the preview-only
+workflow: calibrate, measure glyph pixels and metrics, verify with independent
+holdouts, and compile the verified v1 JSON. The collection workflow adds multiple
+encodings, Unicode inputs, imported glyph collections, and unresolved mappings.
+It does not claim that previews can select every glyph on a printer. UTF-16 HTTP
+previews remain disabled because they caused the tested ZD621 to stop responding.
 
-## Read the stored fonts
+## Portable collection input
 
-The inventory command queries `file.dir` and reads the listed `.FNT` objects
-through SGD. It uses the observed trailing-dot `file.type` form for protected
-resident files. It validates complete directory framing, expected object sizes
-and FNT bounds, saves originals and hashes, and rejects truncated responses.
-It only reads stored objects; it does not print or change printer settings.
-The default drive is `Z`; use `--drives EZ` to include downloaded fonts.
+Start with `fonts.json` in the `zebra-bitmap-collection` version 3 format.
+Each font contains a name, source SHA-256, glyph records, and encoding maps.
+Each record contains `id`, `advance`, `left`, `top`, `width`, `height`, and
+`bitmap_hex` (byte-padded rows). The top bearing is relative to the `^FT`
+baseline. Source hashes scope cached observations to the supplied glyph data.
+Blank glyphs are valid records; an absent ID simply has no supplied record.
 
-```sh
-cargo run --locked -p zpl-font-extract -- collection inventory \
-  --printer printer.example:9100 --drives Z --out _font-inventory
-```
+The format contains no binary font headers, slot tables or format flags.
+The earlier draft v2 format is rejected: exporters must supply the portable v3
+fields and recompute coverage and the content hash. There is no binary font
+file importer in this tool.
 
-The decoder supports the observed type-1 bitmap FNT representation. Descriptor,
-outline and other non-bitmap FNT files are retained and listed as skipped;
-TrueType font files are outside this bitmap-record pipeline. A malformed type-1
-font fails collection rather than silently disappearing. Failed downloads leave
-raw evidence but no successful `fonts.json`.
-
-Existing archived files named `Z-A.FNT`, `Z-EPL1.FNT`, etc. can be imported offline:
-
-```sh
-cargo run --locked -p zpl-font-extract -- collection import ARCHIVED_FNT_DIRECTORY \
-  --out _font-inventory/fonts.json
-```
-
-This exports the complete slot inventory: decoded records, absent slots and
-zero-record slots. Record IDs extend beyond 255. Complete padded bitmap rows,
-including padding ink, signed bearings, advance, flags and original headers
-are retained. Original file hashes link records to their source objects.
+The top-level fields are `schema`, `version`, `fonts`, `provenance`,
+`content_sha256`, `coverage`, and `candidate_code_pages`. The SHA-256 covers the
+compact JSON serialization of the tuple `(schema, version, fonts, provenance,
+coverage, candidate_code_pages)`. Struct field order follows the Rust collection
+types; keys inside arbitrary JSON provenance objects are sorted. `Collection::new`
+and `seal` derive coverage and the hash; `load` and `save` validate both. External
+exporters must use the same serialization contract.
 
 ## Obtain input mappings
 
 ```sh
 cargo run --locked -p zpl-font-extract -- collection survey \
-  _font-inventory/fonts.json --host http://printer.example/ \
+  fonts.json --host http://printer.example/ \
   --cache _font-cache --out _font-mapped.json
 ```
 
@@ -61,7 +50,7 @@ focused work; all keys are decimal. For example:
 
 ```sh
 cargo run --locked -p zpl-font-extract -- collection survey \
-  _font-inventory/fonts.json --host http://printer.example/ \
+  fonts.json --host http://printer.example/ \
   --cache _font-cache --out _font-pilot.json \
   --font Z:A.FNT --encoding 28 --codes 32,65,66,233,923
 ```
@@ -93,7 +82,7 @@ An interrupted run can be resumed from completed, checked cache entries.
 
 ```sh
 cargo run --locked -p zpl-font-extract -- collection merge-evidence \
-  _font-inventory/fonts.json \
+  fonts.json \
   --report zpl-bitmap-fonts/data/zd621/fonts.json \
   --report PATH_TO_ENCODING_OBSERVATIONS.json \
   --report PATH_TO_MAPPING_CANDIDATES.json \
@@ -130,7 +119,7 @@ cargo run --locked -p zpl-font-extract -- collection compile \
   _font-mapped.json --out _compiled-fonts
 ```
 
-The compiler validates schema, content hash, complete slot coverage, record
+The compiler validates schema, content hash, unique ordered glyph IDs, record
 bounds, candidate references, mapping domains and evidence categories before
 writing anything. It emits `fonts.rs`, `bitmaps.bin`, and `catalog.json`. Keep
 the first two adjacent and include the generated module in an application or
@@ -138,9 +127,8 @@ in `zpl-bitmap-fonts`. Existing outputs are never overwritten.
 
 The new `zpl_bitmap_fonts::collection` reader uses borrowed static arrays with
 no allocation, dependencies or runtime JSON. It deduplicates glyph records,
-bitmap payloads, map arrays and candidate-ID sets. It preserves 16-bit raw IDs,
-32-bit Unicode input keys, original headers, absent/zero/blank distinctions,
-metric widths and padding ink. Existing `Font` and bundled `zd621` APIs are
+bitmap payloads, map arrays and candidate-ID sets. It preserves 16-bit glyph IDs,
+32-bit Unicode input keys, blank records, metric widths and padding ink. Existing `Font` and bundled `zd621` APIs are
 unchanged; the renderer's bundled font behavior is not replaced by this work.
 
 ```rust,ignore
@@ -163,25 +151,13 @@ before publication.
 Array sizes in the compact catalog exclude static slice/pointer metadata and
 Rust source text; they are not executable-size measurements.
 
-## Validation on the existing archive
+## Validation
 
-The Rust importer decoded all 47 bitmap fonts and 10,100 records (8,162 visible)
-from the ZD621 203-dpi/V93.21.33Z archive. Importing the existing CI0 dataset,
-saved Unicode/byte surveys, and candidate evidence reproduces 6,872 observed
-record equivalents and 1,290 unresolved records. Candidate evidence covers
-1,122 of those unresolved records; it remains unverified on the current printer.
-All 61 legacy byte-code-page tables were retained.
+Tests cover Unicode inputs, duplicate glyph candidates, blank and unstable
+previews, content-hash checks, mapping conflicts, provenance retention and JSON
+size bounds. Generated modules are compiled and exercised through the compact
+reader, including IDs above 255, signed bearings, wide glyphs and encoding maps.
 
-The generated module was compiled and every record, header, metric, padding
-byte, mapping entry/status/candidate and code-page entry was read back through
-the allocation-free API and compared byte-for-byte with the JSON. The resulting
-arrays occupy 1,600,335 bytes versus approximately 27 MB for the pretty-printed JSON.
-A focused live Font A survey exercised source mapping, CI27 and UTF-8 with
-native preview repeats; its cached run was also replayed offline.
-
-The Rust inventory command also downloaded all 69 resident `.FNT` objects
-from the printer: the 47 bitmap fonts and all their records were byte-identical
-to the archive; 22 non-bitmap descriptors were retained and explicitly skipped.
-Final targeted validation: 23 tests passed, with Clippy (`-D warnings`) and
-workspace rustfmt checks passing. The identity-scoped live survey and its
-offline replay produced identical JSON.
+The portable collection can preserve all supplied glyphs, including ones without
+a measured input mapping. Coverage reports which records have been matched;
+it cannot establish whether an external producer supplied every printer glyph.

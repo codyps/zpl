@@ -16,18 +16,14 @@ pub enum Status {
 }
 #[derive(Debug)]
 pub struct Pool {
-    /// advance, signed left/top as u16 bits, declared width, height, flags.
-    pub metrics: &'static [[u16; 6]],
+    /// advance, signed left/top as u16 bits, declared width, height.
+    pub metrics: &'static [[u16; 5]],
     pub offsets: &'static [u32],
     pub bits: &'static [u8],
 }
 #[derive(Debug)]
 pub struct Font {
     pub name: &'static str,
-    /// Original 116-byte FNT header, including cell metrics and format flags.
-    pub header: &'static [u8; 116],
-    pub slot_count: u16,
-    pub zero_record_slots: &'static [u16],
     pub ids: &'static [u16],
     pub records: &'static [u16],
     pub pool: &'static Pool,
@@ -77,14 +73,13 @@ pub struct Record {
     pub top: i16,
     pub width: u16,
     pub height: u16,
-    pub flags: u16,
     bits: &'static [u8],
 }
 impl Font {
     pub fn record(&self, id: u16) -> Option<Record> {
         let i = self.ids.binary_search(&id).ok()?;
         let i = usize::from(*self.records.get(i)?);
-        let &[advance, left, top, width, height, flags] = self.pool.metrics.get(i)?;
+        let &[advance, left, top, width, height] = self.pool.metrics.get(i)?;
         let start = *self.pool.offsets.get(i)? as usize;
         let len = usize::from(width)
             .div_ceil(8)
@@ -95,7 +90,6 @@ impl Font {
             top: top as i16,
             width,
             height,
-            flags,
             bits: self.pool.bits.get(start..start.checked_add(len)?)?,
         })
     }

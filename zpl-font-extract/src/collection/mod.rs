@@ -1,9 +1,8 @@
-//! Complete stored bitmap records and separately evidenced input mappings.
+//! Portable bitmap glyph records and separately evidenced input mappings.
 //! See docs/complete-bitmap-collections.md for mapping semantics and limitations.
 pub mod compile;
-pub mod fnt;
+mod identity;
 pub mod survey;
-pub mod transport;
 use crate::automatic::model::{hash, read, selector, Glyph};
 use eyre::{ensure, Result};
 use serde::{Deserialize, Serialize};
@@ -16,11 +15,10 @@ pub struct Record {
     pub id: u16,
     pub advance: u16,
     pub left: i16,
-    /// Relative to ^FT; the stored FNT y offset has the opposite sign.
+    /// Vertical bearing relative to the ^FT baseline.
     pub top: i16,
     pub width: u16,
     pub height: u16,
-    pub flags: u16,
     /// Complete byte-padded rows, including any ink outside declared width.
     pub bitmap_hex: String,
 }
@@ -97,10 +95,6 @@ pub struct EncodingMap {
 pub struct Font {
     pub name: String,
     pub source_sha256: String,
-    pub header_hex: String,
-    pub slot_count: u16,
-    pub absent_slots: Vec<u16>,
-    pub zero_record_slots: Vec<u16>,
     pub records: Vec<Record>,
     pub encodings: Vec<EncodingMap>,
 }
@@ -168,7 +162,7 @@ impl Collection {
     pub fn new(fonts: Vec<Font>, provenance: Value) -> Result<Self> {
         let mut c = Self {
             schema: "zebra-bitmap-collection".into(),
-            version: 2,
+            version: 3,
             fonts,
             provenance,
             content_sha256: String::new(),
@@ -236,7 +230,7 @@ impl Collection {
     }
     pub fn validate(&self) -> Result<()> {
         ensure!(
-            self.schema == "zebra-bitmap-collection" && self.version == 2,
+            self.schema == "zebra-bitmap-collection" && self.version == 3,
             "unsupported collection schema/version"
         );
         ensure!(
@@ -269,11 +263,7 @@ impl Collection {
                     && f.source_sha256.bytes().all(|b| b.is_ascii_hexdigit()),
                 "invalid source hash"
             );
-            ensure!(
-                unhex(&f.header_hex)?.len() == 116 && (1..=4096).contains(&f.slot_count),
-                "invalid stored header/count"
-            );
-            let mut slots = BTreeSet::new();
+            ensure!(f.records.len() <= 65536, "too many glyph records");
             let mut ids = BTreeSet::new();
             let mut previous = None;
             for r in &f.records {
@@ -282,10 +272,6 @@ impl Collection {
                     "record IDs must be sorted and unique"
                 );
                 previous = Some(r.id);
-                ensure!(
-                    r.id < f.slot_count && slots.insert(r.id),
-                    "duplicate/out-of-range record ID"
-                );
                 ids.insert(r.id);
                 ensure!(
                     r.width <= 4096 && r.height <= 4096,
@@ -298,16 +284,6 @@ impl Collection {
                 );
                 r.glyph()?;
             }
-            for &id in f.absent_slots.iter().chain(&f.zero_record_slots) {
-                ensure!(
-                    id < f.slot_count && slots.insert(id),
-                    "duplicate/out-of-range absent slot"
-                );
-            }
-            ensure!(
-                slots.len() == usize::from(f.slot_count),
-                "incomplete raw slot inventory"
-            );
             let mut maps = BTreeSet::new();
             for m in &f.encodings {
                 ensure!(

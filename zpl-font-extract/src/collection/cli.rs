@@ -4,21 +4,6 @@ use clap::Subcommand;
 use std::path::PathBuf;
 #[derive(Subcommand)]
 pub enum Command {
-    /// Read all type-1 bitmap font objects on selected printer drives via SGD.
-    Inventory {
-        #[arg(long)]
-        printer: String,
-        #[arg(long, default_value = "Z")]
-        drives: String,
-        #[arg(long)]
-        out: PathBuf,
-    },
-    /// Decode every stored bitmap FNT from a directory without printer access.
-    Import {
-        directory: PathBuf,
-        #[arg(long)]
-        out: PathBuf,
-    },
     /// Probe input-to-record mappings; preserve explicit unresolved and ambiguous results.
     Survey {
         source: PathBuf,
@@ -73,15 +58,6 @@ pub enum Command {
 }
 pub async fn run(command: Command) -> Result<()> {
     match command {
-        Command::Inventory {
-            printer,
-            drives,
-            out,
-        } => {
-            let c = transport::collect(&printer, &drives, &out)?;
-            c.save(&out.join("fonts.json"))?;
-        }
-        Command::Import { directory, out } => fnt::import_directory(&directory)?.save(&out)?,
         Command::Compile { source, out } => compile::compile(&Collection::load(&source)?, &out)?,
         Command::MergeEvidence {
             source,
@@ -141,10 +117,10 @@ pub async fn run(command: Command) -> Result<()> {
             let identity = if offline {
                 let saved: Value = serde_json::from_slice(&read(&profile_path)?)?;
                 ensure!(saved["host"] == host, "cached identity host differs");
-                transport::validate_identity(&saved["identity"])?;
+                identity::validate_identity(&saved["identity"])?;
                 saved["identity"].clone()
             } else {
-                let identity = transport::identity(hostname, identity_port)?;
+                let identity = identity::identity(hostname, identity_port)?;
                 write_json(
                     &profile_path,
                     &serde_json::json!({"host":host,"identity":identity}),
@@ -171,7 +147,7 @@ pub async fn run(command: Command) -> Result<()> {
             }
             if !offline {
                 ensure!(
-                    transport::identity(hostname, identity_port)? == identity,
+                    identity::identity(hostname, identity_port)? == identity,
                     "printer identity changed during survey"
                 );
             }
