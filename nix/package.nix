@@ -15,6 +15,9 @@ rustPlatform.buildRustPackage {
       ../zpl-render-api
       ../zpl-wasm
       ../raster-diff
+      ../zebra-sgd
+      ../zpl-font-extract
+      ../zpl-bitmap-fonts
       ../zebra-firmware
       ../zebra-http-api
       ../zpl-proxy-api

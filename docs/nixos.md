@@ -133,7 +133,9 @@ curl --unix-socket /run/zpl-proxy-api.sock http://localhost/
 The systemd service runs as a dynamic user, serves the packaged browser assets,
 and stores its SQLite database at `/var/lib/zpl-proxy-api/db.sqlite`. Systemd
 manages the directory ownership and keeps it across restarts. The proxy executable applies its embedded Diesel migrations
-on every startup, including upgrades; migration failure prevents serving requests.
+on every startup; migration failure prevents serving requests. The consolidated
+initial schema requires a fresh database when moving from earlier development
+schemas; there is no automatic upgrade path for those databases.
 No separate Diesel CLI step is required.
 Back up the database before upgrading. To take a simple offline backup, stop
 both units with `systemctl stop zpl-proxy-api.socket zpl-proxy-api.service`, then

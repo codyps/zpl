@@ -12,6 +12,8 @@ mod bounded_text;
 mod concatenation;
 mod field_block;
 mod font;
+mod font_downloads;
+pub mod fonts;
 mod graphics;
 mod numbered;
 mod printer_shapes;
@@ -175,6 +177,27 @@ pub fn render_with_limits(
     options: Options,
     limits: Limits,
 ) -> Result<Document, RenderError> {
+    render_with_fonts_and_limits(input, options, &fonts::Fonts::new(), limits)
+}
+
+/// Render using caller-supplied bitmap and TrueType fonts.
+/// Unregistered font IDs retain resident behavior. Fonts affect all output
+/// adapters because glyphs are resolved into the scene here.
+pub fn render_with_fonts(
+    input: &[u8],
+    options: Options,
+    fonts: &fonts::Fonts<'_>,
+) -> Result<Document, RenderError> {
+    render_with_fonts_and_limits(input, options, fonts, Limits::default())
+}
+
+/// Combine caller-supplied fonts with explicit renderer budgets.
+pub fn render_with_fonts_and_limits(
+    input: &[u8],
+    options: Options,
+    fonts: &fonts::Fonts<'_>,
+    limits: Limits,
+) -> Result<Document, RenderError> {
     for dimension in [
         options.compatibility.preview_width_quantum,
         options.compatibility.preview_max_width,
@@ -208,19 +231,25 @@ pub fn render_with_limits(
                 message: "expanded formats exceed configured renderer limit".into(),
             });
         }
-        return render_expanded(&expanded.bytes, options, limits, true).map_err(|mut error| {
-            error.offset = expanded.original_offset(error.offset);
-            error
-        });
+        return render_expanded(&expanded.bytes, options, limits, true, fonts).map_err(
+            |mut error| {
+                error.offset = expanded.original_offset(error.offset);
+                error
+            },
+        );
     }
-    render_expanded(input, options, limits, false)
+    render_expanded(input, options, limits, false, fonts)
 }
 fn render_expanded(
     input: &[u8],
     options: Options,
     limits: Limits,
     allow_empty: bool,
+    fonts: &fonts::Fonts<'_>,
 ) -> Result<Document, RenderError> {
+    // Request-local names resolve against the caller-owned font resources.
+    let downloads = font_downloads::prepare(input, limits);
+    let mut fonts = fonts::RenderFonts::new(fonts);
     let number = |p: &[&str], i, default| number(p, i, default, limits.number_abs);
     let numbered = numbered::plan(input, options.compatibility, limits.field_bytes)?;
     let mut pending_terminator = None;
@@ -345,6 +374,21 @@ fn render_expanded(
                     )
                 }
             };
+            if matches!(name, "DB" | "DT" | "DU" | "DY") {
+                if !matches!(item, Element::ControlCommand(_)) {
+                    return Err(format!("{name} requires control prefix"));
+                }
+                if field.path.is_some() {
+                    return Err("drawing must end with FS before another command".into());
+                }
+                let download = downloads
+                    .get(&offset)
+                    .ok_or("missing font download")?
+                    .as_ref()
+                    .map_err(Clone::clone)?;
+                fonts.install(download)?;
+                return Ok(());
+            }
             if matches!(item, Element::ControlCommand(_))
                 && !matches!(name, "DG" | "CC" | "CT" | "CD")
             {
@@ -361,6 +405,7 @@ fn render_expanded(
                         | "PW"
                         | "LL"
                         | "CF"
+                        | "CW"
                         | "LH"
                         | "LS"
                         | "LT"
@@ -421,11 +466,11 @@ fn render_expanded(
             let max = match name {
                 "XA" | "XZ" | "FS" | "FR" => Some(0),
                 "PW" | "LL" | "LS" | "LT" | "LR" | "PO" | "FH" => Some(1),
-                "LH" | "FW" | "FP" | "SF" => Some(2),
+                "LH" | "FW" | "FP" | "SF" | "CW" => Some(2),
                 "FO" | "FT" | "CF" | "BY" | "XG" | "TB" | "SN" => Some(3),
                 "GB" | "GD" | "B3" | "FB" => Some(5),
                 "BC" => Some(6),
-                "GE" | "PA" => Some(4),
+                "GE" | "PA" | "A@" => Some(4),
                 "GC" => Some(3),
                 "CI" => Some(513),
                 n if n.starts_with('A') => Some(3),
@@ -712,8 +757,29 @@ fn render_expanded(
                     field.justification =
                         justification(&p, 2, default_justification, limits.number_abs)?;
                 }
+                "CW" => {
+                    // ^CW assigns a font ID to a registered virtual printer filename.
+                    let [id] = p[0].as_bytes() else {
+                        return Err("CW requires a single font ID".into());
+                    };
+                    if !id.is_ascii_uppercase() && !id.is_ascii_digit() {
+                        return Err("CW font ID must be 0–9 or A–Z".into());
+                    }
+                    let name = p
+                        .get(1)
+                        .filter(|name| !name.trim().is_empty())
+                        .ok_or("CW requires a font filename")?;
+                    fonts.alias(char::from(*id), name)?;
+                }
                 "CF" => {
                     font_id = match p[0] {
+                        value
+                            if value.len() == 1
+                                && value != "@"
+                                && fonts.get(value.as_bytes()[0] as char).is_some() =>
+                        {
+                            value.as_bytes()[0] as char
+                        }
                         "" => default_font_id,
                         "0" => '0',
                         "A" => 'A',
@@ -747,7 +813,7 @@ fn render_expanded(
                     let supplied_size = p.get(1).is_some_and(|v| !v.is_empty())
                         || p.get(2).is_some_and(|v| !v.is_empty());
                     if options.compatibility.bitmap_cf_font_only_resets_size
-                        && font_id != '0'
+                        && (font_id != '0' && fonts.get(font_id).is_none())
                         && !p[0].is_empty()
                         && !supplied_size
                     {
@@ -757,15 +823,15 @@ fn render_expanded(
                         default_requested_h = number(&p, 1, 0.)?;
                         default_requested_w = number(&p, 2, 0.)?;
                     }
-                    let (dw, dh) = if font_id == '0' {
+                    let (dw, dh) = if font_id == '0' || fonts.get(font_id).is_some() {
                         (default_w, default_h)
                     } else {
                         (default_requested_w, default_requested_h)
                     };
-                    (font_w, font_h) = font_dimensions(
+                    (font_w, font_h) = supplied_font_dimensions(
+                        &fonts,
                         &p,
-                        dw,
-                        dh,
+                        (dw, dh),
                         font_id,
                         options.compatibility.font0_minimum_dimensions,
                         options.compatibility.bitmap_font_maximum_dimensions,
@@ -781,6 +847,25 @@ fn render_expanded(
                     }
                     field.explicit_font = true;
                     font_id = match n {
+                        "A@" => {
+                            // ^A@ p. 62: omitted names reuse the last ^A@ face;
+                            // before any named selection, use the current ^CF face.
+                            if let Some(name) = p.get(3).filter(|name| !name.trim().is_empty()) {
+                                fonts.select_named(name)?;
+                            }
+                            if fonts.has_named_selection() {
+                                fonts::NAMED_FONT
+                            } else {
+                                default_font_id
+                            }
+                        }
+                        value
+                            if value.len() == 2
+                                && value != "A@"
+                                && fonts.get(value.as_bytes()[1] as char).is_some() =>
+                        {
+                            value.as_bytes()[1] as char
+                        }
                         "A0" => '0',
                         "AA" => 'A',
                         "AB" => 'B',
@@ -812,15 +897,15 @@ fn render_expanded(
                     } else {
                         rotation(p[0])?
                     };
-                    let (dw, dh) = if font_id == '0' {
+                    let (dw, dh) = if font_id == '0' || fonts.get(font_id).is_some() {
                         (default_w, default_h)
                     } else {
                         (default_requested_w, default_requested_h)
                     };
-                    (font_w, font_h) = font_dimensions(
+                    (font_w, font_h) = supplied_font_dimensions(
+                        &fonts,
                         &p,
-                        dw,
-                        dh,
+                        (dw, dh),
                         font_id,
                         options.compatibility.font0_minimum_dimensions,
                         options.compatibility.bitmap_font_maximum_dimensions,
@@ -838,10 +923,10 @@ fn render_expanded(
                     } else {
                         rotation(p[0])?
                     };
-                    (font_w, font_h) = font_dimensions(
+                    (font_w, font_h) = supplied_font_dimensions(
+                        &fonts,
                         &p,
-                        default_requested_w,
-                        default_requested_h,
+                        (default_requested_w, default_requested_h),
                         font_id,
                         options.compatibility.font0_minimum_dimensions,
                         options.compatibility.bitmap_font_maximum_dimensions,
@@ -965,7 +1050,8 @@ fn render_expanded(
                             options.compatibility.serial_overlong_keeps_value,
                         )?;
                     }
-                    if field.barcode.as_ref().is_none_or(|b| b.show)
+                    if fonts.get(font_id).is_none()
+                        && field.barcode.as_ref().is_none_or(|b| b.show)
                         && (font_w != 32.
                             || font_h != 32.
                             || options.dpi != 203
@@ -1099,7 +1185,8 @@ fn render_expanded(
                                 );
                                 return Ok(Path::default());
                             }
-                            let rendered = b.render(
+                            let rendered = b.render_with_fonts(
+                                &fonts,
                                 &bytes,
                                 field.explicit_font.then_some((font_id, font_w, font_h)),
                                 field.rotation,
@@ -1125,6 +1212,7 @@ fn render_expanded(
                                     || (encoding == 28
                                         && options.compatibility.utf8_uses_legacy_backslash),
                             )
+                            .with_fonts(&fonts)
                             .with_control_glyphs(
                                 options.compatibility.text_esc_del_processing
                                     && matches!(encoding, 0 | 13),
@@ -1192,7 +1280,7 @@ fn render_expanded(
                                         .filter(|h| *h > 0.)
                                         .unwrap_or(font_h),
                                     if options.compatibility.bounded_text_printer_anchors
-                                        && font_id == '0'
+                                        && (font_id == '0' || fonts.get(font_id).is_some())
                                         && matches!(field.rotation, b'R' | b'I')
                                     {
                                         (bounds.0, (bounds.1 - 1.).max(0.))
@@ -1271,7 +1359,10 @@ fn render_expanded(
                                     .compatibility
                                     .right_justified_inverted_text_uses_ink_margin
                             {
-                                field.inverted_margin = if font_id == '0' && field.block.is_none() {
+                                field.inverted_margin = if (font_id == '0'
+                                    || fonts.get(font_id).is_some())
+                                    && field.block.is_none()
+                                {
                                     font::inverted_text_margin(
                                         text_font,
                                         value,
@@ -1593,6 +1684,7 @@ fn render_expanded(
                             base
                         };
                         let (ft_dx, ft_dy) = if options.compatibility.bitmap_font_ft_dot_origin
+                            && fonts.get(font_id).is_none()
                             && field.baseline
                             && field.text_size.is_some()
                         {
@@ -1617,7 +1709,11 @@ fn render_expanded(
                         {
                             advance += field.direction_metrics.end_margin
                                 + field.direction_metrics.first_delta
-                                + if font_id == '0' { 1. } else { 0. };
+                                + if font_id == '0' || fonts.get(font_id).is_some() {
+                                    1.
+                                } else {
+                                    0.
+                                };
                         }
                         if options.compatibility.field_direction_printer_anchors
                             && field.text_size.is_some()
@@ -1633,7 +1729,7 @@ fn render_expanded(
                             let (w, h) = field
                                 .text_size
                                 .map(|(w, h)| {
-                                    if font_id == '0'
+                                    if (font_id == '0' || fonts.get(font_id).is_some())
                                         || (matches!(
                                             font_id,
                                             'P' | 'Q' | 'R' | 'S' | 'T' | 'U' | 'V'
@@ -1649,7 +1745,11 @@ fn render_expanded(
                                         // P/Q quantize the height pivot in native cells;
                                         // R retains the matrix boundary in native controls.
                                         // its proportional horizontal advance loses one dot.
-                                        let last_row = match font_id {
+                                        let last_row = match if fonts.get(font_id).is_some() {
+                                            '0'
+                                        } else {
+                                            font_id
+                                        } {
                                             'P' => font_h / 20.,
                                             'Q' => font_h / 28.,
                                             'R' => 0.,
@@ -1715,7 +1815,7 @@ fn render_expanded(
                                     b'R' => (-th, -left + field.leading_tab_advance),
                                     b'I' => (
                                         field.inverted_margin - dx
-                                            + if font_id == '0'
+                                            + if (font_id == '0' || fonts.get(font_id).is_some())
                                                 && field.block.is_none()
                                                 && options
                                                     .compatibility
@@ -1749,7 +1849,11 @@ fn render_expanded(
                             && field_justification == 1
                             && field.block.is_none()
                         {
-                            let dot = if font_id == '0' { 0. } else { 1. };
+                            let dot = if font_id == '0' || fonts.get(font_id).is_some() {
+                                0.
+                            } else {
+                                1.
+                            };
                             match (field.direction.0, field.rotation) {
                                 (b'H', b'I') => {
                                     jx += field.direction.1;
@@ -1794,6 +1898,7 @@ fn render_expanded(
                         // the baseline at floor(3h/4). Compute the fractional
                         // correction once, not once per bitmap vertex.
                         let baseline_correction = (options.compatibility.font0_fo_floor_baseline
+                            && fonts.get(font_id).is_none()
                             && font_id == '0'
                             && field.text_size.is_some()
                             && !field.baseline
@@ -1813,7 +1918,7 @@ fn render_expanded(
                                     field.rotation,
                                     field.baseline,
                                     field_justification == 1,
-                                    font_id == '0',
+                                    font_id == '0' || fonts.get(font_id).is_some(),
                                     options.compatibility.bounded_text_printer_anchors,
                                 );
                                 return Point::new(p.x + x, p.y + y);
@@ -2332,6 +2437,37 @@ fn text_block(
         center_overflow,
     })
 }
+fn supplied_font_dimensions(
+    fonts: &fonts::RenderFonts<'_, '_>,
+    p: &[&str],
+    default_size: (f64, f64),
+    id: char,
+    clamp_minimum: bool,
+    clamp_maximum: bool,
+    number_abs: f64,
+) -> Result<(f64, f64), String> {
+    let (default_w, default_h) = default_size;
+    if let Some(face) = fonts.get(id) {
+        let h = number(p, 1, 0., number_abs)?;
+        let w = number(p, 2, 0., number_abs)?;
+        let (w, h) = if w == 0. && h == 0. {
+            (default_w, default_h)
+        } else {
+            (w, h)
+        };
+        return face.dimensions(w, h);
+    }
+    font_dimensions(
+        p,
+        default_w,
+        default_h,
+        id,
+        clamp_minimum,
+        clamp_maximum,
+        number_abs,
+    )
+}
+
 fn font_dimensions(
     p: &[&str],
     default_w: f64,

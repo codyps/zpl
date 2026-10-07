@@ -7,8 +7,6 @@ pub struct Input {
     pub id: i64,
     pub hash: Vec<u8>,
     pub data: Vec<u8>,
-    pub png_id: Option<i64>,
-    pub rendered_zpl_id: Option<i64>,
 }
 
 #[derive(Queryable, Selectable)]
@@ -29,9 +27,10 @@ pub struct PngRequest {
     pub rowid: i64,
     pub timestamp: String,
     pub input_id: i64,
-    pub renderer_key: Option<Vec<u8>>,
+    pub renderer_key: Vec<u8>,
     pub png_id: Option<i64>,
     pub error: Option<String>,
     pub completed_at: Option<String>,
     pub cache_hit: bool,
+    pub printer_identity: Option<String>,
 }

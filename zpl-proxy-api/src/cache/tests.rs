@@ -9,6 +9,14 @@ fn migrated() -> SqliteConnection {
         .unwrap();
     connection
 }
+fn identity() -> zebra_sgd::PrinterIdentity {
+    zebra_sgd::PrinterIdentity {
+        model: "ZD621".into(),
+        serial: "TEST-SERIAL".into(),
+        firmware: "V93.21.33Z".into(),
+        configuration: Default::default(),
+    }
+}
 fn cache() -> Cache {
     Cache(Arc::new(Mutex::new(migrated())))
 }
@@ -23,15 +31,21 @@ async fn begin(cache: &Cache, key: u8, refresh: bool) -> Attempt {
 async fn deduplicates_bytes_but_records_every_request_and_renderer() {
     let cache = cache();
     let first = begin(&cache, 1, false).await;
-    assert!(first.cached_png.is_none());
-    cache.success(first, b"first-png".to_vec()).await.unwrap();
+    assert!(first.cached.is_none());
+    cache
+        .rendered(first, b"first-png".to_vec(), identity(), None)
+        .await
+        .unwrap();
     assert_eq!(
-        begin(&cache, 1, false).await.cached_png.unwrap(),
+        begin(&cache, 1, false).await.cached.unwrap().png,
         b"first-png"
     );
     let other = begin(&cache, 2, false).await;
-    assert!(other.cached_png.is_none());
-    cache.success(other, b"first-png".to_vec()).await.unwrap();
+    assert!(other.cached.is_none());
+    cache
+        .rendered(other, b"first-png".to_vec(), identity(), None)
+        .await
+        .unwrap();
     let mut connection = cache.0.lock().unwrap();
     assert_eq!(
         inputs::table
@@ -73,19 +87,27 @@ async fn deduplicates_bytes_but_records_every_request_and_renderer() {
 async fn refresh_retains_history_and_errors_are_retried() {
     let cache = cache();
     cache
-        .success(begin(&cache, 1, false).await, b"old".to_vec())
+        .rendered(
+            begin(&cache, 1, false).await,
+            b"old".to_vec(),
+            identity(),
+            None,
+        )
         .await
         .unwrap();
     let refresh = begin(&cache, 1, true).await;
-    assert!(refresh.cached_png.is_none());
+    assert!(refresh.cached.is_none());
     cache
         .failure(refresh, "printer offline".into())
         .await
         .unwrap();
     let retry = begin(&cache, 1, false).await;
-    assert!(retry.cached_png.is_none());
-    cache.success(retry, b"new".to_vec()).await.unwrap();
-    assert_eq!(begin(&cache, 1, false).await.cached_png.unwrap(), b"new");
+    assert!(retry.cached.is_none());
+    cache
+        .rendered(retry, b"new".to_vec(), identity(), None)
+        .await
+        .unwrap();
+    assert_eq!(begin(&cache, 1, false).await.cached.unwrap().png, b"new");
     let mut connection = cache.0.lock().unwrap();
     assert_eq!(
         pngs::table
@@ -102,6 +124,64 @@ async fn refresh_retains_history_and_errors_are_retried() {
     assert_eq!(requests[1].error.as_deref(), Some("printer offline"));
     assert!(requests[1].completed_at.is_some());
     assert_ne!(requests[0].png_id, requests[2].png_id);
+}
+
+#[tokio::test]
+async fn failed_annotation_preserves_original_bytes_and_identity_without_caching() {
+    let cache = cache();
+    cache
+        .rendered(
+            begin(&cache, 1, false).await,
+            b"old".to_vec(),
+            identity(),
+            None,
+        )
+        .await
+        .unwrap();
+    let identity = zebra_sgd::PrinterIdentity {
+        model: "ZTC ZD621-203dpi ZPL".into(),
+        firmware: "V93.21.33Z".into(),
+        serial: "TEST-SERIAL".into(),
+        configuration: Default::default(),
+    };
+    let attempt = begin(&cache, 1, true).await;
+    let request_id = attempt.request_id;
+    cache
+        .rendered(
+            attempt,
+            b"broken PNG".to_vec(),
+            identity.clone(),
+            Some("invalid printer PNG signature".into()),
+        )
+        .await
+        .unwrap();
+    assert!(begin(&cache, 1, false).await.cached.is_none());
+    let mut connection = cache.0.lock().unwrap();
+    let request = png_requests::table
+        .find(request_id)
+        .select(PngRequest::as_select())
+        .first::<PngRequest>(&mut *connection)
+        .unwrap();
+    assert_eq!(
+        request.error.as_deref(),
+        Some("invalid printer PNG signature")
+    );
+    assert!(request.completed_at.is_some());
+    assert_eq!(
+        serde_json::from_str::<zebra_sgd::PrinterIdentity>(
+            request.printer_identity.as_ref().unwrap()
+        )
+        .unwrap(),
+        identity
+    );
+    assert_eq!(
+        pngs::table
+            .find(request.png_id.unwrap())
+            .select(pngs::data)
+            .first::<Vec<u8>>(&mut *connection)
+            .unwrap(),
+        b"broken PNG"
+    );
 }
 
 #[tokio::test]
@@ -136,55 +216,43 @@ async fn pending_request_and_input_survive_reopen() {
 }
 
 #[test]
-fn migration_round_trip_preserves_legacy_data() {
-    let mut connection = migrated();
-    connection.batch_execute("INSERT INTO inputs(id,hash,data) VALUES(1,X'01',X'02'); INSERT INTO png_requests(timestamp,input_id) VALUES('legacy',1);").unwrap();
-    connection
-        .batch_execute(include_str!(
-            "../../migrations/2026-09-15-230000_remove-client-ips/down.sql"
-        ))
-        .unwrap();
-    connection
-        .batch_execute(include_str!(
-            "../../migrations/2026-09-15-220000_persist-render-results/down.sql"
-        ))
-        .unwrap();
-    connection
-        .batch_execute(include_str!(
-            "../../migrations/2026-09-15-220000_persist-render-results/up.sql"
-        ))
-        .unwrap();
-    connection
-        .batch_execute(include_str!(
-            "../../migrations/2026-09-15-230000_remove-client-ips/up.sql"
-        ))
-        .unwrap();
-    let request = png_requests::table
-        .select(PngRequest::as_select())
-        .first::<PngRequest>(&mut connection)
-        .unwrap();
-    assert_eq!(request.timestamp, "legacy");
-    assert!(request.renderer_key.is_none());
-    assert_eq!(
-        render_cache::table
-            .count()
-            .get_result::<i64>(&mut connection)
-            .unwrap(),
-        0
-    );
-}
-
-#[test]
 fn printer_fingerprint_includes_configuration() {
-    let key = renderer_key("http://printer/", &["Authorization: sample".into()], "v1");
-    assert_ne!(
-        key,
-        renderer_key("http://other/", &["Authorization: sample".into()], "v1")
+    let key = renderer_key(
+        "http://printer/",
+        &["Authorization: sample".into()],
+        "v1",
+        "printer:9100",
     );
-    assert_ne!(key, renderer_key("http://printer/", &[], "v1"));
     assert_ne!(
         key,
-        renderer_key("http://printer/", &["Authorization: sample".into()], "v2")
+        renderer_key(
+            "http://other/",
+            &["Authorization: sample".into()],
+            "v1",
+            "printer:9100"
+        )
+    );
+    assert_ne!(
+        key,
+        renderer_key("http://printer/", &[], "v1", "printer:9100")
+    );
+    assert_ne!(
+        key,
+        renderer_key(
+            "http://printer/",
+            &["Authorization: sample".into()],
+            "v2",
+            "printer:9100"
+        )
+    );
+    assert_ne!(
+        key,
+        renderer_key(
+            "http://printer/",
+            &["Authorization: sample".into()],
+            "v1",
+            "printer:9101"
+        )
     );
     assert_eq!(key.len(), 32);
 }
@@ -195,34 +263,13 @@ fn startup_migrates_fresh_database_and_reopens_without_reapplying() {
     let path = directory.path().join("fresh.sqlite");
     let cache = Cache::open(path.to_str().unwrap()).unwrap();
     let versions = cache.0.lock().unwrap().applied_migrations().unwrap();
-    assert_eq!(versions.len(), 5);
+    assert_eq!(versions.len(), 1);
     drop(cache);
     let reopened = Cache::open(path.to_str().unwrap()).unwrap();
     assert_eq!(
         reopened.0.lock().unwrap().applied_migrations().unwrap(),
         versions
     );
-}
-
-#[test]
-fn startup_applies_pending_migrations_and_preserves_existing_history() {
-    let directory = tempfile::tempdir().unwrap();
-    let path = directory.path().join("upgrade.sqlite");
-    drop(Cache::open(path.to_str().unwrap()).unwrap());
-    let mut db = SqliteConnection::establish(path.to_str().unwrap()).unwrap();
-    db.revert_last_migration(MIGRATIONS).unwrap();
-    db.batch_execute("INSERT INTO inputs(id,hash,data) VALUES(1,X'01',X'02'); INSERT INTO png_requests(timestamp,input_id) VALUES('existing',1);").unwrap();
-    assert_eq!(db.applied_migrations().unwrap().len(), 4);
-    let upgraded = Cache::open(path.to_str().unwrap()).unwrap();
-    assert_eq!(db.applied_migrations().unwrap().len(), 5);
-    assert_eq!(
-        png_requests::table
-            .count()
-            .get_result::<i64>(&mut db)
-            .unwrap(),
-        1
-    );
-    drop(upgraded);
 }
 
 #[test]

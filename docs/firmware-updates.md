@@ -2,7 +2,8 @@
 
 `zebra-firmware` applies a local, extracted Zebra firmware `.zpl` file over raw
 TCP (Ethernet or Wi-Fi). It requires SGD `device.product_name`, `device.unique_id`,
-and `appl.name` support. USB, serial, firmware discovery/download, password entry,
+and `appl.name` support. Bounded SGD reads are shared with the proxy through
+`zebra-sgd`. USB, serial, firmware discovery/download, password entry,
 and changing printer security settings are not implemented.
 
 Install from this checkout:

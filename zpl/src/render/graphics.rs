@@ -123,39 +123,7 @@ pub(super) fn decode(
         }
         data[..bytes].to_vec()
     } else if data.starts_with(b":Z64:") || data.starts_with(b":B64:") {
-        let end = data[5..]
-            .iter()
-            .position(|&c| c == b':')
-            .ok_or("missing graphic checksum")?
-            + 5;
-        let encoded = &data[5..end];
-        let crc_text = data[end + 1..].trim_ascii();
-        if crc_text.len() != 4 {
-            return Err("invalid graphic checksum".into());
-        }
-        let expected = crc_text
-            .iter()
-            .try_fold(0u16, |v, &c| Ok::<_, String>((v << 4) | hex(c)? as u16))?;
-        let mut crc = 0u16;
-        for &c in encoded {
-            crc ^= (c as u16) << 8;
-            for _ in 0..8 {
-                crc = if crc & 0x8000 != 0 {
-                    (crc << 1) ^ 0x1021
-                } else {
-                    crc << 1
-                }
-            }
-        }
-        if crc != expected {
-            return Err("graphic CRC mismatch".into());
-        }
-        let raw = base64(encoded)?;
-        if data[1] == b'Z' {
-            super::compression::inflate(&raw, bytes)?
-        } else {
-            raw
-        }
+        decode_envelope(data, bytes)?
     } else {
         let nibble_limit = bytes
             .checked_mul(2)
@@ -241,4 +209,41 @@ pub(super) fn decode(
         }
     }
     Ok(path)
+}
+
+// Shared Zebra B64/Z64 envelope validation for graphic and font downloads.
+pub(super) fn decode_envelope(data: &[u8], bytes: usize) -> Result<Vec<u8>, String> {
+    let end = data[5..]
+        .iter()
+        .position(|&c| c == b':')
+        .ok_or("missing graphic checksum")?
+        + 5;
+    let encoded = &data[5..end];
+    let crc_text = data[end + 1..].trim_ascii();
+    if crc_text.len() != 4 {
+        return Err("invalid graphic checksum".into());
+    }
+    let expected = crc_text
+        .iter()
+        .try_fold(0u16, |v, &c| Ok::<_, String>((v << 4) | hex(c)? as u16))?;
+    let mut crc = 0u16;
+    for &c in encoded {
+        crc ^= (c as u16) << 8;
+        for _ in 0..8 {
+            crc = if crc & 0x8000 != 0 {
+                (crc << 1) ^ 0x1021
+            } else {
+                crc << 1
+            }
+        }
+    }
+    if crc != expected {
+        return Err("graphic CRC mismatch".into());
+    }
+    let raw = base64(encoded)?;
+    Ok(if data[1] == b'Z' {
+        super::compression::inflate(&raw, bytes)?
+    } else {
+        raw
+    })
 }

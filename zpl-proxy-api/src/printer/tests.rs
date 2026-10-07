@@ -133,8 +133,12 @@ impl Mock {
                         }
                         let value = if line.contains("device.unique_id") {
                             serial.clone()
-                        } else {
+                        } else if line.contains("device.product_name") {
+                            "ZD621".into()
+                        } else if line.contains("appl.name") {
                             firmware.lock().unwrap().clone()
+                        } else {
+                            "?".into()
                         };
                         if stream
                             .write_all(format!("\"{value}\"\r\n").as_bytes())
@@ -675,4 +679,84 @@ async fn policy_changes_select_a_new_cache_scope() {
     assert_ne!(restricted.0.key, unrestricted.0.key);
     assert!(!unrestricted.render(LABEL.into(), false).await.unwrap().1);
     assert_eq!(mock.labels.lock().unwrap().last().unwrap(), LABEL);
+}
+
+#[tokio::test]
+async fn metadata_survives_cache_hits_and_preserves_original_png() {
+    // PNG textual chunks: https://www.w3.org/TR/png-3/#11textinfo
+    // Capture provenance belongs to the stored rendering, including cache hits.
+    let (_dir, cache, mut db) = database();
+    let mock = Mock::new("metadata").await;
+    let printer = mock.printer(cache);
+    let (response, hit, identity) = printer.render(LABEL.into(), false).await.unwrap();
+    assert!(!hit);
+    assert_eq!(identity.model, "ZD621");
+    assert_eq!(identity.serial, "serial-metadata");
+    assert_eq!(identity.firmware, "V1");
+    let cached = printer.render(LABEL.into(), false).await.unwrap();
+    assert!(cached.1);
+    assert_eq!(cached.0, response);
+    assert_eq!(cached.2, identity);
+    use crate::schema::{png_requests, pngs, render_cache};
+    let (original, hash) = pngs::table
+        .select((pngs::data, pngs::hash))
+        .first::<(Vec<u8>, Vec<u8>)>(&mut db)
+        .unwrap();
+    use sha2::Digest;
+    assert_eq!(hash, sha2::Sha256::digest(&original).to_vec());
+    assert_ne!(original, response);
+    assert_eq!(
+        response,
+        crate::png_metadata::annotate(&original, &identity, LABEL).unwrap()
+    );
+    let stored = render_cache::table
+        .select(render_cache::printer_identity)
+        .first::<String>(&mut db)
+        .unwrap();
+    assert_eq!(
+        serde_json::from_str::<zebra_sgd::PrinterIdentity>(&stored).unwrap(),
+        identity
+    );
+    let history = png_requests::table
+        .order(png_requests::rowid)
+        .select((png_requests::printer_identity, png_requests::cache_hit))
+        .load::<(Option<String>, bool)>(&mut db)
+        .unwrap();
+    assert_eq!(
+        history,
+        vec![(Some(stored.clone()), false), (Some(stored), true)]
+    );
+}
+
+#[tokio::test]
+async fn annotation_failure_keeps_original_and_invalidates_cache_without_recovery() {
+    let (_dir, cache, mut db) = database();
+    let mut mock = Mock::new("annotation").await;
+    mock.config.admission = AdmissionPolicy::Unrestricted;
+    let printer = mock.printer(cache);
+    // Unrestricted transport preserves NUL; PNG iTXt cannot represent it.
+    let input = "^XA^FDnul\0text^FS^XZ";
+    assert!(printer.render(input.into(), false).await.is_err());
+    assert_eq!(mock.labels.lock().unwrap().last().unwrap(), input);
+    assert_eq!(mock.restarts.load(Ordering::SeqCst), 0);
+    use crate::schema::{png_requests, pngs, render_cache};
+    assert_eq!(pngs::table.count().get_result::<i64>(&mut db).unwrap(), 1);
+    assert_eq!(
+        render_cache::table
+            .count()
+            .get_result::<i64>(&mut db)
+            .unwrap(),
+        0
+    );
+    let (png, identity, error, completed) = png_requests::table
+        .select((
+            png_requests::png_id,
+            png_requests::printer_identity,
+            png_requests::error,
+            png_requests::completed_at,
+        ))
+        .first::<(Option<i64>, Option<String>, Option<String>, Option<String>)>(&mut db)
+        .unwrap();
+    assert!(png.is_some() && identity.is_some() && completed.is_some());
+    assert_eq!(error.as_deref(), Some("PNG response annotation failed"));
 }

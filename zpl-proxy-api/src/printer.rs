@@ -4,7 +4,7 @@
 //! device.reset p.755; ^MC p.300; ^CI pp.155-157; ^CF/^BY/^FW and layout commands.
 //! https://www.zebra.com/content/dam/support-dam/en/documentation/unrestricted/guide/software/zpl-zbi2-pg-en.pdf
 use crate::{
-    cache::{self, Attempt, Cache},
+    cache::{self, Attempt, Cache, CachedRender},
     telemetry,
     validation::{AdmissionPolicy, RenderZpl},
 };
@@ -165,7 +165,12 @@ impl Printer {
             "managed-v3:{namespace}:{}:{}:{}:{:?}",
             name, config.width, config.height, config.admission
         );
-        let key = cache::renderer_key(url.as_str(), &config.headers, &namespace);
+        let key = cache::renderer_key(
+            url.as_str(),
+            &config.headers,
+            &namespace,
+            &config.control_address,
+        );
         Ok(Self(Arc::new(Inner {
             name,
             config,
@@ -185,7 +190,11 @@ impl Printer {
 
     /// Admission is bounded before spawning disconnect-independent work. Every
     /// printer has its own queue; recovering one never locks another printer.
-    pub async fn render(&self, input: String, refresh: bool) -> eyre::Result<(Vec<u8>, bool)> {
+    pub async fn render(
+        &self,
+        input: String,
+        refresh: bool,
+    ) -> eyre::Result<(Vec<u8>, bool, zebra_sgd::PrinterIdentity)> {
         let permit = self
             .0
             .slots
@@ -208,7 +217,11 @@ impl Printer {
         .await?
     }
 
-    async fn render_owned(&self, zpl: String, refresh: bool) -> eyre::Result<(Vec<u8>, bool)> {
+    async fn render_owned(
+        &self,
+        zpl: String,
+        refresh: bool,
+    ) -> eyre::Result<(Vec<u8>, bool, zebra_sgd::PrinterIdentity)> {
         let mut state = self.0.state.lock().await;
         let mut attempt = self
             .0
@@ -222,13 +235,32 @@ impl Printer {
         let result = self
             .execute(&mut state, &mut attempt, zpl.as_str(), refresh)
             .await;
-        match &result {
-            Ok((png, false)) => self.0.cache.success(attempt, png.clone()).await?,
-            Ok((_, true)) => {}
-            Err(e) if e.downcast_ref::<Rejected>().is_some_and(|e| e.cached) => {}
-            Err(e) => self.0.cache.failure(attempt, e.to_string()).await?,
+        match result {
+            Ok((render, cache_hit)) => {
+                let annotated = crate::png_metadata::annotate(&render.png, &render.identity, &zpl);
+                if !cache_hit || annotated.is_err() {
+                    self.0
+                        .cache
+                        .rendered(
+                            attempt,
+                            render.png,
+                            render.identity.clone(),
+                            annotated
+                                .as_ref()
+                                .err()
+                                .map(|_| "PNG response annotation failed".into()),
+                        )
+                        .await?;
+                }
+                Ok((annotated?, cache_hit, render.identity))
+            }
+            Err(error) => {
+                if !error.downcast_ref::<Rejected>().is_some_and(|e| e.cached) {
+                    self.0.cache.failure(attempt, error.to_string()).await?;
+                }
+                Err(error)
+            }
         }
-        result
     }
 
     async fn execute(
@@ -237,7 +269,7 @@ impl Printer {
         attempt: &mut Attempt,
         zpl: &str,
         refresh: bool,
-    ) -> eyre::Result<(Vec<u8>, bool)> {
+    ) -> eyre::Result<(CachedRender, bool)> {
         if state.recovering || state.retry_at.is_some_and(|when| Instant::now() < when) {
             return Err(Unavailable.into());
         }
@@ -313,6 +345,7 @@ impl Printer {
             &identity.serial,
             std::slice::from_ref(&identity.firmware),
             &hex(&self.0.key),
+            &self.0.config.control_address,
         );
         let (resolved, error) = self
             .0
@@ -323,8 +356,8 @@ impl Printer {
         if error.is_some() {
             return Err(Rejected { cached: true }.into());
         }
-        if let Some(png) = &attempt.cached_png {
-            return Ok((png.clone(), true));
+        if let Some(render) = &attempt.cached {
+            return Ok((render.clone(), true));
         }
         // First-use control clears residual preview state and verifies the HTTP
         // engine before accepting a user label. It never sends a physical print.
@@ -338,7 +371,7 @@ impl Printer {
             }
             state.initialized = true;
         }
-        let first = self.preview(attempt, &identity, "label", zpl).await?;
+        let first = self.preview_label(attempt, &identity, "label", zpl).await?;
         let first_error = match first {
             Ok(png) => return Ok((png, false)),
             Err(error) => error,
@@ -352,7 +385,7 @@ impl Printer {
         {
             self.recover(state, attempt, &identity, false).await?;
         }
-        let retry = self.preview(attempt, &identity, "retry", zpl).await?;
+        let retry = self.preview_label(attempt, &identity, "retry", zpl).await?;
         let retry_error = match retry {
             Ok(png) => return Ok((png, false)),
             Err(error) => error,
@@ -579,6 +612,27 @@ impl Printer {
         .map_err(eyre::Report::from)?
     }
 
+    async fn preview_label(
+        &self,
+        attempt: &Attempt,
+        identity: &Identity,
+        phase: &'static str,
+        zpl: &str,
+    ) -> eyre::Result<Result<CachedRender, PreviewFailure>> {
+        let metadata = crate::metadata::identity(self.0.config.control_address.clone()).await?;
+        eyre::ensure!(
+            metadata.serial == identity.serial && metadata.firmware == identity.firmware,
+            "Printer identity changed before preview"
+        );
+        Ok(self
+            .preview(attempt, identity, phase, zpl)
+            .await?
+            .map(|png| CachedRender {
+                png,
+                identity: metadata,
+            }))
+    }
+
     // Outer error means persistence failed: never interpret it as a printer
     // fault or reboot because of it. Inner error is a recorded device failure.
     async fn preview(
@@ -690,7 +744,7 @@ fn reset_label(zpl: &str, width: u16, height: u16) -> String {
 fn recovery_key(identity: &Identity) -> Vec<u8> {
     // Restart throttling is physical-printer scoped, independent of render cache
     // namespace, firmware, credentials, address aliases and public name.
-    cache::renderer_key(&identity.serial, &[], "printer-recovery-v1")
+    cache::renderer_key(&identity.serial, &[], "printer-recovery-v1", "")
 }
 
 fn hex(bytes: &[u8]) -> String {

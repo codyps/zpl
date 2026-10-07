@@ -16,6 +16,10 @@ versions are tracked in Diesel's migration table, so restarts do not reapply the
 A migration failure stops startup; no separate CLI call or migration files are
 needed at runtime. The database parent directory must already exist.
 
+This version consolidates the development migrations into one initial schema.
+Start with a fresh database; earlier development databases have no upgrade path.
+Back up any history you need before replacing a database.
+
 Printer configuration is a map keyed by public printer name (there is no nested
 `name` field). For example:
 
@@ -58,6 +62,22 @@ physical printer and prevent other clients from accessing its management ports.
 
 The named-printer configuration is required, including for a single printer.
 
+## Response metadata
+
+Successful PNG responses include `X-ZPL-Printer-Model`, `X-ZPL-Printer-Serial`,
+and `X-ZPL-Printer-Firmware` headers. PNG text metadata includes those values,
+the exact submitted ZPL, and a JSON snapshot of supported rendering settings.
+Fixed, read-only SGD queries capture model, serial, firmware and configuration
+before each label attempt, including retries, through `control_address`.
+The snapshot must match the identity checked for the current request.
+
+SQLite retains the original printer PNG bytes and SHA-256 digest. Annotation
+changes only the response; an annotation failure stores the original image and
+error but invalidates its cache mapping. Cached responses use the original
+capture metadata, after the normal live serial/firmware check. The snapshot is
+not a complete reproducibility bundle: label commands and the restricted
+endpoint reset prefix can change rendering state after capture.
+
 ## State, provenance, and cache
 
 For restricted endpoints, the [admission policy](proxy-validation.md) runs before database or printer access,
@@ -84,7 +104,8 @@ SQLite stores:
 
 - `inputs` and `pngs`: SHA-256-deduplicated original input and validated PNG bytes.
 - `png_requests`: accepted request outcomes, including cache hits. A null completion
-  timestamp means work/persistence was interrupted.
+  timestamp means work/persistence was interrupted. Successful captures and cache
+  hits also retain identity/configuration JSON.
 - `printer_requests`: public name and the observed serial/firmware snapshot for each
   request. Old rows have no fabricated provenance; identity failures have null
   serial/firmware. Cached results retain the identity of their renderer key.
@@ -93,7 +114,8 @@ SQLite stores:
   Preview timeouts are explicitly recorded as **`hang`**. Other categories are
   `rejected`, `unavailable`, and `recovery_failed`.
 - `render_cache`: successful mappings scoped by public name, printer URL/headers,
-  serial, firmware, configured dimensions, namespace, admission policy, and reset/transport version.
+  serial, firmware, SGD control address, configured dimensions, namespace, admission
+  policy, and reset/transport version. Each mapping requires capture metadata.
 - `permanent_errors`: confirmed repeated label failures under that same scope.
 - `printer_recovery`: durable cooldown reservations to prevent restart storms.
 
