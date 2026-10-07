@@ -26,6 +26,17 @@ reqwest = { version = "0.13.5", default-features = false, features = [
     "rustls",
 ] }
 
+# Retain file/line backtraces without generating full type and variable debug info.
+# Tests inherit this setting; use --profile debugging for debugger sessions.
+# https://doc.rust-lang.org/cargo/guide/build-performance.html#reduce-amount-of-generated-debug-information
+[profile.dev]
+debug = "line-tables-only"
+
+# Use a custom name for compatibility with Cargo versions before 1.99.
+[profile.debugging]
+inherits = "dev"
+debug = "full"
+
 # Pixel loops, PNG decoding and provenance hashes dominate native raster tests.
 # Keep validation enabled while optimizing the test harness and its dependencies.
 # https://doc.rust-lang.org/cargo/reference/profiles.html#test

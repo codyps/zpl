@@ -185,6 +185,14 @@ cargo clippy --workspace --all-targets
 Use `taplo fmt` to automatically format TOML files and `nix fmt` for Nix files.
 CI checks TOML formatting with the same Taplo configuration.
 
+Development and test builds use line-table debug information to keep file/line
+backtraces while reducing build artifact size. For full type and variable
+information in a debugger, use `cargo build --profile debugging` or
+`cargo test --profile debugging`; artifacts are written to `target/debugging/`.
+The custom profile also works with Cargo versions before 1.99. It inherits the
+development profile, so debugger test builds use its unoptimized settings rather
+than the normal test profile's `opt-level = 1`.
+
 CI uploads the Linux (`x86_64-linux`) and Intel macOS (`x86_64-darwin`)
 development shells and their dependency closures to `codyps.cachix.org` on
 pushes to every branch, pull requests, and manual CI runs when write credentials
