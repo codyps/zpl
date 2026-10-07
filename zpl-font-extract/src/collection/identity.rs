@@ -6,14 +6,14 @@ use std::{
     net::{TcpStream, ToSocketAddrs},
     time::{Duration, Instant},
 };
-fn exchange(address: &str) -> Result<Vec<u8>> {
+fn exchange(address: &str, request: &[u8]) -> Result<Vec<u8>> {
     let addr = address
         .to_socket_addrs()?
         .next()
         .ok_or_else(|| eyre!("printer address has no IP"))?;
     let mut conn = TcpStream::connect_timeout(&addr, Duration::from_secs(5))?;
     conn.set_write_timeout(Some(Duration::from_secs(5)))?;
-    conn.write_all(b"{}{\"device.unique_id\":null,\"appl.name\":null}\r\n")?;
+    conn.write_all(request)?;
     let deadline = Instant::now() + Duration::from_secs(30);
     let mut data = vec![];
     loop {
@@ -49,7 +49,10 @@ pub fn identity(host: &str, port: u16) -> Result<Value> {
         .to_socket_addrs()?
         .next()
         .ok_or_else(|| eyre!("no identity address"))?;
-    let bytes = exchange(&address.to_string())?;
+    let bytes = exchange(
+        &address.to_string(),
+        b"{}{\"device.unique_id\":null,\"appl.name\":null}\r\n",
+    )?;
     let value: Value = serde_json::from_slice(&bytes)?;
     validate_identity(&value)?;
     Ok(value)
@@ -62,4 +65,51 @@ pub fn validate_identity(value: &Value) -> Result<()> {
         "missing printer serial or firmware"
     );
     Ok(())
+}
+
+/// List font selectors only; never retrieve stored object contents.
+pub fn fonts(host: &str, port: u16) -> Result<Vec<String>> {
+    ensure!(port != 0, "invalid directory port");
+    let address = (host, port)
+        .to_socket_addrs()?
+        .next()
+        .ok_or_else(|| eyre!("no directory address"))?;
+    let mut names: BTreeSet<String> = "ABCDEFGH@".chars().map(|c| c.to_string()).collect();
+    for drive in ['Z', 'E', 'R'] {
+        let bytes = exchange(
+            &address.to_string(),
+            format!("! U1 do \"file.dir\" \"{drive}:\"\r\n").as_bytes(),
+        )?;
+        names.extend(directory_names(&bytes, drive)?);
+    }
+    ensure!(names.len() <= 256, "too many font selectors");
+    Ok(names.into_iter().collect())
+}
+pub fn directory_names(bytes: &[u8], drive: char) -> Result<Vec<String>> {
+    let text = std::str::from_utf8(bytes)?;
+    ensure!(
+        text.trim().starts_with('"')
+            && text.trim().ends_with('"')
+            && text.contains(&format!("- DIR {drive}:")),
+        "incomplete font directory response"
+    );
+    let mut names = BTreeSet::new();
+    for line in text.lines() {
+        let fields = line.split_whitespace().collect::<Vec<_>>();
+        if fields.first() != Some(&"*") {
+            continue;
+        }
+        ensure!(fields.len() >= 3, "malformed directory entry");
+        if fields[1].ends_with(".FNT") {
+            ensure!(
+                selector(fields[1]) && fields[1].starts_with(&format!("{drive}:")),
+                "invalid font selector"
+            );
+            ensure!(
+                names.insert(fields[1].to_string()),
+                "duplicate directory font"
+            );
+        }
+    }
+    Ok(names.into_iter().collect())
 }

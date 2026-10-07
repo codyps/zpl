@@ -3,7 +3,9 @@
 //! against independently composed preview pages.
 //! Sampling is independent of the renderer and never reads firmware font files.
 pub mod capture;
-pub mod compile;
+pub use crate::collection::compile;
+mod recovery;
+pub use recovery::{recover, RecoveryConfig};
 pub mod model;
 pub mod probe;
 use capture::Capture;
@@ -351,7 +353,7 @@ async fn recover_face(
 }
 /// Run calibration, adaptive refinement, sampling and fresh independent holdouts.
 /// Cached Capture implementations make the same function usable completely offline.
-pub async fn recover(c: &Config, capture: &mut impl Capture) -> Result<Document> {
+async fn calibrate(c: &Config, capture: &mut impl Capture) -> Result<Document> {
     c.validate()?;
     let mut lineage = vec![];
     let mut fonts = vec![];

@@ -1,7 +1,7 @@
 //! Portable bitmap glyph records and separately evidenced input mappings.
-//! See docs/complete-bitmap-collections.md for mapping semantics and limitations.
+//! See docs/automatic-bitmap-fonts.md for mapping semantics and limitations.
 pub mod compile;
-mod identity;
+pub mod identity;
 pub mod survey;
 use crate::automatic::model::{hash, read, selector, Glyph};
 use eyre::{ensure, Result};
@@ -95,6 +95,9 @@ pub struct EncodingMap {
 pub struct Font {
     pub name: String,
     pub source_sha256: String,
+    /// Measured cell width, cell height, baseline and space advance, when calibrated.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub metrics: Option<[u16; 4]>,
     pub records: Vec<Record>,
     pub encodings: Vec<EncodingMap>,
 }
@@ -145,6 +148,53 @@ fn read_document(path: &Path) -> Result<Vec<u8>> {
     Ok(bytes)
 }
 impl Collection {
+    /// Read-only migration of verified v1 data into the single current format.
+    pub fn from_verified(d: &crate::automatic::model::Document) -> Result<Self> {
+        d.validate()?;
+        let fonts = d
+            .fonts
+            .iter()
+            .map(|f| {
+                Ok(Font {
+                    name: f.name.clone(),
+                    source_sha256: hash(&serde_json::to_vec(f)?),
+                    metrics: Some([
+                        f.metrics.cell_width,
+                        f.metrics.cell_height,
+                        f.metrics.baseline,
+                        f.metrics.space_advance,
+                    ]),
+                    records: f
+                        .glyphs
+                        .iter()
+                        .map(|g| Record {
+                            id: u16::from(g.key),
+                            advance: g.advance,
+                            left: g.left,
+                            top: g.top,
+                            width: g.width,
+                            height: g.height,
+                            bitmap_hex: g.bitmap.concat(),
+                        })
+                        .collect(),
+                    encodings: vec![],
+                })
+            })
+            .collect::<Result<Vec<_>>>()?;
+        let mut c = Self::new(fonts, serde_json::json!({"imported_v1":d.provenance}))?;
+        evidence::import(&mut c, &serde_json::to_value(d)?, Path::new("."))?;
+        Ok(c)
+    }
+    pub fn load_input(path: &Path) -> Result<Self> {
+        let value: Value = serde_json::from_slice(&read_document(path)?)?;
+        if value["schema"] == "zebra-bitmap-fonts" {
+            Self::from_verified(&serde_json::from_value(value)?)
+        } else {
+            let c: Self = serde_json::from_value(value)?;
+            c.validate()?;
+            Ok(c)
+        }
+    }
     pub fn save(&self, path: &Path) -> Result<()> {
         self.validate()?;
         ensure!(!path.exists(), "output exists");
@@ -263,6 +313,12 @@ impl Collection {
                     && f.source_sha256.bytes().all(|b| b.is_ascii_hexdigit()),
                 "invalid source hash"
             );
+            if let Some([width, height, _, space]) = f.metrics {
+                ensure!(
+                    (1..=4096).contains(&width) && (1..=4096).contains(&height) && space > 0,
+                    "invalid measured cell metrics"
+                );
+            }
             ensure!(f.records.len() <= 65536, "too many glyph records");
             let mut ids = BTreeSet::new();
             let mut previous = None;
@@ -330,5 +386,4 @@ impl Collection {
 #[cfg(test)]
 mod tests;
 
-pub mod cli;
 pub mod evidence;

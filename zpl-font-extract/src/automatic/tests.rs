@@ -219,7 +219,7 @@ fn config() -> Config {
 #[tokio::test]
 async fn automatic_metrics_variable_advances_and_fresh_holdout() {
     let mut printer = Fake::default();
-    let d = recover(&config(), &mut printer).await.unwrap();
+    let d = calibrate(&config(), &mut printer).await.unwrap();
     assert!(printer.calls > 5);
     let face = &d.fonts[0];
     assert_eq!(
@@ -251,7 +251,7 @@ async fn utf8_and_source_keys_do_not_become_unicode_by_accident() {
         if source {
             c.codes.extend([0, 9]);
         }
-        let d = recover(&c, &mut Fake::default()).await.unwrap();
+        let d = calibrate(&c, &mut Fake::default()).await.unwrap();
         for g in &d.fonts[0].glyphs {
             assert_eq!(*g, fixture(g.key));
         }
@@ -264,7 +264,7 @@ async fn utf8_and_source_keys_do_not_become_unicode_by_accident() {
 #[tokio::test]
 async fn rejects_changed_holdouts_unstable_repeats_and_wrong_registration() {
     for corrupt in ["verification", "repeat", "identity"] {
-        let error = recover(
+        let error = calibrate(
             &config(),
             &mut Fake {
                 corrupt: Some(corrupt),
@@ -315,15 +315,23 @@ fn bitmap_model_rejects_non_replication() {
 }
 #[tokio::test]
 async fn json_tampering_and_compact_export() {
-    let mut d = recover(&config(), &mut Fake::default()).await.unwrap();
+    let mut d = calibrate(&config(), &mut Fake::default()).await.unwrap();
     let t = Temp::new();
-    compile::compile(&d, &t.0.join("rust")).unwrap();
-    assert!(compile::compile(&d, &t.0.join("rust")).is_err());
+    compile::compile(
+        &crate::collection::Collection::from_verified(&d).unwrap(),
+        &t.0.join("rust"),
+    )
+    .unwrap();
+    assert!(compile::compile(
+        &crate::collection::Collection::from_verified(&d).unwrap(),
+        &t.0.join("rust")
+    )
+    .is_err());
     let module = fs::read_to_string(t.0.join("rust/fonts.rs")).unwrap();
     assert!(module.contains("zpl_bitmap_fonts"));
     d.fonts[0].glyphs[0].advance += 1;
     assert!(d.validate().is_err());
-    assert!(compile::compile(&d, &t.0.join("bad")).is_err());
+    assert!(crate::collection::Collection::from_verified(&d).is_err());
     assert!(!t.0.join("bad").exists());
 }
 
@@ -437,12 +445,12 @@ async fn http_end_to_end_cache_replay_and_integrity() {
     let t = Temp::new();
     let mut printer = capture::Printer::new(&server.host, &t.0, false, 0.0, 5).unwrap();
     assert!(capture::Printer::new(&server.host, &t.0, false, 0.0, 5).is_err());
-    let online = recover(&config(), &mut printer).await.unwrap();
+    let online = calibrate(&config(), &mut printer).await.unwrap();
     drop(printer);
     let host = server.host.clone();
     drop(server);
     let mut offline = capture::Printer::new(&host, &t.0, true, 0.0, 5).unwrap();
-    let replay = recover(&config(), &mut offline).await.unwrap();
+    let replay = calibrate(&config(), &mut offline).await.unwrap();
     assert_eq!(
         online.content_hash().unwrap(),
         replay.content_hash().unwrap()
@@ -453,7 +461,7 @@ async fn http_end_to_end_cache_replay_and_integrity() {
             fs::write(path, b"corrupt").unwrap();
         }
     }
-    let error = recover(&config(), &mut offline).await.unwrap_err();
+    let error = calibrate(&config(), &mut offline).await.unwrap_err();
     assert!(format!("{error:?}").contains("integrity mismatch"));
 }
 
@@ -461,13 +469,13 @@ async fn http_end_to_end_cache_replay_and_integrity() {
 async fn incomplete_offline_cache_never_falls_back_to_network() {
     let t = Temp::new();
     let mut printer = capture::Printer::new("http://127.0.0.1:1/", &t.0, true, 0.0, 1).unwrap();
-    let error = recover(&config(), &mut printer).await.unwrap_err();
+    let error = calibrate(&config(), &mut printer).await.unwrap_err();
     assert!(format!("{error:?}").contains("missing cached preview"));
 }
 
 #[tokio::test]
 async fn compact_full_key_span_and_metric_limits() {
-    let mut d = recover(&config(), &mut Fake::default()).await.unwrap();
+    let mut d = calibrate(&config(), &mut Fake::default()).await.unwrap();
     d.mapping = Mapping {
         kind: "ci0-source".into(),
         encoding: 0,
@@ -482,14 +490,21 @@ async fn compact_full_key_span_and_metric_limits() {
     ];
     d.verification["content_sha256"] = json!(d.content_hash().unwrap());
     let t = Temp::new();
-    compile::compile(&d, &t.0.join("all-keys")).unwrap();
+    compile::compile(
+        &crate::collection::Collection::from_verified(&d).unwrap(),
+        &t.0.join("all-keys"),
+    )
+    .unwrap();
     let catalog: Value =
         serde_json::from_slice(&fs::read(t.0.join("all-keys/catalog.json")).unwrap()).unwrap();
     assert_eq!(catalog["unique_records"], 2);
     d.fonts[0].glyphs[0].advance = 256;
     d.verification["content_sha256"] = json!(d.content_hash().unwrap());
-    assert!(compile::compile(&d, &t.0.join("oversize")).is_err());
-    assert!(!t.0.join("oversize").exists());
+    compile::compile(
+        &crate::collection::Collection::from_verified(&d).unwrap(),
+        &t.0.join("wide-metrics"),
+    )
+    .unwrap();
 }
 
 #[tokio::test]
@@ -500,18 +515,59 @@ async fn cached_capture_is_scoped_to_printer_identity() {
     let mut printer = capture::Printer::new(&server.host, &temp.0, false, 0.0, 5)
         .unwrap()
         .with_identity(identity.clone());
-    recover(&config(), &mut printer).await.unwrap();
+    calibrate(&config(), &mut printer).await.unwrap();
     drop(printer);
     let host = server.host.clone();
     drop(server);
     let mut wrong = capture::Printer::new(&host, &temp.0, true, 0.0, 5)
         .unwrap()
         .with_identity(json!({"device.unique_id":"serial","appl.name":"firmware-2"}));
-    let error = recover(&config(), &mut wrong).await.unwrap_err();
+    let error = calibrate(&config(), &mut wrong).await.unwrap_err();
     assert!(format!("{error:?}").contains("missing cached preview"));
     drop(wrong);
     let mut right = capture::Printer::new(&host, &temp.0, true, 0.0, 5)
         .unwrap()
         .with_identity(identity);
-    recover(&config(), &mut right).await.unwrap();
+    calibrate(&config(), &mut right).await.unwrap();
+}
+
+#[tokio::test]
+async fn unified_recovery_keeps_calibration_and_multiple_encodings() {
+    use crate::collection::Encoding;
+    let options = RecoveryConfig {
+        probes: config(),
+        encodings: vec![Encoding::Input { ci: 27 }, Encoding::Input { ci: 28 }],
+        codes: vec![32, 65, 66, 67, 200],
+        seed: None,
+    };
+    let c = recover(&options, &mut Fake::default()).await.unwrap();
+    c.validate().unwrap();
+    assert_eq!(c.fonts[0].metrics, Some([7, 11, 9, 4]));
+    assert_eq!(c.fonts[0].encodings.len(), 2);
+    let t = Temp::new();
+    compile::compile(&c, &t.0.join("rust")).unwrap();
+}
+
+#[tokio::test]
+async fn unified_http_recovery_replays_all_encodings_offline() {
+    let server = Server::new();
+    let t = Temp::new();
+    let options = RecoveryConfig {
+        probes: config(),
+        encodings: vec![
+            crate::collection::Encoding::Input { ci: 27 },
+            crate::collection::Encoding::Input { ci: 28 },
+        ],
+        codes: vec![32, 65, 66, 67, 200],
+        seed: None,
+    };
+    let mut printer = capture::Printer::new(&server.host, &t.0, false, 0.0, 5).unwrap();
+    let online = recover(&options, &mut printer).await.unwrap();
+    drop(printer);
+    let mut offline = capture::Printer::new(&server.host, &t.0, true, 0.0, 5).unwrap();
+    let replay = recover(&options, &mut offline).await.unwrap();
+    assert_eq!(
+        serde_json::to_vec(&online).unwrap(),
+        serde_json::to_vec(&replay).unwrap()
+    );
 }

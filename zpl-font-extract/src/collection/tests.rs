@@ -39,6 +39,7 @@ fn font() -> Font {
     Font {
         name: "Z:TEST.FNT".into(),
         source_sha256: "a".repeat(64),
+        metrics: None,
         records: vec![
             record(17),
             record(18),
@@ -100,12 +101,12 @@ impl Capture for Printer {
 }
 #[tokio::test]
 async fn unicode_mapping_ambiguity_blank_and_repeat() {
-    let f = font();
+    let mut f = font();
     let encoding = Encoding::Input { ci: 28 };
     let pages = survey::pages(&f, encoding, &[32, 0x39b], 832, 1024).unwrap();
     assert!(pages.iter().any(|p| p.zpl().unwrap().contains("_CE_9B")));
     let map = survey::run(
-        &f,
+        &mut f,
         encoding,
         &[32, 0x39b],
         832,
@@ -135,7 +136,7 @@ async fn unicode_mapping_ambiguity_blank_and_repeat() {
         Status::BlankUnresolved
     );
     assert!(survey::run(
-        &f,
+        &mut f,
         encoding,
         &[65],
         832,
@@ -329,4 +330,135 @@ fn portable_collection_rejects_internal_metadata_and_old_schema() {
         .unwrap_err()
         .to_string()
         .contains("schema/version"));
+}
+
+#[tokio::test]
+async fn one_pipeline_discovers_unicode_glyphs_without_an_input_collection() {
+    use crate::automatic::{probe::Config, recover, RecoveryConfig};
+    let config = RecoveryConfig {
+        probes: Config {
+            fonts: vec!["Z:TEST.FNT".into()],
+            ..Config::default()
+        },
+        encodings: vec![Encoding::Input { ci: 28 }],
+        codes: vec![32, 0x39b],
+        seed: None,
+    };
+    let c = recover(&config, &mut Printer { unstable: false })
+        .await
+        .unwrap();
+    c.validate().unwrap();
+    let f = &c.fonts[0];
+    let lambda = f.encodings[0]
+        .entries
+        .iter()
+        .find(|e| e.input == 0x39b)
+        .unwrap();
+    assert_eq!(lambda.status, Status::Matched);
+    let record = f
+        .records
+        .iter()
+        .find(|r| r.id == lambda.candidates[0])
+        .unwrap();
+    assert_eq!((record.advance, record.left, record.top), (5, -1, -2));
+    assert_eq!(record.bitmap_hex, "e080");
+    assert_eq!(
+        f.encodings[0]
+            .entries
+            .iter()
+            .find(|e| e.input == 32)
+            .unwrap()
+            .status,
+        Status::BlankUnresolved
+    );
+    let t = Temp::new();
+    compile::compile(&c, &t.0.join("rust")).unwrap();
+}
+
+#[test]
+fn directory_discovery_validates_names_without_reading_objects() {
+    assert_eq!(
+        identity::directory_names(
+            b"\"\r\n- DIR Z:*.*\r\n* Z:A.FNT 100 P A\r\n* Z:0.TTF 200 P 0\r\n\"",
+            'Z'
+        )
+        .unwrap(),
+        vec!["Z:A.FNT"]
+    );
+    assert!(identity::directory_names(b"\"- DIR Z:*.*\n* Z:A.FNT 100", 'Z').is_err());
+    assert!(identity::directory_names(b"\"- DIR Z:*.*\n* E:A.FNT 100\n\"", 'Z').is_err());
+}
+
+#[test]
+fn discovery_reads_only_directory_metadata_on_all_drives() {
+    use std::{
+        io::{Read, Write},
+        net::TcpListener,
+    };
+    let listener = TcpListener::bind("127.0.0.1:0").unwrap();
+    let port = listener.local_addr().unwrap().port();
+    let thread = std::thread::spawn(move || {
+        for drive in ['Z', 'E', 'R'] {
+            let (mut stream, _) = listener.accept().unwrap();
+            let mut request = vec![];
+            let mut byte = [0];
+            while !request.ends_with(b"\r\n") {
+                stream.read_exact(&mut byte).unwrap();
+                request.push(byte[0]);
+            }
+            assert_eq!(
+                request,
+                format!("! U1 do \"file.dir\" \"{drive}:\"\r\n").as_bytes()
+            );
+            let entry = if drive == 'Z' {
+                "* Z:TEST.FNT 100 P A\r\n* Z:0.TTF 1000 P 0\r\n"
+            } else {
+                ""
+            };
+            stream
+                .write_all(format!("\"\r\n- DIR {drive}:*.*\r\n{entry}\"").as_bytes())
+                .unwrap();
+        }
+    });
+    let names = identity::fonts("127.0.0.1", port).unwrap();
+    assert_eq!(names.len(), 10);
+    assert!(names.contains(&"Z:TEST.FNT".into()));
+    assert!(names.contains(&"@".into()));
+    thread.join().unwrap();
+}
+
+#[tokio::test]
+async fn recovery_resolves_previously_unmatched_inputs_with_new_glyphs() {
+    use crate::automatic::{probe::Config, recover, RecoveryConfig};
+    let mut f = font();
+    f.records.retain(|r| r.id != 300);
+    f.encodings.push(EncodingMap {
+        encoding: Encoding::Input { ci: 28 },
+        entries: vec![Entry {
+            input: 0x39b,
+            status: Status::Unmatched,
+            candidates: vec![],
+        }],
+        provenance: json!({"previous":"no matching glyph"}),
+    });
+    let options = RecoveryConfig {
+        probes: Config {
+            fonts: vec![f.name.clone()],
+            ..Config::default()
+        },
+        encodings: vec![Encoding::Input { ci: 28 }],
+        codes: vec![0x39b],
+        seed: Some(Collection::new(vec![f], json!({})).unwrap()),
+    };
+    let c = recover(&options, &mut Printer { unstable: false })
+        .await
+        .unwrap();
+    let entry = c.fonts[0].encodings[0]
+        .entries
+        .iter()
+        .find(|e| e.input == 0x39b)
+        .unwrap();
+    assert_eq!(entry.status, Status::Matched);
+    assert_eq!(entry.candidates.len(), 1);
+    assert_eq!(c.fonts[0].records.len(), 3);
 }

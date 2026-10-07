@@ -24,6 +24,8 @@ pub struct Pool {
 #[derive(Debug)]
 pub struct Font {
     pub name: &'static str,
+    /// Measured cell width/height, baseline and space advance, if available.
+    pub metrics: Option<[u16; 4]>,
     pub ids: &'static [u16],
     pub records: &'static [u16],
     pub pool: &'static Pool,

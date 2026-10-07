@@ -37,8 +37,8 @@ tables. These observations apply to that capture, not to other printer models,
 DPI settings or firmware versions.
 
 The generated `src/zd621/catalog.json` records the source content hash and output
-hashes. From the workspace root, regenerate the bundled tables from the tracked
-JSON into a new directory:
+hashes. From the workspace root, migrate the tracked JSON into the current
+multi-encoding table format in a new directory:
 
 ```sh
 cargo run --locked -p zpl-font-extract -- compile \
@@ -47,7 +47,9 @@ cargo run --locked -p zpl-font-extract -- compile \
 
 The JSON retains the capture lineage and verification hashes. Referenced raw
 capture paths identify the original evidence; those PNGs are not included here
-and are not required to regenerate the compact tables.
+and are not required to compile the portable tables. The current compiler emits
+the `collection` API; keep the existing bundled module and reader for renderer
+compatibility.
 
 Font content retains its original licensing. The crate's code is OSL-3.0.
 Keys are CI0 source positions, not Unicode. Glyph bearings are signed dots relative
@@ -58,12 +60,12 @@ verification, mapping, format bounds and embedding custom datasets.
 
 ## Complete records and multiple encodings
 
-`zpl-font-extract collection compile` generates modules using the separate
+`zpl-font-extract recover` automatically produces JSON and modules using the
 `zpl_bitmap_fonts::collection` API. It supports raw IDs above 255, Unicode
 input keys, multiple per-font encoding maps, ambiguous/unresolved observations,
 and explicitly separate unverified candidates. Padded rows and glyph metrics
 are preserved; records and maps share compact static storage.
 
-See [complete bitmap collections](../docs/complete-bitmap-collections.md) for
+See [automatic recovery](../docs/automatic-bitmap-fonts.md) for
 probing, evidence import, JSON validation and compilation. This does
 not change the existing bundled `zd621` renderer dataset.

@@ -54,21 +54,21 @@ pub fn pages(
         .iter()
         .map(|r| u32::from(r.height) + u32::from(r.top.unsigned_abs()))
         .max()
-        .unwrap_or(32)
+        .unwrap_or(64)
         .max(32);
     let bw = font
         .records
         .iter()
         .map(|r| u32::from(r.width).div_ceil(8) * 8 + u32::from(r.left.unsigned_abs()))
         .max()
-        .unwrap_or(32)
+        .unwrap_or(64)
         .max(32);
     let advance = font
         .records
         .iter()
         .map(|r| u32::from(r.advance))
         .max()
-        .unwrap_or(32)
+        .unwrap_or(64)
         .max(32);
     let mut tiles = vec![];
     let codes = codes
@@ -148,7 +148,7 @@ fn composition(g: &Glyph, n: u32) -> BTreeSet<(i32, i32)> {
         .collect()
 }
 pub fn classify(
-    font: &Font,
+    font: &mut Font,
     encoding: Encoding,
     codes: &[u32],
     observations: &BTreeMap<String, Glyph>,
@@ -170,6 +170,8 @@ pub fn classify(
         let g = r.glyph()?;
         records.entry(g.points()).or_default().push((r.id, g));
     }
+    let occupied = font.records.iter().map(|r| r.id).collect::<BTreeSet<_>>();
+    let mut next_id = 0u32;
     let mut entries = vec![];
     for code in codes
         .iter()
@@ -185,6 +187,37 @@ pub fn classify(
             for (id, g) in records.get(&observed[0]).into_iter().flatten() {
                 if (2..=3).all(|n| composition(g, n) == observed[n as usize - 1]) {
                     candidates.push(*id);
+                }
+            }
+        }
+        if !fallback && !observed[0].is_empty() && candidates.is_empty() {
+            let single = at(&format!("{code}:1"))?;
+            let pair = at(&format!("{code}:2"))?;
+            let delta = i32::from(pair.left) + i32::from(pair.width)
+                - i32::from(single.left)
+                - i32::from(single.width);
+            if let Ok(advance) = u16::try_from(delta) {
+                let mut g = single.clone();
+                g.advance = advance;
+                if (2..=3).all(|n| composition(&g, n) == observed[n as usize - 1]) {
+                    while next_id <= u32::from(u16::MAX) && occupied.contains(&(next_id as u16)) {
+                        next_id += 1;
+                    }
+                    let id =
+                        u16::try_from(next_id).map_err(|_| eyre!("glyph ID space exhausted"))?;
+                    next_id += 1;
+                    font.records.push(Record {
+                        id,
+                        advance,
+                        left: g.left,
+                        top: g.top,
+                        width: g.width,
+                        height: g.height,
+                        bitmap_hex: g.bitmap.concat(),
+                    });
+                    font.records.sort_by_key(|r| r.id);
+                    records.entry(g.points()).or_default().push((id, g));
+                    candidates.push(id);
                 }
             }
         }
@@ -210,7 +243,7 @@ pub fn classify(
     })
 }
 pub async fn run(
-    font: &Font,
+    font: &mut Font,
     encoding: Encoding,
     codes: &[u32],
     width: u32,
