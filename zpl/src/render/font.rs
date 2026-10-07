@@ -557,10 +557,11 @@ fn selected(id: impl Into<Font> + Copy, w: f64, h: f64) -> (GlyphSet, f64, f64) 
     // p. 1583); resident-bc-zd621-v1 verifies the alias across all ASCII.
     let font = id.into();
     if let Some(face) = resident(font.id) {
+        let metrics = face.cell_metrics().expect("resident cell metrics");
         return (
             GlyphSet::Compact(face, font.legacy_backslash),
-            w / f64::from(face.metrics.cell_width),
-            h / f64::from(face.metrics.cell_height),
+            w / f64::from(metrics.cell_width),
+            h / f64::from(metrics.cell_height),
         );
     }
     let id = font.id;
@@ -713,7 +714,7 @@ impl GlyphView {
             }
             Pixels::Compact(g) => {
                 for y in 0..self.height as usize {
-                    row_spans(g.bitmap(), y * width, width, |left, right| {
+                    row_spans(g.bitmap(), g.row_offset(y), width, |left, right| {
                         emit(y, left, right)
                     });
                 }
@@ -727,7 +728,7 @@ impl GlyphView {
         }
         match self.pixels {
             Pixels::Captured(g) => g.bitmap[y][x / 8] & (128 >> (x % 8)) != 0,
-            Pixels::Compact(g) => g.pixel(x as u8, y as u8),
+            Pixels::Compact(g) => g.pixel(x as u16, y as u16),
         }
     }
 }
@@ -800,7 +801,8 @@ fn baseline(h: f64) -> f64 {
 pub(super) fn baseline_for(id: impl Into<Font> + Copy, h: f64) -> f64 {
     let id = id.into().id;
     if let Some(face) = resident(id) {
-        return h * (f64::from(face.metrics.baseline) - 1.) / f64::from(face.metrics.cell_height);
+        let metrics = face.cell_metrics().expect("resident cell metrics");
+        return h * (f64::from(metrics.baseline) - 1.) / f64::from(metrics.cell_height);
     }
     // Scalable preset strikes retain their independently measured baselines.
     h * match id {
@@ -1227,17 +1229,18 @@ mod tests {
     fn resident_bitmap_faces_read_shared_pool_and_preserve_source_mapping() {
         for id in ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', GRAPHIC_SYMBOLS] {
             let native = resident(id).unwrap();
+            let metrics = native.cell_metrics().unwrap();
             let font = Font::new(id, false);
             let (set, sx, sy) = selected(
                 font,
-                f64::from(native.metrics.cell_width),
-                f64::from(native.metrics.cell_height),
+                f64::from(metrics.cell_width),
+                f64::from(metrics.cell_height),
             );
             assert!(matches!(set, GlyphSet::Compact(..)));
             assert_eq!((sx, sy), (1., 1.));
             assert_eq!(
-                baseline_for(font, f64::from(native.metrics.cell_height)),
-                f64::from(native.metrics.baseline) - 1.
+                baseline_for(font, f64::from(metrics.cell_height)),
+                f64::from(metrics.baseline) - 1.
             );
             for (c, key) in [
                 ('A', 65),
@@ -1251,7 +1254,7 @@ mod tests {
                 assert_eq!(g.advance, u32::from(expected.advance));
                 for y in 0..g.height as usize {
                     for x in 0..g.width as usize {
-                        assert_eq!(g.pixel(x, y), expected.pixel(x as u8, y as u8));
+                        assert_eq!(g.pixel(x, y), expected.pixel(x as u16, y as u16));
                     }
                 }
             }

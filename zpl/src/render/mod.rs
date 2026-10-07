@@ -2346,9 +2346,10 @@ fn font_dimensions(
     if id != '0' {
         // ZPL Programming Guide Table 31, pp. 1583–1584: native bitmap matrices.
         let (nh, nw) = if let Some(face) = zpl_bitmap_fonts::resident(id) {
+            let metrics = face.cell_metrics().expect("resident cell metrics");
             (
-                f64::from(face.metrics.cell_height),
-                f64::from(face.metrics.cell_width),
+                f64::from(metrics.cell_height),
+                f64::from(metrics.cell_width),
             )
         } else {
             match id {

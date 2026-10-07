@@ -80,20 +80,18 @@ pub fn import(c: &mut Collection, report: &Value, root: &Path) -> Result<()> {
                 let mut entries = vec![];
                 for glyph in &face.glyphs {
                     let points = glyph.points();
-                    let candidates = if points.is_empty() {
-                        vec![]
-                    } else {
-                        records
-                            .get(&(glyph.advance, points.clone()))
-                            .cloned()
-                            .unwrap_or_default()
-                    };
-                    let status = if points.is_empty() {
-                        Status::BlankUnresolved
-                    } else if candidates.is_empty() {
-                        Status::Unmatched
-                    } else {
+                    // Verified v1 captures include sentinel-measured advances, even
+                    // for blanks. Match that evidence by pixels AND advance.
+                    let candidates = records
+                        .get(&(glyph.advance, points.clone()))
+                        .cloned()
+                        .unwrap_or_default();
+                    let status = if !candidates.is_empty() {
                         Status::Matched
+                    } else if points.is_empty() {
+                        Status::BlankUnresolved
+                    } else {
+                        Status::Unmatched
                     };
                     entries.push(Entry {
                         input: u32::from(glyph.key),

@@ -132,3 +132,91 @@ impl CandidateCodePage {
             .lookup(u32::from(self.byte_to_character[usize::from(byte)]))
     }
 }
+
+/// Native cell dimensions inferred from printer previews.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct Metrics {
+    pub cell_width: u16,
+    pub cell_height: u16,
+    pub baseline: u16,
+    pub space_advance: u16,
+}
+/// Tight glyph view over a padded record; no second bitmap allocation or copy.
+#[derive(Clone, Copy, Debug)]
+pub struct Glyph {
+    pub advance: u16,
+    pub left: i16,
+    pub top: i16,
+    pub width: u16,
+    pub height: u16,
+    record: Record,
+    x: u16,
+    y: u16,
+}
+impl Glyph {
+    /// Original padded bytes. Use row_offset for the beginning of each tight row.
+    pub fn bitmap(&self) -> &'static [u8] {
+        self.record.bitmap()
+    }
+    pub fn row_offset(&self, y: usize) -> usize {
+        (y + usize::from(self.y)) * usize::from(self.record.width).div_ceil(8) * 8
+            + usize::from(self.x)
+    }
+    pub fn pixel(&self, x: u16, y: u16) -> bool {
+        x < self.width && y < self.height && self.record.storage_pixel(x + self.x, y + self.y)
+    }
+}
+impl Font {
+    pub fn cell_metrics(&self) -> Option<Metrics> {
+        let [cell_width, cell_height, baseline, space_advance] = self.metrics?;
+        Some(Metrics {
+            cell_width,
+            cell_height,
+            baseline,
+            space_advance,
+        })
+    }
+    /// Resolve a measured CI0 source input for rendering. Multiple matched IDs
+    /// are observed pixel/advance equivalents; this does not identify one raw ID.
+    /// Unverified candidates and unresolved observations never supply renderer glyphs.
+    pub fn glyph(&self, key: u8) -> Option<Glyph> {
+        let resolution = self.encoding(Encoding::Ci0Source)?.lookup(u32::from(key))?;
+        if resolution.status != Status::Matched {
+            return None;
+        }
+        let record = self.record(*resolution.candidates.first()?)?;
+        let (mut left, mut top, mut right, mut bottom) = (u16::MAX, u16::MAX, 0, 0);
+        for y in 0..record.height {
+            for x in 0..(usize::from(record.width).div_ceil(8) * 8) as u16 {
+                if record.storage_pixel(x, y) {
+                    left = left.min(x);
+                    top = top.min(y);
+                    right = right.max(x + 1);
+                    bottom = bottom.max(y + 1);
+                }
+            }
+        }
+        if left == u16::MAX {
+            return Some(Glyph {
+                advance: record.advance,
+                left: 0,
+                top: 0,
+                width: 0,
+                height: 0,
+                record,
+                x: 0,
+                y: 0,
+            });
+        }
+        Some(Glyph {
+            advance: record.advance,
+            left: record.left.checked_add_unsigned(left)?,
+            top: record.top.checked_add_unsigned(top)?,
+            width: right - left,
+            height: bottom - top,
+            record,
+            x: left,
+            y: top,
+        })
+    }
+}

@@ -2,17 +2,17 @@
 //! This is an archive regression, not evidence of a new printer capture.
 use std::{fs, path::PathBuf};
 use zpl_font_extract::collection::{compile, unhex, Collection};
-#[path = "../../zpl-bitmap-fonts/src/zd621_encodings/fonts.rs"]
+#[path = "../../zpl-bitmap-fonts/src/zd621/fonts.rs"]
 mod generated;
 
 #[test]
 fn bundled_encodings_match_json_and_regenerate_exactly() {
     let root = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../zpl-bitmap-fonts");
-    let c = Collection::load(&root.join("data/zd621-encodings/fonts.json")).unwrap();
+    let c = Collection::load(&root.join("data/zd621/fonts.json")).unwrap();
     assert_eq!(c.fonts.len(), 47);
     assert_eq!(
         c.fonts.iter().map(|f| f.records.len()).sum::<usize>(),
-        10100
+        10111
     );
     assert_eq!(
         c.coverage
@@ -99,7 +99,7 @@ fn bundled_encodings_match_json_and_regenerate_exactly() {
         )));
     compile::compile(&c, &temp.0).unwrap();
     for name in ["fonts.rs", "bitmaps.bin", "catalog.json"] {
-        let expected = fs::read(root.join("src/zd621_encodings").join(name)).unwrap();
+        let expected = fs::read(root.join("src/zd621").join(name)).unwrap();
         assert!(
             fs::read(temp.0.join(name)).unwrap() == expected,
             "generated {name} differs from checked-in file"

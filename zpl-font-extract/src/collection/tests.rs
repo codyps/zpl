@@ -462,3 +462,47 @@ async fn recovery_resolves_previously_unmatched_inputs_with_new_glyphs() {
     assert_eq!(entry.candidates.len(), 1);
     assert_eq!(c.fonts[0].records.len(), 3);
 }
+
+#[tokio::test]
+async fn recovery_retains_verified_blank_advances_without_claiming_fresh_measurement() {
+    use crate::automatic::{probe::Config, recover, RecoveryConfig};
+    let mut f = font();
+    f.records.push(Record {
+        id: 301,
+        advance: 5,
+        left: 0,
+        top: 0,
+        width: 0,
+        height: 0,
+        bitmap_hex: String::new(),
+    });
+    f.encodings.push(EncodingMap {
+        encoding: Encoding::Input { ci: 28 },
+        entries: vec![Entry {
+            input: 32,
+            status: Status::Matched,
+            candidates: vec![301],
+        }],
+        provenance: json!({"source":"verified-blank-advance"}),
+    });
+    let options = RecoveryConfig {
+        probes: Config {
+            fonts: vec![f.name.clone()],
+            ..Config::default()
+        },
+        encodings: vec![Encoding::Input { ci: 28 }],
+        codes: vec![32],
+        seed: Some(Collection::new(vec![f], json!({})).unwrap()),
+    };
+    let c = recover(&options, &mut Printer { unstable: false })
+        .await
+        .unwrap();
+    let map = &c.fonts[0].encodings[0];
+    let blank = map.entries.iter().find(|e| e.input == 32).unwrap();
+    assert_eq!(blank.status, Status::Matched);
+    assert_eq!(blank.candidates, [301]);
+    assert_eq!(
+        map.provenance["merged"][1]["retained_verified_blank_inputs"],
+        json!([32])
+    );
+}

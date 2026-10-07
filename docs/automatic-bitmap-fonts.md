@@ -21,8 +21,7 @@ that input. Both cases run the same recovery and compilation sequence. Verified
 legacy v1 JSON is migrated on input; new output always uses the current format.
 
 The former `collection survey` workflow and the old byte-only compiler are
-removed. Use `recover --source ...` and `compile` instead. The bundled renderer
-reader is retained because the existing `zd621` dataset still uses it.
+removed. Use `recover --source ...` and `compile` instead. The renderer and generated tables share the same reader and bundled dataset.
 
 ## Capture, cache and replay
 
@@ -74,7 +73,9 @@ All pages check dimensions, clipping, registration and stray ink, and each pass
 requires an exact independent repeat of its first page. Named-font controls vary
 the default face to detect filename fallback. A blank input alone cannot establish
 a glyph or its advance, and remains unresolved. Non-composable observations are
-also explicit; they are never silently promoted to glyphs.
+also explicit; they are never silently promoted to glyphs. Previously verified
+blank advances are retained when a new blank-only preview cannot remeasure them;
+the map provenance explicitly labels that reuse.
 
 `--bound` controls resident native-size calibration. `--width` and `--height`
 select the preview canvas (832×4096 by default). Named-font discovery captures the
@@ -152,9 +153,11 @@ if let Some(observation) = map.lookup(0x039b) {
 }
 ```
 
-The bundled `zd621` tables and their existing reader remain unchanged. Newly
-compiled tables use the unified reader; they are not drop-in replacements for
-the old generated module API.
+The bundled `zd621` tables use this same reader. Measured CI0 mappings and native
+cell metrics drive resident rendering; richer encoding maps remain available to
+callers. The old packed-bit reader and duplicate dataset have been removed.
+The `glyph()` source-position view returns tightly cropped pixels over the shared
+padded records. Use `row_offset()` when scanning `bitmap()` rows.
 
 ## Validation
 

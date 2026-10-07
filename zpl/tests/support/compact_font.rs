@@ -10,6 +10,7 @@ pub fn asset(name: &str) -> Option<Vec<u8>> {
         return None;
     };
     let font = zpl_bitmap_fonts::resident(id)?;
+    let metrics = font.cell_metrics()?;
     let unicode = name.ends_with("-legacy-controls.zbf");
     let keys: Vec<(u32, u8)> = if name.ends_with("-cent.zbf") {
         vec![(162, 189)]
@@ -35,8 +36,8 @@ pub fn asset(name: &str) -> Option<Vec<u8>> {
     let mut bytes = if unicode { b"ZBF2" } else { b"ZBF1" }.to_vec();
     bytes.push(id as u8);
     for n in [
-        font.metrics.cell_height,
-        font.metrics.cell_width,
+        metrics.cell_height,
+        metrics.cell_width,
         203,
         keys.len() as u16,
     ] {
@@ -49,13 +50,7 @@ pub fn asset(name: &str) -> Option<Vec<u8>> {
         } else {
             bytes.push(key as u8);
         }
-        for n in [
-            u16::from(g.advance),
-            i16::from(g.left) as u16,
-            i16::from(g.top) as u16,
-            u16::from(g.width),
-            u16::from(g.height),
-        ] {
+        for n in [g.advance, g.left as u16, g.top as u16, g.width, g.height] {
             bytes.extend(n.to_le_bytes());
         }
         let mut bits = vec![0; (usize::from(g.width) * usize::from(g.height)).div_ceil(8)];

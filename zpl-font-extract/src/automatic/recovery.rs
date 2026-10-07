@@ -66,7 +66,7 @@ pub async fn recover(c: &RecoveryConfig, capture: &mut impl Capture) -> Result<C
             } else {
                 (0..=255).collect()
             };
-            let map = survey::run(
+            let mut map = survey::run(
                 font,
                 encoding,
                 &inputs,
@@ -75,6 +75,31 @@ pub async fn recover(c: &RecoveryConfig, capture: &mut impl Capture) -> Result<C
                 capture,
             )
             .await?;
+            // A blank-only preview cannot remeasure an advance. Preserve stronger
+            // existing sentinel/holdout evidence, while marking this reuse explicitly.
+            let mut retained_blanks = vec![];
+            if let Some(old) = font.encodings.iter().find(|m| m.encoding == encoding) {
+                for entry in &mut map.entries {
+                    if entry.status != crate::collection::Status::BlankUnresolved {
+                        continue;
+                    }
+                    if let Some(previous) = old.entries.iter().find(|e| {
+                        e.input == entry.input && e.status == crate::collection::Status::Matched
+                    }) {
+                        if previous.candidates.iter().all(|id| {
+                            font.records
+                                .iter()
+                                .any(|r| r.id == *id && r.bitmap_hex.bytes().all(|b| b == b'0'))
+                        }) {
+                            retained_blanks.push(entry.input);
+                            *entry = previous.clone();
+                        }
+                    }
+                }
+            }
+            if !retained_blanks.is_empty() {
+                map.provenance["retained_verified_blank_inputs"] = json!(retained_blanks);
+            }
             // An earlier unmatched observation did not select a record. A newly
             // discovered glyph can resolve it without contradicting a prior match.
             if let Some(old) = font.encodings.iter_mut().find(|m| m.encoding == encoding) {

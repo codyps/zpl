@@ -4,7 +4,9 @@ This portable v3 dataset combines existing glyph exports and encoding observatio
 for the ZD621 at 203 dpi, software version V93.21.33Z. It is not a fresh complete
 run of the unified prober, nor a claim about other printers or versions.
 
-- 47 fonts, 10,100 glyph records, including 8,162 visible records.
+- 47 fonts, 10,111 glyph records, including 8,162 visible records.
+- Includes 11 additional advancing blank records and calibrated cell metrics from
+  the previously verified source-position captures.
 - 6,872 visible records have measured input equivalents; 1,290 remain unresolved.
 - Unverified candidates cover 1,122 of those unresolved records.
 - 61 imported byte-to-character tables remain explicitly unverified.
@@ -21,13 +23,13 @@ are excluded from this portable snapshot.
 
 The JSON content SHA-256 is:
 
-`760662ac0d7855547f02c9805e18c66b8613a267aa0f473d7b11659ae0c5a8bd`
+`20da33bb37bb031ab410552097de994d365a724c77df06cf55bb66fee132a81c`
 
-Regenerate the matching `src/zd621_encodings` artifacts into a new directory:
+Regenerate the matching `src/zd621` artifacts into a new directory:
 
 ```sh
 cargo run --locked -p zpl-font-extract -- compile \
-  zpl-bitmap-fonts/data/zd621-encodings/fonts.json --out _zd621-encodings
+  zpl-bitmap-fonts/data/zd621/fonts.json --out _zd621
 ```
 
 Compare all three outputs (`fonts.rs`, `bitmaps.bin`, `catalog.json`) before
@@ -35,7 +37,11 @@ replacing tracked artifacts. The `bundled_encodings` integration test checks eve
 glyph/metric/pixel and encoding/status/candidate/code-page entry against the JSON,
 and requires byte-for-byte reproduction of the generated artifacts.
 
-Enable `zpl-bitmap-fonts` feature `zd621-encodings` to access
-`zpl_bitmap_fonts::zd621_encodings`. This opt-in dataset uses the `collection`
-reader. The existing `zd621` feature and renderer dataset remain unchanged.
-Font content retains its original licensing.
+The `zd621` feature exposes `zpl_bitmap_fonts::zd621`. This is the single bundled
+font dataset, also used by the renderer. Its CI0 source glyph views crop the shared
+padded records without allocating or duplicating bitmaps. Only measured mappings
+supply renderer glyphs; unverified candidates remain explicitly separate.
+
+The original 45-font source-position behavior is protected by the unchanged
+whole-dataset pixel/metric golden digest in `tests/bundled.rs`. Font content retains
+its original licensing.
