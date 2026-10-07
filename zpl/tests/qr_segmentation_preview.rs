@@ -1,5 +1,7 @@
 //! ZD621 V93.21.33Z run-merging and Labelixa regressions. Raw native requests,
 //! captures, license, and provenance: fixtures/qr-segmentation-zd621-v1.
+#[path = "support/compact_font.rs"]
+mod compact_font;
 use std::{fs, path::Path};
 use zpl::{
     output::raster::rasterize,
@@ -22,7 +24,7 @@ fn native_frames_are_pixel_exact() {
         );
     }
     assert_eq!(
-        digest::sha256(include_bytes!("../assets/font0-28-0.zbf")),
+        digest::sha256(&compact_font::asset("font0-28-0.zbf").unwrap()),
         provenance["font_asset_sha256"].as_str().unwrap()
     );
     let mut count = 0;

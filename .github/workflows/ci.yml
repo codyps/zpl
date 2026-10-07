@@ -112,6 +112,8 @@ jobs:
       - uses: dtolnay/rust-toolchain@6bed0761d98439e5a578e2877258200ad565ba87 # stable
         with:
           components: rustfmt
+      - name: Verify compact capture tables
+        run: python3 zpl-bitmap-fonts/data/compile_captures.py --check
       - run: cargo fmt --all -- --check
       - run: rustfmt --edition 2021 --check benchmarks/harness.rs
 

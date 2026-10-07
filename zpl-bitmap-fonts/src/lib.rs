@@ -29,5 +29,6 @@ pub fn resident(id: char) -> Option<&'static Font> {
     zd621::font_by_name(name)
 }
 
+pub mod captures;
 pub mod collection;
 pub use collection::{Font, Glyph, Metrics};

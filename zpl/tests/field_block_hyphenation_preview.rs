@@ -96,15 +96,13 @@ fn printer_controls_pin_every_painted_pixel() {
 
 #[test]
 fn native_hyphen_supplements_are_pinned_and_c_d_are_identical() {
-    let root = Path::new(env!("CARGO_MANIFEST_DIR"));
     let mut count = 0;
     for row in include_str!("fixtures/field-block-hyphenation-zd621-v1/assets.tsv")
         .lines()
         .skip(1)
     {
         let c: Vec<_> = row.split('\t').collect();
-        let bytes = compact_font::asset(c[0])
-            .unwrap_or_else(|| fs::read(root.join("assets").join(c[0])).unwrap());
+        let bytes = compact_font::asset(c[0]).unwrap();
         assert_eq!(digest::sha256(&bytes), c[1], "{} asset", c[0]);
         let (settings, glyphs) = zpl::bitmap_font::unpack(&bytes).unwrap();
         assert_eq!(
@@ -129,6 +127,7 @@ fn native_hyphen_supplements_are_pinned_and_c_d_are_identical() {
         count += 1;
     }
     assert_eq!(count, 15);
+    let root = Path::new(env!("CARGO_MANIFEST_DIR"));
     for name in ["page-000", "verification"] {
         let read = |font| {
             let path = root.join(format!("tests/fixtures/field-block-hyphenation-zd621-v1/font-source/{font}-18-10/{name}.png"));

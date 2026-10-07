@@ -1,4 +1,6 @@
 //! Raw ZD621 responses and measured regions: see the fixture README.
+#[path = "support/compact_font.rs"]
+mod compact_font;
 use std::{fs, path::Path};
 #[path = "support/digest.rs"]
 mod digest;
@@ -65,14 +67,13 @@ fn printer_bounded_text_pins_paint_and_each_text_region() {
 
 #[test]
 fn captured_font_assets_are_complete_and_pinned() {
-    let root = Path::new(env!("CARGO_MANIFEST_DIR")).join("assets");
     let mut count = 0;
     for row in include_str!("fixtures/bounded-text-zd621-v1/assets.tsv")
         .lines()
         .skip(1)
     {
         let c: Vec<_> = row.split('\t').collect();
-        let bytes = fs::read(root.join(c[0])).unwrap();
+        let bytes = compact_font::asset(c[0]).unwrap();
         assert_eq!(digest::sha256(&bytes), c[1]);
         let (settings, glyphs) = zpl::bitmap_font::unpack(&bytes).unwrap();
         assert_eq!(

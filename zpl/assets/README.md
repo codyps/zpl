@@ -1,4 +1,15 @@
-# Embedded resident font
+# Captured resident font provenance
+
+All 101 scalable captures are now represented in
+[`captures.json`](../../zpl-bitmap-fonts/data/captures.json) and compiled into
+shared records, bitmap bytes and compatibility maps in `zpl-bitmap-fonts`.
+Names ending in `.zbf` below are historical capture identities, not runtime
+files. The original hashes remain pinned; `compact_captures` reconstructs all
+5,710 glyphs into the historical encoding and checks every original hash.
+Native A–H/GS and scalable 0/P–V now use the same compact glyph view.
+
+The ZD621 evidence applies only to 203 dpi and firmware V93.21.33Z. No new
+printer campaign or additional glyph coverage is claimed by this migration.
 
 `font0-32.zbf` contains 95 printable ASCII glyphs from resident font 0, sampled
 from a Zebra ZD621 HTTP preview on 2026-09-14: height 32 dots, width 0 (natural
@@ -7,7 +18,8 @@ Capture and asset hashes are in `font0-32.provenance.json`. The original PNGs
 and ZPL requests used by pixel-level regression tests are under
 `../tests/fixtures/font0-32/`.
 
-The asset is **4,365 bytes**, included with `include_bytes!` and decoded once.
+The historical base asset was **4,365 bytes**. Rendering now borrows compiled
+glyph records and bitmap slices without decoding or cloning strikes.
 No installed font, network access, JSON parsing, or filesystem lookup is required
 at render time. The font has proportional advances, lowercase and descenders.
 The renderer emits merged horizontal ink runs as paths for both SVG and PNG.
@@ -26,15 +38,20 @@ cargo run --locked -p zebra-http-api --example extract-font -- \
   --verify-text 'AVATAR Agj Wavy 123 _^~|!' _font-0-32
 ```
 
-Copy the verified `font.zbf` into this repository's `zpl/assets/font0-32.zbf`,
-then run `cargo test --locked -p zpl --lib --test render` here.
+Import verified capture metrics into the fixed JSON corpus, retaining provenance
+and independent regression fixtures. Generate and check the runtime tables with:
 
-The extractor always exports ZBF alongside JSON and BDF. Existing captures can
-be repacked with `--offline`. Keep the provenance hashes and reference fixtures
-consistent when intentionally changing the embedded strike. A subset capture is
-not a replacement for this complete 95-glyph asset.
+```sh
+python3 zpl-bitmap-fonts/data/compile_captures.py
+python3 zpl-bitmap-fonts/data/compile_captures.py --check
+cargo test --locked -p zpl --test compact_captures
+```
 
-## ZBF1 and ZBF2 layouts
+The compiler only packs this fixed corpus; extraction, sampling, fitting and
+new research datasets remain in the private font research repository. A subset
+capture is not a replacement for a complete 95-glyph ASCII strike.
+
+## Historical ZBF1 and ZBF2 layouts
 
 All multi-byte integers are little endian. Signed offsets are two's complement.
 

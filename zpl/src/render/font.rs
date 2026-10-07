@@ -2,11 +2,14 @@
 //! Bitmap pixels become output-neutral paths.
 //! Metrics: ZPL Programming Guide Tables 29/31, pp. 1582–1583:
 //! https://www.zebra.com/content/dam/support-dam/en/documentation/unrestricted/guide/software/zpl-zbi2-pg-en.pdf
-use crate::{
-    bitmap_font::{self, Glyph, Settings, GRAPHIC_SYMBOLS},
-    output::{Path, Point, Segment},
-};
-use std::{collections::BTreeMap, sync::OnceLock};
+#[cfg(test)]
+use crate::bitmap_font::GRAPHIC_SYMBOLS;
+pub(super) use crate::fonts::resident::printer_ft_offset;
+#[cfg(test)]
+use crate::fonts::resident::{compact_glyph, resident, CP850};
+use crate::fonts::resident::{glyph_from, selected, GlyphSet, GlyphView, Pixels, Selection};
+use crate::output::{Path, Point, Segment};
+use std::collections::BTreeMap;
 
 /// Emit sorted bitmap rows, extending identical runs that touch vertically.
 /// Joining only exactly shared edges preserves the even-odd region, including
@@ -71,23 +74,22 @@ impl RowPath {
     }
 }
 
-/// Resident face plus the legacy ASCII backslash replacement. Keep this
-/// separate from U+00A2: bitmap faces have distinct native cent designs.
 #[derive(Clone, Copy)]
 pub(super) struct Font<'a> {
     custom: Option<&'a super::fonts::Face<'a>>,
-    id: char,
-    legacy_backslash: bool,
-    legacy_codepage: bool,
-    serial_zero_source: bool,
-    encoding: u8,
-    default_glyph: bool,
-    character_map: Option<[u8; 256]>,
-    explicit_sources: Option<[u8; 32]>,
+    face: Selection,
     block_flow: Option<BlockFlow>,
-    tab_stops: bool,
-    legacy_controls: bool,
-    control_spaces: bool,
+}
+impl std::ops::Deref for Font<'_> {
+    type Target = Selection;
+    fn deref(&self) -> &Selection {
+        &self.face
+    }
+}
+impl From<Font<'_>> for Selection {
+    fn from(font: Font<'_>) -> Self {
+        font.face
+    }
 }
 #[derive(Clone, Copy)]
 struct BlockFlow {
@@ -110,136 +112,46 @@ impl BlockFlow {
 impl<'a> Font<'a> {
     pub(super) fn new(id: char, legacy_backslash: bool) -> Self {
         Self {
-            id,
             custom: None,
-            legacy_backslash,
-            legacy_codepage: false,
-            serial_zero_source: false,
-            encoding: 28,
-            default_glyph: false,
-            character_map: None,
-            explicit_sources: None,
+            face: Selection::new(id, legacy_backslash),
             block_flow: None,
-            tab_stops: false,
-            legacy_controls: false,
-            control_spaces: false,
         }
     }
-    pub(super) fn with_encoding(mut self, encoding: u8) -> Self {
-        self.encoding = encoding;
-        self
-    }
     pub(super) fn with_serial_zero_source(mut self, enabled: bool) -> Self {
-        self.serial_zero_source = enabled;
+        self.face = self.face.with_serial_zero_source(enabled);
         self
     }
     pub(super) fn with_fonts(mut self, fonts: &'a super::fonts::RenderFonts<'_, 'a>) -> Self {
         self.custom = fonts.get(self.id);
+        self.face = self.face.with_custom(self.custom.is_some());
+        self
+    }
+    pub(super) fn with_encoding(mut self, encoding: u8) -> Self {
+        self.face = self.face.with_encoding(encoding);
         self
     }
     pub(super) fn with_legacy_codepage(mut self, enabled: bool) -> Self {
-        self.legacy_codepage = enabled;
+        self.face = self.face.with_legacy_codepage(enabled);
         self
     }
     pub(super) fn with_tab_stops(mut self, enabled: bool) -> Self {
-        self.tab_stops = enabled;
+        self.face = self.face.with_tab_stops(enabled);
         self
     }
-    pub(super) fn is_tab(self, c: char) -> bool {
-        self.tab_stops && c == '\t'
-    }
     pub(super) fn with_character_map(mut self, map: Option<[u8; 256]>) -> Self {
-        self.character_map = map;
+        self.face = self.face.with_character_map(map);
         self
     }
     pub(super) fn with_explicit_sources(mut self, mask: Option<[u8; 32]>) -> Self {
-        self.explicit_sources = mask;
+        self.face = self.face.with_explicit_sources(mask);
         self
     }
     pub(super) fn with_control_glyphs(mut self, legacy: bool, spaces: bool) -> Self {
-        self.legacy_controls = legacy;
-        self.control_spaces = spaces;
+        self.face = self.face.with_control_glyphs(legacy, spaces);
         self
     }
-    fn map_char(self, c: char) -> Result<char, String> {
-        // Text is already Unicode before layout. Recover the input image index
-        // only for ^CI remapping; do not decode layout-generated soft hyphens
-        // (U+00AD) as CP850 byte AD (inverted exclamation mark).
-        let image = if self.legacy_codepage && !c.is_ascii() {
-            CP850.iter().position(|&glyph| glyph == c).map(|i| i + 128)
-        } else {
-            Some(c as usize)
-        };
-        if self.custom.is_none() && resident(self.id).is_some() {
-            if let Some(source) = self
-                .character_map
-                .and_then(|map| image.and_then(|i| map.get(i).copied()))
-            {
-                let explicit = self.explicit_sources.is_some_and(|mask| {
-                    image.is_some_and(|i| i < 256 && mask[i / 8] & (1 << (i % 8)) != 0)
-                });
-                if explicit || Some(source as usize) != image {
-                    return Ok(char::from_u32(0xf0000 + u32::from(source)).unwrap());
-                }
-            }
-        }
-        if self.custom.is_none() && resident(self.id).is_some() {
-            // Legacy text was decoded for Unicode-aware layout. Recover its
-            // byte index here; layout-generated characters use measured Unicode.
-            let source = if self.legacy_codepage {
-                image.filter(|&i| {
-                    i <= 255
-                        && (matches!(self.encoding, 0 | 13) || c != '\\' || self.legacy_backslash)
-                })
-            } else {
-                None
-            };
-            if let Some(source) = source {
-                // Independent ^SN captures retain source zero under CI13; FD/SF
-                // use the measured CI13 input map. Explicit remaps take priority.
-                if self.serial_zero_source && self.encoding == 13 && source == usize::from(b'0') {
-                    return Ok(char::from_u32(0xf0000 + source as u32).unwrap());
-                }
-                // Preserve the input byte independently of explicit source-slot
-                // remapping. CI13's zero is not the CI0 source-slot zero.
-                let tag = if matches!(self.encoding, 0 | 13) {
-                    0xf0100
-                } else {
-                    0xf0000
-                };
-                return Ok(char::from_u32(tag + source as u32).unwrap());
-            }
-            if self.control_spaces && matches!(c, '\u{1b}' | '\u{7f}') {
-                return Ok(char::from_u32(0xf0000 + u32::from(b' ')).unwrap());
-            }
-            if self.legacy_controls && matches!(c, '\u{1b}' | '\u{7f}') {
-                return Ok(char::from_u32(0xf0000 + c as u32).unwrap());
-            }
-        }
-        let c = match self
-            .character_map
-            .and_then(|map| image.and_then(|image| map.get(image).copied()))
-        {
-            Some(source) if Some(source as usize) != image => match source {
-                // ^CI example, Programming Guide p. 158: legacy image 21 is euro.
-                21 => '€',
-                0..=127 => char::from(source),
-                _ if self.legacy_codepage => legacy_char(source),
-                _ => return Err("unsupported legacy remap source glyph".into()),
-            },
-            _ => c,
-        };
-        // Canonical keys identify private legacy-only strike entries. They do
-        // not add Unicode arrow/house support to the normal resident strikes.
-        Ok(match c {
-            '\u{1b}' | '\u{7f}' if self.control_spaces => ' ',
-            '\u{1b}' if self.legacy_controls => '\u{2190}',
-            '\u{7f}' if self.legacy_controls => '\u{2302}',
-            _ => c,
-        })
-    }
     pub(super) fn with_default_glyph(mut self, enabled: bool) -> Self {
-        self.default_glyph = enabled;
+        self.face = self.face.with_default_glyph(enabled);
         self
     }
     pub(super) fn with_block_flow(
@@ -263,16 +175,10 @@ impl<'a> Font<'a> {
         self
     }
     pub(super) fn bounded_pitch(self, w: f64, h: f64) -> Result<f64, String> {
-        // ZD621 TB controls: proportional line leading is 25%; A's leading
-        // is quantized at its horizontally magnified bitmap cell width.
-        Ok(match if self.custom.is_some() { '\0' } else { self.id } {
-            '0' => h * 1.25,
-            'A' => {
-                let width = width_for(self, "A", w, h)? * 5. / 6.;
-                h * (width * 1.1).floor() / width
-            }
-            _ => h,
-        })
+        if self.custom.is_some() {
+            return Ok(h);
+        }
+        self.face.bounded_pitch(h, || width_for(self, "A", w, h))
     }
     pub(super) fn block_overprints(self) -> bool {
         self.block_flow
@@ -294,473 +200,6 @@ impl From<char> for Font<'_> {
     fn from(id: char) -> Self {
         Self::new(id, false)
     }
-}
-const DATA: &[u8] = include_bytes!("../../assets/font0-32.zbf");
-fn strike() -> &'static (Settings, Vec<Glyph>) {
-    static FONT: OnceLock<(Settings, Vec<Glyph>)> = OnceLock::new();
-    FONT.get_or_init(|| {
-        let (settings, mut glyphs) = bitmap_font::unpack(DATA).expect("validated ASCII strike");
-        glyphs.extend(
-            bitmap_font::unpack(include_bytes!("../../assets/font0-32-latin1.zbf"))
-                .expect("validated Latin-1 supplement")
-                .1,
-        );
-        extend_hyphens(settings, &mut glyphs);
-        extend_cent(settings, &mut glyphs);
-        extend_unicode(settings, &mut glyphs);
-        (settings, glyphs)
-    })
-}
-// Unicode Hebrew letters, captured with CI28 and PA0 (Zebra guide ^CI,
-// pp. 156–159 and ^PA p. 315). Native pages and advance controls are pinned
-// in unicode-fonts-zd621-v1, including all five final forms.
-fn extend_unicode(settings: Settings, glyphs: &mut Vec<Glyph>) {
-    let sources: &[&[u8]] = match (settings.font, settings.height, settings.width) {
-        ('0', 32, 0) => &[
-            include_bytes!("../../assets/font0-32-0-hebrew.zbf"),
-            include_bytes!("../../assets/font0-32-0-missing.zbf"),
-        ],
-        ('0', 40, 24) => &[
-            include_bytes!("../../assets/font0-40-24-hebrew.zbf"),
-            include_bytes!("../../assets/font0-40-24-extended.zbf"),
-            include_bytes!("../../assets/font0-40-24-missing.zbf"),
-            include_bytes!("../../assets/font0-40-24-conformance.zbf"),
-            include_bytes!("../../assets/font0-40-24-controls.zbf"),
-        ],
-        _ => return,
-    };
-    for data in sources {
-        // Missing-glyph captures include an ASCII A as an independent visible
-        // verification anchor; the base strike already supplies that glyph.
-        glyphs.extend(
-            bitmap_font::unpack(data)
-                .expect("validated Unicode strike")
-                .1
-                .into_iter()
-                .filter(|g| g.codepoint > 126),
-        );
-    }
-    glyphs.sort_by_key(|g| g.codepoint);
-    // Overlapping independent captures retain the existing encoding's glyph.
-    // In particular CI27 soft hyphen is visible; CI28 formatting is handled
-    // before layout, while FB may still generate its printable hyphen.
-    glyphs.dedup_by_key(|g| g.codepoint);
-}
-// CI27 cent character, measured independently at each embedded strike.
-// ^CI pp. 156–159; raw pages and advance checks: cent-glyph-zd621-v1.
-fn extend_cent(settings: Settings, glyphs: &mut Vec<Glyph>) {
-    let data: &[u8] = match (settings.font, settings.height, settings.width) {
-        ('0', 16, 0) => include_bytes!("../../assets/font0-16-0-cent.zbf"),
-        ('0', 20, 0) => include_bytes!("../../assets/font0-20-0-cent.zbf"),
-        ('0', 24, 24) => include_bytes!("../../assets/font0-24-24-cent.zbf"),
-        ('0', 32, 0) => include_bytes!("../../assets/font0-32-0-cent.zbf"),
-        ('0', 32, 16) => include_bytes!("../../assets/font0-32-16-cent.zbf"),
-        ('0', 32, 24) => include_bytes!("../../assets/font0-32-24-cent.zbf"),
-        ('0', 32, 64) => include_bytes!("../../assets/font0-32-64-cent.zbf"),
-        ('0', 64, 0) => include_bytes!("../../assets/font0-64-0-cent.zbf"),
-        _ => return,
-    };
-    glyphs.extend(
-        bitmap_font::unpack(data)
-            .expect("validated cent supplement")
-            .1,
-    );
-    glyphs.sort_by_key(|g| g.codepoint);
-}
-// Independently captured soft-hyphen and eth supplements. ^FB p. 187;
-// see field-block-hyphenation-zd621-v1 for the CI27 automatic-break departure.
-fn extend_hyphens(settings: Settings, glyphs: &mut Vec<Glyph>) {
-    let data: &[u8] = match (settings.font, settings.height, settings.width) {
-        ('0', 28, 14) => include_bytes!("../../assets/font0-28-14-hyphen.zbf"),
-        ('0', 24, 24) => include_bytes!("../../assets/font0-24-24-hyphen.zbf"),
-        ('0', 32, 0) => include_bytes!("../../assets/font0-32-0-hyphen.zbf"),
-        ('0', 16, 0) => include_bytes!("../../assets/font0-16-0-hyphen.zbf"),
-        ('0', 20, 0) => include_bytes!("../../assets/font0-20-0-hyphen.zbf"),
-        ('0', 64, 0) => include_bytes!("../../assets/font0-64-0-hyphen.zbf"),
-        ('0', 32, 16) => include_bytes!("../../assets/font0-32-16-hyphen.zbf"),
-        ('0', 32, 24) => include_bytes!("../../assets/font0-32-24-hyphen.zbf"),
-        ('0', 32, 64) => include_bytes!("../../assets/font0-32-64-hyphen.zbf"),
-        _ => return,
-    };
-    glyphs.extend(
-        bitmap_font::unpack(data)
-            .expect("validated hyphen supplement")
-            .1,
-    );
-    glyphs.sort_by_key(|g| g.codepoint);
-}
-fn strikes() -> &'static Vec<(Settings, Vec<Glyph>)> {
-    static STRIKES: OnceLock<Vec<(Settings, Vec<Glyph>)>> = OnceLock::new();
-    STRIKES.get_or_init(|| {
-        [
-            // Native SurePost sizes; sampling and independent controls in
-            // tests/fixtures/surepost-zd621-v1 (^A guide p. 60).
-            include_bytes!("../../assets/font0-18-22.zbf").as_slice(),
-            include_bytes!("../../assets/font0-20-24.zbf").as_slice(),
-            include_bytes!("../../assets/font0-22-26.zbf").as_slice(),
-            include_bytes!("../../assets/font0-23-23.zbf").as_slice(),
-            include_bytes!("../../assets/font0-26-30.zbf").as_slice(),
-            include_bytes!("../../assets/font0-28-32.zbf").as_slice(),
-            include_bytes!("../../assets/font0-30-34.zbf").as_slice(),
-            include_bytes!("../../assets/font0-39-42.zbf").as_slice(),
-            include_bytes!("../../assets/font0-45-44.zbf").as_slice(),
-            include_bytes!("../../assets/font0-72-68.zbf").as_slice(),
-            // Native shipping/typography sizes, independently reconstructed
-            // from shipping-fonts-zd621-v1; ^A guide p. 60, FO/FT pp. 201/205.
-            include_bytes!("../../assets/font0-20-12.zbf").as_slice(),
-            include_bytes!("../../assets/font0-28-15.zbf").as_slice(),
-            include_bytes!("../../assets/font0-36-22.zbf").as_slice(),
-            include_bytes!("../../assets/font0-28-16.zbf").as_slice(),
-            include_bytes!("../../assets/font0-52-30.zbf").as_slice(),
-            include_bytes!("../../assets/font0-42-24.zbf").as_slice(),
-            include_bytes!("../../assets/font0-10-0.zbf").as_slice(),
-            include_bytes!("../../assets/font0-10-32.zbf").as_slice(),
-            include_bytes!("../../assets/font0-32-10.zbf").as_slice(),
-            include_bytes!("../../assets/font0-15-0.zbf").as_slice(),
-            include_bytes!("../../assets/font0-17-0.zbf").as_slice(),
-            include_bytes!("../../assets/font0-31-0.zbf").as_slice(),
-            include_bytes!("../../assets/font0-33-0.zbf").as_slice(),
-            include_bytes!("../../assets/font0-63-0.zbf").as_slice(),
-            include_bytes!("../../assets/font0-65-0.zbf").as_slice(),
-            include_bytes!("../../assets/font0-64-16.zbf").as_slice(),
-            include_bytes!("../../assets/font0-16-64.zbf").as_slice(),
-            include_bytes!("../../assets/font0-96-96.zbf").as_slice(),
-            include_bytes!("../../assets/font0-16-10.zbf").as_slice(),
-            include_bytes!("../../assets/fontT-48-42.zbf").as_slice(),
-            include_bytes!("../../assets/fontU-59-53.zbf").as_slice(),
-            include_bytes!("../../assets/fontV-80-71.zbf").as_slice(),
-            include_bytes!("../../assets/font0-16-0.zbf").as_slice(),
-            include_bytes!("../../assets/font0-20-0.zbf").as_slice(),
-            include_bytes!("../../assets/font0-20-18.zbf").as_slice(),
-            include_bytes!("../../assets/font0-20-10.zbf").as_slice(),
-            include_bytes!("../../assets/font0-24-24.zbf").as_slice(),
-            include_bytes!("../../assets/font0-24-12.zbf").as_slice(),
-            include_bytes!("../../assets/font0-24-16.zbf").as_slice(),
-            // Native 28-dot natural width: qr-segmentation-zd621-v1/font-0-28.
-            include_bytes!("../../assets/font0-28-0.zbf").as_slice(),
-            include_bytes!("../../assets/font0-28-14.zbf").as_slice(),
-            include_bytes!("../../assets/font0-26-16.zbf").as_slice(),
-            include_bytes!("../../assets/font0-40-24.zbf").as_slice(),
-            include_bytes!("../../assets/font0-40-22.zbf").as_slice(),
-            include_bytes!("../../assets/font0-48-32.zbf").as_slice(),
-            include_bytes!("../../assets/font0-64-0.zbf").as_slice(),
-            include_bytes!("../../assets/font0-32-16.zbf").as_slice(),
-            include_bytes!("../../assets/font0-32-24.zbf").as_slice(),
-            include_bytes!("../../assets/font0-32-20.zbf").as_slice(),
-            include_bytes!("../../assets/font0-32-64.zbf").as_slice(),
-            include_bytes!("../../assets/fontS-40-35.zbf").as_slice(),
-            include_bytes!("../../assets/fontS-80-70.zbf").as_slice(),
-            include_bytes!("../../assets/fontP-20-18.zbf").as_slice(),
-            include_bytes!("../../assets/fontP-40-18.zbf").as_slice(),
-            include_bytes!("../../assets/fontP-40-36.zbf").as_slice(),
-            include_bytes!("../../assets/fontQ-28-24.zbf").as_slice(),
-            include_bytes!("../../assets/fontR-35-31.zbf").as_slice(),
-        ]
-        .into_iter()
-        .map(|data| {
-            let (settings, mut glyphs) =
-                bitmap_font::unpack(data).expect("validated resident strike");
-            extend_hyphens(settings, &mut glyphs);
-            extend_cent(settings, &mut glyphs);
-            extend_unicode(settings, &mut glyphs);
-            (settings, glyphs)
-        })
-        .collect()
-    })
-}
-// Native CI0 byte 0x5C, sampled separately from Unicode U+00A2.
-// ^CI p. 159; independent advance controls in legacy-backslash-zd621-v1.
-fn legacy_strikes() -> &'static Vec<(Settings, Vec<Glyph>)> {
-    static FONTS: OnceLock<Vec<(Settings, Vec<Glyph>)>> = OnceLock::new();
-    FONTS.get_or_init(|| {
-        let mut faces = strikes().clone();
-        faces.push(strike().clone());
-        for (settings, glyphs) in &mut faces {
-            let data: Option<&[u8]> = match (settings.font, settings.height, settings.width) {
-                ('0', 16, 0) => Some(include_bytes!(
-                    "../../assets/font0-16-0-legacy-backslash.zbf"
-                )),
-                ('0', 20, 0) => Some(include_bytes!(
-                    "../../assets/font0-20-0-legacy-backslash.zbf"
-                )),
-                ('0', 40, 24) => Some(include_bytes!(
-                    "../../assets/font0-40-24-legacy-backslash.zbf"
-                )),
-                ('0', 28, 14) => Some(include_bytes!(
-                    "../../assets/font0-28-14-legacy-backslash.zbf"
-                )),
-                ('0', 24, 24) => Some(include_bytes!(
-                    "../../assets/font0-24-24-legacy-backslash.zbf"
-                )),
-                ('0', 32, 0) => Some(include_bytes!(
-                    "../../assets/font0-32-0-legacy-backslash.zbf"
-                )),
-                ('0', 32, 16) => Some(include_bytes!(
-                    "../../assets/font0-32-16-legacy-backslash.zbf"
-                )),
-                ('0', 32, 24) => Some(include_bytes!(
-                    "../../assets/font0-32-24-legacy-backslash.zbf"
-                )),
-                ('0', 32, 64) => Some(include_bytes!(
-                    "../../assets/font0-32-64-legacy-backslash.zbf"
-                )),
-                ('0', 64, 0) => Some(include_bytes!(
-                    "../../assets/font0-64-0-legacy-backslash.zbf"
-                )),
-                _ => None,
-            };
-            if let Some(data) = data {
-                let (_, replacement) =
-                    bitmap_font::unpack(data).expect("validated legacy backslash");
-                let index = glyphs
-                    .binary_search_by_key(&u32::from(b'\\'), |g| g.codepoint)
-                    .expect("ASCII backslash");
-                glyphs[index] = replacement[0].clone();
-            } else if settings.font == '0' {
-                // Without a sampled legacy replacement, use the enriched
-                // base strike's cent-shaped backslash, not the ASCII slash.
-                glyphs.retain(|g| g.codepoint != u32::from(b'\\'));
-            }
-        }
-        faces
-    })
-}
-// ^PAa, Zebra guide p. 315: use the resident default glyph rather than a
-// space for measured missing characters. Native controls: advanced-text-zd621-v1.
-fn default_glyph_strikes(legacy: bool) -> &'static Vec<(Settings, Vec<Glyph>)> {
-    static NORMAL: OnceLock<Vec<(Settings, Vec<Glyph>)>> = OnceLock::new();
-    static LEGACY: OnceLock<Vec<(Settings, Vec<Glyph>)>> = OnceLock::new();
-    (if legacy { &LEGACY } else { &NORMAL }).get_or_init(|| {
-        let mut faces = if legacy {
-            legacy_strikes().clone()
-        } else {
-            let mut faces = strikes().clone();
-            faces.push(strike().clone());
-            faces
-        };
-        for (settings, glyphs) in &mut faces {
-            let data: &[u8] = match (settings.font, settings.height, settings.width) {
-                ('0', 32, 0) => include_bytes!("../../assets/font0-32-0-default-glyph.zbf"),
-                ('0', 40, 24) => include_bytes!("../../assets/font0-40-24-default-glyph.zbf"),
-                _ => continue,
-            };
-            for glyph in bitmap_font::unpack(data)
-                .expect("validated default glyph strike")
-                .1
-                .into_iter()
-                .filter(|g| g.codepoint > 126)
-            {
-                match glyphs.binary_search_by_key(&glyph.codepoint, |g| g.codepoint) {
-                    Ok(i) => glyphs[i] = glyph,
-                    Err(i) => glyphs.insert(i, glyph),
-                }
-            }
-        }
-        faces
-    })
-}
-// Native ESC/DEL samples and independent CI13 verification:
-// legacy-controls-zd621-v1. Keep these glyphs separate from Unicode faces and
-// from the independently selectable legacy-backslash and PA default glyphs.
-type ControlStrikes = Vec<(Settings, Vec<Glyph>)>;
-fn control_strikes(
-    legacy_backslash: bool,
-    default_glyph: bool,
-) -> &'static Vec<(Settings, Vec<Glyph>)> {
-    static FACES: [OnceLock<ControlStrikes>; 4] = [const { OnceLock::new() }; 4];
-    FACES[usize::from(legacy_backslash) + 2 * usize::from(default_glyph)].get_or_init(|| {
-        let mut faces = if default_glyph {
-            default_glyph_strikes(legacy_backslash).clone()
-        } else if legacy_backslash {
-            legacy_strikes().clone()
-        } else {
-            let mut faces = strikes().clone();
-            faces.push(strike().clone());
-            faces
-        };
-        for (settings, glyphs) in &mut faces {
-            let data: &[u8] = match (
-                settings.font,
-                settings.height,
-                settings.width,
-                default_glyph,
-            ) {
-                ('0', 32, 0, true) => {
-                    include_bytes!("../../assets/font0-32-0-legacy-controls-default.zbf")
-                }
-                ('0', 16, 0, true) => {
-                    include_bytes!("../../assets/font0-16-0-legacy-controls-default.zbf")
-                }
-                ('0', 32, 0, false) => {
-                    include_bytes!("../../assets/font0-32-0-legacy-controls.zbf")
-                }
-                ('0', 16, 0, false) => {
-                    include_bytes!("../../assets/font0-16-0-legacy-controls.zbf")
-                }
-                _ => continue,
-            };
-            for glyph in bitmap_font::unpack(data)
-                .expect("validated native control strike")
-                .1
-            {
-                match glyphs.binary_search_by_key(&glyph.codepoint, |g| g.codepoint) {
-                    Ok(i) => glyphs[i] = glyph,
-                    Err(i) => glyphs.insert(i, glyph),
-                }
-            }
-        }
-        faces
-    })
-}
-fn selected<'a>(id: impl Into<Font<'a>> + Copy, w: f64, h: f64) -> (GlyphSet, f64, f64) {
-    // C and D share the 18x10 matrix (ZPL Programming Guide Table 31,
-    // p. 1583); resident-bc-zd621-v1 verifies the alias across all ASCII.
-    let font = id.into();
-    if let Some(face) = resident(font.id) {
-        let metrics = face.cell_metrics().expect("resident cell metrics");
-        return (
-            GlyphSet::Compact(face, font.legacy_backslash, font.encoding),
-            w / f64::from(metrics.cell_width),
-            h / f64::from(metrics.cell_height),
-        );
-    }
-    let id = font.id;
-    let faces = if font.legacy_controls {
-        control_strikes(font.legacy_backslash, font.default_glyph)
-    } else if font.default_glyph {
-        default_glyph_strikes(font.legacy_backslash)
-    } else if font.legacy_backslash {
-        legacy_strikes()
-    } else {
-        strikes()
-    };
-    for (s, glyphs) in faces {
-        let sw = if s.width == 0 { s.height } else { s.width } as f64;
-        if s.font == id
-            && (!matches!(id, '0' | 'P' | 'Q' | 'R' | 'S' | 'T' | 'U' | 'V')
-                || (s.height as f64 == h && sw == w))
-        {
-            return (GlyphSet::Captured(glyphs), w / sw, h / s.height as f64);
-        }
-    }
-    if matches!(id, 'P' | 'Q' | 'R' | 'S' | 'T' | 'U' | 'V') {
-        // Preset strikes are hinted independently at each size. Use an exact
-        // captured size above, otherwise scale the closest sampled strike.
-        // Table 31 p. 1584 gives each preset's native matrix.
-        let distance =
-            |s: &Settings| (w / s.width as f64).ln().abs() + (h / s.height as f64).ln().abs();
-        let (s, glyphs) = faces
-            .iter()
-            .filter(|(s, _)| s.font == id)
-            .min_by(|(a, _), (b, _)| distance(a).total_cmp(&distance(b)))
-            .expect("embedded preset font");
-        return (
-            GlyphSet::Captured(glyphs),
-            w / s.width as f64,
-            h / s.height as f64,
-        );
-    }
-    fallback(font, w, h)
-}
-fn fallback(font: Font, w: f64, h: f64) -> (GlyphSet, f64, f64) {
-    let fallback = if font.legacy_controls {
-        &control_strikes(font.legacy_backslash, font.default_glyph)
-            .last()
-            .unwrap()
-            .1
-    } else if font.default_glyph {
-        &default_glyph_strikes(font.legacy_backslash)
-            .last()
-            .unwrap()
-            .1
-    } else if font.legacy_backslash {
-        &legacy_strikes().last().unwrap().1
-    } else {
-        &strike().1
-    };
-    (GlyphSet::Captured(fallback), w / 32., h / 32.)
-}
-// Native strikes may cover only ASCII. Keep the enriched base strike's
-// Unicode, legacy and default glyphs available with their original scale.
-fn selected_for_char(font: Font, c: char, w: f64, h: f64) -> (GlyphSet, f64, f64) {
-    let face = selected(font, w, h);
-    if font.id == '0' && glyph_from(face.0, c).is_err() {
-        static RETAIL: OnceLock<Vec<(Settings, Vec<Glyph>)>> = OnceLock::new();
-        let strikes = RETAIL.get_or_init(|| {
-            vec![
-                bitmap_font::unpack(include_bytes!("../../assets/font0-25-14-retail.zbf"))
-                    .expect("validated retail glyphs"),
-                bitmap_font::unpack(include_bytes!("../../assets/font0-32-0-retail.zbf"))
-                    .expect("validated retail glyphs"),
-            ]
-        });
-        for (settings, glyphs) in strikes {
-            let sw = if settings.width == 0 {
-                settings.height
-            } else {
-                settings.width
-            } as f64;
-            if glyph_from(glyphs, c).is_ok()
-                && ((w == sw && h == settings.height as f64) || settings.width == 0)
-            {
-                return (
-                    GlyphSet::Captured(glyphs),
-                    w / sw,
-                    h / settings.height as f64,
-                );
-            }
-        }
-        fallback(font, w, h)
-    } else {
-        face
-    }
-}
-fn resolved_glyph<'a>(
-    font: Font<'a>,
-    c: char,
-    w: f64,
-    h: f64,
-) -> Result<(GlyphView<'a>, f64, f64), String> {
-    if let Some(custom) = font.custom {
-        let (g, sx, sy) = custom.glyph(c, w, h)?;
-        return Ok((
-            GlyphView {
-                advance: g.advance,
-                left: g.left,
-                top: g.top,
-                width: g.width,
-                height: g.height,
-                pixels: Pixels::Captured(g),
-            },
-            sx,
-            sy,
-        ));
-    }
-    let (glyphs, sx, sy) = selected_for_char(font, c, w, h);
-    Ok((glyph_from(glyphs, c)?, sx, sy))
-}
-// Read compact pixels directly; do not expand the shared pool into heap-backed strikes.
-#[derive(Clone, Copy)]
-enum GlyphSet {
-    Captured(&'static [Glyph]),
-    Compact(&'static zpl_bitmap_fonts::Font, bool, u8),
-}
-impl From<&'static Vec<Glyph>> for GlyphSet {
-    fn from(glyphs: &'static Vec<Glyph>) -> Self {
-        Self::Captured(glyphs)
-    }
-}
-enum Pixels<'a> {
-    Captured(std::borrow::Cow<'a, Glyph>),
-    Compact(zpl_bitmap_fonts::Glyph),
-}
-struct GlyphView<'a> {
-    advance: u32,
-    left: i32,
-    top: i32,
-    width: u32,
-    height: u32,
-    pixels: Pixels<'a>,
 }
 impl GlyphView<'_> {
     // Select storage once per glyph and scan packed bytes by runs. Skip
@@ -790,16 +229,16 @@ impl GlyphView<'_> {
         }
         let width = self.width as usize;
         match &self.pixels {
-            Pixels::Captured(g) => {
-                for (y, row) in g.bitmap.iter().enumerate() {
-                    row_spans(row, 0, width, |left, right| emit(y, left, right));
-                }
-            }
             Pixels::Compact(g) => {
                 for y in 0..self.height as usize {
                     row_spans(g.bitmap(), g.row_offset(y), width, |left, right| {
                         emit(y, left, right)
                     });
+                }
+            }
+            Pixels::Custom(g) => {
+                for (y, row) in g.bitmap.iter().enumerate() {
+                    row_spans(row, 0, width, |left, right| emit(y, left, right));
                 }
             }
         }
@@ -810,142 +249,26 @@ impl GlyphView<'_> {
             return false;
         }
         match &self.pixels {
-            Pixels::Captured(g) => g.bitmap[y][x / 8] & (128 >> (x % 8)) != 0,
             Pixels::Compact(g) => g.pixel(x as u16, y as u16),
+            Pixels::Custom(g) => g.bitmap[y][x / 8] & (128 >> (x % 8)) != 0,
         }
     }
 }
-fn resident(id: char) -> Option<&'static zpl_bitmap_fonts::Font> {
-    zpl_bitmap_fonts::resident(id)
-}
-fn compact_glyph(
-    c: char,
-    face: &zpl_bitmap_fonts::Font,
-    legacy_backslash: bool,
-    encoding: u8,
-) -> Option<zpl_bitmap_fonts::Glyph> {
-    use zpl_bitmap_fonts::collection::Encoding;
-    // Explicit ^CI remapping preserves the printer source position through layout.
-    if (0xf0000..=0xf00ff).contains(&(c as u32)) {
-        return face.glyph((c as u32 - 0xf0000) as u8);
-    }
-    if (0xf0100..=0xf01ff).contains(&(c as u32)) {
-        let byte = (c as u32 - 0xf0100) as u8;
-        return face
-            .encoded_glyph(Encoding::Input { ci: encoding }, u32::from(byte))
-            .or_else(|| face.glyph(byte).filter(|g| g.width == 0 && g.height == 0));
-    }
-    // Profiles select the measured legacy or modern backslash behavior. The
-    // per-face mappings carry the actual glyph choice, including symbol fonts.
-    let ci = if c == '\\' && !legacy_backslash {
-        27
-    } else {
-        28
-    };
-    let measured = if c == '\\' {
-        face.encoded_glyph(Encoding::Input { ci }, c as u32)
-    } else if face.encoding(Encoding::Input { ci: encoding }).is_some()
-        && code_page(encoding).is_some()
-    {
-        // Decoding remains necessary for layout. These supported code pages have
-        // unique defined character encodings, so recover their original input byte.
-        let mut utf8 = [0; 4];
-        let (bytes, _, errors) = code_page(encoding)?.encode(c.encode_utf8(&mut utf8));
-        if !errors && bytes.len() == 1 {
-            face.encoded_glyph(Encoding::Input { ci: encoding }, u32::from(bytes[0]))
-        } else {
-            None
-        }
-    } else {
-        // Where the requested byte map has not been measured, use its decoded
-        // Unicode character and the measured Unicode map, never candidate tables.
-        face.encoded_glyph(Encoding::Input { ci: 28 }, c as u32)
-    };
-    measured
-        .or_else(|| {
-            // Layout inserts a visible discretionary hyphen after Unicode decoding.
-            (c == '\u{ad}')
-                .then(|| face.encoded_glyph(Encoding::Input { ci: 27 }, 173))
-                .flatten()
-        })
-        .or_else(|| {
-            // Blank-only captures cannot measure advance. Retain the independently
-            // verified source advance only when that source glyph is also blank.
-            let key = if c.is_ascii() {
-                Some(c as u8)
-            } else {
-                CP850
-                    .iter()
-                    .position(|&key| key == c)
-                    .map(|i| (i + 128) as u8)
-            }?;
-            face.glyph(key).filter(|g| g.width == 0 && g.height == 0)
-        })
-}
-fn glyph_from(glyphs: impl Into<GlyphSet>, c: char) -> Result<GlyphView<'static>, String> {
-    let missing = || format!("unsupported embedded font glyph {c:?}");
-    match glyphs.into() {
-        GlyphSet::Captured(glyphs) => {
-            let index = glyphs
-                .binary_search_by_key(&(c as u32), |g| g.codepoint)
-                .map_err(|_| missing())?;
-            let g = &glyphs[index];
-            Ok(GlyphView {
-                advance: g.advance,
-                left: g.left,
-                top: g.top,
-                width: g.width,
-                height: g.height,
-                pixels: Pixels::Captured(std::borrow::Cow::Borrowed(g)),
-            })
-        }
-        GlyphSet::Compact(face, legacy, encoding) => {
-            let g = compact_glyph(c, face, legacy, encoding).ok_or_else(missing)?;
-            Ok(GlyphView {
-                advance: u32::from(g.advance),
-                left: i32::from(g.left),
-                top: i32::from(g.top),
-                width: u32::from(g.width),
-                height: u32::from(g.height),
-                pixels: Pixels::Compact(g),
-            })
-        }
-    }
+fn selected_for_char(
+    font: Font<'_>,
+    c: crate::fonts::resident::GlyphKey,
+    w: f64,
+    h: f64,
+) -> (GlyphSet, f64, f64) {
+    crate::fonts::resident::selected_for_char(font.face, c, w, h)
 }
 #[cfg(test)]
-fn glyph(c: char) -> Result<&'static Glyph, String> {
-    let glyphs = &strike().1;
-    glyphs
-        .binary_search_by_key(&(c as u32), |g| g.codepoint)
-        .map(|i| &glyphs[i])
-        .map_err(|_| "missing glyph".into())
+fn glyph(c: char) -> Result<GlyphView<'static>, String> {
+    glyph_from(selected('0', 32., 32.).0, c)
 }
 #[cfg(test)]
 fn baseline(h: f64) -> f64 {
     baseline_for('0', h)
-}
-pub(super) fn baseline_for<'a>(id: impl Into<Font<'a>> + Copy, h: f64) -> f64 {
-    let font = id.into();
-    if let Some(custom) = font.custom {
-        return custom.baseline(h);
-    }
-    let id = font.id;
-    if let Some(face) = resident(id) {
-        let metrics = face.cell_metrics().expect("resident cell metrics");
-        return h * (f64::from(metrics.baseline) - 1.) / f64::from(metrics.cell_height);
-    }
-    // Scalable preset strikes retain their independently measured baselines.
-    h * match id {
-        // Native Q/R FO-to-FT controls locate these face baselines; Table 29
-        // omits the presets (their matrices are in Table 31, p. 1584).
-        'Q' => 22. / 28.,
-        'R' => 28. / 35.,
-        // Independent native FO/FT atlas: resident-tuv-zd621-v1.
-        'T' => 36. / 48.,
-        'U' => 46. / 59.,
-        'V' => 62. / 80.,
-        _ => 0.75,
-    }
 }
 #[cfg(test)]
 fn width(s: &str, w: f64) -> Result<f64, String> {
@@ -978,7 +301,7 @@ pub(super) fn width_for<'a>(
 /// See field-direction-zd621-v1 pair controls (notably jW versus Wj),
 /// and Zebra Programming Guide ^FO p. 201 / Field Interactions pp. 1606–1611.
 pub(super) fn inverted_text_margin(
-    font: Font,
+    font: Font<'_>,
     value: &str,
     w: f64,
     h: f64,
@@ -1017,28 +340,8 @@ pub(super) fn inverted_margin<'a>(
 ) -> Result<f64, String> {
     let font = id.into();
     let id = if font.custom.is_some() { '\0' } else { font.id };
-    if id == 'A' {
-        return Ok(w / 5. + 2.);
-    }
-    if id == 'B' {
-        return Ok(2. * w / 7. + 2.);
-    }
-    if id == 'E' {
-        // resident-e-zd621-v1: OCR-B's inverted margin is six native dots,
-        // although its ordinary advance includes only five gap dots.
-        return Ok(6. * w / 15. + 2.);
-    }
-    if id == 'H' {
-        return Ok(6. * w / 13. + 2.);
-    }
-    if id == 'G' {
-        return Ok(8. * w / 40. + 2.);
-    }
-    if id == 'F' {
-        return Ok(3. * w / 13. + 2.);
-    }
-    if matches!(id, 'C' | 'D') {
-        return Ok(w / 5. + 2.);
+    if let Some(margin) = crate::fonts::resident::inverted_margin(id, w) {
+        return Ok(margin);
     }
     let Some(c) = value.chars().last() else {
         return Ok(0.);
@@ -1138,7 +441,7 @@ pub(super) fn text_for<'a>(
         return Ok(union_lines(path));
     }
     let (mut glyphs, mut sx, mut sy) = selected(font, w, h);
-    if font.id == '0' {
+    if font.has_glyph_fallback() {
         for c in s.chars().filter(|&c| !font.is_tab(c)) {
             let c = font.map_char(c)?;
             if glyph_from(glyphs, c).is_err() {
@@ -1258,32 +561,6 @@ pub(super) fn union_lines(path: Path) -> Path {
     output
 }
 
-/// Captured bitmap-font FT dot placement. Native glyph metrics describe the
-/// cell; rotated FT anchors include a final dot boundary. See resident-bc-zd621-v1
-/// and the subsequent resident-font suites (through resident-h-zd621-v1),
-/// with ^FT p. 205
-/// Table 7 in the Programming Guide.
-pub(super) fn printer_ft_offset(id: char, height: f64, rotation: u8) -> (f64, f64) {
-    let native = match id {
-        'A' => 9.,
-        'B' => 11.,
-        'C' | 'D' => 18.,
-        'E' => 28.,
-        'F' => 26.,
-        'G' => 60.,
-        'H' => 21.,
-        GRAPHIC_SYMBOLS => 24.,
-        _ => return (0., 0.),
-    };
-    let scale = height / native;
-    match rotation {
-        b'R' => (scale, 0.),
-        b'I' => (1., scale),
-        b'B' => (1. - scale, 1.),
-        _ => (0., 1. - scale),
-    }
-}
-
 /// Discard wholly invisible text rectangles before applying the document path
 /// budget. Long hanging-indent continuations can extend far beyond the label;
 /// partially visible rectangles keep their original geometry and clipping.
@@ -1318,7 +595,7 @@ mod tests {
 
     #[test]
     fn packed_span_scans_preserve_every_glyph_pixel() {
-        let check = |g: GlyphView| {
+        let check = |g: GlyphView<'_>| {
             let mut pixels = vec![vec![false; g.width as usize]; g.height as usize];
             g.for_each_span(|y, left, right| {
                 assert!(left < right);
@@ -1336,7 +613,7 @@ mod tests {
         for id in ['A', 'B', 'D', 'E', 'F', 'G', 'H', GRAPHIC_SYMBOLS] {
             let face = resident(id).unwrap();
             for key in 0..=255 {
-                let c = char::from_u32(0xf0000 + key).unwrap();
+                let c = crate::fonts::resident::GlyphKey::Source(key as u8);
                 if let Ok(g) = glyph_from(GlyphSet::Compact(face, false, 28), c) {
                     check(g);
                 }
@@ -1605,20 +882,21 @@ mod tests {
     }
     #[test]
     fn embedded_strike_is_complete_and_compact() {
-        let (s, g) = strike();
+        let s = *zpl_bitmap_fonts::captures::zd621::VARIANTS[0]
+            .last()
+            .unwrap();
         assert_eq!((s.font, s.height, s.width, s.dpi), ('0', 32, 0, 203));
         assert_eq!(
-            g.iter().map(|g| g.codepoint).collect::<Vec<_>>(),
-            (32..=126)
+            s.keys,
+            &(32..=126)
                 .chain([162, 173, 233, 240])
                 .chain([0x378])
                 .chain(0x5d0..=0x5ea)
                 .chain([0x627, 0x628, 0x62d, 0x631, 0x645])
                 .collect::<Vec<_>>()
         );
-        assert!(DATA.len() < 4500);
         assert_eq!(width("Wi i", 32.).unwrap(), 51.);
-        assert_eq!(glyph('é').unwrap().codepoint, 233);
+        assert!(glyph('é').is_ok());
     }
     #[test]
     fn lowercase_and_baselines() {
@@ -1652,7 +930,7 @@ pub(super) struct DirectedText {
 }
 /// ^FP, Zebra Programming Guide p. 202 and Field Interactions pp. 1606–1611.
 pub(super) fn directed_text(
-    font: Font,
+    font: Font<'_>,
     value: &str,
     w: f64,
     h: f64,
@@ -1750,7 +1028,7 @@ pub(super) fn directed_text(
         parts,
         size: (width, if d == b'V' { y } else { h }),
         metrics: DirectionMetrics {
-            pivot: (d != b'H').then_some(w - if font.id == '0' { 1. } else { 0. }),
+            pivot: (d != b'H').then_some(w - font.direction_pivot_inset()),
             end_left,
             first_ink,
             count: value.chars().count(),
@@ -1768,64 +1046,26 @@ pub(super) fn directed_text(
     })
 }
 
-/// Return line pitch and baseline adjustment.
-///
-/// Captured S block pitch and ascent: native FO/FT controls at 40 and 80 dots
-/// in resident-s-zd621-v1. ^FB pp. 186–188 describes nominal font-height
-/// spacing; this printer uses distinct preset metrics. Other sizes scale the
-/// closest measured height, just as unsampled glyph strikes are approximated.
+pub(super) fn baseline_for<'a>(id: impl Into<Font<'a>> + Copy, h: f64) -> f64 {
+    let font = id.into();
+    font.custom.map_or_else(
+        || crate::fonts::resident::baseline_for(font.face, h),
+        |custom| custom.baseline(h),
+    )
+}
 pub(super) fn block_metrics<'a>(id: impl Into<Font<'a>>, h: f64, printer_s: bool) -> (f64, f64) {
     let font = id.into();
-    if !printer_s || font.id != 'S' || font.custom.is_some() {
-        return (h, 0.);
-    }
-    let (native, pitch, ascent) = if h < 60. {
-        (40., 34., 25.)
+    if font.custom.is_some() {
+        (h, 0.)
     } else {
-        (80., 67., 50.)
-    };
-    let scale = h / native;
-    (pitch * scale, ascent * scale - baseline_for('S', h))
-}
-
-// ^CI0/^CI13: Zebra CP850. Unicode mapping reference:
-// https://www.unicode.org/Public/MAPPINGS/VENDORS/MICSFT/PC/CP850.TXT
-pub(super) fn legacy_char(byte: u8) -> char {
-    if byte.is_ascii() {
-        char::from(byte)
-    } else {
-        CP850[byte as usize - 128]
+        crate::fonts::resident::block_metrics(font.face, h, printer_s)
     }
 }
-
-const CP850: [char; 128] = [
-    '\u{c7}', '\u{fc}', '\u{e9}', '\u{e2}', '\u{e4}', '\u{e0}', '\u{e5}', '\u{e7}', '\u{ea}',
-    '\u{eb}', '\u{e8}', '\u{ef}', '\u{ee}', '\u{ec}', '\u{c4}', '\u{c5}', '\u{c9}', '\u{e6}',
-    '\u{c6}', '\u{f4}', '\u{f6}', '\u{f2}', '\u{fb}', '\u{f9}', '\u{ff}', '\u{d6}', '\u{dc}',
-    '\u{f8}', '\u{a3}', '\u{d8}', '\u{d7}', '\u{192}', '\u{e1}', '\u{ed}', '\u{f3}', '\u{fa}',
-    '\u{f1}', '\u{d1}', '\u{aa}', '\u{ba}', '\u{bf}', '\u{ae}', '\u{ac}', '\u{bd}', '\u{bc}',
-    '\u{a1}', '\u{ab}', '\u{bb}', '\u{2591}', '\u{2592}', '\u{2593}', '\u{2502}', '\u{2524}',
-    '\u{c1}', '\u{c2}', '\u{c0}', '\u{a9}', '\u{2563}', '\u{2551}', '\u{2557}', '\u{255d}',
-    '\u{a2}', '\u{a5}', '\u{2510}', '\u{2514}', '\u{2534}', '\u{252c}', '\u{251c}', '\u{2500}',
-    '\u{253c}', '\u{e3}', '\u{c3}', '\u{255a}', '\u{2554}', '\u{2569}', '\u{2566}', '\u{2560}',
-    '\u{2550}', '\u{256c}', '\u{a4}', '\u{f0}', '\u{d0}', '\u{ca}', '\u{cb}', '\u{c8}', '\u{131}',
-    '\u{cd}', '\u{ce}', '\u{cf}', '\u{2518}', '\u{250c}', '\u{2588}', '\u{2584}', '\u{a6}',
-    '\u{cc}', '\u{2580}', '\u{d3}', '\u{df}', '\u{d4}', '\u{d2}', '\u{f5}', '\u{d5}', '\u{b5}',
-    '\u{fe}', '\u{de}', '\u{da}', '\u{db}', '\u{d9}', '\u{fd}', '\u{dd}', '\u{af}', '\u{b4}',
-    '\u{ad}', '\u{b1}', '\u{2017}', '\u{be}', '\u{b6}', '\u{a7}', '\u{f7}', '\u{b8}', '\u{b0}',
-    '\u{a8}', '\u{b7}', '\u{b9}', '\u{b3}', '\u{b2}', '\u{25a0}', '\u{a0}',
-];
-
-// Zebra Programming Guide ^CI, pp. 156–159:
-// https://www.zebra.com/content/dam/support-dam/en/documentation/unrestricted/guide/software/zpl-zbi2-pg-en.pdf
-pub(super) fn code_page(ci: u8) -> Option<&'static encoding_rs::Encoding> {
-    match ci {
-        27 => Some(encoding_rs::WINDOWS_1252),
-        31 => Some(encoding_rs::WINDOWS_1250),
-        33 => Some(encoding_rs::WINDOWS_1251),
-        34 => Some(encoding_rs::WINDOWS_1253),
-        35 => Some(encoding_rs::WINDOWS_1254),
-        36 => Some(encoding_rs::WINDOWS_1255),
-        _ => None,
-    }
+fn resolved_glyph<'a>(
+    font: Font<'a>,
+    key: crate::fonts::resident::GlyphKey,
+    w: f64,
+    h: f64,
+) -> Result<(GlyphView<'a>, f64, f64), String> {
+    crate::fonts::resolve_glyph(font.face, font.custom, key, w, h)
 }

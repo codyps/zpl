@@ -275,7 +275,7 @@ parity. Preview width adjustment remains unimplemented.
 | Graphics | `~DG`, `XG`, `GFA`, `GFB`: raw hex, Zebra ASCII run lengths/row shortcuts, B64, Z64; CRC16 and zlib checksums checked |
 | Barcodes | Original per-code linear, matrix, stacked, and postal encoders; `BY`; see [coverage, limitations, specifications, and decoder tests](barcodes.md) |
 
-Text uses [embedded resident font 0](../zpl/assets/README.md), captured from the
+Text uses compact [captured resident font 0](../zpl/assets/README.md), captured from the
 ZD621 preview at 32 dots and 203 DPI. All 95 printable ASCII glyphs, including
 lowercase, retain their measured advances, bearings and baseline offsets. The
 renderer defaults to font 0 at 20 dots. `^CF0,32` or `^A0N,32,0` selects the
@@ -479,3 +479,10 @@ Legacy CI0/CI13 text now maps extended bytes through CP850, after character
 remapping. Fonts still reject glyphs outside the captured repertoire. Native
 retail glyph supplements cover the original legacy byte interpretations and
 the explicit UTF-8 middle dot; see the retail-font-zd621-v1 evidence.
+
+
+Font resources and policy live in `zpl/src/fonts`, separate from text layout and
+scene construction. All bundled bitmap captures, including scalable 0/P–V
+strikes, share `zpl-bitmap-fonts` records and pixel views. Encoding/source lookup,
+strike selection, fallback and measured font metrics do not depend on output
+adapters. See [normalized captures](automatic-bitmap-fonts.md#normalized-captured-strikes).

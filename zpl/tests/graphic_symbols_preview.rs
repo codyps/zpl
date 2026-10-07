@@ -53,6 +53,7 @@ fn printer_controls_pin_every_painted_pixel() {
 
 #[test]
 fn captured_symbol_and_text_assets_are_pinned() {
+    let text = compact_font::asset("font0-24-24.zbf").unwrap();
     let symbols = compact_font::asset("fontGS-24-24.zbf").unwrap();
     for (asset, hash, font) in [
         (
@@ -61,7 +62,7 @@ fn captured_symbol_and_text_assets_are_pinned() {
             zpl::bitmap_font::GRAPHIC_SYMBOLS,
         ),
         (
-            include_bytes!("../assets/font0-24-24.zbf").as_slice(),
+            text.as_slice(),
             include_str!("fixtures/graphic-symbols-zd621-v1/text-asset.sha256"),
             '0',
         ),

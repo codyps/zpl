@@ -12,8 +12,8 @@ mod bounded_text;
 mod concatenation;
 mod field_block;
 mod font;
-mod font_downloads;
-pub mod fonts;
+pub(crate) mod font_downloads;
+pub use crate::fonts;
 mod graphics;
 mod numbered;
 mod printer_shapes;
@@ -22,6 +22,7 @@ mod stored;
 mod validation;
 use crate::{
     bitmap_font::GRAPHIC_SYMBOLS,
+    fonts::resident as font_resources,
     output::{Draw, Paint, Path, Point, Scene},
     parse::{Element, ParseContext},
 };
@@ -683,7 +684,7 @@ fn render_expanded(
                     field.bounded = None;
                     // ^FB selects text layout, replacing a preceding ^GS symbol field.
                     // ZD621 controls in graphic-symbols-zd621-v1 retain GS dimensions.
-                    if font_id == GRAPHIC_SYMBOLS {
+                    if font_resources::is_graphic_symbols(font_id) {
                         font_id = default_font_id;
                     }
                     let width = number(&p, 0, 0.)?;
@@ -813,7 +814,7 @@ fn render_expanded(
                     let supplied_size = p.get(1).is_some_and(|v| !v.is_empty())
                         || p.get(2).is_some_and(|v| !v.is_empty());
                     if options.compatibility.bitmap_cf_font_only_resets_size
-                        && (font_id != '0' && fonts.get(font_id).is_none())
+                        && (!font_resources::is_scalable(font_id) && fonts.get(font_id).is_none())
                         && !p[0].is_empty()
                         && !supplied_size
                     {
@@ -823,11 +824,12 @@ fn render_expanded(
                         default_requested_h = number(&p, 1, 0.)?;
                         default_requested_w = number(&p, 2, 0.)?;
                     }
-                    let (dw, dh) = if font_id == '0' || fonts.get(font_id).is_some() {
-                        (default_w, default_h)
-                    } else {
-                        (default_requested_w, default_requested_h)
-                    };
+                    let (dw, dh) =
+                        if font_resources::is_scalable(font_id) || fonts.get(font_id).is_some() {
+                            (default_w, default_h)
+                        } else {
+                            (default_requested_w, default_requested_h)
+                        };
                     (font_w, font_h) = supplied_font_dimensions(
                         &fonts,
                         &p,
@@ -897,11 +899,12 @@ fn render_expanded(
                     } else {
                         rotation(p[0])?
                     };
-                    let (dw, dh) = if font_id == '0' || fonts.get(font_id).is_some() {
-                        (default_w, default_h)
-                    } else {
-                        (default_requested_w, default_requested_h)
-                    };
+                    let (dw, dh) =
+                        if font_resources::is_scalable(font_id) || fonts.get(font_id).is_some() {
+                            (default_w, default_h)
+                        } else {
+                            (default_requested_w, default_requested_h)
+                        };
                     (font_w, font_h) = supplied_font_dimensions(
                         &fonts,
                         &p,
@@ -1107,23 +1110,9 @@ fn render_expanded(
                     let decoded;
                     let value = if field.barcode.is_some() || field.barcode_error.is_some() {
                         ""
-                    } else if let Some(code_page) = font::code_page(encoding) {
-                        decoded = code_page
-                            .decode_without_bom_handling_and_without_replacement(&bytes)
-                            .ok_or("undefined code page byte")?;
-                        &decoded
                     } else {
-                        if matches!(encoding, 0 | 13) && !bytes.is_ascii() {
-                            // Decode before Unicode-aware layout and control
-                            // processing. Font recovers image indices for ^CI
-                            // remapping without decoding generated characters.
-                            decoded = std::borrow::Cow::Owned(
-                                bytes.iter().map(|&b| font::legacy_char(b)).collect(),
-                            );
-                            &decoded
-                        } else {
-                            std::str::from_utf8(&bytes).map_err(|_| "invalid UTF-8 text")?
-                        }
+                        decoded = font_resources::decode(&bytes, encoding)?;
+                        &decoded
                     };
                     // UAX #15 sections 1.1–1.2: canonically equivalent Unicode
                     // text has the same appearance. Native decomposed-accent
@@ -1280,7 +1269,8 @@ fn render_expanded(
                                         .filter(|h| *h > 0.)
                                         .unwrap_or(font_h),
                                     if options.compatibility.bounded_text_printer_anchors
-                                        && (font_id == '0' || fonts.get(font_id).is_some())
+                                        && (font_resources::is_scalable(font_id)
+                                            || fonts.get(font_id).is_some())
                                         && matches!(field.rotation, b'R' | b'I')
                                     {
                                         (bounds.0, (bounds.1 - 1.).max(0.))
@@ -1344,22 +1334,19 @@ fn render_expanded(
                             }
                             field.text_parts = parts;
                             field.center_overflow = center_overflow;
-                            // Table 29 p. 1582 gives GS a 3/4-height baseline.
-                            // Printer controls instead use native row 23 of 24.
-                            field.baseline_height = if font_id == GRAPHIC_SYMBOLS
-                                && !options.compatibility.graphic_symbol_last_row_baseline
-                            {
-                                baseline - font_h * 5. / 24.
-                            } else {
-                                baseline
-                            };
+                            field.baseline_height = font_resources::adjust_baseline(
+                                font_id,
+                                baseline,
+                                font_h,
+                                options.compatibility.graphic_symbol_last_row_baseline,
+                            );
                             if field.bounded.is_none()
                                 && field.block.is_none_or(|block| block.0 != 0.)
                                 && options
                                     .compatibility
                                     .right_justified_inverted_text_uses_ink_margin
                             {
-                                field.inverted_margin = if (font_id == '0'
+                                field.inverted_margin = if (font_resources::is_scalable(font_id)
                                     || fonts.get(font_id).is_some())
                                     && field.block.is_none()
                                 {
@@ -1692,7 +1679,7 @@ fn render_expanded(
                         } else {
                             (0., 0.)
                         };
-                        let field_justification = if font_id == GRAPHIC_SYMBOLS
+                        let field_justification = if font_resources::is_graphic_symbols(font_id)
                             && field.text_size.is_some()
                             && options.compatibility.graphic_symbol_ignores_justification
                         {
@@ -1709,7 +1696,9 @@ fn render_expanded(
                         {
                             advance += field.direction_metrics.end_margin
                                 + field.direction_metrics.first_delta
-                                + if font_id == '0' || fonts.get(font_id).is_some() {
+                                + if font_resources::is_scalable(font_id)
+                                    || fonts.get(font_id).is_some()
+                                {
                                     1.
                                 } else {
                                     0.
@@ -1729,11 +1718,10 @@ fn render_expanded(
                             let (w, h) = field
                                 .text_size
                                 .map(|(w, h)| {
-                                    if (font_id == '0' || fonts.get(font_id).is_some())
-                                        || (matches!(
-                                            font_id,
-                                            'P' | 'Q' | 'R' | 'S' | 'T' | 'U' | 'V'
-                                        ) && options.compatibility.preset_font_fo_last_dot)
+                                    if (font_resources::is_scalable(font_id)
+                                        || fonts.get(font_id).is_some())
+                                        || (font_resources::is_preset(font_id)
+                                            && options.compatibility.preset_font_fo_last_dot)
                                     {
                                         // A zero-width printer block still
                                         // pivots at width minus one dot.
@@ -1742,24 +1730,14 @@ fn render_expanded(
                                         } else {
                                             (w - 1.).max(0.)
                                         };
-                                        // P/Q quantize the height pivot in native cells;
-                                        // R retains the matrix boundary in native controls.
-                                        // its proportional horizontal advance loses one dot.
-                                        let last_row = match if fonts.get(font_id).is_some() {
-                                            '0'
-                                        } else {
-                                            font_id
-                                        } {
-                                            'P' => font_h / 20.,
-                                            'Q' => font_h / 28.,
-                                            'R' => 0.,
-                                            'S' => 2. * font_h / 40.,
-                                            // Native T/U/V atlas: resident-tuv-zd621-v1.
-                                            'T' => 3. * font_h / 48.,
-                                            'U' => font_h / 59.,
-                                            'V' => 2. * font_h / 80.,
-                                            _ => 1.,
-                                        };
+                                        let last_row = font_resources::last_row(
+                                            if fonts.get(font_id).is_some() {
+                                                '0'
+                                            } else {
+                                                font_id
+                                            },
+                                            font_h,
+                                        );
                                         (w, (h - last_row).max(0.))
                                     } else {
                                         (w, h)
@@ -1815,7 +1793,8 @@ fn render_expanded(
                                     b'R' => (-th, -left + field.leading_tab_advance),
                                     b'I' => (
                                         field.inverted_margin - dx
-                                            + if (font_id == '0' || fonts.get(font_id).is_some())
+                                            + if (font_resources::is_scalable(font_id)
+                                                || fonts.get(font_id).is_some())
                                                 && field.block.is_none()
                                                 && options
                                                     .compatibility
@@ -1849,7 +1828,9 @@ fn render_expanded(
                             && field_justification == 1
                             && field.block.is_none()
                         {
-                            let dot = if font_id == '0' || fonts.get(font_id).is_some() {
+                            let dot = if font_resources::is_scalable(font_id)
+                                || fonts.get(font_id).is_some()
+                            {
                                 0.
                             } else {
                                 1.
@@ -1899,7 +1880,7 @@ fn render_expanded(
                         // correction once, not once per bitmap vertex.
                         let baseline_correction = (options.compatibility.font0_fo_floor_baseline
                             && fonts.get(font_id).is_none()
-                            && font_id == '0'
+                            && font_resources::is_scalable(font_id)
                             && field.text_size.is_some()
                             && !field.baseline
                             && field.bounded.is_none()
@@ -1918,7 +1899,8 @@ fn render_expanded(
                                     field.rotation,
                                     field.baseline,
                                     field_justification == 1,
-                                    font_id == '0' || fonts.get(font_id).is_some(),
+                                    font_resources::is_scalable(font_id)
+                                        || fonts.get(font_id).is_some(),
                                     options.compatibility.bounded_text_printer_anchors,
                                 );
                                 return Point::new(p.x + x, p.y + y);
@@ -2479,76 +2461,13 @@ fn font_dimensions(
 ) -> Result<(f64, f64), String> {
     let h = number(p, 1, 0., number_abs)?;
     let w = number(p, 2, 0., number_abs)?;
-    if id != '0' {
-        // ZPL Programming Guide Table 31, pp. 1583–1584: native bitmap matrices.
-        let (nh, nw) = if let Some(face) = zpl_bitmap_fonts::resident(id) {
-            let metrics = face.cell_metrics().expect("resident cell metrics");
-            (
-                f64::from(metrics.cell_height),
-                f64::from(metrics.cell_width),
-            )
-        } else {
-            match id {
-                'P' => (20., 18.),
-                'Q' => (28., 24.),
-                'R' => (35., 31.),
-                'S' => (40., 35.),
-                'T' => (48., 42.),
-                'U' => (59., 53.),
-                'V' => (80., 71.),
-                _ => (18., 10.),
-            }
-        };
-        // ^A p. 61 and ^CF p. 154: one supplied dimension determines
-        // the other from the native matrix. With neither, use the last CF pair.
-        let (w, h) = if w == 0. && h == 0. {
-            (default_w, default_h)
-        } else {
-            (w, h)
-        };
-        let hs = if h == 0. {
-            (w / nw).round().max(1.)
-        } else {
-            (h / nh).round().max(1.)
-        };
-        let ws = if w == 0. {
-            hs
-        } else {
-            (w / nw).round().max(1.)
-        };
-        // ^A p. 60 limits resident bitmap matrices to tenfold enlargement.
-        // bitmap-maximum-zd621-v1 verifies independent native axis clamping.
-        if (matches!(id, 'A'..='H') || (id == GRAPHIC_SYMBOLS && clamp_maximum))
-            && (ws > 10. || hs > 10.)
-        {
-            if !clamp_maximum {
-                return Err(
-                    "bitmap font dimensions must not exceed ten times the native matrix".into(),
-                );
-            }
-            return Ok((nw * ws.min(10.), nh * hs.min(10.)));
-        }
-        return Ok((nw * ws, nh * hs));
-    }
-    let (w, h) = match (w, h) {
-        (0., 0.) => (default_w, default_h),
-        (0., h) => (h, h),
-        (w, 0.) => (w, w),
-        (w, h) => (w, h),
-    };
-    if w <= 0. || h <= 0. {
-        return Err("font dimensions must be positive".into());
-    }
-    // ^A p. 60 specifies 10 dots as the scalable minimum. Native controls
-    // map requests 1..9 to 10 independently in each dimension, after zero
-    // inference. Keep the documented range strict without the printer option.
-    if clamp_minimum {
-        return Ok((w.max(10.), h.max(10.)));
-    }
-    if w < 10. || h < 10. {
-        return Err("scalable font dimensions must be at least 10 dots".into());
-    }
-    Ok((w, h))
+    font_resources::dimensions(
+        (w, h),
+        (default_w, default_h),
+        id,
+        clamp_minimum,
+        clamp_maximum,
+    )
 }
 
 fn count(p: &[&str], i: usize, number_abs: f64) -> Result<usize, String> {

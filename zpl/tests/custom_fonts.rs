@@ -1,6 +1,8 @@
 //! API regressions for supplied fonts. ZPL font selection and field placement:
 //! https://www.zebra.com/content/dam/support-dam/en/documentation/unrestricted/guide/software/zpl-zbi2-pg-en.pdf
 //! ^A, ^CF, ^FB, ^FO, ^FT. These synthetic fonts assert local behavior, not printer parity.
+#[path = "support/compact_font.rs"]
+mod compact_font;
 use zpl::{
     bitmap_font::{Glyph, Settings},
     render::{fonts::Fonts, profiles::SPECIFICATION, render_with_fonts},
@@ -228,7 +230,7 @@ fn captions_stored_formats_and_output_adapters_use_supplied_faces() {
 fn packed_bitmap_and_bounded_text_use_custom_metrics() {
     let mut packed = Fonts::new();
     packed
-        .insert_zbf('0', include_bytes!("../assets/font0-32.zbf"), 24.)
+        .insert_zbf('0', &compact_font::asset("font0-32.zbf").unwrap(), 24.)
         .unwrap();
     let source = b"^XA^FO30,30^A0N,32,32^FDABC^FS^XZ";
     let resident = zpl::render(source, SPECIFICATION).unwrap();
@@ -355,10 +357,14 @@ fn named_truetype_and_zbf_registration_feed_the_existing_font_engines() {
             )
     );
     custom
-        .insert_named_zbf("CAPTURE.FNT", include_bytes!("../assets/font0-32.zbf"), 24.)
+        .insert_named_zbf(
+            "CAPTURE.FNT",
+            &compact_font::asset("font0-32.zbf").unwrap(),
+            24.,
+        )
         .unwrap();
     custom
-        .insert_zbf('Z', include_bytes!("../assets/font0-32.zbf"), 24.)
+        .insert_zbf('Z', &compact_font::asset("font0-32.zbf").unwrap(), 24.)
         .unwrap();
     let source = "^XA^PW150^LL150^FO20,20^AZN,32,32^FDABC^FS^XZ";
     assert!(

@@ -1,6 +1,12 @@
 //! Reconstruct historical strike encodings from the compact reader. Original
 //! fixture hashes pin every glyph without retaining duplicate embedded assets.
 pub fn asset(name: &str) -> Option<Vec<u8>> {
+    if let Some(capture) = zpl_bitmap_fonts::captures::zd621::CAPTURES
+        .iter()
+        .find(|c| c.name == name)
+    {
+        return Some(captured_asset(capture));
+    }
     let face = name.strip_prefix("font")?.split('-').next()?;
     let id = if face == "GS" {
         '@'
@@ -65,4 +71,40 @@ pub fn asset(name: &str) -> Option<Vec<u8>> {
         bytes.extend(bits);
     }
     Some(bytes)
+}
+
+fn captured_asset(c: &zpl_bitmap_fonts::captures::Capture) -> Vec<u8> {
+    let s = c.strike;
+    let mut bytes = if c.legacy_format == 2 {
+        b"ZBF2"
+    } else {
+        b"ZBF1"
+    }
+    .to_vec();
+    bytes.push(s.font as u8);
+    for value in [s.height, s.width, s.dpi, s.keys.len() as u16] {
+        bytes.extend(value.to_le_bytes());
+    }
+    for &key in s.keys {
+        let g = s.glyph(key).unwrap();
+        if c.legacy_format == 2 {
+            bytes.extend(key.to_le_bytes());
+        } else {
+            bytes.push(key as u8);
+        }
+        for value in [g.advance, g.left as u16, g.top as u16, g.width, g.height] {
+            bytes.extend(value.to_le_bytes());
+        }
+        let mut bits = vec![0; (usize::from(g.width) * usize::from(g.height)).div_ceil(8)];
+        for y in 0..g.height {
+            for x in 0..g.width {
+                if g.pixel(x, y) {
+                    let bit = usize::from(y) * usize::from(g.width) + usize::from(x);
+                    bits[bit / 8] |= 128 >> (bit % 8);
+                }
+            }
+        }
+        bytes.extend(bits);
+    }
+    bytes
 }

@@ -1,4 +1,6 @@
 //! Unmodified ZD621 Unicode font controls; see the fixture README.
+#[path = "support/compact_font.rs"]
+mod compact_font;
 use std::{fs, path::Path};
 #[path = "support/digest.rs"]
 mod digest;
@@ -60,14 +62,13 @@ fn raw_unicode_font_frames_pin_every_pixel_and_meet_text_goal() {
 
 #[test]
 fn captured_unicode_font_assets_are_pinned() {
-    let root = Path::new(env!("CARGO_MANIFEST_DIR")).join("assets");
     for row in include_str!("fixtures/unicode-fonts-zd621-v1/assets.tsv")
         .lines()
         .skip(1)
     {
         let (name, expected) = row.split_once('\t').unwrap();
         assert_eq!(
-            digest::sha256(&fs::read(root.join(name)).unwrap()),
+            digest::sha256(&compact_font::asset(name).unwrap()),
             expected,
             "{name}"
         );
