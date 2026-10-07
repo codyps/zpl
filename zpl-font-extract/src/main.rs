@@ -19,6 +19,11 @@ struct Cli {
 }
 #[derive(Subcommand)]
 enum Command {
+    /// Complete raw font inventory and multiple encoding maps (v2 JSON).
+    Collection {
+        #[command(subcommand)]
+        command: zpl_font_extract::collection::cli::Command,
+    },
     /// Calibrate, capture/cache, extract, verify fonts.json and compile Rust tables.
     Recover {
         #[command(flatten)]
@@ -110,6 +115,7 @@ impl Probes {
 #[tokio::main]
 async fn main() -> Result<()> {
     match Cli::parse().command {
+        Command::Collection { command } => zpl_font_extract::collection::cli::run(command).await?,
         Command::Recover {
             probes,
             host,

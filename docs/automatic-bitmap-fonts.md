@@ -154,3 +154,8 @@ Tests use an independent ZPL-interpreting simulated printer, including real
 loopback HTTP preview transactions, cache replay, unfamiliar dimensions, variable
 and overlapping advances, remapping, corrupt evidence and full-page holdouts.
 These validate the implementation; they do not constitute a new live printer run.
+
+For complete stored bitmap records (including raw IDs above 255) and multiple
+encoding maps per font, use the additional
+[collection pipeline](complete-bitmap-collections.md). The existing preview-only
+pipeline and v1 format remain supported.

@@ -491,3 +491,27 @@ async fn compact_full_key_span_and_metric_limits() {
     assert!(compile::compile(&d, &t.0.join("oversize")).is_err());
     assert!(!t.0.join("oversize").exists());
 }
+
+#[tokio::test]
+async fn cached_capture_is_scoped_to_printer_identity() {
+    let server = Server::new();
+    let temp = Temp::new();
+    let identity = json!({"device.unique_id":"serial","appl.name":"firmware-1"});
+    let mut printer = capture::Printer::new(&server.host, &temp.0, false, 0.0, 5)
+        .unwrap()
+        .with_identity(identity.clone());
+    recover(&config(), &mut printer).await.unwrap();
+    drop(printer);
+    let host = server.host.clone();
+    drop(server);
+    let mut wrong = capture::Printer::new(&host, &temp.0, true, 0.0, 5)
+        .unwrap()
+        .with_identity(json!({"device.unique_id":"serial","appl.name":"firmware-2"}));
+    let error = recover(&config(), &mut wrong).await.unwrap_err();
+    assert!(format!("{error:?}").contains("missing cached preview"));
+    drop(wrong);
+    let mut right = capture::Printer::new(&host, &temp.0, true, 0.0, 5)
+        .unwrap()
+        .with_identity(identity);
+    recover(&config(), &mut right).await.unwrap();
+}

@@ -55,3 +55,15 @@ to `^FT`; a missing key and an advancing blank are distinct.
 
 See [the pipeline guide](../docs/automatic-bitmap-fonts.md) for capture, cache,
 verification, mapping, format bounds and embedding custom datasets.
+
+## Complete records and multiple encodings
+
+`zpl-font-extract collection compile` generates modules using the separate
+`zpl_bitmap_fonts::collection` API. It supports raw IDs above 255, Unicode
+input keys, multiple per-font encoding maps, ambiguous/unresolved observations,
+and explicitly separate firmware candidates. Original padded rows and metadata
+are preserved; records and maps share compact static storage.
+
+See [complete bitmap collections](../docs/complete-bitmap-collections.md) for
+inventory, probing, evidence import, JSON validation and compilation. This does
+not change the existing bundled `zd621` renderer dataset.

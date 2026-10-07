@@ -146,3 +146,6 @@ mod tests {
         assert!(FONT.glyph(35).is_none());
     }
 }
+
+/// Complete raw glyph collections and encoding maps.
+pub mod collection;

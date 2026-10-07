@@ -35,9 +35,15 @@ pub struct Printer {
     username: String,
     password: String,
     last: Option<std::time::Instant>,
+    profile: Option<serde_json::Value>,
     _locks: Vec<fs::File>,
 }
 impl Printer {
+    /// Scope evidence/cache keys to a separately obtained printer identity.
+    pub fn with_identity(mut self, profile: serde_json::Value) -> Self {
+        self.profile = Some(profile);
+        self
+    }
     pub fn new(host: &str, cache: &Path, offline: bool, delay: f64, timeout: u64) -> Result<Self> {
         ensure!(
             delay.is_finite() && (0.0..=60.0).contains(&delay) && (1..=60).contains(&timeout),
@@ -77,6 +83,7 @@ impl Printer {
             username: std::env::var("ZPL_USERNAME").unwrap_or_default(),
             password: std::env::var("ZPL_PASSWORD").unwrap_or_default(),
             last: None,
+            profile: None,
             _locks: locks,
         })
     }
@@ -94,12 +101,19 @@ fn lock(path: &Path) -> Result<fs::File> {
 }
 impl Capture for Printer {
     fn identity(&self) -> serde_json::Value {
-        serde_json::json!({"host":self.host.as_str()})
+        match &self.profile {
+            Some(profile) => serde_json::json!({"host":self.host.as_str(),"profile":profile}),
+            None => serde_json::json!({"host":self.host.as_str()}),
+        }
     }
     async fn png(&mut self, page: &Page, repeat: bool) -> Result<Vec<u8>> {
         let zpl = page.zpl()?;
         let request_hash = hash(zpl.as_bytes());
-        let key = hash(format!("{}:{request_hash}:{repeat}", self.host).as_bytes());
+        let scope = match &self.profile {
+            Some(profile) => format!("{}:{}", self.host, hash(&serde_json::to_vec(profile)?)),
+            None => self.host.to_string(),
+        };
+        let key = hash(format!("{scope}:{request_hash}:{repeat}").as_bytes());
         let folder = self.cache.join(key);
         let receipt_path = folder.join("capture.json");
         if receipt_path.exists() {
