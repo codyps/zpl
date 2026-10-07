@@ -81,6 +81,7 @@ pub(super) struct Font {
     encoding: u8,
     default_glyph: bool,
     character_map: Option<[u8; 256]>,
+    explicit_sources: Option<[u8; 32]>,
     block_flow: Option<BlockFlow>,
     tab_stops: bool,
     legacy_controls: bool,
@@ -113,6 +114,7 @@ impl Font {
             encoding: 28,
             default_glyph: false,
             character_map: None,
+            explicit_sources: None,
             block_flow: None,
             tab_stops: false,
             legacy_controls: false,
@@ -138,6 +140,10 @@ impl Font {
         self.character_map = map;
         self
     }
+    pub(super) fn with_explicit_sources(mut self, mask: Option<[u8; 32]>) -> Self {
+        self.explicit_sources = mask;
+        self
+    }
     pub(super) fn with_control_glyphs(mut self, legacy: bool, spaces: bool) -> Self {
         self.legacy_controls = legacy;
         self.control_spaces = spaces;
@@ -157,7 +163,10 @@ impl Font {
                 .character_map
                 .and_then(|map| image.and_then(|i| map.get(i).copied()))
             {
-                if Some(source as usize) != image {
+                let explicit = self.explicit_sources.is_some_and(|mask| {
+                    image.is_some_and(|i| i < 256 && mask[i / 8] & (1 << (i % 8)) != 0)
+                });
+                if explicit || Some(source as usize) != image {
                     return Ok(char::from_u32(0xf0000 + u32::from(source)).unwrap());
                 }
             }
@@ -166,12 +175,22 @@ impl Font {
             // Legacy text was decoded for Unicode-aware layout. Recover its
             // byte index here; layout-generated characters use measured Unicode.
             let source = if self.legacy_codepage {
-                image.filter(|&i| i <= 255 && (c != '\\' || self.legacy_backslash))
+                image.filter(|&i| {
+                    i <= 255
+                        && (matches!(self.encoding, 0 | 13) || c != '\\' || self.legacy_backslash)
+                })
             } else {
                 None
             };
             if let Some(source) = source {
-                return Ok(char::from_u32(0xf0000 + source as u32).unwrap());
+                // Preserve the input byte independently of explicit source-slot
+                // remapping. CI13's zero is not the CI0 source-slot zero.
+                let tag = if matches!(self.encoding, 0 | 13) {
+                    0xf0100
+                } else {
+                    0xf0000
+                };
+                return Ok(char::from_u32(tag + source as u32).unwrap());
             }
             if self.control_spaces && matches!(c, '\u{1b}' | '\u{7f}') {
                 return Ok(char::from_u32(0xf0000 + u32::from(b' ')).unwrap());
@@ -769,6 +788,12 @@ fn compact_glyph(
     // Explicit ^CI remapping preserves the printer source position through layout.
     if (0xf0000..=0xf00ff).contains(&(c as u32)) {
         return face.glyph((c as u32 - 0xf0000) as u8);
+    }
+    if (0xf0100..=0xf01ff).contains(&(c as u32)) {
+        let byte = (c as u32 - 0xf0100) as u8;
+        return face
+            .encoded_glyph(Encoding::Input { ci: encoding }, u32::from(byte))
+            .or_else(|| face.glyph(byte).filter(|g| g.width == 0 && g.height == 0));
     }
     // Profiles select the measured legacy or modern backslash behavior. The
     // per-face mappings carry the actual glyph choice, including symbol fonts.

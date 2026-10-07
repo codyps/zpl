@@ -278,12 +278,14 @@ impl Capture for Printer {
             if repeat { " repeat" } else { "" }
         );
         self.last = Some(std::time::Instant::now());
-        let png = self.preview_with_recovery(&zpl, &folder).await?;
-        // The receipt is committed last, so interrupted writes are never cache hits.
+        // Retain the exact request even when a transport failure quarantines it.
+        // Only capture.json marks a completed, reusable observation.
         fs::create_dir_all(&folder)?;
         atomic_write(&folder.join("request.zpl"), zpl.as_bytes())?;
-        atomic_write(&folder.join("preview.png"), &png)?;
         write_json(&folder.join("plan.json"), page)?;
+        let png = self.preview_with_recovery(&zpl, &folder).await?;
+        // The receipt is committed last, so interrupted writes are never cache hits.
+        atomic_write(&folder.join("preview.png"), &png)?;
         write_json(
             &receipt_path,
             &Receipt {

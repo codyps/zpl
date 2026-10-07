@@ -1,4 +1,4 @@
-//! Check the 2026-10-06 ZD621 203-dpi/V93.21.33Z snapshot against its portable JSON.
+//! Check the 2026-10-07 ZD621 203-dpi/V93.21.33Z snapshot against its portable JSON.
 //! Compare every generated record/map with the measured preview collection.
 use std::{fs, path::PathBuf};
 use zpl_font_extract::collection::{compile, unhex, Collection};
@@ -10,13 +10,13 @@ fn bundled_encodings_match_json_and_regenerate_exactly() {
     let root = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../zpl-bitmap-fonts");
     let c = Collection::load(&root.join("data/zd621/fonts.json")).unwrap();
     assert_eq!(c.fonts.len(), 47);
-    assert_eq!(c.fonts.iter().map(|f| f.records.len()).sum::<usize>(), 8821);
+    assert_eq!(c.fonts.iter().map(|f| f.records.len()).sum::<usize>(), 8831);
     assert_eq!(
         c.coverage
             .iter()
             .map(|f| f.observed_equivalent_records)
             .sum::<usize>(),
-        6872
+        6882
     );
     assert_eq!(
         c.coverage
@@ -64,6 +64,15 @@ fn bundled_encodings_match_json_and_regenerate_exactly() {
             }
         }
         assert_eq!(actual.encodings.len(), f.encodings.len());
+        assert_eq!(f.encodings.len(), 22);
+        for map in &f.encodings {
+            if map.encoding != (zpl_font_extract::collection::Encoding::Input { ci: 28 }) {
+                assert_eq!(
+                    map.entries.iter().map(|e| e.input).collect::<Vec<_>>(),
+                    (0..=255).collect::<Vec<_>>()
+                );
+            }
+        }
         for (map, expected) in actual.encodings.iter().zip(&f.encodings) {
             assert_eq!(
                 format!("{:?}", map.encoding),

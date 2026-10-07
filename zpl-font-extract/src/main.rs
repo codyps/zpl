@@ -179,8 +179,6 @@ async fn main() -> Result<()> {
             }
             let fonts = if !probes.fonts.is_empty() {
                 probes.fonts.clone()
-            } else if let Some(c) = &seed {
-                c.fonts.iter().map(|f| f.name.clone()).collect()
             } else {
                 let path = cache.join("font-selectors.json");
                 if offline {
@@ -196,12 +194,28 @@ async fn main() -> Result<()> {
                     names
                 }
             };
+            let fonts = if let Some(seed) = &seed {
+                if probes.fonts.is_empty() {
+                    seed.fonts
+                        .iter()
+                        .map(|f| f.name.clone())
+                        .chain(fonts.into_iter().filter(|name: &String| name.contains(':')))
+                        .collect::<std::collections::BTreeSet<_>>()
+                        .into_iter()
+                        .collect()
+                } else {
+                    fonts
+                }
+            } else {
+                fonts
+            };
             let config = RecoveryConfig {
                 probes: probes.config(fonts)?,
                 encodings: probes.encodings()?,
                 codes: probes.codes,
                 seed,
                 missing_only,
+                inspect_new_fonts: true,
             };
             let c = automatic::recover(&config, &mut printer).await?;
             if !offline {

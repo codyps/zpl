@@ -1,6 +1,6 @@
 {
-  "array_bytes": 1425906,
-  "bitmaps_sha256": "f727885cbebedbed0c099496c8ae769d6cc6bcde9166eec5bacf06a0278a2a19",
+  "array_bytes": 4318055,
+  "bitmaps_sha256": "414c83365a937d5d743bdab00da7d8dc583505c15ef847fdda7ec62074fad73e",
   "coverage": [
     {
       "archived_records": 254,
@@ -52,74 +52,74 @@
       "visible_records": 145
     },
     {
-      "archived_records": 282,
+      "archived_records": 283,
       "font": "Z:EPL1.FNT",
-      "observed_equivalent_records": 256,
+      "observed_equivalent_records": 257,
       "unresolved_visible_record_ids": [],
-      "visible_records": 256
+      "visible_records": 257
     },
     {
-      "archived_records": 282,
+      "archived_records": 283,
       "font": "Z:EPL2.FNT",
-      "observed_equivalent_records": 256,
+      "observed_equivalent_records": 257,
       "unresolved_visible_record_ids": [],
-      "visible_records": 256
+      "visible_records": 257
     },
     {
-      "archived_records": 282,
+      "archived_records": 283,
       "font": "Z:EPL3.FNT",
-      "observed_equivalent_records": 256,
+      "observed_equivalent_records": 257,
       "unresolved_visible_record_ids": [],
-      "visible_records": 256
+      "visible_records": 257
     },
     {
-      "archived_records": 279,
+      "archived_records": 280,
       "font": "Z:EPL300-1.FNT",
-      "observed_equivalent_records": 253,
+      "observed_equivalent_records": 254,
       "unresolved_visible_record_ids": [],
-      "visible_records": 253
-    },
-    {
-      "archived_records": 278,
-      "font": "Z:EPL300-2.FNT",
-      "observed_equivalent_records": 252,
-      "unresolved_visible_record_ids": [],
-      "visible_records": 252
+      "visible_records": 254
     },
     {
       "archived_records": 279,
-      "font": "Z:EPL300-3.FNT",
+      "font": "Z:EPL300-2.FNT",
       "observed_equivalent_records": 253,
       "unresolved_visible_record_ids": [],
       "visible_records": 253
     },
     {
-      "archived_records": 274,
-      "font": "Z:EPL300-4.FNT",
-      "observed_equivalent_records": 273,
+      "archived_records": 280,
+      "font": "Z:EPL300-3.FNT",
+      "observed_equivalent_records": 254,
       "unresolved_visible_record_ids": [],
-      "visible_records": 273
-    },
-    {
-      "archived_records": 193,
-      "font": "Z:EPL300-5.FNT",
-      "observed_equivalent_records": 172,
-      "unresolved_visible_record_ids": [],
-      "visible_records": 172
+      "visible_records": 254
     },
     {
       "archived_records": 275,
-      "font": "Z:EPL4.FNT",
+      "font": "Z:EPL300-4.FNT",
       "observed_equivalent_records": 274,
       "unresolved_visible_record_ids": [],
       "visible_records": 274
     },
     {
-      "archived_records": 193,
-      "font": "Z:EPL5.FNT",
-      "observed_equivalent_records": 172,
+      "archived_records": 194,
+      "font": "Z:EPL300-5.FNT",
+      "observed_equivalent_records": 173,
       "unresolved_visible_record_ids": [],
-      "visible_records": 172
+      "visible_records": 173
+    },
+    {
+      "archived_records": 276,
+      "font": "Z:EPL4.FNT",
+      "observed_equivalent_records": 275,
+      "unresolved_visible_record_ids": [],
+      "visible_records": 275
+    },
+    {
+      "archived_records": 194,
+      "font": "Z:EPL5.FNT",
+      "observed_equivalent_records": 173,
+      "unresolved_visible_record_ids": [],
+      "visible_records": 173
     },
     {
       "archived_records": 10,
@@ -332,10 +332,10 @@
       "visible_records": 119
     }
   ],
-  "module_sha256": "d23ec7ade913f9e6a135103f3c09df126c906c0bf2447441d65e6efadedc4b13",
+  "module_sha256": "43170ed71adbf023aa5359b971213b1ef36bcb8a7371ad092f92400853439a7c",
   "schema": "zpl-compact-collection-v4",
-  "source_content_sha256": "7c6e64ef98de35130315ba9b65fc9b8734561f1fd7d76ade491590cc4c768e6d",
-  "unique_maps": 109,
-  "unique_payloads": 6394,
-  "unique_records": 6594
+  "source_content_sha256": "60f0a27d354b9c18c7675c1cee561f91c8d9027b5da2a96af315af7d4e6b6dae",
+  "unique_maps": 654,
+  "unique_payloads": 6404,
+  "unique_records": 6604
 }

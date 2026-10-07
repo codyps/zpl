@@ -310,6 +310,7 @@ fn portable_collection_rejects_internal_metadata_and_old_schema() {
 async fn one_pipeline_discovers_unicode_glyphs_without_an_input_collection() {
     use crate::automatic::{probe::Config, recover, RecoveryConfig};
     let config = RecoveryConfig {
+        inspect_new_fonts: false,
         missing_only: false,
         probes: Config {
             fonts: vec!["Z:TEST.FNT".into()],
@@ -417,6 +418,7 @@ async fn recovery_resolves_previously_unmatched_inputs_with_new_glyphs() {
         provenance: json!({"previous":"no matching glyph"}),
     });
     let options = RecoveryConfig {
+        inspect_new_fonts: false,
         missing_only: false,
         probes: Config {
             fonts: vec![f.name.clone()],
@@ -462,6 +464,7 @@ async fn recovery_retains_verified_blank_advances_without_claiming_fresh_measure
         provenance: json!({"source":"verified-blank-advance"}),
     });
     let options = RecoveryConfig {
+        inspect_new_fonts: false,
         missing_only: false,
         probes: Config {
             fonts: vec![f.name.clone()],
@@ -488,6 +491,7 @@ async fn recovery_retains_verified_blank_advances_without_claiming_fresh_measure
 async fn missing_only_resume_keeps_completed_observations() {
     use crate::automatic::{probe::Config, recover, RecoveryConfig};
     let mut options = RecoveryConfig {
+        inspect_new_fonts: false,
         missing_only: false,
         probes: Config {
             fonts: vec!["Z:TEST.FNT".into()],

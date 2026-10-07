@@ -272,6 +272,7 @@ fn render_expanded(
     let (mut shift, mut top) = (0., 0.);
     let mut encoding = 0;
     let mut character_maps: [Option<[u8; 256]>; 14] = [None; 14];
+    let mut explicit_sources: [Option<[u8; 32]>; 14] = [None; 14];
     let mut advanced = [false; 4];
     let mut default_rotation = b'N';
     let mut default_justification = 2;
@@ -480,6 +481,8 @@ fn render_expanded(
                             character_maps[encoding as usize]
                                 .get_or_insert_with(|| std::array::from_fn(|i| i as u8))
                                 [destination as usize] = source;
+                            explicit_sources[encoding as usize].get_or_insert([0; 32])
+                                [usize::from(destination) / 8] |= 1 << (destination % 8);
                         }
                     }
                 }
@@ -1135,6 +1138,9 @@ fn render_expanded(
                             .with_default_glyph(advanced[0])
                             .with_character_map(
                                 character_maps.get(encoding as usize).copied().flatten(),
+                            )
+                            .with_explicit_sources(
+                                explicit_sources.get(encoding as usize).copied().flatten(),
                             );
                             // ^FB p. 186 permits negative line spacing. The
                             // printer clamps the resulting pitch at zero.

@@ -535,6 +535,7 @@ async fn cached_capture_is_scoped_to_printer_identity() {
 async fn unified_recovery_keeps_calibration_and_multiple_encodings() {
     use crate::collection::Encoding;
     let options = RecoveryConfig {
+        inspect_new_fonts: false,
         missing_only: false,
         probes: config(),
         encodings: vec![Encoding::Input { ci: 27 }, Encoding::Input { ci: 28 }],
@@ -554,6 +555,7 @@ async fn unified_http_recovery_replays_all_encodings_offline() {
     let server = Server::new();
     let t = Temp::new();
     let options = RecoveryConfig {
+        inspect_new_fonts: false,
         missing_only: false,
         probes: config(),
         encodings: vec![
@@ -601,6 +603,16 @@ async fn automatic_restart_does_not_retry_http_status_errors() {
     let error = calibrate(&config(), &mut printer).await.unwrap_err();
     assert!(format!("{error:?}").contains("401"));
     assert!(!temp.0.join("last-reset.json").exists());
+    let requests = std::fs::read_dir(&temp.0)
+        .unwrap()
+        .filter_map(|p| {
+            let p = p.unwrap().path();
+            p.join("request.zpl").exists().then_some(p)
+        })
+        .collect::<Vec<_>>();
+    assert_eq!(requests.len(), 1);
+    assert!(requests[0].join("plan.json").exists());
+    assert!(!requests[0].join("capture.json").exists());
     task.join().unwrap();
 }
 
@@ -625,4 +637,40 @@ async fn checkpoints_are_atomic_and_replaceable() {
     printer.checkpoint(&c).unwrap();
     let saved = crate::collection::Collection::load(&temp.0.join("recovery.json")).unwrap();
     assert_eq!(saved.provenance["stage"], 2);
+}
+
+#[tokio::test]
+async fn discovered_named_bitmaps_are_calibrated_from_previews() {
+    let (face, report) = discover_native(&config(), "Z:NEW.FNT", &mut Fake::default())
+        .await
+        .unwrap();
+    let face = face.unwrap();
+    assert_eq!(face.name, "Z:NEW.FNT");
+    assert_eq!(face.metrics.unwrap()[..2], [7, 11]);
+    assert_eq!(report["status"], "calibrated-native-bitmap");
+    assert!(!face.records.is_empty());
+}
+
+#[tokio::test]
+async fn directory_names_do_not_authorize_default_font_fallback_as_data() {
+    struct Fallback;
+    impl Capture for Fallback {
+        async fn png(&mut self, page: &Page, _repeat: bool) -> Result<Vec<u8>> {
+            let mut raster = decode(&printer_png(&page.zpl()?)?)?;
+            for tile in &page.tiles {
+                if tile.key.starts_with("fallback-") && tile.key.ends_with("-B") {
+                    let index =
+                        ((tile.y + tile.oy - 7) * raster.width + tile.x + tile.ox + 1) as usize;
+                    raster.pixels[index] ^= 255;
+                }
+            }
+            Ok(Png::encode_gray(&raster, 203)?)
+        }
+    }
+    let (face, report) = discover_native(&config(), "Z:UNSELECTABLE.FNT", &mut Fallback)
+        .await
+        .unwrap();
+    assert!(face.is_none());
+    assert_eq!(report["reason"], "filename follows the default font");
+    assert!(report["lineage"].as_array().unwrap().len() >= 2);
 }

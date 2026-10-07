@@ -1,0 +1,18 @@
+{
+  "printer": {
+    "device.unique_id": "D7J211001302",
+    "appl.name": "V93.21.33Z"
+  },
+  "dpi": 203,
+  "source_sha256": "38cc46453591c6ebec8890c7915612b8a8aca485eafe0b3a54310f378782a197",
+  "captures": [
+    {
+      "name": "control",
+      "png_sha256": "e30e1344389cff69aac8b5a52616ce0bf9516cb71faac29f5e9c4aff6f56e7f9"
+    },
+    {
+      "name": "repeat",
+      "png_sha256": "e30e1344389cff69aac8b5a52616ce0bf9516cb71faac29f5e9c4aff6f56e7f9"
+    }
+  ]
+}

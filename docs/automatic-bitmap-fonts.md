@@ -9,15 +9,18 @@ cargo run --locked -p zpl-font-extract -- recover \
   --host http://printer.local/ --cache _font-cache --out _recovered-fonts
 ```
 
-Without `--source` or `--font`, it lists named `.FNT` selectors on Z/E/R through
+Without `--font`, it lists named `.FNT` selectors on Z/E/R through
 read-only SGD `file.dir` requests (default port 9100), and includes resident A–H
 and the separate `^GS` face (`@`). Directory discovery reads names only. No font
 objects are downloaded or decoded. A listed name does not guarantee a usable
-font: blank previews and filename fallback remain explicit mapping outcomes.
+font: calibration checks default-font fallback and exact native magnification.
+Selectors that fail these checks are recorded in `native_inspections` provenance
+and excluded from bitmap recovery. Blank calibration probes alone do not prove
+an empty font; those selectors continue to the broader survey.
 
 Use `--font A,Z:A.FNT` for a subset. To start with known glyphs or resume a JSON
 collection, add `--source fonts.json`; omitted selectors then mean all fonts in
-that input. Both cases run the same recovery and compilation sequence. Verified
+that input plus newly discovered named selectors. Both cases run the same recovery and compilation sequence. Verified
 legacy v1 JSON is migrated on input; new output always uses the current format.
 
 The former `collection survey` workflow and the old byte-only compiler are
@@ -175,8 +178,8 @@ Resident bitmap rendering reads the measured input maps from the same compact
 font collection. `^CI27` uses its byte map; Unicode text uses the measured
 `^CI28` map. Other supported byte encodings are decoded for layout and use the
 measured Unicode map when a dedicated input map is absent. Legacy `^CI0`/`^CI13`
-text and explicit `^CI` source remapping retain source positions through glyph
-selection. No candidate code-page tables are stored.
+text uses its measured input map; explicit `^CI` remapping selects source positions,
+including explicit identity mappings. No candidate code-page tables are stored.
 
 The printer profile's legacy backslash option selects between measured maps;
 there are no font-name exceptions or hard-coded euro/arrow glyph positions.
@@ -201,7 +204,8 @@ completed font/encoding survey. Resume with `--source CACHE/recovery.json
 --missing-only`, the same cache and printer, and a new output directory. Completed
 inputs are retained; only absent inputs are probed. This does not reinterpret
 unresolved entries as successful mappings. Raw PNG/ZPL receipts remain in the
-cache and permit offline replay.
+cache and permit offline replay. Requests and plans are saved before submission,
+including requests that fail.
 
 Version 4 removes candidate character tables and their import format. Version 3
 collections containing those fields are rejected; regenerate with preview recovery

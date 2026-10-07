@@ -1,4 +1,4 @@
-//! Import measured observations and separately labelled unverified mapping candidates.
+//! Import measured preview observations and verified capture documents.
 use super::*;
 use eyre::{ensure, eyre};
 use serde_json::json;

@@ -5,10 +5,16 @@ the ZD621 at 203 dpi, software version V93.21.33Z. It makes no claim about other
 printers or versions. Character tables and records without observed equivalents
 are not bundled.
 
-The initial preview-only subset contains 47 fonts and 8,821 records, including
-6,872 visible records. It preserves calibrated native metrics and independently
+The completed 2026-10-07 preview sweep contains 47 fonts and 8,831 records, including
+6,882 visible records. It preserves calibrated native metrics and independently
 measured advancing blanks. This is a measured repertoire, not proof that every
 possible printer glyph is reachable or recovered.
+
+Every font covers all 256 inputs in 21 byte/source domains and the documented
+bounded CI28 Unicode repertoire. Blank and unmatched observations remain unresolved.
+The directory audit additionally tested 22 selectors: default-font fallback or
+non-native scaling prevented treating them as recovered bitmap fonts. Their
+inspection reports and preview hashes are retained in provenance.
 
 Mappings retain exact tested inputs, equivalent record IDs, unresolved outcomes,
 and separate source-position and Unicode input domains. A blank observation alone
@@ -19,7 +25,7 @@ Source/reference hashes and observation digests retain the lineage of existing
 verified captures. Hashes establish integrity, not independent authentication.
 Raw PNG/ZPL evidence is kept by the recovery tool, outside the crate package.
 
-JSON content SHA-256: `7c6e64ef98de35130315ba9b65fc9b8734561f1fd7d76ade491590cc4c768e6d`.
+JSON content SHA-256: `60f0a27d354b9c18c7675c1cee561f91c8d9027b5da2a96af315af7d4e6b6dae`.
 
 Regenerate the matching `src/zd621` artifacts into a new directory:
 

@@ -11,6 +11,7 @@ pub struct RecoveryConfig {
     pub codes: Vec<u32>,
     pub seed: Option<Collection>,
     pub missing_only: bool,
+    pub inspect_new_fonts: bool,
 }
 
 pub async fn recover(c: &RecoveryConfig, capture: &mut impl Capture) -> Result<Collection> {
@@ -19,42 +20,60 @@ pub async fn recover(c: &RecoveryConfig, capture: &mut impl Capture) -> Result<C
         !c.encodings.is_empty() && c.encodings.iter().all(|e| survey::supported(*e)),
         "unsupported or empty encoding selection"
     );
-    let mut result = if let Some(seed) = &c.seed {
+    if let Some(seed) = &c.seed {
         seed.validate()?;
-        seed.clone()
-    } else {
-        // Resident calibration retains native metric checks and full-page holdouts.
+    }
+    let mut fonts = c
+        .seed
+        .as_ref()
+        .map(|seed| seed.fonts.clone())
+        .unwrap_or_default();
+    if c.seed.is_none() && !c.inspect_new_fonts {
         let mut calibration = c.probes.clone();
         calibration.fonts.retain(|f| f.len() == 1);
-        let mut fonts = if calibration.fonts.is_empty() {
-            vec![]
-        } else {
-            Collection::from_verified(&super::calibrate(&calibration, capture).await?)?.fonts
-        };
-        for name in &c.probes.fonts {
-            if !fonts.iter().any(|f| f.name == *name) {
-                fonts.push(Font {
-                    name: name.clone(),
-                    source_sha256: hash(&serde_json::to_vec(&(name, capture.identity()))?),
-                    metrics: None,
-                    records: vec![],
-                    encodings: vec![],
-                });
-            }
+        if !calibration.fonts.is_empty() {
+            fonts =
+                Collection::from_verified(&super::calibrate(&calibration, capture).await?)?.fonts;
         }
-        fonts.sort_by(|a, b| a.name.cmp(&b.name));
-        Collection::new(
-            fonts,
-            json!({"printer":capture.identity(),"method":"automatic-preview-recovery"}),
-        )?
-    };
+    }
+    let mut inspections = vec![];
+    for name in &c.probes.fonts {
+        if fonts.iter().any(|f| f.name == *name) {
+            continue;
+        }
+        let face = if c.inspect_new_fonts {
+            let (face, inspection) = super::discover_native(&c.probes, name, capture).await?;
+            inspections.push(inspection);
+            face
+        } else {
+            Some(Font {
+                name: name.clone(),
+                source_sha256: hash(&serde_json::to_vec(&(name, capture.identity()))?),
+                metrics: None,
+                records: vec![],
+                encodings: vec![],
+            })
+        };
+        if let Some(face) = face {
+            fonts.push(face);
+        }
+    }
     ensure!(
-        c.probes
-            .fonts
-            .iter()
-            .all(|n| result.fonts.iter().any(|f| f.name == *n)),
-        "unknown font selection"
+        !fonts.is_empty(),
+        "no native bitmap faces established; inspect cached calibration previews"
     );
+    fonts.sort_by(|a, b| a.name.cmp(&b.name));
+    let mut provenance = c
+        .seed
+        .as_ref()
+        .map(|seed| seed.provenance.clone())
+        .unwrap_or_else(
+            || json!({"printer":capture.identity(),"method":"automatic-preview-recovery"}),
+        );
+    if !inspections.is_empty() {
+        provenance = json!({"previous":provenance,"native_inspections":inspections});
+    }
+    let mut result = Collection::new(fonts, provenance)?;
     for index in 0..result.fonts.len() {
         let font = &result.fonts[index];
         if !c.probes.fonts.contains(&font.name) {
