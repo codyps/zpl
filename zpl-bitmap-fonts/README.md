@@ -69,3 +69,9 @@ are preserved; records and maps share compact static storage.
 See [automatic recovery](../docs/automatic-bitmap-fonts.md) for
 probing, evidence import, JSON validation and compilation. This does
 not change the existing bundled `zd621` renderer dataset.
+
+The opt-in `zd621-encodings` feature exposes the
+[2026-10-06 multi-encoding snapshot](data/zd621-encodings/README.md) through
+`zpl_bitmap_fonts::zd621_encodings`. It contains 47 fonts and 10,100 glyph records,
+with measured mappings and explicitly unverified candidates. It does not replace
+the renderer's existing `zd621` bundle.

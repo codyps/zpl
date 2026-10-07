@@ -149,3 +149,9 @@ mod tests {
 
 /// Complete raw glyph collections and encoding maps.
 pub mod collection;
+
+/// Versioned multi-encoding ZD621 dataset. Includes explicitly unverified candidates.
+/// Independent of the bundled renderer faces; see data/zd621-encodings/README.md.
+#[cfg(feature = "zd621-encodings")]
+#[path = "zd621_encodings/fonts.rs"]
+pub mod zd621_encodings;
