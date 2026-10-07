@@ -6,8 +6,8 @@
 //! See [`render::profiles`] for other printer and specification profiles.
 //!
 //! Output adapters in [`output`] encode scenes as PNG, SVG or PDF. For direct pixel
-//! access, use [`output::raster::rasterize`]. Bitmap font types and data live in
-//! [`bitmap_font`].
+//! access, use [`output::raster::rasterize`]. Legacy bitmap strike interchange types live in
+//! [`bitmap_font`]; bundled glyph data uses `zpl-bitmap-fonts`.
 //!
 //! For command framing without rendering, use [`parse::ParseContext`]. The
 //! parser preserves unknown commands and binary payloads; successful parsing
@@ -26,6 +26,7 @@
 mod readme {}
 
 pub mod bitmap_font;
+pub mod fonts;
 pub mod output;
 pub mod parse;
 pub mod render;

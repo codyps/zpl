@@ -1,4 +1,5 @@
-//! Bitmap strike types and ZBF1/ZBF2 decoding used by the renderer.
+//! Bitmap strike interchange types and legacy ZBF1/ZBF2 decoding.
+//! Bundled fonts use the compact `zpl-bitmap-fonts` reader directly.
 /// Internal strike tag for ^GS, distinct from the resident ^AS font.
 pub const GRAPHIC_SYMBOLS: char = '@';
 

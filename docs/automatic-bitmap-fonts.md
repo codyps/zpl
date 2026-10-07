@@ -212,3 +212,46 @@ collections containing those fields are rejected; regenerate with preview recove
 or import verified v1 capture data. The default Unicode discovery repertoire is
 bounded and recorded explicitly; a completed default sweep is not an exhaustive
 Unicode claim.
+
+## Normalized captured strikes
+
+All bundled font-0 and P–V captures now use `zpl-bitmap-fonts` as well. The fixed
+`data/captures.json` corpus retains original capture names, settings, glyph metrics,
+row-padded pixels and historical hashes. `data/compile_captures.py` generates a
+shared pool and deduplicated lookup arrays, including independently selectable
+backslash, PA1 and native-control maps. It performs no sampling or fitting.
+
+These Unicode/layout-key captures are distinct from the native collection's
+measured input/source maps. Their keys must not be interpreted as evidence for
+an unmeasured printer encoding. Both use the same `Pool` and `Glyph` pixel API;
+captured rectangles and blank advances retain their exact original metrics.
+
+`zpl/src/fonts` owns decoding, typed Unicode/input/source lookup, native matrices,
+size selection, fallback, baselines and font spacing. `render/font.rs` handles
+text layout and path construction using those resources. No embedded font uses
+ZBF decoding, runtime strike assembly, or cloned compatibility variants. The
+public ZBF decoder remains available for callers and historical fixture checks.
+
+Run the fixed compiler with `--check` to verify regeneration, and
+`cargo test --locked -p zpl --test compact_captures` to verify every original
+capture hash. Existing full-canvas printer checks still pin the rendered result.
+
+
+The initial migration covers 101 historical captures / 5,710 glyphs, deduplicated
+to 5,161 records. Generated array payload is 365,370 bytes (263,468 bitmap bytes,
+51,610 metric bytes, 20,644 offset bytes, 29,648 lookup bytes), excluding Rust
+references, names and alignment. The former ZBF files totaled 307,658 bytes.
+Row-padded random access and precompiled compatibility maps increase static data
+by 57,712 bytes while eliminating lazy decoded/duplicated strike caches.
+
+A counting-system-allocator probe, comparing PR #53 commit `707f9b50` with the
+migration, rendered and dropped this label with `Options::default()`:
+
+```text
+^XA^CI28^PW600^LL100^FO10,10^A0N,32,32^FDHello world!^FS^XZ
+```
+
+Requested heap bytes retained after that first label fell from 7,319,414 to zero.
+This measures retained allocations for that label, not peak memory, allocator
+bookkeeping, render throughput, or every possible font workload. No new printer
+captures were used for the conversion.

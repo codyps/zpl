@@ -78,8 +78,17 @@ impl Font {
     pub fn record(&self, id: u16) -> Option<Record> {
         let i = self.ids.binary_search(&id).ok()?;
         let i = usize::from(*self.records.get(i)?);
-        let &[advance, left, top, width, height] = self.pool.metrics.get(i)?;
-        let start = *self.pool.offsets.get(i)? as usize;
+        self.pool.record(i)
+    }
+    pub fn encoding(&self, encoding: Encoding) -> Option<&Map> {
+        self.encodings.iter().find(|m| m.encoding == encoding)
+    }
+}
+impl Pool {
+    /// Read a shared record without interpreting its font's key namespace.
+    pub fn record(&self, i: usize) -> Option<Record> {
+        let &[advance, left, top, width, height] = self.metrics.get(i)?;
+        let start = *self.offsets.get(i)? as usize;
         let len = usize::from(width)
             .div_ceil(8)
             .checked_mul(usize::from(height))?;
@@ -89,14 +98,25 @@ impl Font {
             top: top as i16,
             width,
             height,
-            bits: self.pool.bits.get(start..start.checked_add(len)?)?,
+            bits: self.bits.get(start..start.checked_add(len)?)?,
         })
-    }
-    pub fn encoding(&self, encoding: Encoding) -> Option<&Map> {
-        self.encodings.iter().find(|m| m.encoding == encoding)
     }
 }
 impl Record {
+    /// Preserve a captured rectangle and its bearings, including advancing blanks.
+    /// Unlike measured raw printer records, these captures are already cropped.
+    pub fn captured_glyph(self) -> Glyph {
+        Glyph {
+            advance: self.advance,
+            left: self.left,
+            top: self.top,
+            width: self.width,
+            height: self.height,
+            record: self,
+            x: 0,
+            y: 0,
+        }
+    }
     /// Original padded rows. Padding ink is retained; declared width is separate.
     pub fn bitmap(&self) -> &'static [u8] {
         self.bits

@@ -8,7 +8,7 @@ use crate::{
 };
 use std::collections::BTreeMap;
 
-pub(super) enum Download {
+pub(crate) enum Download {
     TrueType {
         name: String,
         data: Vec<u8>,

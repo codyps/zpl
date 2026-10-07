@@ -47,3 +47,16 @@ are not included. Exhaustive tests check the JSON against the reader, exact
 regeneration, and the unchanged golden digest for the previous source-key behavior.
 See [automatic recovery](../docs/automatic-bitmap-fonts.md) for probing and schema
 semantics. Font content retains its original licensing; code is OSL-3.0.
+
+
+The same `zd621` feature includes fixed scalable captures for 0/P–V under
+`captures::zd621`. `Strike::glyph` resolves Unicode/layout keys directly into the
+shared `Glyph` view. `VARIANTS` contains eight precompiled combinations of legacy
+backslash, PA1 and native-control behavior (bits 0, 1 and 2 respectively), with
+the enriched 32-dot fallback last. `CAPTURES` retains original capture identities
+for exact migration verification; these are not new measured input maps.
+
+Regenerate with `python3 zpl-bitmap-fonts/data/compile_captures.py` from the
+workspace root, or add `--check` to verify the checked-in outputs. The fixed
+corpus and compiler are packaged alongside the generated tables; no build script,
+Python installation, JSON parser or heap allocation is needed by consumers.

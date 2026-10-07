@@ -1,4 +1,6 @@
-//! Caller-supplied fonts, scoped to a render call; no filesystem or printer access.
+//! Font resources, encoding, glyph lookup and metrics, scoped to a render call.
+//! No scene construction, filesystem access or printer access.
+pub(crate) mod resident;
 use crate::{
     bitmap_font::{self, Glyph, Settings},
     output::raster::truetype::{rasterize, ScanMode},
@@ -35,7 +37,7 @@ enum Source<'a> {
     Bitmap(Settings, Vec<Glyph>),
     TrueType(Font<'a>, Hinting),
 }
-pub(super) struct Face<'a> {
+pub(crate) struct Face<'a> {
     source: Source<'a>,
     baseline: f64,
     missing_advance: Option<u32>,
@@ -159,7 +161,7 @@ impl<'a> Fonts<'a> {
 
 /// Request-local ZPL selections, separate from caller-owned font resources.
 /// ^CW retains a filename, not a snapshot of the face stored under that name.
-pub(super) struct RenderFonts<'r, 'a> {
+pub(crate) struct RenderFonts<'r, 'a> {
     resources: &'r Fonts<'a>,
     aliases: BTreeMap<char, String>,
     selected_name: Option<String>,
@@ -167,7 +169,7 @@ pub(super) struct RenderFonts<'r, 'a> {
 }
 
 impl<'r, 'a> RenderFonts<'r, 'a> {
-    pub(super) fn new(resources: &'r Fonts<'a>) -> Self {
+    pub(crate) fn new(resources: &'r Fonts<'a>) -> Self {
         Self {
             resources,
             aliases: BTreeMap::new(),
@@ -185,11 +187,11 @@ impl<'r, 'a> RenderFonts<'r, 'a> {
         }
     }
 
-    pub(super) fn install(
+    pub(crate) fn install(
         &mut self,
-        download: &'a super::font_downloads::Download,
+        download: &'a crate::render::font_downloads::Download,
     ) -> Result<(), String> {
-        use super::font_downloads::Download;
+        use crate::render::font_downloads::Download;
         let (name, face) = match download {
             Download::TrueType { name, data } => (name, Face::truetype(data, Hinting::Native)?),
             Download::Bitmap {
@@ -208,22 +210,22 @@ impl<'r, 'a> RenderFonts<'r, 'a> {
         Ok(())
     }
 
-    pub(super) fn alias(&mut self, id: char, name: &str) -> Result<(), String> {
+    pub(crate) fn alias(&mut self, id: char, name: &str) -> Result<(), String> {
         let name = self.checked_name(name)?;
         self.aliases.insert(id, name);
         Ok(())
     }
 
-    pub(super) fn select_named(&mut self, name: &str) -> Result<(), String> {
+    pub(crate) fn select_named(&mut self, name: &str) -> Result<(), String> {
         self.selected_name = Some(self.checked_name(name)?);
         Ok(())
     }
 
-    pub(super) fn has_named_selection(&self) -> bool {
+    pub(crate) fn has_named_selection(&self) -> bool {
         self.selected_name.is_some()
     }
 
-    pub(super) fn get(&self, id: char) -> Option<&Face<'a>> {
+    pub(crate) fn get(&self, id: char) -> Option<&Face<'a>> {
         let name = if id == NAMED_FONT {
             self.selected_name.as_ref()
         } else {
@@ -242,7 +244,7 @@ impl<'r, 'a> RenderFonts<'r, 'a> {
 // Virtual filenames only: Zebra Programming Guide ^CW p. 168 / ^A@ p. 62.
 // https://www.zebra.com/content/dam/support-dam/en/documentation/unrestricted/guide/software/zpl-zbi2-pg-en.pdf
 // Restrict lookup to explicit font extensions on supported drives.
-pub(super) fn font_name(name: &str) -> Result<String, String> {
+pub(crate) fn font_name(name: &str) -> Result<String, String> {
     let name = name.trim().to_ascii_uppercase();
     let (device, file) = name.split_once(':').unwrap_or(("R", &name));
     if !matches!(device, "R" | "E" | "B" | "A") {
@@ -264,7 +266,7 @@ pub(super) fn font_name(name: &str) -> Result<String, String> {
 }
 
 // A direct ^A@ selection has its own slot, distinct from ^GS and all public IDs.
-pub(super) const NAMED_FONT: char = '\0';
+pub(crate) const NAMED_FONT: char = '\0';
 
 impl<'a> Face<'a> {
     fn bitmap(settings: Settings, glyphs: Vec<Glyph>, baseline: f64) -> Result<Self, String> {
@@ -325,7 +327,7 @@ fn validate_id(id: char) -> Result<(), String> {
 }
 
 impl Face<'_> {
-    pub(super) fn baseline(&self, h: f64) -> f64 {
+    pub(crate) fn baseline(&self, h: f64) -> f64 {
         self.baseline
             * match self.source {
                 Source::TrueType(..) => h.round(),
@@ -333,7 +335,7 @@ impl Face<'_> {
             }
     }
 
-    pub(super) fn dimensions(&self, w: f64, h: f64) -> Result<(f64, f64), String> {
+    pub(crate) fn dimensions(&self, w: f64, h: f64) -> Result<(f64, f64), String> {
         let (nw, nh) = match &self.source {
             Source::Bitmap(s, _) => (
                 if s.width == 0 { s.height } else { s.width } as f64,
@@ -358,7 +360,7 @@ impl Face<'_> {
         Ok((w, h))
     }
 
-    pub(super) fn glyph(
+    pub(crate) fn glyph(
         &self,
         c: char,
         w: f64,
@@ -412,4 +414,33 @@ impl Face<'_> {
             }
         }
     }
+}
+
+pub(crate) fn resolve_glyph<'a>(
+    selection: resident::Selection,
+    custom: Option<&'a Face<'a>>,
+    key: crate::fonts::resident::GlyphKey,
+    w: f64,
+    h: f64,
+) -> Result<(resident::GlyphView<'a>, f64, f64), String> {
+    if let Some(custom) = custom {
+        let crate::fonts::resident::GlyphKey::Unicode(c) = key else {
+            return Err("invalid custom font key".into());
+        };
+        let (g, sx, sy) = custom.glyph(c, w, h)?;
+        return Ok((
+            resident::GlyphView {
+                advance: g.advance,
+                left: g.left,
+                top: g.top,
+                width: g.width,
+                height: g.height,
+                pixels: resident::Pixels::Custom(g),
+            },
+            sx,
+            sy,
+        ));
+    }
+    let (glyphs, sx, sy) = resident::selected_for_char(selection, key, w, h);
+    Ok((resident::glyph_from(glyphs, key)?, sx, sy))
 }

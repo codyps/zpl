@@ -8,9 +8,10 @@ other processes in the automation session could not access the local network.
 font-25-14 and font-32-0 contain native samples of space, middle dot, A-grave,
 A-circumflex, and box-drawing down-and-horizontal. Sampling uses CI28. Each
 has a separately composed verification string that matched the printer exactly.
-Original sample ZPL/PNGs and extraction metadata are retained. Embedded ZBF
-files contain these glyphs only; they supplement missing characters without
-replacing the established ASCII strikes.
+Original sample ZPL/PNGs and extraction metadata are retained. The corresponding compact capture records (historically named
+`font0-25-14-retail.zbf` and `font0-32-0-retail.zbf`) contain these glyphs only; they supplement missing characters without
+replacing the established ASCII strikes. Duplicate ZBF files were removed;
+`compact_captures` reconstructs and verifies their original bytes from the shared pool.
 
 controls compares the same C2 B7 bytes under CI0, CI27, and CI28, plus independent
 rotations and a repeated UTF-8 control. It records exact submitted bytes and
