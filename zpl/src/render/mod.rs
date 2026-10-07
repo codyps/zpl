@@ -1018,17 +1018,7 @@ fn render_expanded(
                     let decoded;
                     let value = if field.barcode.is_some() || field.barcode_error.is_some() {
                         ""
-                    } else if let Some(code_page) = match encoding {
-                        // Zebra Programming Guide ^CI, pp. 156–159:
-                        // https://www.zebra.com/content/dam/support-dam/en/documentation/unrestricted/guide/software/zpl-zbi2-pg-en.pdf
-                        27 => Some(encoding_rs::WINDOWS_1252),
-                        31 => Some(encoding_rs::WINDOWS_1250),
-                        33 => Some(encoding_rs::WINDOWS_1251),
-                        34 => Some(encoding_rs::WINDOWS_1253),
-                        35 => Some(encoding_rs::WINDOWS_1254),
-                        36 => Some(encoding_rs::WINDOWS_1255),
-                        _ => None,
-                    } {
+                    } else if let Some(code_page) = font::code_page(encoding) {
                         decoded = code_page
                             .decode_without_bom_handling_and_without_replacement(&bytes)
                             .ok_or("undefined code page byte")?;
@@ -1139,6 +1129,7 @@ fn render_expanded(
                                     && (field.block.is_some() || matches!(encoding, 33..=36))
                                     && !matches!(encoding, 0 | 13),
                             )
+                            .with_encoding(encoding)
                             .with_legacy_codepage(matches!(encoding, 0 | 13))
                             .with_tab_stops(options.compatibility.text_tab_stops)
                             .with_default_glyph(advanced[0])

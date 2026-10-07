@@ -78,6 +78,7 @@ pub(super) struct Font {
     id: char,
     legacy_backslash: bool,
     legacy_codepage: bool,
+    encoding: u8,
     default_glyph: bool,
     character_map: Option<[u8; 256]>,
     block_flow: Option<BlockFlow>,
@@ -109,6 +110,7 @@ impl Font {
             id,
             legacy_backslash,
             legacy_codepage: false,
+            encoding: 28,
             default_glyph: false,
             character_map: None,
             block_flow: None,
@@ -116,6 +118,10 @@ impl Font {
             legacy_controls: false,
             control_spaces: false,
         }
+    }
+    pub(super) fn with_encoding(mut self, encoding: u8) -> Self {
+        self.encoding = encoding;
+        self
     }
     pub(super) fn with_legacy_codepage(mut self, enabled: bool) -> Self {
         self.legacy_codepage = enabled;
@@ -154,6 +160,24 @@ impl Font {
                 if Some(source as usize) != image {
                     return Ok(char::from_u32(0xf0000 + u32::from(source)).unwrap());
                 }
+            }
+        }
+        if resident(self.id).is_some() {
+            // Legacy text was decoded for Unicode-aware layout. Recover its
+            // byte index here; layout-generated characters use measured Unicode.
+            let source = if self.legacy_codepage {
+                image.filter(|&i| i <= 255 && (c != '\\' || self.legacy_backslash))
+            } else {
+                None
+            };
+            if let Some(source) = source {
+                return Ok(char::from_u32(0xf0000 + source as u32).unwrap());
+            }
+            if self.control_spaces && matches!(c, '\u{1b}' | '\u{7f}') {
+                return Ok(char::from_u32(0xf0000 + u32::from(b' ')).unwrap());
+            }
+            if self.legacy_controls && matches!(c, '\u{1b}' | '\u{7f}') {
+                return Ok(char::from_u32(0xf0000 + c as u32).unwrap());
             }
         }
         let c = match self
@@ -559,7 +583,7 @@ fn selected(id: impl Into<Font> + Copy, w: f64, h: f64) -> (GlyphSet, f64, f64) 
     if let Some(face) = resident(font.id) {
         let metrics = face.cell_metrics().expect("resident cell metrics");
         return (
-            GlyphSet::Compact(face, font.legacy_backslash),
+            GlyphSet::Compact(face, font.legacy_backslash, font.encoding),
             w / f64::from(metrics.cell_width),
             h / f64::from(metrics.cell_height),
         );
@@ -659,7 +683,7 @@ fn selected_for_char(font: Font, c: char, w: f64, h: f64) -> (GlyphSet, f64, f64
 #[derive(Clone, Copy)]
 enum GlyphSet {
     Captured(&'static [Glyph]),
-    Compact(&'static zpl_bitmap_fonts::Font, bool),
+    Compact(&'static zpl_bitmap_fonts::Font, bool, u8),
 }
 impl From<&'static Vec<Glyph>> for GlyphSet {
     fn from(glyphs: &'static Vec<Glyph>) -> Self {
@@ -735,25 +759,63 @@ impl GlyphView {
 fn resident(id: char) -> Option<&'static zpl_bitmap_fonts::Font> {
     zpl_bitmap_fonts::resident(id)
 }
-fn source_key(c: char, face: &zpl_bitmap_fonts::Font, legacy_backslash: bool) -> Option<u8> {
-    // CI0 source positions are not Unicode. The character-map path uses a private
-    // internal tag to preserve an explicit source slot through text layout.
+fn compact_glyph(
+    c: char,
+    face: &zpl_bitmap_fonts::Font,
+    legacy_backslash: bool,
+    encoding: u8,
+) -> Option<zpl_bitmap_fonts::Glyph> {
+    use zpl_bitmap_fonts::collection::Encoding;
+    // Explicit ^CI remapping preserves the printer source position through layout.
     if (0xf0000..=0xf00ff).contains(&(c as u32)) {
-        return Some((c as u32 - 0xf0000) as u8);
+        return face.glyph((c as u32 - 0xf0000) as u8);
     }
-    match c {
-        '\\' if !legacy_backslash && !matches!(face.name, "Z:E8.FNT" | "Z:H8.FNT" | "Z:GS.FNT") => {
-            Some(31)
+    // Profiles select the measured legacy or modern backslash behavior. The
+    // per-face mappings carry the actual glyph choice, including symbol fonts.
+    let ci = if c == '\\' && !legacy_backslash {
+        27
+    } else {
+        28
+    };
+    let measured = if c == '\\' {
+        face.encoded_glyph(Encoding::Input { ci }, c as u32)
+    } else if face.encoding(Encoding::Input { ci: encoding }).is_some()
+        && code_page(encoding).is_some()
+    {
+        // Decoding remains necessary for layout. These supported code pages have
+        // unique defined character encodings, so recover their original input byte.
+        let mut utf8 = [0; 4];
+        let (bytes, _, errors) = code_page(encoding)?.encode(c.encode_utf8(&mut utf8));
+        if !errors && bytes.len() == 1 {
+            face.encoded_glyph(Encoding::Input { ci: encoding }, u32::from(bytes[0]))
+        } else {
+            None
         }
-        '€' => Some(21),
-        '\u{2190}' => Some(27),
-        '\u{2302}' => Some(127),
-        _ if (' '..='~').contains(&c) => Some(c as u8),
-        _ => CP850
-            .iter()
-            .position(|&key| key == c)
-            .map(|i| (i + 128) as u8),
-    }
+    } else {
+        // Where the requested byte map has not been measured, use its decoded
+        // Unicode character and the measured Unicode map, never candidate tables.
+        face.encoded_glyph(Encoding::Input { ci: 28 }, c as u32)
+    };
+    measured
+        .or_else(|| {
+            // Layout inserts a visible discretionary hyphen after Unicode decoding.
+            (c == '\u{ad}')
+                .then(|| face.encoded_glyph(Encoding::Input { ci: 27 }, 173))
+                .flatten()
+        })
+        .or_else(|| {
+            // Blank-only captures cannot measure advance. Retain the independently
+            // verified source advance only when that source glyph is also blank.
+            let key = if c.is_ascii() {
+                Some(c as u8)
+            } else {
+                CP850
+                    .iter()
+                    .position(|&key| key == c)
+                    .map(|i| (i + 128) as u8)
+            }?;
+            face.glyph(key).filter(|g| g.width == 0 && g.height == 0)
+        })
 }
 fn glyph_from(glyphs: impl Into<GlyphSet>, c: char) -> Result<GlyphView, String> {
     let missing = || format!("unsupported embedded font glyph {c:?}");
@@ -772,9 +834,8 @@ fn glyph_from(glyphs: impl Into<GlyphSet>, c: char) -> Result<GlyphView, String>
                 pixels: Pixels::Captured(g),
             })
         }
-        GlyphSet::Compact(face, legacy) => {
-            let key = source_key(c, face, legacy).ok_or_else(missing)?;
-            let g = face.glyph(key).ok_or_else(missing)?;
+        GlyphSet::Compact(face, legacy, encoding) => {
+            let g = compact_glyph(c, face, legacy, encoding).ok_or_else(missing)?;
             Ok(GlyphView {
                 advance: u32::from(g.advance),
                 left: i32::from(g.left),
@@ -1210,7 +1271,7 @@ mod tests {
             let face = resident(id).unwrap();
             for key in 0..=255 {
                 let c = char::from_u32(0xf0000 + key).unwrap();
-                if let Ok(g) = glyph_from(GlyphSet::Compact(face, false), c) {
+                if let Ok(g) = glyph_from(GlyphSet::Compact(face, false, 28), c) {
                     check(g);
                 }
             }
@@ -1223,6 +1284,50 @@ mod tests {
                 }
             }
         }
+    }
+
+    #[test]
+    fn measured_input_maps_render_characters_outside_cp850() {
+        // ZD621 measured CI27/28 maps include these inputs, which the old
+        // Unicode-to-CP850 source lookup could not resolve.
+        use zpl_bitmap_fonts::collection::Encoding;
+        let face = resident('A').unwrap();
+        for (character, byte) in [('Œ', 0x8c), ('…', 0x85), ('™', 0x99), ('€', 0x80)] {
+            assert!(!CP850.contains(&character));
+            let expected = face
+                .encoded_glyph(Encoding::Input { ci: 27 }, byte)
+                .unwrap();
+            for ci in [27, 28] {
+                let font = Font::new('A', false).with_encoding(ci);
+                let (set, _, _) = selected(font, 5., 9.);
+                let actual = glyph_from(set, font.map_char(character).unwrap()).unwrap();
+                assert_eq!(
+                    (
+                        actual.advance,
+                        actual.left,
+                        actual.top,
+                        actual.width,
+                        actual.height
+                    ),
+                    (
+                        u32::from(expected.advance),
+                        i32::from(expected.left),
+                        i32::from(expected.top),
+                        u32::from(expected.width),
+                        u32::from(expected.height)
+                    )
+                );
+                for y in 0..actual.height {
+                    for x in 0..actual.width {
+                        assert_eq!(
+                            actual.pixel(x as usize, y as usize),
+                            expected.pixel(x as u16, y as u16)
+                        );
+                    }
+                }
+            }
+        }
+        assert!(compact_glyph('漢', face, false, 28).is_none());
     }
 
     #[test]
@@ -1269,8 +1374,18 @@ mod tests {
             (remapped.width, remapped.height),
             (u32::from(legacy.width), u32::from(legacy.height))
         );
-        assert_eq!(source_key('\\', resident('A').unwrap(), false), Some(31));
-        assert_eq!(source_key('\\', resident('A').unwrap(), true), Some(92));
+        assert_eq!(
+            compact_glyph('\\', resident('A').unwrap(), false, 28)
+                .unwrap()
+                .width,
+            resident('A').unwrap().glyph(31).unwrap().width
+        );
+        assert_eq!(
+            compact_glyph('\\', resident('A').unwrap(), true, 28)
+                .unwrap()
+                .width,
+            resident('A').unwrap().glyph(92).unwrap().width
+        );
         assert!(matches!(selected('0', 32., 32.).0, GlyphSet::Captured(..)));
         assert!(matches!(selected('P', 18., 20.).0, GlyphSet::Captured(..)));
     }
@@ -1633,3 +1748,17 @@ const CP850: [char; 128] = [
     '\u{ad}', '\u{b1}', '\u{2017}', '\u{be}', '\u{b6}', '\u{a7}', '\u{f7}', '\u{b8}', '\u{b0}',
     '\u{a8}', '\u{b7}', '\u{b9}', '\u{b3}', '\u{b2}', '\u{25a0}', '\u{a0}',
 ];
+
+// Zebra Programming Guide ^CI, pp. 156–159:
+// https://www.zebra.com/content/dam/support-dam/en/documentation/unrestricted/guide/software/zpl-zbi2-pg-en.pdf
+pub(super) fn code_page(ci: u8) -> Option<&'static encoding_rs::Encoding> {
+    match ci {
+        27 => Some(encoding_rs::WINDOWS_1252),
+        31 => Some(encoding_rs::WINDOWS_1250),
+        33 => Some(encoding_rs::WINDOWS_1251),
+        34 => Some(encoding_rs::WINDOWS_1253),
+        35 => Some(encoding_rs::WINDOWS_1254),
+        36 => Some(encoding_rs::WINDOWS_1255),
+        _ => None,
+    }
+}

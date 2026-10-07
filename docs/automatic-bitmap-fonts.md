@@ -171,3 +171,19 @@ Tests include independent simulated printer responses, loopback HTTP/cache repla
 Unicode glyph discovery without seed data, multiple encodings in one recovery,
 calibration holdouts, ambiguous/blank inputs, bounded identity/directory queries,
 legacy migration, JSON tampering and compiled-reader execution.
+
+## Renderer encoding resolution
+
+Resident bitmap rendering reads the measured input maps from the same compact
+font collection. `^CI27` uses its byte map; Unicode text uses the measured
+`^CI28` map. Other supported byte encodings are decoded for layout and use the
+measured Unicode map when a dedicated input map is absent. Legacy `^CI0`/`^CI13`
+text and explicit `^CI` source remapping retain source positions through glyph
+selection. Candidate code-page tables never supply renderer glyphs.
+
+The printer profile's legacy backslash option selects between measured maps;
+there are no font-name exceptions or hard-coded euro/arrow glyph positions.
+Unicode-aware layout still requires byte decoding. Independently verified blank
+source advances remain a fallback for unresolved blank input observations, and
+layout-generated discretionary hyphens use the measured CI27 mapping. These
+fallbacks do not promote unresolved observations into verified mapping data.

@@ -180,7 +180,11 @@ impl Font {
     /// are observed pixel/advance equivalents; this does not identify one raw ID.
     /// Unverified candidates and unresolved observations never supply renderer glyphs.
     pub fn glyph(&self, key: u8) -> Option<Glyph> {
-        let resolution = self.encoding(Encoding::Ci0Source)?.lookup(u32::from(key))?;
+        self.encoded_glyph(Encoding::Ci0Source, u32::from(key))
+    }
+    /// Resolve a verified input mapping, excluding candidates and unresolved entries.
+    pub fn encoded_glyph(&self, encoding: Encoding, input: u32) -> Option<Glyph> {
+        let resolution = self.encoding(encoding)?.lookup(input)?;
         if resolution.status != Status::Matched {
             return None;
         }
@@ -218,5 +222,41 @@ impl Font {
             x: left,
             y: top,
         })
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn encoded_glyph_requires_measured_matches() {
+        static POOL: Pool = Pool {
+            metrics: &[[1, 0, 0, 1, 1]],
+            offsets: &[0],
+            bits: &[128],
+        };
+        static FONT: Font = Font {
+            name: "test",
+            metrics: None,
+            ids: &[7],
+            records: &[0],
+            pool: &POOL,
+            encodings: &[Map {
+                encoding: Encoding::Input { ci: 28 },
+                inputs: &[65, 66, 67, 68, 69],
+                spans: &[[0, 1]; 5],
+                statuses: &[0, 1, 2, 3, 4],
+                candidates: &[7],
+            }],
+        };
+        let encoding = Encoding::Input { ci: 28 };
+        assert!(FONT.encoded_glyph(encoding, 65).unwrap().pixel(0, 0));
+        // Even a populated candidate list does not make unresolved or candidate
+        // evidence safe for rendering. Untested encodings/inputs also fail.
+        for input in 66..=70 {
+            assert!(FONT.encoded_glyph(encoding, input).is_none());
+        }
+        assert!(FONT.encoded_glyph(Encoding::Input { ci: 27 }, 65).is_none());
     }
 }
