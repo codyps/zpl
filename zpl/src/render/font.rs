@@ -78,6 +78,7 @@ pub(super) struct Font {
     id: char,
     legacy_backslash: bool,
     legacy_codepage: bool,
+    serial_zero_source: bool,
     encoding: u8,
     default_glyph: bool,
     character_map: Option<[u8; 256]>,
@@ -111,6 +112,7 @@ impl Font {
             id,
             legacy_backslash,
             legacy_codepage: false,
+            serial_zero_source: false,
             encoding: 28,
             default_glyph: false,
             character_map: None,
@@ -123,6 +125,10 @@ impl Font {
     }
     pub(super) fn with_encoding(mut self, encoding: u8) -> Self {
         self.encoding = encoding;
+        self
+    }
+    pub(super) fn with_serial_zero_source(mut self, enabled: bool) -> Self {
+        self.serial_zero_source = enabled;
         self
     }
     pub(super) fn with_legacy_codepage(mut self, enabled: bool) -> Self {
@@ -183,6 +189,11 @@ impl Font {
                 None
             };
             if let Some(source) = source {
+                // Independent ^SN captures retain source zero under CI13; FD/SF
+                // use the measured CI13 input map. Explicit remaps take priority.
+                if self.serial_zero_source && self.encoding == 13 && source == usize::from(b'0') {
+                    return Ok(char::from_u32(0xf0000 + source as u32).unwrap());
+                }
                 // Preserve the input byte independently of explicit source-slot
                 // remapping. CI13's zero is not the CI0 source-slot zero.
                 let tag = if matches!(self.encoding, 0 | 13) {

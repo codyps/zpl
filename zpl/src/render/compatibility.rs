@@ -165,6 +165,10 @@ pub struct Compatibility {
     /// twelve-digit limit (^SN pp. 341–342), without suppressing their zeros.
     /// Disabled: report unsupported input rather than silently skipping indexing.
     pub serial_overlong_keeps_value: bool,
+    /// Use the source-position zero for resident bitmap ^SN text under CI13.
+    /// The ZD621 serial-zd621-v1 captures retain its slash, unlike ordinary FD/SF.
+    /// Disabled: use the selected encoding's input mapping (^CI pp. 155–158).
+    pub serial_ci13_zero_uses_source: bool,
     /// Replace nonnumeric EAN-8/EAN-13/UPC-A field bytes with zero on the ZD621.
     /// Disabled: reject nonnumeric data (Zebra guide pp. 83, 109, 142).
     pub retail_non_digits_as_zero: bool,

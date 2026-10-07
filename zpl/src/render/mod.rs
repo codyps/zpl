@@ -1134,6 +1134,9 @@ fn render_expanded(
                             )
                             .with_encoding(encoding)
                             .with_legacy_codepage(matches!(encoding, 0 | 13))
+                            .with_serial_zero_source(
+                                name == "SN" && options.compatibility.serial_ci13_zero_uses_source,
+                            )
                             .with_tab_stops(options.compatibility.text_tab_stops)
                             .with_default_glyph(advanced[0])
                             .with_character_map(

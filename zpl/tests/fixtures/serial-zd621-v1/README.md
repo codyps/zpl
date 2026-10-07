@@ -18,3 +18,10 @@ This tests the initial preview only; PQ iteration is still an explicit error.
 manifest.tsv pins source, raw PNG and rendered pixel SHA-256, with zero
 underpaint and overpaint across every full canvas, including text.
 Run cargo test -p zpl --test serial --test serial_preview.
+
+The CI13 serial fields retain the source-position slashed zero, unlike ordinary
+FD/SF text. `serial_ci13_zero_uses_source` selects this measured departure.
+On 2026-10-07, two independent previews of the unchanged text-serial request
+reproduced the original PNG SHA-256 exactly:
+`97d738b631358df5c73ffe988ab96e2a73f9d381b33141fc47418ee78bdde167`.
+The specification profile leaves this override disabled.
