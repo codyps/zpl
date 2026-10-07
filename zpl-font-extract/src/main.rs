@@ -43,6 +43,14 @@ enum Command {
         timeout: u64,
         #[arg(long, default_value_t = 9200)]
         identity_port: u16,
+        /// Reboot stalled previews on the JSON settings port and retry once.
+        #[arg(long)]
+        auto_restart: bool,
+        /// Probe only inputs absent from the supplied collection.
+        #[arg(long)]
+        missing_only: bool,
+        #[arg(long, default_value_t = 600)]
+        restart_wait: u64,
         #[arg(long, default_value_t = 9100)]
         sgd_port: u16,
     },
@@ -61,7 +69,7 @@ enum Command {
         #[arg(long = "font")]
         fonts: Vec<String>,
     },
-    /// Merge existing measured observations or unverified candidate reports.
+    /// Merge existing measured preview observations.
     MergeEvidence {
         source: PathBuf,
         #[arg(long, required = true)]
@@ -140,6 +148,9 @@ async fn main() -> Result<()> {
             delay,
             timeout,
             identity_port,
+            auto_restart,
+            missing_only,
+            restart_wait,
             sgd_port,
         } => {
             ensure!(!out.exists(), "output exists");
@@ -161,6 +172,11 @@ async fn main() -> Result<()> {
                 write_json(&profile, &serde_json::json!({"host":host,"identity":id}))?;
                 id
             };
+            printer = printer.with_identity(id.clone());
+            if auto_restart {
+                printer = printer.with_restart(identity_port, restart_wait)?;
+                printer.ensure_ready().await?;
+            }
             let fonts = if !probes.fonts.is_empty() {
                 probes.fonts.clone()
             } else if let Some(c) = &seed {
@@ -180,12 +196,12 @@ async fn main() -> Result<()> {
                     names
                 }
             };
-            printer = printer.with_identity(id.clone());
             let config = RecoveryConfig {
                 probes: probes.config(fonts)?,
                 encodings: probes.encodings()?,
                 codes: probes.codes,
                 seed,
+                missing_only,
             };
             let c = automatic::recover(&config, &mut printer).await?;
             if !offline {

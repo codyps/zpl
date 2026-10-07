@@ -535,6 +535,7 @@ async fn cached_capture_is_scoped_to_printer_identity() {
 async fn unified_recovery_keeps_calibration_and_multiple_encodings() {
     use crate::collection::Encoding;
     let options = RecoveryConfig {
+        missing_only: false,
         probes: config(),
         encodings: vec![Encoding::Input { ci: 27 }, Encoding::Input { ci: 28 }],
         codes: vec![32, 65, 66, 67, 200],
@@ -553,6 +554,7 @@ async fn unified_http_recovery_replays_all_encodings_offline() {
     let server = Server::new();
     let t = Temp::new();
     let options = RecoveryConfig {
+        missing_only: false,
         probes: config(),
         encodings: vec![
             crate::collection::Encoding::Input { ci: 27 },
@@ -570,4 +572,57 @@ async fn unified_http_recovery_replays_all_encodings_offline() {
         serde_json::to_vec(&online).unwrap(),
         serde_json::to_vec(&replay).unwrap()
     );
+}
+
+#[tokio::test]
+async fn automatic_restart_does_not_retry_http_status_errors() {
+    use std::{
+        io::{Read, Write},
+        net::TcpListener,
+    };
+    let listener = TcpListener::bind("127.0.0.1:0").unwrap();
+    let host = format!("http://{}/", listener.local_addr().unwrap());
+    let task = std::thread::spawn(move || {
+        let (mut socket, _) = listener.accept().unwrap();
+        let mut request = [0; 8192];
+        assert!(socket.read(&mut request).unwrap() > 0);
+        socket
+            .write_all(
+                b"HTTP/1.1 401 Unauthorized\r\nContent-Length: 0\r\nConnection: close\r\n\r\n",
+            )
+            .unwrap();
+    });
+    let temp = Temp::new();
+    let mut printer = capture::Printer::new(&host, &temp.0, false, 0.0, 1)
+        .unwrap()
+        .with_restart(1, 10)
+        .unwrap()
+        .with_identity(serde_json::json!({"device.unique_id":"test","appl.name":"test"}));
+    let error = calibrate(&config(), &mut printer).await.unwrap_err();
+    assert!(format!("{error:?}").contains("401"));
+    assert!(!temp.0.join("last-reset.json").exists());
+    task.join().unwrap();
+}
+
+#[tokio::test]
+async fn checkpoints_are_atomic_and_replaceable() {
+    let temp = Temp::new();
+    let mut printer = capture::Printer::new("http://localhost/", &temp.0, true, 0.0, 1).unwrap();
+    let mut c = crate::collection::Collection::new(
+        vec![crate::collection::Font {
+            name: "A".into(),
+            source_sha256: "a".repeat(64),
+            metrics: None,
+            records: vec![],
+            encodings: vec![],
+        }],
+        serde_json::json!({}),
+    )
+    .unwrap();
+    use capture::Capture;
+    printer.checkpoint(&c).unwrap();
+    c.provenance = serde_json::json!({"stage":2});
+    printer.checkpoint(&c).unwrap();
+    let saved = crate::collection::Collection::load(&temp.0.join("recovery.json")).unwrap();
+    assert_eq!(saved.provenance["stage"], 2);
 }

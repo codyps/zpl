@@ -104,13 +104,11 @@ ZD621 stopped responding to them.
 This automates the supported survey; it cannot prove recovery of glyphs no tested
 input can select, or claim all Unicode/multibyte encodings were swept. The JSON
 records the requested scope, exact tested keys, unresolved/ambiguous outcomes,
-and coverage of supplied glyphs. An absent map key is untested. Imported
-unverified candidates have a separate namespace/status and do not reduce measured
-coverage gaps.
+and coverage of supplied glyphs. An absent map key is untested. Only preview observations supply mappings; candidate character tables are not accepted.
 
 ## JSON and compilation
 
-Current output is `zebra-bitmap-collection` version 3. Each font contains a name,
+Current output is `zebra-bitmap-collection` version 4. Each font contains a name,
 source hash, optional measured cell width/height/baseline/space advance, glyph
 records, and per-encoding maps. Records retain 16-bit IDs, signed bearings,
 advance, declared dimensions and byte-padded bitmap rows. Original padding ink
@@ -118,7 +116,7 @@ in imported glyphs is retained. There are no binary headers, slot tables or
 format flags. The earlier draft v2 schema is rejected.
 
 The content SHA-256 covers compact JSON serialization of `(schema, version,
-fonts, provenance, coverage, candidate_code_pages)`. Struct field order follows
+fonts, provenance, coverage)`. Struct field order follows
 the Rust types; arbitrary provenance object keys are sorted. `Collection::new`
 and `seal` derive coverage/hash; `load` and `save` validate them. Documents have
 a 256 MiB read/write limit. Hashes detect edits; they are not printer signatures.
@@ -132,10 +130,9 @@ cargo run --locked -p zpl-font-extract -- merge-evidence fonts.json \
 
 `compile` accepts current JSON and verified legacy v1 input and emits one table
 format using `zpl_bitmap_fonts::collection`. `merge-evidence` accepts verified v1
-data, hash-checked `zebra-font-encoding-observations-v1` reports, and separately
-labelled `zebra-font-mapping-candidates-v1` reports. Contradictory observations
-fail. Candidate reports contain `code_pages` (ID, 256 character keys, provenance)
-and `font_candidates` (source hash, record IDs/character keys, provenance).
+data and hash-checked `zebra-font-encoding-observations-v1` reports.
+Contradictory observations fail. Candidate mapping reports are rejected.
+
 
 The generated reader uses static arrays without allocation, runtime JSON or new
 runtime dependencies. It shares glyph records, bitmap payloads and mapping
@@ -179,7 +176,7 @@ font collection. `^CI27` uses its byte map; Unicode text uses the measured
 `^CI28` map. Other supported byte encodings are decoded for layout and use the
 measured Unicode map when a dedicated input map is absent. Legacy `^CI0`/`^CI13`
 text and explicit `^CI` source remapping retain source positions through glyph
-selection. Candidate code-page tables never supply renderer glyphs.
+selection. No candidate code-page tables are stored.
 
 The printer profile's legacy backslash option selects between measured maps;
 there are no font-name exceptions or hard-coded euro/arrow glyph positions.
@@ -187,3 +184,27 @@ Unicode-aware layout still requires byte decoding. Independently verified blank
 source advances remain a fallback for unresolved blank input observations, and
 layout-generated discretionary hyphens use the measured CI27 mapping. These
 fallbacks do not promote unresolved observations into verified mapping data.
+
+## Automatic hang recovery and resuming
+
+Use `recover --auto-restart` to authorize recovery of stalled HTTP preview
+transactions. It sends the JSON `device.reset` command once per recovery attempt
+on the identity port (default 9200), checks the same serial/software version,
+polls HTTP for up to `--restart-wait` seconds (default 600), and requires a
+pixel-exact control preview before retrying. HTTP status errors, malformed PNGs,
+and failed pixel checks do not trigger reboot. A persistent receipt bounds each
+page to one retry; a second transport failure restores the printer and quarantines
+the page. Resuming does not clear that limit. Resets have a 60-second cooldown.
+
+The cache contains an atomically replaced `recovery.json` checkpoint after every
+completed font/encoding survey. Resume with `--source CACHE/recovery.json
+--missing-only`, the same cache and printer, and a new output directory. Completed
+inputs are retained; only absent inputs are probed. This does not reinterpret
+unresolved entries as successful mappings. Raw PNG/ZPL receipts remain in the
+cache and permit offline replay.
+
+Version 4 removes candidate character tables and their import format. Version 3
+collections containing those fields are rejected; regenerate with preview recovery
+or import verified v1 capture data. The default Unicode discovery repertoire is
+bounded and recorded explicitly; a completed default sweep is not an exhaustive
+Unicode claim.

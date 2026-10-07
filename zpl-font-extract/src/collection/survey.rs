@@ -17,7 +17,6 @@ pub fn supported(encoding: Encoding) -> bool {
         Encoding::Input { ci } => {
             (0..=13).contains(&ci) || [27, 28, 31, 33, 34, 35, 36].contains(&ci)
         }
-        _ => false,
     }
 }
 pub fn pages(

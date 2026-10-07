@@ -64,7 +64,6 @@ pub fn unhex(s: &str) -> Result<Vec<u8>> {
 pub enum Encoding {
     Input { ci: u8 },
     Ci0Source,
-    CandidateCharacters,
 }
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "kebab-case")]
@@ -73,7 +72,6 @@ pub enum Status {
     BlankUnresolved,
     Unmatched,
     FilenameFallback,
-    UnverifiedCandidate,
 }
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -108,16 +106,7 @@ pub struct Coverage {
     pub archived_records: usize,
     pub visible_records: usize,
     pub observed_equivalent_records: usize,
-    pub candidate_records: usize,
     pub unresolved_visible_record_ids: Vec<u16>,
-}
-#[derive(Clone, Debug, Serialize, Deserialize)]
-#[serde(deny_unknown_fields)]
-pub struct CodePage {
-    pub ci: u8,
-    pub byte_to_character: Vec<u16>,
-    /// Offline candidate evidence, not proof of current printer behavior.
-    pub provenance: Value,
 }
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -128,7 +117,6 @@ pub struct Collection {
     pub provenance: Value,
     pub content_sha256: String,
     pub coverage: Vec<Coverage>,
-    pub candidate_code_pages: Vec<CodePage>,
 }
 /// The complete multi-encoding document can exceed the legacy 32 MiB font limit.
 pub const MAX_JSON_BYTES: u64 = 256 * 1024 * 1024;
@@ -212,12 +200,11 @@ impl Collection {
     pub fn new(fonts: Vec<Font>, provenance: Value) -> Result<Self> {
         let mut c = Self {
             schema: "zebra-bitmap-collection".into(),
-            version: 3,
+            version: 4,
             fonts,
             provenance,
             content_sha256: String::new(),
             coverage: vec![],
-            candidate_code_pages: vec![],
         };
         c.seal()?;
         c.validate()?;
@@ -230,7 +217,6 @@ impl Collection {
             &self.fonts,
             &self.provenance,
             &self.coverage,
-            &self.candidate_code_pages,
         ))?))
     }
     fn coverage(&self) -> Result<Vec<Coverage>> {
@@ -250,19 +236,11 @@ impl Collection {
                     .filter(|e| e.status == Status::Matched)
                     .flat_map(|e| e.candidates.iter().copied())
                     .collect::<BTreeSet<_>>();
-                let candidates = f
-                    .encodings
-                    .iter()
-                    .flat_map(|m| &m.entries)
-                    .filter(|e| e.status == Status::UnverifiedCandidate)
-                    .flat_map(|e| e.candidates.iter().copied())
-                    .collect::<BTreeSet<_>>();
                 Ok(Coverage {
                     font: f.name.clone(),
                     archived_records: f.records.len(),
                     visible_records: visible.len(),
                     observed_equivalent_records: visible.intersection(&observed).count(),
-                    candidate_records: visible.intersection(&candidates).count(),
                     unresolved_visible_record_ids: visible.difference(&observed).copied().collect(),
                 })
             })
@@ -280,7 +258,7 @@ impl Collection {
     }
     pub fn validate(&self) -> Result<()> {
         ensure!(
-            self.schema == "zebra-bitmap-collection" && self.version == 3,
+            self.schema == "zebra-bitmap-collection" && self.version == 4,
             "unsupported collection schema/version"
         );
         ensure!(
@@ -295,13 +273,6 @@ impl Collection {
             self.coverage == self.coverage()?,
             "coverage differs from records/mappings"
         );
-        let mut pages = BTreeSet::new();
-        for page in &self.candidate_code_pages {
-            ensure!(
-                pages.insert(page.ci) && page.byte_to_character.len() == 256,
-                "invalid/duplicate candidate code page"
-            );
-        }
         let mut names = BTreeSet::new();
         for f in &self.fonts {
             ensure!(
@@ -342,10 +313,7 @@ impl Collection {
             }
             let mut maps = BTreeSet::new();
             for m in &f.encodings {
-                ensure!(
-                    survey::supported(m.encoding) || m.encoding == Encoding::CandidateCharacters,
-                    "unsupported encoding domain"
-                );
+                ensure!(survey::supported(m.encoding), "unsupported encoding domain");
                 ensure!(maps.insert(m.encoding), "duplicate encoding map");
                 let mut prev = None;
                 for e in &m.entries {
@@ -357,7 +325,6 @@ impl Collection {
                     ensure!(
                         match m.encoding {
                             Encoding::Input { ci: 28 } => char::from_u32(e.input).is_some(),
-                            Encoding::CandidateCharacters => e.input <= 65535,
                             _ => e.input <= 255,
                         },
                         "input outside encoding domain"
@@ -368,14 +335,8 @@ impl Collection {
                         "invalid candidate IDs"
                     );
                     ensure!(
-                        matches!(e.status, Status::Matched | Status::UnverifiedCandidate)
-                            == !e.candidates.is_empty(),
+                        matches!(e.status, Status::Matched) == !e.candidates.is_empty(),
                         "status/candidates disagree"
-                    );
-                    ensure!(
-                        (e.status == Status::UnverifiedCandidate)
-                            == (m.encoding == Encoding::CandidateCharacters),
-                        "candidate evidence must be distinct"
                     );
                 }
             }

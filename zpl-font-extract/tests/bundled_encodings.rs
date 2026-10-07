@@ -1,5 +1,5 @@
 //! Check the 2026-10-06 ZD621 203-dpi/V93.21.33Z snapshot against its portable JSON.
-//! This is an archive regression, not evidence of a new printer capture.
+//! Compare every generated record/map with the measured preview collection.
 use std::{fs, path::PathBuf};
 use zpl_font_extract::collection::{compile, unhex, Collection};
 #[path = "../../zpl-bitmap-fonts/src/zd621/fonts.rs"]
@@ -10,10 +10,7 @@ fn bundled_encodings_match_json_and_regenerate_exactly() {
     let root = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../zpl-bitmap-fonts");
     let c = Collection::load(&root.join("data/zd621/fonts.json")).unwrap();
     assert_eq!(c.fonts.len(), 47);
-    assert_eq!(
-        c.fonts.iter().map(|f| f.records.len()).sum::<usize>(),
-        10111
-    );
+    assert_eq!(c.fonts.iter().map(|f| f.records.len()).sum::<usize>(), 8821);
     assert_eq!(
         c.coverage
             .iter()
@@ -26,10 +23,21 @@ fn bundled_encodings_match_json_and_regenerate_exactly() {
             .iter()
             .map(|f| f.unresolved_visible_record_ids.len())
             .sum::<usize>(),
-        1290
+        0
     );
     assert_eq!(c.fonts.len(), generated::FONTS.len());
     for f in &c.fonts {
+        let observed = f
+            .encodings
+            .iter()
+            .flat_map(|m| &m.entries)
+            .filter(|e| e.status == zpl_font_extract::collection::Status::Matched)
+            .flat_map(|e| e.candidates.iter().copied())
+            .collect::<std::collections::BTreeSet<_>>();
+        assert!(
+            f.records.iter().all(|r| observed.contains(&r.id)),
+            "unobserved bundled record"
+        );
         let actual = generated::font_by_name(&f.name).unwrap();
         assert_eq!(actual.metrics, f.metrics);
         assert_eq!(
@@ -71,17 +79,6 @@ fn bundled_encodings_match_json_and_regenerate_exactly() {
                 assert_eq!(found.candidates, entry.candidates);
             }
         }
-    }
-    assert_eq!(generated::CANDIDATE_CODE_PAGES.len(), 61);
-    for (actual, expected) in generated::CANDIDATE_CODE_PAGES
-        .iter()
-        .zip(&c.candidate_code_pages)
-    {
-        assert_eq!(actual.ci, expected.ci);
-        assert_eq!(
-            actual.byte_to_character.as_slice(),
-            expected.byte_to_character
-        );
     }
     struct Temp(PathBuf);
     impl Drop for Temp {

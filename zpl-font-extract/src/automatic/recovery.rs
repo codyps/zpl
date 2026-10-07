@@ -10,6 +10,7 @@ pub struct RecoveryConfig {
     /// Empty selects all byte inputs and the Unicode discovery repertoire.
     pub codes: Vec<u32>,
     pub seed: Option<Collection>,
+    pub missing_only: bool,
 }
 
 pub async fn recover(c: &RecoveryConfig, capture: &mut impl Capture) -> Result<Collection> {
@@ -54,18 +55,28 @@ pub async fn recover(c: &RecoveryConfig, capture: &mut impl Capture) -> Result<C
             .all(|n| result.fonts.iter().any(|f| f.name == *n)),
         "unknown font selection"
     );
-    for font in &mut result.fonts {
+    for index in 0..result.fonts.len() {
+        let font = &result.fonts[index];
         if !c.probes.fonts.contains(&font.name) {
             continue;
         }
         for &encoding in &c.encodings {
-            let inputs = if !c.codes.is_empty() {
+            let font = &mut result.fonts[index];
+            let mut inputs = if !c.codes.is_empty() {
                 c.codes.clone()
             } else if encoding == (Encoding::Input { ci: 28 }) {
                 survey::unicode_candidates()
             } else {
                 (0..=255).collect()
             };
+            if c.missing_only {
+                if let Some(map) = font.encodings.iter().find(|m| m.encoding == encoding) {
+                    inputs.retain(|input| !map.entries.iter().any(|e| e.input == *input));
+                }
+                if inputs.is_empty() {
+                    continue;
+                }
+            }
             let mut map = survey::run(
                 font,
                 encoding,
@@ -115,6 +126,7 @@ pub async fn recover(c: &RecoveryConfig, capture: &mut impl Capture) -> Result<C
                 });
             }
             evidence::merge(font, map)?;
+            capture.checkpoint(&result)?;
         }
     }
     result.provenance = json!({"previous":result.provenance,"recovery_scope":{"fonts":c.probes.fonts,"encodings":c.encodings,"codes":c.codes,"unicode_default":"U+0000-052F,U+2000-26FF,U+F000-F0FF,U+FFFD-FFFF","exhaustive":false}});

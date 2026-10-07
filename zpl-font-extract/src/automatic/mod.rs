@@ -3,6 +3,7 @@
 //! against independently composed preview pages.
 //! Sampling is independent of the renderer and never reads firmware font files.
 pub mod capture;
+mod restart;
 pub use crate::collection::compile;
 mod recovery;
 pub use recovery::{recover, RecoveryConfig};

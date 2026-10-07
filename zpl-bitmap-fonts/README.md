@@ -15,11 +15,11 @@ The renderer uses this same dataset for resident A–H and GS (`@`). `resident(i
 resolves the appropriate face; C/D share a matrix, E/H select their 203-dpi forms.
 There is no second copy of the bitmap fonts or separate encoding-data feature.
 
-The [2026-10-06 snapshot](data/zd621/README.md) contains 47 fonts and 10,111 glyph
-records, including calibrated native metrics and advancing blanks from the earlier
-verified captures. It combines measured encoding observations and explicitly
-unverified candidates. The latter never supply renderer glyphs. These observations
-apply to the ZD621 at 203 dpi/V93.21.33Z, not other devices or configurations.
+The [preview dataset](data/zd621/README.md) contains 47 fonts, including calibrated
+native metrics and advancing blanks from independently verified captures. Only
+records with measured input equivalents and preview-derived maps are bundled.
+These observations apply to the ZD621 at 203 dpi/V93.21.33Z, not other devices or
+configurations.
 
 Glyph IDs and input keys are separate. Use `font.encoding(Encoding::Input { ci })`
 to inspect a mapping's status and candidate record IDs, then `font.record(id)` for
