@@ -1,4 +1,4 @@
-//! Import prior recovery evidence; firmware investigation stays in zebra-firmware.
+//! Import measured observations and separately labelled unverified mapping candidates.
 use super::*;
 use eyre::{ensure, eyre};
 use serde_json::json;
@@ -202,10 +202,10 @@ pub fn import(c: &mut Collection, report: &Value, root: &Path) -> Result<()> {
                 )?;
             }
         }
-        "zebra-legacy-firmware-font-maps-v1" => {
-            for page in report["gk_byte_encodings"]
+        "zebra-font-mapping-candidates-v1" => {
+            for page in report["code_pages"]
                 .as_array()
-                .ok_or_else(|| eyre!("missing firmware code pages"))?
+                .ok_or_else(|| eyre!("missing candidate code pages"))?
             {
                 let ci = u8::try_from(
                     page["id"]
@@ -213,16 +213,16 @@ pub fn import(c: &mut Collection, report: &Value, root: &Path) -> Result<()> {
                         .ok_or_else(|| eyre!("missing code-page ID"))?,
                 )?;
                 let values = ids(&page["byte_to_character"])?;
-                if let Some(old) = next.firmware_code_pages.iter().find(|p| p.ci == ci) {
+                if let Some(old) = next.candidate_code_pages.iter().find(|p| p.ci == ci) {
                     ensure!(
                         old.byte_to_character == values,
-                        "conflicting firmware code page"
+                        "conflicting candidate code page"
                     );
                 } else {
-                    next.firmware_code_pages.push(CodePage{ci,byte_to_character:values,provenance:json!({"source":"zebra-firmware","sources":report["sources"],"offset":page["offset"]})});
+                    next.candidate_code_pages.push(CodePage{ci,byte_to_character:values,provenance:json!({"report_sha256":hash(&serde_json::to_vec(report)?),"provenance":page["provenance"]})});
                 }
             }
-            next.firmware_code_pages.sort_by_key(|p| p.ci);
+            next.candidate_code_pages.sort_by_key(|p| p.ci);
             for (name, f) in report["font_candidates"]
                 .as_object()
                 .ok_or_else(|| eyre!("missing candidates"))?
@@ -246,7 +246,7 @@ pub fn import(c: &mut Collection, report: &Value, root: &Path) -> Result<()> {
                             .as_u64()
                             .ok_or_else(|| eyre!("missing raw ID"))?,
                     )?;
-                    for code in ids(&e["firmware_character_codes"])? {
+                    for code in ids(&e["character_codes"])? {
                         inputs.entry(u32::from(code)).or_default().insert(id);
                     }
                 }
@@ -254,16 +254,16 @@ pub fn import(c: &mut Collection, report: &Value, root: &Path) -> Result<()> {
                     .into_iter()
                     .map(|(input, candidates)| Entry {
                         input,
-                        status: Status::FirmwareCandidate,
+                        status: Status::UnverifiedCandidate,
                         candidates: candidates.into_iter().collect(),
                     })
                     .collect();
                 merge(
                     font,
                     EncodingMap {
-                        encoding: Encoding::FirmwareCharacters,
+                        encoding: Encoding::CandidateCharacters,
                         entries,
-                        provenance: json!({"source":"zebra-firmware","report_sha256":hash(&serde_json::to_vec(report)?),"sources":report["sources"],"evidence":f}),
+                        provenance: json!({"report_sha256":hash(&serde_json::to_vec(report)?),"provenance":f["provenance"]}),
                     },
                 )?;
             }

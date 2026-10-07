@@ -1,5 +1,5 @@
 //! Decode observed type-1 FNT files. Raw IDs are never Unicode by assumption.
-//! Layout reference: zebra-firmware/docs/fnt-format.md, commit 768c231.
+//! The observed layout uses a 116-byte header and 20-byte big-endian slot records.
 use super::*;
 use eyre::ensure;
 pub fn decode(name: &str, data: &[u8]) -> Result<Font> {

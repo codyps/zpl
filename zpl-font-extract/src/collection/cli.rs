@@ -54,7 +54,7 @@ pub enum Command {
         #[arg(long, default_value_t = 9200)]
         identity_port: u16,
     },
-    /// Import hash-checked prior observations or explicitly labelled firmware candidates.
+    /// Import hash-checked prior observations or explicitly labelled unverified candidates.
     MergeEvidence {
         source: PathBuf,
         #[arg(long, required = true)]

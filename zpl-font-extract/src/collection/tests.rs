@@ -239,10 +239,10 @@ fn generated_tables_compile_and_preserve_raw_ids_and_evidence() {
         provenance: json!({}),
     });
     f.encodings.push(EncodingMap {
-        encoding: Encoding::FirmwareCharacters,
+        encoding: Encoding::CandidateCharacters,
         entries: vec![Entry {
             input: 66,
-            status: Status::FirmwareCandidate,
+            status: Status::UnverifiedCandidate,
             candidates: vec![17],
         }],
         provenance: json!({"source":"test"}),
@@ -261,7 +261,7 @@ fn generated_tables_compile_and_preserve_raw_ids_and_evidence() {
     let mut c = Collection::new(vec![f], json!({})).unwrap();
     let mut bytes = vec![0u16; 256];
     bytes[128] = 66;
-    c.firmware_code_pages.push(CodePage {
+    c.candidate_code_pages.push(CodePage {
         ci: 27,
         byte_to_character: bytes,
         provenance: json!({"source":"test"}),
@@ -274,7 +274,7 @@ fn generated_tables_compile_and_preserve_raw_ids_and_evidence() {
         r#"extern crate self as zpl_bitmap_fonts;
 #[path={:?}] pub mod collection;
 #[path={:?}] mod fonts;
-fn main(){{let f=fonts::font_by_name("Z:TEST.FNT").unwrap();let wide=f.record(302).unwrap();assert_eq!((wide.width,wide.advance,wide.left,wide.top,wide.flags),(257,500,-300,-250,7));assert!(wide.pixel(256,0));assert!(!wide.pixel(263,0));assert!(wide.storage_pixel(263,0));assert_eq!(fonts::FIRMWARE_CODE_PAGES[0].candidate(f,128).unwrap().candidates,&[17]);assert!(f.record(301).is_none());let r=f.record(300).unwrap();assert_eq!(r.bitmap(),&[0xe0,0x80]);assert_eq!((r.left,r.top),(-1,-2));assert!(r.pixel(2,0));let m=f.encoding(collection::Encoding::Input{{ci:28}}).unwrap();assert_eq!(m.lookup(65).unwrap().candidates,&[17,18]);assert_eq!(m.lookup(0x39b).unwrap().candidates,&[300]);assert!(m.lookup(0x3a9).is_none());assert_eq!(f.encoding(collection::Encoding::FirmwareCharacters).unwrap().lookup(66).unwrap().status,collection::Status::FirmwareCandidate);}}
+fn main(){{let f=fonts::font_by_name("Z:TEST.FNT").unwrap();let wide=f.record(302).unwrap();assert_eq!((wide.width,wide.advance,wide.left,wide.top,wide.flags),(257,500,-300,-250,7));assert!(wide.pixel(256,0));assert!(!wide.pixel(263,0));assert!(wide.storage_pixel(263,0));assert_eq!(fonts::CANDIDATE_CODE_PAGES[0].candidate(f,128).unwrap().candidates,&[17]);assert!(f.record(301).is_none());let r=f.record(300).unwrap();assert_eq!(r.bitmap(),&[0xe0,0x80]);assert_eq!((r.left,r.top),(-1,-2));assert!(r.pixel(2,0));let m=f.encoding(collection::Encoding::Input{{ci:28}}).unwrap();assert_eq!(m.lookup(65).unwrap().candidates,&[17,18]);assert_eq!(m.lookup(0x39b).unwrap().candidates,&[300]);assert!(m.lookup(0x3a9).is_none());assert_eq!(f.encoding(collection::Encoding::CandidateCharacters).unwrap().lookup(66).unwrap().status,collection::Status::UnverifiedCandidate);}}
 "#,
         PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../zpl-bitmap-fonts/src/collection.rs"),
         out.join("fonts.rs")
@@ -330,13 +330,21 @@ fn sgd_download_enforces_exact_sizes_and_read_only_commands() {
     thread.join().unwrap();
 }
 #[test]
-fn firmware_candidates_cannot_become_measured_or_lose_codepages() {
+fn unverified_candidates_cannot_become_measured_or_lose_codepages() {
     let mut c = Collection::new(vec![font()], json!({})).unwrap();
-    let report = json!({"schema":"zebra-legacy-firmware-font-maps-v1","sources":[],"gk_byte_encodings":[{"id":27,"byte_to_character":(0..256).collect::<Vec<_>>(),"offset":12}],"font_candidates":{"Z:TEST.FNT":{"reference_sha256":"a".repeat(64),"entries":[{"raw_record_id":300,"firmware_character_codes":[923],"evidence":[]}]}}});
+    let report = json!({"schema":"zebra-font-mapping-candidates-v1","code_pages":[{"id":27,"byte_to_character":(0..256).collect::<Vec<_>>(),"provenance":{"label":"test page"}}],"font_candidates":{"Z:TEST.FNT":{"reference_sha256":"a".repeat(64),"provenance":{"label":"test font"},"entries":[{"raw_record_id":300,"character_codes":[923]}]}}});
     evidence::import(&mut c, &report, Path::new(".")).unwrap();
     assert_eq!(c.coverage[0].observed_equivalent_records, 0);
-    assert_eq!(c.coverage[0].firmware_candidate_records, 1);
-    assert_eq!(c.firmware_code_pages[0].byte_to_character.len(), 256);
+    assert_eq!(c.coverage[0].candidate_records, 1);
+    assert_eq!(c.candidate_code_pages[0].byte_to_character.len(), 256);
+    assert_eq!(
+        c.candidate_code_pages[0].provenance["provenance"]["label"],
+        "test page"
+    );
+    assert_eq!(
+        c.fonts[0].encodings[0].provenance["provenance"]["label"],
+        "test font"
+    );
     c.fonts[0].encodings[0].entries[0].status = Status::Matched;
     c.seal().unwrap();
     assert!(c.validate().is_err());

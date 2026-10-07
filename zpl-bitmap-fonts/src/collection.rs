@@ -4,7 +4,7 @@
 pub enum Encoding {
     Input { ci: u8 },
     Ci0Source,
-    FirmwareCharacters,
+    CandidateCharacters,
 }
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Status {
@@ -12,7 +12,7 @@ pub enum Status {
     BlankUnresolved,
     Unmatched,
     FilenameFallback,
-    FirmwareCandidate,
+    UnverifiedCandidate,
 }
 #[derive(Debug)]
 pub struct Pool {
@@ -57,7 +57,7 @@ impl Map {
             1 => Status::BlankUnresolved,
             2 => Status::Unmatched,
             3 => Status::FilenameFallback,
-            4 => Status::FirmwareCandidate,
+            4 => Status::UnverifiedCandidate,
             _ => return None,
         };
         let &[start, len] = self.spans.get(i)?;
@@ -123,16 +123,16 @@ impl Record {
     }
 }
 
-/// Legacy firmware byte-to-character table. Compose explicitly with a
-/// FirmwareCharacters map; never treat this as a measured input mapping.
+/// Unverified byte-to-character table. Compose explicitly with a
+/// CandidateCharacters map; never treat this as a measured input mapping.
 #[derive(Debug)]
-pub struct FirmwareCodePage {
+pub struct CandidateCodePage {
     pub ci: u8,
     pub byte_to_character: &'static [u16; 256],
 }
-impl FirmwareCodePage {
+impl CandidateCodePage {
     pub fn candidate(&self, font: &Font, byte: u8) -> Option<Resolution> {
-        font.encoding(Encoding::FirmwareCharacters)?
+        font.encoding(Encoding::CandidateCharacters)?
             .lookup(u32::from(self.byte_to_character[usize::from(byte)]))
     }
 }

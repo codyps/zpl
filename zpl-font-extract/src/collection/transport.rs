@@ -1,7 +1,6 @@
 //! Bounded read-only SGD font inventory and object download.
 //! file.dir / file.type: Zebra ZPL II/ZBI2/SGD Programming Guide.
-//! Protected resident FNT reads use the observed trailing-dot form documented at
-//! https://github.com/codyps/zebra-firmware/blob/main/tools/dump_fonts.py
+//! Protected resident FNT reads use the observed trailing-dot file selector.
 use super::*;
 use eyre::{ensure, eyre};
 use serde_json::json;

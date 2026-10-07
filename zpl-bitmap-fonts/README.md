@@ -61,7 +61,7 @@ verification, mapping, format bounds and embedding custom datasets.
 `zpl-font-extract collection compile` generates modules using the separate
 `zpl_bitmap_fonts::collection` API. It supports raw IDs above 255, Unicode
 input keys, multiple per-font encoding maps, ambiguous/unresolved observations,
-and explicitly separate firmware candidates. Original padded rows and metadata
+and explicitly separate unverified candidates. Original padded rows and metadata
 are preserved; records and maps share compact static storage.
 
 See [complete bitmap collections](../docs/complete-bitmap-collections.md) for

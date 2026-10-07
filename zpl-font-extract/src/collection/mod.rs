@@ -1,6 +1,5 @@
 //! Complete stored bitmap records and separately evidenced input mappings.
-//! The observed FNT layout and mapping limitations are documented in
-//! https://github.com/codyps/zebra-firmware/blob/main/docs/bitmap-encoding-recovery.md
+//! See docs/complete-bitmap-collections.md for mapping semantics and limitations.
 pub mod compile;
 pub mod fnt;
 pub mod survey;
@@ -67,7 +66,7 @@ pub fn unhex(s: &str) -> Result<Vec<u8>> {
 pub enum Encoding {
     Input { ci: u8 },
     Ci0Source,
-    FirmwareCharacters,
+    CandidateCharacters,
 }
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "kebab-case")]
@@ -76,7 +75,7 @@ pub enum Status {
     BlankUnresolved,
     Unmatched,
     FilenameFallback,
-    FirmwareCandidate,
+    UnverifiedCandidate,
 }
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -112,7 +111,7 @@ pub struct Coverage {
     pub archived_records: usize,
     pub visible_records: usize,
     pub observed_equivalent_records: usize,
-    pub firmware_candidate_records: usize,
+    pub candidate_records: usize,
     pub unresolved_visible_record_ids: Vec<u16>,
 }
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -120,7 +119,7 @@ pub struct Coverage {
 pub struct CodePage {
     pub ci: u8,
     pub byte_to_character: Vec<u16>,
-    /// Offline firmware evidence, not proof of current printer behavior.
+    /// Offline candidate evidence, not proof of current printer behavior.
     pub provenance: Value,
 }
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -132,7 +131,7 @@ pub struct Collection {
     pub provenance: Value,
     pub content_sha256: String,
     pub coverage: Vec<Coverage>,
-    pub firmware_code_pages: Vec<CodePage>,
+    pub candidate_code_pages: Vec<CodePage>,
 }
 /// The complete multi-encoding document can exceed the legacy 32 MiB font limit.
 pub const MAX_JSON_BYTES: u64 = 256 * 1024 * 1024;
@@ -174,7 +173,7 @@ impl Collection {
             provenance,
             content_sha256: String::new(),
             coverage: vec![],
-            firmware_code_pages: vec![],
+            candidate_code_pages: vec![],
         };
         c.seal()?;
         c.validate()?;
@@ -187,7 +186,7 @@ impl Collection {
             &self.fonts,
             &self.provenance,
             &self.coverage,
-            &self.firmware_code_pages,
+            &self.candidate_code_pages,
         ))?))
     }
     fn coverage(&self) -> Result<Vec<Coverage>> {
@@ -211,7 +210,7 @@ impl Collection {
                     .encodings
                     .iter()
                     .flat_map(|m| &m.entries)
-                    .filter(|e| e.status == Status::FirmwareCandidate)
+                    .filter(|e| e.status == Status::UnverifiedCandidate)
                     .flat_map(|e| e.candidates.iter().copied())
                     .collect::<BTreeSet<_>>();
                 Ok(Coverage {
@@ -219,7 +218,7 @@ impl Collection {
                     archived_records: f.records.len(),
                     visible_records: visible.len(),
                     observed_equivalent_records: visible.intersection(&observed).count(),
-                    firmware_candidate_records: visible.intersection(&candidates).count(),
+                    candidate_records: visible.intersection(&candidates).count(),
                     unresolved_visible_record_ids: visible.difference(&observed).copied().collect(),
                 })
             })
@@ -253,10 +252,10 @@ impl Collection {
             "coverage differs from records/mappings"
         );
         let mut pages = BTreeSet::new();
-        for page in &self.firmware_code_pages {
+        for page in &self.candidate_code_pages {
             ensure!(
                 pages.insert(page.ci) && page.byte_to_character.len() == 256,
-                "invalid/duplicate firmware code page"
+                "invalid/duplicate candidate code page"
             );
         }
         let mut names = BTreeSet::new();
@@ -312,7 +311,7 @@ impl Collection {
             let mut maps = BTreeSet::new();
             for m in &f.encodings {
                 ensure!(
-                    survey::supported(m.encoding) || m.encoding == Encoding::FirmwareCharacters,
+                    survey::supported(m.encoding) || m.encoding == Encoding::CandidateCharacters,
                     "unsupported encoding domain"
                 );
                 ensure!(maps.insert(m.encoding), "duplicate encoding map");
@@ -326,7 +325,7 @@ impl Collection {
                     ensure!(
                         match m.encoding {
                             Encoding::Input { ci: 28 } => char::from_u32(e.input).is_some(),
-                            Encoding::FirmwareCharacters => e.input <= 65535,
+                            Encoding::CandidateCharacters => e.input <= 65535,
                             _ => e.input <= 255,
                         },
                         "input outside encoding domain"
@@ -337,14 +336,14 @@ impl Collection {
                         "invalid candidate IDs"
                     );
                     ensure!(
-                        matches!(e.status, Status::Matched | Status::FirmwareCandidate)
+                        matches!(e.status, Status::Matched | Status::UnverifiedCandidate)
                             == !e.candidates.is_empty(),
                         "status/candidates disagree"
                     );
                     ensure!(
-                        (e.status == Status::FirmwareCandidate)
-                            == (m.encoding == Encoding::FirmwareCharacters),
-                        "firmware evidence must be distinct"
+                        (e.status == Status::UnverifiedCandidate)
+                            == (m.encoding == Encoding::CandidateCharacters),
+                        "candidate evidence must be distinct"
                     );
                 }
             }

@@ -9,10 +9,9 @@ The v2 JSON can represent every record in a supported stored bitmap FNT,
 including records that previews cannot currently select. It does **not** claim
 that every encoding mapping can be discovered through ZPL previews. Tested
 inputs, unresolved inputs, duplicate candidates and untested inputs remain
-separate. UTF-16 HTTP previews remain disabled following the ZD621 hang recorded
-in the [firmware investigation](https://github.com/codyps/zebra-firmware/blob/768c231455191670dff1ac52872a8f42fb6d350a/docs/bitmap-encoding-recovery.md).
-Firmware disassembly and investigation belong in that repository; this pipeline
-can import its exported candidate evidence without treating it as a printer test.
+separate. UTF-16 HTTP previews remain disabled because they caused the tested
+ZD621 to stop responding. Imported candidate mappings remain distinct from
+measured printer observations.
 
 ## Read the stored fonts
 
@@ -20,7 +19,7 @@ The inventory command queries `file.dir` and reads the listed `.FNT` objects
 through SGD. It uses the observed trailing-dot `file.type` form for protected
 resident files. It validates complete directory framing, expected object sizes
 and FNT bounds, saves originals and hashes, and rejects truncated responses.
-It sends no physical print, configuration, download or firmware-update commands.
+It only reads stored objects; it does not print or change printer settings.
 The default drive is `Z`; use `--drives EZ` to include downloaded fonts.
 
 ```sh
@@ -97,25 +96,32 @@ cargo run --locked -p zpl-font-extract -- collection merge-evidence \
   _font-inventory/fonts.json \
   --report zpl-bitmap-fonts/data/zd621/fonts.json \
   --report PATH_TO_ENCODING_OBSERVATIONS.json \
-  --report PATH_TO_LEGACY_FONT_MAPS.json \
-  --evidence-root PATH_TO_ZEBRA_FIRMWARE_WORKTREE \
+  --report PATH_TO_MAPPING_CANDIDATES.json \
+  --evidence-root PATH_TO_CAPTURE_DIRECTORY \
   --out _font-mapped.json
 ```
 
 Accepted evidence formats are the existing verified `zebra-bitmap-fonts` v1
 collection, `zebra-font-encoding-observations-v1`, and
-`zebra-legacy-firmware-font-maps-v1`. The v1 import checks its verification/content
+`zebra-font-mapping-candidates-v1`. The v1 import checks its verification/content
 hash and compares actual glyph pixels and advance against stored records. The
 observation import checks reference-font hashes and the saved plan, PNG/ZPL,
 repeat and completion receipts. Conflicting observations fail rather than
 silently replacing earlier results. Experimental out-of-range source mappings
 are not accepted.
 
-Firmware candidate mappings have their own namespace and status. Their raw
-code-page tables retain every byte and the original firmware character keys,
+Unverified candidate mappings have their own namespace and status. Their raw
+code-page tables retain every byte and the original character keys,
 including vendor-specific keys. The compact reader only composes these tables
-with firmware candidate maps through an explicitly named `candidate()` method.
+with unverified candidate maps through an explicitly named `candidate()` method.
 They never become measured CI mappings automatically.
+
+The candidate report uses schema `zebra-font-mapping-candidates-v1`.
+`code_pages` contains objects with `id`, a 256-element `byte_to_character`
+array, and optional `provenance`. `font_candidates` is keyed by stored font
+name; each value contains `reference_sha256`, optional `provenance`, and
+`entries` with `raw_record_id` and `character_codes`. Imports retain the report
+hash and supplied provenance. These character keys are not assumed to be Unicode.
 
 ## Compile for zpl-bitmap-fonts
 
@@ -149,7 +155,7 @@ if let Some(observation) = map.lookup(0x039b) {
 
 Coverage is derived from the actual records and maps, protected by the collection
 content hash. `unresolved_visible_record_ids` excludes only records matched by
-observations; firmware candidates do not reduce it. Missing map keys are untested.
+observations; unverified candidates do not reduce it. Missing map keys are untested.
 Collection JSON has a separate 256 MiB read/write bound, since complete multi-encoding
 exports can exceed the legacy 32 MiB font-file bound. Oversized documents fail
 before publication.
@@ -161,7 +167,7 @@ Rust source text; they are not executable-size measurements.
 
 The Rust importer decoded all 47 bitmap fonts and 10,100 records (8,162 visible)
 from the ZD621 203-dpi/V93.21.33Z archive. Importing the existing CI0 dataset,
-saved Unicode/byte surveys, and firmware evidence reproduces 6,872 observed
+saved Unicode/byte surveys, and candidate evidence reproduces 6,872 observed
 record equivalents and 1,290 unresolved records. Candidate evidence covers
 1,122 of those unresolved records; it remains unverified on the current printer.
 All 61 legacy byte-code-page tables were retained.
@@ -169,7 +175,7 @@ All 61 legacy byte-code-page tables were retained.
 The generated module was compiled and every record, header, metric, padding
 byte, mapping entry/status/candidate and code-page entry was read back through
 the allocation-free API and compared byte-for-byte with the JSON. The resulting
-arrays occupy 1,600,335 bytes versus 27,695,316 bytes for the pretty-printed JSON.
+arrays occupy 1,600,335 bytes versus approximately 27 MB for the pretty-printed JSON.
 A focused live Font A survey exercised source mapping, CI27 and UTF-8 with
 native preview repeats; its cached run was also replayed offline.
 
