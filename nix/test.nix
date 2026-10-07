@@ -127,7 +127,7 @@ pkgs.testers.runNixOSTest {
         machine.succeed("grep -i 'x-zpl-printer-model: ZD621' /tmp/headers")
         machine.succeed("grep -i 'x-zpl-printer-serial: SERIAL-1' /tmp/headers")
         machine.succeed("grep -i 'x-zpl-printer-firmware: V1' /tmp/headers")
-        script = "import sqlite3; from pathlib import Path; original=Path('/tmp/mock-printer.png').read_bytes(); response=Path('/tmp/image').read_bytes(); db=sqlite3.connect('/var/lib/zpl-proxy-api/db.sqlite'); assert db.execute('SELECT data FROM pngs').fetchone()[0] == original; assert b'ZPL Source' in response and b'^XA^XZ' in response; assert b'ZPL Printer Configuration' in response; assert response != original"
+        script = "import sqlite3; from pathlib import Path; original=Path('/tmp/mock-printer.png').read_bytes(); response=Path('/tmp/image').read_bytes(); db=sqlite3.connect('/var/lib/zpl-proxy-api/db.sqlite'); assert db.execute('SELECT data FROM pngs').fetchone()[0] == original; assert b'ZPL Source' in response and b'^XA^XZ' in response; assert b'ZPL Printer Configuration' in response; assert response.startswith(original[:-12]) and response.endswith(original[-12:]) and len(response) > len(original)"
         machine.succeed("python3 -c " + shlex.quote(script))
 
     provision(token)
