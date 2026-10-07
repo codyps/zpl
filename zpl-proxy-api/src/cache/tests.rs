@@ -3,11 +3,7 @@ use crate::models::PngRequest;
 
 fn migrated() -> SqliteConnection {
     let mut connection = SqliteConnection::establish(":memory:").unwrap();
-    connection
-        .batch_execute(include_str!(
-            "../../migrations/2026-10-03-000000_create-render-cache/up.sql"
-        ))
-        .unwrap();
+    connection.run_pending_migrations(MIGRATIONS).unwrap();
     connection
         .batch_execute("PRAGMA foreign_keys = ON;")
         .unwrap();
@@ -259,4 +255,42 @@ fn printer_fingerprint_includes_configuration() {
         )
     );
     assert_eq!(key.len(), 32);
+}
+
+#[test]
+fn startup_migrates_fresh_database_and_reopens_without_reapplying() {
+    let directory = tempfile::tempdir().unwrap();
+    let path = directory.path().join("fresh.sqlite");
+    let cache = Cache::open(path.to_str().unwrap()).unwrap();
+    let versions = cache.0.lock().unwrap().applied_migrations().unwrap();
+    assert_eq!(versions.len(), 1);
+    drop(cache);
+    let reopened = Cache::open(path.to_str().unwrap()).unwrap();
+    assert_eq!(
+        reopened.0.lock().unwrap().applied_migrations().unwrap(),
+        versions
+    );
+}
+
+#[test]
+fn startup_migration_failure_is_returned_without_recording_success() {
+    let directory = tempfile::tempdir().unwrap();
+    let path = directory.path().join("broken.sqlite");
+    let mut db = SqliteConnection::establish(path.to_str().unwrap()).unwrap();
+    // Force the initial migration to fail against an incompatible table.
+    db.batch_execute(
+        "CREATE TABLE inputs (sentinel TEXT); INSERT INTO inputs VALUES ('preserve');",
+    )
+    .unwrap();
+    let error = Cache::open(path.to_str().unwrap())
+        .err()
+        .expect("startup must fail");
+    assert!(error.to_string().contains("Database migration failed"));
+    assert!(db.applied_migrations().unwrap().is_empty());
+    let value = diesel::select(diesel::dsl::sql::<diesel::sql_types::Text>(
+        "(SELECT sentinel FROM inputs)",
+    ))
+    .get_result::<String>(&mut db)
+    .unwrap();
+    assert_eq!(value, "preserve");
 }
