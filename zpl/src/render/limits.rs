@@ -22,6 +22,9 @@ pub struct Limits {
     pub field_bytes: usize,
     /// Decoded bytes per GF/DG bitmap, checked before decompression.
     pub graphic_bytes: usize,
+    /// Total font-download bytes per render, including replacements and bitmap
+    /// row/glyph allocation overhead.
+    pub font_bytes: usize,
     pub stored_formats: usize,
     pub recall_depth: usize,
     pub recall_calls: usize,
@@ -46,6 +49,7 @@ impl Limits {
         number_abs: 1_000_000.,
         field_bytes: 4096,
         graphic_bytes: 25_000,
+        font_bytes: 16 * 1024 * 1024,
         stored_formats: 256,
         recall_depth: 8,
         recall_calls: 4096,
@@ -63,6 +67,7 @@ impl Limits {
             number_abs: f64::MAX,
             field_bytes: usize::MAX,
             graphic_bytes: usize::MAX,
+            font_bytes: usize::MAX,
             stored_formats: usize::MAX,
             recall_depth: usize::MAX,
             recall_calls: usize::MAX,

@@ -74,7 +74,8 @@ impl RowPath {
 /// Resident face plus the legacy ASCII backslash replacement. Keep this
 /// separate from U+00A2: bitmap faces have distinct native cent designs.
 #[derive(Clone, Copy)]
-pub(super) struct Font {
+pub(super) struct Font<'a> {
+    custom: Option<&'a super::fonts::Face<'a>>,
     id: char,
     legacy_backslash: bool,
     legacy_codepage: bool,
@@ -103,10 +104,11 @@ impl BlockFlow {
     }
 }
 
-impl Font {
+impl<'a> Font<'a> {
     pub(super) fn new(id: char, legacy_backslash: bool) -> Self {
         Self {
             id,
+            custom: None,
             legacy_backslash,
             legacy_codepage: false,
             default_glyph: false,
@@ -116,6 +118,10 @@ impl Font {
             legacy_controls: false,
             control_spaces: false,
         }
+    }
+    pub(super) fn with_fonts(mut self, fonts: &'a super::fonts::RenderFonts<'_, 'a>) -> Self {
+        self.custom = fonts.get(self.id);
+        self
     }
     pub(super) fn with_legacy_codepage(mut self, enabled: bool) -> Self {
         self.legacy_codepage = enabled;
@@ -146,7 +152,7 @@ impl Font {
         } else {
             Some(c as usize)
         };
-        if resident(self.id).is_some() {
+        if self.custom.is_none() && resident(self.id).is_some() {
             if let Some(source) = self
                 .character_map
                 .and_then(|map| image.and_then(|i| map.get(i).copied()))
@@ -205,7 +211,7 @@ impl Font {
     pub(super) fn bounded_pitch(self, w: f64, h: f64) -> Result<f64, String> {
         // ZD621 TB controls: proportional line leading is 25%; A's leading
         // is quantized at its horizontally magnified bitmap cell width.
-        Ok(match self.id {
+        Ok(match if self.custom.is_some() { '\0' } else { self.id } {
             '0' => h * 1.25,
             'A' => {
                 let width = width_for(self, "A", w, h)? * 5. / 6.;
@@ -230,7 +236,7 @@ impl Font {
             .is_some_and(|flow| flow.printer_layout && flow.direction == b'R')
     }
 }
-impl From<char> for Font {
+impl From<char> for Font<'_> {
     fn from(id: char) -> Self {
         Self::new(id, false)
     }
@@ -552,7 +558,7 @@ fn control_strikes(
         faces
     })
 }
-fn selected(id: impl Into<Font> + Copy, w: f64, h: f64) -> (GlyphSet, f64, f64) {
+fn selected<'a>(id: impl Into<Font<'a>> + Copy, w: f64, h: f64) -> (GlyphSet, f64, f64) {
     // C and D share the 18x10 matrix (ZPL Programming Guide Table 31,
     // p. 1583); resident-bc-zd621-v1 verifies the alias across all ASCII.
     let font = id.into();
@@ -654,6 +660,30 @@ fn selected_for_char(font: Font, c: char, w: f64, h: f64) -> (GlyphSet, f64, f64
         face
     }
 }
+fn resolved_glyph<'a>(
+    font: Font<'a>,
+    c: char,
+    w: f64,
+    h: f64,
+) -> Result<(GlyphView<'a>, f64, f64), String> {
+    if let Some(custom) = font.custom {
+        let (g, sx, sy) = custom.glyph(c, w, h)?;
+        return Ok((
+            GlyphView {
+                advance: g.advance,
+                left: g.left,
+                top: g.top,
+                width: g.width,
+                height: g.height,
+                pixels: Pixels::Captured(g),
+            },
+            sx,
+            sy,
+        ));
+    }
+    let (glyphs, sx, sy) = selected_for_char(font, c, w, h);
+    Ok((glyph_from(glyphs, c)?, sx, sy))
+}
 // Read compact pixels directly; do not expand the shared pool into heap-backed strikes.
 #[derive(Clone, Copy)]
 enum GlyphSet {
@@ -665,20 +695,19 @@ impl From<&'static Vec<Glyph>> for GlyphSet {
         Self::Captured(glyphs)
     }
 }
-#[derive(Clone, Copy)]
-enum Pixels {
-    Captured(&'static Glyph),
+enum Pixels<'a> {
+    Captured(std::borrow::Cow<'a, Glyph>),
     Compact(zpl_bitmap_fonts::Glyph),
 }
-struct GlyphView {
+struct GlyphView<'a> {
     advance: u32,
     left: i32,
     top: i32,
     width: u32,
     height: u32,
-    pixels: Pixels,
+    pixels: Pixels<'a>,
 }
-impl GlyphView {
+impl GlyphView<'_> {
     // Select storage once per glyph and scan packed bytes by runs. Skip
     // uniform bits together instead of dispatching and tracking span state
     // at every pixel, including for the retained scalable strikes.
@@ -705,7 +734,7 @@ impl GlyphView {
             }
         }
         let width = self.width as usize;
-        match self.pixels {
+        match &self.pixels {
             Pixels::Captured(g) => {
                 for (y, row) in g.bitmap.iter().enumerate() {
                     row_spans(row, 0, width, |left, right| emit(y, left, right));
@@ -725,7 +754,7 @@ impl GlyphView {
         if x >= self.width as usize || y >= self.height as usize {
             return false;
         }
-        match self.pixels {
+        match &self.pixels {
             Pixels::Captured(g) => g.bitmap[y][x / 8] & (128 >> (x % 8)) != 0,
             Pixels::Compact(g) => g.pixel(x as u8, y as u8),
         }
@@ -754,7 +783,7 @@ fn source_key(c: char, face: &zpl_bitmap_fonts::Font, legacy_backslash: bool) ->
             .map(|i| (i + 128) as u8),
     }
 }
-fn glyph_from(glyphs: impl Into<GlyphSet>, c: char) -> Result<GlyphView, String> {
+fn glyph_from(glyphs: impl Into<GlyphSet>, c: char) -> Result<GlyphView<'static>, String> {
     let missing = || format!("unsupported embedded font glyph {c:?}");
     match glyphs.into() {
         GlyphSet::Captured(glyphs) => {
@@ -768,7 +797,7 @@ fn glyph_from(glyphs: impl Into<GlyphSet>, c: char) -> Result<GlyphView, String>
                 top: g.top,
                 width: g.width,
                 height: g.height,
-                pixels: Pixels::Captured(g),
+                pixels: Pixels::Captured(std::borrow::Cow::Borrowed(g)),
             })
         }
         GlyphSet::Compact(face, legacy) => {
@@ -797,8 +826,12 @@ fn glyph(c: char) -> Result<&'static Glyph, String> {
 fn baseline(h: f64) -> f64 {
     baseline_for('0', h)
 }
-pub(super) fn baseline_for(id: impl Into<Font> + Copy, h: f64) -> f64 {
-    let id = id.into().id;
+pub(super) fn baseline_for<'a>(id: impl Into<Font<'a>> + Copy, h: f64) -> f64 {
+    let font = id.into();
+    if let Some(custom) = font.custom {
+        return custom.baseline(h);
+    }
+    let id = font.id;
     if let Some(face) = resident(id) {
         return h * (f64::from(face.metrics.baseline) - 1.) / f64::from(face.metrics.cell_height);
     }
@@ -824,8 +857,8 @@ fn width(s: &str, w: f64) -> Result<f64, String> {
 fn next_tab(pen: f64) -> f64 {
     (pen / 80.).floor().mul_add(80., 80.)
 }
-pub(super) fn width_for(
-    id: impl Into<Font> + Copy,
+pub(super) fn width_for<'a>(
+    id: impl Into<Font<'a>> + Copy,
     s: &str,
     w: f64,
     h: f64,
@@ -837,8 +870,8 @@ pub(super) fn width_for(
         }
         let gap = font.block_flow.map_or(0., |flow| flow.gap_for(c));
         let c = font.map_char(c)?;
-        let (glyphs, sx, _) = selected_for_char(font, c, w, h);
-        Ok(sum + glyph_from(glyphs, c)?.advance as f64 * sx + gap)
+        let (g, sx, _) = resolved_glyph(font, c, w, h)?;
+        Ok(sum + g.advance as f64 * sx + gap)
     })
 }
 /// ZD621 font-0 FO/I/right anchor: measure ink with a backwards pen.
@@ -865,8 +898,7 @@ pub(super) fn inverted_text_margin(
             continue;
         }
         let c = font.map_char(c)?;
-        let (glyphs, sx, _) = selected_for_char(font, c, w, h);
-        let g = glyph_from(glyphs, c)?;
+        let (g, sx, _) = resolved_glyph(font, c, w, h)?;
         if i == 0 {
             first_advance = g.advance as f64 * sx;
         }
@@ -878,14 +910,14 @@ pub(super) fn inverted_text_margin(
     Ok(first_advance - right)
 }
 
-pub(super) fn inverted_margin(
-    id: impl Into<Font> + Copy,
+pub(super) fn inverted_margin<'a>(
+    id: impl Into<Font<'a>> + Copy,
     value: &str,
     w: f64,
     h: f64,
 ) -> Result<f64, String> {
     let font = id.into();
-    let id = font.id;
+    let id = if font.custom.is_some() { '\0' } else { font.id };
     if id == 'A' {
         return Ok(w / 5. + 2.);
     }
@@ -916,8 +948,7 @@ pub(super) fn inverted_margin(
         return Ok(0.);
     }
     let c = font.map_char(c)?;
-    let (glyphs, sx, _) = selected_for_char(font, c, w, h);
-    let g = glyph_from(glyphs, c)?;
+    let (g, sx, _) = resolved_glyph(font, c, w, h)?;
     Ok(((g.advance as f64 - g.left as f64 - g.width as f64) * sx - 1.).max(0.))
 }
 #[cfg(test)]
@@ -926,8 +957,8 @@ fn text(s: &str, w: f64, h: f64) -> Result<Path, String> {
 }
 // Preserve individual glyph ink for printer edge placement. The regular
 // text path remains merged, so unclamped output does not change.
-pub(super) fn text_parts_for(
-    id: impl Into<Font> + Copy,
+pub(super) fn text_parts_for<'a>(
+    id: impl Into<Font<'a>> + Copy,
     s: &str,
     w: f64,
     h: f64,
@@ -968,8 +999,7 @@ pub(super) fn text_parts_for(
             continue;
         }
         let c = font.map_char(c)?;
-        let (glyphs, sx, sy) = selected_for_char(font, c, w, h);
-        let g = glyph_from(glyphs, c)?;
+        let (g, sx, sy) = resolved_glyph(font, c, w, h)?;
         // A single bitmap glyph already has disjoint row spans. Unlike a
         // complete proportional string, it needs no BTreeMap or union/sort
         // pass to prevent even-odd cancellation of overlapping glyph ink.
@@ -991,14 +1021,14 @@ pub(super) fn text_parts_for(
     }
     Ok(parts)
 }
-pub(super) fn text_for(
-    id: impl Into<Font> + Copy,
+pub(super) fn text_for<'a>(
+    id: impl Into<Font<'a>> + Copy,
     s: &str,
     w: f64,
     h: f64,
 ) -> Result<Path, String> {
     let font = id.into();
-    if font.block_flow.is_some() {
+    if font.block_flow.is_some() || font.custom.is_some() {
         // ^FB pp. 186–187 wraps by advances including the ^FP gap (p. 202).
         // Captured printer V fields overprint each line; R predecrements even
         // the first character. Union preserves overlapping glyph ink.
@@ -1590,8 +1620,9 @@ pub(super) fn directed_text(
 /// in resident-s-zd621-v1. ^FB pp. 186–188 describes nominal font-height
 /// spacing; this printer uses distinct preset metrics. Other sizes scale the
 /// closest measured height, just as unsampled glyph strikes are approximated.
-pub(super) fn block_metrics(id: impl Into<Font>, h: f64, printer_s: bool) -> (f64, f64) {
-    if !printer_s || id.into().id != 'S' {
+pub(super) fn block_metrics<'a>(id: impl Into<Font<'a>>, h: f64, printer_s: bool) -> (f64, f64) {
+    let font = id.into();
+    if !printer_s || font.id != 'S' || font.custom.is_some() {
         return (h, 0.);
     }
     let (native, pitch, ascent) = if h < 60. {
