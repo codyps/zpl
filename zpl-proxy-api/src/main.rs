@@ -180,11 +180,14 @@ async fn render_response(state: AppState, name: String, spec: PrintSpec) -> Resp
         return (StatusCode::NOT_FOUND, "Unknown printer name").into_response();
     };
     match printer.render(spec.zpl, spec.refresh).await {
-        Ok((png, cache_hit)) => Response::builder()
+        Ok((png, cache_hit, identity)) => Response::builder()
             .status(StatusCode::OK)
             .header(header::CONTENT_TYPE, "image/png")
             .header("X-ZPL-Cache", if cache_hit { "hit" } else { "miss" })
             .header(header::CACHE_CONTROL, "no-store")
+            .header("X-ZPL-Printer-Model", &identity.model)
+            .header("X-ZPL-Printer-Serial", &identity.serial)
+            .header("X-ZPL-Printer-Firmware", &identity.firmware)
             .body(Body::from(png))
             .unwrap(),
         Err(error) if error.downcast_ref::<ValidationError>().is_some() => (
@@ -353,7 +356,17 @@ mod tests {
             .await
             .unwrap();
         cache
-            .success(attempt, b"private PNG".to_vec())
+            .rendered(
+                attempt,
+                b"private PNG".to_vec(),
+                zebra_sgd::PrinterIdentity {
+                    model: "ZD621".into(),
+                    serial: "test".into(),
+                    firmware: "V1".into(),
+                    configuration: Default::default(),
+                },
+                None,
+            )
             .await
             .unwrap();
         let configs = BTreeMap::from([(

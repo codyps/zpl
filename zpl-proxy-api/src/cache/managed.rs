@@ -84,8 +84,8 @@ impl Cache {
                         .inner_join(pngs::table)
                         .filter(render_cache::input_id.eq(attempt.input_id))
                         .filter(render_cache::renderer_key.eq(&attempt.renderer_key))
-                        .select((pngs::id, pngs::data))
-                        .first::<(i64, Vec<u8>)>(db)
+                        .select((pngs::id, pngs::data, render_cache::printer_identity))
+                        .first::<(i64, Vec<u8>, String)>(db)
                         .optional()?
                 };
                 if cached.is_some() || error.is_some() {
@@ -93,16 +93,25 @@ impl Cache {
                         png_requests::table.filter(png_requests::rowid.eq(attempt.request_id)),
                     )
                     .set((
-                        png_requests::png_id.eq(cached.as_ref().map(|(id, _)| *id)),
+                        png_requests::png_id.eq(cached.as_ref().map(|(id, _, _)| *id)),
                         png_requests::error.eq(&error),
                         png_requests::cache_hit.eq(true),
+                        png_requests::printer_identity
+                            .eq(cached.as_ref().map(|(_, _, identity)| identity)),
                         png_requests::completed_at.eq(diesel::dsl::sql::<Nullable<Text>>(
                             "strftime('%Y-%m-%dT%H:%M:%fZ','now')",
                         )),
                     ))
                     .execute(db)?;
                 }
-                attempt.cached_png = cached.map(|(_, data)| data);
+                attempt.cached = cached
+                    .map(|(_, png, identity)| {
+                        Ok::<_, eyre::Report>(CachedRender {
+                            png,
+                            identity: serde_json::from_str(&identity)?,
+                        })
+                    })
+                    .transpose()?;
                 Ok((attempt, error))
             })
         })

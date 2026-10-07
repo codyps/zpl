@@ -25,16 +25,23 @@ pub struct Attempt {
     pub request_id: i64,
     pub input_id: i64,
     pub renderer_key: Vec<u8>,
-    pub cached_png: Option<Vec<u8>>,
+    pub cached: Option<CachedRender>,
 }
 
-pub fn renderer_key(url: &str, headers: &[String], namespace: &str) -> Vec<u8> {
+#[derive(Clone)]
+pub struct CachedRender {
+    pub png: Vec<u8>,
+    pub identity: zebra_sgd::PrinterIdentity,
+}
+
+pub fn renderer_key(url: &str, headers: &[String], namespace: &str, sgd_target: &str) -> Vec<u8> {
     // Length prefixes avoid ambiguous concatenation. Only the digest is stored,
     // never the configured authentication headers or credential-bearing URL.
     let mut hash = Sha256::new();
-    for part in std::iter::once("zebra-http-preview-v1")
+    for part in std::iter::once("zebra-http-preview-sgd-v1")
         .chain(std::iter::once(url))
         .chain(std::iter::once(namespace))
+        .chain(std::iter::once(sgd_target))
         .chain(headers.iter().map(String::as_str))
     {
         hash.update((part.len() as u64).to_be_bytes());
@@ -51,23 +58,24 @@ impl Cache {
         connection.batch_execute(
             "PRAGMA busy_timeout = 5000; PRAGMA foreign_keys = ON; PRAGMA journal_mode = WAL;",
         )?;
-        // Diesel tracks applied versions and honors each migration's transaction
-        // metadata (one existing migration manages its own SQLite transaction).
+        // Diesel tracks the initial schema version and applies it transactionally.
         // https://docs.rs/diesel_migrations/2.3.2/diesel_migrations/trait.MigrationHarness.html
         connection
             .run_pending_migrations(MIGRATIONS)
             .map_err(|error| eyre::eyre!("Database migration failed: {error}"))?;
         // Fail at startup with a migration error, not after accepting a request.
         render_cache::table
-            .select(render_cache::input_id)
+            .select((render_cache::input_id, render_cache::printer_identity))
             .limit(1)
-            .load::<i64>(&mut connection)?;
+            .load::<(i64, String)>(&mut connection)?;
         png_requests::table
-            .select((png_requests::completed_at, png_requests::error))
+            .select((
+                png_requests::completed_at,
+                png_requests::error,
+                png_requests::printer_identity,
+            ))
             .limit(1)
-            .load::<(Option<String>, Option<String>)>(&mut connection)?;
-        diesel::sql_query("SELECT request_id FROM printer_requests LIMIT 0")
-            .execute(&mut connection)?;
+            .load::<(Option<String>, Option<String>, Option<String>)>(&mut connection)?;
         Ok(Self(Arc::new(Mutex::new(connection))))
     }
 
@@ -127,15 +135,16 @@ impl Cache {
                         .inner_join(pngs::table)
                         .filter(render_cache::input_id.eq(input.id))
                         .filter(render_cache::renderer_key.eq(&key))
-                        .select((pngs::id, pngs::data))
-                        .first::<(i64, Vec<u8>)>(connection)
+                        .select((pngs::id, pngs::data, render_cache::printer_identity))
+                        .first::<(i64, Vec<u8>, String)>(connection)
                         .optional()?
                 };
-                if let Some((png_id, _)) = &cached {
+                if let Some((png_id, _, identity)) = &cached {
                     diesel::update(png_requests::table.filter(png_requests::rowid.eq(request_id)))
                         .set((
                             png_requests::png_id.eq(png_id),
                             png_requests::cache_hit.eq(true),
+                            png_requests::printer_identity.eq(identity),
                             png_requests::completed_at.eq(diesel::dsl::sql::<
                                 diesel::sql_types::Nullable<diesel::sql_types::Text>,
                             >(
@@ -148,14 +157,30 @@ impl Cache {
                     request_id,
                     input_id: input.id,
                     renderer_key: key,
-                    cached_png: cached.map(|(_, data)| data),
+                    cached: cached
+                        .map(|(_, png, identity)| {
+                            Ok::<_, eyre::Report>(CachedRender {
+                                png,
+                                identity: serde_json::from_str(&identity)?,
+                            })
+                        })
+                        .transpose()?,
                 })
             })
         })
         .await
     }
 
-    pub async fn success(&self, attempt: Attempt, data: Vec<u8>) -> eyre::Result<()> {
+    /// Preserve the original printer response even if response annotation fails.
+    /// Failed responses remain in history but cannot populate the render cache.
+    pub async fn rendered(
+        &self,
+        attempt: Attempt,
+        data: Vec<u8>,
+        identity: zebra_sgd::PrinterIdentity,
+        response_error: Option<String>,
+    ) -> eyre::Result<()> {
+        let identity = serde_json::to_string(&identity)?;
         self.run("cache.store", move |connection| {
             connection.immediate_transaction(|connection| {
                 let hash = Sha256::digest(&data).to_vec();
@@ -177,21 +202,36 @@ impl Cache {
                     .select(Png::as_select())
                     .first(connection)?;
                 eyre::ensure!(png.data == data, "PNG hash collision");
-                diesel::insert_into(render_cache::table)
-                    .values((
-                        render_cache::input_id.eq(attempt.input_id),
-                        render_cache::renderer_key.eq(&attempt.renderer_key),
-                        render_cache::png_id.eq(png.id),
-                    ))
-                    .on_conflict((render_cache::input_id, render_cache::renderer_key))
-                    .do_update()
-                    .set(render_cache::png_id.eq(png.id))
+                if response_error.is_some() {
+                    diesel::delete(
+                        render_cache::table
+                            .filter(render_cache::input_id.eq(attempt.input_id))
+                            .filter(render_cache::renderer_key.eq(&attempt.renderer_key)),
+                    )
                     .execute(connection)?;
+                } else {
+                    diesel::insert_into(render_cache::table)
+                        .values((
+                            render_cache::input_id.eq(attempt.input_id),
+                            render_cache::renderer_key.eq(&attempt.renderer_key),
+                            render_cache::png_id.eq(png.id),
+                            render_cache::printer_identity.eq(&identity),
+                        ))
+                        .on_conflict((render_cache::input_id, render_cache::renderer_key))
+                        .do_update()
+                        .set((
+                            render_cache::png_id.eq(png.id),
+                            render_cache::printer_identity.eq(&identity),
+                        ))
+                        .execute(connection)?;
+                }
                 diesel::update(
                     png_requests::table.filter(png_requests::rowid.eq(attempt.request_id)),
                 )
                 .set((
                     png_requests::png_id.eq(png.id),
+                    png_requests::printer_identity.eq(&identity),
+                    png_requests::error.eq(&response_error),
                     png_requests::completed_at.eq(diesel::dsl::sql::<
                         diesel::sql_types::Nullable<diesel::sql_types::Text>,
                     >(

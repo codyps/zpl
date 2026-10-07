@@ -2,7 +2,9 @@ use diesel::prelude::*;
 use std::env;
 
 pub mod cache;
+mod metadata;
 pub mod models;
+pub mod png_metadata;
 pub mod printer;
 pub mod realip;
 pub mod schema;
