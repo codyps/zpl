@@ -60,7 +60,7 @@ fn captured_cent_assets_are_pinned() {
         let c: Vec<_> = row.split('\t').collect();
         let bytes = compact_font::asset(c[0]).unwrap();
         assert_eq!(digest::sha256(&bytes), c[1], "{} asset", c[0]);
-        let (settings, glyphs) = zpl::bitmap_font::unpack(&bytes).unwrap();
+        let (settings, glyphs) = compact_font::decoded(c[0]).unwrap();
         assert_eq!(glyphs.len(), 1);
         assert_eq!(glyphs[0].codepoint, 162);
         assert!(glyphs[0].advance > 0);

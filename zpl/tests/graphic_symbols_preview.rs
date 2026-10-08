@@ -53,22 +53,23 @@ fn printer_controls_pin_every_painted_pixel() {
 
 #[test]
 fn captured_symbol_and_text_assets_are_pinned() {
-    let text = compact_font::asset("font0-24-24.zbf").unwrap();
-    let symbols = compact_font::asset("fontGS-24-24.zbf").unwrap();
-    for (asset, hash, font) in [
+    for (name, hash, font) in [
         (
-            symbols.as_slice(),
+            "fontGS-24-24.zbf",
             include_str!("fixtures/graphic-symbols-zd621-v1/asset.sha256"),
             zpl::bitmap_font::GRAPHIC_SYMBOLS,
         ),
         (
-            text.as_slice(),
+            "font0-24-24.zbf",
             include_str!("fixtures/graphic-symbols-zd621-v1/text-asset.sha256"),
             '0',
         ),
     ] {
-        assert_eq!(digest::sha256(asset), hash.trim());
-        let (settings, glyphs) = zpl::bitmap_font::unpack(asset).unwrap();
+        assert_eq!(
+            digest::sha256(&compact_font::asset(name).unwrap()),
+            hash.trim()
+        );
+        let (settings, glyphs) = compact_font::decoded(name).unwrap();
         assert_eq!(
             (settings.font, settings.height, settings.width, settings.dpi),
             (font, 24, 24, 203)

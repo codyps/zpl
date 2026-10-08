@@ -57,7 +57,7 @@ fn native_font_b_asset_is_pinned_to_the_capture() {
         digest::sha256(&asset),
         include_str!("fixtures/resident-bc-zd621-v1/asset.sha256").trim()
     );
-    let (settings, glyphs) = zpl::bitmap_font::unpack(&asset).unwrap();
+    let (settings, glyphs) = compact_font::decoded("fontB-11-7.zbf").unwrap();
     assert_eq!(
         (settings.font, settings.height, settings.width, settings.dpi),
         ('B', 11, 7, 203)

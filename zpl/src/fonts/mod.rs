@@ -2,11 +2,72 @@
 //! No scene construction, filesystem access or printer access.
 pub(crate) mod resident;
 use crate::{
-    bitmap_font::{self, Glyph, Settings},
+    bitmap_font::{self, Settings},
     output::raster::truetype::{rasterize, ScanMode},
     truetype::{Environment, Font, Hinting, Size},
 };
 use std::{borrow::Cow, collections::BTreeMap, sync::Arc};
+
+/// Format-independent monochrome glyph data used by [`BitmapFont`].
+pub use crate::bitmap_font::Glyph;
+
+/// Native cell dimensions and baseline for a runtime bitmap font, in dots.
+#[derive(Debug, Clone, Copy)]
+pub struct BitmapMetrics {
+    /// Nominal cell width, in 1..=4096. Controls horizontal scaling.
+    pub width: u32,
+    /// Nominal cell height, in 1..=4096. Controls vertical scaling.
+    pub height: u32,
+    /// Distance from the cell top to the baseline, in 0..=height.
+    pub baseline: f64,
+}
+
+/// A caller-supplied bitmap strike, independent of its file format or storage.
+///
+/// Implementations may borrow decoded glyphs or return owned glyphs on demand.
+/// Glyphs use native dot metrics: `left` and `top` are offsets from the pen's
+/// baseline, and `advance` is the horizontal pen movement. Each bitmap row has
+/// `width.div_ceil(8)` bytes, most significant bit first; one means foreground.
+/// Dimensions, advances, and absolute offsets must not exceed 4096 dots.
+///
+/// Return `Ok(None)` for a missing character (a rendering error, with no resident
+/// fallback), or `Err` for a loading/decoding failure. Returned glyphs must match
+/// the requested Unicode codepoint. Metrics are read once at registration;
+/// glyph lookup should remain deterministic, including across cloned font sets.
+/// The renderer validates each returned glyph before using its bitmap.
+/// No filesystem access or ZBF metadata is required by this interface.
+///
+/// ```
+/// use std::{borrow::Cow, sync::Arc};
+/// use zpl::fonts::{BitmapFont, BitmapMetrics, Fonts, Glyph};
+///
+/// struct MyStrike(Vec<Glyph>);
+/// impl BitmapFont for MyStrike {
+///     fn metrics(&self) -> BitmapMetrics {
+///         BitmapMetrics { width: 8, height: 12, baseline: 9. }
+///     }
+///     fn glyph(&self, c: char) -> Result<Option<Cow<'_, Glyph>>, String> {
+///         Ok(self.0.iter().find(|g| g.codepoint == c as u32).map(Cow::Borrowed))
+///     }
+/// }
+/// // Populate these glyphs using your own decoder or in-memory data.
+/// let strike = MyStrike(vec![Glyph {
+///     codepoint: 'A' as u32, advance: 8, left: 0, top: -3,
+///     width: 3, height: 3, bitmap: vec![vec![0x40], vec![0xa0], vec![0xe0]],
+/// }]);
+/// let mut fonts = Fonts::new();
+/// fonts.insert_bitmap_font('Z', Arc::new(strike))?;
+/// let document = zpl::render::render_with_fonts(
+///     b"^XA^FO20,20^AZN,24,16^FDA^FS^XZ",
+///     zpl::render::profiles::SPECIFICATION,
+///     &fonts,
+/// )?;
+/// # Ok::<(), Box<dyn std::error::Error>>(())
+/// ```
+pub trait BitmapFont: Send + Sync {
+    fn metrics(&self) -> BitmapMetrics;
+    fn glyph(&self, character: char) -> Result<Option<Cow<'_, Glyph>>, String>;
+}
 
 /// Fonts assigned to ZPL IDs (`0`–`9`, `A`–`Z`, or `@` for `^GS`) or
 /// virtual printer filenames selected through `^CW` and `^A@`.
@@ -35,6 +96,7 @@ pub struct Fonts<'a> {
 
 enum Source<'a> {
     Bitmap(Settings, Vec<Glyph>),
+    Provider(BitmapMetrics, Arc<dyn BitmapFont + 'a>),
     TrueType(Font<'a>, Hinting),
 }
 pub(crate) struct Face<'a> {
@@ -46,6 +108,31 @@ pub(crate) struct Face<'a> {
 impl<'a> Fonts<'a> {
     pub fn new() -> Self {
         Self::default()
+    }
+
+    /// Assign a format-independent bitmap provider to a ZPL font ID.
+    /// The provider may borrow data for `'a`; clones of this set share it.
+    /// Invalid metrics leave an existing assignment unchanged.
+    pub fn insert_bitmap_font(
+        &mut self,
+        id: char,
+        font: Arc<dyn BitmapFont + 'a>,
+    ) -> Result<(), String> {
+        validate_id(id)?;
+        self.faces.insert(id, Arc::new(Face::provider(font)?));
+        Ok(())
+    }
+
+    /// Register a bitmap provider under a virtual printer filename.
+    /// See [`Self::insert_named_bitmap`] for filename rules.
+    pub fn insert_named_bitmap_font(
+        &mut self,
+        name: &str,
+        font: Arc<dyn BitmapFont + 'a>,
+    ) -> Result<(), String> {
+        let name = font_name(name)?;
+        self.named.insert(name, Arc::new(Face::provider(font)?));
+        Ok(())
     }
 
     /// Assign a decoded bitmap strike. `baseline` is the distance from the
@@ -63,12 +150,6 @@ impl<'a> Fonts<'a> {
         self.faces
             .insert(id, Arc::new(Face::bitmap(settings, glyphs, baseline)?));
         Ok(())
-    }
-
-    /// Decode and assign a ZBF1/ZBF2 strike with an explicit native baseline.
-    pub fn insert_zbf(&mut self, id: char, data: &[u8], baseline: f64) -> Result<(), String> {
-        let (settings, glyphs) = bitmap_font::unpack(data)?;
-        self.insert_bitmap(id, settings, glyphs, baseline)
     }
 
     /// Assign a TrueType/OpenType font with quadratic `glyf` outlines.
@@ -106,17 +187,6 @@ impl<'a> Fonts<'a> {
         let face = Face::bitmap(settings, glyphs, baseline)?;
         self.named.insert(name, Arc::new(face));
         Ok(())
-    }
-
-    /// Register a ZBF1/ZBF2 strike under a virtual printer filename.
-    pub fn insert_named_zbf(
-        &mut self,
-        name: &str,
-        data: &[u8],
-        baseline: f64,
-    ) -> Result<(), String> {
-        let (settings, glyphs) = bitmap_font::unpack(data)?;
-        self.insert_named_bitmap(name, settings, glyphs, baseline)
     }
 
     /// Register a TrueType face under a virtual printer filename.
@@ -269,6 +339,22 @@ pub(crate) fn font_name(name: &str) -> Result<String, String> {
 pub(crate) const NAMED_FONT: char = '\0';
 
 impl<'a> Face<'a> {
+    fn provider(font: Arc<dyn BitmapFont + 'a>) -> Result<Self, String> {
+        let metrics = font.metrics();
+        if !(1..=4096).contains(&metrics.width)
+            || !(1..=4096).contains(&metrics.height)
+            || !metrics.baseline.is_finite()
+            || !(0. ..=metrics.height as f64).contains(&metrics.baseline)
+        {
+            return Err("invalid bitmap font metrics".into());
+        }
+        Ok(Self {
+            baseline: metrics.baseline / metrics.height as f64,
+            source: Source::Provider(metrics, font),
+            missing_advance: None,
+        })
+    }
+
     fn bitmap(settings: Settings, glyphs: Vec<Glyph>, baseline: f64) -> Result<Self, String> {
         settings.validate()?;
         Self::bitmap_metrics(settings, glyphs, baseline)
@@ -341,6 +427,7 @@ impl Face<'_> {
                 if s.width == 0 { s.height } else { s.width } as f64,
                 s.height as f64,
             ),
+            Source::Provider(m, _) => (m.width as f64, m.height as f64),
             Source::TrueType(..) => (1., 1.),
         };
         let (w, h) = match (w, h) {
@@ -396,6 +483,16 @@ impl Face<'_> {
                     w / width as f64,
                     h / s.height as f64,
                 ))
+            }
+            Source::Provider(metrics, font) => {
+                let glyph = font
+                    .glyph(c)?
+                    .ok_or_else(|| format!("unsupported custom font glyph {c:?}"))?;
+                bitmap_font::validate_glyphs(std::slice::from_ref(glyph.as_ref()))?;
+                if glyph.codepoint != c as u32 {
+                    return Err("bitmap font returned a different codepoint".into());
+                }
+                Ok((glyph, w / metrics.width as f64, h / metrics.height as f64))
             }
             Source::TrueType(font, hinting) => {
                 let index = font

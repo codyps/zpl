@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- **Breaking:** remove ZBF1/ZBF2 decoding (`bitmap_font::unpack`) and the
+  `Fonts::insert_zbf`/`insert_named_zbf` methods. Register a format-independent
+  `fonts::BitmapFont` provider with `insert_bitmap_font`/`insert_named_bitmap_font`,
+  or use `insert_bitmap`/`insert_named_bitmap` with decoded glyphs. Bundled fonts
+  continue using compact shared tables; historical capture hash checks remain.
+
 ## [0.1.1](https://github.com/codyps/zpl/compare/zpl-v0.1.0...zpl-v0.1.1) - 2026-09-30
 
 ### Added

@@ -801,10 +801,11 @@ The unchanged original case was freshly captured and now matches every pixel.
 `^PA` defaults are accepted. Enabled advanced properties are covered by the
 additional controls below; unmeasured glyphs remain explicit errors.
 
-The sampler emits real UTF-8 byte escapes for `^CI28`. ZBF2 stores Unicode
-scalar values; the decoder still accepts ZBF1 and the exporter preserves
-byte-identical ZBF1 output for existing one-byte strikes. See the fixture
-README and the assets format documentation for provenance and limits.
+The original sampler emitted real UTF-8 byte escapes for `^CI28` and stored
+Unicode scalar values in ZBF2 captures. Those captures now use compiled compact
+tables; a test-only historical encoder preserves the original ZBF1/ZBF2 hash
+checks. Runtime ZBF1/ZBF2 decoding has been removed. See the fixture README
+and the assets format documentation for provenance.
 
 ## Advanced text properties and bidirectional layout
 

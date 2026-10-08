@@ -227,14 +227,13 @@ fn captions_stored_formats_and_output_adapters_use_supplied_faces() {
 }
 
 #[test]
-fn packed_bitmap_and_bounded_text_use_custom_metrics() {
-    let mut packed = Fonts::new();
-    packed
-        .insert_zbf('0', &compact_font::asset("font0-32.zbf").unwrap(), 24.)
-        .unwrap();
+fn captured_bitmap_and_bounded_text_use_custom_metrics() {
+    let mut captured = Fonts::new();
+    let (settings, glyphs) = compact_font::decoded("font0-32.zbf").unwrap();
+    captured.insert_bitmap('0', settings, glyphs, 24.).unwrap();
     let source = b"^XA^FO30,30^A0N,32,32^FDABC^FS^XZ";
     let resident = zpl::render(source, SPECIFICATION).unwrap();
-    let custom = render_with_fonts(source, SPECIFICATION, &packed).unwrap();
+    let custom = render_with_fonts(source, SPECIFICATION, &captured).unwrap();
     assert_eq!(
         zpl::output::raster::rasterize(&resident.labels[0]).unwrap(),
         zpl::output::raster::rasterize(&custom.labels[0]).unwrap()
@@ -342,7 +341,7 @@ fn named_selections_persist_within_jobs_and_leave_the_caller_unchanged() {
 }
 
 #[test]
-fn named_truetype_and_zbf_registration_feed_the_existing_font_engines() {
+fn named_truetype_and_bitmap_registration_feed_the_existing_font_engines() {
     let mut custom = Fonts::new();
     custom.insert_truetype('Z', TTF, Hinting::Native).unwrap();
     custom
@@ -356,16 +355,11 @@ fn named_truetype_and_zbf_registration_feed_the_existing_font_engines() {
                 &custom
             )
     );
+    let (settings, glyphs) = compact_font::decoded("font0-32.zbf").unwrap();
     custom
-        .insert_named_zbf(
-            "CAPTURE.FNT",
-            &compact_font::asset("font0-32.zbf").unwrap(),
-            24.,
-        )
+        .insert_named_bitmap("CAPTURE.FNT", settings, glyphs.clone(), 24.)
         .unwrap();
-    custom
-        .insert_zbf('Z', &compact_font::asset("font0-32.zbf").unwrap(), 24.)
-        .unwrap();
+    custom.insert_bitmap('Z', settings, glyphs, 24.).unwrap();
     let source = "^XA^PW150^LL150^FO20,20^AZN,32,32^FDABC^FS^XZ";
     assert!(
         image(source, &custom)
@@ -450,4 +444,169 @@ fn overridden_resident_ids_remap_to_custom_unicode_glyphs() {
         image(source, &fonts('A', 4)),
         image(expected, &fonts('Z', 4))
     );
+}
+
+// A caller-owned strike with no ZBF settings, resident tag, or DPI metadata.
+struct SuppliedBitmap<'a> {
+    metrics: zpl::fonts::BitmapMetrics,
+    glyphs: &'a [Glyph],
+    owned: bool,
+}
+
+impl zpl::fonts::BitmapFont for SuppliedBitmap<'_> {
+    fn metrics(&self) -> zpl::fonts::BitmapMetrics {
+        self.metrics
+    }
+
+    fn glyph(&self, c: char) -> Result<Option<std::borrow::Cow<'_, Glyph>>, String> {
+        Ok(self
+            .glyphs
+            .iter()
+            .find(|g| g.codepoint == c as u32)
+            .map(|g| {
+                if self.owned {
+                    std::borrow::Cow::Owned(g.clone())
+                } else {
+                    std::borrow::Cow::Borrowed(g)
+                }
+            }))
+    }
+}
+
+fn supplied(glyphs: &[Glyph], owned: bool) -> SuppliedBitmap<'_> {
+    SuppliedBitmap {
+        metrics: zpl::fonts::BitmapMetrics {
+            width: 10,
+            height: 10,
+            baseline: 7.,
+        },
+        glyphs,
+        owned,
+    }
+}
+
+#[test]
+fn bitmap_provider_matches_decoded_strike_for_layout_and_named_selection() {
+    let (_, glyphs) = bitmap(4);
+    let legacy = fonts('Z', 4);
+    for owned in [false, true] {
+        let provider = std::sync::Arc::new(supplied(&glyphs, owned));
+        let mut custom = Fonts::new();
+        custom.insert_bitmap_font('Z', provider.clone()).unwrap();
+        custom
+            .insert_named_bitmap_font("brand.fnt", provider)
+            .unwrap();
+        let cloned = custom.clone();
+        drop(custom);
+        for orientation in ['N', 'R', 'I', 'B'] {
+            for dimensions in ["0,0", "20,0", "0,30", "20,30"] {
+                for origin in ["^FO40,40", "^FT40,40"] {
+                    for block in ["", "^FB40,3,0,L,0"] {
+                        let source = format!(
+                            "^XA^PW100^LL100{origin}^AZ{orientation},{dimensions}{block}^FDA A^FS^XZ"
+                        );
+                        let expected = image(&source, &legacy);
+                        assert_eq!(image(&source, &cloned), expected);
+                        assert_eq!(
+                            image(&format!("^CWZ,R:BRAND.FNT{source}"), &cloned),
+                            expected
+                        );
+                        assert_eq!(
+                            image(
+                                &source.replace(
+                                    &format!("^AZ{orientation},{dimensions}"),
+                                    &format!("^A@{orientation},{dimensions},R:BRAND.FNT")
+                                ),
+                                &cloned
+                            ),
+                            expected
+                        );
+                    }
+                }
+            }
+        }
+    }
+}
+
+#[test]
+fn bitmap_provider_validates_metrics_before_replacing_a_face() {
+    let (_, glyphs) = bitmap(4);
+    let source = "^XA^PW100^LL100^FO10,10^AZN,10,10^FDA^FS^XZ";
+    let mut custom = fonts('Z', 4);
+    let expected = image(source, &custom);
+    for (width, height, baseline) in [
+        (0, 10, 7.),
+        (10, 0, 0.),
+        (4097, 10, 7.),
+        (10, 4097, 7.),
+        (10, 10, -1.),
+        (10, 10, 11.),
+        (10, 10, f64::NAN),
+        (10, 10, f64::INFINITY),
+    ] {
+        let mut provider = supplied(&glyphs, false);
+        provider.metrics = zpl::fonts::BitmapMetrics {
+            width,
+            height,
+            baseline,
+        };
+        assert!(custom
+            .insert_bitmap_font('Z', std::sync::Arc::new(provider))
+            .is_err());
+        assert_eq!(image(source, &custom), expected);
+    }
+    // Provider cell dimensions are not subject to the legacy capture limit of 128.
+    let mut provider = supplied(&glyphs, false);
+    provider.metrics.width = 200;
+    provider.metrics.height = 200;
+    custom
+        .insert_bitmap_font('Z', std::sync::Arc::new(provider))
+        .unwrap();
+    assert_eq!(
+        image(&source.replace("10,10^FD", "200,200^FD"), &custom),
+        expected
+    );
+}
+
+#[test]
+fn bitmap_provider_rejects_bad_glyphs_and_propagates_lookup_errors() {
+    struct Provider(Option<Glyph>);
+    impl zpl::fonts::BitmapFont for Provider {
+        fn metrics(&self) -> zpl::fonts::BitmapMetrics {
+            supplied(&[], false).metrics
+        }
+        fn glyph(&self, c: char) -> Result<Option<std::borrow::Cow<'_, Glyph>>, String> {
+            if c == 'B' {
+                return Err("caller bitmap decoder failed".into());
+            }
+            Ok(self.0.as_ref().map(std::borrow::Cow::Borrowed))
+        }
+    }
+    let source = b"^XA^AZN,10,10^FDA^FS^XZ";
+    let (_, glyphs) = bitmap(4);
+    let mut malformed = glyphs[0].clone();
+    malformed.bitmap.pop();
+    let mut wrong_codepoint = glyphs[0].clone();
+    wrong_codepoint.codepoint = 'C' as u32;
+    for (glyph, expected) in [
+        (None, "unsupported custom font glyph 'A'"),
+        (Some(malformed), "invalid glyph metrics or bitmap"),
+        (
+            Some(wrong_codepoint),
+            "bitmap font returned a different codepoint",
+        ),
+    ] {
+        let mut custom = Fonts::new();
+        custom
+            .insert_bitmap_font('Z', std::sync::Arc::new(Provider(glyph)))
+            .unwrap();
+        let error = render_with_fonts(source, SPECIFICATION, &custom).unwrap_err();
+        assert!(error.message.contains(expected), "{error:?}");
+        let error =
+            render_with_fonts(b"^XA^AZN,10,10^FDB^FS^XZ", SPECIFICATION, &custom).unwrap_err();
+        assert!(
+            error.message.contains("caller bitmap decoder failed"),
+            "{error:?}"
+        );
+    }
 }

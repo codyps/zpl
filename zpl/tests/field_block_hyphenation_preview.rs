@@ -104,7 +104,7 @@ fn native_hyphen_supplements_are_pinned_and_c_d_are_identical() {
         let c: Vec<_> = row.split('\t').collect();
         let bytes = compact_font::asset(c[0]).unwrap();
         assert_eq!(digest::sha256(&bytes), c[1], "{} asset", c[0]);
-        let (settings, glyphs) = zpl::bitmap_font::unpack(&bytes).unwrap();
+        let (settings, glyphs) = compact_font::decoded(c[0]).unwrap();
         assert_eq!(
             (settings.font, settings.height, settings.width, settings.dpi),
             (

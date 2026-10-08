@@ -57,7 +57,7 @@ fn native_font_e_asset_is_pinned_to_the_capture() {
         digest::sha256(&asset),
         include_str!("fixtures/resident-e-zd621-v1/asset.sha256").trim()
     );
-    let (settings, glyphs) = zpl::bitmap_font::unpack(&asset).unwrap();
+    let (settings, glyphs) = compact_font::decoded("fontE-28-15.zbf").unwrap();
     assert_eq!(
         (settings.font, settings.height, settings.width, settings.dpi),
         ('E', 28, 15, 203)

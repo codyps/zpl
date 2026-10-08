@@ -14,7 +14,8 @@ fn all_captures_preserve_original_bytes() {
     for c in captures {
         let bytes = compact_font::asset(c.name).unwrap();
         assert_eq!(digest::sha256(&bytes), c.sha256, "{}", c.name);
-        let (_, glyphs) = zpl::bitmap_font::unpack(&bytes).unwrap();
+        let (_, glyphs) = compact_font::decoded(c.name).unwrap();
+        zpl::bitmap_font::validate_glyphs(&glyphs).unwrap();
         glyph_count += glyphs.len();
         assert_eq!(glyphs.len(), c.strike.keys.len());
         assert!(c.strike.glyph(0x10ffff).is_none());
