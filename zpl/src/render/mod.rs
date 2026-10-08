@@ -1867,15 +1867,27 @@ fn render_expanded(
                         // ^FO p. 201 does not prescribe fractional baseline
                         // rounding. Native FO/FT pairs at heights 10..25 place
                         // the baseline at floor(3h/4). Compute the fractional
-                        // correction once, not once per bitmap vertex.
+                        // correction once, not once per bitmap vertex. Controlled
+                        // Heros captures at 17/33/65 dots require the same rounding
+                        // for supplied TrueType faces; bitmap baselines stay explicit.
                         let baseline_correction = (options.compatibility.font0_fo_floor_baseline
-                            && fonts.get(font_id).is_none()
-                            && font_resources::is_scalable(font_id)
+                            && fonts.get(font_id).map_or_else(
+                                || font_resources::is_scalable(font_id),
+                                |face| face.is_truetype(),
+                            )
                             && field.text_size.is_some()
                             && !field.baseline
                             && field.bounded.is_none()
                             && field.direction.0 == b'H')
-                            .then(|| font::baseline_for(font_id, font_h).fract());
+                            .then(|| {
+                                fonts
+                                    .get(font_id)
+                                    .map_or_else(
+                                        || font::baseline_for(font_id, font_h),
+                                        |face| face.baseline(font_h),
+                                    )
+                                    .fract()
+                            });
                         let transform = |p: Point| {
                             let p = if let Some(correction) = baseline_correction {
                                 Point::new(p.x, p.y - correction)

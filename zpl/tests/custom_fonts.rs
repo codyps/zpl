@@ -168,8 +168,7 @@ fn truetype_uses_existing_engine_at_requested_sizes() {
             )
             .unwrap();
             assert!(glyph.bitmap.iter().flatten().any(|&byte| byte != 0));
-            let ascent = i16::from_be_bytes(face.table(b"hhea").unwrap()[4..6].try_into().unwrap());
-            let baseline = f64::from(ascent) * f64::from(h) / f64::from(face.units_per_em());
+            let baseline = 0.75 * f64::from(h);
             // Encode engine output as a bitmap face to check the complete render integration.
             let mut reference = Fonts::new();
             reference
@@ -188,6 +187,50 @@ fn truetype_uses_existing_engine_at_requested_sizes() {
             for rotation in ['N', 'R', 'I', 'B'] {
                 let source = format!("^XA^PW150^LL150^FO70,70^AZ{rotation},{h},{w}^FD{c}{c}^FS^XZ");
                 assert_eq!(image(&source, &custom), image(&source, &reference));
+            }
+        }
+    }
+}
+
+#[test]
+fn truetype_typographic_ascent_does_not_move_zpl_fields() {
+    // The original probe's hhea ascender happens to be 3/4 em, masking the
+    // integration bug. Give it Heros's 1.105-em ascent without changing glyphs.
+    // hhea field definition: https://learn.microsoft.com/en-us/typography/opentype/spec/hhea
+    let face = zpl::truetype::Font::parse(TTF).unwrap();
+    let offset = face.table(b"hhea").unwrap().as_ptr() as usize - TTF.as_ptr() as usize;
+    let mut high_ascent = TTF.to_vec();
+    high_ascent[offset + 4..offset + 6].copy_from_slice(&2263i16.to_be_bytes());
+    for hinting in [Hinting::None, Hinting::Native] {
+        let mut original = Fonts::new();
+        let mut modified = Fonts::new();
+        original.insert_truetype('Z', TTF, hinting).unwrap();
+        modified
+            .insert_truetype('Z', &high_ascent, hinting)
+            .unwrap();
+        modified
+            .insert_named_truetype("R:HIGH.TTF", &high_ascent, hinting)
+            .unwrap();
+        for profile in [SPECIFICATION, zpl::render::profiles::ZD621_203_DPI] {
+            for height in [16, 17, 32, 33, 64, 65] {
+                for rotation in ['N', 'R', 'I', 'B'] {
+                    for origin in ["FO", "FT"] {
+                        for layout in ["", "^FB90,2,0,L,0", "^TBN,90,70"] {
+                            let source = format!("^XA^PW200^LL200^{origin}80,80^AZ{rotation},{height},24{layout}^FD!!^FS^XZ");
+                            let render = |s: &str, fonts: &Fonts<'_>| {
+                                let doc = render_with_fonts(s.as_bytes(), profile, fonts).unwrap();
+                                zpl::output::raster::rasterize(&doc.labels[0]).unwrap()
+                            };
+                            let expected = render(&source, &original);
+                            assert_eq!(render(&source, &modified), expected, "{source}");
+                            let named = source.replace(
+                                &format!("^AZ{rotation},{height},24"),
+                                &format!("^A@{rotation},{height},24,R:HIGH.TTF"),
+                            );
+                            assert_eq!(render(&named, &modified), expected, "{named}");
+                        }
+                    }
+                }
             }
         }
     }
