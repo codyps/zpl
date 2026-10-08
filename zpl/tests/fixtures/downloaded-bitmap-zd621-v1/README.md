@@ -38,9 +38,10 @@ and zero overpaint. Images are never aligned, cropped, padded, or rescaled.
 Measured behavior: `~DB` faces round requested dimensions to independent integer
 multiples of their header matrix (minimum one); header baselines are one-based;
 FO rotations use bitmap pivots; magnified FT uses the last-dot baseline rule.
-These behaviors are selected by `downloaded_bitmap_font_metrics`; FT also uses
-`bitmap_font_ft_dot_origin`. Caller-registered bitmap/provider APIs keep their
-existing explicit metrics. SPECIFICATION keeps its previous custom-font behavior.
+These behaviors are selected by `supplied_bitmap_font_metrics`; FT also uses
+`bitmap_font_ft_dot_origin`. API registrations and resolvers represent already
+installed downloads and use the same profile-dependent metrics. SPECIFICATION
+keeps its previous custom-font behavior.
 
 References: Zebra ZPL Programming Guide ~DB pp. 169–170, ^A@ pp. 31–32,
 ^FO p. 201, ^FT p. 205 and resident matrix tables pp. 1582–1584:

@@ -250,7 +250,8 @@ fn render_expanded(
 ) -> Result<Document, RenderError> {
     // Request-local names resolve against the caller-owned font resources.
     let downloads = font_downloads::prepare(input, limits);
-    let mut fonts = fonts::RenderFonts::new(fonts);
+    let mut fonts =
+        fonts::RenderFonts::new(fonts, options.compatibility.supplied_bitmap_font_metrics);
     let number = |p: &[&str], i, default| number(p, i, default, limits.number_abs);
     let numbered = numbered::plan(input, options.compatibility, limits.field_bytes)?;
     let mut pending_terminator = None;
@@ -387,10 +388,7 @@ fn render_expanded(
                     .ok_or("missing font download")?
                     .as_ref()
                     .map_err(Clone::clone)?;
-                fonts.install(
-                    download,
-                    options.compatibility.downloaded_bitmap_font_metrics,
-                )?;
+                fonts.install(download)?;
                 return Ok(());
             }
             if matches!(item, Element::ControlCommand(_))
@@ -1674,7 +1672,7 @@ fn render_expanded(
                         {
                             match fonts.get(font_id) {
                                 Some(face) => face
-                                    .downloaded_ft_offset(font_h, field.rotation)
+                                    .bitmap_ft_offset(font_h, field.rotation)
                                     .unwrap_or((0., 0.)),
                                 None => font::printer_ft_offset(font_id, font_h, field.rotation),
                             }

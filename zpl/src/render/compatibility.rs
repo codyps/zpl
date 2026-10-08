@@ -265,10 +265,10 @@ pub struct Compatibility {
     /// native baseline geometrically (^FT p. 205 Table 7). The resident-font
     /// suites, including resident-h-zd621-v1, cover scales 1/2/3 and unequal axes.
     pub bitmap_font_ft_dot_origin: bool,
-    /// ZD621 downloaded ~DB faces use integer cell magnification and a one-based
-    /// header baseline. Only in-job downloads are affected; caller font APIs keep
-    /// their explicit metrics. See downloaded-bitmap-zd621-v1 printer controls.
-    pub downloaded_bitmap_font_metrics: bool,
+    /// Supplied bitmap faces use integer cell magnification, one-based baselines
+    /// and bitmap pivots, whether registered through the API, resolved by name,
+    /// or downloaded with ~DB. See downloaded-bitmap-zd621-v1 printer controls.
+    pub supplied_bitmap_font_metrics: bool,
     /// Remove the farthest bar-height dot for R at x <= 0 and I at y <= 0.
     /// This uses the final bar ink position, after ^FO/^FT, home and shift.
     /// Captured for ^B1/^B2/^B3/^BA/^BC in barcode-boundary-zd621-v1;

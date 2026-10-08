@@ -1361,11 +1361,12 @@ normalization and scope](../zpl/tests/fixtures/surepost-zd621-v1/README.md).
 
 The font-controlled comparison's A/D appearance differences came from fractional
 scaling and scalable-font pivots after `~DB`/`^CW` replacement, despite identical
-glyph pixels. The printer profiles now select `downloaded_bitmap_font_metrics`:
+glyph pixels. The printer profiles now select `supplied_bitmap_font_metrics`:
 integer cell magnification, one-based download-header baselines and bitmap FO
 pivots. `bitmap_font_ft_dot_origin` also handles magnified downloaded FT text.
-Caller-supplied bitmap/provider metrics and the specification profile retain
-their previous behavior.
+API-registered bitmap strikes, providers, and resolver-returned faces represent
+already-installed downloads and use the same profile-dependent metrics. The
+specification profile retains continuous sizing and the supplied baseline.
 
 The [100 saved bitmap controls](../zpl/tests/fixtures/downloaded-bitmap-zd621-v1/README.md)
 require exact native-canvas equality, including A–H in four orientations, P–V

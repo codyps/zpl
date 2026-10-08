@@ -18,7 +18,8 @@ pub struct BitmapMetrics {
     pub width: u32,
     /// Nominal cell height, in 1..=4096. Controls vertical scaling.
     pub height: u32,
-    /// Distance from the cell top to the baseline, in 0..=height.
+    /// Baseline in native dots, in 0..=height, using the same metrics as ~DB.
+    /// Printer profiles interpret it as one-based; SPECIFICATION uses it directly.
     pub baseline: f64,
 }
 
@@ -99,7 +100,7 @@ type Resolver<'a> = dyn Fn(&str) -> Result<Option<Face<'a>>, String> + Send + Sy
 
 enum Source<'a> {
     Compact(&'static zpl_bitmap_fonts::Font),
-    Bitmap(Settings, Vec<Glyph>),
+    Bitmap(Settings, Arc<Vec<Glyph>>),
     Provider(BitmapMetrics, Arc<dyn BitmapFont + 'a>),
     TrueType(Font<'a>, Hinting),
 }
@@ -109,7 +110,7 @@ pub struct Face<'a> {
     source: Source<'a>,
     baseline: f64,
     missing_advance: Option<u32>,
-    downloaded_printer_metrics: bool,
+    bitmap_printer_metrics: bool,
 }
 
 impl<'a> Fonts<'a> {
@@ -142,9 +143,11 @@ impl<'a> Fonts<'a> {
         Ok(())
     }
 
-    /// Assign a decoded bitmap strike. `baseline` is the distance from the
-    /// cell top to the baseline in native strike dots; glyph tops are relative
-    /// to that baseline. Glyphs may be unsorted, but duplicates are rejected.
+    /// Assign a decoded bitmap strike as an already-installed ~DB resource.
+    /// `baseline` is in native strike dots; glyph tops are relative to it.
+    /// Printer profiles use one-based baselines and integer magnification;
+    /// SPECIFICATION uses the supplied baseline and continuous sizing directly.
+    /// Glyphs may be unsorted, but duplicates are rejected.
     /// The assignment ID is independent of the strike's resident-font tag.
     pub fn insert_bitmap(
         &mut self,
@@ -249,11 +252,31 @@ pub(crate) struct RenderFonts<'r, 'a, 'd> {
     selected_name: Option<String>,
     downloaded: BTreeMap<String, Face<'d>>,
     resolved: BTreeMap<String, Face<'a>>,
+    registered_faces: BTreeMap<char, Face<'a>>,
+    registered_named: BTreeMap<String, Face<'a>>,
+    printer_metrics: bool,
 }
 
 impl<'r, 'a, 'd> RenderFonts<'r, 'a, 'd> {
-    pub(crate) fn new(resources: &'r Fonts<'a>) -> Self {
+    pub(crate) fn new(resources: &'r Fonts<'a>, printer_metrics: bool) -> Self {
         Self {
+            registered_faces: resources
+                .faces
+                .iter()
+                .filter_map(|(id, face)| {
+                    face.with_printer_metrics(printer_metrics)
+                        .map(|face| (*id, face))
+                })
+                .collect(),
+            registered_named: resources
+                .named
+                .iter()
+                .filter_map(|(name, face)| {
+                    face.with_printer_metrics(printer_metrics)
+                        .map(|face| (name.clone(), face))
+                })
+                .collect(),
+            printer_metrics,
             resources,
             aliases: BTreeMap::new(),
             selected_name: None,
@@ -273,6 +296,9 @@ impl<'r, 'a, 'd> RenderFonts<'r, 'a, 'd> {
                 None => resolve_rom_font(&name)?,
             }
             .ok_or_else(|| format!("unresolved named font {name:?}"))?;
+            let face = face
+                .with_printer_metrics(self.printer_metrics)
+                .unwrap_or(face);
             self.resolved.insert(name.clone(), face);
         }
         Ok(name)
@@ -281,7 +307,6 @@ impl<'r, 'a, 'd> RenderFonts<'r, 'a, 'd> {
     pub(crate) fn install(
         &mut self,
         download: &'d crate::render::font_downloads::Download,
-        printer_metrics: bool,
     ) -> Result<(), String> {
         use crate::render::font_downloads::Download;
         let (name, face) = match download {
@@ -295,10 +320,9 @@ impl<'r, 'a, 'd> RenderFonts<'r, 'a, 'd> {
             } => {
                 let mut face = Face::bitmap_metrics(*settings, glyphs.clone(), *baseline)?;
                 face.missing_advance = Some(*space);
-                face.downloaded_printer_metrics = printer_metrics;
-                if printer_metrics {
-                    face.baseline = (baseline - 1.) / settings.height as f64;
-                }
+                let face = face
+                    .with_printer_metrics(self.printer_metrics)
+                    .unwrap_or(face);
                 (name, face)
             }
         };
@@ -321,12 +345,12 @@ impl<'r, 'a, 'd> RenderFonts<'r, 'a, 'd> {
         self.selected_name.is_some()
     }
 
-    /// Caller-supplied fonts retain their existing continuous-size layout;
-    /// measured ROM and downloaded bitmaps use matrix-based placement even under a new ID.
+    /// The selected profile determines bitmap placement independently of whether
+    /// the resource came from the API, a resolver, or an in-job download.
     pub(crate) fn scalable_layout(&self, id: char) -> bool {
         self.get(id).map_or_else(
             || resident::is_scalable(id),
-            |face| face.compact().is_none() && !face.downloaded_printer_metrics,
+            |face| face.compact().is_none() && !face.bitmap_printer_metrics,
         )
     }
 
@@ -340,9 +364,13 @@ impl<'r, 'a, 'd> RenderFonts<'r, 'a, 'd> {
             Some(name) => self
                 .downloaded
                 .get(name)
+                .or_else(|| self.registered_named.get(name))
                 .or_else(|| self.resources.named.get(name).map(Arc::as_ref))
                 .or_else(|| self.resolved.get(name)),
-            None => self.resources.faces.get(&id).map(Arc::as_ref),
+            None => self
+                .registered_faces
+                .get(&id)
+                .or_else(|| self.resources.faces.get(&id).map(Arc::as_ref)),
         }
     }
 }
@@ -398,7 +426,7 @@ pub fn resolve_rom_font(name: &str) -> Result<Option<Face<'static>>, String> {
                 (f64::from(m.baseline) - 1.) / f64::from(m.cell_height)
             }),
             missing_advance: None,
-            downloaded_printer_metrics: false,
+            bitmap_printer_metrics: false,
         }),
     )
 }
@@ -407,6 +435,31 @@ pub fn resolve_rom_font(name: &str) -> Result<Option<Face<'static>>, String> {
 pub(crate) const NAMED_FONT: char = '\0';
 
 impl<'a> Face<'a> {
+    // Build a request-local metrics view while sharing immutable glyph/provider
+    // storage. A registered face represents a font already installed on the device.
+    fn with_printer_metrics(&self, enabled: bool) -> Option<Self> {
+        if !enabled {
+            return None;
+        }
+        let (source, height) = match &self.source {
+            Source::Bitmap(settings, glyphs) => (
+                Source::Bitmap(*settings, Arc::clone(glyphs)),
+                settings.height,
+            ),
+            Source::Provider(metrics, provider) => (
+                Source::Provider(*metrics, Arc::clone(provider)),
+                metrics.height,
+            ),
+            _ => return None,
+        };
+        Some(Self {
+            source,
+            baseline: self.baseline - 1. / height as f64,
+            missing_advance: self.missing_advance,
+            bitmap_printer_metrics: true,
+        })
+    }
+
     /// Construct a format-independent bitmap provider face for a path resolver.
     /// See [`Fonts::insert_bitmap_font`] for metrics and lifetime requirements.
     pub fn provider(font: Arc<dyn BitmapFont + 'a>) -> Result<Self, String> {
@@ -422,7 +475,7 @@ impl<'a> Face<'a> {
             baseline: metrics.baseline / metrics.height as f64,
             source: Source::Provider(metrics, font),
             missing_advance: None,
-            downloaded_printer_metrics: false,
+            bitmap_printer_metrics: false,
         })
     }
 
@@ -459,9 +512,9 @@ impl<'a> Face<'a> {
         }
         Ok(Self {
             baseline: baseline / settings.height as f64,
-            source: Source::Bitmap(settings, glyphs),
+            source: Source::Bitmap(settings, Arc::new(glyphs)),
             missing_advance: None,
-            downloaded_printer_metrics: false,
+            bitmap_printer_metrics: false,
         })
     }
     /// Construct a borrowed TrueType face; see [`Fonts::insert_truetype`].
@@ -480,7 +533,7 @@ impl<'a> Face<'a> {
         Ok(Self {
             source: Source::TrueType(font, hinting),
             missing_advance: None,
-            downloaded_printer_metrics: false,
+            bitmap_printer_metrics: false,
             baseline,
         })
     }
@@ -495,14 +548,16 @@ fn validate_id(id: char) -> Result<(), String> {
 }
 
 impl Face<'_> {
-    pub(crate) fn downloaded_ft_offset(&self, h: f64, rotation: u8) -> Option<(f64, f64)> {
-        if !self.downloaded_printer_metrics {
+    pub(crate) fn bitmap_ft_offset(&self, h: f64, rotation: u8) -> Option<(f64, f64)> {
+        if !self.bitmap_printer_metrics {
             return None;
         }
-        let Source::Bitmap(settings, _) = &self.source else {
-            return None;
+        let height = match &self.source {
+            Source::Bitmap(settings, _) => settings.height,
+            Source::Provider(metrics, _) => metrics.height,
+            _ => return None,
         };
-        let scale = h / settings.height as f64;
+        let scale = h / height as f64;
         // ~DB baseline dot placement, independently captured by the compact
         // FO/FT controls in downloaded-bitmap-zd621-v1.
         Some(match rotation {
@@ -569,7 +624,7 @@ impl Face<'_> {
         {
             return Err("TrueType size must be in 1..=4096 dots per em".into());
         }
-        if self.downloaded_printer_metrics {
+        if self.bitmap_printer_metrics {
             // ZD621 ~DB captures: downloaded-bitmap-zd621-v1. Quantize each
             // axis independently, using the downloaded cell rather than its alias.
             return Ok((nw * (w / nw).round().max(1.), nh * (h / nh).round().max(1.)));
