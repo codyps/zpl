@@ -31,9 +31,10 @@
         });
         lib = pkgs.lib;
         stdenv = pkgs.stdenv;
-        # Use the exact CLI required by zpl-wasm, including on Intel Darwin,
-        # whose separate Nixpkgs input lacks this versioned package expression.
-        wasmBindgenCli = pkgs.callPackage "${nixpkgs}/pkgs/by-name/wa/wasm-bindgen-cli_0_2_128/package.nix" { };
+        # Use the versioned Nixpkgs attribute. The Intel Darwin input only has
+        # versions through 0.2.126, so build the newer expression with its packages.
+        wasmBindgenCli = pkgs.wasm-bindgen-cli_0_2_128 or
+          (pkgs.callPackage "${nixpkgs}/pkgs/by-name/wa/wasm-bindgen-cli_0_2_128/package.nix" { });
         # Unstable's release-plz requires Rust >= 1.96; Intel macOS defaults to
         # 1.95. Use its newer packaged toolchain only for building release-plz.
         releasePlz = if system == "x86_64-darwin" then
