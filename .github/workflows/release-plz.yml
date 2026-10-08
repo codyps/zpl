@@ -11,6 +11,8 @@ permissions: {}
 env:
   CARGO_NET_RETRY: 2
   CARGO_HTTP_TIMEOUT: 30
+  npm_config_fetch_retries: 2
+  npm_config_fetch_timeout: 30000
 
 jobs:
   release:
@@ -47,9 +49,82 @@ jobs:
           # Leave CARGO_REGISTRY_TOKEN unset: release-plz obtains a short-lived
           # crates.io token through GitHub OIDC only when publication is needed.
 
-  release-pr:
-    # Use the newly published versions as the next release PR's registry baseline.
+  npm-release:
     needs: release
+    if: github.repository == 'codyps/zpl' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      id-token: write
+    concurrency:
+      group: release-npm
+      cancel-in-progress: false
+    steps:
+      - name: Check out the release commit and tags
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Select completed renderer release and set npm version
+        id: renderer
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/npm-release.py >> "$GITHUB_OUTPUT"
+      - name: Install Node
+        if: steps.renderer.outputs.released == 'true'
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24'
+          registry-url: https://registry.npmjs.org
+          package-manager-cache: false
+      - name: Check whether this npm version is already published
+        if: steps.renderer.outputs.released == 'true'
+        id: registry
+        env:
+          RELEASE_VERSION: ${{ steps.renderer.outputs.version }}
+        run: |
+          if npm view "@codyps/zpl@$RELEASE_VERSION" version --json > "$RUNNER_TEMP/npm-version.json"; then
+            jq -e --arg version "$RELEASE_VERSION" '. == $version' "$RUNNER_TEMP/npm-version.json"
+            echo "publish=false" >> "$GITHUB_OUTPUT"
+          else
+            # Only a missing version permits publishing; network/auth errors fail.
+            jq -e '.error.code == "E404"' "$RUNNER_TEMP/npm-version.json"
+            echo "publish=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Install native build dependencies
+        if: steps.registry.outputs.publish == 'true'
+        run: |
+          sudo apt-get -o Acquire::Retries=3 update
+          sudo apt-get -o Acquire::Retries=3 install -y --no-install-recommends build-essential cmake pkg-config libssl-dev
+      - name: Install Rust and Wasm target
+        if: steps.registry.outputs.publish == 'true'
+        uses: dtolnay/rust-toolchain@6bed0761d98439e5a578e2877258200ad565ba87 # stable
+        with:
+          targets: wasm32-unknown-unknown
+      - name: Install WebAssembly bindings CLI
+        if: steps.registry.outputs.publish == 'true'
+        timeout-minutes: 15
+        run: cargo install wasm-bindgen-cli --version 0.2.128 --locked
+      - name: Build and test npm package
+        if: steps.registry.outputs.publish == 'true'
+        env:
+          RELEASE_VERSION: ${{ steps.renderer.outputs.version }}
+        run: |
+          cargo test --locked -p zpl-wasm
+          npm run build --prefix zpl-node
+          npm test --prefix zpl-node
+          node -e 'require("node:assert/strict").equal(require("./zpl-node/index.cjs").libraryVersion(), process.env.RELEASE_VERSION)'
+      - name: Publish npm package with trusted publishing
+        if: steps.registry.outputs.publish == 'true'
+        working-directory: zpl-node
+        # Build/tests above include an installed-archive test. Avoid rebuilding.
+        # No NODE_AUTH_TOKEN: https://docs.npmjs.com/trusted-publishers/
+        run: npm publish --access public --ignore-scripts
+
+  release-pr:
+    # Use published versions as the baseline only after both registries succeed.
+    needs: [release, npm-release]
     if: github.repository == 'codyps/zpl' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-24.04
     timeout-minutes: 15

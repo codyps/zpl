@@ -53,6 +53,14 @@ jobs:
         run: cargo test --locked -p zpl-wasm
       - name: Build static site
         run: bash scripts/build-site.sh
+      - name: Test npm release selection
+        run: python3 -m unittest discover -s scripts -p test_npm_release.py -v
+      - name: Build and test Node package
+        working-directory: zpl-node
+        run: |
+          npm run build
+          npm test
+          npm pack
       - name: Assemble performance dashboard and latest history
         env:
           GH_TOKEN: ${{ github.token }}

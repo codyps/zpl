@@ -57,6 +57,12 @@ Inspect command boundaries in a ZPL file:
 cargo run -p zpl --example zpl-parse -- test-data/cc.zpl
 ```
 
+## Use the renderer in Node.js
+
+The [`@codyps/zpl` package](zpl-node/README.md) wraps the Rust renderer with
+WebAssembly and supports CommonJS, ESM, and TypeScript. Build and pack it from
+`zpl-node/` to render PNG, SVG, and multipage PDF locally without a native addon.
+
 ## Use the renderer in Rust
 
 ```rust

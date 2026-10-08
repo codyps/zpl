@@ -7,3 +7,8 @@ zpl-render-api/node_modules/
 zpl-render-api/.wrangler/
 zpl-render-api/.dev.vars*
 zpl-render-api/pkg/
+zpl-node/pkg/
+zpl-node/LICENSE
+zpl-node/*.tgz
+zpl-node/node_modules/
+.direnv/
