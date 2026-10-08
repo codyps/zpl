@@ -6,6 +6,7 @@ members = [
     "zpl-bitmap-fonts",
     "raster-diff",
     "zpl-wasm",
+    "zpl-python",
     "zpl-cmd",
     "zpl-render-api",
     "zpl",

@@ -75,6 +75,7 @@
             # Match zpl-wasm/Cargo.toml; the unversioned CLI can be newer.
             wasmBindgenCli
             lld
+            python3
           ] ++ lib.optionals stdenv.hostPlatform.isDarwin [
             xcbuild.xcrun
           ];
