@@ -74,19 +74,15 @@ Glyphs follow in ascending Unicode codepoint order. Each record has:
 Bits are MSB-first, row-major, continuous across row boundaries. One is black.
 Unused trailing bits are zero. Space has no bitmap but retains its advance.
 
-ZBF2 uses the same layout with magic `ZBF2` and a four-byte little-endian
-Unicode scalar value instead of the one-byte codepoint. Its count limit is
-4096 glyphs; the existing two-MiB limit still applies. Surrogates and values
-above U+10FFFF are rejected. The extractor emits ZBF1 when all characters fit
-in one byte, preserving existing assets exactly, and ZBF2 otherwise. Sampling
-with `--encoding 28` sends UTF-8 bytes and disables advanced text layout in
-sampling pages so glyph metrics are measured without bidirectional reordering.
-This avoids JSON text and row-padding overhead while retaining exact metrics.
+ZBF2 used the same layout with magic `ZBF2` and a four-byte little-endian
+Unicode scalar value instead of the one-byte codepoint. The historical exporter
+selected ZBF1 for one-byte characters and ZBF2 otherwise.
 
-`zpl_font_extract::pack` and `zpl::bitmap_font::unpack` implement the format, with dimension,
-ordering, length and padding validation. Runtime `font 0` scaling uses 32 as the
-native width/height and the documented baseline of three quarters of height;
-this embedded asset's metadata and completeness are checked in unit tests.
+These layouts are retained here only to explain original capture hashes.
+`tests/support/compact_font.rs` reconstructs the historical byte stream from
+compact glyph data to check those hashes. The library no longer decodes either
+format; runtime registration accepts decoded glyphs or a `fonts::BitmapFont`
+provider. Bundled fonts use shared compiled tables, not serialized ZBF files.
 
 ## Size and rotation study
 

@@ -1,11 +1,25 @@
-//! Reconstruct historical strike encodings from the compact reader. Original
-//! fixture hashes pin every glyph without retaining duplicate embedded assets.
-pub fn asset(name: &str) -> Option<Vec<u8>> {
-    if let Some(capture) = zpl_bitmap_fonts::captures::zd621::CAPTURES
+//! Read compact glyphs directly for tests. The historical encoder below exists
+//! only to check original capture hashes; production has no ZBF1/ZBF2 codec.
+use zpl::bitmap_font::{Glyph, Settings};
+
+pub fn decoded(name: &str) -> Option<(Settings, Vec<Glyph>)> {
+    if let Some(c) = zpl_bitmap_fonts::captures::zd621::CAPTURES
         .iter()
         .find(|c| c.name == name)
     {
-        return Some(captured_asset(capture));
+        let s = c.strike;
+        return Some((
+            Settings {
+                font: s.font,
+                height: s.height.into(),
+                width: s.width.into(),
+                dpi: s.dpi.into(),
+            },
+            s.keys
+                .iter()
+                .map(|&key| owned_glyph(key, s.glyph(key).unwrap()))
+                .collect(),
+        ));
     }
     let face = name.strip_prefix("font")?.split('-').next()?;
     let id = if face == "GS" {
@@ -39,31 +53,81 @@ pub fn asset(name: &str) -> Option<Vec<u8>> {
             })
             .collect()
     };
-    let mut bytes = if unicode { b"ZBF2" } else { b"ZBF1" }.to_vec();
-    bytes.push(id as u8);
-    for n in [
-        metrics.cell_height,
-        metrics.cell_width,
-        203,
-        keys.len() as u16,
-    ] {
-        bytes.extend(n.to_le_bytes());
+    Some((
+        Settings {
+            font: id,
+            height: metrics.cell_height.into(),
+            width: metrics.cell_width.into(),
+            dpi: 203,
+        },
+        keys.into_iter()
+            .map(|(key, source)| owned_glyph(key, font.glyph(source).unwrap()))
+            .collect(),
+    ))
+}
+
+fn owned_glyph(codepoint: u32, g: zpl_bitmap_fonts::Glyph) -> Glyph {
+    let mut bitmap = vec![vec![0; usize::from(g.width).div_ceil(8)]; usize::from(g.height)];
+    for y in 0..g.height {
+        for x in 0..g.width {
+            if g.pixel(x, y) {
+                bitmap[usize::from(y)][usize::from(x) / 8] |= 128 >> (x % 8);
+            }
+        }
     }
-    for (key, source) in keys {
-        let g = font.glyph(source).unwrap();
+    Glyph {
+        codepoint,
+        advance: g.advance.into(),
+        left: g.left.into(),
+        top: g.top.into(),
+        width: g.width.into(),
+        height: g.height.into(),
+        bitmap,
+    }
+}
+
+// Historical layout is documented in zpl/assets/README.md. Preserve the original
+// byte stream (including dense row packing) solely for provenance assertions.
+#[allow(dead_code)] // Some test binaries need only decoded glyphs.
+pub fn asset(name: &str) -> Option<Vec<u8>> {
+    let (s, glyphs) = decoded(name)?;
+    let unicode = zpl_bitmap_fonts::captures::zd621::CAPTURES
+        .iter()
+        .find(|c| c.name == name)
+        .map_or_else(
+            || name.ends_with("-legacy-controls.zbf"),
+            |c| c.legacy_format == 2,
+        );
+    let mut bytes = if unicode { b"ZBF2" } else { b"ZBF1" }.to_vec();
+    bytes.push(s.font as u8);
+    for value in [
+        s.height as u16,
+        s.width as u16,
+        s.dpi as u16,
+        glyphs.len() as u16,
+    ] {
+        bytes.extend(value.to_le_bytes());
+    }
+    for g in glyphs {
         if unicode {
-            bytes.extend(key.to_le_bytes());
+            bytes.extend(g.codepoint.to_le_bytes());
         } else {
-            bytes.push(key as u8);
+            bytes.push(g.codepoint as u8);
         }
-        for n in [g.advance, g.left as u16, g.top as u16, g.width, g.height] {
-            bytes.extend(n.to_le_bytes());
+        for value in [
+            g.advance as u16,
+            g.left as u16,
+            g.top as u16,
+            g.width as u16,
+            g.height as u16,
+        ] {
+            bytes.extend(value.to_le_bytes());
         }
-        let mut bits = vec![0; (usize::from(g.width) * usize::from(g.height)).div_ceil(8)];
-        for y in 0..g.height {
-            for x in 0..g.width {
-                if g.pixel(x, y) {
-                    let bit = usize::from(y) * usize::from(g.width) + usize::from(x);
+        let mut bits = vec![0; (g.width as usize * g.height as usize).div_ceil(8)];
+        for y in 0..g.height as usize {
+            for x in 0..g.width as usize {
+                if g.bitmap[y][x / 8] & (128 >> (x % 8)) != 0 {
+                    let bit = y * g.width as usize + x;
                     bits[bit / 8] |= 128 >> (bit % 8);
                 }
             }
@@ -71,40 +135,4 @@ pub fn asset(name: &str) -> Option<Vec<u8>> {
         bytes.extend(bits);
     }
     Some(bytes)
-}
-
-fn captured_asset(c: &zpl_bitmap_fonts::captures::Capture) -> Vec<u8> {
-    let s = c.strike;
-    let mut bytes = if c.legacy_format == 2 {
-        b"ZBF2"
-    } else {
-        b"ZBF1"
-    }
-    .to_vec();
-    bytes.push(s.font as u8);
-    for value in [s.height, s.width, s.dpi, s.keys.len() as u16] {
-        bytes.extend(value.to_le_bytes());
-    }
-    for &key in s.keys {
-        let g = s.glyph(key).unwrap();
-        if c.legacy_format == 2 {
-            bytes.extend(key.to_le_bytes());
-        } else {
-            bytes.push(key as u8);
-        }
-        for value in [g.advance, g.left as u16, g.top as u16, g.width, g.height] {
-            bytes.extend(value.to_le_bytes());
-        }
-        let mut bits = vec![0; (usize::from(g.width) * usize::from(g.height)).div_ceil(8)];
-        for y in 0..g.height {
-            for x in 0..g.width {
-                if g.pixel(x, y) {
-                    let bit = usize::from(y) * usize::from(g.width) + usize::from(x);
-                    bits[bit / 8] |= 128 >> (bit % 8);
-                }
-            }
-        }
-        bytes.extend(bits);
-    }
-    bytes
 }

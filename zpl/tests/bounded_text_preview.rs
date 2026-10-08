@@ -75,7 +75,7 @@ fn captured_font_assets_are_complete_and_pinned() {
         let c: Vec<_> = row.split('\t').collect();
         let bytes = compact_font::asset(c[0]).unwrap();
         assert_eq!(digest::sha256(&bytes), c[1]);
-        let (settings, glyphs) = zpl::bitmap_font::unpack(&bytes).unwrap();
+        let (settings, glyphs) = compact_font::decoded(c[0]).unwrap();
         assert_eq!(
             (settings.font, settings.height, settings.width, settings.dpi),
             ('0', 28, 14, 203)

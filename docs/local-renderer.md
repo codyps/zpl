@@ -77,7 +77,7 @@ previous face intact. A registered face's missing glyphs return an error instead
 of mixing in resident glyphs. ZPL downloads use the same engines (see below).
 
 Register a virtual printer filename with `insert_named_truetype`,
-`insert_named_bitmap`, or `insert_named_zbf`. Both `^A@` and `^CW` resolve only
+`insert_named_bitmap`, or `insert_named_bitmap_font`. Both `^A@` and `^CW` resolve only
 these caller-registered faces:
 
 ```rust
@@ -170,8 +170,20 @@ References: Zebra Programming Guide ~DB pp. 169–170, ~DT/~DU pp. 179–180,
 
 ### Font metrics and engine limits
 
-For bitmap fonts, use `insert_bitmap(id, settings, glyphs, baseline)` or
-`insert_zbf(id, bytes, baseline)`. The baseline is measured from the strike's
+For bitmap fonts loaded from arbitrary formats, implement `fonts::BitmapFont`
+and register an `Arc` with `insert_bitmap_font(id, provider)` or
+`insert_named_bitmap_font(name, provider)` for `^CW`/`^A@`. The trait exposes
+`BitmapMetrics` (native cell width, height, and baseline) and Unicode glyph lookup
+returning `Result<Option<Cow<Glyph>>, String>`. Providers can borrow their storage
+or decode glyphs on demand, without supplying a resident-font tag, DPI, or ZBF
+bytes. Font sets share providers when cloned; borrowed storage must outlive the
+set. Lookups should be deterministic. Missing glyphs and provider errors are
+rendering errors, with no resident fallback. Cell dimensions are 1–4096 dots;
+metrics are checked at registration and glyphs before use. `fonts::Glyph` stores
+one MSB-first packed row per bitmap row, with one bits marking foreground ink.
+
+For an already decoded strike, use
+`insert_bitmap(id, settings, glyphs, baseline)`. The baseline is measured from the strike's
 cell top in native dots; glyph `top` values are relative to it. The caller's
 advances and ink metrics drive wrapping and placement. Requested width/height
 scale the native strike independently, without resident-matrix quantization;
@@ -179,6 +191,14 @@ an omitted axis preserves its aspect ratio. DPI metadata is validated but does
 not rescale dot-based requests. The registration ID may differ from the strike's
 resident tag. A new registration replaces the prior face rather than adding a
 size-specific strike.
+
+ZBF1/ZBF2 loading has been removed: `bitmap_font::unpack`, `insert_zbf`, and
+`insert_named_zbf` are no longer available. Migrate callers to a `BitmapFont`
+provider or to decoded glyph registration (`insert_bitmap`/`insert_named_bitmap`).
+Bundled fonts use compiled `zpl-bitmap-fonts` tables and need no binary decoder.
+ZBF3 is a separate portable format from the `zebra-firmware` recovery tools;
+this renderer does not include a ZBF3 reader. An external reader can be adapted
+to `BitmapFont`, with explicit character mapping for printer source-position keys.
 
 TrueType uses the existing original engine and scan converter, adding no runtime
 dependencies. It supports TrueType/OpenType **quadratic `glyf` outlines**, not
