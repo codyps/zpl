@@ -92,14 +92,20 @@ pub trait BitmapFont: Send + Sync {
 pub struct Fonts<'a> {
     faces: BTreeMap<char, Arc<Face<'a>>>,
     named: BTreeMap<String, Arc<Face<'a>>>,
+    resolver: Option<Arc<Resolver<'a>>>,
 }
 
+type Resolver<'a> = dyn Fn(&str) -> Result<Option<Face<'a>>, String> + Send + Sync + 'a;
+
 enum Source<'a> {
+    Compact(&'static zpl_bitmap_fonts::Font),
     Bitmap(Settings, Vec<Glyph>),
     Provider(BitmapMetrics, Arc<dyn BitmapFont + 'a>),
     TrueType(Font<'a>, Hinting),
 }
-pub(crate) struct Face<'a> {
+/// A resolved font resource. Construct bitmap or TrueType faces with the methods
+/// below, or obtain a measured ROM face from [`resolve_rom_font`].
+pub struct Face<'a> {
     source: Source<'a>,
     baseline: f64,
     missing_advance: Option<u32>,
@@ -173,7 +179,7 @@ impl<'a> Fonts<'a> {
 
     /// Register a bitmap face under a virtual printer filename for `^CW`/`^A@`.
     /// Names are case-insensitive; an omitted device means `R:`. This never
-    /// reads a host file. Supported devices are R/E/B/A, extensions FNT/TTF/TTE/OTF/DAT,
+    /// reads a host file. Supported devices are R/E/B/A/Z, extensions FNT/TTF/TTE/OTF/DAT,
     /// and basenames contain 1–255 ASCII letters, digits, underscores or hyphens.
     /// See [`Self::insert_bitmap`] for bitmap metrics.
     pub fn insert_named_bitmap(
@@ -220,46 +226,60 @@ impl<'a> Fonts<'a> {
         Ok(())
     }
 
-    fn checked_name(&self, name: &str) -> Result<String, String> {
-        let name = font_name(name)?;
-        if !self.named.contains_key(&name) {
-            return Err(format!("unresolved named font {name:?}"));
-        }
-        Ok(name)
+    /// Replace the default ROM resolver. Explicit registrations and in-job downloads
+    /// take precedence. The callback receives an uppercase, validated device:path
+    /// (an omitted device becomes R:), and is called once per resolved name per render.
+    /// `Ok(None)` means unknown; errors propagate at the selecting ZPL command.
+    /// Call [`resolve_rom_font`] in the callback to retain bundled ROM lookup.
+    /// No filesystem or network access is performed by the default resolver.
+    pub fn set_resolver(
+        &mut self,
+        resolver: impl Fn(&str) -> Result<Option<Face<'a>>, String> + Send + Sync + 'a,
+    ) {
+        self.resolver = Some(Arc::new(resolver));
     }
 }
 
 /// Request-local ZPL selections, separate from caller-owned font resources.
 /// ^CW retains a filename, not a snapshot of the face stored under that name.
-pub(crate) struct RenderFonts<'r, 'a> {
+pub(crate) struct RenderFonts<'r, 'a, 'd> {
     resources: &'r Fonts<'a>,
     aliases: BTreeMap<char, String>,
     selected_name: Option<String>,
-    downloaded: BTreeMap<String, Face<'a>>,
+    downloaded: BTreeMap<String, Face<'d>>,
+    resolved: BTreeMap<String, Face<'a>>,
 }
 
-impl<'r, 'a> RenderFonts<'r, 'a> {
+impl<'r, 'a, 'd> RenderFonts<'r, 'a, 'd> {
     pub(crate) fn new(resources: &'r Fonts<'a>) -> Self {
         Self {
             resources,
             aliases: BTreeMap::new(),
             selected_name: None,
             downloaded: BTreeMap::new(),
+            resolved: BTreeMap::new(),
         }
     }
 
-    fn checked_name(&self, name: &str) -> Result<String, String> {
-        let normalized = font_name(name)?;
-        if self.downloaded.contains_key(&normalized) {
-            Ok(normalized)
-        } else {
-            self.resources.checked_name(name)
+    fn checked_name(&mut self, name: &str) -> Result<String, String> {
+        let name = font_name(name)?;
+        if !self.downloaded.contains_key(&name)
+            && !self.resources.named.contains_key(&name)
+            && !self.resolved.contains_key(&name)
+        {
+            let face = match &self.resources.resolver {
+                Some(resolve) => resolve(&name)?,
+                None => resolve_rom_font(&name)?,
+            }
+            .ok_or_else(|| format!("unresolved named font {name:?}"))?;
+            self.resolved.insert(name.clone(), face);
         }
+        Ok(name)
     }
 
     pub(crate) fn install(
         &mut self,
-        download: &'a crate::render::font_downloads::Download,
+        download: &'d crate::render::font_downloads::Download,
     ) -> Result<(), String> {
         use crate::render::font_downloads::Download;
         let (name, face) = match download {
@@ -295,7 +315,16 @@ impl<'r, 'a> RenderFonts<'r, 'a> {
         self.selected_name.is_some()
     }
 
-    pub(crate) fn get(&self, id: char) -> Option<&Face<'a>> {
+    /// Caller-supplied fonts retain their existing continuous-size layout;
+    /// measured ROM bitmaps use matrix-based placement even under a new ID.
+    pub(crate) fn scalable_layout(&self, id: char) -> bool {
+        self.get(id).map_or_else(
+            || resident::is_scalable(id),
+            |face| face.compact().is_none(),
+        )
+    }
+
+    pub(crate) fn get(&self, id: char) -> Option<&Face<'_>> {
         let name = if id == NAMED_FONT {
             self.selected_name.as_ref()
         } else {
@@ -305,7 +334,8 @@ impl<'r, 'a> RenderFonts<'r, 'a> {
             Some(name) => self
                 .downloaded
                 .get(name)
-                .or_else(|| self.resources.named.get(name).map(Arc::as_ref)),
+                .or_else(|| self.resources.named.get(name).map(Arc::as_ref))
+                .or_else(|| self.resolved.get(name)),
             None => self.resources.faces.get(&id).map(Arc::as_ref),
         }
     }
@@ -317,7 +347,7 @@ impl<'r, 'a> RenderFonts<'r, 'a> {
 pub(crate) fn font_name(name: &str) -> Result<String, String> {
     let name = name.trim().to_ascii_uppercase();
     let (device, file) = name.split_once(':').unwrap_or(("R", &name));
-    if !matches!(device, "R" | "E" | "B" | "A") {
+    if !matches!(device, "R" | "E" | "B" | "A" | "Z") {
         return Err("unsupported named font device".into());
     }
     let (base, extension) = file
@@ -335,11 +365,44 @@ pub(crate) fn font_name(name: &str) -> Result<String, String> {
     Ok(format!("{device}:{file}"))
 }
 
+/// Resolve a recovered ZD621 ROM font by virtual printer filename.
+/// Names are case-insensitive. Returns `None` for valid names outside the bundled
+/// catalog, including other devices. Invalid paths return an error. No I/O occurs.
+/// The bundle preserves measured encodings; it is not a complete ROM image.
+/// EPL6/EPL7 have only size-one captures, so other requested sizes are rejected.
+///
+/// ```
+/// use zpl::fonts::{Fonts, resolve_rom_font};
+/// let mut fonts = Fonts::new();
+/// fonts.set_resolver(|path| {
+///     // Resolve application-owned paths here, then delegate other names.
+///     resolve_rom_font(path)
+/// });
+/// assert!(resolve_rom_font("z:e12.fnt")?.is_some());
+/// # Ok::<(), String>(())
+/// ```
+/// Zebra ^WD documents Z: as the resident font namespace:
+/// <https://docs.zebra.com/us/en/printers/software/zpl-pg/zpl-commands/%5Ewd.html>.
+pub fn resolve_rom_font(name: &str) -> Result<Option<Face<'static>>, String> {
+    let name = font_name(name)?;
+    Ok(
+        zpl_bitmap_fonts::zd621::font_by_name(&name).map(|font| Face {
+            source: Source::Compact(font),
+            baseline: font.cell_metrics().map_or(0., |m| {
+                (f64::from(m.baseline) - 1.) / f64::from(m.cell_height)
+            }),
+            missing_advance: None,
+        }),
+    )
+}
+
 // A direct ^A@ selection has its own slot, distinct from ^GS and all public IDs.
 pub(crate) const NAMED_FONT: char = '\0';
 
 impl<'a> Face<'a> {
-    fn provider(font: Arc<dyn BitmapFont + 'a>) -> Result<Self, String> {
+    /// Construct a format-independent bitmap provider face for a path resolver.
+    /// See [`Fonts::insert_bitmap_font`] for metrics and lifetime requirements.
+    pub fn provider(font: Arc<dyn BitmapFont + 'a>) -> Result<Self, String> {
         let metrics = font.metrics();
         if !(1..=4096).contains(&metrics.width)
             || !(1..=4096).contains(&metrics.height)
@@ -355,7 +418,15 @@ impl<'a> Face<'a> {
         })
     }
 
-    fn bitmap(settings: Settings, glyphs: Vec<Glyph>, baseline: f64) -> Result<Self, String> {
+    pub(crate) fn compact(&self) -> Option<&'static zpl_bitmap_fonts::Font> {
+        match self.source {
+            Source::Compact(face) => Some(face),
+            _ => None,
+        }
+    }
+
+    /// Construct a Unicode-keyed bitmap face; see [`Fonts::insert_bitmap`].
+    pub fn bitmap(settings: Settings, glyphs: Vec<Glyph>, baseline: f64) -> Result<Self, String> {
         settings.validate()?;
         Self::bitmap_metrics(settings, glyphs, baseline)
     }
@@ -384,7 +455,8 @@ impl<'a> Face<'a> {
             missing_advance: None,
         })
     }
-    fn truetype(data: &'a [u8], hinting: Hinting) -> Result<Self, String> {
+    /// Construct a borrowed TrueType face; see [`Fonts::insert_truetype`].
+    pub fn truetype(data: &'a [u8], hinting: Hinting) -> Result<Self, String> {
         let font = Font::parse(data).map_err(|e| e.to_string())?;
         // OpenType hhea ascender (offset 4), in design units:
         // https://learn.microsoft.com/en-us/typography/opentype/spec/hhea
@@ -422,7 +494,32 @@ impl Face<'_> {
     }
 
     pub(crate) fn dimensions(&self, w: f64, h: f64) -> Result<(f64, f64), String> {
+        if let Source::Compact(face) = self.source {
+            // ^A@ bitmap dimensions round independently to native multiples.
+            // https://docs.zebra.com/us/en/printers/software/zpl-pg/zpl-commands/%5Ea-.html
+            if !w.is_finite() || !h.is_finite() || w < 0. || h < 0. {
+                return Err("font dimensions must be nonnegative and finite".into());
+            }
+            let Some(m) = face.cell_metrics() else {
+                return if w <= 1. && h <= 1. {
+                    Ok((1., 1.))
+                } else {
+                    Err(format!(
+                        "ROM font {} has no calibrated sizing metrics; only size 1,1 is supported",
+                        face.name
+                    ))
+                };
+            };
+            let (nw, nh) = (f64::from(m.cell_width), f64::from(m.cell_height));
+            let sx = (w / nw).round().max(1.);
+            let sy = (h / nh).round().max(1.);
+            return Ok((
+                nw * if w == 0. { sy } else { sx },
+                nh * if h == 0. { sx } else { sy },
+            ));
+        }
         let (nw, nh) = match &self.source {
+            Source::Compact(_) => unreachable!(),
             Source::Bitmap(s, _) => (
                 if s.width == 0 { s.height } else { s.width } as f64,
                 s.height as f64,
@@ -455,6 +552,7 @@ impl Face<'_> {
     ) -> Result<(Cow<'_, Glyph>, f64, f64), String> {
         self.dimensions(w, h)?;
         match &self.source {
+            Source::Compact(_) => Err("ROM glyphs require measured encoding lookup".into()),
             Source::Bitmap(s, glyphs) => {
                 let width = if s.width == 0 { s.height } else { s.width };
                 let index = match glyphs.binary_search_by_key(&(c as u32), |g| g.codepoint) {
@@ -521,6 +619,16 @@ pub(crate) fn resolve_glyph<'a>(
     h: f64,
 ) -> Result<(resident::GlyphView<'a>, f64, f64), String> {
     if let Some(custom) = custom {
+        if let Some(face) = custom.compact() {
+            let (nw, nh) = face.cell_metrics().map_or((1., 1.), |m| {
+                (f64::from(m.cell_width), f64::from(m.cell_height))
+            });
+            return Ok((
+                resident::glyph_from(selection.compact_set(face), key)?,
+                w / nw,
+                h / nh,
+            ));
+        }
         let crate::fonts::resident::GlyphKey::Unicode(c) = key else {
             return Err("invalid custom font key".into());
         };

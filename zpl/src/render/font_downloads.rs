@@ -77,11 +77,15 @@ fn name(value: &str, extension: &str) -> Result<String, String> {
     } else {
         value.to_owned()
     };
-    fonts::font_name(&if value.contains('.') {
+    let name = fonts::font_name(&if value.contains('.') {
         value
     } else {
         format!("{value}.{extension}")
-    })
+    })?;
+    if name.starts_with("Z:") {
+        return Err("cannot download a font to read-only ROM device Z:".into());
+    }
+    Ok(name)
 }
 fn bytes(data: &[u8], count: usize, binary: bool) -> Result<Vec<u8>, String> {
     let decoded = if binary {

@@ -396,7 +396,7 @@ impl Barcode {
     }
     pub(super) fn render_with_fonts(
         &self,
-        fonts: &super::fonts::RenderFonts<'_, '_>,
+        fonts: &super::fonts::RenderFonts<'_, '_, '_>,
         bytes: &[u8],
         font: Option<(char, f64, f64)>,
         rotation: u8,

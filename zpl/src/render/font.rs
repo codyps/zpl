@@ -121,9 +121,13 @@ impl<'a> Font<'a> {
         self.face = self.face.with_serial_zero_source(enabled);
         self
     }
-    pub(super) fn with_fonts(mut self, fonts: &'a super::fonts::RenderFonts<'_, 'a>) -> Self {
+    pub(super) fn with_fonts(mut self, fonts: &'a super::fonts::RenderFonts<'_, '_, '_>) -> Self {
         self.custom = fonts.get(self.id);
-        self.face = self.face.with_custom(self.custom.is_some());
+        let compact = self.custom.and_then(|face| face.compact());
+        self.face = self
+            .face
+            .with_custom(self.custom.is_some() && compact.is_none())
+            .with_compact(compact);
         self
     }
     pub(super) fn with_encoding(mut self, encoding: u8) -> Self {
