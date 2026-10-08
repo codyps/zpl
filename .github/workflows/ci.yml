@@ -23,6 +23,11 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  python-wheels:
+    uses: ./.github/workflows/python-package.yml
+    permissions:
+      contents: read
+
   python:
     name: Python package (${{ matrix.runner }})
     strategy:
@@ -144,6 +149,8 @@ jobs:
       - uses: dtolnay/rust-toolchain@6bed0761d98439e5a578e2877258200ad565ba87 # stable
         with:
           components: rustfmt
+      - name: Test registry release selection
+        run: python3 -m unittest discover -s scripts -p 'test_*release.py' -v
       - name: Verify compact capture tables
         run: python3 zpl-bitmap-fonts/data/compile_captures.py --check
       - run: cargo fmt --all -- --check

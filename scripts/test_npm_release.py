@@ -37,7 +37,7 @@ class ReleaseTests(unittest.TestCase):
                 return json.dumps(self.github)
             return original(args, **kwargs)
 
-        mock = patch.object(release.subprocess, "check_output", side_effect=output)
+        mock = patch("renderer_release.subprocess.check_output", side_effect=output)
         self.calls = mock.start()
         self.addCleanup(mock.stop)
 

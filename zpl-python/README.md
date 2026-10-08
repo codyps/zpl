@@ -18,7 +18,10 @@ python -m pip install ./zpl-python
 ```
 
 A built wheel needs no Rust toolchain. These bindings use PyO3's Python 3.10
-stable ABI. No package has been published to PyPI by adding these files.
+stable ABI. Stable renderer releases automatically publish `zpl-python` to PyPI
+with the same version, after the one-time
+[trusted-publisher setup](../docs/releases.md#pypi-publishing-setup). Once the
+first release is published, install it with `python -m pip install zpl-python`.
 
 ## Render
 
@@ -144,6 +147,9 @@ maturin sdist --manifest-path zpl-python/Cargo.toml --out dist
 The source distribution includes the local Rust dependencies and workspace
 lockfile. Maturin trims unrelated workspace members in the archive; installation
 allows Cargo to prune their lockfile entries. Checkout wheel builds use `--locked`.
-CI builds and
-installs a wheel, tests it, and rebuilds a wheel from the source distribution.
+CI builds and installs a wheel, tests it, and rebuilds a wheel from the source
+distribution. Release builds publish five native wheels (Linux x86_64/aarch64,
+macOS Intel/Apple Silicon, Windows x86_64) and a source archive. Linux wheels
+require glibc 2.28 or newer; other platforms can build from source. See the
+[release policy](../docs/releases.md#pypi-publishing-setup) for versioning and retries.
 OSL-3.0 applies to both the bindings and linked workspace crates.

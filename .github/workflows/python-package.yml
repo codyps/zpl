@@ -1,0 +1,102 @@
+# Build/test jobs have no publishing identity; PyPI upload stays in release-plz.yml.
+name: Python distributions
+
+on:
+  workflow_call:
+    inputs:
+      version:
+        description: Completed stable renderer version; empty for ordinary CI builds
+        required: false
+        default: ''
+        type: string
+
+permissions:
+  contents: read
+
+env:
+  CARGO_NET_RETRY: 2
+  CARGO_HTTP_TIMEOUT: 30
+
+jobs:
+  wheels:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-24.04
+            platform: linux-x86_64
+          - runner: ubuntu-24.04-arm
+            platform: linux-aarch64
+          - runner: macos-15-intel
+            platform: macos-x86_64
+          - runner: macos-15
+            platform: macos-arm64
+          - runner: windows-2025
+            platform: windows-x86_64
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    defaults:
+      run:
+        shell: bash
+    env:
+      RELEASE_VERSION: ${{ inputs.version }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.13'
+      - uses: dtolnay/rust-toolchain@6bed0761d98439e5a578e2877258200ad565ba87 # stable
+      - name: Stamp Python version and install build tools
+        run: |
+          if [ -n "$RELEASE_VERSION" ]; then
+            python scripts/python-release.py stamp "$RELEASE_VERSION"
+          fi
+          python -m pip install --retries 2 --timeout 30 'maturin[zig]==1.15.0' 'twine>=6,<7'
+          echo "SOURCE_DATE_EPOCH=$(git show -s --format=%ct HEAD)" >> "$GITHUB_ENV"
+      - name: Materialize license files on Windows
+        if: runner.os == 'Windows'
+        # Git on Windows can check out symlinks as their target-path text.
+        run: |
+          python - <<'PYTHON'
+          from pathlib import Path
+          license_text = Path("LICENSE").read_bytes()
+          for crate in ("zpl-python", "zpl", "zpl-bitmap-fonts", "raster-diff"):
+              license_file = Path(crate) / "LICENSE"
+              license_file.unlink()
+              license_file.write_bytes(license_text)
+          PYTHON
+      - name: Build release wheel
+        run: |
+          if [ "$RUNNER_OS" = Linux ]; then
+            maturin build --locked --release --manifest-path zpl-python/Cargo.toml --out dist --zig --compatibility manylinux_2_28
+          else
+            maturin build --locked --release --manifest-path zpl-python/Cargo.toml --out dist --compatibility pypi
+          fi
+      - name: Test installed wheel and linked renderer version
+        run: |
+          python -m pip install --no-index dist/*.whl
+          python -m unittest discover -s zpl-python/tests -v
+          if [ -n "$RELEASE_VERSION" ]; then
+            python -c 'import os, zpl; assert zpl.__version__ == zpl.library_version == os.environ["RELEASE_VERSION"]'
+          fi
+      - name: Build and test source distribution
+        if: matrix.platform == 'linux-x86_64'
+        run: |
+          maturin sdist --manifest-path zpl-python/Cargo.toml --out dist
+          python -m pip install --no-build-isolation --no-deps --force-reinstall dist/*.tar.gz
+          python -m unittest discover -s zpl-python/tests -v
+          if [ -n "$RELEASE_VERSION" ]; then
+            python -c 'import os, zpl; assert zpl.__version__ == zpl.library_version == os.environ["RELEASE_VERSION"]'
+          fi
+      - name: Check distribution metadata
+        run: python -m twine check --strict dist/*
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: python-${{ matrix.platform }}
+          path: dist/*
+          if-no-files-found: error
+          retention-days: 14
