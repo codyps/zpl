@@ -366,3 +366,146 @@ fn bitmap_allocation_limits_and_stored_format_error_offsets() {
     assert_eq!(err.offset, input.find("~DB").unwrap());
     assert!(err.message.contains("hex digit"));
 }
+
+#[test]
+fn downloaded_bitmap_metrics_follow_the_resource_not_the_alias() {
+    // ~DB pp. 169–170; measured sizing/baseline semantics are pinned separately
+    // by downloaded_bitmap_preview. API registrations model already-installed downloads.
+    use zpl::render::profiles::ZD621_203_DPI;
+    let source = format!(
+        "{}{}",
+        bitmap("FF81", 9),
+        label("^A@N,31,26,R:TEST.FNT", "AA")
+    );
+    let direct = zpl::render(source.as_bytes(), ZD621_203_DPI).unwrap();
+    let image = zpl::output::raster::rasterize(&direct.labels[0]).unwrap();
+    for id in ['A', 'D', '0', 'Z'] {
+        let source = format!(
+            "{}^CW{id},R:TEST.FNT{}",
+            bitmap("FF81", 9),
+            label(&format!("^A{id}N,31,26"), "AA")
+        );
+        let doc = zpl::render(source.as_bytes(), ZD621_203_DPI).unwrap();
+        assert_eq!(
+            image,
+            zpl::output::raster::rasterize(&doc.labels[0]).unwrap()
+        );
+    }
+    let mut options = ZD621_203_DPI;
+    options.compatibility.supplied_bitmap_font_metrics = false;
+    let uncalibrated = zpl::render(source.as_bytes(), options).unwrap();
+    assert_ne!(
+        image,
+        zpl::output::raster::rasterize(&uncalibrated.labels[0]).unwrap()
+    );
+    let caller = reference(9, &[255, 129]);
+    let expected =
+        render_with_fonts(label("^AZN,31,26", "AA").as_bytes(), ZD621_203_DPI, &caller).unwrap();
+    assert_eq!(
+        zpl::output::raster::rasterize(&expected.labels[0]).unwrap(),
+        image
+    );
+}
+
+#[test]
+fn api_bitmap_resources_behave_like_preinstalled_downloads() {
+    use std::{borrow::Cow, sync::Arc};
+    use zpl::fonts::{BitmapFont, BitmapMetrics, Face};
+    use zpl::render::profiles::ZD621_203_DPI;
+    struct Strike(Vec<Glyph>);
+    impl BitmapFont for Strike {
+        fn metrics(&self) -> BitmapMetrics {
+            BitmapMetrics {
+                width: 10,
+                height: 10,
+                baseline: 7.,
+            }
+        }
+        fn glyph(&self, c: char) -> Result<Option<Cow<'_, Glyph>>, String> {
+            Ok(self
+                .0
+                .iter()
+                .find(|g| g.codepoint == c as u32)
+                .map(Cow::Borrowed))
+        }
+    }
+    let glyphs = || {
+        vec![Glyph {
+            codepoint: 65,
+            advance: 9,
+            left: 1,
+            top: -7,
+            width: 8,
+            height: 2,
+            bitmap: vec![vec![255], vec![129]],
+        }]
+    };
+    let settings = Settings {
+        font: '0',
+        width: 10,
+        height: 10,
+        dpi: 203,
+    };
+    let mut decoded = Fonts::new();
+    decoded.insert_bitmap('Z', settings, glyphs(), 7.).unwrap();
+    decoded
+        .insert_named_bitmap("R:TEST.FNT", settings, glyphs(), 7.)
+        .unwrap();
+    let mut providers = Fonts::new();
+    providers
+        .insert_bitmap_font('Z', Arc::new(Strike(glyphs())))
+        .unwrap();
+    providers
+        .insert_named_bitmap_font("R:TEST.FNT", Arc::new(Strike(glyphs())))
+        .unwrap();
+    let mut resolved_bitmap = Fonts::new();
+    resolved_bitmap.set_resolver(move |_| Ok(Some(Face::bitmap(settings, glyphs(), 7.)?)));
+    let mut resolved_provider = Fonts::new();
+    resolved_provider.set_resolver(move |_| Ok(Some(Face::provider(Arc::new(Strike(glyphs())))?)));
+    let render = |input: &str, options, fonts: &Fonts<'_>| {
+        let doc = render_with_fonts(input.as_bytes(), options, fonts).unwrap();
+        zpl::output::raster::rasterize(&doc.labels[0]).unwrap()
+    };
+    // Repeat SPECIFICATION after the printer profile to detect mutation of shared
+    // registered faces. ~DB metrics: ZPL Programming Guide pp. 169–170;
+    // measured native pixel controls live in downloaded_bitmap_preview.
+    for options in [SPECIFICATION, ZD621_203_DPI, SPECIFICATION] {
+        for origin in ["FO", "FT"] {
+            for rotation in ['N', 'R', 'I', 'B'] {
+                for (h, w) in [(10, 10), (31, 26), (0, 31), (31, 0)] {
+                    let body = |selection: &str| {
+                        format!("^XA^PW200^LL200^{origin}80,80{selection}^FDAA^FS^XZ")
+                    };
+                    let named = body(&format!("^A@{rotation},{h},{w},R:TEST.FNT"));
+                    let expected = render(
+                        &format!("{}{named}", bitmap("FF81", 9)),
+                        options,
+                        &Fonts::new(),
+                    );
+                    for fonts in [&decoded, &providers, &resolved_bitmap, &resolved_provider] {
+                        assert_eq!(
+                            render(&named, options, fonts),
+                            expected,
+                            "{origin}/{rotation}/{h}/{w} named"
+                        );
+                        let alias =
+                            format!("^CWZ,R:TEST.FNT{}", body(&format!("^AZ{rotation},{h},{w}")));
+                        assert_eq!(
+                            render(&alias, options, fonts),
+                            expected,
+                            "{origin}/{rotation}/{h}/{w} alias"
+                        );
+                    }
+                    for fonts in [&decoded, &providers] {
+                        let direct = body(&format!("^AZ{rotation},{h},{w}"));
+                        assert_eq!(
+                            render(&direct, options, fonts),
+                            expected,
+                            "{origin}/{rotation}/{h}/{w} registered ID"
+                        );
+                    }
+                }
+            }
+        }
+    }
+}

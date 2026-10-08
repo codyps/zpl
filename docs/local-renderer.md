@@ -114,8 +114,13 @@ selections and `^CW` assignments do not clear the remembered `^A@` name.
 
 Explicit unknown filenames return `RenderError` at the referencing command,
 rather than silently using a different face. This is deliberately stricter than
-firmware's missing-name fallback. Caller-provided named selections retain the custom sizing
-rules below; this does not claim native downloaded-bitmap magnification parity.
+firmware's missing-name fallback. API-registered bitmap fonts represent already
+installed downloads. Registered strikes, providers, resolver-returned bitmap faces,
+and in-job `~DB` downloads share integer cell magnification, one-based baselines
+and bitmap rotation pivots under the printer profiles through
+`supplied_bitmap_font_metrics`; `bitmap_font_ft_dot_origin` also applies to their
+FT anchors. See the [downloaded bitmap controls](../zpl/tests/fixtures/downloaded-bitmap-zd621-v1/README.md)
+for the measured fonts, sizes and device scope.
 See the Zebra Programming Guide [^A@](https://docs.zebra.com/us/en/printers/software/zpl-pg/zpl-commands/%5Ea-.html)
 and ^CW (p. 168) for the command conventions.
 
@@ -203,8 +208,8 @@ For example, this downloads a two-row bitmap character and selects it by name:
 operand supplies blank advances for absent characters; caller-supplied bitmap
 fonts still report missing glyphs. Cell dimensions are bounded to 32000 dots;
 glyph dimensions, advances and offsets use the bitmap engine's 4096-dot bounds.
-Glyph codes must be supported printable Unicode scalars. Downloads use the same
-custom sizing rules described above, without a claim of native printer parity.
+Glyph codes must be supported printable Unicode scalars. Downloads and registered
+bitmap resources use the same profile-dependent sizing and placement rules above.
 
 TrueType downloads use native hinting. All downloaded payloads must decode to
 formats supported by the existing engine: the legacy **ZTools-specific
@@ -241,11 +246,13 @@ metrics are checked at registration and glyphs before use. `fonts::Glyph` stores
 one MSB-first packed row per bitmap row, with one bits marking foreground ink.
 
 For an already decoded strike, use
-`insert_bitmap(id, settings, glyphs, baseline)`. The baseline is measured from the strike's
-cell top in native dots; glyph `top` values are relative to it. The caller's
-advances and ink metrics drive wrapping and placement. Requested width/height
-scale the native strike independently, without resident-matrix quantization;
-an omitted axis preserves its aspect ratio. DPI metadata is validated but does
+`insert_bitmap(id, settings, glyphs, baseline)`. Supply the same native-dot
+baseline and baseline-relative glyph `top` values as for a `~DB` resource.
+The caller's advances and ink metrics drive wrapping and placement. Printer
+profiles interpret the baseline as one-based and round requested width/height
+to independent integer cell multiples. SPECIFICATION uses the baseline directly
+and scales continuously. An omitted axis preserves the aspect ratio before
+quantization. DPI metadata is validated but does
 not rescale dot-based requests. The registration ID may differ from the strike's
 resident tag. A new registration replaces the prior face rather than adding a
 size-specific strike.

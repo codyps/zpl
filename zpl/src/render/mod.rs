@@ -250,7 +250,8 @@ fn render_expanded(
 ) -> Result<Document, RenderError> {
     // Request-local names resolve against the caller-owned font resources.
     let downloads = font_downloads::prepare(input, limits);
-    let mut fonts = fonts::RenderFonts::new(fonts);
+    let mut fonts =
+        fonts::RenderFonts::new(fonts, options.compatibility.supplied_bitmap_font_metrics);
     let number = |p: &[&str], i, default| number(p, i, default, limits.number_abs);
     let numbered = numbered::plan(input, options.compatibility, limits.field_bytes)?;
     let mut pending_terminator = None;
@@ -1666,11 +1667,15 @@ fn render_expanded(
                             base
                         };
                         let (ft_dx, ft_dy) = if options.compatibility.bitmap_font_ft_dot_origin
-                            && fonts.get(font_id).is_none()
                             && field.baseline
                             && field.text_size.is_some()
                         {
-                            font::printer_ft_offset(font_id, font_h, field.rotation)
+                            match fonts.get(font_id) {
+                                Some(face) => face
+                                    .bitmap_ft_offset(font_h, field.rotation)
+                                    .unwrap_or((0., 0.)),
+                                None => font::printer_ft_offset(font_id, font_h, field.rotation),
+                            }
                         } else {
                             (0., 0.)
                         };
