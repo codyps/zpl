@@ -166,8 +166,9 @@ impl<'a> Fonts<'a> {
     /// CFF/CFF2 outlines, collections and unsupported hint instructions return
     /// errors through the existing TrueType engine. Data must outlive this set.
     /// Sizes are dots per em, rounded to whole dots (1..=4096); width and height
-    /// scale independently. Uses standard hinting/scan semantics, independently
-    /// of the resident printer compatibility profile. No kerning or shaping is
+    /// scale independently. The ZPL cell baseline is 3/4 of the rounded height,
+    /// not the font's typographic ascender. Uses standard hinting/scan semantics
+    /// independently of the resident printer compatibility profile. No kerning or shaping is
     /// added beyond the renderer's existing Unicode processing.
     pub fn insert_truetype(
         &mut self,
@@ -520,16 +521,13 @@ impl<'a> Face<'a> {
     /// Construct a borrowed TrueType face; see [`Fonts::insert_truetype`].
     pub fn truetype(data: &'a [u8], hinting: Hinting) -> Result<Self, String> {
         let font = Font::parse(data).map_err(|e| e.to_string())?;
-        // OpenType hhea ascender (offset 4), in design units:
-        // https://learn.microsoft.com/en-us/typography/opentype/spec/hhea
-        let hhea = font.table(b"hhea").ok_or("missing TrueType hhea")?;
-        let ascent = i16::from_be_bytes(
-            hhea.get(4..6)
-                .ok_or("truncated TrueType hhea")?
-                .try_into()
-                .unwrap(),
-        );
-        let baseline = f64::from(ascent) / f64::from(font.units_per_em());
+        // ZPL scalable-font cells use a 3/4-height baseline, independently of
+        // the font's typographic ascender. See Programming Guide Table 29,
+        // p. 1582, and the controlled Heros FO captures in zpl-comparison:
+        // https://codyps.github.io/zpl-comparison/fonts/categories/conformance.html
+        // Using hhea.ascender here shifts FO text (Heros has a 1.105-em
+        // ascender); FT hides the error by subtracting this same baseline.
+        let baseline = 0.75;
         Ok(Self {
             source: Source::TrueType(font, hinting),
             missing_advance: None,
@@ -566,6 +564,10 @@ impl Face<'_> {
             b'B' => (1. - scale, 1.),
             _ => (0., 1. - scale),
         })
+    }
+
+    pub(crate) fn is_truetype(&self) -> bool {
+        matches!(self.source, Source::TrueType(..))
     }
 
     pub(crate) fn baseline(&self, h: f64) -> f64 {

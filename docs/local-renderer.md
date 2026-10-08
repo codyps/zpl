@@ -268,7 +268,11 @@ to `BitmapFont`, with explicit character mapping for printer source-position key
 TrueType uses the existing original engine and scan converter, adding no runtime
 dependencies. It supports TrueType/OpenType **quadratic `glyf` outlines**, not
 CFF/CFF2 outlines or font collections. Dimensions are dots per em, independently
-rounded to whole dots in `1..=4096`; the baseline uses the `hhea` ascender.
+rounded to whole dots in `1..=4096`; the ZPL cell baseline is three quarters of
+the rounded height, independent of the font's `hhea` ascender. The
+`font0_fo_floor_baseline` compatibility option also applies to supplied TrueType
+faces: it floors the `^FO` baseline to match measured ZD621 positioning. Bitmap
+faces retain their supplied baseline metrics; `^FT` remains baseline-anchored.
 `Hinting::None` skips hint execution; `Hinting::Native` reports unsupported
 instructions instead of silently ignoring them. Standard font-engine and scan
 semantics apply, even with a printer compatibility profile. Existing Unicode
