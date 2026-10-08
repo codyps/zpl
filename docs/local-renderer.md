@@ -77,8 +77,9 @@ previous face intact. A registered face's missing glyphs return an error instead
 of mixing in resident glyphs. ZPL downloads use the same engines (see below).
 
 Register a virtual printer filename with `insert_named_truetype`,
-`insert_named_bitmap`, or `insert_named_bitmap_font`. Both `^A@` and `^CW` resolve only
-these caller-registered faces:
+`insert_named_bitmap`, or `insert_named_bitmap_font`. Both `^A@` and `^CW`
+select these resources, as well as bundled ROM fonts and resources supplied by
+a path resolver:
 
 ```rust
 fonts.insert_named_truetype("R:BRAND.TTF", &font_bytes, Hinting::Native)?;
@@ -95,12 +96,12 @@ let aliased = render_with_fonts(
 ```
 
 Names are case-insensitive; omitting the device selects `R:`. Supported devices
-are `R:`, `E:`, `B:`, and `A:`. Require an explicit `.FNT`, `.TTF`, `.TTE`, `.OTF`, or `.DAT`
+are `R:`, `E:`, `B:`, `A:`, and `Z:`. Require an explicit `.FNT`, `.TTF`, `.TTE`, `.OTF`, or `.DAT`
 extension and a basename of 1–255 ASCII letters, digits, underscores or hyphens.
 These are registry keys, not host filesystem paths; the extension does not
 convert the supplied font data or enable additional outline formats.
 
-`^CW` requires a single `0`–`9` or `A`–`Z` ID and a registered filename. It
+`^CW` requires a single `0`–`9` or `A`–`Z` ID and a resolvable filename. It
 replaces that ID's mapping for the remainder of the render call, including
 subsequent labels, and works with both `^A` and `^CF`. It does not mutate the
 caller's font collection. Each render starts with the caller's original mapping.
@@ -113,10 +114,67 @@ selections and `^CW` assignments do not clear the remembered `^A@` name.
 
 Explicit unknown filenames return `RenderError` at the referencing command,
 rather than silently using a different face. This is deliberately stricter than
-firmware's missing-name fallback. Named selections retain the custom sizing
+firmware's missing-name fallback. Caller-provided named selections retain the custom sizing
 rules below; this does not claim native downloaded-bitmap magnification parity.
 See the Zebra Programming Guide [^A@](https://docs.zebra.com/us/en/printers/software/zpl-pg/zpl-commands/%5Ea-.html)
 and ^CW (p. 168) for the command conventions.
+
+### ROM fonts and application path resolvers
+
+The default resolver exposes all 47 recovered `Z:` names in the bundled ZD621
+203-dpi/V93.21.33Z collection through `^A@` and `^CW`, including OCR-A
+`Z:H6.FNT`/`H8.FNT`/`H12.FNT`/`H24.FNT` and OCR-B
+`Z:E6.FNT`/`E8.FNT`/`E12.FNT`/`E24.FNT`. `Z:` is the resident ROM namespace;
+lookup does not read a printer or a host directory. The bundle is not a complete
+ROM image: unknown/unrecovered filenames return an error.
+
+```zpl
+^CWX,Z:H12.FNT
+^XA^CI28^FO20,20^AXN,30,19^FDABC123^FS
+^FO20,80^A@N,41,20,Z:E12.FNT^FDABC123^FS^XZ
+```
+
+ROM faces retain their measured source/input/Unicode maps, bearings and advances.
+Calibrated bitmap sizes round to integer native multiples. `Z:EPL6.FNT` and
+`Z:EPL7.FNT` have measured glyphs but uncalibrated cell metrics: only explicit
+`1,1` (native capture size) is supported. Untested or unresolved input mappings
+remain errors except for the existing independently measured blank-advance
+fallback. The bounded encoding survey is described in
+[automatic recovery](automatic-bitmap-fonts.md); named selection does not expand it.
+Local integration tests verify native pixels for every bundled name. They are
+not new physical-printer parity evidence for named-font layout.
+
+Library users can replace lookup with `Fonts::set_resolver`. Callbacks receive
+validated uppercase printer paths, with `R:` added when the device is omitted.
+They return `Result<Option<Face>, String>`: `None` means unknown, and errors
+propagate at the selecting command. Use `Face::bitmap`, `Face::provider` or
+`Face::truetype` for application resources and the public `resolve_rom_font`
+function to delegate to the built-in collection:
+
+```rust
+use zpl::fonts::{Face, Fonts, resolve_rom_font};
+use zpl::truetype::Hinting;
+
+fn application_fonts(bytes: &[u8]) -> Fonts<'_> {
+    let mut fonts = Fonts::new();
+    fonts.set_resolver(move |path| {
+        if path == "R:BRAND.TTF" {
+            Face::truetype(bytes, Hinting::Native).map(Some)
+        } else {
+            resolve_rom_font(path)
+        }
+    });
+    fonts
+}
+```
+
+Precedence is in-job downloads, explicit named registrations, then the resolver.
+A custom resolver replaces default lookup; it controls whether to delegate.
+Successful results are cached per name per render call, shared by `^A@`/`^CW`,
+and discarded after that call. Later downloads supersede cached faces. Borrowed
+TrueType bytes must outlive the font collection; callbacks must be `Send + Sync`.
+The default resolver performs no I/O; any application callback I/O is caller-owned.
+Font downloads to `Z:` are rejected as read-only.
 
 ### Font downloads in ZPL
 

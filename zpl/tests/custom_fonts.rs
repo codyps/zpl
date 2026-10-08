@@ -39,7 +39,7 @@ fn bitmap(advance: u32) -> (Settings, Vec<Glyph>) {
         ],
     )
 }
-fn fonts(id: char, advance: u32) -> Fonts<'static> {
+fn fonts<'a>(id: char, advance: u32) -> Fonts<'a> {
     let mut fonts = Fonts::new();
     let (s, glyphs) = bitmap(advance);
     fonts.insert_bitmap(id, s, glyphs, 7.).unwrap();

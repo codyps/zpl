@@ -759,7 +759,7 @@ fn render_expanded(
                         justification(&p, 2, default_justification, limits.number_abs)?;
                 }
                 "CW" => {
-                    // ^CW assigns a font ID to a registered virtual printer filename.
+                    // ^CW assigns a font ID to a resolved virtual printer filename.
                     let [id] = p[0].as_bytes() else {
                         return Err("CW requires a single font ID".into());
                     };
@@ -814,7 +814,7 @@ fn render_expanded(
                     let supplied_size = p.get(1).is_some_and(|v| !v.is_empty())
                         || p.get(2).is_some_and(|v| !v.is_empty());
                     if options.compatibility.bitmap_cf_font_only_resets_size
-                        && (!font_resources::is_scalable(font_id) && fonts.get(font_id).is_none())
+                        && !fonts.scalable_layout(font_id)
                         && !p[0].is_empty()
                         && !supplied_size
                     {
@@ -824,12 +824,11 @@ fn render_expanded(
                         default_requested_h = number(&p, 1, 0.)?;
                         default_requested_w = number(&p, 2, 0.)?;
                     }
-                    let (dw, dh) =
-                        if font_resources::is_scalable(font_id) || fonts.get(font_id).is_some() {
-                            (default_w, default_h)
-                        } else {
-                            (default_requested_w, default_requested_h)
-                        };
+                    let (dw, dh) = if fonts.scalable_layout(font_id) {
+                        (default_w, default_h)
+                    } else {
+                        (default_requested_w, default_requested_h)
+                    };
                     (font_w, font_h) = supplied_font_dimensions(
                         &fonts,
                         &p,
@@ -899,12 +898,11 @@ fn render_expanded(
                     } else {
                         rotation(p[0])?
                     };
-                    let (dw, dh) =
-                        if font_resources::is_scalable(font_id) || fonts.get(font_id).is_some() {
-                            (default_w, default_h)
-                        } else {
-                            (default_requested_w, default_requested_h)
-                        };
+                    let (dw, dh) = if fonts.scalable_layout(font_id) {
+                        (default_w, default_h)
+                    } else {
+                        (default_requested_w, default_requested_h)
+                    };
                     (font_w, font_h) = supplied_font_dimensions(
                         &fonts,
                         &p,
@@ -1269,8 +1267,7 @@ fn render_expanded(
                                         .filter(|h| *h > 0.)
                                         .unwrap_or(font_h),
                                     if options.compatibility.bounded_text_printer_anchors
-                                        && (font_resources::is_scalable(font_id)
-                                            || fonts.get(font_id).is_some())
+                                        && fonts.scalable_layout(font_id)
                                         && matches!(field.rotation, b'R' | b'I')
                                     {
                                         (bounds.0, (bounds.1 - 1.).max(0.))
@@ -1346,20 +1343,18 @@ fn render_expanded(
                                     .compatibility
                                     .right_justified_inverted_text_uses_ink_margin
                             {
-                                field.inverted_margin = if (font_resources::is_scalable(font_id)
-                                    || fonts.get(font_id).is_some())
-                                    && field.block.is_none()
-                                {
-                                    font::inverted_text_margin(
-                                        text_font,
-                                        value,
-                                        font_w,
-                                        font_h,
-                                        field.direction.1,
-                                    )?
-                                } else {
-                                    font::inverted_margin(text_font, value, font_w, font_h)?
-                                };
+                                field.inverted_margin =
+                                    if fonts.scalable_layout(font_id) && field.block.is_none() {
+                                        font::inverted_text_margin(
+                                            text_font,
+                                            value,
+                                            font_w,
+                                            font_h,
+                                            field.direction.1,
+                                        )?
+                                    } else {
+                                        font::inverted_margin(text_font, value, font_w, font_h)?
+                                    };
                             }
                             field.text_size = Some(if let Some(size) = field.bounded {
                                 size
@@ -1696,9 +1691,7 @@ fn render_expanded(
                         {
                             advance += field.direction_metrics.end_margin
                                 + field.direction_metrics.first_delta
-                                + if font_resources::is_scalable(font_id)
-                                    || fonts.get(font_id).is_some()
-                                {
+                                + if fonts.scalable_layout(font_id) {
                                     1.
                                 } else {
                                     0.
@@ -1718,9 +1711,9 @@ fn render_expanded(
                             let (w, h) = field
                                 .text_size
                                 .map(|(w, h)| {
-                                    if (font_resources::is_scalable(font_id)
-                                        || fonts.get(font_id).is_some())
-                                        || (font_resources::is_preset(font_id)
+                                    if fonts.scalable_layout(font_id)
+                                        || (fonts.get(font_id).is_none()
+                                            && font_resources::is_preset(font_id)
                                             && options.compatibility.preset_font_fo_last_dot)
                                     {
                                         // A zero-width printer block still
@@ -1793,8 +1786,7 @@ fn render_expanded(
                                     b'R' => (-th, -left + field.leading_tab_advance),
                                     b'I' => (
                                         field.inverted_margin - dx
-                                            + if (font_resources::is_scalable(font_id)
-                                                || fonts.get(font_id).is_some())
+                                            + if fonts.scalable_layout(font_id)
                                                 && field.block.is_none()
                                                 && options
                                                     .compatibility
@@ -1828,9 +1820,7 @@ fn render_expanded(
                             && field_justification == 1
                             && field.block.is_none()
                         {
-                            let dot = if font_resources::is_scalable(font_id)
-                                || fonts.get(font_id).is_some()
-                            {
+                            let dot = if fonts.scalable_layout(font_id) {
                                 0.
                             } else {
                                 1.
@@ -1899,8 +1889,7 @@ fn render_expanded(
                                     field.rotation,
                                     field.baseline,
                                     field_justification == 1,
-                                    font_resources::is_scalable(font_id)
-                                        || fonts.get(font_id).is_some(),
+                                    fonts.scalable_layout(font_id),
                                     options.compatibility.bounded_text_printer_anchors,
                                 );
                                 return Point::new(p.x + x, p.y + y);
@@ -2420,7 +2409,7 @@ fn text_block(
     })
 }
 fn supplied_font_dimensions(
-    fonts: &fonts::RenderFonts<'_, '_>,
+    fonts: &fonts::RenderFonts<'_, '_, '_>,
     p: &[&str],
     default_size: (f64, f64),
     id: char,

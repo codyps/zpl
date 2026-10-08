@@ -12,6 +12,7 @@ pub(crate) struct Selection {
     legacy_codepage: bool,
     serial_zero_source: bool,
     custom: bool,
+    compact: Option<&'static zpl_bitmap_fonts::Font>,
     encoding: u8,
     default_glyph: bool,
     character_map: Option<[u8; 256]>,
@@ -41,6 +42,7 @@ impl Selection {
             legacy_codepage: false,
             serial_zero_source: false,
             custom: false,
+            compact: None,
             encoding: 28,
             default_glyph: false,
             character_map: None,
@@ -53,6 +55,13 @@ impl Selection {
     pub(crate) fn with_serial_zero_source(mut self, enabled: bool) -> Self {
         self.serial_zero_source = enabled;
         self
+    }
+    pub(crate) fn with_compact(mut self, face: Option<&'static zpl_bitmap_fonts::Font>) -> Self {
+        self.compact = face;
+        self
+    }
+    pub(crate) fn compact_set(self, face: &'static zpl_bitmap_fonts::Font) -> GlyphSet {
+        GlyphSet::Compact(face, self.legacy_backslash, self.encoding)
     }
     pub(crate) fn with_custom(mut self, enabled: bool) -> Self {
         self.custom = enabled;
@@ -95,7 +104,7 @@ impl Selection {
         } else {
             Some(c as usize)
         };
-        if !self.custom && resident(self.id).is_some() {
+        if !self.custom && (self.compact.is_some() || resident(self.id).is_some()) {
             if let Some(source) = self
                 .character_map
                 .and_then(|map| image.and_then(|i| map.get(i).copied()))
@@ -108,7 +117,7 @@ impl Selection {
                 }
             }
         }
-        if !self.custom && resident(self.id).is_some() {
+        if !self.custom && (self.compact.is_some() || resident(self.id).is_some()) {
             // Legacy text was decoded for Unicode-aware layout. Recover its
             // byte index here; layout-generated characters use measured Unicode.
             let source = if self.legacy_codepage {
