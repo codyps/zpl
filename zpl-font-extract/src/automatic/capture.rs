@@ -39,7 +39,7 @@ pub struct Printer {
     password: String,
     last: Option<std::time::Instant>,
     profile: Option<serde_json::Value>,
-    _locks: Vec<fs::File>,
+    _locks: Vec<CaptureLock>,
     restart: Option<(u16, Duration)>,
 }
 impl Printer {
@@ -211,7 +211,18 @@ impl Printer {
         })
     }
 }
-fn lock(path: &Path) -> Result<fs::File> {
+struct CaptureLock(fs::File);
+
+impl Drop for CaptureLock {
+    fn drop(&mut self) {
+        // Closing alone can leave a flock held by a descriptor inherited during
+        // another thread's subprocess launch. Explicit unlock ends ownership now.
+        // https://man7.org/linux/man-pages/man2/flock.2.html (DESCRIPTION)
+        let _ = self.0.unlock();
+    }
+}
+
+fn lock(path: &Path) -> Result<CaptureLock> {
     let f = fs::OpenOptions::new()
         .create(true)
         .truncate(false)
@@ -220,7 +231,7 @@ fn lock(path: &Path) -> Result<fs::File> {
         .open(path)?;
     f.try_lock()
         .wrap_err("another extraction is using this printer or cache")?;
-    Ok(f)
+    Ok(CaptureLock(f))
 }
 impl Capture for Printer {
     fn checkpoint(&mut self, collection: &crate::collection::Collection) -> Result<()> {
@@ -321,4 +332,32 @@ fn validate_control(control: &[u8]) -> Result<()> {
         }
     }
     Ok(())
+}
+
+#[cfg(all(test, unix))]
+mod lock_tests {
+    use super::*;
+
+    #[test]
+    fn capture_lock_releases_even_with_a_duplicate_descriptor() {
+        let path = std::env::temp_dir().join(format!(
+            "capture-lock-drop-{}-{}.lock",
+            std::process::id(),
+            std::time::SystemTime::now()
+                .duration_since(std::time::UNIX_EPOCH)
+                .unwrap()
+                .as_nanos()
+        ));
+        let first = lock(&path).unwrap();
+        // dup and fork share the flock open-file description. A concurrent
+        // subprocess launch can retain it until exec closes CLOEXEC descriptors.
+        // https://man7.org/linux/man-pages/man2/flock.2.html (DESCRIPTION)
+        let duplicate = first.0.try_clone().unwrap();
+        assert!(lock(&path).is_err(), "a live capture must remain exclusive");
+        drop(first);
+        let reacquired = lock(&path);
+        drop(duplicate);
+        fs::remove_file(&path).unwrap();
+        assert!(reacquired.is_ok(), "capture ownership must end at drop");
+    }
 }

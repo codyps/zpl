@@ -1,0 +1,101 @@
+# @codyps/zpl
+
+Render ZPL to PNG, SVG, or multipage PDF locally in Node.js using the Rust
+`zpl` renderer compiled to WebAssembly. The packed package includes its Wasm
+binary, has no runtime npm dependencies, and requires no Rust installation,
+bundler, asynchronous initialization, printer, or network service.
+
+## Build and install from this checkout
+
+Requires Node.js 22+, npm, Rust, the `wasm32-unknown-unknown` target, and
+`wasm-bindgen-cli` 0.2.128 (aligned with `zpl-wasm/Cargo.toml`):
+
+```sh
+rustup target add wasm32-unknown-unknown
+cargo install wasm-bindgen-cli --version 0.2.128 --locked
+cd zpl-node
+npm run build
+npm test
+npm pack
+# In your application, install the generated archive:
+npm install /path/to/zpl-node/codyps-zpl-0.1.0.tgz
+```
+
+The repository development shell includes `lld` and the exact
+`wasm-bindgen-cli` 0.2.128 package, including on Intel macOS. After updating the
+flake, reload direnv (or enter `nix develop`) to pick up these tools. The Wasm
+Rust target is still required.
+
+The Cargo package is named `wasm-bindgen-cli`, but its executable is
+`wasm-bindgen`. Check `wasm-bindgen --version`: it must be exactly `0.2.128`.
+If a Nix/direnv shell provides an older version, put Cargo's installed binaries
+first when invoking npm, for example:
+
+```sh
+PATH="${CARGO_HOME:-$HOME/.cargo}/bin:$PATH" npm run build
+```
+
+Use the same PATH prefix for `npm pack` or `npm publish` in that shell.
+
+`npm pack` rebuilds the Wasm binary from the workspace's locked dependencies.
+The archive is ready to install; this does not publish it to npm.
+
+Automatic publishing follows stable Rust `zpl` releases and uses the same version
+number. See [release setup](https://github.com/codyps/zpl/blob/main/docs/releases.md#npm-publishing-setup) for the
+one-time npm account and trusted-publisher configuration.
+
+## Usage
+
+```js
+import { render, libraryVersion } from '@codyps/zpl';
+import { writeFileSync } from 'node:fs';
+
+const result = render('^XA^FO20,20^A0N,30,30^FDHello^FS^XZ', {
+  format: 'png',
+  width: 812,
+  height: 1218,
+  dpi: 203,
+  profile: 'specification',
+});
+writeFileSync('label.png', result.data);
+console.log(libraryVersion(), result.warnings);
+```
+
+CommonJS: `const { render } = require('@codyps/zpl')`.
+TypeScript declarations are included; Node TypeScript applications should have
+`@types/node` installed.
+
+`render(input, options?)` accepts a string (encoded as UTF-8), `Buffer`, or
+`Uint8Array`. Use bytes for binary graphics or legacy character encodings;
+select the matching ZPL `^CI` mode in the source. It returns:
+
+- `data`: an owned `Buffer`; for SVG text use `data.toString('utf8')`.
+- `format`: `png` (default), `svg`, or `pdf`.
+- `width`, `height`: actual dimensions in dots of the selected label, or the
+  first page for multipage PDF.
+- `labels`: total number of labels in the input.
+- `warnings`: renderer warning strings for the whole document.
+
+Options `width`, `height`, and `dpi` override the selected profile's initial
+settings. ZPL commands and profile behavior can change the resulting dimensions.
+`profile` supports `zd621` (the Rust default, 832 × 1218 at 203 DPI),
+`specification` (812 × 1218 at 203 DPI), and `zq610-plus` (384 × 2030 at 203 DPI).
+Printer profiles reflect measured preview behavior, not universal device parity.
+
+`label` is a zero-based index. PNG and SVG select label 0 by default. PDF includes
+all labels unless an index is supplied:
+
+```js
+const { data } = render('^XA^FDOne^FS^XZ^XA^FDTwo^FS^XZ', { format: 'pdf' });
+writeFileSync('labels.pdf', data);
+```
+
+Invalid options, missing labels, unsupported commands, and resource-limit failures
+throw errors. The Rust renderer's default input, label, geometry, and pixel
+budgets apply. Rendering is synchronous; use Node worker threads for substantial
+jobs in servers. Wasm result memory is freed internally; callers need no disposal.
+
+This package exposes rendering and output encoding. It does not yet expose the
+Rust command parser, scene objects, custom font providers, or individual
+compatibility flags. See the repository's `docs/local-renderer.md`,
+`docs/barcodes.md`, and `docs/printer-accuracy.md` for rendering coverage.

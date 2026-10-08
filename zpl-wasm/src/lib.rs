@@ -1,4 +1,5 @@
-//! Browser adapter. JS bindings: https://wasm-bindgen.github.io/wasm-bindgen/
+//! JavaScript adapters. JS bindings: https://wasm-bindgen.github.io/wasm-bindgen/
+mod encode;
 use wasm_bindgen::prelude::*;
 use zpl::{
     output::{Adapter, Pdf, Png, Svg},
