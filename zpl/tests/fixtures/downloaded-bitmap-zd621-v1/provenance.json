@@ -1,0 +1,1962 @@
+{
+  "bitmap_download_sha256": "2f7e9a27d97f292363039ef4342360bc281090a85db132056fd4b274d0f93859",
+  "capture_sha256": "201852df6cd4149943f3043eff37de94302c46080c3746e6b79805f946b4e521",
+  "cases": {
+    "benchmarks/accuracy/conformance-reference/compact-baseline-A.png": {
+      "captured_utc": "2026-10-08T02:27:18Z",
+      "height": 320,
+      "png_sha256": "363193e5343405a813a31ff81bc9c33f742a7a8f4d70b4fb47ab0f15f474c524",
+      "printer": "zd621",
+      "printer_dimensions": [
+        640,
+        320
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/compact-baseline-A.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/compact-baseline-A.zpl",
+      "source_sha256": "861642df8dc039f8ba1d706f831e77ce5b7d9275ddad7f168f540a76e44dfed0",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/compact-baseline-A.zpl",
+      "submitted_sha256": "7fffdeae8c51780faa26db2e4390bded024556abb2279f44c3d0db3cb71436fa",
+      "width": 640
+    },
+    "benchmarks/accuracy/conformance-reference/compact-baseline-B.png": {
+      "captured_utc": "2026-10-08T02:27:18Z",
+      "height": 320,
+      "png_sha256": "2c4d75d19de5002abfbdb0502c2ae3e5d65be569f94fb2fa88d9eb7e64fd36e2",
+      "printer": "zd621",
+      "printer_dimensions": [
+        640,
+        320
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/compact-baseline-B.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/compact-baseline-B.zpl",
+      "source_sha256": "bca8b17d63dde989e4a18b8280a89253bb119d0cba576c1e96dfa9eeca4e1216",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/compact-baseline-B.zpl",
+      "submitted_sha256": "f1218139cdfb29b6e3acefd56c665d279ef4716471aabfc7f0f06cbc7f174c28",
+      "width": 640
+    },
+    "benchmarks/accuracy/conformance-reference/compact-baseline-C.png": {
+      "captured_utc": "2026-10-08T02:27:18Z",
+      "height": 320,
+      "png_sha256": "a16520bcb35b9be1e361f0a05d950d8068f76614b33d30d2ec1686456e2e1f15",
+      "printer": "zd621",
+      "printer_dimensions": [
+        640,
+        320
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/compact-baseline-C.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/compact-baseline-C.zpl",
+      "source_sha256": "efbaf4f07e515088d9cfac72b5e5412a0db0b0d42ec0909134ebb74b798b4e42",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/compact-baseline-C.zpl",
+      "submitted_sha256": "b5239a6d5d68ab649d8dd3199b48361fab39859712cbd2e869bbb70bd0d313e3",
+      "width": 640
+    },
+    "benchmarks/accuracy/conformance-reference/compact-baseline-F.png": {
+      "captured_utc": "2026-10-08T02:27:19Z",
+      "height": 320,
+      "png_sha256": "77a481a45c3b7abb9e460289d44816c0d5d9a07ed57739312b6093ff30775a50",
+      "printer": "zd621",
+      "printer_dimensions": [
+        640,
+        320
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/compact-baseline-F.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/compact-baseline-F.zpl",
+      "source_sha256": "300988ab7afc923a1d6cec1f0869037311eb1934d8fafd38c103a4f94287dade",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/compact-baseline-F.zpl",
+      "submitted_sha256": "02c8e40a5a65946e6260bc5097bf35260b9fe37a915ed0af35c3a7e9b6e40c47",
+      "width": 640
+    },
+    "benchmarks/accuracy/conformance-reference/font-A-B.png": {
+      "captured_utc": "2026-10-08T02:25:24Z",
+      "height": 1218,
+      "png_sha256": "9328c9f6e8205c5337d99ba7f199c94bdbfce2aaf112233116b20ed4a09b6f6f",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/font-A-B.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/font-A-B.zpl",
+      "source_sha256": "6df099d84877a6fc2f095221eba74d2d7ed51b3d5766755424c0f5bf0646b523",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/font-A-B.zpl",
+      "submitted_sha256": "85b3486bd924d0a026c2a1a06ab1a2efd15cf2657cc60754b30cc9e53b490b50",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/font-A-I.png": {
+      "captured_utc": "2026-10-08T02:25:24Z",
+      "height": 1218,
+      "png_sha256": "75070a77e4bc24eb4656ccef3fd5fd9f45b322290de6cd1f40458f95f181e051",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/font-A-I.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/font-A-I.zpl",
+      "source_sha256": "dc79ef5e3e785a9b8853df8cc5bd19817ca8dc86d4db0c90c627adf7e263fbae",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/font-A-I.zpl",
+      "submitted_sha256": "fc068cc5b18217f8bca2af4d69554f1a0c5a8d57da57eeab36e107963b3eacdb",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/font-A-N.png": {
+      "captured_utc": "2026-10-08T02:25:23Z",
+      "height": 1218,
+      "png_sha256": "997824e16ea04d6390cb2dd94a3ee8586bc9edf0f4aa502ad0e9a036724166d2",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/font-A-N.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/font-A-N.zpl",
+      "source_sha256": "c36c094afd3ec928713e7f6cd5b58c570c5b6ad1928a8ee2219fe532a8e9bc5b",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/font-A-N.zpl",
+      "submitted_sha256": "3d3116ce8ad9a6c9d70ebd5c34df9d90e2b13478d1e1a5716930d7da6444de0f",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/font-A-R.png": {
+      "captured_utc": "2026-10-08T02:25:23Z",
+      "height": 1218,
+      "png_sha256": "40374679a8cea79ae96d031b552ef4aacc449857f8f0b3ac05b732a2acd68328",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/font-A-R.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/font-A-R.zpl",
+      "source_sha256": "6d3e5c21c85467cbeed623e2cc9fed99f4ee70dc902201c0ffd1940da001f291",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/font-A-R.zpl",
+      "submitted_sha256": "b5504c61f0fe544074b2457f7ab38be678178b8e062f63f2a0e2797ba17b3bfe",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/font-B-B.png": {
+      "captured_utc": "2026-10-08T02:25:25Z",
+      "height": 1218,
+      "png_sha256": "6541cae5adfaba51a62a046032fe21ef3b2b1a958a957a4a666411761fcbbfd3",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/font-B-B.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/font-B-B.zpl",
+      "source_sha256": "702f165302fadb5f65a13dabb72815a3a07e92b870114cd68d19ef30b318886d",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/font-B-B.zpl",
+      "submitted_sha256": "3f01e42bbaa24d48a34f16b48e382768989bd8cb821a5f475fd3cf454512cfdf",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/font-B-I.png": {
+      "captured_utc": "2026-10-08T02:25:25Z",
+      "height": 1218,
+      "png_sha256": "a06db906ce251888552381aab1e4dad0dd61f62a48161d9b82f5c34aa5a4ea16",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/font-B-I.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/font-B-I.zpl",
+      "source_sha256": "04df44c6567bf2bdc03a4e5437f3a826956213a5fa6739db6fa3684771566c5f",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/font-B-I.zpl",
+      "submitted_sha256": "ccd595de13d8233e9bbe14c071adc9ca97e863a3a72a712f0f4cfb9f09c9de71",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/font-B-N.png": {
+      "captured_utc": "2026-10-08T02:25:24Z",
+      "height": 1218,
+      "png_sha256": "e3b7bef31796c08d0f7a9ba00f81b76929ea5d51f3d53e551ccac6d9f7ba966f",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/font-B-N.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/font-B-N.zpl",
+      "source_sha256": "2d31604ab99535abf82cd5bc7c30bad244cf652379343eca6792605cb2c12e30",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/font-B-N.zpl",
+      "submitted_sha256": "c3da1da321cbd8d6d315d3d57b6d2aa12970db38dd96f76b0fb31989c770656c",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/font-B-R.png": {
+      "captured_utc": "2026-10-08T02:25:24Z",
+      "height": 1218,
+      "png_sha256": "84b9525cedb44cb2f0bd70b5c19400c42f1adfefbc4496c65077aed97b4d2110",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/font-B-R.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/font-B-R.zpl",
+      "source_sha256": "338d03dce0f7409a377d1a122572a0a98d2b3875185030a79bc09b16232d37c5",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/font-B-R.zpl",
+      "submitted_sha256": "b3b85ae05cd8e938eaf58ecf59b416e76c793a927b1d561340534b1bf2f23149",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/font-C-B.png": {
+      "captured_utc": "2026-10-08T02:25:26Z",
+      "height": 1218,
+      "png_sha256": "291b612215d2414efde0da2b7e17668efb08d0d74013954ac905e68afffc1765",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/font-C-B.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/font-C-B.zpl",
+      "source_sha256": "c257e3114d9302e91c56194e254c31640b3a96c6c657210996b5a7bee3fa1f75",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/font-C-B.zpl",
+      "submitted_sha256": "1e68ae98141e7c87519fb2be397a73db210be4dd7b467bfa14c3a14f29e4c005",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/font-C-I.png": {
+      "captured_utc": "2026-10-08T02:25:26Z",
+      "height": 1218,
+      "png_sha256": "54dce2900541f39afe338760aad5fe3b876e4d9079762c10ac5d8166e0dee357",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/font-C-I.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/font-C-I.zpl",
+      "source_sha256": "0dc01ae9c510b96bfeba55e6ca775cc910d97fcbd259930de5ce2d714e675dab",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/font-C-I.zpl",
+      "submitted_sha256": "748915e7d340f44892a295c40c07995585487300adaced41c07df9f9c1e7ac8a",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/font-C-N.png": {
+      "captured_utc": "2026-10-08T02:25:25Z",
+      "height": 1218,
+      "png_sha256": "35e657c3e42836e465f5c5398873749dca1ba1fade6758896d769cae6ba19098",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/font-C-N.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/font-C-N.zpl",
+      "source_sha256": "e6b13ec824ba939b54205a6ac73c3729fa19c69b8a2b1db83317bf8311742e1e",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/font-C-N.zpl",
+      "submitted_sha256": "ded9b6efcd5ba4f34c5508994d13b24300ee68d98ab21bba340ad36dc7dc5904",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/font-C-R.png": {
+      "captured_utc": "2026-10-08T02:25:26Z",
+      "height": 1218,
+      "png_sha256": "a851881d2c84708cc18a9eed10f17615fa1eef12464fcb3ba60c5ae53a1214c4",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/font-C-R.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/font-C-R.zpl",
+      "source_sha256": "1c4d03e8e0da4bfeaf9b6191e56bea464023fb13683fd725785f57703ec28be3",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/font-C-R.zpl",
+      "submitted_sha256": "555918675bd90dd93906cdcd9cba9e820bb8849a3547a8a5ddf83e63b2fbcb11",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/font-D-B.png": {
+      "captured_utc": "2026-10-08T02:25:28Z",
+      "height": 1218,
+      "png_sha256": "291b612215d2414efde0da2b7e17668efb08d0d74013954ac905e68afffc1765",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/font-D-B.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/font-D-B.zpl",
+      "source_sha256": "974f2e7f2d62052de636a7730290ed05376abcf1eaad9d6769a5b6063bf78411",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/font-D-B.zpl",
+      "submitted_sha256": "1a3b23852065a11300947bc038940452f2df6c32a023f14600b6f16ae71fb0b4",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/font-D-I.png": {
+      "captured_utc": "2026-10-08T02:25:27Z",
+      "height": 1218,
+      "png_sha256": "54dce2900541f39afe338760aad5fe3b876e4d9079762c10ac5d8166e0dee357",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/font-D-I.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/font-D-I.zpl",
+      "source_sha256": "c679a268167b69bd1f74dd39bf82457f0f14598034946a890f6755d4f9679228",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/font-D-I.zpl",
+      "submitted_sha256": "19931a7d7310602787af9ea42aaf5ae862c1057e3671c1d8e9f0d5d5a84ac23b",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/font-D-N.png": {
+      "captured_utc": "2026-10-08T02:25:27Z",
+      "height": 1218,
+      "png_sha256": "35e657c3e42836e465f5c5398873749dca1ba1fade6758896d769cae6ba19098",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/font-D-N.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/font-D-N.zpl",
+      "source_sha256": "cde65fe5870221d7481271d241dd0b7ea26d0254e97812ad1b6e44578ba3cd73",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/font-D-N.zpl",
+      "submitted_sha256": "71723e19e26676e9c1c8fccb4cc6187f2ac7171cc2a97508deb7d6048d3666fb",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/font-D-R.png": {
+      "captured_utc": "2026-10-08T02:25:27Z",
+      "height": 1218,
+      "png_sha256": "a851881d2c84708cc18a9eed10f17615fa1eef12464fcb3ba60c5ae53a1214c4",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/font-D-R.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/font-D-R.zpl",
+      "source_sha256": "6007e63082300e0797d1339b4fcd329b03f915cd06e0c57d4b7c7b24a3befccb",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/font-D-R.zpl",
+      "submitted_sha256": "addbf8dcd80b7b511532e8b0f5a87f746e2f1c35b13fdda3a413d7d5371da66b",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/font-E-B.png": {
+      "captured_utc": "2026-10-08T02:25:29Z",
+      "height": 1218,
+      "png_sha256": "089f79a08a60218ceb99222d2b9707f7ac3870ce693c6b636b8a3a2bbf41f7db",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/font-E-B.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/font-E-B.zpl",
+      "source_sha256": "373fc2c8a00f6525204b949fd3dd14daf13539346c120832287347ed8266f016",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/font-E-B.zpl",
+      "submitted_sha256": "022a0fddc8768ad6d69ac81b3fd2c4dbbfe055f65be5f71bd0e2d6f4e119a596",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/font-E-I.png": {
+      "captured_utc": "2026-10-08T02:25:28Z",
+      "height": 1218,
+      "png_sha256": "cf3813759f0bd986211d8816b542f6dcd77e11eea62ff43f272c5fca1f6a99a4",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/font-E-I.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/font-E-I.zpl",
+      "source_sha256": "3b4398b6339879dd07b6ec31d95ba0dcc1f684ac4813fe755057a7e378b29f9c",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/font-E-I.zpl",
+      "submitted_sha256": "610497fdaef3c8aff0d7e3dd2f4666ffc769348d1a486d3b4684df0998fb2a11",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/font-E-N.png": {
+      "captured_utc": "2026-10-08T02:25:28Z",
+      "height": 1218,
+      "png_sha256": "cdfd6a1fe04ebaf286f83bc2bbaf7cbc54e5ba052fe0883e5861b714a1976360",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/font-E-N.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/font-E-N.zpl",
+      "source_sha256": "f783b8c97988653b2f890798be9abcf1e9c9aeb36c47a65ea48c3be86a172429",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/font-E-N.zpl",
+      "submitted_sha256": "56664b54e4732585c680ca2b249e3759e84dbe6dd0a7c911e5c6f498feedbd30",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/font-E-R.png": {
+      "captured_utc": "2026-10-08T02:25:28Z",
+      "height": 1218,
+      "png_sha256": "e08fddb14714e09319e0e25b7d4bf4c760e94a8b9dd4b0f062d0d3e19e8960b6",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/font-E-R.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/font-E-R.zpl",
+      "source_sha256": "ed02bd1b820e1abafaf30eb331f67c0b4a14925def39d02198fedaa0e32b3694",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/font-E-R.zpl",
+      "submitted_sha256": "575563b94711dd152f22fa0a68fa94827ee7d556629965ec59a257da21b11eaa",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/font-F-B.png": {
+      "captured_utc": "2026-10-08T02:25:30Z",
+      "height": 1218,
+      "png_sha256": "b02eced815afc74b7633a2005307a2c2df604cebb4c3c1f6722864faa896deb1",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/font-F-B.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/font-F-B.zpl",
+      "source_sha256": "c8254e2ad0fd5525fb2891be1f258c8503b2fb18c7e152411bfc8577a223c4df",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/font-F-B.zpl",
+      "submitted_sha256": "39c9ae6ad369dfb172b3110b620d36313eb363673a5a449b4b1a88748bfb94db",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/font-F-I.png": {
+      "captured_utc": "2026-10-08T02:25:30Z",
+      "height": 1218,
+      "png_sha256": "994b5a1d433c173ba977c61d12cf7e53db98d9c6ff23813c86c9440c3c259ea7",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/font-F-I.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/font-F-I.zpl",
+      "source_sha256": "f1f6736824c9f51d7b9322e65943a7af4d7abc48ab5646ea0f0eedd13850d0d3",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/font-F-I.zpl",
+      "submitted_sha256": "9d39b529cdb54f422cc337564dd2a67158d6d79afd2038f95b1037677492a0b2",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/font-F-N.png": {
+      "captured_utc": "2026-10-08T02:25:29Z",
+      "height": 1218,
+      "png_sha256": "15923d33404597c2fdbbbe2b0d43bfa1d3862ddf184d1ee7ca2a42281f83b6ab",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/font-F-N.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/font-F-N.zpl",
+      "source_sha256": "733e1b0b614ddf5af84015c95342950520d05a9bb8240b2bb4fd9faf932687d8",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/font-F-N.zpl",
+      "submitted_sha256": "478e2f5661b33e8609d087252c7d61a66d06b5e8c8c21a54db7472ddbc926fde",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/font-F-R.png": {
+      "captured_utc": "2026-10-08T02:25:29Z",
+      "height": 1218,
+      "png_sha256": "3af740170dd07a3650b42debdadb687020ed1dbda57fd8789809686212440306",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/font-F-R.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/font-F-R.zpl",
+      "source_sha256": "cac2ec4787862c237e357ff57a95c47424e70e4b4df78c0f1687a41918667849",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/font-F-R.zpl",
+      "submitted_sha256": "bd4b20e40fd5117882a97fa3a07c2244b4e6e060157839963043593fb8d78e79",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/font-G-B.png": {
+      "captured_utc": "2026-10-08T02:25:31Z",
+      "height": 1218,
+      "png_sha256": "b8a77c9d60f5451fefe7691ac1f5c0e5fb1a7e642bb9a43d1713cd6471578f2f",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/font-G-B.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/font-G-B.zpl",
+      "source_sha256": "ea83e227ca0b62317ffecdaf9c829dfa98a4f82dc0bad5fea0088bf2e42b8a9e",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/font-G-B.zpl",
+      "submitted_sha256": "a9d911a3e5b6bae9210cc870fa98e9c83a8d8efe5cb3129b8338d1be736171fe",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/font-G-I.png": {
+      "captured_utc": "2026-10-08T02:25:31Z",
+      "height": 1218,
+      "png_sha256": "d50ab7794b912070b9a2551305515a88db2c5d890f5335f0fbd783fec070addb",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/font-G-I.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/font-G-I.zpl",
+      "source_sha256": "e2ad92c0f647c3c12d268744be4efd3102c0e9349e8bc8a0057cc4cac0cfe1c5",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/font-G-I.zpl",
+      "submitted_sha256": "e0b93ea3cbf3b3bbbccc1bbff91b3c20f1fc843230d649b4a33bf18c1528257c",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/font-G-N.png": {
+      "captured_utc": "2026-10-08T02:25:30Z",
+      "height": 1218,
+      "png_sha256": "296788302151e9dd71a507409b0adab18f017f104f391d5375a0280c356182a2",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/font-G-N.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/font-G-N.zpl",
+      "source_sha256": "b85d9efb7df8fd3ed2330f52ee7438074d6490c2ad86cd9eb811ad4a678e50fb",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/font-G-N.zpl",
+      "submitted_sha256": "5fc4ffe57967f41435b5983e5a59b4cc0e3b1de65031365221d19d160f34bbe7",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/font-G-R.png": {
+      "captured_utc": "2026-10-08T02:25:31Z",
+      "height": 1218,
+      "png_sha256": "fb10a6a4af08d99e03d02fa49208714f6472e64ef4655cb51ee55ba484057414",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/font-G-R.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/font-G-R.zpl",
+      "source_sha256": "3ff63fb2feab8355a168a1eb296307df877f46aa8f0612c75db96d4d41176ea4",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/font-G-R.zpl",
+      "submitted_sha256": "e2205a324bd89b269be26f635ea114956bf9885c422ed5e5c9a50fa6fdbe0780",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/font-H-B.png": {
+      "captured_utc": "2026-10-08T02:25:33Z",
+      "height": 1218,
+      "png_sha256": "4f884d24b824b9072c03b85158d94f5f0d11abdaaeb266f1e2aa214b387f334f",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/font-H-B.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/font-H-B.zpl",
+      "source_sha256": "2119e9871004aac84eef97af3e0f4c8acbd126ea1072e5fde85abd2c0cf8c0c1",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/font-H-B.zpl",
+      "submitted_sha256": "bd26e10a98bbc4cedf90d7cc5f38ae3bc3f0c86ccd031d67bcdb9cfc9de04b5e",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/font-H-I.png": {
+      "captured_utc": "2026-10-08T02:25:32Z",
+      "height": 1218,
+      "png_sha256": "7e4ae43f6dc9872d259c960eb3e5e305afe16401ebdae407fa9e595990d89aef",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/font-H-I.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/font-H-I.zpl",
+      "source_sha256": "ac0e69b4631c8029f44ed2552dc61931dd6727fa9595d1501db3d0786ef5cda2",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/font-H-I.zpl",
+      "submitted_sha256": "1c73b08eadf83b77b694ea377dc049f4d294e5ba5446fcfa688151f6d1c3f539",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/font-H-N.png": {
+      "captured_utc": "2026-10-08T02:25:32Z",
+      "height": 1218,
+      "png_sha256": "6e2195f08fd5e598680f47876bb71429e5fcf842595052e3f2f5d093d6ffcde8",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/font-H-N.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/font-H-N.zpl",
+      "source_sha256": "72aaa9360ecfa75d97e7b46b24c88b3ddca1d32958ac8902704def01a494b7bb",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/font-H-N.zpl",
+      "submitted_sha256": "772ac31113efd0f912cc4b941769b0382835d826eb36ee5b2a5121329b27b9f5",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/font-H-R.png": {
+      "captured_utc": "2026-10-08T02:25:32Z",
+      "height": 1218,
+      "png_sha256": "a3c1a2ba2a4310523c2c16306082eec2a24a25228953eba430fefc2b27fd14a9",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/font-H-R.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/font-H-R.zpl",
+      "source_sha256": "b17c1d6cafd8c362144b03f2fa16c0812acb7399993bd2fbebb1de7a4e0fd074",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/font-H-R.zpl",
+      "submitted_sha256": "d9ff3beb805f5d975ad50c9bda313f4baff72158e8dd828467e26a4bfd57e53d",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/font-id-P.png": {
+      "captured_utc": "2026-10-08T02:25:38Z",
+      "height": 1218,
+      "png_sha256": "a9d06cc19fc81fd84992d81b0daca64864fecf62fa96b5f381fb1f739c3d6618",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/font-id-P.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/font-id-P.zpl",
+      "source_sha256": "48efb7838535b4625ec263577f31cd97f18629f633a21b719ba6c9fb5cf5bac0",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/font-id-P.zpl",
+      "submitted_sha256": "8679b436c80d571253074b6f7987b59f25b1896989f06747f21fbbd17c8ffb4b",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/font-id-Q.png": {
+      "captured_utc": "2026-10-08T02:25:38Z",
+      "height": 1218,
+      "png_sha256": "fb253845c9c33479f9faad50f503e02732143795fe46255e73f020c4d94b5966",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/font-id-Q.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/font-id-Q.zpl",
+      "source_sha256": "48879a1bbb350215ac4ad876d90e242352787c7616dd0228dbb2e7b8556be81a",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/font-id-Q.zpl",
+      "submitted_sha256": "8cd607faeb3d7083b7f16379ec73cdf8614b1c475339ced6e5fb99ff54ebf26f",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/font-id-R.png": {
+      "captured_utc": "2026-10-08T02:25:39Z",
+      "height": 1218,
+      "png_sha256": "2a723f41bf6bba5c315c59518f5a820ee179b96c4bcb023b27128dfe18cad710",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/font-id-R.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/font-id-R.zpl",
+      "source_sha256": "07bd6da07f25a044de73861f2b7c81e87f245841e33ad0f54e6d57d41c8aaf7e",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/font-id-R.zpl",
+      "submitted_sha256": "6f9b14fa2b784e0bbeba42a6ed1107e1823e8088c19cd1e3e7260a26cfaab4b8",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/font-id-S.png": {
+      "captured_utc": "2026-10-08T02:25:39Z",
+      "height": 1218,
+      "png_sha256": "07dedc0d3e338d83de34ac08b8e8bd4126a6016e09d3d943076859eff5aa893e",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/font-id-S.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/font-id-S.zpl",
+      "source_sha256": "5c21dbc60680c9f05516a8303872c652fc155e336889475fa40f297cf7cb6c88",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/font-id-S.zpl",
+      "submitted_sha256": "8e00c9a6e396ad38d3a7de4dca9df2a350657b1c97b795cb7d6789d88a7bc404",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/font-id-T.png": {
+      "captured_utc": "2026-10-08T02:25:39Z",
+      "height": 1218,
+      "png_sha256": "17f0d328861645689665edea5da851a74d3d1c9bcdeae759e914928793f0ddcb",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/font-id-T.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/font-id-T.zpl",
+      "source_sha256": "3322943faa7ea02ebf154032a0059fa11296d68ded85856bf6f2a53942eb2c6b",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/font-id-T.zpl",
+      "submitted_sha256": "aa3ea6233901ba5716d2507289880b1afddb0a70b68711462dfc5e2f8a3cdeee",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/font-id-U.png": {
+      "captured_utc": "2026-10-08T02:25:39Z",
+      "height": 1218,
+      "png_sha256": "3cc9b72e395c30c83be24ecaf3ebf0924e052c2cf1627b7a25ca81a18342348e",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/font-id-U.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/font-id-U.zpl",
+      "source_sha256": "d615e572d720ef43b0a0b8d3ba7a78202561eac918baf445049c2722ef36a571",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/font-id-U.zpl",
+      "submitted_sha256": "73063dc82d011ab344278bd29d147ee74c3408f30ef0db789a257e4a28c59bff",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/font-id-V.png": {
+      "captured_utc": "2026-10-08T02:25:40Z",
+      "height": 1218,
+      "png_sha256": "f0964bf0d02c309f4709b93128778521d5f593659b889754e95671c3a8b6f847",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/font-id-V.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/font-id-V.zpl",
+      "source_sha256": "3cf0f38c95455c76a2ef0381d5d82c5953bc926f2bb55e1a5bc27f349140646a",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/font-id-V.zpl",
+      "submitted_sha256": "567fcb6be09603e38888f79f01d4c82aa27bdd45388483f5eed8f446ac9d8847",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/printer-field-block-rounding-A-1-gaps.png": {
+      "captured_utc": "2026-10-08T02:25:21Z",
+      "height": 1218,
+      "png_sha256": "dd544be9aaa9e1caa9ee6d7688d22e6e70352df44c2be4e45ba1fc8a2037138d",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/printer-field-block-rounding-A-1-gaps.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/printer-field-block-rounding-A-1-gaps.zpl",
+      "source_sha256": "3e694de2e15dc6905eb2595ff3ea26225f194daa7a40fb00b180c668b1521548",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/printer-field-block-rounding-A-1-gaps.zpl",
+      "submitted_sha256": "5c50a2df7f96b19cf96042ede5717060961032f5d7f94549c3eded36601f2f5e",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/printer-field-block-rounding-A-2-gaps.png": {
+      "captured_utc": "2026-10-08T02:25:21Z",
+      "height": 1218,
+      "png_sha256": "03401a9e90f2addfca069138ea1e775be0009caa7554f9a22319967d76cef2f7",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/printer-field-block-rounding-A-2-gaps.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/printer-field-block-rounding-A-2-gaps.zpl",
+      "source_sha256": "4183c37dd92000a2bf477b9b134ef5370dc90db203f60fd1ae68ba0d7903f100",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/printer-field-block-rounding-A-2-gaps.zpl",
+      "submitted_sha256": "df077710b516a06bf356f9e7af386dfa3a86d09fbe655f3be7af6ffc5f64ccef",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/printer-field-block-rounding-A-3-gaps.png": {
+      "captured_utc": "2026-10-08T02:25:21Z",
+      "height": 1218,
+      "png_sha256": "a50b873f5c2620534f0811c05fedfcebf178e9698e098681c7bb6485812c5155",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/printer-field-block-rounding-A-3-gaps.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/printer-field-block-rounding-A-3-gaps.zpl",
+      "source_sha256": "9a050d3da58ec0c18be1db42c344bb31e54832437264830c6709aeac01e71cb6",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/printer-field-block-rounding-A-3-gaps.zpl",
+      "submitted_sha256": "d5aaaa165be53d82b9f0cceeff5a17f68d8c6985773a5fcf22768e0305a4af1b",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/probe-font-A.png": {
+      "captured_utc": "2026-10-08T02:24:26Z",
+      "height": 300,
+      "png_sha256": "68a2b168a1f29b3fd342db742755882457f83dfff5e5ec1f817585a6935536b5",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        300
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/probe-font-A.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/probe-font-A.zpl",
+      "source_sha256": "256b3ea1c76fe4154510647e14ecad9781a48648a2013036a60412dea1a52979",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/probe-font-A.zpl",
+      "submitted_sha256": "c6c30db9d07eadbcd24db23edac091f7427fd56210990beb726fcdcfab6097cd",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/probe-font-D.png": {
+      "captured_utc": "2026-10-08T02:24:26Z",
+      "height": 300,
+      "png_sha256": "9dbc355fabc6c604148d887e40f796cf99e42fcd3c4699a6e95f1802fd8068e6",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        300
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/probe-font-D.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/probe-font-D.zpl",
+      "source_sha256": "5e88df45ef5b831a370c9bc8b98f929f7989cc8bbc501c52c8218af78dd780b3",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/probe-font-D.zpl",
+      "submitted_sha256": "522fddc5a4ce7f56b013b95abaf8e76fbd6434fa20eaa5924dde30b295464f55",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/symbol-graphic-A-B.png": {
+      "captured_utc": "2026-10-08T02:26:41Z",
+      "height": 1218,
+      "png_sha256": "8f50203b2db5d52a66cc03b3fce60ca21e46d2b9afc893c2508e344ba9d5f9fa",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/symbol-graphic-A-B.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/symbol-graphic-A-B.zpl",
+      "source_sha256": "653c152a10eb622fc4dae4068061b5ec920aa552bf4f363eb3ced007b3307e37",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/symbol-graphic-A-B.zpl",
+      "submitted_sha256": "080d9e7b87ff1d8e124bc03dab50380811a75af425cedc8ed4a01c8bc57680a0",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/symbol-graphic-A-I.png": {
+      "captured_utc": "2026-10-08T02:26:41Z",
+      "height": 1218,
+      "png_sha256": "f8f2b84bd3c09131e2803d7a15411a1613754c2cc01a0d3aca669168e66a5233",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/symbol-graphic-A-I.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/symbol-graphic-A-I.zpl",
+      "source_sha256": "051effa1cf916fe9dfad65479e8d48536fac92ad4af1a1a0f1dcecc323057a58",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/symbol-graphic-A-I.zpl",
+      "submitted_sha256": "50bbcbfa0ce7bf96868c60711c3e6454fc1ebbd726ab5607806a575275a3ef03",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/symbol-graphic-A-N.png": {
+      "captured_utc": "2026-10-08T02:26:40Z",
+      "height": 1218,
+      "png_sha256": "ec26d973b13cf3e107de6f0fd4929b58da6be2852eb1a0cba6e4b169ec6d19c1",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/symbol-graphic-A-N.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/symbol-graphic-A-N.zpl",
+      "source_sha256": "914a5e0ebe3e9d8cd373fe8032299026aec9d94aa7c9effc054e0757e668e2c7",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/symbol-graphic-A-N.zpl",
+      "submitted_sha256": "bfce5ab0650fb0c2b4a2fc60ec8bf074322d5545b0f2b9388a230466d57784ba",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/symbol-graphic-A-R.png": {
+      "captured_utc": "2026-10-08T02:26:41Z",
+      "height": 1218,
+      "png_sha256": "f8cd56367a11606da8a10a0a9e42bf41f1d223f68d439f454f520d290d310127",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/symbol-graphic-A-R.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/symbol-graphic-A-R.zpl",
+      "source_sha256": "985dbb901f6c92c61434263dd7a4c0cf49a330cacf0865805b2e4eaa941c11dd",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/symbol-graphic-A-R.zpl",
+      "submitted_sha256": "10069abbc8e15a28aa802adf79d55929d8288bbbbb19fd309248fb792bd9ddc4",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/symbol-graphic-B-B.png": {
+      "captured_utc": "2026-10-08T02:26:43Z",
+      "height": 1218,
+      "png_sha256": "eb68d4d79c1d2a4f80a5953af962acb94c14b8c1495464a1e12cf27156a5a494",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/symbol-graphic-B-B.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/symbol-graphic-B-B.zpl",
+      "source_sha256": "834956522670777fa9ee6aa9d584b515932e3d99dc8c3c0d83eb2ed106493c71",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/symbol-graphic-B-B.zpl",
+      "submitted_sha256": "692284974a72680383d930dc39f468bf22d44615f0b8c7597657b9654aa2ea4b",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/symbol-graphic-B-I.png": {
+      "captured_utc": "2026-10-08T02:26:42Z",
+      "height": 1218,
+      "png_sha256": "b227e906c7107505d56d371c6c8d6938ff2608b9888442f73adfa34c1be57232",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/symbol-graphic-B-I.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/symbol-graphic-B-I.zpl",
+      "source_sha256": "65aabdb42f6d07e9ebc6ce04d0ad1810db81e01c5ad6ad6c43a1042e0abcdf99",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/symbol-graphic-B-I.zpl",
+      "submitted_sha256": "f81007dcc19a63013ef1c99985a70e40d25b149d4adc957327566ba2f81c486d",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/symbol-graphic-B-N.png": {
+      "captured_utc": "2026-10-08T02:26:42Z",
+      "height": 1218,
+      "png_sha256": "e79d49a66b3b565612a186616a2ca0cfe345245bc7e8e674ef13cb39fbd4fdb5",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/symbol-graphic-B-N.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/symbol-graphic-B-N.zpl",
+      "source_sha256": "fbe5b98968b5d0e4bea1763b907ac61b651e06dea824e95c2e79df17e07ba74c",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/symbol-graphic-B-N.zpl",
+      "submitted_sha256": "441d3c5507768319c653f6ac72d1e0c9b4b79ba88cd094c7ffc959a47b16cbb4",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/symbol-graphic-B-R.png": {
+      "captured_utc": "2026-10-08T02:26:42Z",
+      "height": 1218,
+      "png_sha256": "53188fc1c13f1524f1f377b066dc26e842a5eb2dd13ee1bc96d05a4c191166d9",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/symbol-graphic-B-R.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/symbol-graphic-B-R.zpl",
+      "source_sha256": "b7983768050a8fe204baa9eae9259fd6d127acf0dc309f00c615fdee228e1bea",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/symbol-graphic-B-R.zpl",
+      "submitted_sha256": "275d9284bdf630f7003b3f121ca713c21fd2ef18929ed7c5b9466a582fa0725a",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/symbol-graphic-C-B.png": {
+      "captured_utc": "2026-10-08T02:26:44Z",
+      "height": 1218,
+      "png_sha256": "dbee46bf43a564ca0e51d3c221a25f26a842891357684b03c9f186ebd1a2ae27",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/symbol-graphic-C-B.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/symbol-graphic-C-B.zpl",
+      "source_sha256": "28f2de84a9a6b0c9c1c4394f95931353ab6d20650f88a7843fc74d53297b2d44",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/symbol-graphic-C-B.zpl",
+      "submitted_sha256": "258e6da6946220c1bfe702463eaabf5445ea66c54cb4650c882ab04b6270d833",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/symbol-graphic-C-I.png": {
+      "captured_utc": "2026-10-08T02:26:43Z",
+      "height": 1218,
+      "png_sha256": "8c08e3b7403f0678eecfa697cad2c34fbff5a9cd88cb129322db6ab45ace1043",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/symbol-graphic-C-I.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/symbol-graphic-C-I.zpl",
+      "source_sha256": "3d12559e51cf54ec769af4803e222622206a3c21646f0b828aff4ee1c4c017a6",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/symbol-graphic-C-I.zpl",
+      "submitted_sha256": "8a1ba846d246d1a16caebdca97a2860da143f33f53dca8381294043a93fa052e",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/symbol-graphic-C-N.png": {
+      "captured_utc": "2026-10-08T02:26:43Z",
+      "height": 1218,
+      "png_sha256": "c86f1340ad3b71719f0695c4ece6d4ce9f6290b70e25beb45c5de66901dc89ff",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/symbol-graphic-C-N.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/symbol-graphic-C-N.zpl",
+      "source_sha256": "21ec135e3eda1b8ed6f8cb0dfa94065048c7e7582cbc636cf73b948e18a76f43",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/symbol-graphic-C-N.zpl",
+      "submitted_sha256": "283a8ad5fe5b671b0bf2cbd4646333c00110256b501dfa6f456dc4ae407129f6",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/symbol-graphic-C-R.png": {
+      "captured_utc": "2026-10-08T02:26:43Z",
+      "height": 1218,
+      "png_sha256": "210be27cb232fe4dc851228bcc342dc4463e27f100bdfca14e133e727f273c10",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/symbol-graphic-C-R.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/symbol-graphic-C-R.zpl",
+      "source_sha256": "ecd1db3e47869ef93748fac9d6ba57d3ed5d8df461880175d5638f4ea08d1232",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/symbol-graphic-C-R.zpl",
+      "submitted_sha256": "97fb47fb1f541a847e67f53a686836622902c867395f68a5a2a65a8fa9f425e3",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/symbol-graphic-D-B.png": {
+      "captured_utc": "2026-10-08T02:26:45Z",
+      "height": 1218,
+      "png_sha256": "b29a137788100762d50d6cbf9a8f31f4f6cf6a06040a6a547e8c023c1bb0fb62",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/symbol-graphic-D-B.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/symbol-graphic-D-B.zpl",
+      "source_sha256": "271753052b05698b238de69921723d1f951e5fa55ead432d2d36de15ad820707",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/symbol-graphic-D-B.zpl",
+      "submitted_sha256": "e3b6a1c557b19743996ea3b2de90ee57d21715693cdc32b1d03003f6ecf8127b",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/symbol-graphic-D-I.png": {
+      "captured_utc": "2026-10-08T02:26:45Z",
+      "height": 1218,
+      "png_sha256": "a34d4428bf447e985d567efad9f01fd777a02b046e6aa26e198f1541ef69c9b7",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/symbol-graphic-D-I.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/symbol-graphic-D-I.zpl",
+      "source_sha256": "ab40d21d231deb880d710193cd8737c6126b9aa4cb9cdebb75309e5a9ab17800",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/symbol-graphic-D-I.zpl",
+      "submitted_sha256": "f4caffab931461d81ee4369f5db0da907892dad57e8124ea9d7359152e60ba20",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/symbol-graphic-D-N.png": {
+      "captured_utc": "2026-10-08T02:26:44Z",
+      "height": 1218,
+      "png_sha256": "b6826e24a8cfb03cbb4d5f9e77c1f3376c2c6a68e2acab72da4010653826c7bd",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/symbol-graphic-D-N.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/symbol-graphic-D-N.zpl",
+      "source_sha256": "2690e68426b8154a9d1d930bc16657dabbba31c6a9b4e4a79e8341cacbc2dcf7",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/symbol-graphic-D-N.zpl",
+      "submitted_sha256": "fa1260c9ba5c41a6ba58a3a142cd4c280576e47a2f2389b72ca18e608e945f4a",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/symbol-graphic-D-R.png": {
+      "captured_utc": "2026-10-08T02:26:44Z",
+      "height": 1218,
+      "png_sha256": "ad78650f5e4c8a68ee376d6fe2937db2a8349cf6238dd833e85bea4740b38597",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/symbol-graphic-D-R.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/symbol-graphic-D-R.zpl",
+      "source_sha256": "255cf14b0aafd8c71e576a15bc858e107d487851424cdfafa8b932339871711e",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/symbol-graphic-D-R.zpl",
+      "submitted_sha256": "ab1c5fd44cae53dfd388f7f46f39f0884d9c23004b0f8161f0e6849801378e62",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/symbol-graphic-E-B.png": {
+      "captured_utc": "2026-10-08T02:26:46Z",
+      "height": 1218,
+      "png_sha256": "f2257e8d005b301eb5f2d057a90681c42fc860c92f06ad819ee42d1c475d6d06",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/symbol-graphic-E-B.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/symbol-graphic-E-B.zpl",
+      "source_sha256": "a93c2918f1d8ef10a740e724396e0640e6b6ffc9fe773705ac5e7eae04ec2eab",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/symbol-graphic-E-B.zpl",
+      "submitted_sha256": "80de3380c39e02fdb3cfee8d9d61ee27540edeb985c30ee749ed376a69aac2a5",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/symbol-graphic-E-I.png": {
+      "captured_utc": "2026-10-08T02:26:46Z",
+      "height": 1218,
+      "png_sha256": "0c97c5ffe9312c966ef72b242bf2b557830a8238b6e0b9cc9faae6996ce1c50d",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/symbol-graphic-E-I.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/symbol-graphic-E-I.zpl",
+      "source_sha256": "8c35ecce1770fc90d7da12c51f3bc1a297735b5beaf377e0418dcf34d7bce0b0",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/symbol-graphic-E-I.zpl",
+      "submitted_sha256": "92849963b40873500e0177598a2712aabafc29665fe069de9a5fd79ff13bcff3",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/symbol-graphic-E-N.png": {
+      "captured_utc": "2026-10-08T02:26:45Z",
+      "height": 1218,
+      "png_sha256": "89d7fabbae7ebede1351d9d2736a6c8e18f5d772249752fc9bbed00f657a92a6",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/symbol-graphic-E-N.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/symbol-graphic-E-N.zpl",
+      "source_sha256": "eabdcababd1f9918e713c6305fda757e9fda519c21a6ed12a1701937f817aba2",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/symbol-graphic-E-N.zpl",
+      "submitted_sha256": "18663bd60e58ccd0dc16a39f32e8c94c3ae799fcb4d779569fedc654a3afba62",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/symbol-graphic-E-R.png": {
+      "captured_utc": "2026-10-08T02:26:46Z",
+      "height": 1218,
+      "png_sha256": "d883155a8ec4e5c599ff33b4a8b735293c62c0f0a03de3302778afd77b6a4f8e",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/symbol-graphic-E-R.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/symbol-graphic-E-R.zpl",
+      "source_sha256": "96f18faed30d657cc23345d28d45537e1031abde7b6f73bb042726ce2409d9de",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/symbol-graphic-E-R.zpl",
+      "submitted_sha256": "7d2d18f8ee32e74863b1f5a78a2e1a20b8f765fc22af09fdbb02ecb38f9a5cf8",
+      "width": 832
+    },
+    "benchmarks/accuracy/reference/font-A.png": {
+      "captured_utc": "2026-10-08T02:24:05Z",
+      "height": 300,
+      "png_sha256": "68a2b168a1f29b3fd342db742755882457f83dfff5e5ec1f817585a6935536b5",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        300
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/reference/font-A.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/reference/font-A.zpl",
+      "source_sha256": "5f31474e0d1d65c2d31c55e44cdb769cbded94fd72e8ae8502790f9e78b80af6",
+      "submitted": "submitted/benchmarks/accuracy/reference/font-A.zpl",
+      "submitted_sha256": "fddea4ce0af008bd43caa40b1f1cb8f9af3869efd207944da09225de121ed156",
+      "width": 832
+    },
+    "benchmarks/accuracy/reference/font-D.png": {
+      "captured_utc": "2026-10-08T02:24:05Z",
+      "height": 300,
+      "png_sha256": "9dbc355fabc6c604148d887e40f796cf99e42fcd3c4699a6e95f1802fd8068e6",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        300
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/reference/font-D.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/reference/font-D.zpl",
+      "source_sha256": "56dff5750e3c29427bace9da71593991a37bfa64d262f4a26c92e2b9122107c2",
+      "submitted": "submitted/benchmarks/accuracy/reference/font-D.zpl",
+      "submitted_sha256": "9cfc542cffa2759e646814013ea80831c3d3d1c325848669357088d566ca18a1",
+      "width": 832
+    },
+    "references/zq610-plus-v1/text-A-B/zd621.png": {
+      "captured_utc": "2026-10-08T02:28:35Z",
+      "height": 2030,
+      "png_sha256": "614ec6fe688141145d30b9ad27df650846ce263048b962d1926502c5318aca0a",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        2030
+      ],
+      "ram_resources": false,
+      "reference": "references/zq610-plus-v1/text-A-B/zd621.png",
+      "session": 1,
+      "source": "references/zq610-plus-v1/text-A-B/zd621.zpl",
+      "source_sha256": "f048749a88bce0f4e8ba73abb875c54844e77a8ebdc009d16833d1831f9e37c4",
+      "submitted": "submitted/references/zq610-plus-v1/text-A-B/zd621.zpl",
+      "submitted_sha256": "62a866279b2cb909ee1d23f443f961f79af0a1440554915adc025ca9325c0c5e",
+      "width": 832
+    },
+    "references/zq610-plus-v1/text-A-B/zq610.png": {
+      "captured_utc": "2026-10-08T02:37:12Z",
+      "height": 2030,
+      "png_sha256": "7f9b1e3d0bb30feb12beb53926cfbf01fc751a5bf54a8265cd0fbee0fb208901",
+      "printer": "zq610",
+      "printer_dimensions": [
+        384,
+        2030
+      ],
+      "ram_resources": false,
+      "reference": "references/zq610-plus-v1/text-A-B/zq610.png",
+      "session": 6,
+      "source": "references/zq610-plus-v1/text-A-B/zq610.zpl",
+      "source_sha256": "f9e9342a084686996b22bc0b46c1532b0caa765befb1ae3df7f0596e957f74fc",
+      "submitted": "submitted/references/zq610-plus-v1/text-A-B/zq610.zpl",
+      "submitted_sha256": "93c8fcd8b6fdf042317893a79c5b42119730c9dc8e929a1f721f294852934cd4",
+      "width": 384
+    },
+    "references/zq610-plus-v1/text-A-I-fit/zd621.png": {
+      "captured_utc": "2026-10-08T02:28:36Z",
+      "height": 2030,
+      "png_sha256": "1fa51667f102c11a556bab96db486fe0eda9661a2720ee951f1081d3f540d0ee",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        2030
+      ],
+      "ram_resources": false,
+      "reference": "references/zq610-plus-v1/text-A-I-fit/zd621.png",
+      "session": 1,
+      "source": "references/zq610-plus-v1/text-A-I-fit/zd621.zpl",
+      "source_sha256": "b8e6e23839cc3c4195b0d5f96f5a050fca882c1ba9bae5da9e21942dcfd6e0e3",
+      "submitted": "submitted/references/zq610-plus-v1/text-A-I-fit/zd621.zpl",
+      "submitted_sha256": "042a9148321048eba782b42ff2d151166a85eae08cd6154cb0264e49fe7193e8",
+      "width": 832
+    },
+    "references/zq610-plus-v1/text-A-I-fit/zq610.png": {
+      "captured_utc": "2026-10-08T02:37:15Z",
+      "height": 2030,
+      "png_sha256": "972a47e40162c2891314ee921f5cb34dad1afee342bf7e1a1ab2317673b66744",
+      "printer": "zq610",
+      "printer_dimensions": [
+        384,
+        2030
+      ],
+      "ram_resources": false,
+      "reference": "references/zq610-plus-v1/text-A-I-fit/zq610.png",
+      "session": 6,
+      "source": "references/zq610-plus-v1/text-A-I-fit/zq610.zpl",
+      "source_sha256": "3f65a77ca014bea28845cbea77e75701b4d7da8500f7143d7e1c9465f7da4c8f",
+      "submitted": "submitted/references/zq610-plus-v1/text-A-I-fit/zq610.zpl",
+      "submitted_sha256": "cf280adf3ee106338c3919200efbff112adf056f47f4225ed05cf0a720c45360",
+      "width": 384
+    },
+    "references/zq610-plus-v1/text-A-I/zd621.png": {
+      "captured_utc": "2026-10-08T02:28:35Z",
+      "height": 2030,
+      "png_sha256": "5a453495c31b9da44a043e9122a9cdd7caafd6c0e71655952ad207ee0bf0685f",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        2030
+      ],
+      "ram_resources": false,
+      "reference": "references/zq610-plus-v1/text-A-I/zd621.png",
+      "session": 1,
+      "source": "references/zq610-plus-v1/text-A-I/zd621.zpl",
+      "source_sha256": "c510d0fc3a68e5936a1efeb5a80e5af702287e0a80ca9d810d8e0efe5e76cd90",
+      "submitted": "submitted/references/zq610-plus-v1/text-A-I/zd621.zpl",
+      "submitted_sha256": "1fe01e42a5f8f0a7c88a2c967da7262d3015609163933c073363264f74b2c237",
+      "width": 832
+    },
+    "references/zq610-plus-v1/text-A-I/zq610.png": {
+      "captured_utc": "2026-10-08T02:37:13Z",
+      "height": 2030,
+      "png_sha256": "b7aba5f69e085ba1cce41d22f9fff05d45833703909f520d5094511845e765fb",
+      "printer": "zq610",
+      "printer_dimensions": [
+        384,
+        2030
+      ],
+      "ram_resources": false,
+      "reference": "references/zq610-plus-v1/text-A-I/zq610.png",
+      "session": 6,
+      "source": "references/zq610-plus-v1/text-A-I/zq610.zpl",
+      "source_sha256": "1bea677548b0a526db75454889bd8133371caddfbb0453a7988c9e6b669fa175",
+      "submitted": "submitted/references/zq610-plus-v1/text-A-I/zq610.zpl",
+      "submitted_sha256": "3f5c298751984e6485b4101c227c52f49929979460f21cc5c907720c5a9e3e62",
+      "width": 384
+    },
+    "references/zq610-plus-v1/text-A-N/zd621.png": {
+      "captured_utc": "2026-10-08T02:28:36Z",
+      "height": 2030,
+      "png_sha256": "952d7ee846844d88705d09ed2ca24f0a3dc43b9119e10041a7769d359205d36a",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        2030
+      ],
+      "ram_resources": false,
+      "reference": "references/zq610-plus-v1/text-A-N/zd621.png",
+      "session": 1,
+      "source": "references/zq610-plus-v1/text-A-N/zd621.zpl",
+      "source_sha256": "3ee460b8248ddf8a65c19a1f84e0004dfa668c7e1cdb9d2f15583f28ee27d675",
+      "submitted": "submitted/references/zq610-plus-v1/text-A-N/zd621.zpl",
+      "submitted_sha256": "24fb894f9ff65dd7c93a36e3c009e9846617b7b53d2dbd479927ab931fdacb7c",
+      "width": 832
+    },
+    "references/zq610-plus-v1/text-A-N/zq610.png": {
+      "captured_utc": "2026-10-08T02:37:16Z",
+      "height": 2030,
+      "png_sha256": "f29d72d3b158a4c5b4598911b8c72abe1f43bf4afefe7862e24d258e6458dea0",
+      "printer": "zq610",
+      "printer_dimensions": [
+        384,
+        2030
+      ],
+      "ram_resources": false,
+      "reference": "references/zq610-plus-v1/text-A-N/zq610.png",
+      "session": 6,
+      "source": "references/zq610-plus-v1/text-A-N/zq610.zpl",
+      "source_sha256": "bbc7300398e4d658f74880f5dd8530df27818a4d2b49c19bb73d2263070dc2a6",
+      "submitted": "submitted/references/zq610-plus-v1/text-A-N/zq610.zpl",
+      "submitted_sha256": "b7cd35cb0d0b864bd8fb92202032d76db592b7dc50037e956b9868db5b138121",
+      "width": 384
+    },
+    "references/zq610-plus-v1/text-A-R/zd621.png": {
+      "captured_utc": "2026-10-08T02:28:36Z",
+      "height": 2030,
+      "png_sha256": "a983499ebb63b40f93587610543497b3d1e98a18a1535787ce205bf5b501f336",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        2030
+      ],
+      "ram_resources": false,
+      "reference": "references/zq610-plus-v1/text-A-R/zd621.png",
+      "session": 1,
+      "source": "references/zq610-plus-v1/text-A-R/zd621.zpl",
+      "source_sha256": "94dd407d73021a56860372623793f4aea60d0b4291b80470b942588013e784df",
+      "submitted": "submitted/references/zq610-plus-v1/text-A-R/zd621.zpl",
+      "submitted_sha256": "3107da4f55518a0f6ef44fa689aed2977dc81b7cc91761403a7492d5136c3929",
+      "width": 832
+    },
+    "references/zq610-plus-v1/text-A-R/zq610.png": {
+      "captured_utc": "2026-10-08T02:37:18Z",
+      "height": 2030,
+      "png_sha256": "02f1b9fcf66963c51c00c76da9510f739fedc429b0e7fa366108ef0415f29e8b",
+      "printer": "zq610",
+      "printer_dimensions": [
+        384,
+        2030
+      ],
+      "ram_resources": false,
+      "reference": "references/zq610-plus-v1/text-A-R/zq610.png",
+      "session": 6,
+      "source": "references/zq610-plus-v1/text-A-R/zq610.zpl",
+      "source_sha256": "fb8cb2bf0a50943ba71786d8ef59edf77b8ee68c5000721f1cf3de9c07a07828",
+      "submitted": "submitted/references/zq610-plus-v1/text-A-R/zq610.zpl",
+      "submitted_sha256": "12f6ae7058cedb2c135261f63f9e778aa2d498e32467969cf8944acd4d388dfe",
+      "width": 384
+    },
+    "references/zq610-plus-v1/text-D-B/zd621.png": {
+      "captured_utc": "2026-10-08T02:28:37Z",
+      "height": 2030,
+      "png_sha256": "7932df0e8fc6f8254b31cbc8e117700f787a18399b72605d2c10f0c5bb54f03c",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        2030
+      ],
+      "ram_resources": false,
+      "reference": "references/zq610-plus-v1/text-D-B/zd621.png",
+      "session": 1,
+      "source": "references/zq610-plus-v1/text-D-B/zd621.zpl",
+      "source_sha256": "49450522de47d5fdc788942cc8f4957f677400ec019ac6af9e8b309d8d2d5f7a",
+      "submitted": "submitted/references/zq610-plus-v1/text-D-B/zd621.zpl",
+      "submitted_sha256": "3e90c0cb56d92882d2daa647db14e9cdee36628334d35e30f33c9c867ec5be3d",
+      "width": 832
+    },
+    "references/zq610-plus-v1/text-D-B/zq610.png": {
+      "captured_utc": "2026-10-08T02:37:20Z",
+      "height": 2030,
+      "png_sha256": "72178b483575e2e0c796c97dc9dc16804ca3315da5de6e8d2d4e68d5b8435271",
+      "printer": "zq610",
+      "printer_dimensions": [
+        384,
+        2030
+      ],
+      "ram_resources": false,
+      "reference": "references/zq610-plus-v1/text-D-B/zq610.png",
+      "session": 6,
+      "source": "references/zq610-plus-v1/text-D-B/zq610.zpl",
+      "source_sha256": "4d548f677480a80f6752edd07b62c17afef7bfd5865ee61d8da10f37ce38d956",
+      "submitted": "submitted/references/zq610-plus-v1/text-D-B/zq610.zpl",
+      "submitted_sha256": "87573d0d2746f63f5f8b481cde780a4d05eea76c630e7dea551f4aa3e29bd764",
+      "width": 384
+    },
+    "references/zq610-plus-v1/text-D-I-fit/zd621.png": {
+      "captured_utc": "2026-10-08T02:28:38Z",
+      "height": 2030,
+      "png_sha256": "25d55364120c11c6549ddaf47aae1c9005c5371535cc224fc9c79ee40438714b",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        2030
+      ],
+      "ram_resources": false,
+      "reference": "references/zq610-plus-v1/text-D-I-fit/zd621.png",
+      "session": 1,
+      "source": "references/zq610-plus-v1/text-D-I-fit/zd621.zpl",
+      "source_sha256": "ea2d6bcbdcee940093e545abc384d5cfc155691037fb58e3678169e6189787ea",
+      "submitted": "submitted/references/zq610-plus-v1/text-D-I-fit/zd621.zpl",
+      "submitted_sha256": "4b05c1d0ef6be2015c945ce889b16ccd43330fd32478d5ef1be0624a79ca7f1d",
+      "width": 832
+    },
+    "references/zq610-plus-v1/text-D-I-fit/zq610.png": {
+      "captured_utc": "2026-10-08T02:37:23Z",
+      "height": 2030,
+      "png_sha256": "f06e5f96d4221b05b3eae62d159f6859f567effc0dcba620d5bf29373325dc1a",
+      "printer": "zq610",
+      "printer_dimensions": [
+        384,
+        2030
+      ],
+      "ram_resources": false,
+      "reference": "references/zq610-plus-v1/text-D-I-fit/zq610.png",
+      "session": 6,
+      "source": "references/zq610-plus-v1/text-D-I-fit/zq610.zpl",
+      "source_sha256": "ba62ddbdd637f578324832185a43b74f113222f52df30dab259c9d0a6e952811",
+      "submitted": "submitted/references/zq610-plus-v1/text-D-I-fit/zq610.zpl",
+      "submitted_sha256": "d09ac11e82ed39050c1f4882009b9eea138f708faa31297939fbcc8e24dd0ab7",
+      "width": 384
+    },
+    "references/zq610-plus-v1/text-D-I/zd621.png": {
+      "captured_utc": "2026-10-08T02:28:37Z",
+      "height": 2030,
+      "png_sha256": "bf4389bbd5fef25e592104d136f4f6881af4a7e6d4dbcd0ba23ba710c4edba69",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        2030
+      ],
+      "ram_resources": false,
+      "reference": "references/zq610-plus-v1/text-D-I/zd621.png",
+      "session": 1,
+      "source": "references/zq610-plus-v1/text-D-I/zd621.zpl",
+      "source_sha256": "f7db21d4c3774e1a1eddb37fa8bc5d8f3761fe753a11577cd9369743e20eacd4",
+      "submitted": "submitted/references/zq610-plus-v1/text-D-I/zd621.zpl",
+      "submitted_sha256": "f371110645c6391b77bf34f92f15b60cde31370012749c2e42868d4aa2b48120",
+      "width": 832
+    },
+    "references/zq610-plus-v1/text-D-I/zq610.png": {
+      "captured_utc": "2026-10-08T02:37:21Z",
+      "height": 2030,
+      "png_sha256": "e1b951f6fe3c5c8cced3a7f3699418b010fd7a2e628f69d9728200354fc32702",
+      "printer": "zq610",
+      "printer_dimensions": [
+        384,
+        2030
+      ],
+      "ram_resources": false,
+      "reference": "references/zq610-plus-v1/text-D-I/zq610.png",
+      "session": 6,
+      "source": "references/zq610-plus-v1/text-D-I/zq610.zpl",
+      "source_sha256": "1bd4cbfaf72381c9ab3874a3c1c587a66702cd203853fc483fa93a06c4e71abd",
+      "submitted": "submitted/references/zq610-plus-v1/text-D-I/zq610.zpl",
+      "submitted_sha256": "72cce935aaa03c8d8e55367af1c47eee4c6e2920dd000037b4e30e16d094c433",
+      "width": 384
+    },
+    "references/zq610-plus-v1/text-D-N/zd621.png": {
+      "captured_utc": "2026-10-08T02:28:38Z",
+      "height": 2030,
+      "png_sha256": "8f98b25d2e98984b23d9bf394dcdca3a0da44e524f9d7d7d54a461579584cb9e",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        2030
+      ],
+      "ram_resources": false,
+      "reference": "references/zq610-plus-v1/text-D-N/zd621.png",
+      "session": 1,
+      "source": "references/zq610-plus-v1/text-D-N/zd621.zpl",
+      "source_sha256": "13701400f419a804510533269571b7074be26fdcb6fdad3fd5e6d700facd3c39",
+      "submitted": "submitted/references/zq610-plus-v1/text-D-N/zd621.zpl",
+      "submitted_sha256": "dcede8f6ee9e3a540f92a924d90c1c1e1864e5a113803ae7e19b48a69ee4dbe4",
+      "width": 832
+    },
+    "references/zq610-plus-v1/text-D-N/zq610.png": {
+      "captured_utc": "2026-10-08T02:37:24Z",
+      "height": 2030,
+      "png_sha256": "0c8ab252fde8f644447ccf501a0a408450b9c6bd1a29015fd3f6d4e9593956b1",
+      "printer": "zq610",
+      "printer_dimensions": [
+        384,
+        2030
+      ],
+      "ram_resources": false,
+      "reference": "references/zq610-plus-v1/text-D-N/zq610.png",
+      "session": 6,
+      "source": "references/zq610-plus-v1/text-D-N/zq610.zpl",
+      "source_sha256": "b01d1cf682d019f3a1b02d383b29b4b23bbeaa483efde8a52df714c6820667f7",
+      "submitted": "submitted/references/zq610-plus-v1/text-D-N/zq610.zpl",
+      "submitted_sha256": "7caf1517c11cd8c277afe480b42c6434e4527f8fd33d69e5d7b0f66614c6a6eb",
+      "width": 384
+    },
+    "references/zq610-plus-v1/text-D-R/zd621.png": {
+      "captured_utc": "2026-10-08T02:28:38Z",
+      "height": 2030,
+      "png_sha256": "5fba9d0a3dd5753666aa3ebd1ec52cfddab3adb229ac3d27ae626263c4536cf9",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        2030
+      ],
+      "ram_resources": false,
+      "reference": "references/zq610-plus-v1/text-D-R/zd621.png",
+      "session": 1,
+      "source": "references/zq610-plus-v1/text-D-R/zd621.zpl",
+      "source_sha256": "c735e739c03b70e381d797e0321aedc76c602a4005e3efeb8ffc49fed9720bc9",
+      "submitted": "submitted/references/zq610-plus-v1/text-D-R/zd621.zpl",
+      "submitted_sha256": "41cb08c19066cdf89936edb974cd0421e5aea44861868920388a41d4f773f588",
+      "width": 832
+    },
+    "references/zq610-plus-v1/text-D-R/zq610.png": {
+      "captured_utc": "2026-10-08T02:37:26Z",
+      "height": 2030,
+      "png_sha256": "b7bd578edcc8970bb794842532653cc9b8470219e1eb16e055ca9291b24d5704",
+      "printer": "zq610",
+      "printer_dimensions": [
+        384,
+        2030
+      ],
+      "ram_resources": false,
+      "reference": "references/zq610-plus-v1/text-D-R/zq610.png",
+      "session": 6,
+      "source": "references/zq610-plus-v1/text-D-R/zq610.zpl",
+      "source_sha256": "d70d9f166ee1d82cba443f2aa9468458590b59233c626cbbb88952e1e211ebb4",
+      "submitted": "submitted/references/zq610-plus-v1/text-D-R/zq610.zpl",
+      "submitted_sha256": "5eb84f103cd2cc7ddf0a6e2bda9d4b15867489a71061559c6cd5d8b8b09d75c4",
+      "width": 384
+    },
+    "references/zq610-plus-v1/text-E-B/zd621.png": {
+      "captured_utc": "2026-10-08T02:28:39Z",
+      "height": 2030,
+      "png_sha256": "f9580a41b3c65833b809c5da084e134d124b2f1e88eae5191b7f27f1972bb69f",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        2030
+      ],
+      "ram_resources": false,
+      "reference": "references/zq610-plus-v1/text-E-B/zd621.png",
+      "session": 1,
+      "source": "references/zq610-plus-v1/text-E-B/zd621.zpl",
+      "source_sha256": "7b730bdace391ff1509aa025e40b399035eb43c418dc1793193d24c208660de7",
+      "submitted": "submitted/references/zq610-plus-v1/text-E-B/zd621.zpl",
+      "submitted_sha256": "ebc53c55ba97ee302c82ddbc37be07110a238df8b2961923fb7d891080f94aae",
+      "width": 832
+    },
+    "references/zq610-plus-v1/text-E-B/zq610.png": {
+      "captured_utc": "2026-10-08T02:37:27Z",
+      "height": 2030,
+      "png_sha256": "00cce35cf74095971e76c32a9e21224c9641e0f6587bdbdd7c78ef87c1f887f6",
+      "printer": "zq610",
+      "printer_dimensions": [
+        384,
+        2030
+      ],
+      "ram_resources": false,
+      "reference": "references/zq610-plus-v1/text-E-B/zq610.png",
+      "session": 6,
+      "source": "references/zq610-plus-v1/text-E-B/zq610.zpl",
+      "source_sha256": "1460e4b95f2bd709f67d83f90ac0050859d5dd79634ec7390c2f2fb252cb8349",
+      "submitted": "submitted/references/zq610-plus-v1/text-E-B/zq610.zpl",
+      "submitted_sha256": "59160135e84692e2bdddd632d1c198e8e611c93a6e4abf7c858208a0e392ccad",
+      "width": 384
+    },
+    "references/zq610-plus-v1/text-E-I-fit/zd621.png": {
+      "captured_utc": "2026-10-08T02:28:39Z",
+      "height": 2030,
+      "png_sha256": "d0fac00f75ed2d0fe5394e53440e4cb8633b1ac1d8b86d26ce81d008b86941a4",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        2030
+      ],
+      "ram_resources": false,
+      "reference": "references/zq610-plus-v1/text-E-I-fit/zd621.png",
+      "session": 1,
+      "source": "references/zq610-plus-v1/text-E-I-fit/zd621.zpl",
+      "source_sha256": "b1cd67d4bb8851d0eacc92a2c2d7f835c955551190fe550ec2aeb292db78ffdd",
+      "submitted": "submitted/references/zq610-plus-v1/text-E-I-fit/zd621.zpl",
+      "submitted_sha256": "0df8a78715209a141ab619acf4b9ff34afde46208f96985b4dcee0278bd1ed51",
+      "width": 832
+    },
+    "references/zq610-plus-v1/text-E-I-fit/zq610.png": {
+      "captured_utc": "2026-10-08T02:37:30Z",
+      "height": 2030,
+      "png_sha256": "190b2b7bcda4f7a152ca477332e5298be8aebf0e11dc7e1f119be58eec9bc795",
+      "printer": "zq610",
+      "printer_dimensions": [
+        384,
+        2030
+      ],
+      "ram_resources": false,
+      "reference": "references/zq610-plus-v1/text-E-I-fit/zq610.png",
+      "session": 6,
+      "source": "references/zq610-plus-v1/text-E-I-fit/zq610.zpl",
+      "source_sha256": "996e24143483c89d7a9a3b46358cde44afe46ef840ec2dddeedb29f0457f658a",
+      "submitted": "submitted/references/zq610-plus-v1/text-E-I-fit/zq610.zpl",
+      "submitted_sha256": "d6cd78c8773ff128b8cbf70febf69ffbf31b5033342a8e47ec78adf52611b704",
+      "width": 384
+    },
+    "references/zq610-plus-v1/text-E-I/zd621.png": {
+      "captured_utc": "2026-10-08T02:28:39Z",
+      "height": 2030,
+      "png_sha256": "51e46a7eaca6acce20e9ffddc92cc11990ec0e8a6ead10afae9a1562102e8141",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        2030
+      ],
+      "ram_resources": false,
+      "reference": "references/zq610-plus-v1/text-E-I/zd621.png",
+      "session": 1,
+      "source": "references/zq610-plus-v1/text-E-I/zd621.zpl",
+      "source_sha256": "c9c3091145c151fa064433914993e6f6038ed5d4003eafeaca376d8df84e6fca",
+      "submitted": "submitted/references/zq610-plus-v1/text-E-I/zd621.zpl",
+      "submitted_sha256": "c775bffd365384cc15943f78ec23729d5b7b8bf8b983aa11c591c2603711c979",
+      "width": 832
+    },
+    "references/zq610-plus-v1/text-E-I/zq610.png": {
+      "captured_utc": "2026-10-08T02:37:29Z",
+      "height": 2030,
+      "png_sha256": "17097ef40237798cc9f7af63a6cc525439efaf6335584fdc7a6639c7ab8d388f",
+      "printer": "zq610",
+      "printer_dimensions": [
+        384,
+        2030
+      ],
+      "ram_resources": false,
+      "reference": "references/zq610-plus-v1/text-E-I/zq610.png",
+      "session": 6,
+      "source": "references/zq610-plus-v1/text-E-I/zq610.zpl",
+      "source_sha256": "c95e3f197b184dac08f5b166921f3443b89d0a61af87a3be99bd1f8f12b47be8",
+      "submitted": "submitted/references/zq610-plus-v1/text-E-I/zq610.zpl",
+      "submitted_sha256": "337c75fa85b859cb14b8b128f4e7d7bc0b7471c658eb8e98623d01e77e123195",
+      "width": 384
+    },
+    "references/zq610-plus-v1/text-E-N/zd621.png": {
+      "captured_utc": "2026-10-08T02:28:40Z",
+      "height": 2030,
+      "png_sha256": "fd4fc9c404ffc22626baf35b3fc62e8a076d94b72731aab99335ce399e8b08b5",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        2030
+      ],
+      "ram_resources": false,
+      "reference": "references/zq610-plus-v1/text-E-N/zd621.png",
+      "session": 1,
+      "source": "references/zq610-plus-v1/text-E-N/zd621.zpl",
+      "source_sha256": "080b1177a0844986d130607d335975c1ab4e8074c1bb1ecfa0e1afbc4f5139f8",
+      "submitted": "submitted/references/zq610-plus-v1/text-E-N/zd621.zpl",
+      "submitted_sha256": "f903c460242f957ed08f50e2551acbe9e2979f454dbaee00840c73c42f9db212",
+      "width": 832
+    },
+    "references/zq610-plus-v1/text-E-N/zq610.png": {
+      "captured_utc": "2026-10-08T02:37:32Z",
+      "height": 2030,
+      "png_sha256": "d2804babd42cf271aa40b262889d1d6ccc2783b74ba91790f88f945e1d514fda",
+      "printer": "zq610",
+      "printer_dimensions": [
+        384,
+        2030
+      ],
+      "ram_resources": false,
+      "reference": "references/zq610-plus-v1/text-E-N/zq610.png",
+      "session": 6,
+      "source": "references/zq610-plus-v1/text-E-N/zq610.zpl",
+      "source_sha256": "2a5c030770cb2f0e003eae9c0c222f8f89807122edb6a83eb3d1486a3d151ecd",
+      "submitted": "submitted/references/zq610-plus-v1/text-E-N/zq610.zpl",
+      "submitted_sha256": "3ddda213dcb788315041dbaddc1eb29837502dbff1b6d045f98c534607effa25",
+      "width": 384
+    },
+    "references/zq610-plus-v1/text-E-R/zd621.png": {
+      "captured_utc": "2026-10-08T02:28:40Z",
+      "height": 2030,
+      "png_sha256": "b6de04b8da34c8ce5bc354171c4e54a9f0c83388fb76b839c38a07910cae2f4e",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        2030
+      ],
+      "ram_resources": false,
+      "reference": "references/zq610-plus-v1/text-E-R/zd621.png",
+      "session": 1,
+      "source": "references/zq610-plus-v1/text-E-R/zd621.zpl",
+      "source_sha256": "b73f4a63644b41dea916db205f261971a96026af7ed6f3f95ccf79530bf97d3f",
+      "submitted": "submitted/references/zq610-plus-v1/text-E-R/zd621.zpl",
+      "submitted_sha256": "a0fe2f43c1116ac84674385e9522b9c0d1a4358874e2b0fc357dcf62671a1a83",
+      "width": 832
+    },
+    "references/zq610-plus-v1/text-E-R/zq610.png": {
+      "captured_utc": "2026-10-08T02:38:46Z",
+      "height": 2030,
+      "png_sha256": "187fbbc0db291797cdfca690619b354256de8a12c4cd6062103a98eeb74da5c1",
+      "printer": "zq610",
+      "printer_dimensions": [
+        384,
+        2030
+      ],
+      "ram_resources": false,
+      "reference": "references/zq610-plus-v1/text-E-R/zq610.png",
+      "session": 7,
+      "source": "references/zq610-plus-v1/text-E-R/zq610.zpl",
+      "source_sha256": "8dc6ecf339944ab35a349265e59e28c10496b5f1a28554386c70fd73449955b9",
+      "submitted": "submitted/references/zq610-plus-v1/text-E-R/zq610.zpl",
+      "submitted_sha256": "3d59109a74b5e6109b97276ecfd0c2d70c94d04c02cc366cfa58f367e85a4061",
+      "width": 384
+    }
+  },
+  "font_control": {
+    "bundle_sha256": "843c31e01220ae1330768eff0bee08213291fe6cfba096db38e2bbc71d0a66ac",
+    "fonts": {
+      "0": "0.ttf",
+      "A": "A.ttf",
+      "B": "B.ttf",
+      "C": "D.ttf",
+      "D": "D.ttf",
+      "E": "E.ttf",
+      "F": "F.ttf",
+      "G": "G.ttf",
+      "GS": "GS.ttf",
+      "H": "H.ttf",
+      "P": "P.ttf",
+      "Q": "Q.ttf",
+      "R": "R.ttf",
+      "S": "S.ttf",
+      "T": "T.ttf",
+      "TT0003M_": "Swiss.ttf",
+      "U": "U.ttf",
+      "V": "V.ttf"
+    },
+    "mode": "supplied-printer-ram",
+    "note": "Recovered native bitmap fonts via ~DB; shared TrueType bytes via ~DY. Per-format ^CW aliases; GS and some captions retain resident fonts.",
+    "profile": "controlled-v1"
+  },
+  "sessions": [
+    {
+      "finished_utc": "2026-10-08T02:29:14Z",
+      "identity": {
+        "firmware": "V93.21.33Z",
+        "host": "http://d7j211001302.bed.einic.org/",
+        "model": "ZTC ZD621-203dpi ZPL",
+        "serial": "D7J211001302"
+      },
+      "printer": "zd621",
+      "repeat_pixels_equal": true,
+      "resident_alias_normalization_pixels_equal": true,
+      "restoration_method": "verified device.reset",
+      "restoration_status": "verified after restart",
+      "restored_pixels_equal": true,
+      "started_utc": "2026-10-08T02:23:54Z",
+      "status": "complete",
+      "upload_sha256": "3053e480b99b6d0ed61a7ee0a6c3e44a43b10955090027216adf1b27a7e30244"
+    },
+    {
+      "finished_utc": "2026-10-08T02:30:59Z",
+      "identity": {
+        "firmware": "V100.21.21Z",
+        "host": "http://xxzmj230802993.bed.einic.org/",
+        "model": "ZTC ZQ610 Plus-203dpi ZPL",
+        "serial": "XXZMJ230802993"
+      },
+      "printer": "zq610",
+      "repeat_pixels_equal": true,
+      "resident_alias_normalization_pixels_equal": true,
+      "restoration_method": "verified device.reset",
+      "restoration_status": "verified after restart",
+      "restored_pixels_equal": true,
+      "started_utc": "2026-10-08T02:29:47Z",
+      "status": "complete",
+      "upload_sha256": "3053e480b99b6d0ed61a7ee0a6c3e44a43b10955090027216adf1b27a7e30244"
+    },
+    {
+      "finished_utc": "2026-10-08T02:32:46Z",
+      "identity": {
+        "firmware": "V100.21.21Z",
+        "host": "http://xxzmj230802993.bed.einic.org/",
+        "model": "ZTC ZQ610 Plus-203dpi ZPL",
+        "serial": "XXZMJ230802993"
+      },
+      "printer": "zq610",
+      "repeat_pixels_equal": true,
+      "resident_alias_normalization_pixels_equal": true,
+      "restoration_method": "verified device.reset",
+      "restoration_status": "verified after restart",
+      "restored_pixels_equal": true,
+      "started_utc": "2026-10-08T02:31:33Z",
+      "status": "complete",
+      "upload_sha256": "3053e480b99b6d0ed61a7ee0a6c3e44a43b10955090027216adf1b27a7e30244"
+    },
+    {
+      "finished_utc": "2026-10-08T02:34:32Z",
+      "identity": {
+        "firmware": "V100.21.21Z",
+        "host": "http://xxzmj230802993.bed.einic.org/",
+        "model": "ZTC ZQ610 Plus-203dpi ZPL",
+        "serial": "XXZMJ230802993"
+      },
+      "printer": "zq610",
+      "repeat_pixels_equal": true,
+      "resident_alias_normalization_pixels_equal": true,
+      "restoration_method": "verified device.reset",
+      "restoration_status": "verified after restart",
+      "restored_pixels_equal": true,
+      "started_utc": "2026-10-08T02:33:19Z",
+      "status": "complete",
+      "upload_sha256": "3053e480b99b6d0ed61a7ee0a6c3e44a43b10955090027216adf1b27a7e30244"
+    },
+    {
+      "finished_utc": "2026-10-08T02:36:18Z",
+      "identity": {
+        "firmware": "V100.21.21Z",
+        "host": "http://xxzmj230802993.bed.einic.org/",
+        "model": "ZTC ZQ610 Plus-203dpi ZPL",
+        "serial": "XXZMJ230802993"
+      },
+      "printer": "zq610",
+      "repeat_pixels_equal": true,
+      "resident_alias_normalization_pixels_equal": true,
+      "restoration_method": "verified device.reset",
+      "restoration_status": "verified after restart",
+      "restored_pixels_equal": true,
+      "started_utc": "2026-10-08T02:35:07Z",
+      "status": "complete",
+      "upload_sha256": "3053e480b99b6d0ed61a7ee0a6c3e44a43b10955090027216adf1b27a7e30244"
+    },
+    {
+      "finished_utc": "2026-10-08T02:38:02Z",
+      "identity": {
+        "firmware": "V100.21.21Z",
+        "host": "http://xxzmj230802993.bed.einic.org/",
+        "model": "ZTC ZQ610 Plus-203dpi ZPL",
+        "serial": "XXZMJ230802993"
+      },
+      "printer": "zq610",
+      "repeat_pixels_equal": true,
+      "resident_alias_normalization_pixels_equal": true,
+      "restoration_method": "verified device.reset",
+      "restoration_status": "verified after restart",
+      "restored_pixels_equal": true,
+      "started_utc": "2026-10-08T02:36:52Z",
+      "status": "complete",
+      "upload_sha256": "3053e480b99b6d0ed61a7ee0a6c3e44a43b10955090027216adf1b27a7e30244"
+    },
+    {
+      "finished_utc": "2026-10-08T02:39:45Z",
+      "identity": {
+        "firmware": "V100.21.21Z",
+        "host": "http://xxzmj230802993.bed.einic.org/",
+        "model": "ZTC ZQ610 Plus-203dpi ZPL",
+        "serial": "XXZMJ230802993"
+      },
+      "printer": "zq610",
+      "repeat_pixels_equal": true,
+      "resident_alias_normalization_pixels_equal": true,
+      "restoration_method": "verified device.reset",
+      "restoration_status": "verified after restart",
+      "restored_pixels_equal": true,
+      "started_utc": "2026-10-08T02:38:35Z",
+      "status": "complete",
+      "upload_sha256": "3053e480b99b6d0ed61a7ee0a6c3e44a43b10955090027216adf1b27a7e30244"
+    }
+  ],
+  "source_commit": "ca17c2e4fa3bfdcd9685e51c67d3cf2c8e69bd33",
+  "source_repository": "https://github.com/codyps/zpl-comparison"
+}

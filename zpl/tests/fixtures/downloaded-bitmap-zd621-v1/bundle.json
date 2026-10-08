@@ -1,0 +1,144 @@
+{
+  "fonts": {
+    "0": "0.ttf",
+    "A": "A.ttf",
+    "B": "B.ttf",
+    "C": "D.ttf",
+    "D": "D.ttf",
+    "E": "E.ttf",
+    "F": "F.ttf",
+    "G": "G.ttf",
+    "GS": "GS.ttf",
+    "H": "H.ttf",
+    "P": "P.ttf",
+    "Q": "Q.ttf",
+    "R": "R.ttf",
+    "S": "S.ttf",
+    "T": "T.ttf",
+    "TT0003M_": "Swiss.ttf",
+    "U": "U.ttf",
+    "V": "V.ttf"
+  },
+  "schema": 1,
+  "sha256": {
+    "0.ttf": "4d85ae3a0423ddd83953921ff180ff20fbfe3f8b2e3b7e1e1af1e709755bc9e1",
+    "A.ttf": "df77f4dfa1feba40f325eb8489db05a0de4f0dc9ea60fe551d1bdc40925a64d3",
+    "B.ttf": "3c6cafdba0f1e03e40ece9968b021bc65e178bf9009bfb047bc2a0fdd182eb6f",
+    "D.ttf": "9e0cfbb969a1653a0fa7ffd7488723abee1126fbe5eb6433f18fc70b886f0cd2",
+    "E.ttf": "179d64c0c36b77bdca5f702efc15242dc5c7e91d47dc2d6f8b037d236c8f376b",
+    "F.ttf": "391a9646397d1ad456de5d72feaeebe92bd0560e207eb439ad0382d5383b5831",
+    "G.ttf": "6fa0177b7681d17f4d63f4e3884fba74335dba3d9055839128a1524a9a88c51f",
+    "GS.ttf": "e20b120302d160a5bb8e96ff874ce3c04eadc074090bdfce3a965645af55b2e7",
+    "GUST-LICENSE.txt": "c55815db173ac09bf484e0dd4951d25c676a20fe3946bdd3f02c1656ca1f44a6",
+    "H.ttf": "5e4ba5e9e588a16a8e7bf81650a1e668b74b2a530bdd349d8cc2e72ab1f6b609",
+    "P.ttf": "ea29b19b982a7f58dd60c2a1b81276a80e190378bd95243a1d0a4890c2e16243",
+    "Q.ttf": "e48f2d0ce4165e3625cbf8773c4dc644023d3d9888e60e020712bc6d2d13512f",
+    "R.ttf": "9a0fe3c55613fc62e049814908663759f85fa0b9a9d2af7fafbd91424de2858b",
+    "S.ttf": "ee194ae2d459a210911cba5bb630b74d6ae400ea0b62f358982da2bd0752eda1",
+    "Swiss.ttf": "f9e63eb8595b5fdfb5ce82f8b7a52ddc781b543a14a4b861544486e32dfa5f1e",
+    "T.ttf": "595e120cea486dc573aef1632c9c4ca17195fce7d3b801c19cdcf2511faf2144",
+    "U.ttf": "6fad45ba0ce26d914cf1e0b93e5f96764ebb06e8ae42003a1d9b1449563f415f",
+    "V.ttf": "7e9c9ab83b15a69234702ef1251c4f59e91b8ba12e34cf4275a53362ea0d86f7",
+    "bitmap-download.zpl": "2f7e9a27d97f292363039ef4342360bc281090a85db132056fd4b274d0f93859"
+  },
+  "sources": {
+    "heros_regular_url": "https://mirrors.ctan.org/fonts/tex-gyre/opentype/texgyreheros-regular.otf",
+    "sha256": {
+      "recovered/fontA-9-5-cent.zbf": "3c5b35d4be418a0cd38cd9661f54307f134e7ebc285f6e935629f64786ff2e00",
+      "recovered/fontA-9-5-hyphen.zbf": "34215d41ef0d11efcb052d021861d287c5a9f3ab5a06ccb35db40aa2d7ffd8d3",
+      "recovered/fontA-9-5.zbf": "f92b11694ef6b5adaea4cf3cb36edb6a564e6bc03a90eb0fff8acb782686557a",
+      "recovered/fontB-11-7-cent.zbf": "bbd5ba58301b7ab7a10d5fc98a7531bf75268544ee2991ea7bd28975f49f9683",
+      "recovered/fontB-11-7-hyphen.zbf": "5a341fbc75a653f6cbf051780e2017e10f640e4e02ee0c5ec65380ab32db7a4b",
+      "recovered/fontB-11-7.zbf": "8b27a278e60f12ba3df874a166ce2ae826e55c0bd74a748647d9a3e17e89bd26",
+      "recovered/fontD-18-10-cent.zbf": "0c456e79dfc032804a4e8da8674d73a6e7b9a98c17daa446c2f848f794daf012",
+      "recovered/fontD-18-10-hyphen.zbf": "8dea96a6ad8e93671a275562901764cf906bdd0d4ef73052d3c0f99ac43ddd84",
+      "recovered/fontD-18-10.zbf": "865bbc7f567f34bc39874015be9ea7436d81c7fdbe4e92345029252daf08c825",
+      "recovered/fontE-28-15-cent.zbf": "eab7c501dcd99d596e4e9305bf9eb1b166161e2cfc4bd5434c882b528cef8581",
+      "recovered/fontE-28-15-hyphen.zbf": "3acab35c59f0cadd1c8e5d544c11af241ac2c918b170cb578e0dd8b90f9d5c2d",
+      "recovered/fontE-28-15.zbf": "120b21a885971e60ac95e5130a8e1952061375cacd6bc68f2672ce8480ebcd2d",
+      "recovered/fontF-26-13-cent.zbf": "1e458210913a8295fc4c04d55a24b05890c5ea49c06947f6b817447844462259",
+      "recovered/fontF-26-13-hyphen.zbf": "b0fc9bf7cfc4021220bed75eaa0dc83afbba147749484ef1a84ee74bd2ce5e57",
+      "recovered/fontF-26-13.zbf": "b570576e12e4654d587c1f0075628c94cbd15fda23ba567e56493f7fa9522fa8",
+      "recovered/fontG-60-40-cent.zbf": "527a758bdbcac9761f4ed4ec2d682746e6976187f6dd9a2dd73cd4bf4e353d80",
+      "recovered/fontG-60-40-hyphen.zbf": "ea931fe1b4f528819004477ff90e9b1e568d50bd98dcec3f1ae3b6629b3ec6ff",
+      "recovered/fontG-60-40.zbf": "8957dcb5ae201ac56fe01c75fcec9a6b2c387275eedbe315f64e1aad1499d8f0",
+      "recovered/fontGS-24-24.zbf": "85b8eafad3303465c2b5de4f91c3fd3f102cd0a021414a97578bf8f9e3b1d648",
+      "recovered/fontH-21-13-cent.zbf": "835335161eabcadb40c3d86ae22ef8b15da49413edcd13a80466cc3d6916cd6d",
+      "recovered/fontH-21-13-hyphen.zbf": "8c1996c9d78f393a140780fea971363a8e15870c653a78a4c9fe045c2db761b6",
+      "recovered/fontH-21-13.zbf": "2e0f9ff5dc8e5957856360443e815467188a7288863d62dc05b3c30116e68efd",
+      "recovered/fontP-20-18.zbf": "aa89b6a8d2d271ee845e145c0729def7840a2283f672adf4903afba00863d1eb",
+      "recovered/fontQ-28-24.zbf": "2ac995b234cf833abdb7fcf2b0d620e3a3e8a186a98a88cd7c10c4448784218f",
+      "recovered/fontR-35-31.zbf": "a3c01b52b113ca61cc0fbb77ec446afd69a8a9e629537dfa7cd906227836b49b",
+      "recovered/fontS-40-35.zbf": "4c89c8fc3a467217d0a05923a438ebd981c5e7f14915c25e0090edfb40bf9e8e",
+      "recovered/fontT-48-42.zbf": "9dd064f9db0f5d35fbcbd7a844e8ffe1ff6463faa514a51c988428db455c2bea",
+      "recovered/fontU-59-53.zbf": "f81e59488e86cb0a04d42d3b840e67498c135c41c6603d50098282176b1debb8",
+      "recovered/fontV-80-71.zbf": "b93d817c0ef134e97e293f046c7fa1353b42eaef769cac011724b2a0f490b7de",
+      "source/GUST-LICENSE.txt": "c55815db173ac09bf484e0dd4951d25c676a20fe3946bdd3f02c1656ca1f44a6",
+      "source/heros-cn-bold.otf": "ba3b1a5915994b4186d0debe81ed0a45f482fde1750a7bc59b4649f505e4c627",
+      "source/heros-regular.otf": "6ae1a09d5a940367b7aaaa91ee8bd8a2c333bfe193e7096e23f931357d62081f"
+    },
+    "source_commit": "0e52dbca89fbb393e7a3390bb99cb50ebcb68360",
+    "source_repository": "https://github.com/codyps/zpl",
+    "strikes": {
+      "A": [
+        "recovered/fontA-9-5.zbf",
+        "recovered/fontA-9-5-cent.zbf",
+        "recovered/fontA-9-5-hyphen.zbf"
+      ],
+      "B": [
+        "recovered/fontB-11-7.zbf",
+        "recovered/fontB-11-7-cent.zbf",
+        "recovered/fontB-11-7-hyphen.zbf"
+      ],
+      "D": [
+        "recovered/fontD-18-10.zbf",
+        "recovered/fontD-18-10-cent.zbf",
+        "recovered/fontD-18-10-hyphen.zbf"
+      ],
+      "E": [
+        "recovered/fontE-28-15.zbf",
+        "recovered/fontE-28-15-cent.zbf",
+        "recovered/fontE-28-15-hyphen.zbf"
+      ],
+      "F": [
+        "recovered/fontF-26-13.zbf",
+        "recovered/fontF-26-13-cent.zbf",
+        "recovered/fontF-26-13-hyphen.zbf"
+      ],
+      "G": [
+        "recovered/fontG-60-40.zbf",
+        "recovered/fontG-60-40-cent.zbf",
+        "recovered/fontG-60-40-hyphen.zbf"
+      ],
+      "GS": [
+        "recovered/fontGS-24-24.zbf"
+      ],
+      "H": [
+        "recovered/fontH-21-13.zbf",
+        "recovered/fontH-21-13-cent.zbf",
+        "recovered/fontH-21-13-hyphen.zbf"
+      ],
+      "P": [
+        "recovered/fontP-20-18.zbf"
+      ],
+      "Q": [
+        "recovered/fontQ-28-24.zbf"
+      ],
+      "R": [
+        "recovered/fontR-35-31.zbf"
+      ],
+      "S": [
+        "recovered/fontS-40-35.zbf"
+      ],
+      "T": [
+        "recovered/fontT-48-42.zbf"
+      ],
+      "U": [
+        "recovered/fontU-59-53.zbf"
+      ],
+      "V": [
+        "recovered/fontV-80-71.zbf"
+      ]
+    }
+  }
+}

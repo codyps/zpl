@@ -387,7 +387,10 @@ fn render_expanded(
                     .ok_or("missing font download")?
                     .as_ref()
                     .map_err(Clone::clone)?;
-                fonts.install(download)?;
+                fonts.install(
+                    download,
+                    options.compatibility.downloaded_bitmap_font_metrics,
+                )?;
                 return Ok(());
             }
             if matches!(item, Element::ControlCommand(_))
@@ -1666,11 +1669,15 @@ fn render_expanded(
                             base
                         };
                         let (ft_dx, ft_dy) = if options.compatibility.bitmap_font_ft_dot_origin
-                            && fonts.get(font_id).is_none()
                             && field.baseline
                             && field.text_size.is_some()
                         {
-                            font::printer_ft_offset(font_id, font_h, field.rotation)
+                            match fonts.get(font_id) {
+                                Some(face) => face
+                                    .downloaded_ft_offset(font_h, field.rotation)
+                                    .unwrap_or((0., 0.)),
+                                None => font::printer_ft_offset(font_id, font_h, field.rotation),
+                            }
                         } else {
                             (0., 0.)
                         };

@@ -1356,3 +1356,21 @@ Six independent font rotation pages retain small measured differences, with
 95% foreground IoU required separately for every field. Extraction tests
 reconstruct the ten font assets from native pages. See [the capture evidence,
 normalization and scope](../zpl/tests/fixtures/surepost-zd621-v1/README.md).
+
+## Downloaded bitmap font sizing and origins
+
+The font-controlled comparison's A/D appearance differences came from fractional
+scaling and scalable-font pivots after `~DB`/`^CW` replacement, despite identical
+glyph pixels. The printer profiles now select `downloaded_bitmap_font_metrics`:
+integer cell magnification, one-based download-header baselines and bitmap FO
+pivots. `bitmap_font_ft_dot_origin` also handles magnified downloaded FT text.
+Caller-supplied bitmap/provider metrics and the specification profile retain
+their previous behavior.
+
+The [100 saved bitmap controls](../zpl/tests/fixtures/downloaded-bitmap-zd621-v1/README.md)
+require exact native-canvas equality, including A–H in four orientations, P–V
+normal text, resident GS, A field blocks, FO/FT controls, and A/D/E controls on
+both ZD621 and ZQ610 Plus. The original controlled A/D accuracy cases improve
+from 23.05%/17.16% foreground IoU to 100%, with zero underpaint or overpaint.
+This is replay of identified printer evidence, not a fresh capture or a claim
+about unsampled sizes, rotated downloaded P–V/FT, or other firmware.

@@ -366,3 +366,43 @@ fn bitmap_allocation_limits_and_stored_format_error_offsets() {
     assert_eq!(err.offset, input.find("~DB").unwrap());
     assert!(err.message.contains("hex digit"));
 }
+
+#[test]
+fn downloaded_bitmap_metrics_follow_the_resource_not_the_alias() {
+    // ~DB pp. 169–170; measured sizing/baseline semantics are pinned separately
+    // by downloaded_bitmap_preview. Caller bitmap APIs retain explicit metrics.
+    use zpl::render::profiles::ZD621_203_DPI;
+    let source = format!(
+        "{}{}",
+        bitmap("FF81", 9),
+        label("^A@N,31,26,R:TEST.FNT", "AA")
+    );
+    let direct = zpl::render(source.as_bytes(), ZD621_203_DPI).unwrap();
+    let image = zpl::output::raster::rasterize(&direct.labels[0]).unwrap();
+    for id in ['A', 'D', '0', 'Z'] {
+        let source = format!(
+            "{}^CW{id},R:TEST.FNT{}",
+            bitmap("FF81", 9),
+            label(&format!("^A{id}N,31,26"), "AA")
+        );
+        let doc = zpl::render(source.as_bytes(), ZD621_203_DPI).unwrap();
+        assert_eq!(
+            image,
+            zpl::output::raster::rasterize(&doc.labels[0]).unwrap()
+        );
+    }
+    let mut options = ZD621_203_DPI;
+    options.compatibility.downloaded_bitmap_font_metrics = false;
+    let uncalibrated = zpl::render(source.as_bytes(), options).unwrap();
+    assert_ne!(
+        image,
+        zpl::output::raster::rasterize(&uncalibrated.labels[0]).unwrap()
+    );
+    let caller = reference(9, &[255, 129]);
+    let expected =
+        render_with_fonts(label("^AZN,31,26", "AA").as_bytes(), ZD621_203_DPI, &caller).unwrap();
+    assert_eq!(
+        zpl::output::raster::rasterize(&expected.labels[0]).unwrap(),
+        zpl::output::raster::rasterize(&uncalibrated.labels[0]).unwrap()
+    );
+}

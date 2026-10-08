@@ -109,6 +109,7 @@ pub struct Face<'a> {
     source: Source<'a>,
     baseline: f64,
     missing_advance: Option<u32>,
+    downloaded_printer_metrics: bool,
 }
 
 impl<'a> Fonts<'a> {
@@ -280,6 +281,7 @@ impl<'r, 'a, 'd> RenderFonts<'r, 'a, 'd> {
     pub(crate) fn install(
         &mut self,
         download: &'d crate::render::font_downloads::Download,
+        printer_metrics: bool,
     ) -> Result<(), String> {
         use crate::render::font_downloads::Download;
         let (name, face) = match download {
@@ -293,6 +295,10 @@ impl<'r, 'a, 'd> RenderFonts<'r, 'a, 'd> {
             } => {
                 let mut face = Face::bitmap_metrics(*settings, glyphs.clone(), *baseline)?;
                 face.missing_advance = Some(*space);
+                face.downloaded_printer_metrics = printer_metrics;
+                if printer_metrics {
+                    face.baseline = (baseline - 1.) / settings.height as f64;
+                }
                 (name, face)
             }
         };
@@ -316,11 +322,11 @@ impl<'r, 'a, 'd> RenderFonts<'r, 'a, 'd> {
     }
 
     /// Caller-supplied fonts retain their existing continuous-size layout;
-    /// measured ROM bitmaps use matrix-based placement even under a new ID.
+    /// measured ROM and downloaded bitmaps use matrix-based placement even under a new ID.
     pub(crate) fn scalable_layout(&self, id: char) -> bool {
         self.get(id).map_or_else(
             || resident::is_scalable(id),
-            |face| face.compact().is_none(),
+            |face| face.compact().is_none() && !face.downloaded_printer_metrics,
         )
     }
 
@@ -392,6 +398,7 @@ pub fn resolve_rom_font(name: &str) -> Result<Option<Face<'static>>, String> {
                 (f64::from(m.baseline) - 1.) / f64::from(m.cell_height)
             }),
             missing_advance: None,
+            downloaded_printer_metrics: false,
         }),
     )
 }
@@ -415,6 +422,7 @@ impl<'a> Face<'a> {
             baseline: metrics.baseline / metrics.height as f64,
             source: Source::Provider(metrics, font),
             missing_advance: None,
+            downloaded_printer_metrics: false,
         })
     }
 
@@ -453,6 +461,7 @@ impl<'a> Face<'a> {
             baseline: baseline / settings.height as f64,
             source: Source::Bitmap(settings, glyphs),
             missing_advance: None,
+            downloaded_printer_metrics: false,
         })
     }
     /// Construct a borrowed TrueType face; see [`Fonts::insert_truetype`].
@@ -471,6 +480,7 @@ impl<'a> Face<'a> {
         Ok(Self {
             source: Source::TrueType(font, hinting),
             missing_advance: None,
+            downloaded_printer_metrics: false,
             baseline,
         })
     }
@@ -485,6 +495,24 @@ fn validate_id(id: char) -> Result<(), String> {
 }
 
 impl Face<'_> {
+    pub(crate) fn downloaded_ft_offset(&self, h: f64, rotation: u8) -> Option<(f64, f64)> {
+        if !self.downloaded_printer_metrics {
+            return None;
+        }
+        let Source::Bitmap(settings, _) = &self.source else {
+            return None;
+        };
+        let scale = h / settings.height as f64;
+        // ~DB baseline dot placement, independently captured by the compact
+        // FO/FT controls in downloaded-bitmap-zd621-v1.
+        Some(match rotation {
+            b'R' => (scale, 0.),
+            b'I' => (1., scale),
+            b'B' => (1. - scale, 1.),
+            _ => (0., 1. - scale),
+        })
+    }
+
     pub(crate) fn baseline(&self, h: f64) -> f64 {
         self.baseline
             * match self.source {
@@ -540,6 +568,11 @@ impl Face<'_> {
             && (!(1. ..=4096.).contains(&w.round()) || !(1. ..=4096.).contains(&h.round()))
         {
             return Err("TrueType size must be in 1..=4096 dots per em".into());
+        }
+        if self.downloaded_printer_metrics {
+            // ZD621 ~DB captures: downloaded-bitmap-zd621-v1. Quantize each
+            // axis independently, using the downloaded cell rather than its alias.
+            return Ok((nw * (w / nw).round().max(1.), nh * (h / nh).round().max(1.)));
         }
         Ok((w, h))
     }

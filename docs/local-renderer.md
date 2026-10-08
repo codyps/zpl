@@ -115,7 +115,11 @@ selections and `^CW` assignments do not clear the remembered `^A@` name.
 Explicit unknown filenames return `RenderError` at the referencing command,
 rather than silently using a different face. This is deliberately stricter than
 firmware's missing-name fallback. Caller-provided named selections retain the custom sizing
-rules below; this does not claim native downloaded-bitmap magnification parity.
+rules below. In-job `~DB` downloads under the printer profiles instead use integer
+cell magnification, one-based header baselines and bitmap rotation pivots through
+`downloaded_bitmap_font_metrics`; `bitmap_font_ft_dot_origin` also applies to their
+FT anchors. See the [downloaded bitmap controls](../zpl/tests/fixtures/downloaded-bitmap-zd621-v1/README.md)
+for the measured fonts, sizes and device scope.
 See the Zebra Programming Guide [^A@](https://docs.zebra.com/us/en/printers/software/zpl-pg/zpl-commands/%5Ea-.html)
 and ^CW (p. 168) for the command conventions.
 
