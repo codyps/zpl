@@ -4218,6 +4218,8 @@ version = "0.1.0"
 name = "zpl-c"
 version = "0.1.0"
 dependencies = [
+ "cc",
+ "tempfile",
  "zpl",
 ]
 

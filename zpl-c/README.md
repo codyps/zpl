@@ -116,12 +116,15 @@ using both bitmap callbacks and TrueType data.
 ```sh
 python3 zpl-c/generate-config.py --check
 cargo test --locked -p zpl-c
-sh zpl-c/tests/run-c.sh
 ```
 
-The C test builds and links the actual shared library, exercises ownership and
-failure paths, and compiles the header as C++. Rust tests compare every output
-format directly with native adapters. `generate-config.py` uses only Python's
+`cargo test` builds the shared library, then Rust integration tests compile and
+execute the C and C++ smoke/font consumers and the C rendering example. No shell
+script or nested Cargo build is needed. Install a C/C++ toolchain locally; the
+`cc` crate discovers the compiler and Windows MSVC SDK environment. CI runs the
+same command on Linux, macOS, and Windows. Integration tests use Cargo's current
+profile/target library directory, including custom `CARGO_TARGET_DIR` locations.
+Rust tests compare every output format directly with native adapters. `generate-config.py` uses only Python's
 standard library; rerun it when native configuration fields change, and review
 whether the ABI version must change. The generator checks all native fields and
 fails on unsupported types; it is not required to build the library.

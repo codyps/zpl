@@ -28,7 +28,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        runner: [ubuntu-24.04, macos-15]
+        runner: [ubuntu-24.04, macos-15, windows-2025]
     runs-on: ${{ matrix.runner }}
     timeout-minutes: 20
     steps:
@@ -36,10 +36,10 @@ jobs:
         with:
           persist-credentials: false
       - uses: dtolnay/rust-toolchain@6bed0761d98439e5a578e2877258200ad565ba87 # stable
+      - name: Check generated C configuration
+        run: python zpl-c/generate-config.py --check
       - name: Test native equivalence and C/C++ ABI
-        run: |
-          cargo test --locked -p zpl-c
-          sh zpl-c/tests/run-c.sh
+        run: cargo test --locked -p zpl-c
 
   python-wheels:
     uses: ./.github/workflows/python-package.yml
