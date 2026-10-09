@@ -1,7 +1,7 @@
 # Releases
 
 The [Release-plz workflow](../.github/workflows/release-plz.yml) runs on pushes to
-`main`, or manually from the Actions tab on `main`. It has three jobs:
+`main`, or manually from the Actions tab on `main`. Its publishing stages are:
 
 1. `release` publishes prepared versions to **crates.io**, pushes package tags,
    and creates GitHub releases with changelog notes. With
@@ -12,19 +12,24 @@ The [Release-plz workflow](../.github/workflows/release-plz.yml) runs on pushes 
    at the same commit. It builds and tests the Wasm package and uses the Rust
    renderer version as the npm version. Ordinary commits and releases of only
    other crates skip npm publication.
-3. After both publishing jobs succeed, `release-pr` creates or updates a PR containing
+3. `python-version` selects the same completed stable `zpl` release. `python-build`
+   builds and tests native wheels and a source distribution, and `python-release`
+   publishes `zplkit` to **PyPI** with the renderer version.
+4. After all three registries succeed, `release-pr` creates or updates a PR containing
    package versions, changelogs, and workspace dependency updates, using the
    published crates.io versions as the baseline. A failed publication stops
    release preparation so it cannot race ahead of the registry.
 
 `raster-diff`, `zpl-bitmap-fonts`, and `zpl` are publishable and managed by
-release-plz. The remaining workspace packages set `publish = false`. Release-plz
+release-plz. The empty `zplkit` 0.0.0 placeholder is published separately and
+explicitly excluded from release-plz; it does not implement the Python bindings.
+The remaining workspace packages set `publish = false`. Release-plz
 derives dependency order and publishes the raster and bitmap-font dependencies
 before `zpl`. Tags and GitHub releases use `<crate>-v<version>`.
 
 The action and Rust/checkout actions are pinned to commit SHAs; the release-plz
 binary is pinned separately. Publishing jobs are serialized, and an active publish
-is not cancelled by newer pushes; release-PR jobs are also serialized. Both jobs
+is not cancelled by newer pushes; release-PR jobs are also serialized. Release jobs
 are restricted to `codyps/zpl` on `main` and have bounded execution time.
 
 CI excludes pushes to release-plz's temporary `release-plz-*-tmp-*` branches to
@@ -142,6 +147,78 @@ npm view @codyps/zpl version dist-tags --registry=https://registry.npmjs.org/
 
 The release selection tests and local dry runs do not verify npm ownership or
 OIDC authentication. That requires an actual successful publish in Actions.
+
+## PyPI publishing setup
+
+The Python distribution is **`zplkit`**, imported as `zplkit`, and links this
+repository's Rust `zpl` crate. Automatic releases use exactly the stable renderer
+version, following the same `zpl-v<version>` tag and completed GitHub release
+checks as npm. A shared selector prevents publishing on ordinary commits,
+prereleases, missing GitHub releases, or tags pointing at a different commit.
+Python-wrapper-only changes need an explicit renderer version bump in the release
+PR, just like Node-wrapper-only changes. The binding's checked-in Cargo version is
+for local development; CI stamps the binding manifest and its entry in the root
+Cargo lockfile without committing them. The wheel metadata, `zplkit.__version__`, and
+`zplkit.library_version` are checked for equality before upload.
+
+Before the first automatic PyPI release, an account owner must configure a
+[pending trusted publisher](https://docs.pypi.org/trusted-publishers/creating-a-project-through-oidc/)
+at **PyPI → account → Publishing → Add a new pending publisher**:
+
+| Field | Value |
+| --- | --- |
+| PyPI project name | `zplkit` |
+| Owner | `codyps` |
+| Repository name | `zpl` |
+| Workflow filename | `release-plz.yml` |
+| Environment name | Leave empty; this job does not declare an environment. |
+
+The first successful trusted publication creates the project. A pending publisher
+does not reserve the name. If the project already exists under your account, add
+the same configuration under its **Publishing** settings instead. No initial
+manual upload or long-lived PyPI API token is required. These settings must be
+created on PyPI; repository configuration cannot create them. See
+[PyPI's publisher setup](https://docs.pypi.org/trusted-publishers/adding-a-publisher/).
+
+The workflow builds five stable-ABI wheels for CPython 3.10+:
+
+- Linux x86_64 and aarch64, using Zig to target `manylinux_2_28` (glibc 2.28+).
+- macOS x86_64 (Intel) and arm64 (Apple Silicon).
+- Windows x86_64.
+
+The reusable [distribution build workflow](../.github/workflows/python-package.yml)
+also runs in ordinary PR CI. A source archive contains the linked local crates
+for other systems with Rust installed. Each wheel is installed and tested on its
+native runner; Linux also rebuilds and tests the source archive. All six files pass strict metadata checks.
+Only after every build succeeds does a separate Ubuntu job receive
+`id-token: write`, download the tested artifacts, and publish using the pinned
+[PyPA action](https://github.com/pypa/gh-action-pypi-publish). The action generates
+PyPI attestations by default. Build jobs have read-only repository permissions.
+
+On retries, the workflow queries the PyPI release JSON API and omits only files
+whose filename and SHA-256 match an existing, non-yanked file. It uploads the
+remaining files after a partial failure. A changed file under an existing name,
+yanked file, malformed registry response, timeout, or HTTP error other than 404
+stops publication. Once all files match, the job succeeds without another upload.
+
+If crates.io succeeds but PyPI fails, fix the publisher configuration and use
+**Re-run failed jobs** on the original workflow run. The original tested artifacts
+are retained for 14 days; retry within that window. Do not rebuild a published
+version with changed bytes or advance its version just to bypass a failed upload.
+A manual run on a later ordinary commit does not backfill an old release. Failed
+Python builds or uploads stop release-PR preparation, alongside Rust/npm failures.
+
+Verify the first publication on [PyPI](https://pypi.org/project/zplkit/) and
+install it into a clean environment:
+
+```sh
+python -m pip install --only-binary=:all: zplkit==<released-version>
+python -c 'import zplkit; print(zplkit.__version__, zplkit.library_version)'
+```
+
+Local release-gate tests, archive builds, and metadata checks do not establish
+PyPI project ownership or a working OIDC exchange; the first successful Actions
+publication verifies that setup.
 
 ## Releasing and verifying
 

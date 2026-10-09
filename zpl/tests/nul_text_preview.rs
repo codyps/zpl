@@ -26,7 +26,7 @@ fn raw_nul_frames_pin_paint_counts_and_text_floor() {
             "{}",
             c[0]
         );
-        if c[0] == "nul" {
+        if c[0] == "nul-control" {
             assert_eq!(&c[3..5], &["0", "0"]);
         }
         let both = reference

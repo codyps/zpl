@@ -4,7 +4,7 @@ Three unmodified ZD621 203-DPI V93.21.33Z frames pin exact paint counts.
 The new control is pixel-exact; each original hex case has one underpaint and
 one overpaint pixel in a resident glyph, with an enforced 80% foreground-IoU floor. `hex-underscore` and `hex-hash` are original complete comparison
 captures, verified against that corpus's source and PNG hashes. The independent
-`nul` control places AB, decoded NUL, and CD in twelve fields: CI0/27/28 with
+`nul-control` control places AB, decoded NUL, and CD in twelve fields: CI0/27/28 with
 plain Font 0, field blocks, bounded text, and bitmap font A. Plain and bounded text render AB and discard the remainder. Field blocks
 remove NUL and render ABCD. An additional field starts with NUL and is blank.
 

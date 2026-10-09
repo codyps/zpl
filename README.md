@@ -94,6 +94,23 @@ Text uses an embedded bitmap capture of resident font 0; other sizes and rotatio
 can differ from printer output. See [local rendering](docs/local-renderer.md) for
 dimensions, resource limits, font fidelity, and custom output adapters.
 
+## Use the renderer in Python
+
+Install the native bindings with `python -m pip install ./zpl-python` (Python
+3.10+ and Rust required to build). The `zplkit` package exposes local rendering,
+lossless parsing, profiles, resource limits, PNG/SVG/PDF output, and raw pixels:
+
+```python
+from pathlib import Path
+from zplkit import Options, render
+
+document = render(b"^XA^FO20,20^FDHello^FS^XZ", Options(width=400, height=200))
+Path("label.png").write_bytes(document.labels[0].png())
+```
+
+See the [Python package documentation](zpl-python/README.md) for the API and
+wheel/source distribution build instructions.
+
 ## Browser preview
 
 **[Try the browser preview on GitHub Pages](https://codyps.github.io/zpl/).**

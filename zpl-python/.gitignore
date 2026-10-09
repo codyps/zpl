@@ -1,0 +1,7 @@
+!__init__.py
+!_native.pyi
+__pycache__/
+*.so
+*.pyd
+.venv/
+dist/

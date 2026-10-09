@@ -1,0 +1,28 @@
+# Mixed package layout: https://www.maturin.rs/project_layout.html
+[build-system]
+requires = ["maturin>=1.15,<2"]
+build-backend = "maturin"
+
+[project]
+name = "zplkit"
+dynamic = ["version"]
+description = "Local ZPL parsing and rendering powered by Rust"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "OSL-3.0"
+license-files = ["LICENSE"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Rust",
+    "Typing :: Typed",
+]
+
+[project.urls]
+Repository = "https://github.com/codyps/zpl"
+
+[tool.maturin]
+python-source = "python"
+module-name = "zplkit._native"
+# Use --locked for checkout builds. Source archives trim workspace members, so
+# Cargo must be allowed to prune the included workspace lockfile on installation.
+include = [{ path = "tests/**", format = "sdist" }]

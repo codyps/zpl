@@ -26,3 +26,9 @@ release = true
 [[package]]
 name = "zpl"
 release = true
+
+# Name placeholder only; Python releases are built from zpl-python, not this crate.
+[[package]]
+name = "zplkit"
+release = false
+publish = false
