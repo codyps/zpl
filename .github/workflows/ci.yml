@@ -41,6 +41,11 @@ jobs:
       - name: Test native equivalence and C/C++ ABI
         run: cargo test --locked -p zpl-c
 
+  elixir:
+    uses: ./.github/workflows/elixir-package.yml
+    permissions:
+      contents: read
+
   python-wheels:
     uses: ./.github/workflows/python-package.yml
     permissions:

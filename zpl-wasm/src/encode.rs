@@ -1,10 +1,84 @@
 //! Byte-preserving Node adapter using the same scenes and output adapters as Rust.
+use std::sync::OnceLock;
 use wasm_bindgen::prelude::*;
 use zpl::{
+    fonts::{resolve_rom_font, Face, Fonts},
     output::{Adapter, Pdf, Png, Svg},
-    render::{profiles, Document},
+    render::{profiles, Document, Limits},
+    truetype::Hinting,
     Options,
 };
+
+// Append-only render-local storage: OnceLock lets the Send + Sync Rust
+// resolver retain borrowed font bytes without leaking allocations or extending
+// lifetimes unsafely. Resolved faces are dropped before this storage.
+#[derive(Default)]
+struct FontData {
+    bytes: OnceLock<Vec<u8>>,
+    next: OnceLock<Box<FontData>>,
+}
+impl FontData {
+    fn insert(&self, mut bytes: Vec<u8>) -> &[u8] {
+        let mut node = self;
+        loop {
+            match node.bytes.set(bytes) {
+                Ok(()) => return node.bytes.get().unwrap(),
+                Err(value) => bytes = value,
+            }
+            node = node.next.get_or_init(Default::default);
+        }
+    }
+}
+impl Drop for FontData {
+    fn drop(&mut self) {
+        // Avoid recursive destruction for jobs resolving many distinct names.
+        let mut next = self.next.take();
+        while let Some(mut node) = next {
+            next = node.next.take();
+        }
+    }
+}
+
+fn resolve<'a>(
+    callback: &js_sys::Function,
+    name: &str,
+    data: &'a FontData,
+) -> Result<Option<Face<'a>>, String> {
+    let value = callback
+        .call1(&JsValue::UNDEFINED, &JsValue::from_str(name))
+        .map_err(|error| {
+            error
+                .as_string()
+                .or_else(|| {
+                    js_sys::Reflect::get(&error, &JsValue::from_str("message"))
+                        .ok()
+                        .and_then(|message| message.as_string())
+                })
+                .unwrap_or_else(|| "font resolver failed".into())
+        })?;
+    if value.is_null() || value.is_undefined() {
+        return Ok(None);
+    }
+    // The Node wrapper converts its opaque ROM-font handles to lookup names.
+    if let Some(rom_name) = value.as_string() {
+        return resolve_rom_font(&rom_name);
+    }
+    let bytes = value
+        .dyn_into::<js_sys::Uint8Array>()
+        .map_err(|_| "resolveFont must return Uint8Array, null, or undefined (not a Promise)")?;
+    if bytes.length() > 16 * 1024 * 1024 {
+        return Err("external font exceeds 16 MiB TrueType limit".into());
+    }
+    Face::truetype(data.insert(bytes.to_vec()), Hinting::Native).map(Some)
+}
+
+/// Validate a ROM lookup before the Node wrapper creates an opaque face handle.
+#[wasm_bindgen]
+pub fn has_rom_font(name: &str) -> Result<bool, JsError> {
+    resolve_rom_font(name)
+        .map(|face| face.is_some())
+        .map_err(|error| JsError::new(&error))
+}
 
 #[wasm_bindgen]
 pub struct EncodedLabel {
@@ -67,6 +141,9 @@ pub fn render_encoded(
     profile: &str,
     format: &str,
     label: Option<u32>,
+    input_bytes: Option<u32>,
+    font_bytes: Option<u32>,
+    resolver: Option<js_sys::Function>,
 ) -> Result<EncodedLabel, JsError> {
     let defaults = match profile {
         "specification" => profiles::SPECIFICATION,
@@ -74,7 +151,22 @@ pub fn render_encoded(
         "zq610-plus" => profiles::ZQ610_PLUS_203_DPI,
         _ => return Err(JsError::new("Unknown rendering profile")),
     };
-    let document = zpl::render(
+    let data = FontData::default();
+    let mut fonts = Fonts::new();
+    if let Some(callback) = resolver {
+        let data = &data;
+        // wasm-bindgen implements Send + Sync for JS values on our non-atomic
+        // Wasm target. Capture the callback directly; nested renders own theirs.
+        // https://docs.rs/wasm-bindgen/0.2.128/src/wasm_bindgen/lib.rs.html
+        fonts.set_resolver(move |name| resolve(&callback, name, data));
+    }
+    let defaults_limits = Limits::default();
+    let limits = Limits {
+        input_bytes: input_bytes.map_or(defaults_limits.input_bytes, |n| n as usize),
+        font_bytes: font_bytes.map_or(defaults_limits.font_bytes, |n| n as usize),
+        ..defaults_limits
+    };
+    let document = zpl::render::render_with_fonts_and_limits(
         input,
         Options {
             width: width.unwrap_or(defaults.width),
@@ -82,6 +174,8 @@ pub fn render_encoded(
             dpi: dpi.unwrap_or(defaults.dpi),
             ..defaults
         },
+        &fonts,
+        limits,
     )
     .map_err(|error| JsError::new(&error.to_string()))?;
     encode(document, format, label).map_err(|error| JsError::new(&error))

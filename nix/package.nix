@@ -14,6 +14,7 @@ rustPlatform.buildRustPackage {
       ../zpl-cmd
       ../zpl-c
       ../zpl-python
+      ../zpl-elixir
       ../zplkit
       ../zpl-render-api
       ../zpl-wasm

@@ -1,0 +1,88 @@
+# Build/test jobs never receive the Hex publishing credential.
+name: Elixir source distribution
+
+on:
+  workflow_call:
+    inputs:
+      version:
+        description: Completed stable renderer version; empty for ordinary CI
+        required: false
+        default: ''
+        type: string
+
+permissions:
+  contents: read
+
+env:
+  CARGO_NET_RETRY: 2
+  CARGO_HTTP_TIMEOUT: 30
+  HEX_HTTP_TIMEOUT: 30
+  RELEASE_VERSION: ${{ inputs.version }}
+
+jobs:
+  package:
+    name: Elixir ${{ matrix.elixir }} / OTP ${{ matrix.otp }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-22.04
+            elixir: '1.15'
+            otp: '25'
+          - runner: ubuntu-24.04
+            elixir: '1.18'
+            otp: '28'
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.13'
+      - uses: dtolnay/rust-toolchain@6bed0761d98439e5a578e2877258200ad565ba87 # stable
+        with:
+          components: clippy, rustfmt
+      - uses: erlef/setup-beam@54075bcc5e249e4758d363f27d099f55d843f124 # v1.24.1
+        with:
+          elixir-version: ${{ matrix.elixir }}
+          otp-version: ${{ matrix.otp }}
+      - run: mix local.hex 2.5.1 --force
+      - name: Stamp completed renderer version
+        if: inputs.version != ''
+        run: python3 scripts/elixir-release.py stamp "$RELEASE_VERSION"
+      - name: Check native binding
+        run: cargo clippy --locked -p zpl_elixir --all-targets -- -D warnings
+      - name: Test checkout
+        working-directory: zpl-elixir
+        run: |
+          mix deps.get
+          mix format --check-formatted
+          mix test
+          git diff --exit-code -- mix.lock
+      - name: Stage portable source package
+        run: python3 scripts/elixir-package.py zpl-elixir/_package
+      - name: Build Hex archive
+        working-directory: zpl-elixir/_package
+        run: |
+          mix deps.get
+          mkdir -p "$GITHUB_WORKSPACE/dist"
+          VERSION=$(python3 -c 'import tomllib; print(tomllib.load(open("Cargo.toml", "rb"))["package"]["version"])')
+          mix hex.build --output "$GITHUB_WORKSPACE/dist/zpl-$VERSION.tar"
+      - name: Test unpacked archive outside the checkout
+        run: |
+          mkdir "$RUNNER_TEMP/elixir-unpacked"
+          tar -xOf dist/zpl-*.tar contents.tar.gz | tar -xz -C "$RUNNER_TEMP/elixir-unpacked"
+          cd "$RUNNER_TEMP/elixir-unpacked"
+          mix deps.get
+          mix test
+          cargo check --locked -p zpl_elixir
+
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: matrix.otp == '28'
+        with:
+          name: elixir-source
+          path: dist/*.tar
+          if-no-files-found: error
+          retention-days: 14

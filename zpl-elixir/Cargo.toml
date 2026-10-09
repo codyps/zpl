@@ -1,14 +1,16 @@
 [package]
-name = "zpl-wasm"
+name = "zpl_elixir"
 version = "0.1.0"
 edition = "2021"
 license.workspace = true
 publish = false
+description = "Elixir bindings for the local ZPL parser and renderer"
+repository = "https://github.com/codyps/zpl"
 
 [lib]
+name = "zpl_elixir"
 crate-type = ["cdylib", "rlib"]
 
 [dependencies]
+rustler = "0.38.0"
 zpl = { version = "0.2.0", path = "../zpl" }
-wasm-bindgen = "=0.2.128"
-js-sys = "=0.3.105"
