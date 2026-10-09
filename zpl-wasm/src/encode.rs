@@ -1,5 +1,5 @@
 //! Byte-preserving Node adapter using the same scenes and output adapters as Rust.
-use std::{cell::RefCell, sync::OnceLock};
+use std::sync::OnceLock;
 use wasm_bindgen::prelude::*;
 use zpl::{
     fonts::{resolve_rom_font, Face, Fonts},
@@ -9,30 +9,6 @@ use zpl::{
     Options,
 };
 
-// JS values are thread-affine; do not claim Send/Sync for a JS callback.
-// The Rust resolver captures only an index in this thread-local, render-scoped
-// stack. Clone the function before invoking JS so nested render() calls work.
-thread_local! {
-    static RESOLVERS: RefCell<Vec<js_sys::Function>> = const { RefCell::new(Vec::new()) };
-}
-struct ResolverScope(usize);
-impl ResolverScope {
-    fn new(callback: js_sys::Function) -> Self {
-        Self(RESOLVERS.with(|stack| {
-            let mut stack = stack.borrow_mut();
-            let index = stack.len();
-            stack.push(callback);
-            index
-        }))
-    }
-}
-impl Drop for ResolverScope {
-    fn drop(&mut self) {
-        RESOLVERS.with(|stack| {
-            stack.borrow_mut().pop();
-        });
-    }
-}
 // Append-only render-local storage: OnceLock lets the Send + Sync Rust
 // resolver retain borrowed font bytes without leaking allocations or extending
 // lifetimes unsafely. Resolved faces are dropped before this storage.
@@ -63,8 +39,11 @@ impl Drop for FontData {
     }
 }
 
-fn resolve<'a>(index: usize, name: &str, data: &'a FontData) -> Result<Option<Face<'a>>, String> {
-    let callback = RESOLVERS.with(|stack| stack.borrow()[index].clone());
+fn resolve<'a>(
+    callback: &js_sys::Function,
+    name: &str,
+    data: &'a FontData,
+) -> Result<Option<Face<'a>>, String> {
     let value = callback
         .call1(&JsValue::UNDEFINED, &JsValue::from_str(name))
         .map_err(|error| {
@@ -160,13 +139,14 @@ pub fn render_encoded(
         "zq610-plus" => profiles::ZQ610_PLUS_203_DPI,
         _ => return Err(JsError::new("Unknown rendering profile")),
     };
-    let scope = resolver.map(ResolverScope::new);
     let data = FontData::default();
     let mut fonts = Fonts::new();
-    if let Some(scope) = &scope {
-        let index = scope.0;
+    if let Some(callback) = resolver {
         let data = &data;
-        fonts.set_resolver(move |name| resolve(index, name, data));
+        // wasm-bindgen implements Send + Sync for JS values on our non-atomic
+        // Wasm target. Capture the callback directly; nested renders own theirs.
+        // https://docs.rs/wasm-bindgen/0.2.128/src/wasm_bindgen/lib.rs.html
+        fonts.set_resolver(move |name| resolve(&callback, name, data));
     }
     let defaults_limits = Limits::default();
     let limits = Limits {
