@@ -110,10 +110,18 @@ fn barcode_reference_coverage_and_error_budget() {
         if codes.is_empty() {
             return None;
         }
-        let name = path.strip_prefix(root).unwrap().to_str().unwrap();
+        // The capture manifest and report use repository-relative slash paths
+        // on every OS, independent of the filesystem's native separator.
+        let name = path
+            .strip_prefix(root)
+            .unwrap()
+            .components()
+            .map(|part| part.as_os_str().to_str().unwrap())
+            .collect::<Vec<_>>()
+            .join("/");
         // Exact comparisons use bytes. Hash only persisted observations: a
         // requested report or an immutable exception in the gaps manifest.
-        let needs_hashes = report_path.is_some() || exceptions.contains_key(name);
+        let needs_hashes = report_path.is_some() || exceptions.contains_key(name.as_str());
         let png_path = path.with_extension("png");
         assert!(png_path.is_file(), "{name}: missing printer comparison");
         let png = fs::read(&png_path).unwrap();
@@ -215,7 +223,7 @@ fn barcode_reference_coverage_and_error_budget() {
             }
         };
         Some(Observation {
-            name: name.to_owned(),
+            name,
             codes,
             reference_ink,
             profile_name,
