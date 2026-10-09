@@ -90,6 +90,40 @@ const { data } = render('^XA^FDOne^FS^XZ^XA^FDTwo^FS^XZ', { format: 'pdf' });
 writeFileSync('labels.pdf', data);
 ```
 
+## Parsing
+
+`parse(input, options?)` frames a complete ZPL byte stream without rendering it:
+
+```js
+import { parse, ParseError } from '@codyps/zpl';
+
+const { elements, syntax } = parse('^XA^FO20,20^FDHello^FS^XZ');
+for (const { kind, offset, data } of elements) {
+  console.log(kind, offset, data);
+}
+const next = parse('^XA^XZ', { syntax });
+```
+
+Input accepts the same string, `Buffer`, and `Uint8Array` types as rendering.
+Each element has a `kind` (`before_first_command`, `format_command`,
+`control_command`, or `control_character`), a byte `offset`, and an owned
+`data` Buffer. Concatenating all element buffers reproduces the input exactly,
+including whitespace, unknown commands, non-UTF-8 bytes, and binary payloads.
+Offsets in string input count UTF-8 bytes, not JavaScript characters.
+
+`options.syntax` accepts optional numeric bytes `formatPrefix`,
+`controlPrefix`, and `delimiter` (0–255), defaulting to 94 (`^`), 126 (`~`),
+and 44 (comma). The result includes the final syntax after in-stream changes.
+You can carry it into the next complete stream; this API does not buffer partial
+network chunks.
+
+A framing failure throws `ParseError` with `offset` and `kind` properties;
+no partial result is returned. Parsing does not validate operands, decompress
+downloads, or authorize commands for a printer. It does not apply rendering
+budgets such as the 1 MiB input limit. See
+[parser coverage](https://github.com/codyps/zpl/blob/main/docs/parser-coverage.md)
+for framing rules and limitations.
+
 ## External and inline fonts
 
 Use `resolveFont` to supply quadratic TrueType bytes for virtual printer filenames
@@ -147,7 +181,7 @@ throw errors. The Rust renderer's default input, label, geometry, and pixel
 budgets apply. Rendering is synchronous; use Node worker threads for substantial
 jobs in servers. Wasm result memory is freed internally; callers need no disposal.
 
-This package exposes rendering and output encoding. It does not yet expose the
-Rust command parser, scene objects, bitmap glyph-provider callbacks, or individual
+This package exposes command framing, rendering, and output encoding. It does not
+yet expose scene objects, bitmap glyph-provider callbacks, or individual
 compatibility flags. See the repository's `docs/local-renderer.md`,
 `docs/barcodes.md`, and `docs/printer-accuracy.md` for rendering coverage.

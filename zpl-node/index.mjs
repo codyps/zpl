@@ -1,2 +1,2 @@
 import api from './index.cjs';
-export const { render, libraryVersion } = api;
+export const { render, parse, ParseError, libraryVersion } = api;

@@ -27,9 +27,10 @@ test('packed archive installs and runs independently of the checkout', () => {
     });
     copyFileSync(join(root, 'tests/render.test.mjs'), join(directory, 'render.test.mjs'));
     copyFileSync(join(root, 'tests/fonts.test.mjs'), join(directory, 'fonts.test.mjs'));
+    copyFileSync(join(root, 'tests/parse.test.mjs'), join(directory, 'parse.test.mjs'));
     env.ZPL_TEST_FONT = join(directory, 'probe.ttf');
     copyFileSync(join(root, '../zpl/tests/fixtures/truetype-regression/font-probes-20261002/probe.ttf'), env.ZPL_TEST_FONT);
-    execFileSync(process.execPath, ['--test', 'render.test.mjs', 'fonts.test.mjs'], { cwd: directory, env, stdio: 'pipe' });
+    execFileSync(process.execPath, ['--test', 'render.test.mjs', 'fonts.test.mjs', 'parse.test.mjs'], { cwd: directory, env, stdio: 'pipe' });
   } finally {
     rmSync(directory, { recursive: true, force: true });
   }

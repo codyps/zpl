@@ -45,3 +45,47 @@ export interface RenderResult {
 export function render(input: string | Uint8Array, options?: Options): RenderResult;
 /** Version of the linked Rust renderer, independent of the npm package version. */
 export function libraryVersion(): string;
+
+/** Syntax bytes, not Unicode characters. Defaults: ^ (94), ~ (126), comma (44). */
+export interface Syntax {
+  formatPrefix: number;
+  controlPrefix: number;
+  delimiter: number;
+}
+
+export interface ParseOptions {
+  /** Initial syntax for this complete stream. Each byte must be in 0..255. */
+  syntax?: Partial<Syntax>;
+}
+
+export interface Element {
+  kind: 'before_first_command' | 'format_command' | 'control_command' | 'control_character';
+  /** Offset in input bytes, including for UTF-8 string input. */
+  offset: number;
+  /** Owned, unmodified bytes, including whitespace and binary payloads. */
+  data: Buffer;
+}
+
+export interface ParseResult {
+  elements: Element[];
+  /** Carry to the next complete stream; this is not incremental chunk parsing. */
+  syntax: Syntax;
+}
+
+export type ParseErrorKind =
+  | 'IncompleteCommand'
+  | 'MissingSyntaxCharacter'
+  | 'InvalidBinaryHeader'
+  | 'InvalidBinaryLength'
+  | 'TruncatedBinaryData'
+  | 'InvalidEncodedData'
+  | 'IncompleteEncodedData';
+
+export class ParseError extends Error {
+  constructor(offset: number, kind: ParseErrorKind);
+  offset: number;
+  kind: ParseErrorKind;
+}
+
+/** Lossless command framing, not operand validation. Throws ParseError on framing failure. */
+export function parse(input: string | Uint8Array, options?: ParseOptions): ParseResult;

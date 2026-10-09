@@ -46,3 +46,66 @@ function render(input, options = {}) {
 
 exports.render = render;
 exports.libraryVersion = wasm.library_version;
+
+const elementKinds = ['before_first_command', 'format_command', 'control_command', 'control_character'];
+
+class ParseError extends Error {
+  constructor(offset, kind) {
+    super(`ZPL framing error at byte ${offset}: ${kind}`);
+    this.name = 'ParseError';
+    this.offset = offset;
+    this.kind = kind;
+  }
+}
+
+function syntaxByte(value, name, fallback) {
+  if (value === undefined) return fallback;
+  if (!Number.isInteger(value) || value < 0 || value > 255) {
+    throw new RangeError(`${name} must be an integer from 0 to 255`);
+  }
+  return value;
+}
+
+function parse(input, options = {}) {
+  if (typeof input === 'string') input = Buffer.from(input, 'utf8');
+  if (!(input instanceof Uint8Array)) throw new TypeError('input must be a string, Buffer, or Uint8Array');
+  if (options === null || typeof options !== 'object' || Array.isArray(options)) {
+    throw new TypeError('options must be an object');
+  }
+  const { syntax = {} } = options;
+  if (syntax === null || typeof syntax !== 'object' || Array.isArray(syntax)) {
+    throw new TypeError('syntax must be an object');
+  }
+  const result = wasm.parse_bytes(input,
+    syntaxByte(syntax.formatPrefix, 'syntax.formatPrefix', 94),
+    syntaxByte(syntax.controlPrefix, 'syntax.controlPrefix', 126),
+    syntaxByte(syntax.delimiter, 'syntax.delimiter', 44));
+  try {
+    if (result.error_offset !== undefined) {
+      throw new ParseError(result.error_offset, result.error_kind());
+    }
+    const spans = result.take_spans();
+    const elements = [];
+    for (let i = 0; i < spans.length; i += 3) {
+      const offset = spans[i + 1];
+      elements.push({
+        kind: elementKinds[spans[i]],
+        offset,
+        data: Buffer.from(input.subarray(offset, offset + spans[i + 2])),
+      });
+    }
+    return {
+      elements,
+      syntax: {
+        formatPrefix: result.format_prefix,
+        controlPrefix: result.control_prefix,
+        delimiter: result.delimiter,
+      },
+    };
+  } finally {
+    result.free();
+  }
+}
+
+exports.parse = parse;
+exports.ParseError = ParseError;
