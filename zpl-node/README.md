@@ -90,12 +90,64 @@ const { data } = render('^XA^FDOne^FS^XZ^XA^FDTwo^FS^XZ', { format: 'pdf' });
 writeFileSync('labels.pdf', data);
 ```
 
+## External and inline fonts
+
+Use `resolveFont` to supply quadratic TrueType bytes for virtual printer filenames
+selected by `^A@` or assigned to an ID by `^CW`:
+
+```js
+import { readFileSync } from 'node:fs';
+
+const brand = readFileSync('brand.ttf');
+const result = render('^CWZ,R:BRAND.TTF^XA^FO20,20^AZN,32,24^FDHello^FS^XZ', {
+  resolveFont(name) {
+    if (name === 'R:BRAND.TTF') return brand;
+    return null;
+  },
+});
+```
+
+The synchronous callback receives a validated uppercase `device:path`; omitted
+devices become `R:`. It runs once per resolved name per render. Return a `Buffer`
+or `Uint8Array`; the renderer copies and validates the bytes. Returning `null`
+or `undefined` delegates to bundled ROM lookup; unknown names still fail.
+Thrown errors fail the render at the selecting command. Promises are rejected;
+load fonts before rendering if your storage API is asynchronous. No host files
+are opened automatically, and font registrations never persist between renders.
+
+In-job downloads take precedence over the resolver. External fonts support the
+Rust engine's quadratic TrueType outlines and native hinting, with a 16 MiB
+per-font ceiling. CFF/CFF2, variable fonts, and collections are unsupported.
+Missing glyphs fail rather than falling back to a different face.
+
+Inline `~DB`, `~DT`, `~DU`, and `~DY` font downloads use the Rust renderer's
+existing support. The default **1 MiB input budget**, rather than a Wasm argument
+size limit, can reject large downloads. Raise it explicitly for trusted jobs:
+
+```js
+const job = readFileSync('label-with-font.zpl');
+const result = render(job, {
+  limits: {
+    inputBytes: 32 * 1024 * 1024,
+    fontBytes: 16 * 1024 * 1024,
+  },
+});
+```
+
+`inputBytes` bounds both raw input and expanded stored formats separately.
+`fontBytes` bounds total decoded inline downloads, including replacements and
+bitmap allocation overhead; its default is 16 MiB. Both accept nonnegative
+integers up to 4294967295. Hex downloads need roughly twice their decoded size
+in the input budget. Use byte input for binary downloads. Other renderer/output
+budgets and Wasm memory constraints still apply; raising these limits does not
+disable them.
+
 Invalid options, missing labels, unsupported commands, and resource-limit failures
 throw errors. The Rust renderer's default input, label, geometry, and pixel
 budgets apply. Rendering is synchronous; use Node worker threads for substantial
 jobs in servers. Wasm result memory is freed internally; callers need no disposal.
 
 This package exposes rendering and output encoding. It does not yet expose the
-Rust command parser, scene objects, custom font providers, or individual
+Rust command parser, scene objects, bitmap glyph-provider callbacks, or individual
 compatibility flags. See the repository's `docs/local-renderer.md`,
 `docs/barcodes.md`, and `docs/printer-accuracy.md` for rendering coverage.

@@ -12,6 +12,21 @@ export interface Options {
   dpi?: number;
   /** Zero-based label index. PNG/SVG default to 0; PDF defaults to all labels. */
   label?: number;
+  /**
+   * Synchronous named-font lookup for ^A@/^CW. Receives a validated uppercase
+   * device:path (default device R:), once per resolved name per render.
+   * Return quadratic TrueType bytes; null/undefined delegates to bundled ROM
+   * fonts. In-job downloads take precedence. Throws propagate as render errors.
+   * Bytes are copied; no filesystem access is performed by the package.
+   */
+  resolveFont?: (name: string) => Uint8Array | null | undefined;
+  /** Nonnegative integer byte budgets, up to 4294967295. Other Rust budgets remain. */
+  limits?: {
+    /** Raw input and expanded formats, each separately. Default 1048576 (1 MiB). */
+    inputBytes?: number;
+    /** Total decoded inline-font downloads. Default 16777216 (16 MiB). */
+    fontBytes?: number;
+  };
 }
 
 export interface RenderResult {
