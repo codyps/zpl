@@ -1,5 +1,6 @@
 //! JavaScript adapters. JS bindings: https://wasm-bindgen.github.io/wasm-bindgen/
 mod encode;
+mod parse;
 use wasm_bindgen::prelude::*;
 use zpl::{
     output::{Adapter, Pdf, Png, Svg},
