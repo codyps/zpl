@@ -6,7 +6,9 @@
 // in the installed C header, instead of repeating it on each declaration.
 #![allow(clippy::missing_safety_doc)]
 mod config;
+mod fonts;
 pub use config::*;
+pub use fonts::*;
 use std::{
     cell::RefCell,
     panic::{catch_unwind, AssertUnwindSafe},
@@ -20,6 +22,7 @@ pub const ZPL_PARSE_ERROR: i32 = 2;
 pub const ZPL_RENDER_ERROR: i32 = 3;
 pub const ZPL_OUTPUT_ERROR: i32 = 4;
 pub const ZPL_PANIC: i32 = 5;
+pub const ZPL_FONT_ERROR: i32 = 6;
 
 type Result<T> = std::result::Result<T, Failure>;
 #[derive(Debug)]
@@ -193,14 +196,33 @@ pub unsafe extern "C" fn zpl_render(
     limits: *const ZplRenderLimits,
     out: *mut *mut ZplDocument,
 ) -> i32 {
+    unsafe { zpl_render_with_fonts(data, len, options, ptr::null(), limits, out) }
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn zpl_render_with_fonts(
+    data: *const u8,
+    len: usize,
+    options: *const ZplOptions,
+    fonts: *const ZplFonts,
+    limits: *const ZplRenderLimits,
+    out: *mut *mut ZplDocument,
+) -> i32 {
     boundary(|| {
         let out = unsafe { destination(out)? };
         *out = ptr::null_mut();
         let options = unsafe { options.as_ref() }
             .map_or_else(|| Ok(zpl::Options::default()), |v| v.native())?;
-        let document = render::render_with_limits(unsafe { bytes(data, len)? }, options, unsafe {
-            render_limits(limits)?
-        })
+        let fonts = unsafe { fonts.as_ref() }
+            .map(ZplFonts::native)
+            .transpose()?
+            .unwrap_or_default();
+        let document = render::render_with_fonts_and_limits(
+            unsafe { bytes(data, len)? },
+            options,
+            &fonts,
+            unsafe { render_limits(limits)? },
+        )
         .map_err(|e| Failure {
             status: ZPL_RENDER_ERROR,
             offset: e.offset,
@@ -412,3 +434,6 @@ pub unsafe extern "C" fn zpl_parsed_element(
 
 #[cfg(test)]
 mod tests;
+
+#[cfg(test)]
+mod font_tests;

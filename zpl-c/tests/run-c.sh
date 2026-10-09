@@ -11,14 +11,16 @@ case $(uname -s) in
     Linux|Darwin) ;;
     *) echo 'run-c.sh currently supports Linux and macOS' >&2; exit 1 ;;
 esac
-"${CC:-cc}" -std=c11 -Wall -Wextra -Werror -pedantic -Izpl-c/include \
-    zpl-c/tests/smoke.c -L"$zpl_target/debug" -lzpl_c \
-    -Wl,-rpath,"$zpl_target/debug" -o "$zpl_tmp/smoke"
-"$zpl_tmp/smoke"
-"${CXX:-c++}" -x c++ -std=c++11 -Wall -Wextra -Werror -pedantic -Izpl-c/include \
-    zpl-c/tests/smoke.c -L"$zpl_target/debug" -lzpl_c \
-    -Wl,-rpath,"$zpl_target/debug" -o "$zpl_tmp/smoke-cpp"
-"$zpl_tmp/smoke-cpp"
+for zpl_test in smoke fonts; do
+    "${CC:-cc}" -std=c11 -Wall -Wextra -Werror -pedantic -Izpl-c/include \
+        "zpl-c/tests/$zpl_test.c" -L"$zpl_target/debug" -lzpl_c \
+        -Wl,-rpath,"$zpl_target/debug" -o "$zpl_tmp/$zpl_test"
+    "$zpl_tmp/$zpl_test"
+    "${CXX:-c++}" -x c++ -std=c++11 -Wall -Wextra -Werror -pedantic -Izpl-c/include \
+        "zpl-c/tests/$zpl_test.c" -L"$zpl_target/debug" -lzpl_c \
+        -Wl,-rpath,"$zpl_target/debug" -o "$zpl_tmp/$zpl_test-cpp"
+    "$zpl_tmp/$zpl_test-cpp"
+done
 "${CC:-cc}" -std=c11 -Wall -Wextra -Werror -pedantic -Izpl-c/include \
     zpl-c/examples/render.c -L"$zpl_target/debug" -lzpl_c \
     -Wl,-rpath,"$zpl_target/debug" -o "$zpl_tmp/render"

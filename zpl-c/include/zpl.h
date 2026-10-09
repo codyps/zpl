@@ -28,6 +28,7 @@ extern "C" {
 #define ZPL_RENDER_ERROR 3
 #define ZPL_OUTPUT_ERROR 4
 #define ZPL_PANIC 5
+#define ZPL_FONT_ERROR 6
 #define ZPL_PROFILE_ZD621 0u
 #define ZPL_PROFILE_SPECIFICATION 1u
 #define ZPL_PROFILE_ZQ610_PLUS 2u
@@ -86,6 +87,65 @@ int32_t zpl_document_pdf(const ZplDocument *value, const ZplOutputLimits *limits
 /* Borrowed until buffer_free; NULL returns {NULL, 0}. */
 ZplBytes zpl_buffer_bytes(const ZplBuffer *value);
 void zpl_buffer_free(ZplBuffer *value);
+
+/* Application-owned fonts. Bitmap layout/metrics follow zpl::fonts::BitmapFont.
+ * IDs are Unicode scalar values for '0'-'9', 'A'-'Z', or '@' (graphic symbols).
+ * Names follow native virtual filename rules; they never open host files.
+ * Registration failures leave previous assignments unchanged. */
+typedef struct ZplFonts ZplFonts;
+typedef struct { uint32_t width, height; double baseline; } ZplBitmapMetrics;
+typedef struct {
+    uint32_t advance;
+    int32_t left, top;
+    uint32_t width, height;
+    /* Contiguous rows, ceil(width/8) bytes each, MSB first; 1 is foreground.
+     * len must equal height * ceil(width/8). No extra row padding. */
+    ZplBytes bitmap;
+} ZplGlyph;
+#define ZPL_GLYPH_FOUND 0
+#define ZPL_GLYPH_MISSING 1
+#define ZPL_GLYPH_ERROR 2
+#define ZPL_HINTING_NONE 0u
+#define ZPL_HINTING_NATIVE 1u
+/* Return FOUND after filling out, MISSING for an absent glyph, or ERROR after
+ * filling error with a length-delimited UTF-8 message (an empty message is OK).
+ * The library copies returned bitmap/error bytes. They must stay valid and
+ * immutable until the enclosing render returns; do not return stack storage.
+ * Missing glyphs produce rendering errors, with no resident-font fallback.
+ * Callbacks must be deterministic and thread-safe, must return normally (no
+ * exceptions, longjmp, or Rust unwinding), and must not mutate/free the active
+ * font collection or its callback data. Concurrent renders may call concurrently.
+ * Output slots are initialized and valid only during the callback. */
+typedef int32_t (*ZplGlyphCallback)(void *user_data, uint32_t codepoint,
+                                    ZplGlyph *out, ZplBytes *error);
+typedef struct {
+    ZplBitmapMetrics metrics;
+    void *user_data;
+    ZplGlyphCallback glyph;
+} ZplBitmapProvider;
+int32_t zpl_fonts_new(ZplFonts **out);
+void zpl_fonts_free(ZplFonts *value);
+/* The descriptor/metrics are copied. user_data stays caller-owned; keep it and
+ * the callback alive until all registrations using them are replaced or freed.
+ * Mutation/free requires exclusive access: no concurrent registration/render.
+ * Cell width/height: 1..4096; baseline: finite, 0..height. Glyph dimensions,
+ * advance, and absolute offsets: <=4096. Invalid glyphs fail during rendering. */
+int32_t zpl_fonts_insert_bitmap(ZplFonts *value, uint32_t id,
+                                const ZplBitmapProvider *font);
+int32_t zpl_fonts_insert_named_bitmap(ZplFonts *value, const uint8_t *name,
+                                      size_t name_len, const ZplBitmapProvider *font);
+/* Copies font bytes; caller may release the input after return. Supports native
+ * quadratic glyf TrueType/OpenType, with native hinting/format limitations. */
+int32_t zpl_fonts_insert_truetype(ZplFonts *value, uint32_t id,
+                                  const uint8_t *data, size_t len, uint32_t hinting);
+int32_t zpl_fonts_insert_named_truetype(ZplFonts *value, const uint8_t *name,
+                                        size_t name_len, const uint8_t *data,
+                                        size_t len, uint32_t hinting);
+/* NULL fonts means resident defaults. The returned document owns its scene
+ * geometry and does not retain font data or call providers after returning. */
+int32_t zpl_render_with_fonts(const uint8_t *data, size_t len,
+                               const ZplOptions *options, const ZplFonts *fonts,
+                               const ZplRenderLimits *limits, ZplDocument **out);
 
 /* Lossless framing, NOT validation or authorization. No renderer limits apply:
  * callers must bound parser input size. Source is copied into the result. */
