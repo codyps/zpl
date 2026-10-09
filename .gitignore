@@ -12,3 +12,7 @@ zpl-node/LICENSE
 zpl-node/*.tgz
 zpl-node/node_modules/
 .direnv/
+
+zpl-elixir/deps/
+zpl-elixir/priv/native/
+zpl-elixir/*.tar

@@ -22,6 +22,9 @@ and [barcode support](docs/barcodes.md) for the exact boundaries.
 and pixel hashes against checked-in ZD621 previews using the overridable
 [ZD621 renderer profile](docs/local-renderer.md#printer-profiles).
 
+Use the [Elixir package](zpl-elixir/README.md) for lossless parsing and local
+PNG/SVG/PDF rendering from the BEAM.
+
 ## Quick start
 
 Run these commands from the repository root. With Nix and direnv installed, enter

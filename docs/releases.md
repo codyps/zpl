@@ -15,7 +15,10 @@ The [Release-plz workflow](../.github/workflows/release-plz.yml) runs on pushes 
 3. `python-version` selects the same completed stable `zpl` release. `python-build`
    builds and tests native wheels and a source distribution, and `python-release`
    publishes `zplkit` to **PyPI** with the renderer version.
-4. After all three registries succeed, `release-pr` creates or updates a PR containing
+4. `elixir-version` selects the same completed stable renderer release. `elixir-build`
+   builds and tests a portable source archive, and `elixir-release` publishes
+   `zpl` to **Hex** with the renderer version.
+5. After all four registries succeed, `release-pr` creates or updates a PR containing
    package versions, changelogs, and workspace dependency updates, using the
    published crates.io versions as the baseline. A failed publication stops
    release preparation so it cannot race ahead of the registry.
@@ -219,6 +222,67 @@ python -c 'import zplkit; print(zplkit.__version__, zplkit.library_version)'
 Local release-gate tests, archive builds, and metadata checks do not establish
 PyPI project ownership or a working OIDC exchange; the first successful Actions
 publication verifies that setup.
+
+## Hex publishing setup
+
+The Elixir package is **`zpl`**, with Mix application `:zpl` and module `Zpl`.
+The [Elixir distribution workflow](../.github/workflows/elixir-package.yml) runs
+in PR CI and on completed stable renderer releases. It tests Elixir 1.15/OTP 25
+and Elixir 1.18/OTP 28, then retains the tested source archive from the latter.
+The archive includes this checkout's Rust runtime sources and a pruned copy of
+the workspace lockfile. Consumers need Rust to compile the NIF; no prebuilt NIFs
+are published. Generated HexDocs are not currently published.
+
+The same shared release selector used by npm/PyPI requires the exact checked-out
+commit's `zpl-v<version>` tag and a completed stable GitHub release. CI stamps
+that version into the Mix project, binding Cargo manifest, and root lock entry.
+The installed package version must match `Zpl.library_version()` before upload.
+Elixir-only changes require an explicit renderer bump in the release PR, just
+like Python/Node wrapper changes; development versions are not committed back.
+
+Before the first automatic release:
+
+1. Create/sign into the Hex account that will own `zpl`, enable two-factor
+   authentication, and check that the public package name is available or owned
+   by that account. A missing package lookup does not reserve its name.
+2. In **Hex → Dashboard → API keys**, generate a publishing key with API write
+   permission and an appropriate expiry. Add its value as the GitHub repository
+   Actions secret **`HEX_API_KEY`** for `codyps/zpl`. Do not commit the key. The first
+   automatic publication can create the package; afterwards prefer a key scoped
+   to publishing `zpl`, and rotate/revoke the bootstrap key.
+3. Merge this workflow before the next stable renderer release. Keep the secret
+   available only to the publishing step; build/test jobs receive no Hex credential.
+
+The workflow pins stable Hex **2.5.1** for archive creation. Hex's native GitHub
+OIDC support is currently listed under **2.5.2-dev** in its
+[changelog](https://github.com/hexpm/hex/blob/main/CHANGELOG.md); it is not enabled
+here using an unreleased client. The stable
+[CI publishing mechanism](https://hex.pm/docs/publish#publishing-from-ci) uses an
+API key. This setup can move to native workload identity after a supported stable
+release and account-side configuration.
+
+The separate `elixir-release` job downloads the original tested artifact and
+uploads those exact bytes through Hex's
+[release API](https://github.com/hexpm/hex/blob/v2.5.1/src/mix_hex_api_release.erl).
+It does not rebuild the tarball, publish documentation, or replace a release.
+Before upload it validates the archive's package/application/version metadata
+and queries Hex. Only HTTP 404 means the version is absent. An existing version
+is skipped only when its outer SHA-256 checksum matches and it is not retired.
+A changed checksum, retired release, malformed response, or network/auth error
+fails visibly. POST requests are never automatically retried.
+
+If crates.io succeeds and Hex fails, fix the account/secret and use **Re-run
+failed jobs** on the original Actions run within the artifact's 14-day retention.
+This preserves the original release commit and tested bytes. A manual workflow
+run on a later ordinary commit does not backfill an earlier release. Hex failures
+block new release-PR preparation alongside failures from the other registries.
+
+Verify a first successful publication at
+[hex.pm/packages/zpl](https://hex.pm/packages/zpl) and install the released version
+in a clean Mix project with `{:zpl, "== <version>"}`. Confirm rendering and
+`Zpl.library_version()`. Local tests and mocked uploads do not prove account
+ownership or live publishing authorization; the first successful Actions upload
+does. No live publication is needed to review this change.
 
 ## Releasing and verifying
 
