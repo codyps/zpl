@@ -1,0 +1,9 @@
+[package]
+name = "zplkit"
+version = "0.0.0"
+edition = "2021"
+license.workspace = true
+description = "Placeholder for the ZPL toolkit from codyps/zpl"
+repository = "https://github.com/codyps/zpl"
+readme = "README.md"
+include = ["src/lib.rs", "README.md", "LICENSE"]

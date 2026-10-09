@@ -81,7 +81,7 @@ jobs:
           python -m pip install --no-index dist/*.whl
           python -m unittest discover -s zpl-python/tests -v
           if [ -n "$RELEASE_VERSION" ]; then
-            python -c 'import os, zpl; assert zpl.__version__ == zpl.library_version == os.environ["RELEASE_VERSION"]'
+            python -c 'import os, zplkit; assert zplkit.__version__ == zplkit.library_version == os.environ["RELEASE_VERSION"]'
           fi
       - name: Build and test source distribution
         if: matrix.platform == 'linux-x86_64'
@@ -90,7 +90,7 @@ jobs:
           python -m pip install --no-build-isolation --no-deps --force-reinstall dist/*.tar.gz
           python -m unittest discover -s zpl-python/tests -v
           if [ -n "$RELEASE_VERSION" ]; then
-            python -c 'import os, zpl; assert zpl.__version__ == zpl.library_version == os.environ["RELEASE_VERSION"]'
+            python -c 'import os, zplkit; assert zplkit.__version__ == zplkit.library_version == os.environ["RELEASE_VERSION"]'
           fi
       - name: Check distribution metadata
         run: python -m twine check --strict dist/*

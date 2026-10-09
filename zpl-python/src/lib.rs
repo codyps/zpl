@@ -12,9 +12,9 @@ use pyo3::{
 use std::sync::Arc;
 use zpl::{output, parse as framing, render as rendering};
 
-create_exception!(zpl, ParseError, PyValueError);
-create_exception!(zpl, RenderError, PyValueError);
-create_exception!(zpl, OutputError, PyValueError);
+create_exception!(zplkit, ParseError, PyValueError);
+create_exception!(zplkit, RenderError, PyValueError);
+create_exception!(zplkit, OutputError, PyValueError);
 
 // Own the bytes before detaching from Python; bytearray/memoryview callers can
 // explicitly snapshot their buffers with bytes(). Never decode binary ZPL.
@@ -47,7 +47,7 @@ fn output_limits(limits: Option<&OutputLimits>) -> PyResult<output::Limits> {
     Ok(limits)
 }
 
-#[pyclass(frozen, from_py_object, module = "zpl._native")]
+#[pyclass(frozen, from_py_object, module = "zplkit._native")]
 #[derive(Clone, Copy)]
 struct Options {
     inner: zpl::Options,
@@ -116,7 +116,7 @@ impl Options {
     }
 }
 
-#[pyclass(frozen, module = "zpl._native")]
+#[pyclass(frozen, module = "zplkit._native")]
 struct Scene {
     document: Arc<rendering::Document>,
     index: usize,
@@ -188,7 +188,7 @@ impl Scene {
     }
 }
 
-#[pyclass(frozen, module = "zpl._native")]
+#[pyclass(frozen, module = "zplkit._native")]
 struct Raster {
     inner: output::raster::Raster,
 }
@@ -209,7 +209,7 @@ impl Raster {
     }
 }
 
-#[pyclass(frozen, module = "zpl._native")]
+#[pyclass(frozen, module = "zplkit._native")]
 struct Document {
     inner: Arc<rendering::Document>,
 }
@@ -269,7 +269,7 @@ fn render(
     }
 }
 
-#[pyclass(frozen, module = "zpl._native")]
+#[pyclass(frozen, module = "zplkit._native")]
 struct Element {
     #[pyo3(get)]
     kind: &'static str,
@@ -289,7 +289,7 @@ impl Element {
     }
 }
 
-#[pyclass(frozen, module = "zpl._native")]
+#[pyclass(frozen, module = "zplkit._native")]
 struct ParseResult {
     elements: Vec<Py<Element>>,
     #[pyo3(get)]
@@ -360,13 +360,13 @@ fn _native(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add("library_version", zpl::version::VERSION)?;
     m.py()
         .get_type::<ParseError>()
-        .setattr("__module__", "zpl.parse")?;
+        .setattr("__module__", "zplkit.parse")?;
     m.py()
         .get_type::<RenderError>()
-        .setattr("__module__", "zpl.rendering")?;
+        .setattr("__module__", "zplkit.rendering")?;
     m.py()
         .get_type::<OutputError>()
-        .setattr("__module__", "zpl.output")?;
+        .setattr("__module__", "zplkit.output")?;
     m.add("ParseError", m.py().get_type::<ParseError>())?;
     m.add("RenderError", m.py().get_type::<RenderError>())?;
     m.add("OutputError", m.py().get_type::<OutputError>())?;

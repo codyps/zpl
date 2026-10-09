@@ -1,9 +1,9 @@
-# zpl-python
+# zplkit
 
 Python bindings for the [codyps/zpl](https://github.com/codyps/zpl) Rust `zpl`
 crate, linked directly from this workspace's `zpl/` directory. Parsing and rendering run
 locally with no printer, subprocess, network service, or Python runtime
-dependencies. The distribution is named `zpl-python`; the import is `zpl`.
+dependencies. The distribution is named `zplkit`; the import is `zplkit`.
 Use a separate environment if another package already provides that import.
 
 ## Install from this checkout
@@ -18,16 +18,16 @@ python -m pip install ./zpl-python
 ```
 
 A built wheel needs no Rust toolchain. These bindings use PyO3's Python 3.10
-stable ABI. Stable renderer releases automatically publish `zpl-python` to PyPI
+stable ABI. Stable renderer releases automatically publish `zplkit` to PyPI
 with the same version, after the one-time
 [trusted-publisher setup](../docs/releases.md#pypi-publishing-setup). Once the
-first release is published, install it with `python -m pip install zpl-python`.
+first release is published, install it with `python -m pip install zplkit`.
 
 ## Render
 
 ```python
 from pathlib import Path
-from zpl import Options, render
+from zplkit import Options, render
 
 options = Options(profile="specification", width=400, height=200, dpi=203)
 document = render(b"^XA^FO20,20^A0N,32,0^FDHello, ZPL!^FS^XZ", options)
@@ -79,7 +79,7 @@ image = Image.frombytes("L", (raster.width, raster.height), raster.pixels)
 ## Parse without rendering
 
 ```python
-from zpl.parse import parse, Syntax
+from zplkit.parse import parse, Syntax
 
 source = b"^XA^FO10,20^FDhello^FS^XZ"
 result = parse(source)
@@ -101,8 +101,8 @@ error; it does not return partial results.
 ## Limits and errors
 
 ```python
-from zpl.rendering import Limits, RenderError
-from zpl.output import Limits as OutputLimits
+from zplkit.rendering import Limits, RenderError
+from zplkit.output import Limits as OutputLimits
 
 try:
     document = render(b"^XA^XZ", limits=Limits(input_bytes=4096, labels=1))
@@ -118,10 +118,10 @@ budgets. Floating-point ceilings must be finite and nonnegative. Unknown fields
 raise `TypeError`; integer overflow/negative unsigned values raise `OverflowError`.
 The parser has no resource budget; callers control the input buffer size.
 
-`zpl.parse.ParseError` has `offset` and `kind`; `zpl.rendering.RenderError` has
-`offset` and `message`; `zpl.output.OutputError` preserves the native diagnostic.
-All three extend `ValueError`. `zpl.__version__` is the binding package version;
-`zpl.library_version` identifies the linked renderer. Type hints and `py.typed`
+`zplkit.parse.ParseError` has `offset` and `kind`; `zplkit.rendering.RenderError` has
+`offset` and `message`; `zplkit.output.OutputError` preserves the native diagnostic.
+All three extend `ValueError`. `zplkit.__version__` is the binding package version;
+`zplkit.library_version` identifies the linked renderer. Type hints and `py.typed`
 are included. Native parsing, rendering and output encoding release the GIL.
 
 The binding covers command framing, render options and compatibility, resource

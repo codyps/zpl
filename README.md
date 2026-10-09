@@ -97,12 +97,12 @@ dimensions, resource limits, font fidelity, and custom output adapters.
 ## Use the renderer in Python
 
 Install the native bindings with `python -m pip install ./zpl-python` (Python
-3.10+ and Rust required to build). The `zpl-python` package exposes local rendering,
+3.10+ and Rust required to build). The `zplkit` package exposes local rendering,
 lossless parsing, profiles, resource limits, PNG/SVG/PDF output, and raw pixels:
 
 ```python
 from pathlib import Path
-from zpl import Options, render
+from zplkit import Options, render
 
 document = render(b"^XA^FO20,20^FDHello^FS^XZ", Options(width=400, height=200))
 Path("label.png").write_bytes(document.labels[0].png())

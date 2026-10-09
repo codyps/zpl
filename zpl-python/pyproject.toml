@@ -4,7 +4,7 @@ requires = ["maturin>=1.15,<2"]
 build-backend = "maturin"
 
 [project]
-name = "zpl-python"
+name = "zplkit"
 dynamic = ["version"]
 description = "Local ZPL parsing and rendering powered by Rust"
 readme = "README.md"
@@ -22,7 +22,7 @@ Repository = "https://github.com/codyps/zpl"
 
 [tool.maturin]
 python-source = "python"
-module-name = "zpl._native"
+module-name = "zplkit._native"
 # Use --locked for checkout builds. Source archives trim workspace members, so
 # Cargo must be allowed to prune the included workspace lockfile on installation.
 include = [{ path = "tests/**", format = "sdist" }]

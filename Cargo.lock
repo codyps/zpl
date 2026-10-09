@@ -4302,3 +4302,7 @@ dependencies = [
  "wasm-bindgen",
  "zpl",
 ]
+
+[[package]]
+name = "zplkit"
+version = "0.0.0"

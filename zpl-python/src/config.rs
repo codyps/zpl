@@ -5,7 +5,7 @@ use pyo3::{exceptions::PyTypeError, prelude::*, types::PyDict};
 // Keep native structs inside the wrappers so Rust remains the source of defaults.
 macro_rules! configuration {
     ($name:ident, $native:ty, $default:expr, {$($field:ident: $ty:ty),* $(,)?}) => {
-        #[pyclass(frozen, from_py_object, module = "zpl._native")]
+        #[pyclass(frozen, from_py_object, module = "zplkit._native")]
         #[derive(Clone, Copy)]
         pub struct $name { pub inner: $native }
         #[pymethods]

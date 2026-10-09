@@ -30,7 +30,7 @@ class ReleaseTests(unittest.TestCase):
         self.manifest = self.root / "zpl-python/Cargo.toml"
         self.manifest.write_text('[package]\nname = "zpl-python"\nversion = "0.1.0"\n')
         (self.root / "zpl-python/pyproject.toml").write_text(
-            '[project]\nname = "zpl-python"\ndynamic = ["version"]\n'
+            '[project]\nname = "zplkit"\ndynamic = ["version"]\n'
         )
         self.lock = self.root / "Cargo.lock"
         self.lock.write_text(
@@ -99,10 +99,10 @@ class ReleaseTests(unittest.TestCase):
             "win_amd64",
         ]
         for platform in platforms:
-            (source / f"zpl_python-1.2.3-cp310-abi3-{platform}.whl").write_bytes(
+            (source / f"zplkit-1.2.3-cp310-abi3-{platform}.whl").write_bytes(
                 platform.encode()
             )
-        (source / "zpl_python-1.2.3.tar.gz").write_bytes(b"source")
+        (source / "zplkit-1.2.3.tar.gz").write_bytes(b"source")
         return source
 
     def remote(self, source):
@@ -187,7 +187,7 @@ class ReleaseTests(unittest.TestCase):
                 release.registry_files("1.2.3")
 
     def test_registry_version_mismatch_stops_release(self):
-        data = {"info": {"name": "zpl-python", "version": "9.9.9"}, "urls": []}
+        data = {"info": {"name": "zplkit", "version": "9.9.9"}, "urls": []}
         with patch.object(
             release.urllib.request,
             "urlopen",

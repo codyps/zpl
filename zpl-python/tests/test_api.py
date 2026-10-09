@@ -10,13 +10,13 @@ import unittest
 from concurrent.futures import ThreadPoolExecutor
 from importlib.resources import files
 
-from zpl.output import Limits as OutputLimits
-from zpl.output import OutputError
-from zpl.parse import ParseError, Syntax, parse
-from zpl.rendering import Compatibility, Limits, RenderError
+from zplkit.output import Limits as OutputLimits
+from zplkit.output import OutputError
+from zplkit.parse import ParseError, Syntax, parse
+from zplkit.rendering import Compatibility, Limits, RenderError
 
-import zpl
-from zpl import Options, render
+import zplkit
+from zplkit import Options, render
 
 
 class BindingsTest(unittest.TestCase):
@@ -188,10 +188,10 @@ class BindingsTest(unittest.TestCase):
         self.assertEqual(parse(b"").elements, [])
         with self.assertRaisesRegex(RenderError, "no labels"):
             render(b"", self.options)
-        self.assertTrue(zpl.__version__)
-        self.assertTrue(zpl.library_version)
-        self.assertTrue(files("zpl").joinpath("py.typed").is_file())
-        self.assertTrue(files("zpl").joinpath("_native.pyi").is_file())
+        self.assertTrue(zplkit.__version__)
+        self.assertTrue(zplkit.library_version)
+        self.assertTrue(files("zplkit").joinpath("py.typed").is_file())
+        self.assertTrue(files("zplkit").joinpath("_native.pyi").is_file())
 
 
 if __name__ == "__main__":

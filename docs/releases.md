@@ -14,14 +14,16 @@ The [Release-plz workflow](../.github/workflows/release-plz.yml) runs on pushes 
    other crates skip npm publication.
 3. `python-version` selects the same completed stable `zpl` release. `python-build`
    builds and tests native wheels and a source distribution, and `python-release`
-   publishes `zpl-python` to **PyPI** with the renderer version.
+   publishes `zplkit` to **PyPI** with the renderer version.
 4. After all three registries succeed, `release-pr` creates or updates a PR containing
    package versions, changelogs, and workspace dependency updates, using the
    published crates.io versions as the baseline. A failed publication stops
    release preparation so it cannot race ahead of the registry.
 
 `raster-diff`, `zpl-bitmap-fonts`, and `zpl` are publishable and managed by
-release-plz. The remaining workspace packages set `publish = false`. Release-plz
+release-plz. The empty `zplkit` 0.0.0 placeholder is published separately and
+explicitly excluded from release-plz; it does not implement the Python bindings.
+The remaining workspace packages set `publish = false`. Release-plz
 derives dependency order and publishes the raster and bitmap-font dependencies
 before `zpl`. Tags and GitHub releases use `<crate>-v<version>`.
 
@@ -148,7 +150,7 @@ OIDC authentication. That requires an actual successful publish in Actions.
 
 ## PyPI publishing setup
 
-The Python distribution is **`zpl-python`**, imported as `zpl`, and links this
+The Python distribution is **`zplkit`**, imported as `zplkit`, and links this
 repository's Rust `zpl` crate. Automatic releases use exactly the stable renderer
 version, following the same `zpl-v<version>` tag and completed GitHub release
 checks as npm. A shared selector prevents publishing on ordinary commits,
@@ -156,8 +158,8 @@ prereleases, missing GitHub releases, or tags pointing at a different commit.
 Python-wrapper-only changes need an explicit renderer version bump in the release
 PR, just like Node-wrapper-only changes. The binding's checked-in Cargo version is
 for local development; CI stamps the binding manifest and its entry in the root
-Cargo lockfile without committing them. The wheel metadata, `zpl.__version__`, and
-`zpl.library_version` are checked for equality before upload.
+Cargo lockfile without committing them. The wheel metadata, `zplkit.__version__`, and
+`zplkit.library_version` are checked for equality before upload.
 
 Before the first automatic PyPI release, an account owner must configure a
 [pending trusted publisher](https://docs.pypi.org/trusted-publishers/creating-a-project-through-oidc/)
@@ -165,7 +167,7 @@ at **PyPI → account → Publishing → Add a new pending publisher**:
 
 | Field | Value |
 | --- | --- |
-| PyPI project name | `zpl-python` |
+| PyPI project name | `zplkit` |
 | Owner | `codyps` |
 | Repository name | `zpl` |
 | Workflow filename | `release-plz.yml` |
@@ -206,12 +208,12 @@ version with changed bytes or advance its version just to bypass a failed upload
 A manual run on a later ordinary commit does not backfill an old release. Failed
 Python builds or uploads stop release-PR preparation, alongside Rust/npm failures.
 
-Verify the first publication on [PyPI](https://pypi.org/project/zpl-python/) and
+Verify the first publication on [PyPI](https://pypi.org/project/zplkit/) and
 install it into a clean environment:
 
 ```sh
-python -m pip install --only-binary=:all: zpl-python==<released-version>
-python -c 'import zpl; print(zpl.__version__, zpl.library_version)'
+python -m pip install --only-binary=:all: zplkit==<released-version>
+python -c 'import zplkit; print(zplkit.__version__, zplkit.library_version)'
 ```
 
 Local release-gate tests, archive builds, and metadata checks do not establish

@@ -17,7 +17,8 @@ from pathlib import Path
 
 from renderer_release import release_version
 
-PACKAGE = "zpl-python"
+PACKAGE = "zplkit"
+CRATE = "zpl-python"
 
 
 def stamp(root, version):
@@ -33,7 +34,7 @@ def stamp(root, version):
     manifest_path = root / "zpl-python/Cargo.toml"
     manifest = manifest_path.read_text()
     package = tomllib.loads(manifest)["package"]
-    if package["name"] != PACKAGE:
+    if package["name"] != CRATE:
         raise ValueError("Unexpected binding crate name")
     old = re.escape(package["version"])
     manifest, count = re.subn(
@@ -93,9 +94,9 @@ def select_uploads(source, destination, version):
     wheels = [
         p
         for p in artifacts
-        if p.name.startswith(f"zpl_python-{version}-") and p.suffix == ".whl"
+        if p.name.startswith(f"zplkit-{version}-") and p.suffix == ".whl"
     ]
-    sdists = [p for p in artifacts if p.name == f"zpl_python-{version}.tar.gz"]
+    sdists = [p for p in artifacts if p.name == f"zplkit-{version}.tar.gz"]
     if len(wheels) != 5 or len(sdists) != 1 or len(artifacts) != 6:
         raise ValueError(
             "Expected five platform wheels and one source archive for this version"
