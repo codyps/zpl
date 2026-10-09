@@ -41,6 +41,36 @@ presence flags must be 0 or 1. See the [native compatibility documentation](../z
 for individual settings, and [renderer coverage](../docs/local-renderer.md) for
 supported commands and font behavior.
 
+## Renderer profiles
+
+`zpl_options_init` fills the entire options struct, including compatibility,
+from the corresponding Rust profile. No manual compatibility initialization is
+needed. All profiles currently defined in `zpl::render::profiles` are available:
+
+| C profile | Rust profile |
+| --- | --- |
+| `ZPL_PROFILE_SPECIFICATION` | `SPECIFICATION` |
+| `ZPL_PROFILE_ZD621` | `ZD621_203_DPI` |
+| `ZPL_PROFILE_ZQ610_PLUS` | `ZQ610_PLUS_203_DPI` |
+
+```c
+ZplOptions options;
+int32_t status = zpl_options_init(ZPL_PROFILE_ZD621, &options);
+if (status == ZPL_OK) {
+    /* Optional overrides; all remaining settings retain the Rust profile values. */
+    options.width = 812;
+    options.height = 1218;
+    /* Pass &options to zpl_render or zpl_render_with_fonts. */
+}
+```
+
+Passing NULL for options selects the complete default ZD621 profile. Individual
+compatibility fields may be overridden after initialization when needed. The Rust
+binding tests compare each initialized C profile, including all compatibility
+fields, with its native Rust constant.
+
+## Ownership
+
 Inputs are byte slices, not C strings. Returned bytes are length-delimited and
 not NUL-terminated. Each document, scene, parsed result, and encoded buffer is
 owned by its caller and must be freed exactly once with the corresponding library

@@ -59,7 +59,11 @@ ZplBytes zpl_library_version(void);
 /* Borrowed until the next status-returning call on this thread (even success).
  * Accessors returning counts/views and free functions preserve the last error. */
 ZplError zpl_last_error(void);
-/* Initialize configurations before editing fields. Compatibility flags must be
+/* options_init copies the complete native Rust profile: dimensions, DPI, and
+ * every compatibility setting. No field needs manual initialization. Select
+ * SPECIFICATION, ZD621 (ZD621_203_DPI), or ZQ610_PLUS (ZQ610_PLUS_203_DPI), then
+ * override only the fields you want to change. NULL render options use ZD621.
+ * Initialize configurations before editing fields. Compatibility flags must be
  * 0 or 1. Optional presence flags distinguish None from Some(0). See the native
  * render::compatibility::Compatibility docs for each field's semantics. */
 int32_t zpl_options_init(uint32_t profile, ZplOptions *out);
