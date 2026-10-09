@@ -6,6 +6,7 @@ This Rust 2021 Cargo workspace contains these crates:
 
 - `raster-diff/`: Raster image decoding and comparison.
 - `zpl-wasm/`: Browser rendering bindings.
+- `zpl-elixir/`: Elixir `:zpl` package and Rustler bindings (`zpl_elixir` Cargo crate).
 - `zpl-cmd/`: Local CLI with `zpl-cmd render` for PNG, SVG, and multipage PDF output.
 - `zpl/`: ZPL parsing, command/format types, and rendering. Parser unit tests live in `src/parse/test.rs`; renderer unit tests are colocated with their modules; integration tests and printer captures live in `tests/`.
 - `zebra-http-api/`: Zebra printer HTTP rendering client, with a `zebra-render` example.

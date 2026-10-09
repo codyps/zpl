@@ -23,6 +23,11 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  elixir:
+    uses: ./.github/workflows/elixir-package.yml
+    permissions:
+      contents: read
+
   python-wheels:
     uses: ./.github/workflows/python-package.yml
     permissions:
