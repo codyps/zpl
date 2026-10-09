@@ -131,20 +131,28 @@ selected by `^A@` or assigned to an ID by `^CW`:
 
 ```js
 import { readFileSync } from 'node:fs';
+import { render, resolveRomFont } from '@codyps/zpl';
 
 const brand = readFileSync('brand.ttf');
 const result = render('^CWZ,R:BRAND.TTF^XA^FO20,20^AZN,32,24^FDHello^FS^XZ', {
   resolveFont(name) {
     if (name === 'R:BRAND.TTF') return brand;
-    return null;
+    return resolveRomFont(name); // Explicitly retain bundled ROM lookup.
   },
 });
 ```
 
 The synchronous callback receives a validated uppercase `device:path`; omitted
 devices become `R:`. It runs once per resolved name per render. Return a `Buffer`
-or `Uint8Array`; the renderer copies and validates the bytes. Returning `null`
-or `undefined` delegates to bundled ROM lookup; unknown names still fail.
+or `Uint8Array`; the renderer copies and validates the bytes. Supplying a callback
+replaces the default named-font resolver, matching Rust's `Fonts::set_resolver`.
+Returning `null` or `undefined` means unresolved and fails the render, even for
+bundled ROM names. With no callback, bundled ROM lookup remains the default.
+
+To retain ROM lookup explicitly, return `resolveRomFont(name)`. This helper
+returns an opaque, reusable face handle for a known bundled font, `null` for
+an unknown valid name, and throws for an invalid path. It is case-insensitive,
+requires no disposal, and can also map a virtual filename to another ROM face.
 Thrown errors fail the render at the selecting command. Promises are rejected;
 load fonts before rendering if your storage API is asynchronous. No host files
 are opened automatically, and font registrations never persist between renders.
@@ -153,6 +161,9 @@ In-job downloads take precedence over the resolver. External fonts support the
 Rust engine's quadratic TrueType outlines and native hinting, with a 16 MiB
 per-font ceiling. CFF/CFF2, variable fonts, and collections are unsupported.
 Missing glyphs fail rather than falling back to a different face.
+The callback resolves filenames used by `^A@`/`^CW`; it does not intercept
+resident font-ID selections. Custom bitmap glyph-provider callbacks remain
+unexposed; `resolveRomFont()` handles refer to the bundled ROM faces.
 
 Inline `~DB`, `~DT`, `~DU`, and `~DY` font downloads use the Rust renderer's
 existing support. The default **1 MiB input budget**, rather than a Wasm argument

@@ -1,7 +1,8 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
-import { render } from '@codyps/zpl';
+import { createRequire } from 'node:module';
+import { render, resolveRomFont } from '@codyps/zpl';
 
 // Original constructed TrueType probe used by Rust font-download regressions.
 // Zebra Programming Guide ~DT/~DU/~DY and ^A@/^CW:
@@ -57,9 +58,35 @@ test('CW canonicalizes names; inline downloads take precedence', () => {
   } }).data, render(inline, options).data);
 });
 
-test('resolver fallback, errors, and nested renders are render-scoped', () => {
+test('custom resolvers replace ROM lookup and can explicitly delegate', () => {
+  assert.equal(createRequire(import.meta.url)('@codyps/zpl').resolveRomFont, resolveRomFont);
   const rom = '^XA^A@N,12,12,Z:E12.FNT^FDABC^FS^XZ';
-  assert.deepEqual(render(rom, { ...options, resolveFont: () => null }), render(rom, options));
+  const expected = render(rom, options);
+  for (const value of [null, undefined]) {
+    assert.throws(() => render(rom, { ...options, resolveFont: () => value }), /unresolved named font/);
+    assert.throws(() => render(label, { ...options, resolveFont: () => value }), /unresolved named font/);
+  }
+  assert.deepEqual(render(rom, { ...options, resolveFont: resolveRomFont }), expected);
+  const face = resolveRomFont('z:e12.fnt');
+  assert.ok(face);
+  for (let i = 0; i < 2; i++) {
+    assert.deepEqual(render(rom.replace('Z:E12.FNT', 'R:ALIAS.FNT'), {
+      ...options, resolveFont: () => face,
+    }), expected);
+  }
+  const overridden = render(label.replace('R:TEST.TTF', 'Z:E12.FNT'), {
+    ...options, resolveFont: () => font,
+  });
+  assert.deepEqual(overridden, render(inline, options));
+  const resident = '^XA^AAN,9,5^FDABC^FS^XZ';
+  assert.deepEqual(render(resident, { ...options, resolveFont: () => null }), render(resident, options));
+  assert.equal(resolveRomFont('R:UNKNOWN.TTF'), null);
+  assert.throws(() => resolveRomFont('../font.ttf'), /invalid named font/);
+  assert.throws(() => resolveRomFont(null), TypeError);
+  assert.throws(() => render(rom, { ...options, resolveFont: () => ({}) }), /resolveFont must return/);
+});
+
+test('resolver errors and nested renders are render-scoped', () => {
   for (const value of [[], 'font.ttf', Promise.resolve(font), 42]) {
     assert.throws(() => render(label, { ...options, resolveFont: () => value }), /resolveFont must return/);
   }

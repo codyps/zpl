@@ -1,6 +1,26 @@
 'use strict';
 const wasm = require('./pkg/zpl_wasm.js');
 
+// Opaque, reusable ROM-face selections; no Wasm allocation or disposal needed.
+const romFonts = new WeakMap();
+function resolveRomFont(name) {
+  if (typeof name !== 'string') throw new TypeError('font name must be a string');
+  if (!wasm.has_rom_font(name)) return null;
+  const face = Object.freeze({});
+  romFonts.set(face, name);
+  return face;
+}
+
+function fontResolver(callback) {
+  if (callback === undefined) return undefined;
+  return name => {
+    const face = callback(name);
+    if (romFonts.has(face)) return romFonts.get(face);
+    if (face == null || face instanceof Uint8Array) return face;
+    throw new TypeError('resolveFont must return Uint8Array, a resolveRomFont() result, null, or undefined (not a Promise)');
+  };
+}
+
 function integer(value, name, minimum = 1) {
   if (value !== undefined && (!Number.isInteger(value) || value < minimum || value > 0xffffffff)) {
     throw new RangeError(`${name} must be an integer from ${minimum} to 4294967295`);
@@ -29,7 +49,7 @@ function render(input, options = {}) {
   const result = wasm.render_encoded(input, integer(width, 'width'), integer(height, 'height'),
     integer(dpi, 'dpi'), profile, format, integer(label, 'label', 0),
     integer(limits.inputBytes, 'limits.inputBytes', 0),
-    integer(limits.fontBytes, 'limits.fontBytes', 0), resolveFont);
+    integer(limits.fontBytes, 'limits.fontBytes', 0), fontResolver(resolveFont));
   try {
     return {
       data: Buffer.from(result.take_body()),
@@ -45,6 +65,7 @@ function render(input, options = {}) {
 }
 
 exports.render = render;
+exports.resolveRomFont = resolveRomFont;
 exports.libraryVersion = wasm.library_version;
 
 const elementKinds = ['before_first_command', 'format_command', 'control_command', 'control_character'];

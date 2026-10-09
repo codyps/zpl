@@ -57,7 +57,11 @@ fn resolve<'a>(
                 .unwrap_or_else(|| "font resolver failed".into())
         })?;
     if value.is_null() || value.is_undefined() {
-        return resolve_rom_font(name);
+        return Ok(None);
+    }
+    // The Node wrapper converts its opaque ROM-font handles to lookup names.
+    if let Some(rom_name) = value.as_string() {
+        return resolve_rom_font(&rom_name);
     }
     let bytes = value
         .dyn_into::<js_sys::Uint8Array>()
@@ -66,6 +70,14 @@ fn resolve<'a>(
         return Err("external font exceeds 16 MiB TrueType limit".into());
     }
     Face::truetype(data.insert(bytes.to_vec()), Hinting::Native).map(Some)
+}
+
+/// Validate a ROM lookup before the Node wrapper creates an opaque face handle.
+#[wasm_bindgen]
+pub fn has_rom_font(name: &str) -> Result<bool, JsError> {
+    resolve_rom_font(name)
+        .map(|face| face.is_some())
+        .map_err(|error| JsError::new(&error))
 }
 
 #[wasm_bindgen]

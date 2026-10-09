@@ -1,5 +1,13 @@
 import type { Buffer } from 'node:buffer';
 
+declare const romFontBrand: unique symbol;
+/** Opaque, reusable bundled ROM face returned by resolveRomFont(). No disposal needed. */
+export interface RomFont {
+  readonly [romFontBrand]: true;
+}
+/** Case-insensitive lookup. Returns null for unknown names; throws on invalid paths. */
+export function resolveRomFont(name: string): RomFont | null;
+
 export interface Options {
   /** PNG by default. PDF includes all labels unless label is supplied. */
   format?: 'png' | 'svg' | 'pdf';
@@ -15,11 +23,13 @@ export interface Options {
   /**
    * Synchronous named-font lookup for ^A@/^CW. Receives a validated uppercase
    * device:path (default device R:), once per resolved name per render.
-   * Return quadratic TrueType bytes; null/undefined delegates to bundled ROM
-   * fonts. In-job downloads take precedence. Throws propagate as render errors.
+   * Replaces the default named-font resolver. Return quadratic TrueType bytes
+   * or a resolveRomFont() result; null/undefined means unresolved.
+   * In-job downloads take precedence. Throws propagate as render errors.
+   * Without this callback, bundled ROM lookup remains the default.
    * Bytes are copied; no filesystem access is performed by the package.
    */
-  resolveFont?: (name: string) => Uint8Array | null | undefined;
+  resolveFont?: (name: string) => Uint8Array | RomFont | null | undefined;
   /** Nonnegative integer byte budgets, up to 4294967295. Other Rust budgets remain. */
   limits?: {
     /** Raw input and expanded formats, each separately. Default 1048576 (1 MiB). */
