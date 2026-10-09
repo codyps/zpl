@@ -12,6 +12,9 @@ rustPlatform.buildRustPackage {
       ../LICENSE
       ../zpl
       ../zpl-cmd
+      ../zpl-c
+      ../zpl-python
+      ../zplkit
       ../zpl-render-api
       ../zpl-wasm
       ../raster-diff

@@ -23,6 +23,24 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  c-api:
+    name: C API (${{ matrix.runner }})
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [ubuntu-24.04, macos-15]
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: dtolnay/rust-toolchain@6bed0761d98439e5a578e2877258200ad565ba87 # stable
+      - name: Test native equivalence and C/C++ ABI
+        run: |
+          cargo test --locked -p zpl-c
+          sh zpl-c/tests/run-c.sh
+
   python-wheels:
     uses: ./.github/workflows/python-package.yml
     permissions:

@@ -63,6 +63,12 @@ The [`@codyps/zpl` package](zpl-node/README.md) wraps the Rust renderer with
 WebAssembly and supports CommonJS, ESM, and TypeScript. Build and pack it from
 `zpl-node/` to render PNG, SVG, and multipage PDF locally without a native addon.
 
+## Use the renderer in C or C++
+
+The [`zpl-c` library](zpl-c/README.md) provides a C header and shared/static libraries
+for lossless parsing, rendering with configurable profiles and limits, and
+PNG, SVG, PDF, or grayscale output. Build it with `cargo build --locked --release -p zpl-c`.
+
 ## Use the renderer in Rust
 
 ```rust

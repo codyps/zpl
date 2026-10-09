@@ -4215,6 +4215,13 @@ name = "zpl-bitmap-fonts"
 version = "0.1.0"
 
 [[package]]
+name = "zpl-c"
+version = "0.1.0"
+dependencies = [
+ "zpl",
+]
+
+[[package]]
 name = "zpl-cmd"
 version = "0.1.0"
 dependencies = [
