@@ -7,6 +7,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0](https://github.com/codyps/zpl/compare/zpl-v0.1.1...zpl-v0.2.0) - 2026-10-09
+
+### Added
+
+- *(python)* add zplkit bindings and automated PyPI releases ([#61](https://github.com/codyps/zpl/pull/61))
+- *(fonts)* resolve ROM paths and support custom font resolvers ([#56](https://github.com/codyps/zpl/pull/56))
+- *(fonts)* [**breaking**] support format-independent bitmap providers ([#57](https://github.com/codyps/zpl/pull/57))
+- *(fonts)* [**breaking**] unify automatic glyph and encoding recovery
+- *(render)* [**breaking**] support caller-supplied and ZPL-downloaded fonts ([#52](https://github.com/codyps/zpl/pull/52))
+- *(fonts)* recover and render with shared bitmap fonts ([#51](https://github.com/codyps/zpl/pull/51))
+- *(render)* add calibrated TrueType rendering and separate font research
+
+### Fixed
+
+- *(fonts)* match supplied bitmap metrics to printer output
+- *(render)* correct supplied TrueType field baselines
+- *(render)* match ZD621 QR segmentation and label caption ([#48](https://github.com/codyps/zpl/pull/48))
+- *(render)* accept public ZPL printer preview tolerances
+- *(render)* match ZD621 PDF417 layout and punctuation encoding
+- *(privacy)* remove printer identifiers from docs and capture defaults ([#40](https://github.com/codyps/zpl/pull/40))
+
+### Other
+
+- *(fonts)* normalize captured glyph storage and lookup
+
 ### Changed
 
 - **Breaking:** remove ZBF1/ZBF2 decoding (`bitmap_font::unpack`) and the
