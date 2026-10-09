@@ -151,8 +151,10 @@ cargo test --locked -p zpl-c
 `cargo test` builds the shared library, then Rust integration tests compile and
 execute the C and C++ smoke/font consumers and the C rendering example. No shell
 script or nested Cargo build is needed. Install a C/C++ toolchain locally; the
-`cc` crate discovers the compiler and Windows MSVC SDK environment. CI runs the
-same command on Linux, macOS, and Windows. Integration tests use Cargo's current
+`cc` crate discovers the compiler and Windows MSVC SDK environment. The shared
+Rust workspace CI jobs run these tests alongside all other crates
+with Nextest on Linux x86_64/aarch64, macOS x86_64/aarch64, and Windows x86_64;
+doctests run separately with Cargo. Integration tests use Cargo's current
 profile/target library directory, including custom `CARGO_TARGET_DIR` locations.
 Rust tests compare every output format directly with native adapters. `generate-config.py` uses only Python's
 standard library; rerun it when native configuration fields change, and review
