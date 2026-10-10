@@ -7,6 +7,7 @@ members = [
     "raster-diff",
     "zpl-wasm",
     "zpl-python",
+    "zpl-c",
     "zpl-elixir",
     "zplkit",
     "zpl-cmd",

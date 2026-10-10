@@ -1,0 +1,5 @@
+# https://nexte.st/docs/configuration/
+[profile.ci]
+# Use Nextest's CPU-based concurrency across test binaries; never retry failures.
+fail-fast = false
+retries = 0

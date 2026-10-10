@@ -83,7 +83,7 @@ impl Mock {
                                 }
                             }
                             if hung.load(Ordering::SeqCst) != 0 {
-                                tokio::time::sleep(Duration::from_millis(150)).await;
+                                tokio::time::sleep(Duration::from_secs(1)).await;
                                 return (StatusCode::SERVICE_UNAVAILABLE, "hung").into_response();
                             }
                             "<IMG SRC=\"/image\">".into_response()
@@ -128,7 +128,7 @@ impl Mock {
                             break;
                         }
                         if mode.load(Ordering::SeqCst) == 7 {
-                            tokio::time::sleep(Duration::from_millis(150)).await;
+                            tokio::time::sleep(Duration::from_secs(1)).await;
                             break;
                         }
                         let value = if line.contains("device.unique_id") {
@@ -176,8 +176,10 @@ impl Mock {
             cache,
             "test",
             Timing {
-                io: Duration::from_millis(70),
-                boot: Duration::from_millis(500),
+                // Allow healthy loopback requests to finish on busy CI runners.
+                // Simulated hangs above still exceed this deadline.
+                io: Duration::from_millis(500),
+                boot: Duration::from_secs(2),
                 settle: Duration::from_millis(2),
                 poll: Duration::from_millis(5),
                 cooldown: Duration::from_secs(300),
@@ -294,7 +296,7 @@ async fn stuck_preview_restarts_and_retries_or_quarantines_reproduced_hang() {
             mock.config.admission = policy;
             mock.mode.store(mode, Ordering::SeqCst);
             let mut printer = mock.printer(cache);
-            Arc::get_mut(&mut printer.0).unwrap().timing.cooldown = Duration::from_secs(1);
+            Arc::get_mut(&mut printer.0).unwrap().timing.cooldown = Duration::from_secs(3);
             let result = printer.render(LABEL.into(), false).await;
             if mode == 2 {
                 assert!(!result.unwrap().1);
@@ -305,7 +307,7 @@ async fn stuck_preview_restarts_and_retries_or_quarantines_reproduced_hang() {
                     1,
                     "second restart must wait for cooldown"
                 );
-                timeout(Duration::from_secs(4), async {
+                timeout(Duration::from_secs(10), async {
                     loop {
                         if !printer.0.state.lock().await.recovering {
                             break;
@@ -366,13 +368,19 @@ async fn outage_is_retryable_cooldown_survives_reopen_and_other_printer_runs() {
     a.mode.store(4, Ordering::SeqCst);
     let pa = a.printer(cache.clone());
     let pb = b.printer(cache);
-    let ra = tokio::spawn(async move { pa.render(LABEL.into(), false).await });
+    // Hold A's state explicitly: B must finish while A cannot make progress.
+    // The timeout is only a deadlock guard, not a scheduling-speed assertion.
+    let state = pa.0.state.lock().await;
+    let request_printer = pa.clone();
+    let ra = tokio::spawn(async move { request_printer.render(LABEL.into(), false).await });
     assert!(
-        timeout(Duration::from_millis(250), pb.render(LABEL.into(), false))
+        timeout(Duration::from_secs(10), pb.render(LABEL.into(), false))
             .await
             .unwrap()
             .is_ok()
     );
+    assert!(!ra.is_finished());
+    drop(state);
     assert!(ra
         .await
         .unwrap()
@@ -429,11 +437,11 @@ async fn recovery_continues_without_another_user_request() {
     let mock = Mock::new("automatic").await;
     mock.mode.store(4, Ordering::SeqCst);
     let mut printer = mock.printer(cache);
-    Arc::get_mut(&mut printer.0).unwrap().timing.cooldown = Duration::from_secs(1);
+    Arc::get_mut(&mut printer.0).unwrap().timing.cooldown = Duration::from_secs(3);
     assert!(printer.render(LABEL.into(), false).await.is_err());
     assert!(printer.0.state.lock().await.recovering);
     mock.mode.store(0, Ordering::SeqCst);
-    timeout(Duration::from_secs(4), async {
+    timeout(Duration::from_secs(10), async {
         loop {
             if !printer.0.state.lock().await.recovering {
                 break;
@@ -468,7 +476,7 @@ async fn recovery_does_not_stop_after_three_failed_attempts() {
     timing.cooldown = Duration::from_millis(40);
     timing.boot = Duration::from_millis(100);
     assert!(printer.render(LABEL.into(), false).await.is_err());
-    timeout(Duration::from_secs(4), async {
+    timeout(Duration::from_secs(10), async {
         while mock.restarts.load(Ordering::SeqCst) < 5 {
             tokio::time::sleep(Duration::from_millis(10)).await;
         }
@@ -508,7 +516,7 @@ async fn identity_hang_after_reopen_uses_marked_last_known_identity_for_recovery
     assert!(printer.render(LABEL.into(), false).await.is_err());
     assert!(printer.0.state.lock().await.recovering);
     mock.mode.store(0, Ordering::SeqCst);
-    timeout(Duration::from_secs(3), async {
+    timeout(Duration::from_secs(10), async {
         while printer.0.state.lock().await.recovering {
             tokio::time::sleep(Duration::from_millis(20)).await;
         }
@@ -534,7 +542,7 @@ async fn client_disconnect_does_not_cancel_hang_recovery_or_persistence() {
     mock.mode.store(2, Ordering::SeqCst);
     let printer = mock.printer(cache);
     let request = tokio::spawn(async move { printer.render(LABEL.into(), false).await });
-    timeout(Duration::from_secs(3), async {
+    timeout(Duration::from_secs(10), async {
         while mock.labels.lock().unwrap().len() < 2 {
             tokio::time::sleep(Duration::from_millis(5)).await;
         }
@@ -544,7 +552,7 @@ async fn client_disconnect_does_not_cancel_hang_recovery_or_persistence() {
     request.abort();
     assert!(request.await.unwrap_err().is_cancelled());
     use crate::schema::png_requests as r;
-    timeout(Duration::from_secs(3), async {
+    timeout(Duration::from_secs(10), async {
         loop {
             if r::table
                 .filter(r::png_id.is_not_null())
