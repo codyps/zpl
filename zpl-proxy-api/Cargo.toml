@@ -48,7 +48,7 @@ opentelemetry-otlp = { version = "0.32.0", default-features = false, features = 
 ] }
 zebra-sgd = { version = "0.1.0", path = "../zebra-sgd" }
 zebra-http-api = { version = "0.1.0", path = "../zebra-http-api" }
-zpl = { version = "0.2.0", path = "../zpl" }
+zpl = { version = "0.2.1", path = "../zpl" }
 
 raster-diff = { version = "0.1.0", path = "../raster-diff" }
 

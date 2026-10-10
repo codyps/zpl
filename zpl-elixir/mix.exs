@@ -4,7 +4,7 @@ defmodule Zpl.MixProject do
   def project do
     [
       app: :zpl,
-      version: "0.1.0",
+      version: "0.2.1",
       elixir: "~> 1.15",
       start_permanent: Mix.env() == :prod,
       deps: [{:rustler, "~> 0.38.0", runtime: false}],
