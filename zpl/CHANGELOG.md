@@ -15,9 +15,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Node parsing and external font APIs ([#62](https://github.com/codyps/zpl/pull/62)).
 - Elixir bindings and automated Hex releases ([#64](https://github.com/codyps/zpl/pull/64)).
 
+### Fixed
+
+- Automatically prepare release PRs for binding-only changes and synchronize
+  C, Wasm/Node, Python, and Elixir versions with the renderer.
+
 ### Changed
 
-- Align the C, Node, Python, and Elixir package versions with renderer 0.2.1.
+- Align the C, Wasm/Node, Python, and Elixir package versions with renderer 0.2.1.
   This explicit renderer bump releases binding-only changes through the existing
   npm, PyPI, and Hex workflows. Python retains its existing API. C is distributed
   as source in the renderer release; its ABI version remains 1.

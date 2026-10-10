@@ -279,10 +279,38 @@ jobs:
           sudo apt-get -o Acquire::Retries=3 install -y --no-install-recommends build-essential cmake pkg-config libssl-dev libsqlite3-dev gh jq
       - name: Install Rust
         uses: dtolnay/rust-toolchain@6bed0761d98439e5a578e2877258200ad565ba87 # stable
-      - name: Create or update release PR
-        uses: release-plz/action@b8d6b54b02889ff2ae2bb82e8b57c3a8fc1683a5 # v0.5.139
+      # release-plz calculates Rust versions first. Binding packages are outside
+      # its registry comparison, so finish the local edits before opening one PR.
+      - name: Install release preparation tools
+        uses: taiki-e/install-action@ab6895351a88b908e96a4697860d4ffea5e57dbe # v2.87.27
         with:
-          command: release-pr
-          version: 0.3.169
+          tool: release-plz@0.3.169,cargo-semver-checks@0.50.0
+      - name: Calculate Rust releases
         env:
-          GITHUB_TOKEN: ${{ secrets.RELEASE_PLZ_TOKEN }}
+          GIT_TOKEN: ${{ secrets.RELEASE_PLZ_TOKEN }}
+        run: release-plz update
+      - name: Include binding releases and synchronize versions
+        run: |
+          python3 scripts/bindings-release.py --body "$RUNNER_TEMP/release-pr.md"
+          cargo metadata --locked --no-deps --format-version 1 > /dev/null
+          git diff --check
+      - name: Create or update release PR
+        # https://github.com/peter-evans/create-pull-request#usage
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
+        with:
+          token: ${{ secrets.RELEASE_PLZ_TOKEN }}
+          branch: release-plz-auto
+          base: main
+          title: "chore: prepare release"
+          commit-message: |
+            chore: prepare release
+
+            Prepare Rust and binding versions from changes since the previous releases.
+            Keep binding packages aligned with the renderer for registry publication.
+          body-path: ${{ runner.temp }}/release-pr.md
+          add-paths: |
+            Cargo.lock
+            **/Cargo.toml
+            **/CHANGELOG.md
+            zpl-node/package.json
+            zpl-elixir/mix.exs

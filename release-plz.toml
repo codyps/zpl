@@ -13,7 +13,8 @@ git_tag_enable = true
 git_release_enable = true
 # Release preparation must not also perform unrelated dependency upgrades.
 dependencies_update = false
-pr_name = "chore: prepare release"
+# PR creation runs after update + scripts/bindings-release.py; its branch/title
+# are configured in release-plz.yml so all ecosystems appear in one PR.
 
 [[package]]
 name = "raster-diff"

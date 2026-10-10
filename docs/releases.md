@@ -18,10 +18,12 @@ The [Release-plz workflow](../.github/workflows/release-plz.yml) runs on pushes 
 4. `elixir-version` selects the same completed stable renderer release. `elixir-build`
    builds and tests a portable source archive, and `elixir-release` publishes
    `zpl` to **Hex** with the renderer version.
-5. After all four registries succeed, `release-pr` creates or updates a PR containing
-   package versions, changelogs, and workspace dependency updates, using the
-   published crates.io versions as the baseline. A failed publication stops
-   release preparation so it cannot race ahead of the registry.
+5. After all four registries succeed, `release-pr` runs `release-plz update` using
+   published crates.io versions as the baseline, then includes binding changes
+   with `scripts/bindings-release.py`. A pinned create-pull-request action creates
+   or updates `release-plz-auto` with all versions, changelogs, and workspace
+   dependency updates. A failed publication stops release preparation so it
+   cannot race ahead of the registry.
 
 `raster-diff`, `zpl-bitmap-fonts`, and `zpl` are publishable and managed by
 release-plz. The empty `zplkit` 0.0.0 placeholder is published separately and
@@ -126,13 +128,13 @@ non-prerelease GitHub release. It stamps that version into the npm manifest in
 CI, builds Wasm, runs native and Node tests (including installing a packed
 archive), and publishes the public package. npm supplies provenance automatically
 for a public package built in a public repository via trusted publishing.
-The checked-in npm version is a local-development version; CI does not commit
-its version stamp back to the repository.
+Release PRs commit the npm version alongside the renderer version. The publisher
+also stamps the selected version as an idempotent consistency measure.
 
 This policy couples npm releases to **stable `zpl` releases**, not every workspace
-crate release. For a Node-wrapper-only fix, explicitly arrange a `zpl` version
-bump in the release PR, including the normal Cargo lockfile/dependency updates;
-release-plz may not infer a renderer release from files outside that crate.
+crate release. Node-wrapper-only changes automatically prepare a renderer bump
+and the normal Cargo lockfile/dependency updates through the binding preparation
+step described below.
 Prereleases are not published to npm by this workflow.
 
 On a retry, an already-published npm version is skipped. Registry errors other
@@ -158,10 +160,10 @@ repository's Rust `zpl` crate. Automatic releases use exactly the stable rendere
 version, following the same `zpl-v<version>` tag and completed GitHub release
 checks as npm. A shared selector prevents publishing on ordinary commits,
 prereleases, missing GitHub releases, or tags pointing at a different commit.
-Python-wrapper-only changes need an explicit renderer version bump in the release
-PR, just like Node-wrapper-only changes. The binding's checked-in Cargo version is
-for local development; CI stamps the binding manifest and its entry in the root
-Cargo lockfile without committing them. The wheel metadata, `zplkit.__version__`, and
+Python-wrapper-only changes automatically prepare a renderer bump, just like
+Node-wrapper-only changes. Release PRs align the binding's checked-in Cargo
+version and root lock entry with the renderer. CI also stamps these versions
+idempotently when building the selected release. The wheel metadata, `zplkit.__version__`, and
 `zplkit.library_version` are checked for equality before upload.
 
 Before the first automatic PyPI release, an account owner must configure a
@@ -237,8 +239,8 @@ The same shared release selector used by npm/PyPI requires the exact checked-out
 commit's `zpl-v<version>` tag and a completed stable GitHub release. CI stamps
 that version into the Mix project, binding Cargo manifest, and root lock entry.
 The installed package version must match `Zpl.library_version()` before upload.
-Elixir-only changes require an explicit renderer bump in the release PR, just
-like Python/Node wrapper changes; development versions are not committed back.
+Elixir-only changes automatically prepare a renderer bump. Release PRs commit the
+aligned Mix/Cargo versions and root lock entry; publication stamping is idempotent.
 
 Before the first automatic release:
 
@@ -288,23 +290,46 @@ does. No live publication is needed to review this change.
 
 ### Binding-only releases
 
-Release-plz can finish successfully without opening a PR when only the bindings
-changed: the managed crates.io packages have no new packaged code. The npm,
-Python, and Elixir publishers still require a new stable renderer release.
-For this case, prepare an explicit release PR:
+Release-plz's registry comparison covers the public Rust crates. The workflow
+runs that analysis first, including its Rust API compatibility checks, then the
+[binding preparation helper](../scripts/bindings-release.py) compares committed
+binding files against the highest stable `zpl-v<version>` tag reachable from the
+checkout. Full history and a matching tagged renderer manifest are required.
 
-1. Start from current `main` on a `release-plz-` prefixed branch. This prefix is
-   required by the existing publication gate, including for a manually prepared PR.
-2. Bump `zpl`, its workspace dependency requirements, and the root lockfile.
-   Add binding changes to `zpl/CHANGELOG.md`. Follow the configured release-plz
-   policy: additive changes use a patch increment while below 1.0; breaking
-   changes require a minor increment.
-3. Align `zpl-c`, `zpl-python`, and `zpl_elixir` Cargo package versions and lock
-   entries, `zpl-node/package.json`, and `zpl-elixir/mix.exs` with the renderer.
-   Python's distribution version comes from its Cargo manifest. Publishing still
-   stamps Node/Python/Elixir versions in CI on future automated releases.
-4. Run the release-script tests and normal PR CI before merging. Verify registry
-   outcomes after merging, including the first Hex publication when applicable.
+The helper tracks C, Wasm, Node, Python, and Elixir directories, the Node build
+script, and the Elixir source-packaging script. A net change prepares a renderer
+release even when release-plz found no Rust changes. Conventional Commit `!`
+markers and `BREAKING CHANGE:` / `BREAKING-CHANGE:` footers raise the required
+version. It mirrors the current pre-1.0 policy: additive changes increment the
+patch; breaking changes increment the minor (or patch while at 0.0.x). From 1.0,
+features increment the minor and breaking changes increment the major.
+
+The final renderer version is the higher of release-plz's result and the binding
+requirement. The helper aligns C, Wasm, Python, and Elixir Cargo versions, the
+Node manifest, Mix version, root lock entries, and workspace renderer dependency
+requirements. It adds binding commit links while preserving native release notes.
+All bindings follow the shared renderer release even if only one changed. They
+remain `publish = false`; this automation does not add crates.io packages.
+
+Unrelated changes, fully reverted binding changes, and reruns immediately after
+a completed release do not generate a binding bump. Re-running preparation for
+the same checkout is idempotent. The generated PR uses the fixed branch
+`release-plz-auto`, retaining the prefix required by the existing publication
+gate. Only the preparation job writes that branch, under its existing serialized
+concurrency group. The repository token still triggers normal PR CI.
+
+Tests exercise real git histories and the pinned release-plz binary without
+registry uploads. Run them locally with:
+
+```sh
+RELEASE_PLZ_BIN=release-plz python3 -m unittest discover -s scripts -p 'test_*release.py' -v
+```
+
+To preview preparation, use a disposable clean checkout and run
+`release-plz update`, then `python3 scripts/bindings-release.py --body /tmp/release-pr.md`.
+Neither command pushes or publishes. Review the generated diff and PR CI before
+merging. Custom version-regex/release-commit policies require updating the helper;
+it fails visibly instead of silently applying a different binding policy.
 
 The C binding is available in the repository source archive for `zpl-v<version>`;
 there is currently no prebuilt C library upload or crates.io publication for
@@ -314,11 +339,10 @@ the separate C ABI version.
 
 ### Publication checks
 
-Merge workflow changes into `main` before merging the generated release PR. Let
-release-plz update the release PR and wait for its normal CI checks, then merge
-it. Its push to `main` runs `release`, publishing any unpublished prepared
-versions and creating their tags/releases. Merging only a workflow or feature PR
-prepares a release PR; it does not itself publish a release.
+Once this workflow is on `main`, let the release preparation job update its PR
+and wait for the normal CI checks, then merge it. Its push to `main` runs `release`,
+publishing any unpublished prepared versions and creating their tags/releases.
+Merging only a workflow or feature PR prepares a release PR; it does not itself publish a release.
 
 Review `cargo package --list -p raster-diff -p zpl-bitmap-fonts -p zpl` before
 publication. To verify the archives locally without uploading, run:
