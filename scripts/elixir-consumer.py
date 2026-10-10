@@ -19,6 +19,9 @@ from pathlib import Path
 import tomllib
 
 SMOKE = """
+# Release `eval` does not start applications on all supported Elixir versions.
+# https://hexdocs.pm/mix/1.15.8/Mix.Tasks.Release.html#module-one-off-commands-eval-and-rpc
+{:ok, _} = Application.ensure_all_started(:zpl)
 true = Zpl.library_version() == System.fetch_env!("ZPL_EXPECTED_LIBRARY_VERSION")
 true = to_string(Application.spec(:zpl, :vsn)) == System.fetch_env!("ZPL_EXPECTED_PACKAGE_VERSION")
 source = "^XA^FO2,3^GB4,2,2^FS^XZ"
