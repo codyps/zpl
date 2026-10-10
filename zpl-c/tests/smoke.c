@@ -59,6 +59,12 @@ int main(void) {
     options.compatibility.code128_above_text_keeps_bar_origin = 2; /* Last field checks full layout. */
     assert(zpl_render(input, sizeof(input)-1, &options, NULL, &doc) == ZPL_INVALID_ARGUMENT);
     options.compatibility.code128_above_text_keeps_bar_origin = 0;
+    /* The new caption flag must reach native boolean validation. */
+    assert(options.compatibility.barcode_implicit_caption_uses_resident_font == 0);
+    options.compatibility.barcode_implicit_caption_uses_resident_font = 2;
+    assert(zpl_render(input, sizeof(input)-1, &options, NULL, &doc) == ZPL_INVALID_ARGUMENT);
+    assert(doc == NULL);
+    options.compatibility.barcode_implicit_caption_uses_resident_font = 0;
     render_limits.number_abs = NAN;
     assert(zpl_render(input, sizeof(input)-1, &options, &render_limits, &doc) == ZPL_INVALID_ARGUMENT);
     assert(zpl_render(NULL, 1, NULL, NULL, &doc) == ZPL_INVALID_ARGUMENT);

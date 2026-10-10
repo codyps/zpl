@@ -24,7 +24,7 @@ func New() *Module {
 	m.t0 = make([]any, 96)
 	m.maxMem = 4096
 	m.memory = make([]byte, 0x4b0000)
-	m.elements = [][]any{{m.__RINvNtCsknUcikIyyBm_4core3ptr9drop_glueNtNtCs6UNhEcE2CoN_5alloc6string6StringECskbVi9Yr3aUV_16zpl_go_prototype, m.__RNvXsZ_NtCs6UNhEcE2CoN_5alloc6stringNtB5_6StringNtNtCsknUcikIyyBm_4core3fmt5Write9write_str, m.__RNvXsZ_NtCs6UNhEcE2CoN_5alloc6stringNtB5_6StringNtNtCsknUcikIyyBm_4core3fmt5Write10write_char, m.__RNvYNtNtCs6UNhEcE2CoN_5alloc6string6StringNtNtCsknUcikIyyBm_4core3fmt5Write9write_fmtCskbVi9Yr3aUV_16zpl_go_prototype, m.__RNvXsK_NtCsknUcikIyyBm_4core3fmtNtB5_5ErrorNtB5_5Debug3fmt, m.__RNvXs1i_NtCsknUcikIyyBm_4core3fmtReNtB6_7Display3fmtCs508fO6TR0hO_3zpl, m.__RNvXs8_NtNtNtCsknUcikIyyBm_4core3fmt3num3impmNtB9_7Display3fmt, m.__RNvXs1g_NtCsknUcikIyyBm_4core3fmtRReNtB6_5Debug3fmtCs508fO6TR0hO_3zpl, m.__RNvXsi_NtCs508fO6TR0hO_3zpl5parseNtB5_14ParseErrorKindNtNtCsknUcikIyyBm_4core3fmt5Debug3fmt_llvm_17359454854788387126_d2mkxr, m.__RNvXsq_NtCs6UNhEcE2CoN_5alloc6stringNtB5_6StringNtNtCsknUcikIyyBm_4core3fmt7Display3fmt, m.__RNvXsd_NtNtCsknUcikIyyBm_4core3num5errorNtB5_13ParseIntErrorNtNtB9_3fmt5Debug3fmt, m.__RNvXs1g_NtCsknUcikIyyBm_4core3fmtRNtNtNtB8_3num5error12IntErrorKindNtB6_5Debug3fmtCs508fO6TR0hO_3zpl, m.__RINvNtCsknUcikIyyBm_4core3ptr9drop_glueNtNtCs6UNhEcE2CoN_5alloc6string6StringECs508fO6TR0hO_3zpl, m.fn60, m.fn59, m.__RNvYNtNtCs6UNhEcE2CoN_5alloc6string6StringNtNtCsknUcikIyyBm_4core3fmt5Write9write_fmtCs508fO6TR0hO_3zpl, m.fn58, m.__RNvXsq_NtCs6UNhEcE2CoN_5alloc6stringNtB5_6StringNtNtCsknUcikIyyBm_4core3fmt7Display3fmt_llvm_8941680849063143092_5o5k9z, m.fn88, m.fn130, m.fn129, m.__RNvXsk_NtCsknUcikIyyBm_4core3fmtcNtB5_7Display3fmt, m.__RNvXsj_NtCsknUcikIyyBm_4core3fmtcNtB5_5Debug3fmt, m.__RNvXs7_NtNtCsknUcikIyyBm_4core3fmt5floatdNtB7_7Display3fmt, m.fn303, m.__RINvNtCsknUcikIyyBm_4core3ptr9drop_glueINtNvNtCs7L774UPzF0f_3std2io17default_write_fmt7AdapterINtNtCs6UNhEcE2CoN_5alloc3vec3VechEEECs508fO6TR0hO_3zpl_llvm_7849316228480962171_zrmtbd, m.__RNvXNvNtCs7L774UPzF0f_3std2io17default_write_fmtINtB2_7AdapterINtNtCs6UNhEcE2CoN_5alloc3vec3VechEENtNtCsknUcikIyyBm_4core3fmt5Write9write_strCs508fO6TR0hO_3zpl_llvm_7849316228480962171_ynogul, m.__RNvYINtNvNtCs7L774UPzF0f_3std2io17default_write_fmt7AdapterINtNtCs6UNhEcE2CoN_5alloc3vec3VechEENtNtCsknUcikIyyBm_4core3fmt5Write10write_charCs508fO6TR0hO_3zpl_llvm_7849316228480962171_fbqijb, m.__RNvYINtNvNtCs7L774UPzF0f_3std2io17default_write_fmt7AdapterINtNtCs6UNhEcE2CoN_5alloc3vec3VechEENtNtCsknUcikIyyBm_4core3fmt5Write9write_fmtCs508fO6TR0hO_3zpl_llvm_7849316228480962171_ah8wu6, m.fn286, m.fn321, m.fn320, m.fn319, m.__RNvXsr_NtCs6UNhEcE2CoN_5alloc6stringNtB5_6StringNtNtCsknUcikIyyBm_4core3fmt5Debug3fmt, m.__RNvXs1i_NtCsknUcikIyyBm_4core3fmtRjNtB6_7Display3fmtCs508fO6TR0hO_3zpl, m.__RINvNtCsknUcikIyyBm_4core3ptr9drop_glueNtNtNtB4_2io5error5ErrorECs508fO6TR0hO_3zpl, m.__RNvXNtNtCsknUcikIyyBm_4core2io5errorNtB2_5ErrorNtNtB6_3fmt5Debug3fmt, m.fn427, m.fn482, m.fn481, m.fn480, m.fn574, m.fn588, m.fn568, m.fn591, m.fn590, m.fn589, m.fn596, m.fn639, m.fn638, m.fn637, m.__RNvXse_NtNtCsknUcikIyyBm_4core3fmt3numhNtB7_8LowerHex3fmt, m.fn666, m.__RNvXsv_NtCsknUcikIyyBm_4core5arrayNtB5_17TryFromSliceErrorNtNtB7_3fmt5Debug3fmt, m.__RNvXs1g_NtCsknUcikIyyBm_4core3fmtRuNtB6_5Debug3fmtCs508fO6TR0hO_3zpl, m.__RNvXsc_NtCskgABYU7MvcT_12unicode_bidi5levelNtB5_5ErrorNtNtCsknUcikIyyBm_4core3fmt5Debug3fmt_llvm_17315918091969738793_glpg3r, m.__RNvXsc_NtCskgABYU7MvcT_12unicode_bidi5levelNtB5_5ErrorNtNtCsknUcikIyyBm_4core3fmt5Debug3fmt, m.__RNvNtCs7L774UPzF0f_3std5alloc24default_alloc_error_hook, m.__RINvNtCsknUcikIyyBm_4core3ptr9drop_glueNtNtCs6UNhEcE2CoN_5alloc6string6StringECs7L774UPzF0f_3std, m.fn889, m.fn888, m.__RNvYNtNtCs6UNhEcE2CoN_5alloc6string6StringNtNtCsknUcikIyyBm_4core3fmt5Write9write_fmtCs7L774UPzF0f_3std, m.__RNvXs2_NvNtCs7L774UPzF0f_3std9panicking13panic_handlerNtB5_16StaticStrPayloadNtNtCsknUcikIyyBm_4core3fmt7Display3fmt, m.__RNvXs1_NvNtCs7L774UPzF0f_3std9panicking13panic_handlerNtB5_16StaticStrPayloadNtNtCsknUcikIyyBm_4core5panic12PanicPayload8take_box, m.__RNvXs1_NvNtCs7L774UPzF0f_3std9panicking13panic_handlerNtB5_16StaticStrPayloadNtNtCsknUcikIyyBm_4core5panic12PanicPayload3get, m.__RNvXs1_NvNtCs7L774UPzF0f_3std9panicking13panic_handlerNtB5_16StaticStrPayloadNtNtCsknUcikIyyBm_4core5panic12PanicPayload6as_str, m.__RINvNtCsknUcikIyyBm_4core3ptr9drop_glueNtNvNtCs7L774UPzF0f_3std9panicking13panic_handler19FormatStringPayloadEBH_, m.__RNvXs0_NvNtCs7L774UPzF0f_3std9panicking13panic_handlerNtB5_19FormatStringPayloadNtNtCsknUcikIyyBm_4core3fmt7Display3fmt, m.__RNvXs_NvNtCs7L774UPzF0f_3std9panicking13panic_handlerNtB4_19FormatStringPayloadNtNtCsknUcikIyyBm_4core5panic12PanicPayload8take_box, m.__RNvXs_NvNtCs7L774UPzF0f_3std9panicking13panic_handlerNtB4_19FormatStringPayloadNtNtCsknUcikIyyBm_4core5panic12PanicPayload3get, m.__RNvYINtNvNtCs7L774UPzF0f_3std9panicking11begin_panic7PayloadReENtNtCsknUcikIyyBm_4core5panic12PanicPayload6as_strB9_, m.__RNvXNtCsknUcikIyyBm_4core3anyReNtB2_3Any7type_idCs7L774UPzF0f_3std, m.__RNvXNtCsknUcikIyyBm_4core3anyNtNtCs6UNhEcE2CoN_5alloc6string6StringNtB2_3Any7type_idCs7L774UPzF0f_3std, m.__RINvNtCsknUcikIyyBm_4core3ptr9drop_glueNtNtCs6UNhEcE2CoN_5alloc6string6StringEBF_, m.fn911, m.fn910, m.__RNvYNtNtCs6UNhEcE2CoN_5alloc6string6StringNtNtCsknUcikIyyBm_4core3fmt5Write9write_fmtB6_, m.fn909, m.__RNvXs1g_NtCsknUcikIyyBm_4core3fmtRDNtB6_5DebugEL_Bx_3fmtB8_, m.__RNvXs8_NtCsknUcikIyyBm_4core3fmtNtB5_9ArgumentsNtB5_7Display3fmt, m.__RNvXs1i_NtCsknUcikIyyBm_4core3fmtReNtB6_7Display3fmtB8_, m.__RNvXs_NtNtCsknUcikIyyBm_4core3ops5rangeINtB4_5RangejENtNtB8_3fmt5Debug3fmtB8_, m.__RNvXs8_NtNtCsknUcikIyyBm_4core3fmt8buildersINtB5_6FromFnNCNCNvXs2_NtNtB9_2io5errorNtNtB12_4repr4ReprNtB7_5Debug3fmt00ENtB7_7Display3fmtB9_, m.__RNvXs1g_NtCsknUcikIyyBm_4core3fmtRjNtB6_5Debug3fmtB8_, m.__RNvXs1g_NtCsknUcikIyyBm_4core3fmtRyNtB6_5Debug3fmtB8_, m.__RNvXs0_NtNtCsknUcikIyyBm_4core3fmt8buildersNtB5_10PadAdapterNtB7_5Write9write_str, m.__RNvXs0_NtNtCsknUcikIyyBm_4core3fmt8buildersNtB5_10PadAdapterNtB7_5Write10write_char, m.__RNvYNtNtNtCsknUcikIyyBm_4core3fmt8builders10PadAdapterNtB6_5Write9write_fmtB8_, __RNvYNCNvMs5_NtNtCsknUcikIyyBm_4core2io5errorNtBa_11OsFunctions7DEFAULT0INtNtNtBe_3ops8function6FnOnceTlQNtNtBe_3fmt9FormatterEE9call_onceBe_, __RNvYNCNvMs5_NtNtCsknUcikIyyBm_4core2io5errorNtBa_11OsFunctions7DEFAULTs_0INtNtNtBe_3ops8function6FnOnceTlEE9call_onceBe_, __RNvYNCNvMs5_NtNtCsknUcikIyyBm_4core2io5errorNtBa_11OsFunctions7DEFAULTs0_0INtNtNtBe_3ops8function6FnOnceTlEE9call_onceBe_, m.__RNvXsQ_NtNtCsknUcikIyyBm_4core3fmt3numlNtB7_5Debug3fmt, m.__RNvXsn_NtNtCsknUcikIyyBm_4core2io5errorNtB5_9ErrorKindNtNtB9_3fmt5Debug3fmt, m.__RNvXs7_NtNtCsknUcikIyyBm_4core3fmt8buildersINtB5_6FromFnNCNvXs2_NtNtB9_2io5errorNtNtB10_4repr4ReprNtB7_5Debug3fmt0EB1y_3fmtB9_, m.__RNvXs1g_NtCsknUcikIyyBm_4core3fmtReNtB6_5Debug3fmtB8_}}
+	m.elements = [][]any{{m.__RINvNtCsknUcikIyyBm_4core3ptr9drop_glueNtNtCs6UNhEcE2CoN_5alloc6string6StringECskbVi9Yr3aUV_16zpl_go_prototype, m.__RNvXsZ_NtCs6UNhEcE2CoN_5alloc6stringNtB5_6StringNtNtCsknUcikIyyBm_4core3fmt5Write9write_str, m.__RNvXsZ_NtCs6UNhEcE2CoN_5alloc6stringNtB5_6StringNtNtCsknUcikIyyBm_4core3fmt5Write10write_char, m.__RNvYNtNtCs6UNhEcE2CoN_5alloc6string6StringNtNtCsknUcikIyyBm_4core3fmt5Write9write_fmtCskbVi9Yr3aUV_16zpl_go_prototype, m.__RNvXsK_NtCsknUcikIyyBm_4core3fmtNtB5_5ErrorNtB5_5Debug3fmt, m.__RNvXs1i_NtCsknUcikIyyBm_4core3fmtReNtB6_7Display3fmtCs508fO6TR0hO_3zpl, m.__RNvXs8_NtNtNtCsknUcikIyyBm_4core3fmt3num3impmNtB9_7Display3fmt, m.__RNvXs1g_NtCsknUcikIyyBm_4core3fmtRReNtB6_5Debug3fmtCs508fO6TR0hO_3zpl, m.__RNvXsi_NtCs508fO6TR0hO_3zpl5parseNtB5_14ParseErrorKindNtNtCsknUcikIyyBm_4core3fmt5Debug3fmt_llvm_1612776412242081695_vnyn3f, m.__RNvXsq_NtCs6UNhEcE2CoN_5alloc6stringNtB5_6StringNtNtCsknUcikIyyBm_4core3fmt7Display3fmt, m.__RNvXsd_NtNtCsknUcikIyyBm_4core3num5errorNtB5_13ParseIntErrorNtNtB9_3fmt5Debug3fmt, m.__RNvXs1g_NtCsknUcikIyyBm_4core3fmtRNtNtNtB8_3num5error12IntErrorKindNtB6_5Debug3fmtCs508fO6TR0hO_3zpl, m.__RINvNtCsknUcikIyyBm_4core3ptr9drop_glueNtNtCs6UNhEcE2CoN_5alloc6string6StringECs508fO6TR0hO_3zpl, m.fn60, m.fn59, m.__RNvYNtNtCs6UNhEcE2CoN_5alloc6string6StringNtNtCsknUcikIyyBm_4core3fmt5Write9write_fmtCs508fO6TR0hO_3zpl, m.fn58, m.__RNvXsq_NtCs6UNhEcE2CoN_5alloc6stringNtB5_6StringNtNtCsknUcikIyyBm_4core3fmt7Display3fmt_llvm_4997834558440384663_n5ispn, m.fn88, m.fn130, m.fn129, m.__RNvXsk_NtCsknUcikIyyBm_4core3fmtcNtB5_7Display3fmt, m.__RNvXsj_NtCsknUcikIyyBm_4core3fmtcNtB5_5Debug3fmt, m.__RNvXs7_NtNtCsknUcikIyyBm_4core3fmt5floatdNtB7_7Display3fmt, m.fn303, m.__RINvNtCsknUcikIyyBm_4core3ptr9drop_glueINtNvNtCs7L774UPzF0f_3std2io17default_write_fmt7AdapterINtNtCs6UNhEcE2CoN_5alloc3vec3VechEEECs508fO6TR0hO_3zpl_llvm_7849316228480962171_zrmtbd, m.__RNvXNvNtCs7L774UPzF0f_3std2io17default_write_fmtINtB2_7AdapterINtNtCs6UNhEcE2CoN_5alloc3vec3VechEENtNtCsknUcikIyyBm_4core3fmt5Write9write_strCs508fO6TR0hO_3zpl_llvm_7849316228480962171_ynogul, m.__RNvYINtNvNtCs7L774UPzF0f_3std2io17default_write_fmt7AdapterINtNtCs6UNhEcE2CoN_5alloc3vec3VechEENtNtCsknUcikIyyBm_4core3fmt5Write10write_charCs508fO6TR0hO_3zpl_llvm_7849316228480962171_fbqijb, m.__RNvYINtNvNtCs7L774UPzF0f_3std2io17default_write_fmt7AdapterINtNtCs6UNhEcE2CoN_5alloc3vec3VechEENtNtCsknUcikIyyBm_4core3fmt5Write9write_fmtCs508fO6TR0hO_3zpl_llvm_7849316228480962171_ah8wu6, m.fn286, m.fn321, m.fn320, m.fn319, m.__RNvXsr_NtCs6UNhEcE2CoN_5alloc6stringNtB5_6StringNtNtCsknUcikIyyBm_4core3fmt5Debug3fmt, m.__RNvXs1i_NtCsknUcikIyyBm_4core3fmtRjNtB6_7Display3fmtCs508fO6TR0hO_3zpl, m.__RINvNtCsknUcikIyyBm_4core3ptr9drop_glueNtNtNtB4_2io5error5ErrorECs508fO6TR0hO_3zpl, m.__RNvXNtNtCsknUcikIyyBm_4core2io5errorNtB2_5ErrorNtNtB6_3fmt5Debug3fmt, m.fn427, m.fn482, m.fn481, m.fn480, m.fn574, m.fn588, m.fn568, m.fn591, m.fn590, m.fn589, m.fn596, m.fn639, m.fn638, m.fn637, m.__RNvXse_NtNtCsknUcikIyyBm_4core3fmt3numhNtB7_8LowerHex3fmt, m.fn666, m.__RNvXsv_NtCsknUcikIyyBm_4core5arrayNtB5_17TryFromSliceErrorNtNtB7_3fmt5Debug3fmt, m.__RNvXs1g_NtCsknUcikIyyBm_4core3fmtRuNtB6_5Debug3fmtCs508fO6TR0hO_3zpl, m.__RNvXsc_NtCskgABYU7MvcT_12unicode_bidi5levelNtB5_5ErrorNtNtCsknUcikIyyBm_4core3fmt5Debug3fmt_llvm_17315918091969738793_glpg3r, m.__RNvXsc_NtCskgABYU7MvcT_12unicode_bidi5levelNtB5_5ErrorNtNtCsknUcikIyyBm_4core3fmt5Debug3fmt, m.__RNvNtCs7L774UPzF0f_3std5alloc24default_alloc_error_hook, m.__RINvNtCsknUcikIyyBm_4core3ptr9drop_glueNtNtCs6UNhEcE2CoN_5alloc6string6StringECs7L774UPzF0f_3std, m.fn889, m.fn888, m.__RNvYNtNtCs6UNhEcE2CoN_5alloc6string6StringNtNtCsknUcikIyyBm_4core3fmt5Write9write_fmtCs7L774UPzF0f_3std, m.__RNvXs2_NvNtCs7L774UPzF0f_3std9panicking13panic_handlerNtB5_16StaticStrPayloadNtNtCsknUcikIyyBm_4core3fmt7Display3fmt, m.__RNvXs1_NvNtCs7L774UPzF0f_3std9panicking13panic_handlerNtB5_16StaticStrPayloadNtNtCsknUcikIyyBm_4core5panic12PanicPayload8take_box, m.__RNvXs1_NvNtCs7L774UPzF0f_3std9panicking13panic_handlerNtB5_16StaticStrPayloadNtNtCsknUcikIyyBm_4core5panic12PanicPayload3get, m.__RNvXs1_NvNtCs7L774UPzF0f_3std9panicking13panic_handlerNtB5_16StaticStrPayloadNtNtCsknUcikIyyBm_4core5panic12PanicPayload6as_str, m.__RINvNtCsknUcikIyyBm_4core3ptr9drop_glueNtNvNtCs7L774UPzF0f_3std9panicking13panic_handler19FormatStringPayloadEBH_, m.__RNvXs0_NvNtCs7L774UPzF0f_3std9panicking13panic_handlerNtB5_19FormatStringPayloadNtNtCsknUcikIyyBm_4core3fmt7Display3fmt, m.__RNvXs_NvNtCs7L774UPzF0f_3std9panicking13panic_handlerNtB4_19FormatStringPayloadNtNtCsknUcikIyyBm_4core5panic12PanicPayload8take_box, m.__RNvXs_NvNtCs7L774UPzF0f_3std9panicking13panic_handlerNtB4_19FormatStringPayloadNtNtCsknUcikIyyBm_4core5panic12PanicPayload3get, m.__RNvYINtNvNtCs7L774UPzF0f_3std9panicking11begin_panic7PayloadReENtNtCsknUcikIyyBm_4core5panic12PanicPayload6as_strB9_, m.__RNvXNtCsknUcikIyyBm_4core3anyReNtB2_3Any7type_idCs7L774UPzF0f_3std, m.__RNvXNtCsknUcikIyyBm_4core3anyNtNtCs6UNhEcE2CoN_5alloc6string6StringNtB2_3Any7type_idCs7L774UPzF0f_3std, m.__RINvNtCsknUcikIyyBm_4core3ptr9drop_glueNtNtCs6UNhEcE2CoN_5alloc6string6StringEBF_, m.fn911, m.fn910, m.__RNvYNtNtCs6UNhEcE2CoN_5alloc6string6StringNtNtCsknUcikIyyBm_4core3fmt5Write9write_fmtB6_, m.fn909, m.__RNvXs1g_NtCsknUcikIyyBm_4core3fmtRDNtB6_5DebugEL_Bx_3fmtB8_, m.__RNvXs8_NtCsknUcikIyyBm_4core3fmtNtB5_9ArgumentsNtB5_7Display3fmt, m.__RNvXs1i_NtCsknUcikIyyBm_4core3fmtReNtB6_7Display3fmtB8_, m.__RNvXs_NtNtCsknUcikIyyBm_4core3ops5rangeINtB4_5RangejENtNtB8_3fmt5Debug3fmtB8_, m.__RNvXs8_NtNtCsknUcikIyyBm_4core3fmt8buildersINtB5_6FromFnNCNCNvXs2_NtNtB9_2io5errorNtNtB12_4repr4ReprNtB7_5Debug3fmt00ENtB7_7Display3fmtB9_, m.__RNvXs1g_NtCsknUcikIyyBm_4core3fmtRjNtB6_5Debug3fmtB8_, m.__RNvXs1g_NtCsknUcikIyyBm_4core3fmtRyNtB6_5Debug3fmtB8_, m.__RNvXs0_NtNtCsknUcikIyyBm_4core3fmt8buildersNtB5_10PadAdapterNtB7_5Write9write_str, m.__RNvXs0_NtNtCsknUcikIyyBm_4core3fmt8buildersNtB5_10PadAdapterNtB7_5Write10write_char, m.__RNvYNtNtNtCsknUcikIyyBm_4core3fmt8builders10PadAdapterNtB6_5Write9write_fmtB8_, __RNvYNCNvMs5_NtNtCsknUcikIyyBm_4core2io5errorNtBa_11OsFunctions7DEFAULT0INtNtNtBe_3ops8function6FnOnceTlQNtNtBe_3fmt9FormatterEE9call_onceBe_, __RNvYNCNvMs5_NtNtCsknUcikIyyBm_4core2io5errorNtBa_11OsFunctions7DEFAULTs_0INtNtNtBe_3ops8function6FnOnceTlEE9call_onceBe_, __RNvYNCNvMs5_NtNtCsknUcikIyyBm_4core2io5errorNtBa_11OsFunctions7DEFAULTs0_0INtNtNtBe_3ops8function6FnOnceTlEE9call_onceBe_, m.__RNvXsQ_NtNtCsknUcikIyyBm_4core3fmt3numlNtB7_5Debug3fmt, m.__RNvXsn_NtNtCsknUcikIyyBm_4core2io5errorNtB5_9ErrorKindNtNtB9_3fmt5Debug3fmt, m.__RNvXs7_NtNtCsknUcikIyyBm_4core3fmt8buildersINtB5_6FromFnNCNvXs2_NtNtB9_2io5errorNtNtB10_4repr4ReprNtB7_5Debug3fmt0EB1y_3fmtB9_, m.__RNvXs1g_NtCsknUcikIyyBm_4core3fmtReNtB6_5Debug3fmtB8_}}
 	table_init(m.t0, m.elements[0], i32(1), 0, len(m.elements[0]))
 	m.elements[0] = nil
 	memory_init(m.memory, data[0:3846920], uint32(i32(0x100000)), 0, len(data[0:3846920]))
@@ -2642,7 +2642,7 @@ func (m *Module) __RNCNCNvNtCs508fO6TR0hO_3zpl6render15render_expandeds1_0sp_0B7
 										v41 = t111
 										t112 := math.Float64frombits(load64(m.memory, uint32(v5)))
 										v49 = t112
-										t113 := int32(m.memory[uint64(uint32(v15))+140])
+										t113 := int32(m.memory[uint64(uint32(v15))+141])
 										if t113 != i32(1) {
 											goto l26
 										}
@@ -2694,7 +2694,7 @@ func (m *Module) __RNCNCNvNtCs508fO6TR0hO_3zpl6render15render_expandeds1_0sp_0B7
 										p125 = v48
 									}
 									v48 = p125
-									t126 := int32(m.memory[uint64(uint32(v15))+139])
+									t126 := int32(m.memory[uint64(uint32(v15))+140])
 									v9 = t126
 									t127 := int32(m.memory[uint32(v4)])
 									v18 = t127
@@ -2801,15 +2801,15 @@ func (m *Module) __RNCNCNvNtCs508fO6TR0hO_3zpl6render15render_expandeds1_0sp_0B7
 								goto l1
 							}
 						l29:
-							t153 := int32(m.memory[uint64(uint32(v15))+136])
+							t153 := int32(m.memory[uint64(uint32(v15))+137])
 							p154 := v41
 							if t153&i32(1) != 0 {
 								p154 = float64(0)
 							}
 							v42 = p154
-							t155 := int32(m.memory[uint64(uint32(v15))+138])
+							t155 := int32(m.memory[uint64(uint32(v15))+139])
 							v18 = t155
-							t156 := int32(m.memory[uint64(uint32(v15))+142])
+							t156 := int32(m.memory[uint64(uint32(v15))+143])
 							v3 = t156
 						}
 					l30:
@@ -2932,7 +2932,7 @@ func (m *Module) __RNCNCNvNtCs508fO6TR0hO_3zpl6render15render_expandeds1_0sp_0B7
 													}
 													t167 := int32(m.memory[uint32(v9)])
 													v3 = t167
-													t168 := int32(m.memory[uint64(uint32(v2))+1080])
+													t168 := int32(m.memory[uint64(uint32(v2))+1081])
 													v54 = t168
 													{
 														if !(v40 < v49) {
@@ -4813,7 +4813,7 @@ func (m *Module) __RNCNCNvNtCs508fO6TR0hO_3zpl6render15render_expandeds1_0sp_0B7
 					if t590 != i32(20802) {
 						goto l160
 					}
-					t591 := int32(m.memory[uint64(uint32(v3))+150])
+					t591 := int32(m.memory[uint64(uint32(v3))+151])
 					if t591&i32(1) == 0 {
 						goto l160
 					}
@@ -4939,7 +4939,7 @@ func (m *Module) __RNCNCNvNtCs508fO6TR0hO_3zpl6render15render_expandeds1_0sp_0B7
 			}
 		l170:
 			{
-				t621 := int32(m.memory[uint64(uint32(v3))+146])
+				t621 := int32(m.memory[uint64(uint32(v3))+147])
 				if t621&i32(1) != 0 {
 					goto l171
 				}
@@ -7444,7 +7444,7 @@ l23:
 																																																																		v14 = v3 + i32(610)
 																																																																		t463 := int32(load32(m.memory, uint64(uint32(v1))+40))
 																																																																		v13 = t463
-																																																																		v29 = v13 + i32(140)
+																																																																		v29 = v13 + i32(141)
 																																																																		v30 = v13 + i32(77)
 																																																																		v31 = v13 + i32(51)
 																																																																		v32 = v13 + i32(78)
@@ -7520,7 +7520,7 @@ l23:
 																																																																				v18 = float64(v19 + t484)
 																																																																				v19 = float64(0)
 																																																																				{
-																																																																					t485 := int32(m.memory[uint64(uint32(v13))+133])
+																																																																					t485 := int32(m.memory[uint64(uint32(v13))+134])
 																																																																					if t485 != 0 {
 																																																																						goto l208
 																																																																					}
@@ -7739,7 +7739,7 @@ l23:
 																																																																			}
 																																																																		l223:
 																																																																			store64(m.memory, uint64(uint32(v2))+736, math.Float64bits(v18))
-																																																																			t540 := int32(m.memory[uint64(uint32(v13))+137])
+																																																																			t540 := int32(m.memory[uint64(uint32(v13))+138])
 																																																																			v7 = t540
 																																																																			{
 																																																																				{
@@ -7804,7 +7804,7 @@ l23:
 																																																																							t552 := v2
 																																																																							v18 = float64(t551 + float64(v19+v18))
 																																																																							store64(m.memory, uint64(uint32(t552))+736, math.Float64bits(v18))
-																																																																							t553 := int32(m.memory[uint64(uint32(v13))+137])
+																																																																							t553 := int32(m.memory[uint64(uint32(v13))+138])
 																																																																							if t553 != i32(1) {
 																																																																								goto l227
 																																																																							}
@@ -7874,7 +7874,7 @@ l23:
 																																																																				v7 = t565
 																																																																				{
 																																																																					{
-																																																																						t566 := int32(m.memory[uint64(uint32(v13))+129])
+																																																																						t566 := int32(m.memory[uint64(uint32(v13))+130])
 																																																																						if t566 != i32(1) {
 																																																																							goto l236
 																																																																						}
@@ -8079,7 +8079,7 @@ l23:
 																																																																			store64(m.memory, uint64(uint32(v2))+760, math.Float64bits(v18))
 																																																																			store64(m.memory, uint64(uint32(v2))+768, math.Float64bits(v50))
 																																																																			{
-																																																																				t601 := int32(m.memory[uint64(uint32(v13))+137])
+																																																																				t601 := int32(m.memory[uint64(uint32(v13))+138])
 																																																																				if t601 == 0 {
 																																																																					goto l263
 																																																																				}
@@ -9442,7 +9442,7 @@ l23:
 																																																																		store64(m.memory, uint64(uint32(v2))+944, uint64(i64(0x800000000)))
 																																																																		{
 																																																																			t1609 := int32(load32(m.memory, uint64(uint32(v1))+40))
-																																																																			t1610 := int32(m.memory[uint64(uint32(t1609))+152])
+																																																																			t1610 := int32(m.memory[uint64(uint32(t1609))+153])
 																																																																			if t1610 != 0 {
 																																																																				v57 = i64_trunc_sat_f64_u(v50)
 																																																																				if v57 == 0 {
@@ -10397,7 +10397,7 @@ l23:
 																																																																		if uint32(v6) < uint32(i32(6)) {
 																																																																			goto l526
 																																																																		}
-																																																																		t1532 := int32(m.memory[uint64(uint32(v54))+147])
+																																																																		t1532 := int32(m.memory[uint64(uint32(v54))+148])
 																																																																		if t1532&i32(1) != 0 {
 																																																																			t1540 := int32(load32(m.memory, uint32(v5)))
 																																																																			t1541 := int32(load16(m.memory, uint32(v5+i32(4))))
@@ -10461,7 +10461,7 @@ l23:
 																																																														if uint32(v6) < uint32(i32(18)) {
 																																																															goto l525
 																																																														}
-																																																														t1552 := int32(m.memory[uint64(uint32(v54))+148])
+																																																														t1552 := int32(m.memory[uint64(uint32(v54))+149])
 																																																														if t1552&i32(1) == 0 {
 																																																															goto l525
 																																																														}
@@ -11640,7 +11640,7 @@ l23:
 																																						goto l363
 																																					}
 																																					t900 := int32(load32(m.memory, uint64(uint32(v1))+40))
-																																					t901 := int32(m.memory[uint64(uint32(t900))+134])
+																																					t901 := int32(m.memory[uint64(uint32(t900))+135])
 																																					v7 = (t901 ^ i32(-1)) & i32(1)
 																																				}
 																																			l363:
@@ -11652,7 +11652,7 @@ l23:
 																																						goto l364
 																																					}
 																																					t904 := int32(load32(m.memory, uint64(uint32(v1))+40))
-																																					t905 := int32(m.memory[uint64(uint32(t904))+135])
+																																					t905 := int32(m.memory[uint64(uint32(t904))+136])
 																																					v6 = (t905 ^ i32(-1)) & i32(1)
 																																				}
 																																			l364:
@@ -13510,7 +13510,7 @@ l23:
 											l165:
 												t1902 := int32(load32(m.memory, uint64(uint32(v1))+40))
 												v6 = t1902
-												t1903 := int32(m.memory[uint64(uint32(v6))+141])
+												t1903 := int32(m.memory[uint64(uint32(v6))+142])
 												if t1903 != 0 {
 													store64(m.memory, uint64(uint32(v3))+40, uint64(i64(0)))
 													goto l624
@@ -18012,7 +18012,7 @@ func (m *Module) __RINvMs_NtCs508fO6TR0hO_3zpl6outputNtB5_4Path9transformNCNCNvN
 					t6 := math.Float64frombits(load64(m.memory, uint32(v6)))
 					v7 = v0 + i32(16)
 					t7 := math.Float64frombits(load64(m.memory, uint32(v7)))
-					m.__RNCNCNvNtCs508fO6TR0hO_3zpl6render15render_expandeds1_0sJ_0B7__llvm_5346829279900133175_hbhjx1(t4, t5, t6, t7)
+					m.__RNCNCNvNtCs508fO6TR0hO_3zpl6render15render_expandeds1_0sJ_0B7__llvm_12600400687148171439_o4e7qu(t4, t5, t6, t7)
 					t8 := math.Float64frombits(load64(m.memory, uint32(v2)))
 					v8 = t8
 					t9 := math.Float64frombits(load64(m.memory, uint64(uint32(v2))+8))
@@ -18024,7 +18024,7 @@ func (m *Module) __RINvMs_NtCs508fO6TR0hO_3zpl6outputNtB5_4Path9transformNCNCNvN
 					t12 := math.Float64frombits(load64(m.memory, uint32(v6)))
 					v7 = v0 + i32(32)
 					t13 := math.Float64frombits(load64(m.memory, uint32(v7)))
-					m.__RNCNCNvNtCs508fO6TR0hO_3zpl6render15render_expandeds1_0sJ_0B7__llvm_5346829279900133175_hbhjx1(t10, t11, t12, t13)
+					m.__RNCNCNvNtCs508fO6TR0hO_3zpl6render15render_expandeds1_0sJ_0B7__llvm_12600400687148171439_o4e7qu(t10, t11, t12, t13)
 					t14 := math.Float64frombits(load64(m.memory, uint32(v2)))
 					v8 = t14
 					t15 := math.Float64frombits(load64(m.memory, uint64(uint32(v2))+8))
@@ -18036,7 +18036,7 @@ func (m *Module) __RINvMs_NtCs508fO6TR0hO_3zpl6outputNtB5_4Path9transformNCNCNvN
 					t18 := math.Float64frombits(load64(m.memory, uint32(v6)))
 					v0 = v0 + i32(48)
 					t19 := math.Float64frombits(load64(m.memory, uint32(v0)))
-					m.__RNCNCNvNtCs508fO6TR0hO_3zpl6render15render_expandeds1_0sJ_0B7__llvm_5346829279900133175_hbhjx1(t16, t17, t18, t19)
+					m.__RNCNCNvNtCs508fO6TR0hO_3zpl6render15render_expandeds1_0sJ_0B7__llvm_12600400687148171439_o4e7qu(t16, t17, t18, t19)
 					t20 := math.Float64frombits(load64(m.memory, uint32(v2)))
 					v8 = t20
 					t21 := math.Float64frombits(load64(m.memory, uint64(uint32(v2))+8))
@@ -18050,7 +18050,7 @@ func (m *Module) __RINvMs_NtCs508fO6TR0hO_3zpl6outputNtB5_4Path9transformNCNCNvN
 					t24 := math.Float64frombits(load64(m.memory, uint32(v6)))
 					v0 = v0 + i32(16)
 					t25 := math.Float64frombits(load64(m.memory, uint32(v0)))
-					m.__RNCNCNvNtCs508fO6TR0hO_3zpl6render15render_expandeds1_0sJ_0B7__llvm_5346829279900133175_hbhjx1(t22, t23, t24, t25)
+					m.__RNCNCNvNtCs508fO6TR0hO_3zpl6render15render_expandeds1_0sJ_0B7__llvm_12600400687148171439_o4e7qu(t22, t23, t24, t25)
 					t26 := math.Float64frombits(load64(m.memory, uint32(v2)))
 					v8 = t26
 					t27 := math.Float64frombits(load64(m.memory, uint64(uint32(v2))+8))
@@ -18069,7 +18069,7 @@ func (m *Module) __RINvMs_NtCs508fO6TR0hO_3zpl6outputNtB5_4Path9transformNCNCNvN
 l0:
 	m.___stack_pointer = v2 + i32(16)
 }
-func (m *Module) __RNCNCNvNtCs508fO6TR0hO_3zpl6render15render_expandeds1_0sJ_0B7__llvm_5346829279900133175_hbhjx1(v0, v1 int32, v2, v3 float64) {
+func (m *Module) __RNCNCNvNtCs508fO6TR0hO_3zpl6render15render_expandeds1_0sJ_0B7__llvm_12600400687148171439_o4e7qu(v0, v1 int32, v2, v3 float64) {
 	var v4, v5 int32
 	var v6, v7 float64
 	var v8, v9, v10, v11 int32
@@ -24514,7 +24514,7 @@ func (m *Module) __RINvNtNtCs508fO6TR0hO_3zpl6render4font8text_forNtB2_4FontEB6_
 											if v30 <= v4 {
 												goto l62
 											}
-											m.__RNvMNtNtCs508fO6TR0hO_3zpl6render4fontNtB2_7RowPath4rect_llvm_5346829279900133175_kx6jt4(v6+i32(448), float64(v17*v5), v28, float64(v17*float64(v4-v5)), v18)
+											m.__RNvMNtNtCs508fO6TR0hO_3zpl6render4fontNtB2_7RowPath4rect_llvm_12600400687148171439_e1gwyi(v6+i32(448), float64(v17*v5), v28, float64(v17*float64(v4-v5)), v18)
 											v5 = v30
 											v4 = v29
 											goto l63
@@ -24558,7 +24558,7 @@ func (m *Module) __RINvNtNtCs508fO6TR0hO_3zpl6render4font8text_forNtB2_4FontEB6_
 						}
 						m.__RNvCs1njKG4L9aB3_7___rustc14___rust_dealloc(v12, v1<<4, i32(8))
 					l66:
-						m.__RNvMNtNtCs508fO6TR0hO_3zpl6render4fontNtB2_7RowPath4rect_llvm_5346829279900133175_kx6jt4(v6+i32(448), float64(v17*v5), v28, float64(v17*float64(v4-v5)), v18)
+						m.__RNvMNtNtCs508fO6TR0hO_3zpl6render4fontNtB2_7RowPath4rect_llvm_12600400687148171439_e1gwyi(v6+i32(448), float64(v17*v5), v28, float64(v17*float64(v4-v5)), v18)
 					l61:
 						m.__RNvXsA_NtNtNtCs6UNhEcE2CoN_5alloc11collections5btree3mapINtB5_8IntoIterlINtNtBb_3vec3VecTddEEENtNtNtNtCsknUcikIyyBm_4core4iter6traits8iterator8Iterator4nextCs508fO6TR0hO_3zpl(v6+i32(368), v6+i32(544))
 						t129 := int32(load32(m.memory, uint64(uint32(v6))+372))
@@ -25778,7 +25778,7 @@ l12:
 	m.__RNvNtCs6UNhEcE2CoN_5alloc7raw_vec12handle_error(v10, v4)
 	panic("unreachable")
 }
-func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render4fontNtB2_7RowPath4rect_llvm_5346829279900133175_kx6jt4(v0 int32, v1, v2, v3, v4 float64) {
+func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render4fontNtB2_7RowPath4rect_llvm_12600400687148171439_e1gwyi(v0 int32, v1, v2, v3, v4 float64) {
 	var v5, v6 int32
 	var v7 int64
 	var v8 float64
@@ -25983,7 +25983,7 @@ func (m *Module) __RINvNvMs4_NtNtCs508fO6TR0hO_3zpl6render4fontNtNtNtBc_5fonts8r
 					t15 := float64(v17 * float64(float64(uint32(v18))+float64(t12)))
 					v19 = t14
 					t16 := int32(load32(m.memory, uint32(v7)))
-					m.__RNvMNtNtCs508fO6TR0hO_3zpl6render4fontNtB2_7RowPath4rect_llvm_5346829279900133175_kx6jt4(t11, t15, float64(t13+float64(v19*float64(t16+v12))), float64(v17*float64(uint32(v4-v18))), v19)
+					m.__RNvMNtNtCs508fO6TR0hO_3zpl6render4fontNtB2_7RowPath4rect_llvm_12600400687148171439_e1gwyi(t11, t15, float64(t13+float64(v19*float64(t16+v12))), float64(v17*float64(uint32(v4-v18))), v19)
 					goto l3
 				}
 			l2:
@@ -26019,10 +26019,10 @@ func (m *Module) __RINvNvMs4_NtNtCs508fO6TR0hO_3zpl6render4fontNtNtNtBc_5fonts8r
 		t25 := float64(v17 * float64(float64(uint32(v18))+float64(t22)))
 		v19 = t24
 		t26 := int32(load32(m.memory, uint32(v7)))
-		m.__RNvMNtNtCs508fO6TR0hO_3zpl6render4fontNtB2_7RowPath4rect_llvm_5346829279900133175_kx6jt4(t21, t25, float64(t23+float64(v19*float64(t26+v12))), float64(v17*float64(uint32(v3-v18))), v19)
+		m.__RNvMNtNtCs508fO6TR0hO_3zpl6render4fontNtB2_7RowPath4rect_llvm_12600400687148171439_e1gwyi(t21, t25, float64(t23+float64(v19*float64(t26+v12))), float64(v17*float64(uint32(v3-v18))), v19)
 	}
 }
-func (m *Module) __RNCINvNtNtCs508fO6TR0hO_3zpl6render4font8text_forNtB4_4FontEs_0B8__llvm_5346829279900133175_j5zrxd(v0, v1, v2, v3 int32) {
+func (m *Module) __RNCINvNtNtCs508fO6TR0hO_3zpl6render4font8text_forNtB4_4FontEs_0B8__llvm_12600400687148171439_d4qumn(v0, v1, v2, v3 int32) {
 	var v4, v5, v6, v7, v8, v9, v10, v11, v12, v13, v14 int32
 	var v15 float64
 	t0 := m.___stack_pointer
@@ -31142,7 +31142,7 @@ func (m *Module) __RNvNtNtCs508fO6TR0hO_3zpl6render4font13directed_text(v0, v1, 
 						v14 = i32(8)
 						goto l31
 					}
-					t8 := int32(m.memory[uint64(uint32(v8))+136])
+					t8 := int32(m.memory[uint64(uint32(v8))+137])
 					t10 := v5
 					p9 := v7
 					if t8 != 0 {
@@ -32008,7 +32008,7 @@ func (m *Module) __RNvNtNtCs508fO6TR0hO_3zpl6render4font13directed_text(v0, v1, 
 					goto l53
 				}
 				{
-					t189 := int32(m.memory[uint64(uint32(v8))+137])
+					t189 := int32(m.memory[uint64(uint32(v8))+138])
 					if t189 == i32(1) {
 						goto l54
 					}
@@ -43595,7 +43595,7 @@ l2:
 	t9 := int32(load32(m.memory, uint64(uint32(v1))+4))
 	t10 := int32(load32(m.memory, uint64(uint32(v1))+8))
 	t11 := int32(load32(m.memory, uint32(t10)))
-	t12 := int32(m.memory[uint64(uint32(v4))+149])
+	t12 := int32(m.memory[uint64(uint32(v4))+150])
 	m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode9qr_model16encode(v0, t9, t11, v2, t12)
 }
 func (m *Module) __RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode2qr6encode(v0, v1, v2, v3 int32) {
@@ -53429,7 +53429,7 @@ func (m *Module) __RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode11codablock_a6rende
 					}
 				}
 			l38:
-				t91 := int32(m.memory[uint64(uint32(v1))+157])
+				t91 := int32(m.memory[uint64(uint32(v1))+158])
 				v3 = t91
 				store64(m.memory, uint64(uint32(v4))+24, uint64(i64(0x200000000)))
 				t93 := v4
@@ -53603,7 +53603,7 @@ l35:
 			t133 := math.Float64frombits(load64(m.memory, uint64(uint32(v1))+168))
 			v17 = t133
 			{
-				t134 := int32(m.memory[uint64(uint32(v1))+156])
+				t134 := int32(m.memory[uint64(uint32(v1))+157])
 				if t134 != 0 {
 					goto l55
 				}
@@ -57576,7 +57576,7 @@ func (m *Module) __RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode6pdf4176render(v0, 
 		}
 		v7 = i32(14)
 	l7:
-		m.__RNvNtNtNtNtCs508fO6TR0hO_3zpl6render7barcode6pdf41710high_level14encode_initial_llvm_17359454854788387126_4y1xon(v4+i32(28), v2, v10, i32(1), i32(0), v7, i32(1), v11&i32(1))
+		m.__RNvNtNtNtNtCs508fO6TR0hO_3zpl6render7barcode6pdf41710high_level14encode_initial_llvm_1612776412242081695_oy8qyd(v4+i32(28), v2, v10, i32(1), i32(0), v7, i32(1), v11&i32(1))
 		t15 := int32(load32(m.memory, uint64(uint32(v4))+36))
 		t16 := v4
 		t17 := v9
@@ -58547,7 +58547,7 @@ func (m *Module) __RINvMs4_NtNtCs508fO6TR0hO_3zpl6render4fontNtNtNtBa_5fonts8res
 							if v12 == 0 {
 								goto l4
 							}
-							m.__RNCINvNtNtCs508fO6TR0hO_3zpl6render4font8text_forNtB4_4FontEs_0B8__llvm_5346829279900133175_j5zrxd(v1, v7, v14, v0)
+							m.__RNCINvNtNtCs508fO6TR0hO_3zpl6render4font8text_forNtB4_4FontEs_0B8__llvm_12600400687148171439_d4qumn(v1, v7, v14, v0)
 							goto l4
 						}
 					l3:
@@ -58574,7 +58574,7 @@ func (m *Module) __RINvMs4_NtNtCs508fO6TR0hO_3zpl6render4fontNtNtNtBa_5fonts8res
 				if v10 == 0 {
 					goto l6
 				}
-				m.__RNCINvNtNtCs508fO6TR0hO_3zpl6render4font8text_forNtB4_4FontEs_0B8__llvm_5346829279900133175_j5zrxd(v1, v7, v14, v2)
+				m.__RNCINvNtNtCs508fO6TR0hO_3zpl6render4font8text_forNtB4_4FontEs_0B8__llvm_12600400687148171439_d4qumn(v1, v7, v14, v2)
 			l6:
 				if v4 != v5 {
 					goto l7
@@ -58637,7 +58637,7 @@ func (m *Module) __RINvMs4_NtNtCs508fO6TR0hO_3zpl6render4fontNtNtNtBa_5fonts8res
 					if v12 == 0 {
 						goto l10
 					}
-					m.__RNCINvNtNtCs508fO6TR0hO_3zpl6render4font8text_forNtB4_4FontEs_0B8__llvm_5346829279900133175_j5zrxd(v1, v4, v14, v0)
+					m.__RNCINvNtNtCs508fO6TR0hO_3zpl6render4font8text_forNtB4_4FontEs_0B8__llvm_12600400687148171439_d4qumn(v1, v4, v14, v0)
 					goto l10
 				}
 			l9:
@@ -58664,7 +58664,7 @@ func (m *Module) __RINvMs4_NtNtCs508fO6TR0hO_3zpl6render4fontNtNtNtBa_5fonts8res
 		if v10 == 0 {
 			goto l12
 		}
-		m.__RNCINvNtNtCs508fO6TR0hO_3zpl6render4font8text_forNtB4_4FontEs_0B8__llvm_5346829279900133175_j5zrxd(v1, v4, v14, v2)
+		m.__RNCINvNtNtCs508fO6TR0hO_3zpl6render4font8text_forNtB4_4FontEs_0B8__llvm_12600400687148171439_d4qumn(v1, v4, v14, v2)
 	l12:
 		if v6 != v5 {
 			goto l13
@@ -59231,7 +59231,7 @@ func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode17rende
 	var v43 float64
 	var v44 int32
 	t0 := m.___stack_pointer
-	v8 = t0 - i32(1152)
+	v8 = t0 - i32(1808)
 	m.___stack_pointer = v8
 	v9 = v1 + i32(184)
 	{
@@ -59288,30 +59288,30 @@ func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode17rende
 							v12 = i32(12)
 						}
 					l4:
-						m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode6retail9normalize(v8+i32(784), v3, v4, v12, v1)
-						t9 := int64(load64(m.memory, uint64(uint32(v8))+788))
-						store64(m.memory, uint64(uint32(v8))+424, uint64(t9))
-						t10 := int32(load32(m.memory, uint64(uint32(v8))+796))
-						store32(m.memory, uint64(uint32(v8))+432, uint32(t10))
+						m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode6retail9normalize(v8+i32(1152), v3, v4, v12, v1)
+						t9 := int64(load64(m.memory, uint64(uint32(v8))+1156))
+						store64(m.memory, uint64(uint32(v8))+776, uint64(t9))
+						t10 := int32(load32(m.memory, uint64(uint32(v8))+1164))
+						store32(m.memory, uint64(uint32(v8))+784, uint32(t10))
 						v11 = i32(1)
 						{
-							t11 := int32(load32(m.memory, uint64(uint32(v8))+784))
+							t11 := int32(load32(m.memory, uint64(uint32(v8))+1152))
 							if t11 != i32(1) {
 								goto l7
 							}
-							t12 := int32(load32(m.memory, uint64(uint32(v8))+432))
+							t12 := int32(load32(m.memory, uint64(uint32(v8))+784))
 							store32(m.memory, uint64(uint32(v0))+8, uint32(t12))
-							t13 := int64(load64(m.memory, uint64(uint32(v8))+424))
+							t13 := int64(load64(m.memory, uint64(uint32(v8))+776))
 							store64(m.memory, uint32(v0), uint64(t13))
 							store32(m.memory, uint64(uint32(v0))+40, uint32(i32(-1)))
 							goto l8
 						}
 					l7:
-						t14 := int32(load32(m.memory, uint64(uint32(v8))+432))
+						t14 := int32(load32(m.memory, uint64(uint32(v8))+784))
 						t15 := v8
 						v4 = t14
 						store32(m.memory, uint64(uint32(t15))+8, uint32(v4))
-						t16 := int64(load64(m.memory, uint64(uint32(v8))+424))
+						t16 := int64(load64(m.memory, uint64(uint32(v8))+776))
 						store64(m.memory, uint32(v8), uint64(t16))
 					}
 				l2:
@@ -59393,97 +59393,97 @@ func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode17rende
 																																	if t104 != i32(23106) {
 																																		goto l13
 																																	}
-																																	m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode6postal6render(v8+i32(424), v1, v3, v4)
+																																	m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode6postal6render(v8+i32(776), v1, v3, v4)
 																																	goto l17
 																																}
-																																m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode11data_matrix6render(v8+i32(424), v1, v3, v4)
+																																m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode11data_matrix6render(v8+i32(776), v1, v3, v4)
 																																goto l17
 																															}
-																															m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode4upca6render(v8+i32(424), v1, v3, v4)
+																															m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode4upca6render(v8+i32(776), v1, v3, v4)
 																															goto l17
 																														}
-																														m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode5tlc396render(v8+i32(424), v1, v3, v4)
+																														m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode5tlc396render(v8+i32(776), v1, v3, v4)
 																														goto l17
 																													}
-																													m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode13upc_extension6render(v8+i32(424), v1, v3, v4)
+																													m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode13upc_extension6render(v8+i32(776), v1, v3, v4)
 																													goto l17
 																												}
-																												m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode7databar6render(v8+i32(424), v1, v3, v4)
+																												m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode7databar6render(v8+i32(776), v1, v3, v4)
 																												goto l17
 																											}
-																											m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode2qr6render(v8+i32(424), v1, v3, v4)
+																											m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode2qr6render(v8+i32(776), v1, v3, v4)
 																											goto l17
 																										}
-																										m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode7plessey6render(v8+i32(424), v1, v3, v4)
+																										m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode7plessey6render(v8+i32(776), v1, v3, v4)
 																										goto l17
 																									}
-																									m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode3msi6render(v8+i32(424), v1, v3, v4)
+																									m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode3msi6render(v8+i32(776), v1, v3, v4)
 																									goto l17
 																								}
-																								m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode7logmars6render(v8+i32(424), v1, v3, v4)
+																								m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode7logmars6render(v8+i32(776), v1, v3, v4)
 																								goto l17
 																							}
-																							m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode7codabar6render(v8+i32(424), v1, v3, v4)
+																							m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode7codabar6render(v8+i32(776), v1, v3, v4)
 																							goto l17
 																						}
-																						m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode11two_of_five6encode(v8+i32(424), v1, v3, v4, i32(2), i32(0))
+																						m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode11two_of_five6encode(v8+i32(776), v1, v3, v4, i32(2), i32(0))
 																						goto l17
 																					}
-																					m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode11two_of_five6encode(v8+i32(424), v1, v3, v4, i32(1), i32(0))
+																					m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode11two_of_five6encode(v8+i32(776), v1, v3, v4, i32(1), i32(0))
 																					goto l17
 																				}
-																				m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode11micropdf4176render(v8+i32(424), v1, v3, v4)
+																				m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode11micropdf4176render(v8+i32(776), v1, v3, v4)
 																				goto l17
 																			}
-																			m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode5ean136render(v8+i32(424), v1, v3, v4)
+																			m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode5ean136render(v8+i32(776), v1, v3, v4)
 																			goto l17
 																		}
-																		m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode8maxicode6render(v8+i32(424), v1, v3, v4)
+																		m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode8maxicode6render(v8+i32(776), v1, v3, v4)
 																		goto l17
 																	}
-																	m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode7code1286render(v8+i32(424), v1, v3, v4)
+																	m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode7code1286render(v8+i32(776), v1, v3, v4)
 																	goto l17
 																}
-																m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode9codablock6render(v8+i32(424), v1, v3, v4)
+																m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode9codablock6render(v8+i32(776), v1, v3, v4)
 																goto l17
 															}
-															m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode6code936render(v8+i32(424), v1, v3, v4)
+															m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode6code936render(v8+i32(776), v1, v3, v4)
 															goto l17
 														}
-														m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode4upce6render(v8+i32(424), v1, v3, v4)
+														m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode4upce6render(v8+i32(776), v1, v3, v4)
 														goto l17
 													}
-													m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode4ean86render(v8+i32(424), v1, v3, v4)
+													m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode4ean86render(v8+i32(776), v1, v3, v4)
 													goto l17
 												}
-												m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode6pdf4176render(v8+i32(424), v1, v3, v4)
+												m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode6pdf4176render(v8+i32(776), v1, v3, v4)
 												goto l17
 											}
-											m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode6planet6render(v8+i32(424), v1, v3, v4)
+											m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode6planet6render(v8+i32(776), v1, v3, v4)
 											goto l17
 										}
-										m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode6code496render(v8+i32(424), v1, v3, v4)
+										m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode6code496render(v8+i32(776), v1, v3, v4)
 										goto l17
 									}
-									m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode6code3910standalone(v8+i32(424), v1, v3, v4)
+									m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode6code3910standalone(v8+i32(776), v1, v3, v4)
 									goto l17
 								}
-								m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode15interleaved2of56render(v8+i32(424), v1, v3, v4)
+								m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode15interleaved2of56render(v8+i32(776), v1, v3, v4)
 								goto l17
 							}
-							m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode6code1114checked_values(v8+i32(784), v1, v3, v4)
-							t22 := int32(load32(m.memory, uint64(uint32(v8))+796))
+							m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode6code1114checked_values(v8+i32(1152), v1, v3, v4)
+							t22 := int32(load32(m.memory, uint64(uint32(v8))+1164))
 							v12 = t22
-							t23 := int32(load32(m.memory, uint64(uint32(v8))+792))
+							t23 := int32(load32(m.memory, uint64(uint32(v8))+1160))
 							v13 = t23
-							t24 := int32(load32(m.memory, uint64(uint32(v8))+788))
+							t24 := int32(load32(m.memory, uint64(uint32(v8))+1156))
 							v14 = t24
 							{
-								t25 := int32(load32(m.memory, uint64(uint32(v8))+784))
+								t25 := int32(load32(m.memory, uint64(uint32(v8))+1152))
 								if t25 != i32(1) {
 									v15 = i32(0)
-									store32(m.memory, uint64(uint32(v8))+792, uint32(i32(0)))
-									store64(m.memory, uint64(uint32(v8))+784, uint64(i64(0x800000000)))
+									store32(m.memory, uint64(uint32(v8))+1160, uint32(i32(0)))
+									store64(m.memory, uint64(uint32(v8))+1152, uint64(i64(0x800000000)))
 									v16 = v13 + v12
 									t26 := math.Float64frombits(load64(m.memory, uint64(uint32(v1))+176))
 									v17 = t26
@@ -59592,14 +59592,14 @@ func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode17rende
 														goto l29
 													}
 													{
-														t35 := int32(load32(m.memory, uint64(uint32(v8))+784))
+														t35 := int32(load32(m.memory, uint64(uint32(v8))+1152))
 														if uint32(t35-v15) > uint32(i32(4)) {
 															goto l30
 														}
-														m.__RINvNvMs2_NtCs6UNhEcE2CoN_5alloc7raw_vecINtB8_11RawVecInnerpE7reserve21do_reserve_and_handleNtNtBa_5alloc6GlobalECs508fO6TR0hO_3zpl(v8+i32(784), v15, i32(5), i32(8), i32(56))
-														t36 := int32(load32(m.memory, uint64(uint32(v8))+788))
+														m.__RINvNvMs2_NtCs6UNhEcE2CoN_5alloc7raw_vecINtB8_11RawVecInnerpE7reserve21do_reserve_and_handleNtNtBa_5alloc6GlobalECs508fO6TR0hO_3zpl(v8+i32(1152), v15, i32(5), i32(8), i32(56))
+														t36 := int32(load32(m.memory, uint64(uint32(v8))+1156))
 														v26 = t36
-														t37 := int32(load32(m.memory, uint64(uint32(v8))+792))
+														t37 := int32(load32(m.memory, uint64(uint32(v8))+1160))
 														v15 = t37
 													}
 												l30:
@@ -59619,7 +59619,7 @@ func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode17rende
 													store64(m.memory, uint32(v12), uint64(i64(0)))
 													t38 := v8
 													v15 = v15 + i32(5)
-													store32(m.memory, uint64(uint32(t38))+792, uint32(v15))
+													store32(m.memory, uint64(uint32(t38))+1160, uint32(v15))
 												}
 											l29:
 												v24 = v29 & i32(3944)
@@ -59644,16 +59644,16 @@ func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode17rende
 														goto l31
 													}
 													{
-														t42 := int32(load32(m.memory, uint64(uint32(v8))+784))
+														t42 := int32(load32(m.memory, uint64(uint32(v8))+1152))
 														if uint32(t42-v15) > uint32(i32(4)) {
 															goto l32
 														}
-														m.__RINvNvMs2_NtCs6UNhEcE2CoN_5alloc7raw_vecINtB8_11RawVecInnerpE7reserve21do_reserve_and_handleNtNtBa_5alloc6GlobalECs508fO6TR0hO_3zpl(v8+i32(784), v15, i32(5), i32(8), i32(56))
-														t43 := int32(load32(m.memory, uint64(uint32(v8))+792))
+														m.__RINvNvMs2_NtCs6UNhEcE2CoN_5alloc7raw_vecINtB8_11RawVecInnerpE7reserve21do_reserve_and_handleNtNtBa_5alloc6GlobalECs508fO6TR0hO_3zpl(v8+i32(1152), v15, i32(5), i32(8), i32(56))
+														t43 := int32(load32(m.memory, uint64(uint32(v8))+1160))
 														v15 = t43
 													}
 												l32:
-													t44 := int32(load32(m.memory, uint64(uint32(v8))+788))
+													t44 := int32(load32(m.memory, uint64(uint32(v8))+1156))
 													v26 = t44
 													v12 = v26 + v15*i32(56)
 													store64(m.memory, uint64(uint32(v12))+224, uint64(i64(3)))
@@ -59671,7 +59671,7 @@ func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode17rende
 													store64(m.memory, uint32(v12), uint64(i64(0)))
 													t45 := v8
 													v15 = v15 + i32(5)
-													store32(m.memory, uint64(uint32(t45))+792, uint32(v15))
+													store32(m.memory, uint64(uint32(t45))+1160, uint32(v15))
 												}
 											l31:
 												p46 := v25
@@ -59693,16 +59693,16 @@ func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode17rende
 													goto l33
 												}
 												{
-													t49 := int32(load32(m.memory, uint64(uint32(v8))+784))
+													t49 := int32(load32(m.memory, uint64(uint32(v8))+1152))
 													if uint32(t49-v15) > uint32(i32(4)) {
 														goto l34
 													}
-													m.__RINvNvMs2_NtCs6UNhEcE2CoN_5alloc7raw_vecINtB8_11RawVecInnerpE7reserve21do_reserve_and_handleNtNtBa_5alloc6GlobalECs508fO6TR0hO_3zpl(v8+i32(784), v15, i32(5), i32(8), i32(56))
-													t50 := int32(load32(m.memory, uint64(uint32(v8))+792))
+													m.__RINvNvMs2_NtCs6UNhEcE2CoN_5alloc7raw_vecINtB8_11RawVecInnerpE7reserve21do_reserve_and_handleNtNtBa_5alloc6GlobalECs508fO6TR0hO_3zpl(v8+i32(1152), v15, i32(5), i32(8), i32(56))
+													t50 := int32(load32(m.memory, uint64(uint32(v8))+1160))
 													v15 = t50
 												}
 											l34:
-												t51 := int32(load32(m.memory, uint64(uint32(v8))+788))
+												t51 := int32(load32(m.memory, uint64(uint32(v8))+1156))
 												v26 = t51
 												v12 = v26 + v15*i32(56)
 												store64(m.memory, uint64(uint32(v12))+224, uint64(i64(3)))
@@ -59720,7 +59720,7 @@ func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode17rende
 												store64(m.memory, uint32(v12), uint64(i64(0)))
 												t52 := v8
 												v15 = v15 + i32(5)
-												store32(m.memory, uint64(uint32(t52))+792, uint32(v15))
+												store32(m.memory, uint64(uint32(t52))+1160, uint32(v15))
 												goto l33
 											}
 										}
@@ -59820,14 +59820,14 @@ func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode17rende
 													goto l42
 												}
 												{
-													t61 := int32(load32(m.memory, uint64(uint32(v8))+784))
+													t61 := int32(load32(m.memory, uint64(uint32(v8))+1152))
 													if uint32(t61-v15) > uint32(i32(4)) {
 														goto l43
 													}
-													m.__RINvNvMs2_NtCs6UNhEcE2CoN_5alloc7raw_vecINtB8_11RawVecInnerpE7reserve21do_reserve_and_handleNtNtBa_5alloc6GlobalECs508fO6TR0hO_3zpl(v8+i32(784), v15, i32(5), i32(8), i32(56))
-													t62 := int32(load32(m.memory, uint64(uint32(v8))+788))
+													m.__RINvNvMs2_NtCs6UNhEcE2CoN_5alloc7raw_vecINtB8_11RawVecInnerpE7reserve21do_reserve_and_handleNtNtBa_5alloc6GlobalECs508fO6TR0hO_3zpl(v8+i32(1152), v15, i32(5), i32(8), i32(56))
+													t62 := int32(load32(m.memory, uint64(uint32(v8))+1156))
 													v21 = t62
-													t63 := int32(load32(m.memory, uint64(uint32(v8))+792))
+													t63 := int32(load32(m.memory, uint64(uint32(v8))+1160))
 													v15 = t63
 												}
 											l43:
@@ -59847,7 +59847,7 @@ func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode17rende
 												store64(m.memory, uint32(v12), uint64(i64(0)))
 												t64 := v8
 												v15 = v15 + i32(5)
-												store32(m.memory, uint64(uint32(t64))+792, uint32(v15))
+												store32(m.memory, uint64(uint32(t64))+1160, uint32(v15))
 											}
 										l42:
 											p65 := v25
@@ -59870,16 +59870,16 @@ func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode17rende
 													goto l44
 												}
 												{
-													t68 := int32(load32(m.memory, uint64(uint32(v8))+784))
+													t68 := int32(load32(m.memory, uint64(uint32(v8))+1152))
 													if uint32(t68-v15) > uint32(i32(4)) {
 														goto l45
 													}
-													m.__RINvNvMs2_NtCs6UNhEcE2CoN_5alloc7raw_vecINtB8_11RawVecInnerpE7reserve21do_reserve_and_handleNtNtBa_5alloc6GlobalECs508fO6TR0hO_3zpl(v8+i32(784), v15, i32(5), i32(8), i32(56))
-													t69 := int32(load32(m.memory, uint64(uint32(v8))+792))
+													m.__RINvNvMs2_NtCs6UNhEcE2CoN_5alloc7raw_vecINtB8_11RawVecInnerpE7reserve21do_reserve_and_handleNtNtBa_5alloc6GlobalECs508fO6TR0hO_3zpl(v8+i32(1152), v15, i32(5), i32(8), i32(56))
+													t69 := int32(load32(m.memory, uint64(uint32(v8))+1160))
 													v15 = t69
 												}
 											l45:
-												t70 := int32(load32(m.memory, uint64(uint32(v8))+788))
+												t70 := int32(load32(m.memory, uint64(uint32(v8))+1156))
 												v21 = t70
 												v12 = v21 + v15*i32(56)
 												store64(m.memory, uint64(uint32(v12))+224, uint64(i64(3)))
@@ -59897,7 +59897,7 @@ func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode17rende
 												store64(m.memory, uint32(v12), uint64(i64(0)))
 												t71 := v8
 												v15 = v15 + i32(5)
-												store32(m.memory, uint64(uint32(t71))+792, uint32(v15))
+												store32(m.memory, uint64(uint32(t71))+1160, uint32(v15))
 											}
 										l44:
 											p72 := v25
@@ -59919,16 +59919,16 @@ func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode17rende
 												goto l46
 											}
 											{
-												t75 := int32(load32(m.memory, uint64(uint32(v8))+784))
+												t75 := int32(load32(m.memory, uint64(uint32(v8))+1152))
 												if uint32(t75-v15) > uint32(i32(4)) {
 													goto l47
 												}
-												m.__RINvNvMs2_NtCs6UNhEcE2CoN_5alloc7raw_vecINtB8_11RawVecInnerpE7reserve21do_reserve_and_handleNtNtBa_5alloc6GlobalECs508fO6TR0hO_3zpl(v8+i32(784), v15, i32(5), i32(8), i32(56))
-												t76 := int32(load32(m.memory, uint64(uint32(v8))+792))
+												m.__RINvNvMs2_NtCs6UNhEcE2CoN_5alloc7raw_vecINtB8_11RawVecInnerpE7reserve21do_reserve_and_handleNtNtBa_5alloc6GlobalECs508fO6TR0hO_3zpl(v8+i32(1152), v15, i32(5), i32(8), i32(56))
+												t76 := int32(load32(m.memory, uint64(uint32(v8))+1160))
 												v15 = t76
 											}
 										l47:
-											t77 := int32(load32(m.memory, uint64(uint32(v8))+788))
+											t77 := int32(load32(m.memory, uint64(uint32(v8))+1156))
 											v21 = t77
 											v12 = v21 + v15*i32(56)
 											store64(m.memory, uint64(uint32(v12))+224, uint64(i64(3)))
@@ -59946,24 +59946,24 @@ func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode17rende
 											store64(m.memory, uint32(v12), uint64(i64(0)))
 											t78 := v8
 											v15 = v15 + i32(5)
-											store32(m.memory, uint64(uint32(t78))+792, uint32(v15))
+											store32(m.memory, uint64(uint32(t78))+1160, uint32(v15))
 											goto l46
 										}
 									}
 								}
-								store32(m.memory, uint64(uint32(v8))+436, uint32(v12))
-								store32(m.memory, uint64(uint32(v8))+432, uint32(v13))
-								store32(m.memory, uint64(uint32(v8))+428, uint32(v14))
-								store32(m.memory, uint64(uint32(v8))+424, uint32(i32(1)))
+								store32(m.memory, uint64(uint32(v8))+788, uint32(v12))
+								store32(m.memory, uint64(uint32(v8))+784, uint32(v13))
+								store32(m.memory, uint64(uint32(v8))+780, uint32(v14))
+								store32(m.memory, uint64(uint32(v8))+776, uint32(i32(1)))
 								goto l17
 							}
 						}
 					l25:
-						t105 := int32(load32(m.memory, uint64(uint32(v8))+792))
-						store32(m.memory, uint64(uint32(v8))+436, uint32(t105))
-						t106 := int64(load64(m.memory, uint64(uint32(v8))+784))
-						store64(m.memory, uint64(uint32(v8))+428, uint64(t106))
-						store32(m.memory, uint64(uint32(v8))+424, uint32(i32(0)))
+						t105 := int32(load32(m.memory, uint64(uint32(v8))+1160))
+						store32(m.memory, uint64(uint32(v8))+788, uint32(t105))
+						t106 := int64(load64(m.memory, uint64(uint32(v8))+1152))
+						store64(m.memory, uint64(uint32(v8))+780, uint64(t106))
+						store32(m.memory, uint64(uint32(v8))+776, uint32(i32(0)))
 						goto l17
 					}
 				l26:
@@ -59978,8 +59978,8 @@ func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode17rende
 				goto l13
 			}
 		l10:
-			store64(m.memory, uint64(uint32(v8))+784, uint64(int64(uint32(i32(18)))<<32|int64(uint32(v9))))
-			m.__RNvNvNtCs6UNhEcE2CoN_5alloc3fmt6format12format_inner(v0, i32(1055846), v8+i32(784))
+			store64(m.memory, uint64(uint32(v8))+1152, uint64(int64(uint32(i32(18)))<<32|int64(uint32(v9))))
+			m.__RNvNvNtCs6UNhEcE2CoN_5alloc3fmt6format12format_inner(v0, i32(1055846), v8+i32(1152))
 			store32(m.memory, uint64(uint32(v0))+40, uint32(i32(-1)))
 			if v11 == 0 {
 				goto l8
@@ -59989,20 +59989,20 @@ func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode17rende
 			m.__RNvNtCsknUcikIyyBm_4core9panicking5panic(i32(1091267), i32(40), i32(1091308))
 			panic("unreachable")
 		l12:
-			m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode5aztec6render(v8+i32(424), v1, v3, v4)
+			m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode5aztec6render(v8+i32(776), v1, v3, v4)
 		l17:
-			t107 := int64(load64(m.memory, uint64(uint32(v8))+428))
-			store64(m.memory, uint64(uint32(v8))+80, uint64(t107))
-			t108 := int32(load32(m.memory, uint64(uint32(v8))+436))
-			store32(m.memory, uint64(uint32(v8))+88, uint32(t108))
+			t107 := int64(load64(m.memory, uint64(uint32(v8))+780))
+			store64(m.memory, uint64(uint32(v8))+88, uint64(t107))
+			t108 := int32(load32(m.memory, uint64(uint32(v8))+788))
+			store32(m.memory, uint64(uint32(v8))+96, uint32(t108))
 			{
-				t109 := int32(load32(m.memory, uint64(uint32(v8))+424))
+				t109 := int32(load32(m.memory, uint64(uint32(v8))+776))
 				if t109 != i32(1) {
 					goto l73
 				}
-				t110 := int32(load32(m.memory, uint64(uint32(v8))+88))
+				t110 := int32(load32(m.memory, uint64(uint32(v8))+96))
 				store32(m.memory, uint64(uint32(v0))+8, uint32(t110))
-				t111 := int64(load64(m.memory, uint64(uint32(v8))+80))
+				t111 := int64(load64(m.memory, uint64(uint32(v8))+88))
 				store64(m.memory, uint32(v0), uint64(t111))
 				store32(m.memory, uint64(uint32(v0))+40, uint32(i32(-1)))
 				if v11 == 0 {
@@ -60011,11 +60011,11 @@ func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode17rende
 				goto l14
 			}
 		l73:
-			t112 := int32(load32(m.memory, uint64(uint32(v8))+88))
+			t112 := int32(load32(m.memory, uint64(uint32(v8))+96))
 			t113 := v8
 			v29 = t112
 			store32(m.memory, uint64(uint32(t113))+24, uint32(v29))
-			t114 := int64(load64(m.memory, uint64(uint32(v8))+80))
+			t114 := int64(load64(m.memory, uint64(uint32(v8))+88))
 			store64(m.memory, uint64(uint32(v8))+16, uint64(t114))
 			t115 := int32(load32(m.memory, uint64(uint32(v8))+20))
 			v30 = t115
@@ -60437,7 +60437,7 @@ func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode17rende
 					if t231 != i32(20802) {
 						goto l83
 					}
-					t232 := int32(m.memory[uint64(uint32(v1))+151])
+					t232 := int32(m.memory[uint64(uint32(v1))+152])
 					if t232&i32(1) == 0 {
 						goto l83
 					}
@@ -60459,15 +60459,15 @@ func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode17rende
 						v19 = p234
 					}
 				l84:
-					m.__RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode3num(v8+i32(784), v1, i32(2), v19, float64(1), float64(100))
+					m.__RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode3num(v8+i32(1152), v1, i32(2), v19, float64(1), float64(100))
 					{
-						t235 := int32(load32(m.memory, uint64(uint32(v8))+784))
+						t235 := int32(load32(m.memory, uint64(uint32(v8))+1152))
 						if t235 != i32(1) {
 							goto l85
 						}
-						t236 := int32(load32(m.memory, uint64(uint32(v8))+788))
+						t236 := int32(load32(m.memory, uint64(uint32(v8))+1156))
 						v12 = t236
-						t237 := math.Float64frombits(load64(m.memory, uint64(uint32(v8))+792))
+						t237 := math.Float64frombits(load64(m.memory, uint64(uint32(v8))+1160))
 						v19 = t237
 						store32(m.memory, uint64(uint32(v0))+40, uint32(i32(-1)))
 						store64(m.memory, uint64(uint32(v0))+4, math.Float64bits(v19))
@@ -60475,7 +60475,7 @@ func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode17rende
 						goto l86
 					}
 				l85:
-					t238 := math.Float64frombits(load64(m.memory, uint64(uint32(v8))+792))
+					t238 := math.Float64frombits(load64(m.memory, uint64(uint32(v8))+1160))
 					v32 = float64(v32 + float64(float64(t238*float64(3))+float64(-1)))
 				}
 			l83:
@@ -60563,16 +60563,16 @@ func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode17rende
 										store32(m.memory, uint64(uint32(v8))+48, uint32(v12))
 										store32(m.memory, uint64(uint32(v8))+44, uint32(v15))
 										{
-											t248 := m.__RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode19uses_retail_caption_llvm_8941680849063143092_tq3ix4(v1)
+											t248 := m.__RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode19uses_retail_caption_llvm_4997834558440384663_cnsotw(v1)
 											if t248 != 0 {
-												m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode6retail7caption(v8+i32(784), v1, v3, v4, v6, v7)
-												t259 := int32(load32(m.memory, uint64(uint32(v8))+796))
+												m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode6retail7caption(v8+i32(1152), v1, v3, v4, v6, v7)
+												t259 := int32(load32(m.memory, uint64(uint32(v8))+1164))
 												v21 = t259
-												t260 := int32(load32(m.memory, uint64(uint32(v8))+792))
+												t260 := int32(load32(m.memory, uint64(uint32(v8))+1160))
 												v23 = t260
-												t261 := int32(load32(m.memory, uint64(uint32(v8))+788))
+												t261 := int32(load32(m.memory, uint64(uint32(v8))+1156))
 												v10 = t261
-												t262 := int32(load32(m.memory, uint64(uint32(v8))+784))
+												t262 := int32(load32(m.memory, uint64(uint32(v8))+1152))
 												v4 = t262
 												if v4 == i32(-1) {
 													store32(m.memory, uint64(uint32(v0))+40, uint32(i32(-1)))
@@ -60581,12 +60581,12 @@ func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode17rende
 													store32(m.memory, uint32(v0), uint32(v10))
 													goto l101
 												}
-												t263 := int32(load32(m.memory, uint64(uint32(v8))+804))
+												t263 := int32(load32(m.memory, uint64(uint32(v8))+1172))
 												v22 = t263
-												t264 := int32(load32(m.memory, uint64(uint32(v8))+800))
+												t264 := int32(load32(m.memory, uint64(uint32(v8))+1168))
 												v26 = t264
 												{
-													t265 := int64(load64(m.memory, uint64(uint32(v8))+800))
+													t265 := int64(load64(m.memory, uint64(uint32(v8))+1168))
 													v37 = t265
 													v38 = int64(uint64(v37) >> 32)
 													if v38 == 0 {
@@ -60696,33 +60696,33 @@ func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode17rende
 											{
 												t250 := int32(load16(m.memory, uint32(v10)))
 												if t250 == i32(16706) {
-													m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode6code9316extended_caption(v8+i32(784), v1, v3, v4)
-													t251 := int64(load64(m.memory, uint64(uint32(v8))+788))
-													store64(m.memory, uint64(uint32(v8))+424, uint64(t251))
-													t252 := int32(load32(m.memory, uint64(uint32(v8))+796))
-													store32(m.memory, uint64(uint32(v8))+432, uint32(t252))
+													m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode6code9316extended_caption(v8+i32(1152), v1, v3, v4)
+													t251 := int64(load64(m.memory, uint64(uint32(v8))+1156))
+													store64(m.memory, uint64(uint32(v8))+776, uint64(t251))
+													t252 := int32(load32(m.memory, uint64(uint32(v8))+1164))
+													store32(m.memory, uint64(uint32(v8))+784, uint32(t252))
 													{
-														t253 := int32(load32(m.memory, uint64(uint32(v8))+784))
+														t253 := int32(load32(m.memory, uint64(uint32(v8))+1152))
 														v27 = t253
 														if v27 == i32(-2) {
-															t257 := int32(load32(m.memory, uint64(uint32(v8))+432))
+															t257 := int32(load32(m.memory, uint64(uint32(v8))+784))
 															store32(m.memory, uint64(uint32(v0))+8, uint32(t257))
-															t258 := int64(load64(m.memory, uint64(uint32(v8))+424))
+															t258 := int64(load64(m.memory, uint64(uint32(v8))+776))
 															store64(m.memory, uint32(v0), uint64(t258))
 															store32(m.memory, uint64(uint32(v0))+40, uint32(i32(-1)))
 															goto l101
 														}
-														t254 := int64(load64(m.memory, uint64(uint32(v8))+424))
+														t254 := int64(load64(m.memory, uint64(uint32(v8))+776))
 														store64(m.memory, uint64(uint32(v8))+60, uint64(t254))
-														t255 := int32(load32(m.memory, uint64(uint32(v8))+432))
+														t255 := int32(load32(m.memory, uint64(uint32(v8))+784))
 														store32(m.memory, uint64(uint32(v8))+68, uint32(t255))
-														t256 := int64(load64(m.memory, uint64(uint32(v8))+800))
+														t256 := int64(load64(m.memory, uint64(uint32(v8))+1168))
 														store64(m.memory, uint64(uint32(v8))+72, uint64(t256))
 														store32(m.memory, uint64(uint32(v8))+56, uint32(v27))
 														if v27 == i32(-1) {
 															goto l98
 														}
-														m.__RNvXs4_NtCs6UNhEcE2CoN_5alloc6stringNtB5_6StringNtNtCsknUcikIyyBm_4core5clone5Clone5clone(v8+i32(428), v8+i32(56))
+														m.__RNvXs4_NtCs6UNhEcE2CoN_5alloc6stringNtB5_6StringNtNtCsknUcikIyyBm_4core5clone5Clone5clone(v8+i32(780), v8+i32(56))
 														goto l100
 													}
 												}
@@ -60744,52 +60744,52 @@ func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode17rende
 															if t281&i32(1) == 0 {
 																goto l111
 															}
-															m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode6code1114checked_values(v8+i32(784), v1, v3, v4)
-															t282 := int32(load32(m.memory, uint64(uint32(v8))+796))
+															m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode6code1114checked_values(v8+i32(1152), v1, v3, v4)
+															t282 := int32(load32(m.memory, uint64(uint32(v8))+1164))
 															v15 = t282
-															t283 := int32(load32(m.memory, uint64(uint32(v8))+792))
+															t283 := int32(load32(m.memory, uint64(uint32(v8))+1160))
 															v12 = t283
-															t284 := int32(load32(m.memory, uint64(uint32(v8))+788))
+															t284 := int32(load32(m.memory, uint64(uint32(v8))+1156))
 															v29 = t284
-															t285 := int32(load32(m.memory, uint64(uint32(v8))+784))
+															t285 := int32(load32(m.memory, uint64(uint32(v8))+1152))
 															if t285 == 0 {
-																store32(m.memory, uint64(uint32(v8))+88, uint32(i32(0)))
-																store64(m.memory, uint64(uint32(v8))+80, uint64(i64(0x100000000)))
+																store32(m.memory, uint64(uint32(v8))+96, uint32(i32(0)))
+																store64(m.memory, uint64(uint32(v8))+88, uint64(i64(0x100000000)))
 																v30 = v12 + v15
 																if v15 == 0 {
 																	goto l178
 																}
-																m.__RINvNvMs2_NtCs6UNhEcE2CoN_5alloc7raw_vecINtB8_11RawVecInnerpE7reserve21do_reserve_and_handleNtNtBa_5alloc6GlobalECs508fO6TR0hO_3zpl(v8+i32(80), i32(0), v15, i32(1), i32(1))
+																m.__RINvNvMs2_NtCs6UNhEcE2CoN_5alloc7raw_vecINtB8_11RawVecInnerpE7reserve21do_reserve_and_handleNtNtBa_5alloc6GlobalECs508fO6TR0hO_3zpl(v8+i32(88), i32(0), v15, i32(1), i32(1))
 															l178:
-																store32(m.memory, uint64(uint32(v8))+796, uint32(v30))
-																store32(m.memory, uint64(uint32(v8))+792, uint32(v29))
-																store32(m.memory, uint64(uint32(v8))+788, uint32(v12))
-																store32(m.memory, uint64(uint32(v8))+784, uint32(v12))
-																m.__RINvXs0_NtNtNtCsknUcikIyyBm_4core4iter8adapters3mapINtB6_3MapINtNtNtCs6UNhEcE2CoN_5alloc3vec9into_iter8IntoIterhENCNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB1S_7Barcode14interpretation0ENtNtNtBa_6traits8iterator8Iterator4folduNCINvNvB2Z_8for_each4callcNCINvXsd_NtB14_6stringNtB4c_6StringINtNtB33_7collect6ExtendcE6extendBN_E0E0EB1W_(v8+i32(784), v8+i32(80))
-																t453 := int64(load64(m.memory, uint64(uint32(v8))+80))
-																store64(m.memory, uint64(uint32(v8))+1136, uint64(t453))
-																t454 := int32(load32(m.memory, uint64(uint32(v8))+88))
-																store32(m.memory, uint64(uint32(v8))+1144, uint32(t454))
-																store64(m.memory, uint64(uint32(v8))+80, uint64(int64(uint32(i32(18)))<<32|int64(uint32(v8+i32(1136)))))
-																m.__RNvNvNtCs6UNhEcE2CoN_5alloc3fmt6format12format_inner(v8+i32(784), i32(1056566), v8+i32(80))
-																store32(m.memory, uint64(uint32(v8))+424, uint32(i32(0)))
-																t455 := int64(load64(m.memory, uint64(uint32(v8))+784))
-																store64(m.memory, uint64(uint32(v8))+428, uint64(t455))
-																t456 := int32(load32(m.memory, uint64(uint32(v8))+792))
-																store32(m.memory, uint64(uint32(v8))+436, uint32(t456))
-																t457 := int32(load32(m.memory, uint64(uint32(v8))+1136))
+																store32(m.memory, uint64(uint32(v8))+1164, uint32(v30))
+																store32(m.memory, uint64(uint32(v8))+1160, uint32(v29))
+																store32(m.memory, uint64(uint32(v8))+1156, uint32(v12))
+																store32(m.memory, uint64(uint32(v8))+1152, uint32(v12))
+																m.__RINvXs0_NtNtNtCsknUcikIyyBm_4core4iter8adapters3mapINtB6_3MapINtNtNtCs6UNhEcE2CoN_5alloc3vec9into_iter8IntoIterhENCNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB1S_7Barcode14interpretation0ENtNtNtBa_6traits8iterator8Iterator4folduNCINvNvB2Z_8for_each4callcNCINvXsd_NtB14_6stringNtB4c_6StringINtNtB33_7collect6ExtendcE6extendBN_E0E0EB1W_(v8+i32(1152), v8+i32(88))
+																t453 := int64(load64(m.memory, uint64(uint32(v8))+88))
+																store64(m.memory, uint64(uint32(v8))+1496, uint64(t453))
+																t454 := int32(load32(m.memory, uint64(uint32(v8))+96))
+																store32(m.memory, uint64(uint32(v8))+1504, uint32(t454))
+																store64(m.memory, uint64(uint32(v8))+88, uint64(int64(uint32(i32(18)))<<32|int64(uint32(v8+i32(1496)))))
+																m.__RNvNvNtCs6UNhEcE2CoN_5alloc3fmt6format12format_inner(v8+i32(1152), i32(1056566), v8+i32(88))
+																store32(m.memory, uint64(uint32(v8))+776, uint32(i32(0)))
+																t455 := int64(load64(m.memory, uint64(uint32(v8))+1152))
+																store64(m.memory, uint64(uint32(v8))+780, uint64(t455))
+																t456 := int32(load32(m.memory, uint64(uint32(v8))+1160))
+																store32(m.memory, uint64(uint32(v8))+788, uint32(t456))
+																t457 := int32(load32(m.memory, uint64(uint32(v8))+1496))
 																v12 = t457
 																if v12 == 0 {
 																	goto l113
 																}
-																t458 := int32(load32(m.memory, uint64(uint32(v8))+1140))
+																t458 := int32(load32(m.memory, uint64(uint32(v8))+1500))
 																m.__RNvCs1njKG4L9aB3_7___rustc14___rust_dealloc(t458, v12, i32(1))
 																goto l113
 															}
-															store32(m.memory, uint64(uint32(v8))+436, uint32(v15))
-															store32(m.memory, uint64(uint32(v8))+432, uint32(v12))
-															store32(m.memory, uint64(uint32(v8))+428, uint32(v29))
-															store32(m.memory, uint64(uint32(v8))+424, uint32(i32(1)))
+															store32(m.memory, uint64(uint32(v8))+788, uint32(v15))
+															store32(m.memory, uint64(uint32(v8))+784, uint32(v12))
+															store32(m.memory, uint64(uint32(v8))+780, uint32(v29))
+															store32(m.memory, uint64(uint32(v8))+776, uint32(i32(1)))
 															goto l113
 														}
 													l111:
@@ -60822,14 +60822,14 @@ func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode17rende
 																v12 = v23
 															}
 														l115:
-															store32(m.memory, uint64(uint32(v8))+1132, uint32(v12))
-															store32(m.memory, uint64(uint32(v8))+1128, uint32(v15))
-															m.__RNvNtNtCsknUcikIyyBm_4core3str8converts9from_utf8(v8+i32(784), v3, v4)
+															store32(m.memory, uint64(uint32(v8))+1124, uint32(v12))
+															store32(m.memory, uint64(uint32(v8))+1120, uint32(v15))
+															m.__RNvNtNtCsknUcikIyyBm_4core3str8converts9from_utf8(v8+i32(1152), v3, v4)
 															v12 = i32(1)
-															t292 := int32(load32(m.memory, uint64(uint32(v8))+784))
+															t292 := int32(load32(m.memory, uint64(uint32(v8))+1152))
 															if t292 != i32(1) {
-																t447 := int64(load64(m.memory, uint64(uint32(v8))+788))
-																store64(m.memory, uint64(uint32(v8))+768, uint64(t447))
+																t447 := int64(load64(m.memory, uint64(uint32(v8))+1156))
+																store64(m.memory, uint64(uint32(v8))+1136, uint64(t447))
 																v15 = i32(1090920)
 																{
 																	if uint32(v30) < uint32(i32(7)) {
@@ -60845,19 +60845,19 @@ func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode17rende
 																	v12 = v30
 																}
 															l177:
-																store32(m.memory, uint64(uint32(v8))+1140, uint32(v12))
-																store32(m.memory, uint64(uint32(v8))+1136, uint32(v15))
+																store32(m.memory, uint64(uint32(v8))+1500, uint32(v12))
+																store32(m.memory, uint64(uint32(v8))+1496, uint32(v15))
 																t450 := v8
 																v37 = int64(uint32(i32(6))) << 32
-																store64(m.memory, uint64(uint32(t450))+800, uint64(v37|int64(uint32(v8+i32(1136)))))
-																store64(m.memory, uint64(uint32(v8))+792, uint64(v37|int64(uint32(v8+i32(768)))))
-																store64(m.memory, uint64(uint32(v8))+784, uint64(v37|int64(uint32(v8+i32(1128)))))
-																m.__RNvNvNtCs6UNhEcE2CoN_5alloc3fmt6format12format_inner(v8+i32(80), i32(0x100000), v8+i32(784))
-																store32(m.memory, uint64(uint32(v8))+424, uint32(i32(0)))
-																t451 := int64(load64(m.memory, uint64(uint32(v8))+80))
-																store64(m.memory, uint64(uint32(v8))+428, uint64(t451))
-																t452 := int32(load32(m.memory, uint64(uint32(v8))+88))
-																store32(m.memory, uint64(uint32(v8))+436, uint32(t452))
+																store64(m.memory, uint64(uint32(t450))+1168, uint64(v37|int64(uint32(v8+i32(1496)))))
+																store64(m.memory, uint64(uint32(v8))+1160, uint64(v37|int64(uint32(v8+i32(1136)))))
+																store64(m.memory, uint64(uint32(v8))+1152, uint64(v37|int64(uint32(v8+i32(1120)))))
+																m.__RNvNvNtCs6UNhEcE2CoN_5alloc3fmt6format12format_inner(v8+i32(88), i32(0x100000), v8+i32(1152))
+																store32(m.memory, uint64(uint32(v8))+776, uint32(i32(0)))
+																t451 := int64(load64(m.memory, uint64(uint32(v8))+88))
+																store64(m.memory, uint64(uint32(v8))+780, uint64(t451))
+																t452 := int32(load32(m.memory, uint64(uint32(v8))+96))
+																store32(m.memory, uint64(uint32(v8))+788, uint32(t452))
 																goto l113
 															}
 															__RNvCs1njKG4L9aB3_7___rustc35___rust_no_alloc_shim_is_unstable_v2()
@@ -60872,9 +60872,9 @@ func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode17rende
 																store64(m.memory, uint64(uint32(v12))+8, uint64(t445))
 																t446 := int64(load64(m.memory, uint64(uint32(i32(0)))+1090963))
 																store64(m.memory, uint32(v12), uint64(t446))
-																store32(m.memory, uint64(uint32(v8))+436, uint32(i32(27)))
-																store32(m.memory, uint64(uint32(v8))+432, uint32(v12))
-																store64(m.memory, uint64(uint32(v8))+424, uint64(i64(0x1b00000001)))
+																store32(m.memory, uint64(uint32(v8))+788, uint32(i32(27)))
+																store32(m.memory, uint64(uint32(v8))+784, uint32(v12))
+																store64(m.memory, uint64(uint32(v8))+776, uint64(i64(0x1b00000001)))
 																goto l113
 															}
 															m.__RNvNtCs6UNhEcE2CoN_5alloc7raw_vec12handle_error(i32(1), i32(27))
@@ -60890,12 +60890,12 @@ func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode17rende
 															if t295&i32(1) == 0 {
 																goto l118
 															}
-															m.__RNvNtNtCsknUcikIyyBm_4core3str8converts9from_utf8(v8+i32(784), v3, v4)
-															t296 := int32(load32(m.memory, uint64(uint32(v8))+784))
+															m.__RNvNtNtCsknUcikIyyBm_4core3str8converts9from_utf8(v8+i32(1152), v3, v4)
+															t296 := int32(load32(m.memory, uint64(uint32(v8))+1152))
 															if t296 != i32(1) {
-																t422 := int32(load32(m.memory, uint64(uint32(v8))+792))
+																t422 := int32(load32(m.memory, uint64(uint32(v8))+1160))
 																v12 = t422
-																t423 := int32(load32(m.memory, uint64(uint32(v8))+788))
+																t423 := int32(load32(m.memory, uint64(uint32(v8))+1156))
 																v29 = t423
 																v15 = i32(1091392)
 																{
@@ -60931,23 +60931,23 @@ func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode17rende
 																			}
 																		}
 																	l169:
-																		store64(m.memory, uint64(uint32(v8))+80, uint64(int64(uint32(i32(18)))<<32|int64(uint32(v9))))
-																		m.__RNvNvNtCs6UNhEcE2CoN_5alloc3fmt6format12format_inner(v8+i32(784), i32(1055687), v8+i32(80))
-																		t429 := int32(m.memory[uint64(uint32(v8))+788])
+																		store64(m.memory, uint64(uint32(v8))+88, uint64(int64(uint32(i32(18)))<<32|int64(uint32(v9))))
+																		m.__RNvNvNtCs6UNhEcE2CoN_5alloc3fmt6format12format_inner(v8+i32(1152), i32(1055687), v8+i32(88))
+																		t429 := int32(m.memory[uint64(uint32(v8))+1156])
 																		v15 = t429
 																		{
-																			t430 := int32(load32(m.memory, uint64(uint32(v8))+784))
+																			t430 := int32(load32(m.memory, uint64(uint32(v8))+1152))
 																			v30 = t430
 																			if v30 == i32(-1) {
 																				goto l172
 																			}
-																			t431 := int32(load32(m.memory, uint64(uint32(v8))+792))
-																			store32(m.memory, uint64(uint32(v8))+436, uint32(t431))
-																			t432 := int32(load32(m.memory, uint64(uint32(v8))+789))
-																			store32(m.memory, uint64(uint32(v8))+433, uint32(t432))
-																			m.memory[uint64(uint32(v8))+432] = byte(v15)
-																			store32(m.memory, uint64(uint32(v8))+428, uint32(v30))
-																			store32(m.memory, uint64(uint32(v8))+424, uint32(i32(1)))
+																			t431 := int32(load32(m.memory, uint64(uint32(v8))+1160))
+																			store32(m.memory, uint64(uint32(v8))+788, uint32(t431))
+																			t432 := int32(load32(m.memory, uint64(uint32(v8))+1157))
+																			store32(m.memory, uint64(uint32(v8))+785, uint32(t432))
+																			m.memory[uint64(uint32(v8))+784] = byte(v15)
+																			store32(m.memory, uint64(uint32(v8))+780, uint32(v30))
+																			store32(m.memory, uint64(uint32(v8))+776, uint32(i32(1)))
 																			goto l113
 																		}
 																	l172:
@@ -60956,16 +60956,16 @@ func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode17rende
 																		}
 																	}
 																l170:
-																	m.__RNvMs5_NtCs6UNhEcE2CoN_5alloc7raw_vecNtB5_11RawVecInner15try_allocate_inCs508fO6TR0hO_3zpl(v8+i32(784), v12, i32(0), i32(1), i32(1))
-																	t433 := int32(load32(m.memory, uint64(uint32(v8))+788))
+																	m.__RNvMs5_NtCs6UNhEcE2CoN_5alloc7raw_vecNtB5_11RawVecInner15try_allocate_inCs508fO6TR0hO_3zpl(v8+i32(1152), v12, i32(0), i32(1), i32(1))
+																	t433 := int32(load32(m.memory, uint64(uint32(v8))+1156))
 																	v30 = t433
-																	t434 := int32(load32(m.memory, uint64(uint32(v8))+784))
+																	t434 := int32(load32(m.memory, uint64(uint32(v8))+1152))
 																	if t434 != 0 {
-																		t461 := int32(load32(m.memory, uint64(uint32(v8))+792))
+																		t461 := int32(load32(m.memory, uint64(uint32(v8))+1160))
 																		m.__RNvNtCs6UNhEcE2CoN_5alloc7raw_vec12handle_error(v30, t461)
 																		panic("unreachable")
 																	}
-																	t435 := int32(load32(m.memory, uint64(uint32(v8))+792))
+																	t435 := int32(load32(m.memory, uint64(uint32(v8))+1160))
 																	v15 = t435
 																	if v12 == 0 {
 																		goto l174
@@ -60977,25 +60977,25 @@ func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode17rende
 																	goto l174
 																}
 															l171:
-																m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode6code3913with_checksum(v8+i32(784), v29, v12)
-																t436 := int64(load64(m.memory, uint64(uint32(v8))+788))
-																store64(m.memory, uint64(uint32(v8))+80, uint64(t436))
-																t437 := int32(load32(m.memory, uint64(uint32(v8))+796))
-																store32(m.memory, uint64(uint32(v8))+88, uint32(t437))
+																m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode6code3913with_checksum(v8+i32(1152), v29, v12)
+																t436 := int64(load64(m.memory, uint64(uint32(v8))+1156))
+																store64(m.memory, uint64(uint32(v8))+88, uint64(t436))
+																t437 := int32(load32(m.memory, uint64(uint32(v8))+1164))
+																store32(m.memory, uint64(uint32(v8))+96, uint32(t437))
 																{
-																	t438 := int32(load32(m.memory, uint64(uint32(v8))+784))
+																	t438 := int32(load32(m.memory, uint64(uint32(v8))+1152))
 																	if t438 != 0 {
-																		t441 := int32(load32(m.memory, uint64(uint32(v8))+88))
-																		store32(m.memory, uint64(uint32(v8))+436, uint32(t441))
-																		t442 := int64(load64(m.memory, uint64(uint32(v8))+80))
-																		store64(m.memory, uint64(uint32(v8))+428, uint64(t442))
-																		store32(m.memory, uint64(uint32(v8))+424, uint32(i32(1)))
+																		t441 := int32(load32(m.memory, uint64(uint32(v8))+96))
+																		store32(m.memory, uint64(uint32(v8))+788, uint32(t441))
+																		t442 := int64(load64(m.memory, uint64(uint32(v8))+88))
+																		store64(m.memory, uint64(uint32(v8))+780, uint64(t442))
+																		store32(m.memory, uint64(uint32(v8))+776, uint32(i32(1)))
 																		goto l113
 																	}
-																	t439 := int32(load32(m.memory, uint64(uint32(v8))+88))
-																	store32(m.memory, uint64(uint32(v8))+1144, uint32(t439))
-																	t440 := int64(load64(m.memory, uint64(uint32(v8))+80))
-																	store64(m.memory, uint64(uint32(v8))+1136, uint64(t440))
+																	t439 := int32(load32(m.memory, uint64(uint32(v8))+96))
+																	store32(m.memory, uint64(uint32(v8))+1504, uint32(t439))
+																	t440 := int64(load64(m.memory, uint64(uint32(v8))+88))
+																	store64(m.memory, uint64(uint32(v8))+1496, uint64(t440))
 																	goto l176
 																}
 															}
@@ -61011,9 +61011,9 @@ func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode17rende
 																store64(m.memory, uint64(uint32(v12))+8, uint64(t420))
 																t421 := int64(load64(m.memory, uint64(uint32(i32(0)))+1090963))
 																store64(m.memory, uint32(v12), uint64(t421))
-																store32(m.memory, uint64(uint32(v8))+436, uint32(i32(27)))
-																store32(m.memory, uint64(uint32(v8))+432, uint32(v12))
-																store64(m.memory, uint64(uint32(v8))+424, uint64(i64(0x1b00000001)))
+																store32(m.memory, uint64(uint32(v8))+788, uint32(i32(27)))
+																store32(m.memory, uint64(uint32(v8))+784, uint32(v12))
+																store64(m.memory, uint64(uint32(v8))+776, uint64(i64(0x1b00000001)))
 																goto l113
 															}
 															m.__RNvNtCs6UNhEcE2CoN_5alloc7raw_vec12handle_error(i32(1), i32(27))
@@ -61041,21 +61041,21 @@ func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode17rende
 																											if t337 != i32(14402) {
 																												goto l143
 																											}
-																											m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode6retail7checked(v8+i32(784), v3, v4, i32(8))
-																											t338 := int32(load32(m.memory, uint64(uint32(v8))+796))
+																											m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode6retail7checked(v8+i32(1152), v3, v4, i32(8))
+																											t338 := int32(load32(m.memory, uint64(uint32(v8))+1164))
 																											v29 = t338
-																											t339 := int32(load32(m.memory, uint64(uint32(v8))+792))
+																											t339 := int32(load32(m.memory, uint64(uint32(v8))+1160))
 																											v15 = t339
-																											t340 := int32(load32(m.memory, uint64(uint32(v8))+788))
+																											t340 := int32(load32(m.memory, uint64(uint32(v8))+1156))
 																											v12 = t340
-																											t341 := int32(load32(m.memory, uint64(uint32(v8))+784))
+																											t341 := int32(load32(m.memory, uint64(uint32(v8))+1152))
 																											if t341 == 0 {
 																												goto l144
 																											}
-																											store32(m.memory, uint64(uint32(v8))+436, uint32(v29))
-																											store32(m.memory, uint64(uint32(v8))+432, uint32(v15))
-																											store32(m.memory, uint64(uint32(v8))+428, uint32(v12))
-																											store32(m.memory, uint64(uint32(v8))+424, uint32(i32(1)))
+																											store32(m.memory, uint64(uint32(v8))+788, uint32(v29))
+																											store32(m.memory, uint64(uint32(v8))+784, uint32(v15))
+																											store32(m.memory, uint64(uint32(v8))+780, uint32(v12))
+																											store32(m.memory, uint64(uint32(v8))+776, uint32(i32(1)))
 																											goto l113
 																										}
 																									l143:
@@ -61064,21 +61064,21 @@ func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode17rende
 																											if t342 != i32(17730) {
 																												goto l145
 																											}
-																											m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode6retail7checked(v8+i32(784), v3, v4, i32(13))
-																											t343 := int32(load32(m.memory, uint64(uint32(v8))+796))
+																											m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode6retail7checked(v8+i32(1152), v3, v4, i32(13))
+																											t343 := int32(load32(m.memory, uint64(uint32(v8))+1164))
 																											v29 = t343
-																											t344 := int32(load32(m.memory, uint64(uint32(v8))+792))
+																											t344 := int32(load32(m.memory, uint64(uint32(v8))+1160))
 																											v15 = t344
-																											t345 := int32(load32(m.memory, uint64(uint32(v8))+788))
+																											t345 := int32(load32(m.memory, uint64(uint32(v8))+1156))
 																											v12 = t345
-																											t346 := int32(load32(m.memory, uint64(uint32(v8))+784))
+																											t346 := int32(load32(m.memory, uint64(uint32(v8))+1152))
 																											if t346 == 0 {
 																												goto l144
 																											}
-																											store32(m.memory, uint64(uint32(v8))+436, uint32(v29))
-																											store32(m.memory, uint64(uint32(v8))+432, uint32(v15))
-																											store32(m.memory, uint64(uint32(v8))+428, uint32(v12))
-																											store32(m.memory, uint64(uint32(v8))+424, uint32(i32(1)))
+																											store32(m.memory, uint64(uint32(v8))+788, uint32(v29))
+																											store32(m.memory, uint64(uint32(v8))+784, uint32(v15))
+																											store32(m.memory, uint64(uint32(v8))+780, uint32(v12))
+																											store32(m.memory, uint64(uint32(v8))+776, uint32(i32(1)))
 																											goto l113
 																										}
 																									l145:
@@ -61087,21 +61087,21 @@ func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode17rende
 																											if t347 != i32(21826) {
 																												goto l146
 																											}
-																											m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode6retail7checked(v8+i32(784), v3, v4, i32(12))
-																											t348 := int32(load32(m.memory, uint64(uint32(v8))+796))
+																											m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode6retail7checked(v8+i32(1152), v3, v4, i32(12))
+																											t348 := int32(load32(m.memory, uint64(uint32(v8))+1164))
 																											v29 = t348
-																											t349 := int32(load32(m.memory, uint64(uint32(v8))+792))
+																											t349 := int32(load32(m.memory, uint64(uint32(v8))+1160))
 																											v15 = t349
-																											t350 := int32(load32(m.memory, uint64(uint32(v8))+788))
+																											t350 := int32(load32(m.memory, uint64(uint32(v8))+1156))
 																											v12 = t350
-																											t351 := int32(load32(m.memory, uint64(uint32(v8))+784))
+																											t351 := int32(load32(m.memory, uint64(uint32(v8))+1152))
 																											if t351 == 0 {
 																												goto l144
 																											}
-																											store32(m.memory, uint64(uint32(v8))+436, uint32(v29))
-																											store32(m.memory, uint64(uint32(v8))+432, uint32(v15))
-																											store32(m.memory, uint64(uint32(v8))+428, uint32(v12))
-																											store32(m.memory, uint64(uint32(v8))+424, uint32(i32(1)))
+																											store32(m.memory, uint64(uint32(v8))+788, uint32(v29))
+																											store32(m.memory, uint64(uint32(v8))+784, uint32(v15))
+																											store32(m.memory, uint64(uint32(v8))+780, uint32(v12))
+																											store32(m.memory, uint64(uint32(v8))+776, uint32(i32(1)))
 																											goto l113
 																										}
 																									l146:
@@ -61110,21 +61110,21 @@ func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode17rende
 																											if t352 != i32(14658) {
 																												goto l147
 																											}
-																											m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode4upce9canonical(v8+i32(784), v3, v4)
-																											t353 := int32(load32(m.memory, uint64(uint32(v8))+796))
+																											m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode4upce9canonical(v8+i32(1152), v3, v4)
+																											t353 := int32(load32(m.memory, uint64(uint32(v8))+1164))
 																											v29 = t353
-																											t354 := int32(load32(m.memory, uint64(uint32(v8))+792))
+																											t354 := int32(load32(m.memory, uint64(uint32(v8))+1160))
 																											v15 = t354
-																											t355 := int32(load32(m.memory, uint64(uint32(v8))+788))
+																											t355 := int32(load32(m.memory, uint64(uint32(v8))+1156))
 																											v12 = t355
-																											t356 := int32(load32(m.memory, uint64(uint32(v8))+784))
+																											t356 := int32(load32(m.memory, uint64(uint32(v8))+1152))
 																											if t356 == 0 {
 																												goto l144
 																											}
-																											store32(m.memory, uint64(uint32(v8))+436, uint32(v29))
-																											store32(m.memory, uint64(uint32(v8))+432, uint32(v15))
-																											store32(m.memory, uint64(uint32(v8))+428, uint32(v12))
-																											store32(m.memory, uint64(uint32(v8))+424, uint32(i32(1)))
+																											store32(m.memory, uint64(uint32(v8))+788, uint32(v29))
+																											store32(m.memory, uint64(uint32(v8))+784, uint32(v15))
+																											store32(m.memory, uint64(uint32(v8))+780, uint32(v12))
+																											store32(m.memory, uint64(uint32(v8))+776, uint32(i32(1)))
 																											goto l113
 																										}
 																									l147:
@@ -61132,22 +61132,22 @@ func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode17rende
 																										if t357 != i32(19778) {
 																											goto l148
 																										}
-																										m.__RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode4flag(v8+i32(784), v1, i32(5), i32(0))
-																										t358 := int32(m.memory[uint64(uint32(v8))+788])
+																										m.__RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode4flag(v8+i32(1152), v1, i32(5), i32(0))
+																										t358 := int32(m.memory[uint64(uint32(v8))+1156])
 																										v12 = t358
 																										{
-																											t359 := int32(load32(m.memory, uint64(uint32(v8))+784))
+																											t359 := int32(load32(m.memory, uint64(uint32(v8))+1152))
 																											v15 = t359
 																											if v15 == i32(-1) {
 																												goto l149
 																											}
-																											t360 := int32(load32(m.memory, uint64(uint32(v8))+792))
-																											store32(m.memory, uint64(uint32(v8))+436, uint32(t360))
-																											t361 := int32(load32(m.memory, uint64(uint32(v8))+789))
-																											store32(m.memory, uint64(uint32(v8))+433, uint32(t361))
-																											m.memory[uint64(uint32(v8))+432] = byte(v12)
-																											store32(m.memory, uint64(uint32(v8))+428, uint32(v15))
-																											store32(m.memory, uint64(uint32(v8))+424, uint32(i32(1)))
+																											t360 := int32(load32(m.memory, uint64(uint32(v8))+1160))
+																											store32(m.memory, uint64(uint32(v8))+788, uint32(t360))
+																											t361 := int32(load32(m.memory, uint64(uint32(v8))+1157))
+																											store32(m.memory, uint64(uint32(v8))+785, uint32(t361))
+																											m.memory[uint64(uint32(v8))+784] = byte(v12)
+																											store32(m.memory, uint64(uint32(v8))+780, uint32(v15))
+																											store32(m.memory, uint64(uint32(v8))+776, uint32(i32(1)))
 																											goto l113
 																										}
 																									l149:
@@ -61173,19 +61173,19 @@ func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode17rende
 																											v15 = v30
 																										}
 																									l150:
-																										m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode3msi6checks(v8+i32(784), v3, v4, v12, v15)
-																										t366 := int32(load32(m.memory, uint64(uint32(v8))+796))
+																										m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode3msi6checks(v8+i32(1152), v3, v4, v12, v15)
+																										t366 := int32(load32(m.memory, uint64(uint32(v8))+1164))
 																										v29 = t366
-																										t367 := int32(load32(m.memory, uint64(uint32(v8))+792))
+																										t367 := int32(load32(m.memory, uint64(uint32(v8))+1160))
 																										v15 = t367
-																										t368 := int32(load32(m.memory, uint64(uint32(v8))+788))
+																										t368 := int32(load32(m.memory, uint64(uint32(v8))+1156))
 																										v12 = t368
-																										t369 := int32(load32(m.memory, uint64(uint32(v8))+784))
+																										t369 := int32(load32(m.memory, uint64(uint32(v8))+1152))
 																										if t369 != 0 {
-																											store32(m.memory, uint64(uint32(v8))+436, uint32(v29))
-																											store32(m.memory, uint64(uint32(v8))+432, uint32(v15))
-																											store32(m.memory, uint64(uint32(v8))+428, uint32(v12))
-																											store32(m.memory, uint64(uint32(v8))+424, uint32(i32(1)))
+																											store32(m.memory, uint64(uint32(v8))+788, uint32(v29))
+																											store32(m.memory, uint64(uint32(v8))+784, uint32(v15))
+																											store32(m.memory, uint64(uint32(v8))+780, uint32(v12))
+																											store32(m.memory, uint64(uint32(v8))+776, uint32(i32(1)))
 																											goto l113
 																										}
 																									}
@@ -61235,11 +61235,11 @@ func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode17rende
 																									}
 																								}
 																							l148:
-																								m.__RNvNtNtCsknUcikIyyBm_4core3str8converts9from_utf8(v8+i32(784), v3, v4)
-																								t377 := int32(load32(m.memory, uint64(uint32(v8))+784))
+																								m.__RNvNtNtCsknUcikIyyBm_4core3str8converts9from_utf8(v8+i32(1152), v3, v4)
+																								t377 := int32(load32(m.memory, uint64(uint32(v8))+1152))
 																								if t377 != i32(1) {
 																									v15 = i32(0)
-																									t391 := int32(load32(m.memory, uint64(uint32(v8))+792))
+																									t391 := int32(load32(m.memory, uint64(uint32(v8))+1160))
 																									v12 = t391
 																									if v12 < i32(0) {
 																										goto l161
@@ -61251,7 +61251,7 @@ func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode17rende
 																										v29 = i32(1)
 																										goto l163
 																									l162:
-																										t392 := int32(load32(m.memory, uint64(uint32(v8))+788))
+																										t392 := int32(load32(m.memory, uint64(uint32(v8))+1156))
 																										v30 = t392
 																										__RNvCs1njKG4L9aB3_7___rustc35___rust_no_alloc_shim_is_unstable_v2()
 																										v15 = i32(1)
@@ -61266,10 +61266,10 @@ func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode17rende
 																										memory_copy(m.memory, uint32(v29), uint32(v30), uint32(v12))
 																									}
 																								l163:
-																									store32(m.memory, uint64(uint32(v8))+436, uint32(v12))
-																									store32(m.memory, uint64(uint32(v8))+432, uint32(v29))
-																									store32(m.memory, uint64(uint32(v8))+428, uint32(v12))
-																									store32(m.memory, uint64(uint32(v8))+424, uint32(i32(0)))
+																									store32(m.memory, uint64(uint32(v8))+788, uint32(v12))
+																									store32(m.memory, uint64(uint32(v8))+784, uint32(v29))
+																									store32(m.memory, uint64(uint32(v8))+780, uint32(v12))
+																									store32(m.memory, uint64(uint32(v8))+776, uint32(i32(0)))
 																									goto l113
 																								}
 																								__RNvCs1njKG4L9aB3_7___rustc35___rust_no_alloc_shim_is_unstable_v2()
@@ -61284,31 +61284,31 @@ func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode17rende
 																									store64(m.memory, uint64(uint32(v12))+8, uint64(t389))
 																									t390 := int64(load64(m.memory, uint64(uint32(i32(0)))+1090963))
 																									store64(m.memory, uint32(v12), uint64(t390))
-																									store32(m.memory, uint64(uint32(v8))+436, uint32(i32(27)))
-																									store32(m.memory, uint64(uint32(v8))+432, uint32(v12))
-																									store64(m.memory, uint64(uint32(v8))+424, uint64(i64(0x1b00000001)))
+																									store32(m.memory, uint64(uint32(v8))+788, uint32(i32(27)))
+																									store32(m.memory, uint64(uint32(v8))+784, uint32(v12))
+																									store64(m.memory, uint64(uint32(v8))+776, uint64(i64(0x1b00000001)))
 																									goto l113
 																								}
 																								m.__RNvNtCs6UNhEcE2CoN_5alloc7raw_vec12handle_error(i32(1), i32(27))
 																								panic("unreachable")
 																							}
 																						l155:
-																							store64(m.memory, uint64(uint32(v8))+80, uint64(int64(uint32(i32(18)))<<32|int64(uint32(v9))))
-																							m.__RNvNvNtCs6UNhEcE2CoN_5alloc3fmt6format12format_inner(v8+i32(784), i32(1055687), v8+i32(80))
-																							t379 := int32(m.memory[uint64(uint32(v8))+788])
+																							store64(m.memory, uint64(uint32(v8))+88, uint64(int64(uint32(i32(18)))<<32|int64(uint32(v9))))
+																							m.__RNvNvNtCs6UNhEcE2CoN_5alloc3fmt6format12format_inner(v8+i32(1152), i32(1055687), v8+i32(88))
+																							t379 := int32(m.memory[uint64(uint32(v8))+1156])
 																							v30 = t379
 																							{
-																								t380 := int32(load32(m.memory, uint64(uint32(v8))+784))
+																								t380 := int32(load32(m.memory, uint64(uint32(v8))+1152))
 																								v23 = t380
 																								if v23 == i32(-1) {
 																									goto l159
 																								}
-																								t381 := int32(load32(m.memory, uint64(uint32(v8))+792))
-																								store32(m.memory, uint64(uint32(v8))+436, uint32(t381))
-																								t382 := int32(load32(m.memory, uint64(uint32(v8))+789))
-																								store32(m.memory, uint64(uint32(v8))+433, uint32(t382))
-																								m.memory[uint64(uint32(v8))+432] = byte(v30)
-																								store32(m.memory, uint64(uint32(v8))+428, uint32(v23))
+																								t381 := int32(load32(m.memory, uint64(uint32(v8))+1160))
+																								store32(m.memory, uint64(uint32(v8))+788, uint32(t381))
+																								t382 := int32(load32(m.memory, uint64(uint32(v8))+1157))
+																								store32(m.memory, uint64(uint32(v8))+785, uint32(t382))
+																								m.memory[uint64(uint32(v8))+784] = byte(v30)
+																								store32(m.memory, uint64(uint32(v8))+780, uint32(v23))
 																								v30 = i32(1)
 																								goto l160
 																							}
@@ -61327,23 +61327,23 @@ func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode17rende
 																					}
 																				l153:
 																					v30 = i32(0)
-																					store32(m.memory, uint64(uint32(v8))+792, uint32(i32(0)))
-																					store64(m.memory, uint64(uint32(v8))+784, uint64(i64(0x100000000)))
-																					m.__RINvXsd_NtCs6UNhEcE2CoN_5alloc6stringNtB6_6StringINtNtNtNtCsknUcikIyyBm_4core4iter6traits7collect6ExtendcE6extendINtNtNtBS_8adapters3map3MapINtNtNtBU_5slice4iter4IterhENCNCNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode6retail7caption00EEB2S_(v8+i32(784), v15, v15+v29)
-																					t385 := int32(load32(m.memory, uint64(uint32(v8))+792))
-																					store32(m.memory, uint64(uint32(v8))+436, uint32(t385))
-																					t386 := int64(load64(m.memory, uint64(uint32(v8))+784))
-																					store64(m.memory, uint64(uint32(v8))+428, uint64(t386))
+																					store32(m.memory, uint64(uint32(v8))+1160, uint32(i32(0)))
+																					store64(m.memory, uint64(uint32(v8))+1152, uint64(i64(0x100000000)))
+																					m.__RINvXsd_NtCs6UNhEcE2CoN_5alloc6stringNtB6_6StringINtNtNtNtCsknUcikIyyBm_4core4iter6traits7collect6ExtendcE6extendINtNtNtBS_8adapters3map3MapINtNtNtBU_5slice4iter4IterhENCNCNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode6retail7caption00EEB2S_(v8+i32(1152), v15, v15+v29)
+																					t385 := int32(load32(m.memory, uint64(uint32(v8))+1160))
+																					store32(m.memory, uint64(uint32(v8))+788, uint32(t385))
+																					t386 := int64(load64(m.memory, uint64(uint32(v8))+1152))
+																					store64(m.memory, uint64(uint32(v8))+780, uint64(t386))
 																				}
 																			l160:
-																				store32(m.memory, uint64(uint32(v8))+424, uint32(v30))
+																				store32(m.memory, uint64(uint32(v8))+776, uint32(v30))
 																				if v12 == 0 {
 																					goto l113
 																				}
 																				m.__RNvCs1njKG4L9aB3_7___rustc14___rust_dealloc(v15, v12, i32(1))
 																				goto l113
 																			}
-																			t327 := int32(m.memory[uint64(uint32(v1))+155])
+																			t327 := int32(m.memory[uint64(uint32(v1))+156])
 																			v29 = t327
 																			v15 = i32(1091392)
 																			{
@@ -61378,103 +61378,103 @@ func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode17rende
 																				}
 																			}
 																		l140:
-																			store64(m.memory, uint64(uint32(v8))+768, uint64(int64(uint32(i32(18)))<<32|int64(uint32(v9))))
-																			m.__RNvNvNtCs6UNhEcE2CoN_5alloc3fmt6format12format_inner(v8+i32(80), i32(1055687), v8+i32(768))
-																			t333 := int32(m.memory[uint64(uint32(v8))+84])
+																			store64(m.memory, uint64(uint32(v8))+1136, uint64(int64(uint32(i32(18)))<<32|int64(uint32(v9))))
+																			m.__RNvNvNtCs6UNhEcE2CoN_5alloc3fmt6format12format_inner(v8+i32(88), i32(1055687), v8+i32(1136))
+																			t333 := int32(m.memory[uint64(uint32(v8))+92])
 																			v12 = t333
-																			t334 := int32(load32(m.memory, uint64(uint32(v8))+80))
+																			t334 := int32(load32(m.memory, uint64(uint32(v8))+88))
 																			v15 = t334
 																			if v15 == i32(-1) {
 																				goto l142
 																			}
-																			t335 := int32(load32(m.memory, uint64(uint32(v8))+88))
-																			store32(m.memory, uint64(uint32(v8))+436, uint32(t335))
-																			t336 := int32(load32(m.memory, uint64(uint32(v8))+85))
-																			store32(m.memory, uint64(uint32(v8))+433, uint32(t336))
-																			m.memory[uint64(uint32(v8))+432] = byte(v12)
-																			store32(m.memory, uint64(uint32(v8))+428, uint32(v15))
-																			store32(m.memory, uint64(uint32(v8))+424, uint32(i32(1)))
+																			t335 := int32(load32(m.memory, uint64(uint32(v8))+96))
+																			store32(m.memory, uint64(uint32(v8))+788, uint32(t335))
+																			t336 := int32(load32(m.memory, uint64(uint32(v8))+93))
+																			store32(m.memory, uint64(uint32(v8))+785, uint32(t336))
+																			m.memory[uint64(uint32(v8))+784] = byte(v12)
+																			store32(m.memory, uint64(uint32(v8))+780, uint32(v15))
+																			store32(m.memory, uint64(uint32(v8))+776, uint32(i32(1)))
 																			goto l113
 																		}
 																	l141:
 																		v12 = i32(0)
 																	l142:
-																		m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode6code9314interpretation(v8+i32(784), v3, v4, v29&i32(1), v12&i32(1))
-																		t394 := int64(load64(m.memory, uint64(uint32(v8))+788))
-																		store64(m.memory, uint64(uint32(v8))+1136, uint64(t394))
-																		t395 := int32(load32(m.memory, uint64(uint32(v8))+796))
-																		store32(m.memory, uint64(uint32(v8))+1144, uint32(t395))
+																		m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode6code9314interpretation(v8+i32(1152), v3, v4, v29&i32(1), v12&i32(1))
+																		t394 := int64(load64(m.memory, uint64(uint32(v8))+1156))
+																		store64(m.memory, uint64(uint32(v8))+1496, uint64(t394))
+																		t395 := int32(load32(m.memory, uint64(uint32(v8))+1164))
+																		store32(m.memory, uint64(uint32(v8))+1504, uint32(t395))
 																		{
-																			t396 := int32(load32(m.memory, uint64(uint32(v8))+784))
+																			t396 := int32(load32(m.memory, uint64(uint32(v8))+1152))
 																			if t396 != i32(1) {
-																				t399 := int32(load32(m.memory, uint64(uint32(v8))+1144))
-																				store32(m.memory, uint64(uint32(v8))+88, uint32(t399))
-																				t400 := int64(load64(m.memory, uint64(uint32(v8))+1136))
-																				store64(m.memory, uint64(uint32(v8))+80, uint64(t400))
+																				t399 := int32(load32(m.memory, uint64(uint32(v8))+1504))
+																				store32(m.memory, uint64(uint32(v8))+96, uint32(t399))
+																				t400 := int64(load64(m.memory, uint64(uint32(v8))+1496))
+																				store64(m.memory, uint64(uint32(v8))+88, uint64(t400))
 																				{
 																					t401 := int32(m.memory[uint64(uint32(v1))+94])
 																					if t401 != 0 {
-																						store64(m.memory, uint64(uint32(v8))+1136, uint64(int64(uint32(i32(18)))<<32|int64(uint32(v8+i32(80)))))
-																						m.fn260(v8+i32(784), i32(1056566), v8+i32(1136))
-																						store32(m.memory, uint64(uint32(v8))+424, uint32(i32(0)))
-																						t404 := int64(load64(m.memory, uint64(uint32(v8))+784))
-																						store64(m.memory, uint64(uint32(v8))+428, uint64(t404))
-																						t405 := int32(load32(m.memory, uint64(uint32(v8))+792))
-																						store32(m.memory, uint64(uint32(v8))+436, uint32(t405))
-																						t406 := int32(load32(m.memory, uint64(uint32(v8))+80))
+																						store64(m.memory, uint64(uint32(v8))+1496, uint64(int64(uint32(i32(18)))<<32|int64(uint32(v8+i32(88)))))
+																						m.fn260(v8+i32(1152), i32(1056566), v8+i32(1496))
+																						store32(m.memory, uint64(uint32(v8))+776, uint32(i32(0)))
+																						t404 := int64(load64(m.memory, uint64(uint32(v8))+1152))
+																						store64(m.memory, uint64(uint32(v8))+780, uint64(t404))
+																						t405 := int32(load32(m.memory, uint64(uint32(v8))+1160))
+																						store32(m.memory, uint64(uint32(v8))+788, uint32(t405))
+																						t406 := int32(load32(m.memory, uint64(uint32(v8))+88))
 																						v12 = t406
 																						if v12 == 0 {
 																							goto l113
 																						}
-																						t407 := int32(load32(m.memory, uint64(uint32(v8))+84))
+																						t407 := int32(load32(m.memory, uint64(uint32(v8))+92))
 																						m.__RNvCs1njKG4L9aB3_7___rustc14___rust_dealloc(t407, v12, i32(1))
 																						goto l113
 																					}
-																					t402 := int32(load32(m.memory, uint64(uint32(v8))+88))
-																					store32(m.memory, uint64(uint32(v8))+436, uint32(t402))
-																					t403 := int64(load64(m.memory, uint64(uint32(v8))+80))
-																					store64(m.memory, uint64(uint32(v8))+428, uint64(t403))
-																					store32(m.memory, uint64(uint32(v8))+424, uint32(i32(0)))
+																					t402 := int32(load32(m.memory, uint64(uint32(v8))+96))
+																					store32(m.memory, uint64(uint32(v8))+788, uint32(t402))
+																					t403 := int64(load64(m.memory, uint64(uint32(v8))+88))
+																					store64(m.memory, uint64(uint32(v8))+780, uint64(t403))
+																					store32(m.memory, uint64(uint32(v8))+776, uint32(i32(0)))
 																					goto l113
 																				}
 																			}
-																			t397 := int32(load32(m.memory, uint64(uint32(v8))+1144))
-																			store32(m.memory, uint64(uint32(v8))+436, uint32(t397))
-																			t398 := int64(load64(m.memory, uint64(uint32(v8))+1136))
-																			store64(m.memory, uint64(uint32(v8))+428, uint64(t398))
-																			store32(m.memory, uint64(uint32(v8))+424, uint32(i32(1)))
+																			t397 := int32(load32(m.memory, uint64(uint32(v8))+1504))
+																			store32(m.memory, uint64(uint32(v8))+788, uint32(t397))
+																			t398 := int64(load64(m.memory, uint64(uint32(v8))+1496))
+																			store64(m.memory, uint64(uint32(v8))+780, uint64(t398))
+																			store32(m.memory, uint64(uint32(v8))+776, uint32(i32(1)))
 																			goto l113
 																		}
 																	}
-																	m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode7plessey12checked_bits(v8+i32(784), v3, v4)
-																	t310 := int32(load32(m.memory, uint64(uint32(v8))+796))
+																	m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode7plessey12checked_bits(v8+i32(1152), v3, v4)
+																	t310 := int32(load32(m.memory, uint64(uint32(v8))+1164))
 																	v15 = t310
-																	t311 := int32(load32(m.memory, uint64(uint32(v8))+792))
+																	t311 := int32(load32(m.memory, uint64(uint32(v8))+1160))
 																	v22 = t311
-																	t312 := int32(load32(m.memory, uint64(uint32(v8))+788))
+																	t312 := int32(load32(m.memory, uint64(uint32(v8))+1156))
 																	v23 = t312
 																	{
-																		t313 := int32(load32(m.memory, uint64(uint32(v8))+784))
+																		t313 := int32(load32(m.memory, uint64(uint32(v8))+1152))
 																		if t313 != i32(1) {
-																			m.__RNvNtNtCsknUcikIyyBm_4core3str8converts9from_utf8(v8+i32(784), v3, v4)
+																			m.__RNvNtNtCsknUcikIyyBm_4core3str8converts9from_utf8(v8+i32(1152), v3, v4)
 																			{
-																				t314 := int32(load32(m.memory, uint64(uint32(v8))+784))
+																				t314 := int32(load32(m.memory, uint64(uint32(v8))+1152))
 																				if t314 != i32(1) {
-																					t320 := int32(load32(m.memory, uint64(uint32(v8))+788))
+																					t320 := int32(load32(m.memory, uint64(uint32(v8))+1156))
 																					v21 = t320
-																					t321 := int32(load32(m.memory, uint64(uint32(v8))+792))
-																					t322 := v8 + i32(784)
+																					t321 := int32(load32(m.memory, uint64(uint32(v8))+1160))
+																					t322 := v8 + i32(1152)
 																					v12 = t321
 																					m.__RNvMs5_NtCs6UNhEcE2CoN_5alloc7raw_vecNtB5_11RawVecInner15try_allocate_inCs508fO6TR0hO_3zpl(t322, v12, i32(0), i32(1), i32(1))
-																					t323 := int32(load32(m.memory, uint64(uint32(v8))+788))
+																					t323 := int32(load32(m.memory, uint64(uint32(v8))+1156))
 																					v29 = t323
-																					t324 := int32(load32(m.memory, uint64(uint32(v8))+784))
+																					t324 := int32(load32(m.memory, uint64(uint32(v8))+1152))
 																					if t324 == i32(1) {
-																						t459 := int32(load32(m.memory, uint64(uint32(v8))+792))
+																						t459 := int32(load32(m.memory, uint64(uint32(v8))+1160))
 																						m.__RNvNtCs6UNhEcE2CoN_5alloc7raw_vec12handle_error(v29, t459)
 																						panic("unreachable")
 																					}
-																					t325 := int32(load32(m.memory, uint64(uint32(v8))+792))
+																					t325 := int32(load32(m.memory, uint64(uint32(v8))+1160))
 																					v30 = t325
 																					if v12 == 0 {
 																						goto l137
@@ -61500,16 +61500,16 @@ func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode17rende
 																				store64(m.memory, uint64(uint32(v12))+8, uint64(t318))
 																				t319 := int64(load64(m.memory, uint64(uint32(i32(0)))+1090963))
 																				store64(m.memory, uint32(v12), uint64(t319))
-																				store32(m.memory, uint64(uint32(v8))+436, uint32(i32(27)))
-																				store32(m.memory, uint64(uint32(v8))+432, uint32(v12))
-																				store64(m.memory, uint64(uint32(v8))+424, uint64(i64(0x1b00000001)))
+																				store32(m.memory, uint64(uint32(v8))+788, uint32(i32(27)))
+																				store32(m.memory, uint64(uint32(v8))+784, uint32(v12))
+																				store64(m.memory, uint64(uint32(v8))+776, uint64(i64(0x1b00000001)))
 																				goto l135
 																			}
 																		}
-																		store32(m.memory, uint64(uint32(v8))+436, uint32(v15))
-																		store32(m.memory, uint64(uint32(v8))+432, uint32(v22))
-																		store32(m.memory, uint64(uint32(v8))+428, uint32(v23))
-																		store32(m.memory, uint64(uint32(v8))+424, uint32(i32(1)))
+																		store32(m.memory, uint64(uint32(v8))+788, uint32(v15))
+																		store32(m.memory, uint64(uint32(v8))+784, uint32(v22))
+																		store32(m.memory, uint64(uint32(v8))+780, uint32(v23))
+																		store32(m.memory, uint64(uint32(v8))+776, uint32(i32(1)))
 																		goto l113
 																	}
 																}
@@ -61546,24 +61546,24 @@ func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode17rende
 																	v29 = t306
 																}
 															l126:
-																m.__RNvNtNtCsknUcikIyyBm_4core3str8converts9from_utf8(v8+i32(784), v3, v4)
-																t307 := int32(load32(m.memory, uint64(uint32(v8))+784))
+																m.__RNvNtNtCsknUcikIyyBm_4core3str8converts9from_utf8(v8+i32(1152), v3, v4)
+																t307 := int32(load32(m.memory, uint64(uint32(v8))+1152))
 																if t307 != i32(1) {
-																	t412 := int32(load32(m.memory, uint64(uint32(v8))+788))
+																	t412 := int32(load32(m.memory, uint64(uint32(v8))+1156))
 																	v23 = t412
-																	t413 := int32(load32(m.memory, uint64(uint32(v8))+792))
-																	t414 := v8 + i32(784)
+																	t413 := int32(load32(m.memory, uint64(uint32(v8))+1160))
+																	t414 := v8 + i32(1152)
 																	v12 = t413
 																	m.__RNvMs5_NtCs6UNhEcE2CoN_5alloc7raw_vecNtB5_11RawVecInner15try_allocate_inCs508fO6TR0hO_3zpl(t414, v12, i32(0), i32(1), i32(1))
-																	t415 := int32(load32(m.memory, uint64(uint32(v8))+788))
+																	t415 := int32(load32(m.memory, uint64(uint32(v8))+1156))
 																	v30 = t415
-																	t416 := int32(load32(m.memory, uint64(uint32(v8))+784))
+																	t416 := int32(load32(m.memory, uint64(uint32(v8))+1152))
 																	if t416 == i32(1) {
-																		t460 := int32(load32(m.memory, uint64(uint32(v8))+792))
+																		t460 := int32(load32(m.memory, uint64(uint32(v8))+1160))
 																		m.__RNvNtCs6UNhEcE2CoN_5alloc7raw_vec12handle_error(v30, t460)
 																		panic("unreachable")
 																	}
-																	t417 := int32(load32(m.memory, uint64(uint32(v8))+792))
+																	t417 := int32(load32(m.memory, uint64(uint32(v8))+1160))
 																	v15 = t417
 																	if v12 == 0 {
 																		goto l167
@@ -61586,38 +61586,38 @@ func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode17rende
 																	store64(m.memory, uint64(uint32(v12))+8, uint64(t410))
 																	t411 := int64(load64(m.memory, uint64(uint32(i32(0)))+1090963))
 																	store64(m.memory, uint32(v12), uint64(t411))
-																	store32(m.memory, uint64(uint32(v8))+436, uint32(i32(27)))
-																	store32(m.memory, uint64(uint32(v8))+432, uint32(v12))
-																	store32(m.memory, uint64(uint32(v8))+428, uint32(i32(27)))
-																	store32(m.memory, uint64(uint32(v8))+424, uint32(i32(1)))
+																	store32(m.memory, uint64(uint32(v8))+788, uint32(i32(27)))
+																	store32(m.memory, uint64(uint32(v8))+784, uint32(v12))
+																	store32(m.memory, uint64(uint32(v8))+780, uint32(i32(27)))
+																	store32(m.memory, uint64(uint32(v8))+776, uint32(i32(1)))
 																	goto l113
 																}
 																m.__RNvNtCs6UNhEcE2CoN_5alloc7raw_vec12handle_error(i32(1), i32(27))
 																panic("unreachable")
 															}
-															m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode7code1286encode_llvm_2873827144148751203_oo8rd2(v8+i32(784), v1, v3, v4)
-															t299 := int64(load64(m.memory, uint64(uint32(v8))+792))
+															m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode7code1286encode_llvm_9890160647063501120_y6kvas(v8+i32(1152), v1, v3, v4)
+															t299 := int64(load64(m.memory, uint64(uint32(v8))+1160))
 															v37 = t299
-															t300 := int32(load32(m.memory, uint64(uint32(v8))+788))
+															t300 := int32(load32(m.memory, uint64(uint32(v8))+1156))
 															v15 = t300
 															{
-																t301 := int32(load32(m.memory, uint64(uint32(v8))+784))
+																t301 := int32(load32(m.memory, uint64(uint32(v8))+1152))
 																v12 = t301
 																if v12 != i32(-1) {
-																	t302 := int64(load64(m.memory, uint64(uint32(v8))+800))
-																	store64(m.memory, uint64(uint32(v8))+432, uint64(t302))
-																	store32(m.memory, uint64(uint32(v8))+428, uint32(int64(uint64(v37)>>32)))
+																	t302 := int64(load64(m.memory, uint64(uint32(v8))+1168))
+																	store64(m.memory, uint64(uint32(v8))+784, uint64(t302))
+																	store32(m.memory, uint64(uint32(v8))+780, uint32(int64(uint64(v37)>>32)))
 																	if v12 == 0 {
 																		goto l123
 																	}
 																	m.__RNvCs1njKG4L9aB3_7___rustc14___rust_dealloc(v15, v12<<2, i32(4))
 																l123:
-																	store32(m.memory, uint64(uint32(v8))+424, uint32(i32(0)))
+																	store32(m.memory, uint64(uint32(v8))+776, uint32(i32(0)))
 																	goto l113
 																}
-																store64(m.memory, uint64(uint32(v8))+432, uint64(v37))
-																store32(m.memory, uint64(uint32(v8))+428, uint32(v15))
-																store32(m.memory, uint64(uint32(v8))+424, uint32(i32(1)))
+																store64(m.memory, uint64(uint32(v8))+784, uint64(v37))
+																store32(m.memory, uint64(uint32(v8))+780, uint32(v15))
+																store32(m.memory, uint64(uint32(v8))+776, uint32(i32(1)))
 																goto l113
 															}
 														}
@@ -61628,55 +61628,55 @@ func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode17rende
 														m.__RNvNtCs6UNhEcE2CoN_5alloc7raw_vec12handle_error(v15, v12)
 														panic("unreachable")
 													l174:
-														store32(m.memory, uint64(uint32(v8))+1144, uint32(v12))
-														store32(m.memory, uint64(uint32(v8))+1140, uint32(v15))
-														store32(m.memory, uint64(uint32(v8))+1136, uint32(v30))
+														store32(m.memory, uint64(uint32(v8))+1504, uint32(v12))
+														store32(m.memory, uint64(uint32(v8))+1500, uint32(v15))
+														store32(m.memory, uint64(uint32(v8))+1496, uint32(v30))
 													l176:
-														store64(m.memory, uint64(uint32(v8))+80, uint64(int64(uint32(i32(18)))<<32|int64(uint32(v8+i32(1136)))))
-														m.fn260(v8+i32(784), i32(1056075), v8+i32(80))
-														store32(m.memory, uint64(uint32(v8))+424, uint32(i32(0)))
-														t462 := int64(load64(m.memory, uint64(uint32(v8))+784))
-														store64(m.memory, uint64(uint32(v8))+428, uint64(t462))
-														t463 := int32(load32(m.memory, uint64(uint32(v8))+792))
-														store32(m.memory, uint64(uint32(v8))+436, uint32(t463))
-														t464 := int32(load32(m.memory, uint64(uint32(v8))+1136))
+														store64(m.memory, uint64(uint32(v8))+88, uint64(int64(uint32(i32(18)))<<32|int64(uint32(v8+i32(1496)))))
+														m.fn260(v8+i32(1152), i32(1056075), v8+i32(88))
+														store32(m.memory, uint64(uint32(v8))+776, uint32(i32(0)))
+														t462 := int64(load64(m.memory, uint64(uint32(v8))+1152))
+														store64(m.memory, uint64(uint32(v8))+780, uint64(t462))
+														t463 := int32(load32(m.memory, uint64(uint32(v8))+1160))
+														store32(m.memory, uint64(uint32(v8))+788, uint32(t463))
+														t464 := int32(load32(m.memory, uint64(uint32(v8))+1496))
 														v12 = t464
 														if v12 == 0 {
 															goto l113
 														}
-														t465 := int32(load32(m.memory, uint64(uint32(v8))+1140))
+														t465 := int32(load32(m.memory, uint64(uint32(v8))+1500))
 														m.__RNvCs1njKG4L9aB3_7___rustc14___rust_dealloc(t465, v12, i32(1))
 														goto l113
 													}
 												l167:
-													store32(m.memory, uint64(uint32(v8))+84, uint32(v15))
-													store32(m.memory, uint64(uint32(v8))+80, uint32(v30))
-													store32(m.memory, uint64(uint32(v8))+88, uint32(v12))
+													store32(m.memory, uint64(uint32(v8))+92, uint32(v15))
+													store32(m.memory, uint64(uint32(v8))+88, uint32(v30))
+													store32(m.memory, uint64(uint32(v8))+96, uint32(v12))
 													t466 := int32(m.memory[uint64(uint32(v29))+1090860])
 													v29 = t466
 													{
 														if v30 != v12 {
 															goto l179
 														}
-														m.__RINvNvMs2_NtCs6UNhEcE2CoN_5alloc7raw_vecINtB8_11RawVecInnerpE7reserve21do_reserve_and_handleNtNtBa_5alloc6GlobalECs508fO6TR0hO_3zpl(v8+i32(80), v12, i32(1), i32(1), i32(1))
-														t467 := int32(load32(m.memory, uint64(uint32(v8))+84))
+														m.__RINvNvMs2_NtCs6UNhEcE2CoN_5alloc7raw_vecINtB8_11RawVecInnerpE7reserve21do_reserve_and_handleNtNtBa_5alloc6GlobalECs508fO6TR0hO_3zpl(v8+i32(88), v12, i32(1), i32(1), i32(1))
+														t467 := int32(load32(m.memory, uint64(uint32(v8))+92))
 														v15 = t467
 													}
 												l179:
 													m.memory[uint32(v15+v12)] = byte(v29)
 													t468 := v8
 													v12 = v12 + i32(1)
-													store32(m.memory, uint64(uint32(t468))+88, uint32(v12))
-													t469 := int64(load64(m.memory, uint64(uint32(v8))+80))
-													store64(m.memory, uint64(uint32(v8))+428, uint64(t469))
-													store32(m.memory, uint64(uint32(v8))+436, uint32(v12))
-													store32(m.memory, uint64(uint32(v8))+424, uint32(i32(0)))
+													store32(m.memory, uint64(uint32(t468))+96, uint32(v12))
+													t469 := int64(load64(m.memory, uint64(uint32(v8))+88))
+													store64(m.memory, uint64(uint32(v8))+780, uint64(t469))
+													store32(m.memory, uint64(uint32(v8))+788, uint32(v12))
+													store32(m.memory, uint64(uint32(v8))+776, uint32(i32(0)))
 													goto l113
 												}
 											l137:
-												store32(m.memory, uint64(uint32(v8))+88, uint32(v12))
-												store32(m.memory, uint64(uint32(v8))+84, uint32(v30))
-												store32(m.memory, uint64(uint32(v8))+80, uint32(v29))
+												store32(m.memory, uint64(uint32(v8))+96, uint32(v12))
+												store32(m.memory, uint64(uint32(v8))+92, uint32(v30))
+												store32(m.memory, uint64(uint32(v8))+88, uint32(v29))
 												v21 = i32(1091392)
 												{
 													{
@@ -61709,22 +61709,22 @@ func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode17rende
 													}
 												}
 											l181:
-												store64(m.memory, uint64(uint32(v8))+1136, uint64(int64(uint32(i32(18)))<<32|int64(uint32(v9))))
-												m.__RNvNvNtCs6UNhEcE2CoN_5alloc3fmt6format12format_inner(v8+i32(784), i32(1055687), v8+i32(1136))
-												t475 := int32(m.memory[uint64(uint32(v8))+788])
+												store64(m.memory, uint64(uint32(v8))+1496, uint64(int64(uint32(i32(18)))<<32|int64(uint32(v9))))
+												m.__RNvNvNtCs6UNhEcE2CoN_5alloc3fmt6format12format_inner(v8+i32(1152), i32(1055687), v8+i32(1496))
+												t475 := int32(m.memory[uint64(uint32(v8))+1156])
 												v21 = t475
-												t476 := int32(load32(m.memory, uint64(uint32(v8))+784))
+												t476 := int32(load32(m.memory, uint64(uint32(v8))+1152))
 												v3 = t476
 												if v3 == i32(-1) {
 													goto l184
 												}
-												t477 := int32(load32(m.memory, uint64(uint32(v8))+792))
-												store32(m.memory, uint64(uint32(v8))+436, uint32(t477))
-												t478 := int32(load32(m.memory, uint64(uint32(v8))+789))
-												store32(m.memory, uint64(uint32(v8))+433, uint32(t478))
-												m.memory[uint64(uint32(v8))+432] = byte(v21)
-												store32(m.memory, uint64(uint32(v8))+428, uint32(v3))
-												store32(m.memory, uint64(uint32(v8))+424, uint32(i32(1)))
+												t477 := int32(load32(m.memory, uint64(uint32(v8))+1160))
+												store32(m.memory, uint64(uint32(v8))+788, uint32(t477))
+												t478 := int32(load32(m.memory, uint64(uint32(v8))+1157))
+												store32(m.memory, uint64(uint32(v8))+785, uint32(t478))
+												m.memory[uint64(uint32(v8))+784] = byte(v21)
+												store32(m.memory, uint64(uint32(v8))+780, uint32(v3))
+												store32(m.memory, uint64(uint32(v8))+776, uint32(i32(1)))
 												if v29 == 0 {
 													goto l135
 												}
@@ -61767,19 +61767,19 @@ func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode17rende
 												t484 := int32(m.memory[uint64(uint32((t480|t481<<2|t482<<1|t483<<3)&i32(15)))+1104948])
 												v15 = t484
 												{
-													t485 := int32(load32(m.memory, uint64(uint32(v8))+80))
+													t485 := int32(load32(m.memory, uint64(uint32(v8))+88))
 													if v12 != t485 {
 														goto l187
 													}
-													m.__RINvNvMs2_NtCs6UNhEcE2CoN_5alloc7raw_vecINtB8_11RawVecInnerpE7reserve21do_reserve_and_handleNtNtBa_5alloc6GlobalECs508fO6TR0hO_3zpl(v8+i32(80), v12, i32(1), i32(1), i32(1))
-													t486 := int32(load32(m.memory, uint64(uint32(v8))+84))
+													m.__RINvNvMs2_NtCs6UNhEcE2CoN_5alloc7raw_vecINtB8_11RawVecInnerpE7reserve21do_reserve_and_handleNtNtBa_5alloc6GlobalECs508fO6TR0hO_3zpl(v8+i32(88), v12, i32(1), i32(1), i32(1))
+													t486 := int32(load32(m.memory, uint64(uint32(v8))+92))
 													v30 = t486
 												}
 											l187:
 												m.memory[uint32(v30+v12)] = byte(v15)
 												t487 := v8
 												v12 = v12 + i32(1)
-												store32(m.memory, uint64(uint32(t487))+88, uint32(v12))
+												store32(m.memory, uint64(uint32(t487))+96, uint32(v12))
 												t488 := v21
 												v29 = v29 + i32(4)
 												if t488 != v29 {
@@ -61787,11 +61787,11 @@ func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode17rende
 												}
 											}
 										l182:
-											t489 := int32(load32(m.memory, uint64(uint32(v8))+88))
-											store32(m.memory, uint64(uint32(v8))+436, uint32(t489))
-											t490 := int64(load64(m.memory, uint64(uint32(v8))+80))
-											store64(m.memory, uint64(uint32(v8))+428, uint64(t490))
-											store32(m.memory, uint64(uint32(v8))+424, uint32(i32(0)))
+											t489 := int32(load32(m.memory, uint64(uint32(v8))+96))
+											store32(m.memory, uint64(uint32(v8))+788, uint32(t489))
+											t490 := int64(load64(m.memory, uint64(uint32(v8))+88))
+											store64(m.memory, uint64(uint32(v8))+780, uint64(t490))
+											store32(m.memory, uint64(uint32(v8))+776, uint32(i32(0)))
 											if v23 == 0 {
 												goto l113
 											}
@@ -61799,13 +61799,13 @@ func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode17rende
 										}
 									l113:
 										v27 = i32(-1)
-										t491 := int32(load32(m.memory, uint64(uint32(v8))+424))
+										t491 := int32(load32(m.memory, uint64(uint32(v8))+776))
 										if t491 != i32(1) {
 											goto l100
 										}
-										t492 := int64(load64(m.memory, uint64(uint32(v8))+428))
+										t492 := int64(load64(m.memory, uint64(uint32(v8))+780))
 										v37 = t492
-										t493 := int32(load32(m.memory, uint64(uint32(v8))+436))
+										t493 := int32(load32(m.memory, uint64(uint32(v8))+788))
 										v12 = t493
 										store32(m.memory, uint64(uint32(v0))+40, uint32(i32(-1)))
 										store32(m.memory, uint64(uint32(v0))+8, uint32(v12))
@@ -61870,7 +61870,7 @@ func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode17rende
 											v40 = t504
 											t505 := math.Float64frombits(load64(m.memory, uint64(uint32(v5))+16))
 											v36 = t505
-											v41 = i32(0)
+											v14 = i32(0)
 											goto l194
 										}
 									l190:
@@ -61881,55 +61881,66 @@ func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode17rende
 										v36 = float64(v19 * float64(9))
 										v40 = float64(v19 * float64(5))
 										v39 = i32(65)
-										v41 = i32(1)
+										v14 = i32(1)
 									}
 								l194:
-									t507 := int32(load32(m.memory, uint64(uint32(v8))+436))
+									t507 := int32(load32(m.memory, uint64(uint32(v8))+788))
 									v28 = t507
-									t508 := int32(load32(m.memory, uint64(uint32(v8))+432))
+									t508 := int32(load32(m.memory, uint64(uint32(v8))+784))
 									v5 = t508
-									t509 := int32(load32(m.memory, uint64(uint32(v8))+428))
-									v14 = t509
-									store64(m.memory, uint64(uint32(v8))+1128, math.Float64bits(v36))
-									m.memory[uint64(uint32(v8))+1078] = byte(i32(0))
-									store32(m.memory, uint64(uint32(v8))+808, uint32(v39))
-									store32(m.memory, uint64(uint32(v8))+1116, uint32(i32(0)))
-									store64(m.memory, uint64(uint32(v8))+812, uint64(i64(0)))
-									store16(m.memory, uint64(uint32(v8))+820, uint16(i32(0)))
-									store32(m.memory, uint64(uint32(v8))+1111, uint32(i32(0x1c000000)))
-									m.memory[uint64(uint32(v8))+1120] = byte(i32(0))
-									m.memory[uint64(uint32(v8))+802] = byte(i32(2))
-									m.__RNvMs2_NtNtCs508fO6TR0hO_3zpl6render4fontNtB5_4Font10with_fonts(v8+i32(424), v8+i32(784), v2)
-									t510 := int32(m.memory[uint64(uint32(v1))+88])
-									m.__RNvMs2_NtNtCs508fO6TR0hO_3zpl6render4fontNtB5_4Font25with_truetype_environment(v8+i32(784), v8+i32(424), t510, v6)
-									t511 := v8 + i32(424)
-									v12 = v8 + i32(808)
-									memory_copy(m.memory, uint32(t511), uint32(v12), uint32(i32(308)))
-									memory_copy(m.memory, uint32(v8+i32(437)), uint32(v7), uint32(i32(257)))
-									memory_copy(m.memory, uint32(v12), uint32(v8+i32(424)), uint32(i32(308)))
-									memory_copy(m.memory, uint32(v8+i32(80)), uint32(v8+i32(784)), uint32(i32(344)))
+									t509 := int32(load32(m.memory, uint64(uint32(v8))+780))
+									v41 = t509
+									store64(m.memory, uint64(uint32(v8))+80, math.Float64bits(v36))
+									m.memory[uint64(uint32(v8))+382] = byte(i32(0))
+									store32(m.memory, uint64(uint32(v8))+112, uint32(v39))
+									store32(m.memory, uint64(uint32(v8))+420, uint32(i32(0)))
+									store64(m.memory, uint64(uint32(v8))+116, uint64(i64(0)))
+									store16(m.memory, uint64(uint32(v8))+124, uint16(i32(0)))
+									store32(m.memory, uint64(uint32(v8))+415, uint32(i32(0x1c000000)))
+									m.memory[uint64(uint32(v8))+424] = byte(i32(0))
+									m.memory[uint64(uint32(v8))+106] = byte(i32(2))
 									{
-										if v41 == 0 {
+										if v14 == 0 {
 											goto l195
 										}
-										v42 = i32(1)
-										t512 := int32(m.memory[uint64(uint32(v1))+85])
-										if t512&i32(1) == 0 {
-											goto l195
+										t510 := int32(m.memory[uint64(uint32(v1))+129])
+										if t510&i32(1) != 0 {
+											goto l196
 										}
-										t513 := math.Float64frombits(load64(m.memory, uint64(uint32(v1))+168))
-										if !(t513 > float64(10)) {
-											goto l195
+									}
+								l195:
+									m.__RNvMs2_NtNtCs508fO6TR0hO_3zpl6render4fontNtB5_4Font10with_fonts(v8+i32(432), v8+i32(88), v2)
+									goto l197
+								l196:
+									memory_copy(m.memory, uint32(v8+i32(432)), uint32(v8+i32(88)), uint32(i32(344)))
+								l197:
+									t511 := int32(m.memory[uint64(uint32(v1))+88])
+									m.__RNvMs2_NtNtCs508fO6TR0hO_3zpl6render4fontNtB5_4Font25with_truetype_environment(v8+i32(1152), v8+i32(432), t511, v6)
+									t512 := v8 + i32(1496)
+									v12 = v8 + i32(1176)
+									memory_copy(m.memory, uint32(t512), uint32(v12), uint32(i32(308)))
+									memory_copy(m.memory, uint32(v8+i32(1509)), uint32(v7), uint32(i32(257)))
+									memory_copy(m.memory, uint32(v12), uint32(v8+i32(1496)), uint32(i32(308)))
+									memory_copy(m.memory, uint32(v8+i32(776)), uint32(v8+i32(1152)), uint32(i32(344)))
+									v42 = i32(1)
+									{
+										t513 := int32(m.memory[uint64(uint32(v1))+85])
+										if v14&t513 != i32(1) {
+											goto l198
+										}
+										t514 := math.Float64frombits(load64(m.memory, uint64(uint32(v1))+168))
+										if !(t514 > float64(10)) {
+											goto l198
 										}
 										v34 = float64(90)
 										v35 = float64(50)
-										goto l196
+										goto l199
 									}
-								l195:
+								l198:
 									v35 = v40
 									v42 = i32(0)
 									v34 = v36
-								l196:
+								l199:
 									{
 										{
 											if v13 != 0 {
@@ -61937,979 +61948,979 @@ func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode17rende
 												store64(m.memory, uint64(uint32(v8))+1136, uint64(i64(0x800000000)))
 												{
 													if v28 == 0 {
-														goto l201
+														goto l204
 													}
 													v16 = v5 + v28
 													v43 = float64(float64(v34*float64(7)) / float64(9))
-													var p519 int32
+													var p520 int32
 													if v39 == i32(65) {
-														p519 = 1
+														p520 = 1
 													}
-													v2 = p519
+													v2 = p520
 													v44 = i32(8)
 													v24 = i32(0)
 													v31 = float64(0)
 													v9 = v5
-												l232:
+												l235:
 													{
 														{
-															t520 := int32(int8(m.memory[uint32(v9)]))
-															v12 = t520
+															t521 := int32(int8(m.memory[uint32(v9)]))
+															v12 = t521
 															if v12 > i32(-1) {
-																goto l202
+																goto l205
 															}
-															t521 := int32(m.memory[uint64(uint32(v9))+1])
-															v15 = t521 & i32(63)
+															t522 := int32(m.memory[uint64(uint32(v9))+1])
+															v15 = t522 & i32(63)
 															v29 = v12 & i32(31)
 															{
 																if uint32(v12) > uint32(i32(-33)) {
-																	goto l203
+																	goto l206
 																}
 																v12 = v29<<6 | v15
 																v9 = v9 + i32(2)
-																goto l204
-															l203:
-																t522 := int32(m.memory[uint64(uint32(v9))+2])
-																v15 = v15<<6 | t522&i32(63)
+																goto l207
+															l206:
+																t523 := int32(m.memory[uint64(uint32(v9))+2])
+																v15 = v15<<6 | t523&i32(63)
 																if uint32(v12) >= uint32(i32(-16)) {
-																	goto l205
+																	goto l208
 																}
 																v12 = v15 | v29<<12
 																v9 = v9 + i32(3)
-																goto l204
-															l205:
-																t523 := int32(m.memory[uint64(uint32(v9))+3])
-																v12 = v15<<6 | t523&i32(63) | v29<<18&i32(0x1c0000)
+																goto l207
+															l208:
+																t524 := int32(m.memory[uint64(uint32(v9))+3])
+																v12 = v15<<6 | t524&i32(63) | v29<<18&i32(0x1c0000)
 																v9 = v9 + i32(4)
 															}
-														l204:
-															store32(m.memory, uint64(uint32(v8))+784, uint32(i32(0)))
+														l207:
+															store32(m.memory, uint64(uint32(v8))+1152, uint32(i32(0)))
 															if uint32(v12) < uint32(i32(128)) {
-																goto l206
+																goto l209
 															}
 															v15 = v12&i32(63) | i32(-128)
 															v29 = int32(uint32(v12) >> 6)
 															if uint32(v12) >= uint32(i32(2048)) {
-																goto l207
+																goto l210
 															}
-															m.memory[uint64(uint32(v8))+785] = byte(v15)
-															m.memory[uint64(uint32(v8))+784] = byte(v29 | i32(192))
+															m.memory[uint64(uint32(v8))+1153] = byte(v15)
+															m.memory[uint64(uint32(v8))+1152] = byte(v29 | i32(192))
 															v21 = i32(2)
-															goto l208
+															goto l211
 														}
-													l202:
+													l205:
 														v9 = v9 + i32(1)
 														v12 = v12 & i32(255)
-														store32(m.memory, uint64(uint32(v8))+784, uint32(i32(0)))
-													l206:
-														m.memory[uint64(uint32(v8))+784] = byte(v12)
+														store32(m.memory, uint64(uint32(v8))+1152, uint32(i32(0)))
+													l209:
+														m.memory[uint64(uint32(v8))+1152] = byte(v12)
 														v21 = i32(1)
-														goto l208
-													l207:
+														goto l211
+													l210:
 														v30 = int32(uint32(v12) >> 12)
 														v29 = v29&i32(63) | i32(-128)
 														if uint32(v12) > uint32(i32(0xffff)) {
-															goto l209
+															goto l212
 														}
-														m.memory[uint64(uint32(v8))+786] = byte(v15)
-														m.memory[uint64(uint32(v8))+785] = byte(v29)
-														m.memory[uint64(uint32(v8))+784] = byte(v30 | i32(224))
+														m.memory[uint64(uint32(v8))+1154] = byte(v15)
+														m.memory[uint64(uint32(v8))+1153] = byte(v29)
+														m.memory[uint64(uint32(v8))+1152] = byte(v30 | i32(224))
 														v21 = i32(3)
-														goto l208
-													l209:
-														m.memory[uint64(uint32(v8))+787] = byte(v15)
-														m.memory[uint64(uint32(v8))+786] = byte(v29)
-														m.memory[uint64(uint32(v8))+785] = byte(v30&i32(63) | i32(-128))
-														m.memory[uint64(uint32(v8))+784] = byte(int32(uint32(v12)>>18) | i32(-16))
+														goto l211
+													l212:
+														m.memory[uint64(uint32(v8))+1155] = byte(v15)
+														m.memory[uint64(uint32(v8))+1154] = byte(v29)
+														m.memory[uint64(uint32(v8))+1153] = byte(v30&i32(63) | i32(-128))
+														m.memory[uint64(uint32(v8))+1152] = byte(int32(uint32(v12)>>18) | i32(-16))
 														v21 = i32(4)
-													l208:
+													l211:
 														__RNvCs1njKG4L9aB3_7___rustc35___rust_no_alloc_shim_is_unstable_v2()
 														{
-															t524 := m.__RNvCs1njKG4L9aB3_7___rustc12___rust_alloc(v21, i32(1))
-															v22 = t524
+															t525 := m.__RNvCs1njKG4L9aB3_7___rustc12___rust_alloc(v21, i32(1))
+															v22 = t525
 															if v22 != 0 {
-																goto l210
+																goto l213
 															}
 															m.__RNvNtCs6UNhEcE2CoN_5alloc7raw_vec12handle_error(i32(1), v21)
 															panic("unreachable")
 														}
-													l210:
+													l213:
 														if v21 == 0 {
-															goto l211
+															goto l214
 														}
-														memory_copy(m.memory, uint32(v22), uint32(v8+i32(784)), uint32(v21))
-													l211:
-														memory_copy(m.memory, uint32(v8+i32(784)), uint32(v8+i32(80)), uint32(i32(344)))
-														m.__RINvNtNtCs508fO6TR0hO_3zpl6render4font8text_forNtB2_4FontEB6_(v8+i32(424), v8+i32(784), v22, v21, v35, v34)
-														t525 := int32(load32(m.memory, uint64(uint32(v8))+428))
-														v7 = t525
-														t526 := int32(load32(m.memory, uint64(uint32(v8))+432))
-														v29 = t526
-														t527 := int32(load32(m.memory, uint64(uint32(v8))+436))
-														v4 = t527
+														memory_copy(m.memory, uint32(v22), uint32(v8+i32(1152)), uint32(v21))
+													l214:
+														memory_copy(m.memory, uint32(v8+i32(1152)), uint32(v8+i32(776)), uint32(i32(344)))
+														m.__RINvNtNtCs508fO6TR0hO_3zpl6render4font8text_forNtB2_4FontEB6_(v8+i32(1496), v8+i32(1152), v22, v21, v35, v34)
+														t526 := int32(load32(m.memory, uint64(uint32(v8))+1500))
+														v7 = t526
+														t527 := int32(load32(m.memory, uint64(uint32(v8))+1504))
+														v29 = t527
+														t528 := int32(load32(m.memory, uint64(uint32(v8))+1508))
+														v4 = t528
 														{
 															{
 																{
-																	t528 := int32(load32(m.memory, uint64(uint32(v8))+424))
-																	if t528 != i32(1) {
-																		goto l212
+																	t529 := int32(load32(m.memory, uint64(uint32(v8))+1496))
+																	if t529 != i32(1) {
+																		goto l215
 																	}
 																	store32(m.memory, uint64(uint32(v0))+8, uint32(v4))
 																	store32(m.memory, uint64(uint32(v0))+4, uint32(v29))
 																	store32(m.memory, uint32(v0), uint32(v7))
-																	goto l213
+																	goto l216
 																}
-															l212:
+															l215:
 																{
 																	if v2 != 0 {
-																		goto l214
+																		goto l217
 																	}
 																	v23 = v4 * i32(56)
 																	v19 = float64(0)
-																	goto l215
-																l214:
+																	goto l218
+																l217:
 																	v23 = v4 * i32(56)
 																	if v4 != 0 {
-																		goto l216
+																		goto l219
 																	}
 																	v19 = float64(0)
-																	goto l217
-																l216:
+																	goto l220
+																l219:
 																	v18 = float64(0)
 																	v15 = v23
 																	v12 = v29
 																	v25 = float64(0)
-																l221:
+																l224:
 																	v30 = i32(16)
 																	{
-																		t529 := int32(load32(m.memory, uint32(v12)))
-																		switch t529 {
+																		t530 := int32(load32(m.memory, uint32(v12)))
+																		switch t530 {
 																		case 2:
-																			t530 := math.Float64frombits(load64(m.memory, uint32(v12+i32(32))))
-																			v19 = t530
-																			t531 := math.Float64frombits(load64(m.memory, uint32(v12+i32(16))))
-																			t532 := v19
-																			v33 = t531
-																			p533 := v18
+																			t531 := math.Float64frombits(load64(m.memory, uint32(v12+i32(32))))
+																			v19 = t531
+																			t532 := math.Float64frombits(load64(m.memory, uint32(v12+i32(16))))
+																			t533 := v19
+																			v33 = t532
+																			p534 := v18
 																			if v18 != v18 {
-																				p533 = v33
+																				p534 = v33
 																			}
-																			v18 = p533
-																			t534 := v18
+																			v18 = p534
 																			t535 := v18
-																			t536 := v33
-																			var p537 int32
+																			t536 := v18
+																			t537 := v33
+																			var p538 int32
 																			if v33 != v33 {
-																				p537 = 1
+																				p538 = 1
 																			}
-																			v30 = p537
-																			p538 := t536
+																			v30 = p538
+																			p539 := t537
 																			if v30 != 0 {
-																				p538 = t535
+																				p539 = t536
 																			}
-																			v17 = p538
-																			p539 := v17
+																			v17 = p539
+																			p540 := v17
 																			if v18 > v17 {
-																				p539 = t534
-																			}
-																			v18 = p539
-																			p540 := v18
-																			if v18 != v18 {
-																				p540 = t532
+																				p540 = t535
 																			}
 																			v18 = p540
-																			t541 := v18
+																			p541 := v18
+																			if v18 != v18 {
+																				p541 = t533
+																			}
+																			v18 = p541
 																			t542 := v18
-																			t543 := v19
-																			var p544 int32
+																			t543 := v18
+																			t544 := v19
+																			var p545 int32
 																			if v19 != v19 {
-																				p544 = 1
+																				p545 = 1
 																			}
-																			v3 = p544
-																			p545 := t543
+																			v3 = p545
+																			p546 := t544
 																			if v3 != 0 {
-																				p545 = t542
+																				p546 = t543
 																			}
-																			v17 = p545
-																			p546 := v17
+																			v17 = p546
+																			p547 := v17
 																			if v18 > v17 {
-																				p546 = t541
+																				p547 = t542
 																			}
-																			v18 = p546
-																			t548 := v19
-																			p547 := v25
+																			v18 = p547
+																			t549 := v19
+																			p548 := v25
 																			if v25 != v25 {
-																				p547 = v33
+																				p548 = v33
 																			}
-																			v25 = p547
-																			t550 := v25
-																			p549 := v33
+																			v25 = p548
+																			t551 := v25
+																			p550 := v33
 																			if v30 != 0 {
-																				p549 = v25
+																				p550 = v25
 																			}
-																			v33 = p549
-																			p551 := v33
+																			v33 = p550
+																			p552 := v33
 																			if v25 < v33 {
-																				p551 = t550
-																			}
-																			v25 = p551
-																			p552 := v25
-																			if v25 != v25 {
-																				p552 = t548
+																				p552 = t551
 																			}
 																			v25 = p552
-																			t554 := v25
-																			p553 := v19
+																			p553 := v25
+																			if v25 != v25 {
+																				p553 = t549
+																			}
+																			v25 = p553
+																			t555 := v25
+																			p554 := v19
 																			if v3 != 0 {
-																				p553 = v25
+																				p554 = v25
 																			}
-																			v19 = p553
-																			p555 := v19
+																			v19 = p554
+																			p556 := v19
 																			if v25 < v19 {
-																				p555 = t554
+																				p556 = t555
 																			}
-																			v25 = p555
+																			v25 = p556
 																			v30 = i32(48)
 																			fallthrough
 																		default:
-																			t556 := math.Float64frombits(load64(m.memory, uint32(v12+v30)))
-																			v19 = t556
-																			p557 := v18
+																			t557 := math.Float64frombits(load64(m.memory, uint32(v12+v30)))
+																			v19 = t557
+																			p558 := v18
 																			if v18 != v18 {
-																				p557 = v19
+																				p558 = v19
 																			}
-																			v18 = p557
-																			t558 := v18
+																			v18 = p558
 																			t559 := v18
-																			t560 := v19
-																			var p561 int32
+																			t560 := v18
+																			t561 := v19
+																			var p562 int32
 																			if v19 != v19 {
-																				p561 = 1
+																				p562 = 1
 																			}
-																			v30 = p561
-																			p562 := t560
+																			v30 = p562
+																			p563 := t561
 																			if v30 != 0 {
-																				p562 = t559
+																				p563 = t560
 																			}
-																			v33 = p562
-																			p563 := v33
+																			v33 = p563
+																			p564 := v33
 																			if v18 > v33 {
-																				p563 = t558
+																				p564 = t559
 																			}
-																			v18 = p563
-																			p564 := v25
+																			v18 = p564
+																			p565 := v25
 																			if v25 != v25 {
-																				p564 = v19
+																				p565 = v19
 																			}
-																			v25 = p564
-																			t566 := v25
-																			p565 := v19
+																			v25 = p565
+																			t567 := v25
+																			p566 := v19
 																			if v30 != 0 {
-																				p565 = v25
+																				p566 = v25
 																			}
-																			v19 = p565
-																			p567 := v19
+																			v19 = p566
+																			p568 := v19
 																			if v25 < v19 {
-																				p567 = t566
+																				p568 = t567
 																			}
-																			v25 = p567
+																			v25 = p568
 																			fallthrough
 																		case 3:
 																			v12 = v12 + i32(56)
 																			v15 = v15 + i32(-56)
 																			if v15 != 0 {
-																				goto l221
+																				goto l224
 																			}
 																		}
 																	}
 																	v19 = float64(v18 - v25)
-																l217:
+																l220:
 																	v19 = float64(v43 - v19)
-																	p568 := v19
+																	p569 := v19
 																	if v19 != v19 {
-																		p568 = float64(0)
-																	}
-																	v19 = p568
-																	p569 := float64(0)
-																	if v19 > float64(0) {
-																		p569 = v19
+																		p569 = float64(0)
 																	}
 																	v19 = p569
+																	p570 := float64(0)
+																	if v19 > float64(0) {
+																		p570 = v19
+																	}
+																	v19 = p570
 																}
-															l215:
+															l218:
 																if v4 == 0 {
-																	goto l222
+																	goto l225
 																}
 																v12 = i32(0)
-															l226:
+															l229:
 																v15 = i32(8)
 																{
 																	v30 = v29 + v12
-																	t570 := int32(load32(m.memory, uint32(v30)))
-																	switch t570 {
+																	t571 := int32(load32(m.memory, uint32(v30)))
+																	switch t571 {
 																	case 2:
 																		v15 = v30 + i32(8)
-																		t571 := math.Float64frombits(load64(m.memory, uint32(v15)))
-																		store64(m.memory, uint32(v15), math.Float64bits(float64(v31+t571)))
-																		v15 = v30 + i32(24)
 																		t572 := math.Float64frombits(load64(m.memory, uint32(v15)))
 																		store64(m.memory, uint32(v15), math.Float64bits(float64(v31+t572)))
+																		v15 = v30 + i32(24)
+																		t573 := math.Float64frombits(load64(m.memory, uint32(v15)))
+																		store64(m.memory, uint32(v15), math.Float64bits(float64(v31+t573)))
 																		v15 = i32(40)
 																		fallthrough
 																	default:
 																		v15 = v29 + (v15 + v12)
-																		t573 := math.Float64frombits(load64(m.memory, uint32(v15)))
-																		store64(m.memory, uint32(v15), math.Float64bits(float64(v31+t573)))
+																		t574 := math.Float64frombits(load64(m.memory, uint32(v15)))
+																		store64(m.memory, uint32(v15), math.Float64bits(float64(v31+t574)))
 																		fallthrough
 																	case 3:
-																		t574 := v23
+																		t575 := v23
 																		v12 = v12 + i32(56)
-																		if t574 != v12 {
-																			goto l226
+																		if t575 != v12 {
+																			goto l229
 																		}
 																	}
 																}
 																{
-																	t575 := int32(load32(m.memory, uint64(uint32(v8))+1136))
-																	if uint32(v4) <= uint32(t575-v24) {
-																		goto l227
+																	t576 := int32(load32(m.memory, uint64(uint32(v8))+1136))
+																	if uint32(v4) <= uint32(t576-v24) {
+																		goto l230
 																	}
 																	m.__RINvNvMs2_NtCs6UNhEcE2CoN_5alloc7raw_vecINtB8_11RawVecInnerpE7reserve21do_reserve_and_handleNtNtBa_5alloc6GlobalECs508fO6TR0hO_3zpl(v8+i32(1136), v24, v4, i32(8), i32(56))
-																	t576 := int32(load32(m.memory, uint64(uint32(v8))+1140))
-																	v44 = t576
-																	t577 := int32(load32(m.memory, uint64(uint32(v8))+1144))
-																	v24 = t577
+																	t577 := int32(load32(m.memory, uint64(uint32(v8))+1140))
+																	v44 = t577
+																	t578 := int32(load32(m.memory, uint64(uint32(v8))+1144))
+																	v24 = t578
 																}
-															l227:
+															l230:
 																if v23 == 0 {
-																	goto l222
+																	goto l225
 																}
 																memory_copy(m.memory, uint32(v44+v24*i32(56)), uint32(v29), uint32(v23))
-															l222:
-																t578 := v8
+															l225:
+																t579 := v8
 																v24 = v24 + v4
-																store32(m.memory, uint64(uint32(t578))+1144, uint32(v24))
+																store32(m.memory, uint64(uint32(t579))+1144, uint32(v24))
 																if v7 == 0 {
-																	goto l228
+																	goto l231
 																}
 																m.__RNvCs1njKG4L9aB3_7___rustc14___rust_dealloc(v29, v7*i32(56), i32(8))
-															l228:
-																t579 := int32(load32(m.memory, uint64(uint32(v8))+24))
-																v15 = t579 + v24
+															l231:
+																t580 := int32(load32(m.memory, uint64(uint32(v8))+24))
+																v15 = t580 + v24
 																{
-																	t580 := int32(load32(m.memory, uint64(uint32(v8))+52))
-																	v12 = t580
-																	t581 := int32(load32(m.memory, uint64(uint32(v8))+44))
-																	if v12 != t581 {
-																		goto l229
+																	t581 := int32(load32(m.memory, uint64(uint32(v8))+52))
+																	v12 = t581
+																	t582 := int32(load32(m.memory, uint64(uint32(v8))+44))
+																	if v12 != t582 {
+																		goto l232
 																	}
 																	m.__RNvMs4_NtCs6UNhEcE2CoN_5alloc7raw_vecINtB5_6RawVecNtNtCs508fO6TR0hO_3zpl6output5PointE8grow_oneBQ_(v8 + i32(44))
 																}
-															l229:
-																t582 := int32(load32(m.memory, uint64(uint32(v8))+48))
-																v29 = t582 + v12<<4
+															l232:
+																t583 := int32(load32(m.memory, uint64(uint32(v8))+48))
+																v29 = t583 + v12<<4
 																store32(m.memory, uint64(uint32(v29))+8, uint32(v15))
 																store64(m.memory, uint32(v29), math.Float64bits(v19))
 																store32(m.memory, uint64(uint32(v8))+52, uint32(v12+i32(1)))
-																memory_copy(m.memory, uint32(v8+i32(784)), uint32(v8+i32(80)), uint32(i32(344)))
-																m.__RINvNtNtCs508fO6TR0hO_3zpl6render4font9width_forNtB2_4FontEB6_(v8+i32(424), v8+i32(784), v22, v21, v35, v34)
-																t583 := int32(load32(m.memory, uint64(uint32(v8))+424))
-																if t583 != i32(1) {
-																	goto l230
+																memory_copy(m.memory, uint32(v8+i32(1152)), uint32(v8+i32(776)), uint32(i32(344)))
+																m.__RINvNtNtCs508fO6TR0hO_3zpl6render4font9width_forNtB2_4FontEB6_(v8+i32(1496), v8+i32(1152), v22, v21, v35, v34)
+																t584 := int32(load32(m.memory, uint64(uint32(v8))+1496))
+																if t584 != i32(1) {
+																	goto l233
 																}
-																t584 := int32(load32(m.memory, uint64(uint32(v8))+428))
-																v12 = t584
-																t585 := math.Float64frombits(load64(m.memory, uint64(uint32(v8))+432))
-																store64(m.memory, uint64(uint32(v0))+4, math.Float64bits(t585))
+																t585 := int32(load32(m.memory, uint64(uint32(v8))+1500))
+																v12 = t585
+																t586 := math.Float64frombits(load64(m.memory, uint64(uint32(v8))+1504))
+																store64(m.memory, uint64(uint32(v0))+4, math.Float64bits(t586))
 																store32(m.memory, uint32(v0), uint32(v12))
 															}
-														l213:
+														l216:
 															store32(m.memory, uint64(uint32(v0))+40, uint32(i32(-1)))
 															v23 = i32(1)
 															m.__RNvCs1njKG4L9aB3_7___rustc14___rust_dealloc(v22, v21, i32(1))
-															t586 := int32(load32(m.memory, uint64(uint32(v8))+1136))
-															v12 = t586
+															t587 := int32(load32(m.memory, uint64(uint32(v8))+1136))
+															v12 = t587
 															if v12 == 0 {
-																goto l231
+																goto l234
 															}
-															t587 := int32(load32(m.memory, uint64(uint32(v8))+1140))
-															m.__RNvCs1njKG4L9aB3_7___rustc14___rust_dealloc(t587, v12*i32(56), i32(8))
-															goto l231
+															t588 := int32(load32(m.memory, uint64(uint32(v8))+1140))
+															m.__RNvCs1njKG4L9aB3_7___rustc14___rust_dealloc(t588, v12*i32(56), i32(8))
+															goto l234
 														}
-													l230:
-														t588 := math.Float64frombits(load64(m.memory, uint64(uint32(v8))+432))
-														v19 = t588
+													l233:
+														t589 := math.Float64frombits(load64(m.memory, uint64(uint32(v8))+1504))
+														v19 = t589
 														m.__RNvCs1njKG4L9aB3_7___rustc14___rust_dealloc(v22, v21, i32(1))
 														v31 = float64(v31 + v19)
 														if v9 != v16 {
-															goto l232
+															goto l235
 														}
 													}
 												}
-											l201:
-												t589 := int32(load32(m.memory, uint64(uint32(v8))+1144))
-												store32(m.memory, uint64(uint32(v8))+776, uint32(t589))
-												t590 := int64(load64(m.memory, uint64(uint32(v8))+1136))
-												store64(m.memory, uint64(uint32(v8))+768, uint64(t590))
-												goto l233
+											l204:
+												t590 := int32(load32(m.memory, uint64(uint32(v8))+1144))
+												store32(m.memory, uint64(uint32(v8))+1128, uint32(t590))
+												t591 := int64(load64(m.memory, uint64(uint32(v8))+1136))
+												store64(m.memory, uint64(uint32(v8))+1120, uint64(t591))
+												goto l236
 											}
-											memory_copy(m.memory, uint32(v8+i32(784)), uint32(v8+i32(80)), uint32(i32(344)))
-											m.__RINvNtNtCs508fO6TR0hO_3zpl6render4font8text_forNtB2_4FontEB6_(v8+i32(424), v8+i32(784), v5, v28, v35, v34)
-											t514 := int64(load64(m.memory, uint64(uint32(v8))+428))
-											store64(m.memory, uint64(uint32(v8))+1136, uint64(t514))
-											t515 := int32(load32(m.memory, uint64(uint32(v8))+436))
-											store32(m.memory, uint64(uint32(v8))+1144, uint32(t515))
-											t516 := int32(load32(m.memory, uint64(uint32(v8))+424))
-											if t516 == 0 {
-												goto l198
+											memory_copy(m.memory, uint32(v8+i32(1152)), uint32(v8+i32(776)), uint32(i32(344)))
+											m.__RINvNtNtCs508fO6TR0hO_3zpl6render4font8text_forNtB2_4FontEB6_(v8+i32(1496), v8+i32(1152), v5, v28, v35, v34)
+											t515 := int64(load64(m.memory, uint64(uint32(v8))+1500))
+											store64(m.memory, uint64(uint32(v8))+1136, uint64(t515))
+											t516 := int32(load32(m.memory, uint64(uint32(v8))+1508))
+											store32(m.memory, uint64(uint32(v8))+1144, uint32(t516))
+											t517 := int32(load32(m.memory, uint64(uint32(v8))+1496))
+											if t517 == 0 {
+												goto l201
 											}
-											t517 := int32(load32(m.memory, uint64(uint32(v8))+1144))
-											store32(m.memory, uint64(uint32(v0))+8, uint32(t517))
-											t518 := int64(load64(m.memory, uint64(uint32(v8))+1136))
-											store64(m.memory, uint32(v0), uint64(t518))
+											t518 := int32(load32(m.memory, uint64(uint32(v8))+1144))
+											store32(m.memory, uint64(uint32(v0))+8, uint32(t518))
+											t519 := int64(load64(m.memory, uint64(uint32(v8))+1136))
+											store64(m.memory, uint32(v0), uint64(t519))
 											store32(m.memory, uint64(uint32(v0))+40, uint32(i32(-1)))
-											if v14 == 0 {
-												goto l199
+											if v41 == 0 {
+												goto l202
 											}
-											m.__RNvCs1njKG4L9aB3_7___rustc14___rust_dealloc(v5, v14, i32(1))
-										l199:
+											m.__RNvCs1njKG4L9aB3_7___rustc14___rust_dealloc(v5, v41, i32(1))
+										l202:
 											if v27 == i32(-1) {
 												goto l101
 											}
-											goto l200
+											goto l203
 										}
-									l198:
-										t591 := int32(load32(m.memory, uint64(uint32(v8))+1144))
-										store32(m.memory, uint64(uint32(v8))+776, uint32(t591))
-										t592 := int64(load64(m.memory, uint64(uint32(v8))+1136))
-										store64(m.memory, uint64(uint32(v8))+768, uint64(t592))
+									l201:
+										t592 := int32(load32(m.memory, uint64(uint32(v8))+1144))
+										store32(m.memory, uint64(uint32(v8))+1128, uint32(t592))
+										t593 := int64(load64(m.memory, uint64(uint32(v8))+1136))
+										store64(m.memory, uint64(uint32(v8))+1120, uint64(t593))
 									}
-								l233:
+								l236:
 									{
 										{
 											{
-												t593 := int32(load16(m.memory, uint32(v10)))
-												if t593 != i32(12610) {
-													goto l234
+												t594 := int32(load16(m.memory, uint32(v10)))
+												if t594 != i32(12610) {
+													goto l237
 												}
-												t594 := int32(m.memory[uint64(uint32(v1))+93])
-												if t594 == 0 {
-													goto l235
+												t595 := int32(m.memory[uint64(uint32(v1))+93])
+												if t595 == 0 {
+													goto l238
 												}
 												v15 = i32(1091331)
 												v12 = i32(4)
-												goto l236
+												goto l239
 											}
-										l234:
+										l237:
 											if v27 != i32(-1) {
-												goto l235
+												goto l238
 											}
-											t595 := int32(load16(m.memory, uint32(v10)))
-											if t595 != i32(16706) {
-												goto l235
+											t596 := int32(load16(m.memory, uint32(v10)))
+											if t596 != i32(16706) {
+												goto l238
 											}
-											t596 := int32(m.memory[uint64(uint32(v1))+94])
-											if t596&i32(1) == 0 {
-												goto l235
+											t597 := int32(m.memory[uint64(uint32(v1))+94])
+											if t597&i32(1) == 0 {
+												goto l238
 											}
 											v15 = i32(1091324)
 											v12 = i32(7)
 										}
-									l236:
-										memory_copy(m.memory, uint32(v8+i32(784)), uint32(v8+i32(80)), uint32(i32(344)))
-										m.__RINvNtNtCs508fO6TR0hO_3zpl6render4font9width_forNtB2_4FontEB6_(v8+i32(424), v8+i32(784), v5, v28, v35, v34)
+									l239:
+										memory_copy(m.memory, uint32(v8+i32(1152)), uint32(v8+i32(776)), uint32(i32(344)))
+										m.__RINvNtNtCs508fO6TR0hO_3zpl6render4font9width_forNtB2_4FontEB6_(v8+i32(1496), v8+i32(1152), v5, v28, v35, v34)
 										v23 = i32(1)
 										{
-											t597 := int32(load32(m.memory, uint64(uint32(v8))+424))
-											if t597 != i32(1) {
-												goto l237
+											t598 := int32(load32(m.memory, uint64(uint32(v8))+1496))
+											if t598 != i32(1) {
+												goto l240
 											}
-											t598 := int32(load32(m.memory, uint64(uint32(v8))+428))
-											v12 = t598
-											t599 := math.Float64frombits(load64(m.memory, uint64(uint32(v8))+432))
-											v19 = t599
+											t599 := int32(load32(m.memory, uint64(uint32(v8))+1500))
+											v12 = t599
+											t600 := math.Float64frombits(load64(m.memory, uint64(uint32(v8))+1504))
+											v19 = t600
 											store32(m.memory, uint64(uint32(v0))+40, uint32(i32(-1)))
 											store64(m.memory, uint64(uint32(v0))+4, math.Float64bits(v19))
 											store32(m.memory, uint32(v0), uint32(v12))
-											goto l238
+											goto l241
 										}
-									l237:
-										t600 := math.Float64frombits(load64(m.memory, uint64(uint32(v8))+432))
-										v19 = t600
-										memory_copy(m.memory, uint32(v8+i32(784)), uint32(v8+i32(80)), uint32(i32(344)))
-										m.__RINvNtNtCs508fO6TR0hO_3zpl6render4font9width_forNtB2_4FontEB6_(v8+i32(424), v8+i32(784), i32(1091335), i32(1), v35, v34)
+									l240:
+										t601 := math.Float64frombits(load64(m.memory, uint64(uint32(v8))+1504))
+										v19 = t601
+										memory_copy(m.memory, uint32(v8+i32(1152)), uint32(v8+i32(776)), uint32(i32(344)))
+										m.__RINvNtNtCs508fO6TR0hO_3zpl6render4font9width_forNtB2_4FontEB6_(v8+i32(1496), v8+i32(1152), i32(1091335), i32(1), v35, v34)
 										{
-											t601 := int32(load32(m.memory, uint64(uint32(v8))+424))
-											if t601 != i32(1) {
-												goto l239
+											t602 := int32(load32(m.memory, uint64(uint32(v8))+1496))
+											if t602 != i32(1) {
+												goto l242
 											}
-											t602 := int32(load32(m.memory, uint64(uint32(v8))+428))
-											v12 = t602
-											t603 := math.Float64frombits(load64(m.memory, uint64(uint32(v8))+432))
-											v19 = t603
+											t603 := int32(load32(m.memory, uint64(uint32(v8))+1500))
+											v12 = t603
+											t604 := math.Float64frombits(load64(m.memory, uint64(uint32(v8))+1504))
+											v19 = t604
 											store32(m.memory, uint64(uint32(v0))+40, uint32(i32(-1)))
 											store64(m.memory, uint64(uint32(v0))+4, math.Float64bits(v19))
 											store32(m.memory, uint32(v0), uint32(v12))
 											v23 = i32(1)
-											goto l238
+											goto l241
 										}
-									l239:
+									l242:
 										v30 = v15
 										v29 = v12
 										{
-											t604 := math.Float64frombits(load64(m.memory, uint64(uint32(v8))+432))
-											v19 = float64(v19 - t604)
+											t605 := math.Float64frombits(load64(m.memory, uint64(uint32(v8))+1504))
+											v19 = float64(v19 - t605)
 											if v19 != float64(0) {
-												goto l240
+												goto l243
 											}
 											v30 = v15
 											v29 = v12
-											t605 := int32(load16(m.memory, uint32(v10)))
-											if t605 != i32(12610) {
-												goto l240
-											}
-											m.__RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode4flag(v8+i32(784), v1, i32(1), i32(0))
-											t606 := int32(load32(m.memory, uint64(uint32(v8))+784))
-											v29 = t606
-											if v29 != i32(-1) {
-												goto l241
-											}
-											t607 := int32(m.memory[uint64(uint32(v8))+788])
-											t608 := v12
-											v30 = t607
-											p609 := i32(7)
-											if v30 != 0 {
-												p609 = t608
-											}
-											v29 = p609
-											p610 := i32(1091352)
-											if v30 != 0 {
-												p610 = v15
-											}
-											v30 = p610
-										}
-									l240:
-										m.__RNvNtNtCs508fO6TR0hO_3zpl6render7barcode13caption_glyph(v8+i32(768), float64(0), v35, v34, v30, v29)
-										{
-											if v13 == 0 {
-												goto l242
-											}
-											t611 := int32(load32(m.memory, uint64(uint32(v8))+24))
-											v30 = t611
-											t612 := int32(load32(m.memory, uint64(uint32(v8))+776))
-											v23 = t612
-											v18 = float64(0)
-											if v39 != i32(65) {
+											t606 := int32(load16(m.memory, uint32(v10)))
+											if t606 != i32(12610) {
 												goto l243
 											}
+											m.__RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode4flag(v8+i32(1152), v1, i32(1), i32(0))
+											t607 := int32(load32(m.memory, uint64(uint32(v8))+1152))
+											v29 = t607
+											if v29 != i32(-1) {
+												goto l244
+											}
+											t608 := int32(m.memory[uint64(uint32(v8))+1156])
+											t609 := v12
+											v30 = t608
+											p610 := i32(7)
+											if v30 != 0 {
+												p610 = t609
+											}
+											v29 = p610
+											p611 := i32(1091352)
+											if v30 != 0 {
+												p611 = v15
+											}
+											v30 = p611
+										}
+									l243:
+										m.__RNvNtNtCs508fO6TR0hO_3zpl6render7barcode13caption_glyph(v8+i32(1120), float64(0), v35, v34, v30, v29)
+										{
+											if v13 == 0 {
+												goto l245
+											}
+											t612 := int32(load32(m.memory, uint64(uint32(v8))+24))
+											v30 = t612
+											t613 := int32(load32(m.memory, uint64(uint32(v8))+1128))
+											v23 = t613
+											v18 = float64(0)
+											if v39 != i32(65) {
+												goto l246
+											}
 											v18 = float64(float64(v34*float64(uint32(v29^i32(7)))) / float64(9))
-										l243:
+										l246:
 											v30 = v23 + v30
 											{
-												t613 := int32(load32(m.memory, uint64(uint32(v8))+52))
-												v29 = t613
-												t614 := int32(load32(m.memory, uint64(uint32(v8))+44))
-												if v29 != t614 {
-													goto l244
+												t614 := int32(load32(m.memory, uint64(uint32(v8))+52))
+												v29 = t614
+												t615 := int32(load32(m.memory, uint64(uint32(v8))+44))
+												if v29 != t615 {
+													goto l247
 												}
 												m.__RNvMs4_NtCs6UNhEcE2CoN_5alloc7raw_vecINtB5_6RawVecNtNtCs508fO6TR0hO_3zpl6output5PointE8grow_oneBQ_(v8 + i32(44))
 											}
-										l244:
-											t615 := int32(load32(m.memory, uint64(uint32(v8))+48))
-											v23 = t615 + v29<<4
+										l247:
+											t616 := int32(load32(m.memory, uint64(uint32(v8))+48))
+											v23 = t616 + v29<<4
 											store32(m.memory, uint64(uint32(v23))+8, uint32(v30))
 											store64(m.memory, uint32(v23), math.Float64bits(v18))
 											store32(m.memory, uint64(uint32(v8))+52, uint32(v29+i32(1)))
 										}
-									l242:
+									l245:
 										{
 											if v19 != v19 {
-												goto l245
+												goto l248
 											}
-											t616 := int32(load16(m.memory, uint32(v10)))
-											if t616 != i32(12610) {
-												goto l245
+											t617 := int32(load16(m.memory, uint32(v10)))
+											if t617 != i32(12610) {
+												goto l248
 											}
-											m.__RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode4flag(v8+i32(784), v1, i32(1), i32(0))
-											t617 := int32(load32(m.memory, uint64(uint32(v8))+784))
-											v29 = t617
-											if v29 != i32(-1) {
-												goto l241
-											}
-											t618 := int32(m.memory[uint64(uint32(v8))+788])
-											t619 := v12
+											m.__RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode4flag(v8+i32(1152), v1, i32(1), i32(0))
+											t618 := int32(load32(m.memory, uint64(uint32(v8))+1152))
 											v29 = t618
-											p620 := i32(7)
-											if v29 != 0 {
-												p620 = t619
+											if v29 != i32(-1) {
+												goto l244
 											}
-											v12 = p620
-											p621 := i32(1091352)
+											t619 := int32(m.memory[uint64(uint32(v8))+1156])
+											t620 := v12
+											v29 = t619
+											p621 := i32(7)
 											if v29 != 0 {
-												p621 = v15
+												p621 = t620
 											}
-											v15 = p621
+											v12 = p621
+											p622 := i32(1091352)
+											if v29 != 0 {
+												p622 = v15
+											}
+											v15 = p622
 										}
-									l245:
-										m.__RNvNtNtCs508fO6TR0hO_3zpl6render7barcode13caption_glyph(v8+i32(768), v19, v35, v34, v15, v12)
+									l248:
+										m.__RNvNtNtCs508fO6TR0hO_3zpl6render7barcode13caption_glyph(v8+i32(1120), v19, v35, v34, v15, v12)
 										if v13 == 0 {
-											goto l235
+											goto l238
 										}
-										t622 := int32(load32(m.memory, uint64(uint32(v8))+24))
-										v15 = t622
-										t623 := int32(load32(m.memory, uint64(uint32(v8))+776))
-										v29 = t623
+										t623 := int32(load32(m.memory, uint64(uint32(v8))+24))
+										v15 = t623
+										t624 := int32(load32(m.memory, uint64(uint32(v8))+1128))
+										v29 = t624
 										v19 = float64(0)
 										if v39 != i32(65) {
-											goto l246
+											goto l249
 										}
 										v19 = float64(float64(v34*float64(uint32(v12^i32(7)))) / float64(9))
-									l246:
+									l249:
 										v15 = v29 + v15
 										{
-											t624 := int32(load32(m.memory, uint64(uint32(v8))+52))
-											v12 = t624
-											t625 := int32(load32(m.memory, uint64(uint32(v8))+44))
-											if v12 != t625 {
-												goto l247
+											t625 := int32(load32(m.memory, uint64(uint32(v8))+52))
+											v12 = t625
+											t626 := int32(load32(m.memory, uint64(uint32(v8))+44))
+											if v12 != t626 {
+												goto l250
 											}
 											m.__RNvMs4_NtCs6UNhEcE2CoN_5alloc7raw_vecINtB5_6RawVecNtNtCs508fO6TR0hO_3zpl6output5PointE8grow_oneBQ_(v8 + i32(44))
 										}
-									l247:
-										t626 := int32(load32(m.memory, uint64(uint32(v8))+48))
-										v29 = t626 + v12<<4
+									l250:
+										t627 := int32(load32(m.memory, uint64(uint32(v8))+48))
+										v29 = t627 + v12<<4
 										store32(m.memory, uint64(uint32(v29))+8, uint32(v15))
 										store64(m.memory, uint32(v29), math.Float64bits(v19))
 										store32(m.memory, uint64(uint32(v8))+52, uint32(v12+i32(1)))
 									}
-								l235:
+								l238:
 									{
-										var p627 int32
+										var p628 int32
 										if v27 == i32(-1) {
-											p627 = 1
+											p628 = 1
 										}
-										v23 = p627
+										v23 = p628
 										if v23 != 0 {
-											goto l248
+											goto l251
 										}
-										t628 := int32(load32(m.memory, uint64(uint32(v8))+72))
-										v3 = t628
-										t629 := int32(load32(m.memory, uint64(uint32(v8))+68))
-										v9 = t629
-										t630 := int32(load32(m.memory, uint64(uint32(v8))+60))
-										v22 = t630
+										t629 := int32(load32(m.memory, uint64(uint32(v8))+72))
+										v3 = t629
+										t630 := int32(load32(m.memory, uint64(uint32(v8))+68))
+										v9 = t630
+										t631 := int32(load32(m.memory, uint64(uint32(v8))+60))
+										v22 = t631
 										{
-											t631 := int32(load32(m.memory, uint64(uint32(v8))+76))
-											v12 = t631
+											t632 := int32(load32(m.memory, uint64(uint32(v8))+76))
+											v12 = t632
 											if v12 == 0 {
-												goto l249
+												goto l252
 											}
 											v21 = v3 + v12*i32(12)
-											var p632 int32
+											var p633 int32
 											if v39 != i32(65) {
-												p632 = 1
+												p633 = 1
 											}
-											v4 = p632
+											v4 = p633
 											v12 = v3
-										l257:
+										l260:
 											{
-												t633 := int32(load32(m.memory, uint32(v12+i32(4))))
-												v30 = t633
+												t634 := int32(load32(m.memory, uint32(v12+i32(4))))
+												v30 = t634
 												if v30 == 0 {
-													goto l249
+													goto l252
 												}
-												t634 := int32(load32(m.memory, uint32(v12+i32(8))))
-												v29 = t634
+												t635 := int32(load32(m.memory, uint32(v12+i32(8))))
+												v29 = t635
 												{
-													t635 := int32(load32(m.memory, uint32(v12)))
-													v15 = t635
+													t636 := int32(load32(m.memory, uint32(v12)))
+													v15 = t636
 													if v15 == 0 {
-														goto l250
+														goto l253
 													}
 													{
 														if uint32(v15) < uint32(v28) {
-															goto l251
+															goto l254
 														}
 														if v15 != v28 {
-															goto l252
+															goto l255
 														}
-														goto l250
-													l251:
-														t636 := int32(int8(m.memory[uint32(v5+v15)]))
-														if t636 > i32(-65) {
-															goto l250
+														goto l253
+													l254:
+														t637 := int32(int8(m.memory[uint32(v5+v15)]))
+														if t637 > i32(-65) {
+															goto l253
 														}
 													}
-												l252:
+												l255:
 													m.__RNvNtCsknUcikIyyBm_4core3str16slice_error_fail(v5, v28, i32(0), v15, i32(1091336))
 													panic("unreachable")
 												}
-											l250:
-												memory_copy(m.memory, uint32(v8+i32(784)), uint32(v8+i32(80)), uint32(i32(344)))
-												m.__RINvNtNtCs508fO6TR0hO_3zpl6render4font9width_forNtB2_4FontEB6_(v8+i32(424), v8+i32(784), v5, v15, v35, v34)
+											l253:
+												memory_copy(m.memory, uint32(v8+i32(1152)), uint32(v8+i32(776)), uint32(i32(344)))
+												m.__RINvNtNtCs508fO6TR0hO_3zpl6render4font9width_forNtB2_4FontEB6_(v8+i32(1496), v8+i32(1152), v5, v15, v35, v34)
 												{
-													t637 := int32(load32(m.memory, uint64(uint32(v8))+424))
-													if t637 != 0 {
-														goto l253
+													t638 := int32(load32(m.memory, uint64(uint32(v8))+1496))
+													if t638 != 0 {
+														goto l256
 													}
-													t638 := math.Float64frombits(load64(m.memory, uint64(uint32(v8))+432))
-													m.__RNvNtNtCs508fO6TR0hO_3zpl6render7barcode13caption_glyph(v8+i32(768), t638, v35, v34, v30, v29)
+													t639 := math.Float64frombits(load64(m.memory, uint64(uint32(v8))+1504))
+													m.__RNvNtNtCs508fO6TR0hO_3zpl6render7barcode13caption_glyph(v8+i32(1120), t639, v35, v34, v30, v29)
 													{
 														if v13 == 0 {
-															goto l254
+															goto l257
 														}
 														v19 = float64(0)
 														{
 															if v4 != 0 {
-																goto l255
+																goto l258
 															}
-															t639 := v34
+															t640 := v34
 															v15 = i32(7) - v29
-															p640 := v15
+															p641 := v15
 															if uint32(v15) > uint32(i32(7)) {
-																p640 = i32(0)
+																p641 = i32(0)
 															}
-															v19 = float64(float64(t639*float64(uint32(p640))) / float64(9))
+															v19 = float64(float64(t640*float64(uint32(p641))) / float64(9))
 														}
-													l255:
-														t641 := int32(load32(m.memory, uint64(uint32(v8))+776))
-														t642 := int32(load32(m.memory, uint64(uint32(v8))+24))
-														v29 = t641 + t642
+													l258:
+														t642 := int32(load32(m.memory, uint64(uint32(v8))+1128))
+														t643 := int32(load32(m.memory, uint64(uint32(v8))+24))
+														v29 = t642 + t643
 														{
-															t643 := int32(load32(m.memory, uint64(uint32(v8))+52))
-															v15 = t643
-															t644 := int32(load32(m.memory, uint64(uint32(v8))+44))
-															if v15 != t644 {
-																goto l256
+															t644 := int32(load32(m.memory, uint64(uint32(v8))+52))
+															v15 = t644
+															t645 := int32(load32(m.memory, uint64(uint32(v8))+44))
+															if v15 != t645 {
+																goto l259
 															}
 															m.__RNvMs4_NtCs6UNhEcE2CoN_5alloc7raw_vecINtB5_6RawVecNtNtCs508fO6TR0hO_3zpl6output5PointE8grow_oneBQ_(v8 + i32(44))
 														}
-													l256:
-														t645 := int32(load32(m.memory, uint64(uint32(v8))+48))
-														v30 = t645 + v15<<4
+													l259:
+														t646 := int32(load32(m.memory, uint64(uint32(v8))+48))
+														v30 = t646 + v15<<4
 														store32(m.memory, uint64(uint32(v30))+8, uint32(v29))
 														store64(m.memory, uint32(v30), math.Float64bits(v19))
 														store32(m.memory, uint64(uint32(v8))+52, uint32(v15+i32(1)))
 													}
-												l254:
+												l257:
 													v12 = v12 + i32(12)
 													if v12 == v21 {
-														goto l249
+														goto l252
 													}
-													goto l257
+													goto l260
 												}
-											l253:
+											l256:
 											}
-											t646 := int32(load32(m.memory, uint64(uint32(v8))+428))
-											v12 = t646
-											t647 := math.Float64frombits(load64(m.memory, uint64(uint32(v8))+432))
-											v19 = t647
+											t647 := int32(load32(m.memory, uint64(uint32(v8))+1500))
+											v12 = t647
+											t648 := math.Float64frombits(load64(m.memory, uint64(uint32(v8))+1504))
+											v19 = t648
 											store32(m.memory, uint64(uint32(v0))+40, uint32(i32(-1)))
 											store64(m.memory, uint64(uint32(v0))+4, math.Float64bits(v19))
 											store32(m.memory, uint32(v0), uint32(v12))
 											if v9 == 0 {
-												goto l258
+												goto l261
 											}
 											m.__RNvCs1njKG4L9aB3_7___rustc14___rust_dealloc(v3, v9*i32(12), i32(4))
-										l258:
+										l261:
 											v23 = i32(0)
 											if v27 == 0 {
-												goto l238
+												goto l241
 											}
 											m.__RNvCs1njKG4L9aB3_7___rustc14___rust_dealloc(v22, v27, i32(1))
-											goto l238
+											goto l241
 										}
-									l249:
+									l252:
 										if v9 == 0 {
-											goto l259
+											goto l262
 										}
 										m.__RNvCs1njKG4L9aB3_7___rustc14___rust_dealloc(v3, v9*i32(12), i32(4))
-									l259:
+									l262:
 										if v27 == 0 {
-											goto l248
+											goto l251
 										}
 										m.__RNvCs1njKG4L9aB3_7___rustc14___rust_dealloc(v22, v27, i32(1))
 									}
-								l248:
+								l251:
 									if v42 == 0 {
-										goto l260
+										goto l263
 									}
-									m.__RINvMs_NtCs508fO6TR0hO_3zpl6outputNtB5_4Path9transformNCNvMNtNtB7_6render7barcodeNtBV_7Barcode17render_with_fontss1_0EB7_(v8+i32(768), v1)
-								l260:
-									t648 := int32(m.memory[uint64(uint32(v1))+128])
-									t649 := v8
-									v12 = t648
-									p650 := float64(3)
-									if v12 != 0 {
-										p650 = float64(6)
-									}
-									store64(m.memory, uint64(uint32(t649))+1136, math.Float64bits(p650))
-									t652 := v8
+									m.__RINvMs_NtCs508fO6TR0hO_3zpl6outputNtB5_4Path9transformNCNvMNtNtB7_6render7barcodeNtBV_7Barcode17render_with_fontss1_0EB7_(v8+i32(1120), v1)
+								l263:
+									t649 := int32(m.memory[uint64(uint32(v1))+128])
+									t650 := v8
+									v12 = t649
 									p651 := float64(3)
 									if v12 != 0 {
-										p651 = float64(8)
+										p651 = float64(6)
 									}
-									v19 = p651
-									store64(m.memory, uint64(uint32(t652))+424, math.Float64bits(v19))
+									store64(m.memory, uint64(uint32(t650))+1136, math.Float64bits(p651))
+									t653 := v8
+									p652 := float64(3)
+									if v12 != 0 {
+										p652 = float64(8)
+									}
+									v19 = p652
+									store64(m.memory, uint64(uint32(t653))+1496, math.Float64bits(v19))
 									{
-										if v41 == 0 {
-											goto l261
+										if v14 == 0 {
+											goto l264
 										}
-										m.__RNvNtCs508fO6TR0hO_3zpl6render6bounds(v8+i32(784), v8+i32(16))
-										t653 := math.Float64frombits(load64(m.memory, uint64(uint32(v8))+800))
-										v18 = t653
+										m.__RNvNtCs508fO6TR0hO_3zpl6render6bounds(v8+i32(1152), v8+i32(16))
+										t654 := math.Float64frombits(load64(m.memory, uint64(uint32(v8))+1168))
+										v18 = t654
 										{
-											t654 := int32(m.memory[uint64(uint32(v1))+96])
-											if t654 == 0 {
-												goto l262
+											t655 := int32(m.memory[uint64(uint32(v1))+96])
+											if t655 == 0 {
+												goto l265
 											}
 											{
-												t655 := int32(load16(m.memory, uint32(v10)))
-												if t655 == i32(13634) {
-													goto l263
-												}
 												t656 := int32(load16(m.memory, uint32(v10)))
-												if t656 != i32(23106) {
-													goto l262
+												if t656 == i32(13634) {
+													goto l266
 												}
-												m.__RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode7integer(v8+i32(784), v1, i32(4), i32(0), i32(0), i32(3))
+												t657 := int32(load16(m.memory, uint32(v10)))
+												if t657 != i32(23106) {
+													goto l265
+												}
+												m.__RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode7integer(v8+i32(1152), v1, i32(4), i32(0), i32(0), i32(3))
 												{
-													t657 := int32(load32(m.memory, uint64(uint32(v8))+784))
-													v12 = t657
+													t658 := int32(load32(m.memory, uint64(uint32(v8))+1152))
+													v12 = t658
 													switch v12 + i32(1) {
 													case 1:
-														goto l262
+														goto l265
 													case 0:
-														t658 := int32(load32(m.memory, uint64(uint32(v8))+788))
-														if uint32(t658) >= uint32(i32(2)) {
-															goto l262
+														t659 := int32(load32(m.memory, uint64(uint32(v8))+1156))
+														if uint32(t659) >= uint32(i32(2)) {
+															goto l265
 														}
-														goto l263
+														goto l266
 													default:
-														t659 := int32(load32(m.memory, uint64(uint32(v8))+788))
-														m.__RNvCs1njKG4L9aB3_7___rustc14___rust_dealloc(t659, v12, i32(1))
-														goto l262
+														t660 := int32(load32(m.memory, uint64(uint32(v8))+1156))
+														m.__RNvCs1njKG4L9aB3_7___rustc14___rust_dealloc(t660, v12, i32(1))
+														goto l265
 													}
 												}
 											}
-										l263:
-											t660 := math.Float64frombits(load64(m.memory, uint64(uint32(v1))+168))
-											v25 = t660
-											{
-												t661 := int32(m.memory[uint64(uint32(v1))+153])
-												if t661 != 0 {
-													goto l266
-												}
-												t662 := math.Float64frombits(load64(m.memory, uint64(uint32(v1))+176))
-												v31 = float64(v25 * float64(t662+float64(1)))
-												goto l267
-											}
 										l266:
+											t661 := math.Float64frombits(load64(m.memory, uint64(uint32(v1))+168))
+											v25 = t661
+											{
+												t662 := int32(m.memory[uint64(uint32(v1))+154])
+												if t662 != 0 {
+													goto l269
+												}
+												t663 := math.Float64frombits(load64(m.memory, uint64(uint32(v1))+176))
+												v31 = float64(v25 * float64(t663+float64(1)))
+												goto l270
+											}
+										l269:
 											v31 = math.Floor(float64(v25 * float64(2.5)))
-										l267:
+										l270:
 											v18 = float64(v18 + float64(v31-v25))
 										}
-									l262:
-										m.__RINvNtNtCs508fO6TR0hO_3zpl6render4font9width_forNtB2_4FontEB6_(v8+i32(784), v8+i32(80), v5, v28, v40, v36)
+									l265:
+										m.__RINvNtNtCs508fO6TR0hO_3zpl6render4font9width_forNtB2_4FontEB6_(v8+i32(1152), v8+i32(776), v5, v28, v40, v36)
 										{
-											t663 := int32(load32(m.memory, uint64(uint32(v8))+784))
-											if t663 == 0 {
-												goto l268
+											t664 := int32(load32(m.memory, uint64(uint32(v8))+1152))
+											if t664 == 0 {
+												goto l271
 											}
-											t664 := int32(load32(m.memory, uint64(uint32(v8))+788))
-											v12 = t664
-											t665 := math.Float64frombits(load64(m.memory, uint64(uint32(v8))+792))
-											v19 = t665
+											t665 := int32(load32(m.memory, uint64(uint32(v8))+1156))
+											v12 = t665
+											t666 := math.Float64frombits(load64(m.memory, uint64(uint32(v8))+1160))
+											v19 = t666
 											store32(m.memory, uint64(uint32(v0))+40, uint32(i32(-1)))
 											store64(m.memory, uint64(uint32(v0))+4, math.Float64bits(v19))
 											store32(m.memory, uint32(v0), uint32(v12))
-											goto l238
+											goto l241
 										}
-									l268:
-										t666 := math.Float64frombits(load64(m.memory, uint64(uint32(v8))+792))
-										store64(m.memory, uint64(uint32(v8))+784, math.Float64bits(math.Floor(float64(float64(v18-t666)*float64(0.5)))))
-										m.__RINvMs_NtCs508fO6TR0hO_3zpl6outputNtB5_4Path9transformNCNvMNtNtB7_6render7barcodeNtBV_7Barcode17render_with_fontss0_0EB7_(v8+i32(768), v8+i32(784))
+									l271:
+										t667 := math.Float64frombits(load64(m.memory, uint64(uint32(v8))+1160))
+										store64(m.memory, uint64(uint32(v8))+1152, math.Float64bits(math.Floor(float64(float64(v18-t667)*float64(0.5)))))
+										m.__RINvMs_NtCs508fO6TR0hO_3zpl6outputNtB5_4Path9transformNCNvMNtNtB7_6render7barcodeNtBV_7Barcode17render_with_fontss0_0EB7_(v8+i32(1120), v8+i32(1152))
 									}
-								l261:
+								l264:
 									{
-										t667 := int32(m.memory[uint64(uint32(v1))+132])
-										if t667 == 0 {
-											goto l269
+										t668 := int32(m.memory[uint64(uint32(v1))+133])
+										if t668 == 0 {
+											goto l272
 										}
 										switch v6&i32(255) + i32(-66) {
 										default:
-											goto l269
+											goto l272
 										case 0, 7:
 											{
-												if v41 != 0 {
-													goto l271
+												if v14 != 0 {
+													goto l274
 												}
 												if uint32(v39+i32(-65)) > uint32(i32(7)) {
-													goto l269
+													goto l272
 												}
-												t668 := int32(load16(m.memory, uint32(v10)))
-												if t668 != i32(17218) {
-													goto l269
+												t669 := int32(load16(m.memory, uint32(v10)))
+												if t669 != i32(17218) {
+													goto l272
 												}
 											}
-										l271:
-											m.__RINvMs_NtCs508fO6TR0hO_3zpl6outputNtB5_4Path9transformNCNvMNtNtB7_6render7barcodeNtBV_7Barcode17render_with_fontss4_0EB7_(v8 + i32(768))
+										l274:
+											m.__RINvMs_NtCs508fO6TR0hO_3zpl6outputNtB5_4Path9transformNCNvMNtNtB7_6render7barcodeNtBV_7Barcode17render_with_fontss4_0EB7_(v8 + i32(1120))
 										}
 									}
-								l269:
+								l272:
 									{
-										t669 := int32(m.memory[uint64(uint32(v1))+213])
-										v12 = t669
-										t670 := int32(load16(m.memory, uint32(v10)))
-										t672 := v12
-										t673 := v1
-										p671 := i32(131)
-										if t670 == i32(17218) {
-											p671 = i32(158)
+										t670 := int32(m.memory[uint64(uint32(v1))+213])
+										v12 = t670
+										t671 := int32(load16(m.memory, uint32(v10)))
+										t673 := v12
+										t674 := v1
+										p672 := i32(132)
+										if t671 == i32(17218) {
+											p672 = i32(159)
 										}
-										t674 := int32(m.memory[uint32(t673+p671)])
-										if t672&t674&i32(1) != 0 {
-											goto l272
+										t675 := int32(m.memory[uint32(t674+p672)])
+										if t673&t675&i32(1) != 0 {
+											goto l275
 										}
 										if v12&i32(1) != 0 {
 											v32 = float64(v32 + float64(v36+v19))
-											m.__RINvMs_NtCs508fO6TR0hO_3zpl6outputNtB5_4Path9transformNCNvMNtNtB7_6render7barcodeNtBV_7Barcode17render_with_fontss6_0EB7_(v8+i32(16), v8+i32(1128), v8+i32(424))
-											goto l274
+											m.__RINvMs_NtCs508fO6TR0hO_3zpl6outputNtB5_4Path9transformNCNvMNtNtB7_6render7barcodeNtBV_7Barcode17render_with_fontss6_0EB7_(v8+i32(16), v8+i32(80), v8+i32(1496))
+											goto l277
 										}
-										m.__RINvMs_NtCs508fO6TR0hO_3zpl6outputNtB5_4Path9transformNCNvMNtNtB7_6render7barcodeNtBV_7Barcode17render_with_fontss6_0EB7_(v8+i32(768), v8+i32(32), v8+i32(1136))
-										goto l274
+										m.__RINvMs_NtCs508fO6TR0hO_3zpl6outputNtB5_4Path9transformNCNvMNtNtB7_6render7barcodeNtBV_7Barcode17render_with_fontss6_0EB7_(v8+i32(1120), v8+i32(32), v8+i32(1136))
+										goto l277
 									}
-								l272:
-									m.__RINvMs_NtCs508fO6TR0hO_3zpl6outputNtB5_4Path9transformNCNvMNtNtB7_6render7barcodeNtBV_7Barcode17render_with_fontss5_0EB7_(v8+i32(768), v8+i32(1128), v8+i32(424))
-								l274:
-									t675 := int32(load32(m.memory, uint64(uint32(v8))+776))
-									v15 = t675
-									t676 := int32(load32(m.memory, uint64(uint32(v8))+772))
-									v12 = t676
-									t677 := int32(load32(m.memory, uint64(uint32(v8))+768))
-									store32(m.memory, uint64(uint32(v8))+792, uint32(t677))
-									store32(m.memory, uint64(uint32(v8))+784, uint32(v12))
-									store32(m.memory, uint64(uint32(v8))+788, uint32(v12))
-									store32(m.memory, uint64(uint32(v8))+796, uint32(v12+v15*i32(56)))
-									m.__RNvXs0_NtNtCs6UNhEcE2CoN_5alloc3vec11spec_extendINtB7_3VecNtNtCs508fO6TR0hO_3zpl6output7SegmentEINtB5_10SpecExtendBU_INtNtB7_9into_iter8IntoIterBU_EE11spec_extendBY_(v8+i32(16), v8+i32(784))
-									if v14 == 0 {
-										goto l275
-									}
-									m.__RNvCs1njKG4L9aB3_7___rustc14___rust_dealloc(v5, v14, i32(1))
 								l275:
+									m.__RINvMs_NtCs508fO6TR0hO_3zpl6outputNtB5_4Path9transformNCNvMNtNtB7_6render7barcodeNtBV_7Barcode17render_with_fontss5_0EB7_(v8+i32(1120), v8+i32(80), v8+i32(1496))
+								l277:
+									t676 := int32(load32(m.memory, uint64(uint32(v8))+1128))
+									v15 = t676
+									t677 := int32(load32(m.memory, uint64(uint32(v8))+1124))
+									v12 = t677
+									t678 := int32(load32(m.memory, uint64(uint32(v8))+1120))
+									store32(m.memory, uint64(uint32(v8))+1160, uint32(t678))
+									store32(m.memory, uint64(uint32(v8))+1152, uint32(v12))
+									store32(m.memory, uint64(uint32(v8))+1156, uint32(v12))
+									store32(m.memory, uint64(uint32(v8))+1164, uint32(v12+v15*i32(56)))
+									m.__RNvXs0_NtNtCs6UNhEcE2CoN_5alloc3vec11spec_extendINtB7_3VecNtNtCs508fO6TR0hO_3zpl6output7SegmentEINtB5_10SpecExtendBU_INtNtB7_9into_iter8IntoIterBU_EE11spec_extendBY_(v8+i32(16), v8+i32(1152))
+									if v41 == 0 {
+										goto l278
+									}
+									m.__RNvCs1njKG4L9aB3_7___rustc14___rust_dealloc(v5, v41, i32(1))
+								l278:
 									v22 = i32(0)
 								}
 							l96:
 								v21 = i32(0)
 							l110:
-								t678 := int32(load32(m.memory, uint64(uint32(v8))+24))
-								store32(m.memory, uint64(uint32(v0))+24, uint32(t678))
-								t679 := int64(load64(m.memory, uint64(uint32(v8))+16))
-								store64(m.memory, uint64(uint32(v0))+16, uint64(t679))
-								t680 := int64(load64(m.memory, uint64(uint32(v8))+44))
-								store64(m.memory, uint64(uint32(v0))+28, uint64(t680))
-								t681 := int32(load32(m.memory, uint64(uint32(v8))+52))
-								store32(m.memory, uint64(uint32(v0))+36, uint32(t681))
+								t679 := int32(load32(m.memory, uint64(uint32(v8))+24))
+								store32(m.memory, uint64(uint32(v0))+24, uint32(t679))
+								t680 := int64(load64(m.memory, uint64(uint32(v8))+16))
+								store64(m.memory, uint64(uint32(v0))+16, uint64(t680))
+								t681 := int64(load64(m.memory, uint64(uint32(v8))+44))
+								store64(m.memory, uint64(uint32(v0))+28, uint64(t681))
+								t682 := int32(load32(m.memory, uint64(uint32(v8))+52))
+								store32(m.memory, uint64(uint32(v0))+36, uint32(t682))
 								store32(m.memory, uint64(uint32(v0))+48, uint32(v22))
 								store32(m.memory, uint64(uint32(v0))+44, uint32(v26))
 								store32(m.memory, uint64(uint32(v0))+40, uint32(v21))
@@ -62918,90 +62929,90 @@ func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode17rende
 								if v11 == 0 {
 									goto l8
 								}
-								t682 := int32(load32(m.memory, uint32(v8)))
-								v12 = t682
+								t683 := int32(load32(m.memory, uint32(v8)))
+								v12 = t683
 								if v12 == 0 {
 									goto l8
 								}
-								t683 := int32(load32(m.memory, uint64(uint32(v8))+4))
-								m.__RNvCs1njKG4L9aB3_7___rustc14___rust_dealloc(t683, v12, i32(1))
+								t684 := int32(load32(m.memory, uint64(uint32(v8))+4))
+								m.__RNvCs1njKG4L9aB3_7___rustc14___rust_dealloc(t684, v12, i32(1))
 								goto l8
 							}
-						l241:
-							t684 := int32(load32(m.memory, uint64(uint32(v8))+789))
-							store32(m.memory, uint64(uint32(v0))+5, uint32(t684))
-							t685 := int32(load32(m.memory, uint64(uint32(v8))+792))
-							store32(m.memory, uint64(uint32(v0))+8, uint32(t685))
-							t686 := int32(m.memory[uint64(uint32(v8))+788])
-							v12 = t686
+						l244:
+							t685 := int32(load32(m.memory, uint64(uint32(v8))+1157))
+							store32(m.memory, uint64(uint32(v0))+5, uint32(t685))
+							t686 := int32(load32(m.memory, uint64(uint32(v8))+1160))
+							store32(m.memory, uint64(uint32(v0))+8, uint32(t686))
+							t687 := int32(m.memory[uint64(uint32(v8))+1156])
+							v12 = t687
 							store32(m.memory, uint64(uint32(v0))+40, uint32(i32(-1)))
 							m.memory[uint64(uint32(v0))+4] = byte(v12)
 							store32(m.memory, uint32(v0), uint32(v29))
 							v23 = i32(1)
 						}
-					l238:
-						t687 := int32(load32(m.memory, uint64(uint32(v8))+768))
-						v12 = t687
+					l241:
+						t688 := int32(load32(m.memory, uint64(uint32(v8))+1120))
+						v12 = t688
 						if v12 == 0 {
-							goto l231
+							goto l234
 						}
-						t688 := int32(load32(m.memory, uint64(uint32(v8))+772))
-						m.__RNvCs1njKG4L9aB3_7___rustc14___rust_dealloc(t688, v12*i32(56), i32(8))
+						t689 := int32(load32(m.memory, uint64(uint32(v8))+1124))
+						m.__RNvCs1njKG4L9aB3_7___rustc14___rust_dealloc(t689, v12*i32(56), i32(8))
 					}
-				l231:
-					if v14 == 0 {
-						goto l276
+				l234:
+					if v41 == 0 {
+						goto l279
 					}
-					m.__RNvCs1njKG4L9aB3_7___rustc14___rust_dealloc(v5, v14, i32(1))
-				l276:
-					t689 := v23
-					var p690 int32
+					m.__RNvCs1njKG4L9aB3_7___rustc14___rust_dealloc(v5, v41, i32(1))
+				l279:
+					t690 := v23
+					var p691 int32
 					if v27 != i32(-1) {
-						p690 = 1
+						p691 = 1
 					}
-					if t689&p690 == 0 {
+					if t690&p691 == 0 {
 						goto l101
 					}
 				}
-			l200:
+			l203:
 				m.__RINvNtCsknUcikIyyBm_4core3ptr9drop_glueNtNtNtNtCs508fO6TR0hO_3zpl6render7barcode6code937CaptionEBJ_(v8 + i32(56))
 			l101:
-				t691 := int32(load32(m.memory, uint64(uint32(v8))+44))
-				v12 = t691
+				t692 := int32(load32(m.memory, uint64(uint32(v8))+44))
+				v12 = t692
 				if v12 == 0 {
 					goto l86
 				}
-				t692 := int32(load32(m.memory, uint64(uint32(v8))+48))
-				m.__RNvCs1njKG4L9aB3_7___rustc14___rust_dealloc(t692, v12<<4, i32(8))
+				t693 := int32(load32(m.memory, uint64(uint32(v8))+48))
+				m.__RNvCs1njKG4L9aB3_7___rustc14___rust_dealloc(t693, v12<<4, i32(8))
 			}
 		l86:
 			{
-				t693 := int32(load32(m.memory, uint64(uint32(v8))+16))
-				v12 = t693
+				t694 := int32(load32(m.memory, uint64(uint32(v8))+16))
+				v12 = t694
 				if v12 == 0 {
-					goto l277
+					goto l280
 				}
-				t694 := int32(load32(m.memory, uint64(uint32(v8))+20))
-				m.__RNvCs1njKG4L9aB3_7___rustc14___rust_dealloc(t694, v12*i32(56), i32(8))
+				t695 := int32(load32(m.memory, uint64(uint32(v8))+20))
+				m.__RNvCs1njKG4L9aB3_7___rustc14___rust_dealloc(t695, v12*i32(56), i32(8))
 			}
-		l277:
+		l280:
 			if v11 == 0 {
 				goto l8
 			}
 		}
 	l14:
-		t695 := int32(load32(m.memory, uint32(v8)))
-		v12 = t695
+		t696 := int32(load32(m.memory, uint32(v8)))
+		v12 = t696
 		if v12 == 0 {
 			goto l8
 		}
-		t696 := int32(load32(m.memory, uint64(uint32(v8))+4))
-		m.__RNvCs1njKG4L9aB3_7___rustc14___rust_dealloc(t696, v12, i32(1))
+		t697 := int32(load32(m.memory, uint64(uint32(v8))+4))
+		m.__RNvCs1njKG4L9aB3_7___rustc14___rust_dealloc(t697, v12, i32(1))
 	}
 l8:
-	m.___stack_pointer = v8 + i32(1152)
+	m.___stack_pointer = v8 + i32(1808)
 }
-func (m *Module) __RNvXsq_NtCs6UNhEcE2CoN_5alloc6stringNtB5_6StringNtNtCsknUcikIyyBm_4core3fmt7Display3fmt_llvm_8941680849063143092_5o5k9z(v0, v1 int32) int32 {
+func (m *Module) __RNvXsq_NtCs6UNhEcE2CoN_5alloc6stringNtB5_6StringNtNtCsknUcikIyyBm_4core3fmt7Display3fmt_llvm_4997834558440384663_n5ispn(v0, v1 int32) int32 {
 	t0 := int32(load32(m.memory, uint64(uint32(v0))+4))
 	t1 := int32(load32(m.memory, uint64(uint32(v0))+8))
 	t2 := m.__RNvXsi_NtCsknUcikIyyBm_4core3fmteNtB5_7Display3fmt(t0, t1, v1)
@@ -63612,7 +63623,7 @@ func (m *Module) __RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode9codablock6render(v
 			p53 = 1
 		}
 		v15 = p53
-		t54 := int32(m.memory[uint64(uint32(v1))+143])
+		t54 := int32(m.memory[uint64(uint32(v1))+144])
 		v16 = t54 & i32(1)
 		v9 = i32(0)
 		v17 = i32(0)
@@ -64513,7 +64524,7 @@ func (m *Module) __RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode9codablock6render(v
 					t192 := math.Float64frombits(load64(m.memory, uint64(uint32(v4))+48))
 					t193 := v27
 					v11 = t192
-					t194 := int32(m.memory[uint64(uint32(v1))+145])
+					t194 := int32(m.memory[uint64(uint32(v1))+146])
 					p195 := float64(v11 * v27)
 					if t194 != 0 {
 						p195 = v11
@@ -64700,11 +64711,11 @@ func (m *Module) __RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode11micropdf4176rende
 					l7:
 						v7 = v7 + i32(1)
 					l8:
-						m.__RNvNtNtNtNtCs508fO6TR0hO_3zpl6render7barcode6pdf41710high_level14encode_initial_llvm_17359454854788387126_4y1xon(v4+i32(84), v5, v2, i32(0), i32(1), i32(13), i32(0), i32(0))
+						m.__RNvNtNtNtNtCs508fO6TR0hO_3zpl6render7barcode6pdf41710high_level14encode_initial_llvm_1612776412242081695_oy8qyd(v4+i32(84), v5, v2, i32(0), i32(1), i32(13), i32(0), i32(0))
 						goto l10
 					l6:
 						v3 = i32(1)
-						m.__RNvNtNtNtNtCs508fO6TR0hO_3zpl6render7barcode6pdf41710high_level14encode_initial_llvm_17359454854788387126_4y1xon(v4+i32(84), v5, v2, i32(0), i32(1), i32(13), i32(0), i32(0))
+						m.__RNvNtNtNtNtCs508fO6TR0hO_3zpl6render7barcode6pdf41710high_level14encode_initial_llvm_1612776412242081695_oy8qyd(v4+i32(84), v5, v2, i32(0), i32(1), i32(13), i32(0), i32(0))
 						if uint32(v7) < uint32(i32(6)) {
 							goto l11
 						}
@@ -65695,7 +65706,7 @@ l2:
 	store32(m.memory, uint32(v0), uint32(v7))
 	m.___stack_pointer = v6 + i32(48)
 }
-func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode19uses_retail_caption_llvm_8941680849063143092_tq3ix4(v0 int32) int32 {
+func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode19uses_retail_caption_llvm_4997834558440384663_cnsotw(v0 int32) int32 {
 	var v1 int32
 	v1 = i32(0)
 	{
@@ -66885,7 +66896,7 @@ func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode18field
 			t0 := int32(load32(m.memory, uint64(uint32(v0))+192))
 			if t0 != i32(2) {
 				v2 = v1
-				t7 := m.__RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode19uses_retail_caption_llvm_8941680849063143092_tq3ix4(v0)
+				t7 := m.__RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode19uses_retail_caption_llvm_4997834558440384663_cnsotw(v0)
 				if t7 == 0 {
 					goto l2
 				}
@@ -66901,14 +66912,14 @@ func (m *Module) __RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode18field
 				if t2 != i32(17218) {
 					goto l1
 				}
-				t3 := int32(m.memory[uint64(uint32(v0))+130])
+				t3 := int32(m.memory[uint64(uint32(v0))+131])
 				if t3&i32(1) != 0 {
 					goto l2
 				}
 			}
 		l1:
 			v2 = v1
-			t4 := m.__RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode19uses_retail_caption_llvm_8941680849063143092_tq3ix4(v0)
+			t4 := m.__RNvMNtNtCs508fO6TR0hO_3zpl6render7barcodeNtB2_7Barcode19uses_retail_caption_llvm_4997834558440384663_cnsotw(v0)
 			if t4 == 0 {
 				goto l2
 			}
@@ -72205,7 +72216,7 @@ func (m *Module) __RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode11micropdf4176linke
 		if v2 != 0 {
 			goto l1
 		}
-		m.__RNvNtNtNtNtCs508fO6TR0hO_3zpl6render7barcode6pdf41710high_level14encode_initial_llvm_17359454854788387126_4y1xon(v5+i32(16), v1, i32(0), i32(0), i32(0), i32(14), i32(0), i32(0))
+		m.__RNvNtNtNtNtCs508fO6TR0hO_3zpl6render7barcode6pdf41710high_level14encode_initial_llvm_1612776412242081695_oy8qyd(v5+i32(16), v1, i32(0), i32(0), i32(0), i32(14), i32(0), i32(0))
 		goto l2
 	l1:
 		v7 = i32(0)
@@ -72221,10 +72232,10 @@ func (m *Module) __RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode11micropdf4176linke
 				goto l4
 			}
 		}
-		m.__RNvNtNtNtNtCs508fO6TR0hO_3zpl6render7barcode6pdf41710high_level14encode_initial_llvm_17359454854788387126_4y1xon(v5+i32(16), v1, v2, i32(0), i32(0), i32(14), i32(0), i32(0))
+		m.__RNvNtNtNtNtCs508fO6TR0hO_3zpl6render7barcode6pdf41710high_level14encode_initial_llvm_1612776412242081695_oy8qyd(v5+i32(16), v1, v2, i32(0), i32(0), i32(14), i32(0), i32(0))
 		goto l2
 	l3:
-		m.__RNvNtNtNtNtCs508fO6TR0hO_3zpl6render7barcode6pdf41710high_level14encode_initial_llvm_17359454854788387126_4y1xon(v5+i32(16), v1, v2, i32(0), i32(1), i32(13), i32(0), i32(0))
+		m.__RNvNtNtNtNtCs508fO6TR0hO_3zpl6render7barcode6pdf41710high_level14encode_initial_llvm_1612776412242081695_oy8qyd(v5+i32(16), v1, v2, i32(0), i32(1), i32(13), i32(0), i32(0))
 	l2:
 		v2 = i32(1)
 		t3 := int32(load32(m.memory, uint64(uint32(v5))+16))
@@ -112403,9 +112414,9 @@ func (m *Module) __RINvYNtNtNtCs7L774UPzF0f_3std4hash6random11RandomStateNtNtCsk
 	store64(m.memory, uint64(uint32(v2))+8, uint64(v4^i64(8317987319222330741)))
 	t5 := int32(load32(m.memory, uint64(uint32(v1))+4))
 	t6 := int32(load32(m.memory, uint64(uint32(v1))+8))
-	m.__RNvXs3_NtNtCsknUcikIyyBm_4core4hash3sipINtB5_6HasherNtB5_11Sip13RoundsENtB7_6Hasher5writeCs508fO6TR0hO_3zpl_llvm_13172218091977488604_r8y74t(v2+i32(8), t5, t6)
+	m.__RNvXs3_NtNtCsknUcikIyyBm_4core4hash3sipINtB5_6HasherNtB5_11Sip13RoundsENtB7_6Hasher5writeCs508fO6TR0hO_3zpl_llvm_11022730133092837585_2re0ig(v2+i32(8), t5, t6)
 	m.memory[uint64(uint32(v2))+79] = byte(i32(255))
-	m.__RNvXs3_NtNtCsknUcikIyyBm_4core4hash3sipINtB5_6HasherNtB5_11Sip13RoundsENtB7_6Hasher5writeCs508fO6TR0hO_3zpl_llvm_13172218091977488604_r8y74t(v2+i32(8), v2+i32(79), i32(1))
+	m.__RNvXs3_NtNtCsknUcikIyyBm_4core4hash3sipINtB5_6HasherNtB5_11Sip13RoundsENtB7_6Hasher5writeCs508fO6TR0hO_3zpl_llvm_11022730133092837585_2re0ig(v2+i32(8), v2+i32(79), i32(1))
 	t7 := int64(load64(m.memory, uint64(uint32(v2))+8))
 	v4 = t7
 	t8 := int64(load64(m.memory, uint64(uint32(v2))+24))
@@ -112468,7 +112479,7 @@ func (m *Module) __RINvYNtNtNtCs7L774UPzF0f_3std4hash6random11RandomStateNtNtCsk
 	v3 = v3 + v6
 	return t30 ^ i64_rotl(v3, i64(32)) ^ v3
 }
-func (m *Module) __RNvXs3_NtNtCsknUcikIyyBm_4core4hash3sipINtB5_6HasherNtB5_11Sip13RoundsENtB7_6Hasher5writeCs508fO6TR0hO_3zpl_llvm_13172218091977488604_r8y74t(v0, v1, v2 int32) {
+func (m *Module) __RNvXs3_NtNtCsknUcikIyyBm_4core4hash3sipINtB5_6HasherNtB5_11Sip13RoundsENtB7_6Hasher5writeCs508fO6TR0hO_3zpl_llvm_11022730133092837585_2re0ig(v0, v1, v2 int32) {
 	var v3, v4, v5, v6 int32
 	var v7, v8, v9, v10, v11, v12 int64
 	t0 := int32(load32(m.memory, uint64(uint32(v0))+56))
@@ -112654,12 +112665,12 @@ func (m *Module) __RINvYNtNtNtCs7L774UPzF0f_3std4hash6random11RandomStateNtNtCsk
 	v0 = t5
 	t7 := int32(m.memory[uint32(v0)])
 	m.memory[uint64(uint32(t6))+79] = byte(t7)
-	m.__RNvXs3_NtNtCsknUcikIyyBm_4core4hash3sipINtB5_6HasherNtB5_11Sip13RoundsENtB7_6Hasher5writeCs508fO6TR0hO_3zpl_llvm_13172218091977488604_r8y74t(v2+i32(8), v2+i32(79), i32(1))
+	m.__RNvXs3_NtNtCsknUcikIyyBm_4core4hash3sipINtB5_6HasherNtB5_11Sip13RoundsENtB7_6Hasher5writeCs508fO6TR0hO_3zpl_llvm_11022730133092837585_2re0ig(v2+i32(8), v2+i32(79), i32(1))
 	t8 := int32(load32(m.memory, uint64(uint32(v0))+8))
 	t9 := int32(load32(m.memory, uint64(uint32(v0))+12))
-	m.__RNvXs3_NtNtCsknUcikIyyBm_4core4hash3sipINtB5_6HasherNtB5_11Sip13RoundsENtB7_6Hasher5writeCs508fO6TR0hO_3zpl_llvm_13172218091977488604_r8y74t(v2+i32(8), t8, t9)
+	m.__RNvXs3_NtNtCsknUcikIyyBm_4core4hash3sipINtB5_6HasherNtB5_11Sip13RoundsENtB7_6Hasher5writeCs508fO6TR0hO_3zpl_llvm_11022730133092837585_2re0ig(v2+i32(8), t8, t9)
 	m.memory[uint64(uint32(v2))+79] = byte(i32(255))
-	m.__RNvXs3_NtNtCsknUcikIyyBm_4core4hash3sipINtB5_6HasherNtB5_11Sip13RoundsENtB7_6Hasher5writeCs508fO6TR0hO_3zpl_llvm_13172218091977488604_r8y74t(v2+i32(8), v2+i32(79), i32(1))
+	m.__RNvXs3_NtNtCsknUcikIyyBm_4core4hash3sipINtB5_6HasherNtB5_11Sip13RoundsENtB7_6Hasher5writeCs508fO6TR0hO_3zpl_llvm_11022730133092837585_2re0ig(v2+i32(8), v2+i32(79), i32(1))
 	t10 := int64(load64(m.memory, uint64(uint32(v2))+8))
 	v4 = t10
 	t11 := int64(load64(m.memory, uint64(uint32(v2))+24))
@@ -112744,12 +112755,12 @@ func (m *Module) __RINvYNtNtNtCs7L774UPzF0f_3std4hash6random11RandomStateNtNtCsk
 	store64(m.memory, uint64(uint32(v2))+8, uint64(v4^i64(8317987319222330741)))
 	t5 := int32(m.memory[uint32(v1)])
 	m.memory[uint64(uint32(v2))+79] = byte(t5)
-	m.__RNvXs3_NtNtCsknUcikIyyBm_4core4hash3sipINtB5_6HasherNtB5_11Sip13RoundsENtB7_6Hasher5writeCs508fO6TR0hO_3zpl_llvm_13172218091977488604_r8y74t(v2+i32(8), v2+i32(79), i32(1))
+	m.__RNvXs3_NtNtCsknUcikIyyBm_4core4hash3sipINtB5_6HasherNtB5_11Sip13RoundsENtB7_6Hasher5writeCs508fO6TR0hO_3zpl_llvm_11022730133092837585_2re0ig(v2+i32(8), v2+i32(79), i32(1))
 	t6 := int32(load32(m.memory, uint64(uint32(v1))+8))
 	t7 := int32(load32(m.memory, uint64(uint32(v1))+12))
-	m.__RNvXs3_NtNtCsknUcikIyyBm_4core4hash3sipINtB5_6HasherNtB5_11Sip13RoundsENtB7_6Hasher5writeCs508fO6TR0hO_3zpl_llvm_13172218091977488604_r8y74t(v2+i32(8), t6, t7)
+	m.__RNvXs3_NtNtCsknUcikIyyBm_4core4hash3sipINtB5_6HasherNtB5_11Sip13RoundsENtB7_6Hasher5writeCs508fO6TR0hO_3zpl_llvm_11022730133092837585_2re0ig(v2+i32(8), t6, t7)
 	m.memory[uint64(uint32(v2))+79] = byte(i32(255))
-	m.__RNvXs3_NtNtCsknUcikIyyBm_4core4hash3sipINtB5_6HasherNtB5_11Sip13RoundsENtB7_6Hasher5writeCs508fO6TR0hO_3zpl_llvm_13172218091977488604_r8y74t(v2+i32(8), v2+i32(79), i32(1))
+	m.__RNvXs3_NtNtCsknUcikIyyBm_4core4hash3sipINtB5_6HasherNtB5_11Sip13RoundsENtB7_6Hasher5writeCs508fO6TR0hO_3zpl_llvm_11022730133092837585_2re0ig(v2+i32(8), v2+i32(79), i32(1))
 	t8 := int64(load64(m.memory, uint64(uint32(v2))+8))
 	v4 = t8
 	t9 := int64(load64(m.memory, uint64(uint32(v2))+24))
@@ -112832,9 +112843,9 @@ func (m *Module) __RINvYNtNtNtCs7L774UPzF0f_3std4hash6random11RandomStateNtNtCsk
 	store64(m.memory, uint64(uint32(v3))+24, uint64(v4^i64(7237128888997146477)))
 	store64(m.memory, uint64(uint32(v3))+16, uint64(v5^i64(0x6c7967656e657261)))
 	store64(m.memory, uint64(uint32(v3))+8, uint64(v5^i64(8317987319222330741)))
-	m.__RNvXs3_NtNtCsknUcikIyyBm_4core4hash3sipINtB5_6HasherNtB5_11Sip13RoundsENtB7_6Hasher5writeCs508fO6TR0hO_3zpl_llvm_13172218091977488604_r8y74t(v3+i32(8), v1, v2)
+	m.__RNvXs3_NtNtCsknUcikIyyBm_4core4hash3sipINtB5_6HasherNtB5_11Sip13RoundsENtB7_6Hasher5writeCs508fO6TR0hO_3zpl_llvm_11022730133092837585_2re0ig(v3+i32(8), v1, v2)
 	m.memory[uint64(uint32(v3))+79] = byte(i32(255))
-	m.__RNvXs3_NtNtCsknUcikIyyBm_4core4hash3sipINtB5_6HasherNtB5_11Sip13RoundsENtB7_6Hasher5writeCs508fO6TR0hO_3zpl_llvm_13172218091977488604_r8y74t(v3+i32(8), v3+i32(79), i32(1))
+	m.__RNvXs3_NtNtCsknUcikIyyBm_4core4hash3sipINtB5_6HasherNtB5_11Sip13RoundsENtB7_6Hasher5writeCs508fO6TR0hO_3zpl_llvm_11022730133092837585_2re0ig(v3+i32(8), v3+i32(79), i32(1))
 	t5 := int64(load64(m.memory, uint64(uint32(v3))+8))
 	v5 = t5
 	t6 := int64(load64(m.memory, uint64(uint32(v3))+24))
@@ -112919,7 +112930,7 @@ func (m *Module) __RINvYNtNtNtCs7L774UPzF0f_3std4hash6random11RandomStateNtNtCsk
 	store64(m.memory, uint64(uint32(v2))+8, uint64(v4^i64(8317987319222330741)))
 	t5 := int32(load32(m.memory, uint32(v1)))
 	store32(m.memory, uint64(uint32(v2))+76, uint32(t5))
-	m.__RNvXs3_NtNtCsknUcikIyyBm_4core4hash3sipINtB5_6HasherNtB5_11Sip13RoundsENtB7_6Hasher5writeCs508fO6TR0hO_3zpl_llvm_13172218091977488604_r8y74t(v2+i32(8), v2+i32(76), i32(4))
+	m.__RNvXs3_NtNtCsknUcikIyyBm_4core4hash3sipINtB5_6HasherNtB5_11Sip13RoundsENtB7_6Hasher5writeCs508fO6TR0hO_3zpl_llvm_11022730133092837585_2re0ig(v2+i32(8), v2+i32(76), i32(4))
 	t6 := int64(load64(m.memory, uint64(uint32(v2))+8))
 	v4 = t6
 	t7 := int64(load64(m.memory, uint64(uint32(v2))+24))
@@ -113004,7 +113015,7 @@ func (m *Module) __RINvYNtNtNtCs7L774UPzF0f_3std4hash6random11RandomStateNtNtCsk
 	store64(m.memory, uint64(uint32(v2))+8, uint64(v4^i64(8317987319222330741)))
 	t5 := int32(load16(m.memory, uint32(v1)))
 	store16(m.memory, uint64(uint32(v2))+78, uint16(t5))
-	m.__RNvXs3_NtNtCsknUcikIyyBm_4core4hash3sipINtB5_6HasherNtB5_11Sip13RoundsENtB7_6Hasher5writeCs508fO6TR0hO_3zpl_llvm_13172218091977488604_r8y74t(v2+i32(8), v2+i32(78), i32(2))
+	m.__RNvXs3_NtNtCsknUcikIyyBm_4core4hash3sipINtB5_6HasherNtB5_11Sip13RoundsENtB7_6Hasher5writeCs508fO6TR0hO_3zpl_llvm_11022730133092837585_2re0ig(v2+i32(8), v2+i32(78), i32(2))
 	t6 := int64(load64(m.memory, uint64(uint32(v2))+8))
 	v4 = t6
 	t7 := int64(load64(m.memory, uint64(uint32(v2))+24))
@@ -114881,7 +114892,7 @@ func (m *Module) __RNvMs2_NtCs508fO6TR0hO_3zpl8truetypeNtB5_8Instance7outline(v0
 l1:
 	m.___stack_pointer = v3 + i32(64)
 }
-func (m *Module) __RNvMs_NtCs508fO6TR0hO_3zpl5fontsNtB4_11RenderFonts12checked_name_llvm_13172218091977488604_vsnabl(v0, v1, v2, v3 int32) {
+func (m *Module) __RNvMs_NtCs508fO6TR0hO_3zpl5fontsNtB4_11RenderFonts12checked_name_llvm_11022730133092837585_8f2w04(v0, v1, v2, v3 int32) {
 	var v4, v5, v6, v7, v8, v9, v10, v11, v12, v13 int32
 	t0 := m.___stack_pointer
 	v4 = t0 - i32(384)
@@ -115410,7 +115421,7 @@ func (m *Module) __RNvMs_NtCs508fO6TR0hO_3zpl5fontsNtB4_11RenderFonts12select_na
 	t0 := m.___stack_pointer
 	v4 = t0 - i32(32)
 	m.___stack_pointer = v4
-	m.__RNvMs_NtCs508fO6TR0hO_3zpl5fontsNtB4_11RenderFonts12checked_name_llvm_13172218091977488604_vsnabl(v4+i32(16), v1, v2, v3)
+	m.__RNvMs_NtCs508fO6TR0hO_3zpl5fontsNtB4_11RenderFonts12checked_name_llvm_11022730133092837585_8f2w04(v4+i32(16), v1, v2, v3)
 	t1 := int64(load64(m.memory, uint64(uint32(v4))+20))
 	store64(m.memory, uint32(v4), uint64(t1))
 	t2 := int32(load32(m.memory, uint64(uint32(v4))+28))
@@ -115961,7 +115972,7 @@ func (m *Module) __RNvMs_NtCs508fO6TR0hO_3zpl5fontsNtB4_11RenderFonts5alias(v0, 
 	t0 := m.___stack_pointer
 	v5 = t0 - i32(48)
 	m.___stack_pointer = v5
-	m.__RNvMs_NtCs508fO6TR0hO_3zpl5fontsNtB4_11RenderFonts12checked_name_llvm_13172218091977488604_vsnabl(v5+i32(28), v1, v3, v4)
+	m.__RNvMs_NtCs508fO6TR0hO_3zpl5fontsNtB4_11RenderFonts12checked_name_llvm_11022730133092837585_8f2w04(v5+i32(28), v1, v3, v4)
 	t1 := int64(load64(m.memory, uint64(uint32(v5))+32))
 	store64(m.memory, uint32(v5), uint64(t1))
 	t2 := int32(load32(m.memory, uint64(uint32(v5))+40))
@@ -121944,7 +121955,7 @@ l11:
 									v5 = i32(8)
 								l31:
 									{
-										m.__RINvNtNtNtNtCsknUcikIyyBm_4core5slice4sort6shared9smallsort11insert_tailTjbENCINvMNtCs6UNhEcE2CoN_5alloc5sliceSB18_11sort_by_keyB18_NCNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode5aztec6renders0_0E0EB2g__llvm_11274427024600035647_ax46kx(v11, v11+v5)
+										m.__RINvNtNtNtNtCsknUcikIyyBm_4core5slice4sort6shared9smallsort11insert_tailTjbENCINvMNtCs6UNhEcE2CoN_5alloc5sliceSB18_11sort_by_keyB18_NCNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode5aztec6renders0_0E0EB2g__llvm_14668647991823675356_nl9r2i(v11, v11+v5)
 										t74 := v3
 										v5 = v5 + i32(8)
 										if t74 != v5 {
@@ -123883,7 +123894,7 @@ func (m *Module) __RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode6code9316extended_c
 	v4 = t0 - i32(64)
 	m.___stack_pointer = v4
 	v5 = i32(0)
-	t1 := int32(m.memory[uint64(uint32(v1))+155])
+	t1 := int32(m.memory[uint64(uint32(v1))+156])
 	t2 := v4 + i32(40)
 	t3 := v2
 	t4 := v3
@@ -124590,7 +124601,7 @@ func (m *Module) __RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode6code936render(v0, 
 			goto l3
 		}
 	l2:
-		t10 := int32(m.memory[uint64(uint32(v1))+155])
+		t10 := int32(m.memory[uint64(uint32(v1))+156])
 		m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode6code9312field_values(v4+i32(32), v2, v3, t10)
 		t11 := int64(load64(m.memory, uint64(uint32(v4))+36))
 		store64(m.memory, uint64(uint32(v4))+16, uint64(t11))
@@ -126592,7 +126603,7 @@ func (m *Module) __RINvXs0_NtNtNtCsknUcikIyyBm_4core4iter8adapters3mapINtB6_3Map
 				}
 			l3:
 				t14 := int32(load32(m.memory, uint32(v7)))
-				t15 := int32(m.memory[uint64(uint32(v10))+149])
+				t15 := int32(m.memory[uint64(uint32(v10))+150])
 				m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode9qr_model16encode(v4+i32(12), v8, t14, v5, t15)
 			}
 		l4:
@@ -141157,7 +141168,7 @@ func (m *Module) __RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode12multi_origin6rend
 							l22:
 								t50 := int32(load32(m.memory, uint64(uint32(v5))+4))
 								t51 := int32(load32(m.memory, uint64(uint32(v5))+8))
-								m.__RNvNtNtNtNtCs508fO6TR0hO_3zpl6render7barcode6pdf41710high_level14encode_initial_llvm_17359454854788387126_4y1xon(v5+i32(152), t50, t51, i32(1), i32(0), i32(8), i32(0), i32(0))
+								m.__RNvNtNtNtNtCs508fO6TR0hO_3zpl6render7barcode6pdf41710high_level14encode_initial_llvm_1612776412242081695_oy8qyd(v5+i32(152), t50, t51, i32(1), i32(0), i32(8), i32(0), i32(0))
 								v12 = i32_shl(i32(1), v3+i32(1))
 								t52 := int32(load32(m.memory, uint64(uint32(v5))+160))
 								v11 = v12 + t52 + i32(12)
@@ -141329,7 +141340,7 @@ func (m *Module) __RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode12multi_origin6rend
 											if uint32(v21) > uint32(v15) {
 												goto l38
 											}
-											m.__RNvNtNtNtNtCs508fO6TR0hO_3zpl6render7barcode6pdf41710high_level14encode_initial_llvm_17359454854788387126_4y1xon(v5+i32(152), v20, v11, i32(1), i32(0), i32(8), i32(0), i32(0))
+											m.__RNvNtNtNtNtCs508fO6TR0hO_3zpl6render7barcode6pdf41710high_level14encode_initial_llvm_1612776412242081695_oy8qyd(v5+i32(152), v20, v11, i32(1), i32(0), i32(8), i32(0), i32(0))
 											t82 := int32(load32(m.memory, uint64(uint32(v5))+152))
 											v9 = t82
 											{
@@ -141459,7 +141470,7 @@ func (m *Module) __RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode12multi_origin6rend
 								if uint32(v21) > uint32(v15) {
 									goto l38
 								}
-								m.__RNvNtNtNtNtCs508fO6TR0hO_3zpl6render7barcode6pdf41710high_level14encode_initial_llvm_17359454854788387126_4y1xon(v5+i32(152), v20, v11, i32(0), i32(1), i32(13), i32(0), i32(0))
+								m.__RNvNtNtNtNtCs508fO6TR0hO_3zpl6render7barcode6pdf41710high_level14encode_initial_llvm_1612776412242081695_oy8qyd(v5+i32(152), v20, v11, i32(0), i32(1), i32(13), i32(0), i32(0))
 								t102 := int32(load32(m.memory, uint64(uint32(v5))+152))
 								v9 = t102
 								{
@@ -156819,7 +156830,7 @@ func (m *Module) __RNCNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode6retail7caption0B
 		{
 			t13 := int32(load32(m.memory, uint64(uint32(v1))+12))
 			v11 = t13
-			t14 := int32(m.memory[uint64(uint32(v11))+132])
+			t14 := int32(m.memory[uint64(uint32(v11))+133])
 			if t14 != i32(1) {
 				goto l2
 			}
@@ -163905,7 +163916,7 @@ l30:
 l18:
 	m.___stack_pointer = v5 + i32(32)
 }
-func (m *Module) __RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode7code1286encode_llvm_2873827144148751203_oo8rd2(v0, v1, v2, v3 int32) {
+func (m *Module) __RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode7code1286encode_llvm_9890160647063501120_y6kvas(v0, v1, v2, v3 int32) {
 	var v4, v5, v6, v7, v8, v9, v10, v11 int32
 	var v12 int64
 	var v13, v14, v15, v16, v17, v18, v19, v20, v21, v22 int32
@@ -166638,7 +166649,7 @@ func (m *Module) __RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode7code1286render(v0,
 	t0 := m.___stack_pointer
 	v4 = t0 - i32(32)
 	m.___stack_pointer = v4
-	m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode7code1286encode_llvm_2873827144148751203_oo8rd2(v4+i32(8), v1, v2, v3)
+	m.__RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode7code1286encode_llvm_9890160647063501120_y6kvas(v4+i32(8), v1, v2, v3)
 	t1 := int32(load32(m.memory, uint64(uint32(v4))+20))
 	v3 = t1
 	t2 := int32(load32(m.memory, uint64(uint32(v4))+16))
@@ -184171,7 +184182,7 @@ func (m *Module) __RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode6postal4draw(v0, v1
 			t50 := math.Float64frombits(load64(m.memory, uint64(uint32(v1))+168))
 			v15 = t50
 			{
-				t51 := int32(m.memory[uint64(uint32(v1))+153])
+				t51 := int32(m.memory[uint64(uint32(v1))+154])
 				if t51 != 0 {
 					goto l17
 				}
@@ -197599,7 +197610,7 @@ l3:
 	store32(m.memory, uint32(v0), uint32(v4))
 	m.___stack_pointer = v3 + i32(64)
 }
-func (m *Module) __RNvNtNtNtNtCs508fO6TR0hO_3zpl6render7barcode6pdf41710high_level14encode_initial_llvm_17359454854788387126_4y1xon(v0, v1, v2, v3, v4, v5, v6, v7 int32) {
+func (m *Module) __RNvNtNtNtNtCs508fO6TR0hO_3zpl6render7barcode6pdf41710high_level14encode_initial_llvm_1612776412242081695_oy8qyd(v0, v1, v2, v3, v4, v5, v6, v7 int32) {
 	var v8, v9, v10, v11, v12, v13, v14, v15, v16, v17, v18, v19, v20, v21, v22, v23, v24, v25, v26, v27, v28, v29, v30, v31 int32
 	var v32 int64
 	t0 := m.___stack_pointer
@@ -198923,7 +198934,7 @@ l16:
 	}
 	m.___stack_pointer = v3 + i32(48)
 }
-func (m *Module) __RNvXsi_NtCs508fO6TR0hO_3zpl5parseNtB5_14ParseErrorKindNtNtCsknUcikIyyBm_4core3fmt5Debug3fmt_llvm_17359454854788387126_d2mkxr(v0, v1 int32) int32 {
+func (m *Module) __RNvXsi_NtCs508fO6TR0hO_3zpl5parseNtB5_14ParseErrorKindNtNtCsknUcikIyyBm_4core3fmt5Debug3fmt_llvm_1612776412242081695_vnyn3f(v0, v1 int32) int32 {
 	t0 := int32(m.memory[uint32(v0)])
 	t1 := v1
 	v0 = t0 << 2
@@ -201576,7 +201587,7 @@ func (m *Module) __RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode16data_matrix_text5
 l3:
 	store32(m.memory, uint32(v2), uint32(v4+i32(1)))
 }
-func (m *Module) __RINvNtNtNtNtCsknUcikIyyBm_4core5slice4sort6shared9smallsort11insert_tailTjbENCINvMNtCs6UNhEcE2CoN_5alloc5sliceSB18_11sort_by_keyB18_NCNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode5aztec6renders0_0E0EB2g__llvm_11274427024600035647_ax46kx(v0, v1 int32) {
+func (m *Module) __RINvNtNtNtNtCsknUcikIyyBm_4core5slice4sort6shared9smallsort11insert_tailTjbENCINvMNtCs6UNhEcE2CoN_5alloc5sliceSB18_11sort_by_keyB18_NCNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode5aztec6renders0_0E0EB2g__llvm_14668647991823675356_nl9r2i(v0, v1 int32) {
 	var v2, v3, v4, v5, v6, v7 int32
 	var v8 int64
 	t0 := int32(load32(m.memory, uint32(v1)))
@@ -216994,10 +217005,10 @@ func (m *Module) __RNvNtNtNtCs508fO6TR0hO_3zpl6render7barcode16intelligent_mail6
 			t204 := math.Float64frombits(load64(m.memory, uint64(uint32(v1))+168))
 			v17 = t204
 			v18 = float64(float64(v15+v15) / float64(3))
-			t205 := int32(m.memory[uint64(uint32(v1))+154])
+			t205 := int32(m.memory[uint64(uint32(v1))+155])
 			v3 = t205
 			{
-				t206 := int32(m.memory[uint64(uint32(v1))+153])
+				t206 := int32(m.memory[uint64(uint32(v1))+154])
 				if t206 != 0 {
 					goto l23
 				}
