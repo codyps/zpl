@@ -13,4 +13,4 @@ crate-type = ["cdylib", "rlib"]
 
 [dependencies]
 rustler = "0.38.0"
-zpl = { version = "0.2.0", path = "../zpl" }
+zpl = { version = "0.2.1", path = "../zpl" }

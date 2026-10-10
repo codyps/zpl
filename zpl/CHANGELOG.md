@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.1](https://github.com/codyps/zpl/compare/zpl-v0.2.0...zpl-v0.2.1) - 2026-10-10
+
+### Added
+
+- *(c-api)* expose ZPL parsing and rendering to C ([#63](https://github.com/codyps/zpl/pull/63))
+
 ## [0.2.0](https://github.com/codyps/zpl/compare/zpl-v0.1.1...zpl-v0.2.0) - 2026-10-09
 
 ### Added
