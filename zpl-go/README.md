@@ -3,7 +3,11 @@
 `github.com/codyps/zpl/zpl-go` provides one Go API for the Rust ZPL renderer.
 **wasm2go is the default backend**. Generated Go, its embedded data, and the Wasm
 module are included, so ordinary Go builds need neither Rust nor code generation.
-The API is experimental; it has not been published as a versioned Go release.
+The API is experimental. Releases follow the renderer version and publish the
+Go module with a `zpl-go/v<version>` repository tag, then register it with the
+public Go proxy. After publication, install with
+`go get github.com/codyps/zpl/zpl-go@v<version>`; see the
+[release procedure](../docs/releases.md#go-module-releases).
 
 ## Build-time backends
 
