@@ -1,6 +1,6 @@
 {
   "name": "@codyps/zpl",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Render ZPL locally to PNG, SVG and PDF with the Rust zpl renderer and WebAssembly",
   "license": "OSL-3.0",
   "publishConfig": { "access": "public", "registry": "https://registry.npmjs.org/" },
