@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.1](https://github.com/codyps/zpl/compare/zpl-v0.2.0...zpl-v0.2.1) - 2026-10-09
+
+### Added
+
+- C bindings for parsing, rendering, output adapters, and external fonts ([#63](https://github.com/codyps/zpl/pull/63)).
+- Node parsing and external font APIs ([#62](https://github.com/codyps/zpl/pull/62)).
+- Elixir bindings and automated Hex releases ([#64](https://github.com/codyps/zpl/pull/64)).
+
+### Changed
+
+- Align the C, Node, Python, and Elixir package versions with renderer 0.2.1.
+  This explicit renderer bump releases binding-only changes through the existing
+  npm, PyPI, and Hex workflows. Python retains its existing API. C is distributed
+  as source in the renderer release; its ABI version remains 1.
+
 ## [0.2.0](https://github.com/codyps/zpl/compare/zpl-v0.1.1...zpl-v0.2.0) - 2026-10-09
 
 ### Added

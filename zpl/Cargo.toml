@@ -1,6 +1,6 @@
 [package]
 name = "zpl"
-version = "0.2.0"
+version = "0.2.1"
 edition = "2021"
 description = "A high accuracy ZPL renderer"
 license.workspace = true

@@ -286,6 +286,34 @@ does. No live publication is needed to review this change.
 
 ## Releasing and verifying
 
+### Binding-only releases
+
+Release-plz can finish successfully without opening a PR when only the bindings
+changed: the managed crates.io packages have no new packaged code. The npm,
+Python, and Elixir publishers still require a new stable renderer release.
+For this case, prepare an explicit release PR:
+
+1. Start from current `main` on a `release-plz-` prefixed branch. This prefix is
+   required by the existing publication gate, including for a manually prepared PR.
+2. Bump `zpl`, its workspace dependency requirements, and the root lockfile.
+   Add binding changes to `zpl/CHANGELOG.md`. Follow the configured release-plz
+   policy: additive changes use a patch increment while below 1.0; breaking
+   changes require a minor increment.
+3. Align `zpl-c`, `zpl-python`, and `zpl_elixir` Cargo package versions and lock
+   entries, `zpl-node/package.json`, and `zpl-elixir/mix.exs` with the renderer.
+   Python's distribution version comes from its Cargo manifest. Publishing still
+   stamps Node/Python/Elixir versions in CI on future automated releases.
+4. Run the release-script tests and normal PR CI before merging. Verify registry
+   outcomes after merging, including the first Hex publication when applicable.
+
+The C binding is available in the repository source archive for `zpl-v<version>`;
+there is currently no prebuilt C library upload or crates.io publication for
+`zpl-c`. Build and distribute its matching headers and library as described in
+the [C API guide](../zpl-c/README.md). Package version alignment does not change
+the separate C ABI version.
+
+### Publication checks
+
 Merge workflow changes into `main` before merging the generated release PR. Let
 release-plz update the release PR and wait for its normal CI checks, then merge
 it. Its push to `main` runs `release`, publishing any unpublished prepared
