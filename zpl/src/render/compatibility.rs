@@ -437,6 +437,11 @@ pub struct Compatibility {
     /// after the font cell above. ^BC permits a preceding font command (p. 94)
     /// but does not prescribe these raster gaps. Default: three-dot gaps.
     pub barcode_interpretation_printer_layout: bool,
+    /// Use internal resident A for automatic linear barcode captions, bypassing
+    /// supplied fonts and ^CW aliases. Controlled LOGMARS/Code 128 captures in
+    /// downloaded-bitmap-zd621-v1 show that these captions retain resident metrics.
+    /// Explicit preceding font commands still select the supplied face.
+    pub barcode_implicit_caption_uses_resident_font: bool,
     /// Anchor rotated ^FO barcodes using bar height, excluding interpretation
     /// text and retail guard extensions. Captured above/below interpretation
     /// controls cover ^B2/^BC/^BE/^BU in all four orientations. The nominal

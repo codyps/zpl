@@ -237,6 +237,45 @@ fn truetype_typographic_ascent_does_not_move_zpl_fields() {
 }
 
 #[test]
+fn automatic_captions_bypass_supplied_a_only_in_printer_profiles() {
+    use zpl::render::profiles::ZD621_203_DPI;
+    // The native evidence is in downloaded-bitmap-zd621-v1. Distinct synthetic
+    // glyph advances also guard explicit ^A selection and the profile switch.
+    let custom = fonts('A', 4);
+    let changed = fonts('A', 8);
+    for rotation in ['N', 'R', 'I', 'B'] {
+        for above in ['N', 'Y'] {
+            let source =
+                format!("^XA^PW400^LL400^FO200,200^BY2^BC{rotation},30,Y,{above},N^FDAA^FS^XZ");
+            let render = |source: &str, options, fonts: &Fonts<'_>| {
+                render_with_fonts(source.as_bytes(), options, fonts)
+                    .unwrap()
+                    .labels
+            };
+            assert_eq!(
+                render(&source, ZD621_203_DPI, &custom),
+                render(&source, ZD621_203_DPI, &Fonts::new())
+            );
+            let explicit = source.replace("^BY2", "^BY2^AAN,10,10");
+            assert_ne!(
+                render(&explicit, ZD621_203_DPI, &custom),
+                render(&explicit, ZD621_203_DPI, &changed)
+            );
+            let mut disabled = ZD621_203_DPI;
+            disabled
+                .compatibility
+                .barcode_implicit_caption_uses_resident_font = false;
+            for options in [SPECIFICATION, disabled] {
+                assert_ne!(
+                    render(&source, options, &custom),
+                    render(&source, options, &changed)
+                );
+            }
+        }
+    }
+}
+
+#[test]
 fn captions_stored_formats_and_output_adapters_use_supplied_faces() {
     use zpl::output::{Adapter, Pdf, Png, Svg};
     let custom = fonts('Z', 4);

@@ -24,7 +24,7 @@ fn downloaded_bitmap_faces_match_saved_printer_canvases() {
         manifest["sha256"]["bitmap-download.zpl"]
     );
     // Preserve the exact saved submissions, including their unused font-0 alias.
-    // These fixtures explicitly select bitmap text. A sentinel face makes any
+    // These fixtures use bitmap text and automatic captions. A sentinel makes any
     // accidental font-0 text an error instead of importing an unrelated TTF.
     let mut fonts = Fonts::new();
     fonts
@@ -80,6 +80,6 @@ fn downloaded_bitmap_faces_match_saved_printer_canvases() {
         }
         count += 1;
     }
-    assert_eq!(count, 100);
+    assert_eq!(count, 110);
     assert!(failures.is_empty(), "{}", failures.join("\n"));
 }
