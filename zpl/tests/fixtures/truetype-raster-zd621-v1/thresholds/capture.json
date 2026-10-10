@@ -1,0 +1,215 @@
+{
+  "started": "2026-10-10T02:33:13.030979+00:00",
+  "host": "d7j211001302.bed.einic.org",
+  "pages": [
+    {
+      "name": "00-control-start",
+      "source_sha256": "358f6c2413b21f6690578bda0554004f5efa2b30d3e101f31ae1ea4628929e6e",
+      "started": "2026-10-10T02:33:13.157582+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "bba3993eb0619c434c448ba43e7e72ffc3b5b68cf635c6f56560e702c534b514",
+      "finished": "2026-10-10T02:33:13.260574+00:00"
+    },
+    {
+      "name": "00-curves-repeat-0",
+      "source_sha256": "2f1526230af47e4ca4125ac5a3b90cf17034f57564c2b1af1d2676f1a0f0b30b",
+      "started": "2026-10-10T02:33:15.300567+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "d2b1e15b5972a33fa26d1704167ba885a07f2ec912516ba92fac0ab688b79f1a",
+      "finished": "2026-10-10T02:33:15.915547+00:00"
+    },
+    {
+      "name": "01-curves-repeat-0",
+      "source_sha256": "a596fc0b539d4c0d37557d4d92380300a1be59cd25b61332b06fddeeb05646c4",
+      "started": "2026-10-10T02:33:16.916395+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "adf50237773d1d03c38aa88a9756e759593d919b15d6de2ef1af8a18e4831ca7",
+      "finished": "2026-10-10T02:33:17.517339+00:00"
+    },
+    {
+      "name": "02-curves-repeat-0",
+      "source_sha256": "acd5d0aba2af675b0f6b11cc9969dbf5c17fce847956fbcbb78450bfb2d05354",
+      "started": "2026-10-10T02:33:18.518655+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "1ee47abe53b6fd240ae7bca71cde21cffeb4c368a536935c84cfcb0bdd7647fb",
+      "finished": "2026-10-10T02:33:19.124185+00:00"
+    },
+    {
+      "name": "03-curves-repeat-0",
+      "source_sha256": "58ba479558d07edaf371b8f4001b24425a9e90c4e4a8faf151669728b6f70903",
+      "started": "2026-10-10T02:33:20.124769+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "e415a1687c93c3f8d5d69b4c47c8956aa1d7838e9ac0fcaf7e8bd9127a75fe21",
+      "finished": "2026-10-10T02:33:20.733004+00:00"
+    },
+    {
+      "name": "04-curves-repeat-0",
+      "source_sha256": "227ca011963c710175d8b1979ec13278d58802bd3ba38677392dc541d294543a",
+      "started": "2026-10-10T02:33:21.733639+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "cbdc2a5bd32fa18b36f3b32e87e3f1d47e0ec4d31329745ccc84e86ab12d6116",
+      "finished": "2026-10-10T02:33:22.342478+00:00"
+    },
+    {
+      "name": "05-curves-repeat-0",
+      "source_sha256": "7f0f661d8bb6ea17702b689c98e7bd7af7489f09a6cbcd76cfc20cd2fbfea54e",
+      "started": "2026-10-10T02:33:23.343009+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "10b7c03d5b222faafe0ecebeb6fdc13867fa88fa44dd1f1468a765fa2e58d7e1",
+      "finished": "2026-10-10T02:33:23.949440+00:00"
+    },
+    {
+      "name": "06-curves-repeat-0",
+      "source_sha256": "32262a65d161de6f113be6699d50c012762a069014cd09748366057fae91498e",
+      "started": "2026-10-10T02:33:24.949917+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "16d34175df331275ff91106a4db7e28a131d27698a23a3307363310e48441da0",
+      "finished": "2026-10-10T02:33:25.555347+00:00"
+    },
+    {
+      "name": "07-curves-repeat-0",
+      "source_sha256": "6a76f6b6e2eaf7270c7f8cf3beaae81005ea27b5469892363d661e4e9661a550",
+      "started": "2026-10-10T02:33:26.555916+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "8bf17185dfc416d21f6226f12a370c984e76ab6398d25f60135529f64261450c",
+      "finished": "2026-10-10T02:33:26.900360+00:00"
+    },
+    {
+      "name": "00-curves-repeat-1",
+      "source_sha256": "2f1526230af47e4ca4125ac5a3b90cf17034f57564c2b1af1d2676f1a0f0b30b",
+      "started": "2026-10-10T02:33:27.900821+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "d2b1e15b5972a33fa26d1704167ba885a07f2ec912516ba92fac0ab688b79f1a",
+      "finished": "2026-10-10T02:33:28.467385+00:00"
+    },
+    {
+      "name": "01-curves-repeat-1",
+      "source_sha256": "a596fc0b539d4c0d37557d4d92380300a1be59cd25b61332b06fddeeb05646c4",
+      "started": "2026-10-10T02:33:29.467813+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "adf50237773d1d03c38aa88a9756e759593d919b15d6de2ef1af8a18e4831ca7",
+      "finished": "2026-10-10T02:33:30.035981+00:00"
+    },
+    {
+      "name": "02-curves-repeat-1",
+      "source_sha256": "acd5d0aba2af675b0f6b11cc9969dbf5c17fce847956fbcbb78450bfb2d05354",
+      "started": "2026-10-10T02:33:31.036800+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "1ee47abe53b6fd240ae7bca71cde21cffeb4c368a536935c84cfcb0bdd7647fb",
+      "finished": "2026-10-10T02:33:31.605346+00:00"
+    },
+    {
+      "name": "03-curves-repeat-1",
+      "source_sha256": "58ba479558d07edaf371b8f4001b24425a9e90c4e4a8faf151669728b6f70903",
+      "started": "2026-10-10T02:33:32.605802+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "e415a1687c93c3f8d5d69b4c47c8956aa1d7838e9ac0fcaf7e8bd9127a75fe21",
+      "finished": "2026-10-10T02:33:33.172068+00:00"
+    },
+    {
+      "name": "04-curves-repeat-1",
+      "source_sha256": "227ca011963c710175d8b1979ec13278d58802bd3ba38677392dc541d294543a",
+      "started": "2026-10-10T02:33:34.172511+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "cbdc2a5bd32fa18b36f3b32e87e3f1d47e0ec4d31329745ccc84e86ab12d6116",
+      "finished": "2026-10-10T02:33:34.744444+00:00"
+    },
+    {
+      "name": "05-curves-repeat-1",
+      "source_sha256": "7f0f661d8bb6ea17702b689c98e7bd7af7489f09a6cbcd76cfc20cd2fbfea54e",
+      "started": "2026-10-10T02:33:35.744919+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "10b7c03d5b222faafe0ecebeb6fdc13867fa88fa44dd1f1468a765fa2e58d7e1",
+      "finished": "2026-10-10T02:33:36.315471+00:00"
+    },
+    {
+      "name": "06-curves-repeat-1",
+      "source_sha256": "32262a65d161de6f113be6699d50c012762a069014cd09748366057fae91498e",
+      "started": "2026-10-10T02:33:37.316427+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "16d34175df331275ff91106a4db7e28a131d27698a23a3307363310e48441da0",
+      "finished": "2026-10-10T02:33:37.888443+00:00"
+    },
+    {
+      "name": "07-curves-repeat-1",
+      "source_sha256": "6a76f6b6e2eaf7270c7f8cf3beaae81005ea27b5469892363d661e4e9661a550",
+      "started": "2026-10-10T02:33:38.888954+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "8bf17185dfc416d21f6226f12a370c984e76ab6398d25f60135529f64261450c",
+      "finished": "2026-10-10T02:33:39.216309+00:00"
+    },
+    {
+      "name": "99-control-end",
+      "source_sha256": "358f6c2413b21f6690578bda0554004f5efa2b30d3e101f31ae1ea4628929e6e",
+      "started": "2026-10-10T02:33:40.216630+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "bba3993eb0619c434c448ba43e7e72ffc3b5b68cf635c6f56560e702c534b514",
+      "finished": "2026-10-10T02:33:40.296362+00:00"
+    }
+  ],
+  "owned": [
+    "R:ZRASQ01.TTF"
+  ],
+  "status": "complete",
+  "identity": {
+    "device.product_name": "ZD621",
+    "device.unique_id": "D7J211001302",
+    "appl.name": "V93.21.33Z"
+  },
+  "cleanup_errors": [],
+  "finished": "2026-10-10T02:33:41.877952+00:00"
+}

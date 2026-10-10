@@ -250,8 +250,11 @@ fn render_expanded(
 ) -> Result<Document, RenderError> {
     // Request-local names resolve against the caller-owned font resources.
     let downloads = font_downloads::prepare(input, limits);
-    let mut fonts =
-        fonts::RenderFonts::new(fonts, options.compatibility.supplied_bitmap_font_metrics);
+    let mut fonts = fonts::RenderFonts::new(
+        fonts,
+        options.compatibility.supplied_bitmap_font_metrics,
+        options.compatibility.supplied_truetype_printer_metrics,
+    );
     let number = |p: &[&str], i, default| number(p, i, default, limits.number_abs);
     let numbered = numbered::plan(input, options.compatibility, limits.field_bytes)?;
     let mut pending_terminator = None;
@@ -1201,6 +1204,10 @@ fn render_expanded(
                                         && options.compatibility.utf8_uses_legacy_backslash),
                             )
                             .with_fonts(&fonts)
+                            .with_truetype_environment(
+                                options.compatibility.supplied_truetype_printer_metrics,
+                                field.rotation,
+                            )
                             .with_control_glyphs(
                                 options.compatibility.text_esc_del_processing
                                     && matches!(encoding, 0 | 13),
@@ -2443,7 +2450,14 @@ fn supplied_font_dimensions(
         } else {
             (w, h)
         };
-        return face.dimensions(w, h);
+        let (w, h) = face.dimensions(w, h)?;
+        return Ok(if face.is_truetype() && fonts.truetype_printer_metrics {
+            // The same 10-dot minimum applies to the cell baseline and layout,
+            // not just the outline scaler. Native font-dim-1/2/7 holdouts.
+            (w.max(10.), h.max(10.))
+        } else {
+            (w, h)
+        });
     }
     font_dimensions(
         p,

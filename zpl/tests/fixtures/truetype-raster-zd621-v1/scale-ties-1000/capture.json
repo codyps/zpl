@@ -1,0 +1,176 @@
+{
+  "started": "2026-10-10T04:32:46.170160+00:00",
+  "host": "d7j211001302.bed.einic.org",
+  "pages": [
+    {
+      "name": "00-control-start",
+      "source_sha256": "358f6c2413b21f6690578bda0554004f5efa2b30d3e101f31ae1ea4628929e6e",
+      "started": "2026-10-10T04:32:46.260683+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "bba3993eb0619c434c448ba43e7e72ffc3b5b68cf635c6f56560e702c534b514",
+      "finished": "2026-10-10T04:32:46.343882+00:00"
+    },
+    {
+      "name": "16-ties-repeat-0",
+      "source_sha256": "1f87879bc611ff24ee16c4b6f3d96825e9f1b811856030c1bbefc239433bd478",
+      "started": "2026-10-10T04:32:53.621426+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "39cab777110947fbb3acff04e1fa3ee1105613839096fe55a9f3735bc47c7f2b",
+      "finished": "2026-10-10T04:32:54.109646+00:00"
+    },
+    {
+      "name": "127-ties-repeat-0",
+      "source_sha256": "915eb9e8e08de7c3da2aff36595438f7741bc82295fe4d751d8b84700004f8e2",
+      "started": "2026-10-10T04:32:55.110495+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "9a37ea6894bbf9ac898b23f29529636418764aff4369a6591050a21557917654",
+      "finished": "2026-10-10T04:32:55.598075+00:00"
+    },
+    {
+      "name": "1000-ties-repeat-0",
+      "source_sha256": "e8d0868701c38ec179c6569ec50a5533d719e3aed909bd52c3318c774c9b76d1",
+      "started": "2026-10-10T04:32:56.599159+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "f76601dd523f4061bac21390b19c03c2428e47ff332ad09401878d93ca3295bc",
+      "finished": "2026-10-10T04:32:57.086996+00:00"
+    },
+    {
+      "name": "1024-ties-repeat-0",
+      "source_sha256": "52209979fafac7f1b5fa790d18537f6fba5f12e7b288a2354dbd4b4d1c8af96b",
+      "started": "2026-10-10T04:32:58.087546+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "b46dee38cfadaf2c0235bb2a23de9e19ebbe52ca1bfd23b946632f4c7f33b2eb",
+      "finished": "2026-10-10T04:32:58.575818+00:00"
+    },
+    {
+      "name": "8192-ties-repeat-0",
+      "source_sha256": "70c8bfe226b15185923fb9f91dba3a308566717533f1ef5de5da19fc04943410",
+      "started": "2026-10-10T04:32:59.576858+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "647ec7a31aefa34ecd1238d811224f5919e3b0d4626235cd9d5bbd391a18dd73",
+      "finished": "2026-10-10T04:33:00.068656+00:00"
+    },
+    {
+      "name": "16384-ties-repeat-0",
+      "source_sha256": "58b13524a222a8cb103692c292579c262674dfbce9883bd19a4ed1423f522064",
+      "started": "2026-10-10T04:33:01.069084+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "647ec7a31aefa34ecd1238d811224f5919e3b0d4626235cd9d5bbd391a18dd73",
+      "finished": "2026-10-10T04:33:01.557977+00:00"
+    },
+    {
+      "name": "16-ties-repeat-1",
+      "source_sha256": "1f87879bc611ff24ee16c4b6f3d96825e9f1b811856030c1bbefc239433bd478",
+      "started": "2026-10-10T04:33:02.558671+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "39cab777110947fbb3acff04e1fa3ee1105613839096fe55a9f3735bc47c7f2b",
+      "finished": "2026-10-10T04:33:03.020194+00:00"
+    },
+    {
+      "name": "127-ties-repeat-1",
+      "source_sha256": "915eb9e8e08de7c3da2aff36595438f7741bc82295fe4d751d8b84700004f8e2",
+      "started": "2026-10-10T04:33:04.020855+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "9a37ea6894bbf9ac898b23f29529636418764aff4369a6591050a21557917654",
+      "finished": "2026-10-10T04:33:04.473816+00:00"
+    },
+    {
+      "name": "1000-ties-repeat-1",
+      "source_sha256": "e8d0868701c38ec179c6569ec50a5533d719e3aed909bd52c3318c774c9b76d1",
+      "started": "2026-10-10T04:33:05.474737+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "f76601dd523f4061bac21390b19c03c2428e47ff332ad09401878d93ca3295bc",
+      "finished": "2026-10-10T04:33:05.930938+00:00"
+    },
+    {
+      "name": "1024-ties-repeat-1",
+      "source_sha256": "52209979fafac7f1b5fa790d18537f6fba5f12e7b288a2354dbd4b4d1c8af96b",
+      "started": "2026-10-10T04:33:06.932172+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "b46dee38cfadaf2c0235bb2a23de9e19ebbe52ca1bfd23b946632f4c7f33b2eb",
+      "finished": "2026-10-10T04:33:07.390667+00:00"
+    },
+    {
+      "name": "8192-ties-repeat-1",
+      "source_sha256": "70c8bfe226b15185923fb9f91dba3a308566717533f1ef5de5da19fc04943410",
+      "started": "2026-10-10T04:33:08.391863+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "647ec7a31aefa34ecd1238d811224f5919e3b0d4626235cd9d5bbd391a18dd73",
+      "finished": "2026-10-10T04:33:08.851098+00:00"
+    },
+    {
+      "name": "16384-ties-repeat-1",
+      "source_sha256": "58b13524a222a8cb103692c292579c262674dfbce9883bd19a4ed1423f522064",
+      "started": "2026-10-10T04:33:09.852335+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "647ec7a31aefa34ecd1238d811224f5919e3b0d4626235cd9d5bbd391a18dd73",
+      "finished": "2026-10-10T04:33:10.309873+00:00"
+    },
+    {
+      "name": "99-control-end",
+      "source_sha256": "358f6c2413b21f6690578bda0554004f5efa2b30d3e101f31ae1ea4628929e6e",
+      "started": "2026-10-10T04:33:11.310784+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "bba3993eb0619c434c448ba43e7e72ffc3b5b68cf635c6f56560e702c534b514",
+      "finished": "2026-10-10T04:33:11.393311+00:00"
+    }
+  ],
+  "owned": [
+    "R:ZSCAL31.TTF",
+    "R:ZSCAL32.TTF",
+    "R:ZSCAL33.TTF",
+    "R:ZSCAL34.TTF",
+    "R:ZSCAL35.TTF",
+    "R:ZSCAL36.TTF"
+  ],
+  "status": "complete",
+  "identity": {
+    "device.product_name": "ZD621",
+    "device.unique_id": "D7J211001302",
+    "appl.name": "V93.21.33Z"
+  },
+  "cleanup_errors": [],
+  "finished": "2026-10-10T04:33:15.691154+00:00"
+}

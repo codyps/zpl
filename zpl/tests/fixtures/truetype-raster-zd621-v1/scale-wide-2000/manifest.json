@@ -1,0 +1,3852 @@
+{
+  "fonts": [
+    {
+      "object": "R:ZSCAL06.TTF",
+      "source": "/home/cody-ai/.cache/cargo-targets/zpl-scaling-rounding/binary-holdout/probe.ttf",
+      "sha256": "9cd0a95d1ee2f6b7689344b64b1d5e860319cdacd39780cd7057594faa8461e8",
+      "upload": "upload.zpl"
+    }
+  ],
+  "pages": [
+    {
+      "name": "00-factor-1014",
+      "source": "00-factor-1014.zpl",
+      "sha256": "26f7bdc114adf0a488496f40df60e43d8d69f61f0a98ad70ffcdd8f2b4d5e069",
+      "dimensions": [
+        832,
+        832
+      ],
+      "probes": [
+        {
+          "value": 1,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 55,
+          "size": 1014,
+          "codepoint": 57344
+        },
+        {
+          "value": 1,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 55,
+          "size": 1014,
+          "codepoint": 57345
+        },
+        {
+          "value": -1,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 55,
+          "size": 1014,
+          "codepoint": 57346
+        },
+        {
+          "value": -1,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 55,
+          "size": 1014,
+          "codepoint": 57347
+        },
+        {
+          "value": 7,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 55,
+          "size": 1014,
+          "codepoint": 57348
+        },
+        {
+          "value": 7,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 55,
+          "size": 1014,
+          "codepoint": 57349
+        },
+        {
+          "value": -7,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 151,
+          "size": 1014,
+          "codepoint": 57350
+        },
+        {
+          "value": -7,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 151,
+          "size": 1014,
+          "codepoint": 57351
+        },
+        {
+          "value": 125,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 151,
+          "size": 1014,
+          "codepoint": 57352
+        },
+        {
+          "value": 125,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 151,
+          "size": 1014,
+          "codepoint": 57353
+        },
+        {
+          "value": -125,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 151,
+          "size": 1014,
+          "codepoint": 57354
+        },
+        {
+          "value": -125,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 151,
+          "size": 1014,
+          "codepoint": 57355
+        },
+        {
+          "value": 375,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 247,
+          "size": 1014,
+          "codepoint": 57356
+        },
+        {
+          "value": 375,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 247,
+          "size": 1014,
+          "codepoint": 57357
+        },
+        {
+          "value": -375,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 247,
+          "size": 1014,
+          "codepoint": 57358
+        },
+        {
+          "value": -375,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 247,
+          "size": 1014,
+          "codepoint": 57359
+        },
+        {
+          "value": 961,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 247,
+          "size": 1014,
+          "codepoint": 57360
+        },
+        {
+          "value": 961,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 247,
+          "size": 1014,
+          "codepoint": 57361
+        },
+        {
+          "value": -961,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 343,
+          "size": 1014,
+          "codepoint": 57362
+        },
+        {
+          "value": -961,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 343,
+          "size": 1014,
+          "codepoint": 57363
+        },
+        {
+          "value": 2375,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 343,
+          "size": 1014,
+          "codepoint": 57364
+        },
+        {
+          "value": 2375,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 343,
+          "size": 1014,
+          "codepoint": 57365
+        },
+        {
+          "value": -2375,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 343,
+          "size": 1014,
+          "codepoint": 57366
+        },
+        {
+          "value": -2375,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 343,
+          "size": 1014,
+          "codepoint": 57367
+        },
+        {
+          "value": 15936,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 439,
+          "size": 1014,
+          "codepoint": 57368
+        },
+        {
+          "value": 15936,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 439,
+          "size": 1014,
+          "codepoint": 57369
+        },
+        {
+          "value": -15936,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 439,
+          "size": 1014,
+          "codepoint": 57370
+        },
+        {
+          "value": -15936,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 439,
+          "size": 1014,
+          "codepoint": 57371
+        },
+        {
+          "value": 32749,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 439,
+          "size": 1014,
+          "codepoint": 57372
+        },
+        {
+          "value": 32749,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 439,
+          "size": 1014,
+          "codepoint": 57373
+        },
+        {
+          "value": -32749,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 535,
+          "size": 1014,
+          "codepoint": 57374
+        },
+        {
+          "value": -32749,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 535,
+          "size": 1014,
+          "codepoint": 57375
+        },
+        {
+          "value": 131071,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 535,
+          "size": 1014,
+          "codepoint": 57376
+        },
+        {
+          "value": 131071,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 535,
+          "size": 1014,
+          "codepoint": 57377
+        },
+        {
+          "value": -131071,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 535,
+          "size": 1014,
+          "codepoint": 57378
+        },
+        {
+          "value": -131071,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 535,
+          "size": 1014,
+          "codepoint": 57379
+        },
+        {
+          "value": 132105,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 631,
+          "size": 1014,
+          "codepoint": 57380
+        },
+        {
+          "value": 132105,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 631,
+          "size": 1014,
+          "codepoint": 57381
+        },
+        {
+          "value": -132105,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 631,
+          "size": 1014,
+          "codepoint": 57382
+        },
+        {
+          "value": -132105,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 631,
+          "size": 1014,
+          "codepoint": 57383
+        },
+        {
+          "value": 132106,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 631,
+          "size": 1014,
+          "codepoint": 57384
+        },
+        {
+          "value": 132106,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 631,
+          "size": 1014,
+          "codepoint": 57385
+        },
+        {
+          "value": -132106,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 727,
+          "size": 1014,
+          "codepoint": 57386
+        },
+        {
+          "value": -132106,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 727,
+          "size": 1014,
+          "codepoint": 57387
+        },
+        {
+          "value": 250125,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 727,
+          "size": 1014,
+          "codepoint": 57388
+        },
+        {
+          "value": 250125,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 727,
+          "size": 1014,
+          "codepoint": 57389
+        },
+        {
+          "value": -250125,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 727,
+          "size": 1014,
+          "codepoint": 57390
+        },
+        {
+          "value": -250125,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 727,
+          "size": 1014,
+          "codepoint": 57391
+        }
+      ]
+    },
+    {
+      "name": "01-factor-1015",
+      "source": "01-factor-1015.zpl",
+      "sha256": "dd8039137241c3af3f6c9d506beb7c1870719008f3341df41add1b37e1c18af1",
+      "dimensions": [
+        832,
+        832
+      ],
+      "probes": [
+        {
+          "value": 1,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 55,
+          "size": 1015,
+          "codepoint": 57344
+        },
+        {
+          "value": 1,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 55,
+          "size": 1015,
+          "codepoint": 57345
+        },
+        {
+          "value": -1,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 55,
+          "size": 1015,
+          "codepoint": 57346
+        },
+        {
+          "value": -1,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 55,
+          "size": 1015,
+          "codepoint": 57347
+        },
+        {
+          "value": 7,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 55,
+          "size": 1015,
+          "codepoint": 57348
+        },
+        {
+          "value": 7,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 55,
+          "size": 1015,
+          "codepoint": 57349
+        },
+        {
+          "value": -7,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 151,
+          "size": 1015,
+          "codepoint": 57350
+        },
+        {
+          "value": -7,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 151,
+          "size": 1015,
+          "codepoint": 57351
+        },
+        {
+          "value": 125,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 151,
+          "size": 1015,
+          "codepoint": 57352
+        },
+        {
+          "value": 125,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 151,
+          "size": 1015,
+          "codepoint": 57353
+        },
+        {
+          "value": -125,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 151,
+          "size": 1015,
+          "codepoint": 57354
+        },
+        {
+          "value": -125,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 151,
+          "size": 1015,
+          "codepoint": 57355
+        },
+        {
+          "value": 375,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 247,
+          "size": 1015,
+          "codepoint": 57356
+        },
+        {
+          "value": 375,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 247,
+          "size": 1015,
+          "codepoint": 57357
+        },
+        {
+          "value": -375,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 247,
+          "size": 1015,
+          "codepoint": 57358
+        },
+        {
+          "value": -375,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 247,
+          "size": 1015,
+          "codepoint": 57359
+        },
+        {
+          "value": 961,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 247,
+          "size": 1015,
+          "codepoint": 57360
+        },
+        {
+          "value": 961,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 247,
+          "size": 1015,
+          "codepoint": 57361
+        },
+        {
+          "value": -961,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 343,
+          "size": 1015,
+          "codepoint": 57362
+        },
+        {
+          "value": -961,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 343,
+          "size": 1015,
+          "codepoint": 57363
+        },
+        {
+          "value": 2375,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 343,
+          "size": 1015,
+          "codepoint": 57364
+        },
+        {
+          "value": 2375,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 343,
+          "size": 1015,
+          "codepoint": 57365
+        },
+        {
+          "value": -2375,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 343,
+          "size": 1015,
+          "codepoint": 57366
+        },
+        {
+          "value": -2375,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 343,
+          "size": 1015,
+          "codepoint": 57367
+        },
+        {
+          "value": 15936,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 439,
+          "size": 1015,
+          "codepoint": 57368
+        },
+        {
+          "value": 15936,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 439,
+          "size": 1015,
+          "codepoint": 57369
+        },
+        {
+          "value": -15936,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 439,
+          "size": 1015,
+          "codepoint": 57370
+        },
+        {
+          "value": -15936,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 439,
+          "size": 1015,
+          "codepoint": 57371
+        },
+        {
+          "value": 32749,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 439,
+          "size": 1015,
+          "codepoint": 57372
+        },
+        {
+          "value": 32749,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 439,
+          "size": 1015,
+          "codepoint": 57373
+        },
+        {
+          "value": -32749,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 535,
+          "size": 1015,
+          "codepoint": 57374
+        },
+        {
+          "value": -32749,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 535,
+          "size": 1015,
+          "codepoint": 57375
+        },
+        {
+          "value": 131071,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 535,
+          "size": 1015,
+          "codepoint": 57376
+        },
+        {
+          "value": 131071,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 535,
+          "size": 1015,
+          "codepoint": 57377
+        },
+        {
+          "value": -131071,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 535,
+          "size": 1015,
+          "codepoint": 57378
+        },
+        {
+          "value": -131071,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 535,
+          "size": 1015,
+          "codepoint": 57379
+        },
+        {
+          "value": 132105,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 631,
+          "size": 1015,
+          "codepoint": 57380
+        },
+        {
+          "value": 132105,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 631,
+          "size": 1015,
+          "codepoint": 57381
+        },
+        {
+          "value": -132105,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 631,
+          "size": 1015,
+          "codepoint": 57382
+        },
+        {
+          "value": -132105,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 631,
+          "size": 1015,
+          "codepoint": 57383
+        },
+        {
+          "value": 132106,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 631,
+          "size": 1015,
+          "codepoint": 57384
+        },
+        {
+          "value": 132106,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 631,
+          "size": 1015,
+          "codepoint": 57385
+        },
+        {
+          "value": -132106,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 727,
+          "size": 1015,
+          "codepoint": 57386
+        },
+        {
+          "value": -132106,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 727,
+          "size": 1015,
+          "codepoint": 57387
+        },
+        {
+          "value": 250125,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 727,
+          "size": 1015,
+          "codepoint": 57388
+        },
+        {
+          "value": 250125,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 727,
+          "size": 1015,
+          "codepoint": 57389
+        },
+        {
+          "value": -250125,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 727,
+          "size": 1015,
+          "codepoint": 57390
+        },
+        {
+          "value": -250125,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 727,
+          "size": 1015,
+          "codepoint": 57391
+        }
+      ]
+    },
+    {
+      "name": "02-factor-1016",
+      "source": "02-factor-1016.zpl",
+      "sha256": "0af570306b3e044d0f08472e282568d0c0a18915e7e8f6d273eacfc581077654",
+      "dimensions": [
+        832,
+        832
+      ],
+      "probes": [
+        {
+          "value": 1,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 55,
+          "size": 1016,
+          "codepoint": 57344
+        },
+        {
+          "value": 1,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 55,
+          "size": 1016,
+          "codepoint": 57345
+        },
+        {
+          "value": -1,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 55,
+          "size": 1016,
+          "codepoint": 57346
+        },
+        {
+          "value": -1,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 55,
+          "size": 1016,
+          "codepoint": 57347
+        },
+        {
+          "value": 7,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 55,
+          "size": 1016,
+          "codepoint": 57348
+        },
+        {
+          "value": 7,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 55,
+          "size": 1016,
+          "codepoint": 57349
+        },
+        {
+          "value": -7,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 151,
+          "size": 1016,
+          "codepoint": 57350
+        },
+        {
+          "value": -7,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 151,
+          "size": 1016,
+          "codepoint": 57351
+        },
+        {
+          "value": 125,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 151,
+          "size": 1016,
+          "codepoint": 57352
+        },
+        {
+          "value": 125,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 151,
+          "size": 1016,
+          "codepoint": 57353
+        },
+        {
+          "value": -125,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 151,
+          "size": 1016,
+          "codepoint": 57354
+        },
+        {
+          "value": -125,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 151,
+          "size": 1016,
+          "codepoint": 57355
+        },
+        {
+          "value": 375,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 247,
+          "size": 1016,
+          "codepoint": 57356
+        },
+        {
+          "value": 375,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 247,
+          "size": 1016,
+          "codepoint": 57357
+        },
+        {
+          "value": -375,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 247,
+          "size": 1016,
+          "codepoint": 57358
+        },
+        {
+          "value": -375,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 247,
+          "size": 1016,
+          "codepoint": 57359
+        },
+        {
+          "value": 961,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 247,
+          "size": 1016,
+          "codepoint": 57360
+        },
+        {
+          "value": 961,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 247,
+          "size": 1016,
+          "codepoint": 57361
+        },
+        {
+          "value": -961,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 343,
+          "size": 1016,
+          "codepoint": 57362
+        },
+        {
+          "value": -961,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 343,
+          "size": 1016,
+          "codepoint": 57363
+        },
+        {
+          "value": 2375,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 343,
+          "size": 1016,
+          "codepoint": 57364
+        },
+        {
+          "value": 2375,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 343,
+          "size": 1016,
+          "codepoint": 57365
+        },
+        {
+          "value": -2375,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 343,
+          "size": 1016,
+          "codepoint": 57366
+        },
+        {
+          "value": -2375,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 343,
+          "size": 1016,
+          "codepoint": 57367
+        },
+        {
+          "value": 15936,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 439,
+          "size": 1016,
+          "codepoint": 57368
+        },
+        {
+          "value": 15936,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 439,
+          "size": 1016,
+          "codepoint": 57369
+        },
+        {
+          "value": -15936,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 439,
+          "size": 1016,
+          "codepoint": 57370
+        },
+        {
+          "value": -15936,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 439,
+          "size": 1016,
+          "codepoint": 57371
+        },
+        {
+          "value": 32749,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 439,
+          "size": 1016,
+          "codepoint": 57372
+        },
+        {
+          "value": 32749,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 439,
+          "size": 1016,
+          "codepoint": 57373
+        },
+        {
+          "value": -32749,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 535,
+          "size": 1016,
+          "codepoint": 57374
+        },
+        {
+          "value": -32749,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 535,
+          "size": 1016,
+          "codepoint": 57375
+        },
+        {
+          "value": 131071,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 535,
+          "size": 1016,
+          "codepoint": 57376
+        },
+        {
+          "value": 131071,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 535,
+          "size": 1016,
+          "codepoint": 57377
+        },
+        {
+          "value": -131071,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 535,
+          "size": 1016,
+          "codepoint": 57378
+        },
+        {
+          "value": -131071,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 535,
+          "size": 1016,
+          "codepoint": 57379
+        },
+        {
+          "value": 132105,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 631,
+          "size": 1016,
+          "codepoint": 57380
+        },
+        {
+          "value": 132105,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 631,
+          "size": 1016,
+          "codepoint": 57381
+        },
+        {
+          "value": -132105,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 631,
+          "size": 1016,
+          "codepoint": 57382
+        },
+        {
+          "value": -132105,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 631,
+          "size": 1016,
+          "codepoint": 57383
+        },
+        {
+          "value": 132106,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 631,
+          "size": 1016,
+          "codepoint": 57384
+        },
+        {
+          "value": 132106,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 631,
+          "size": 1016,
+          "codepoint": 57385
+        },
+        {
+          "value": -132106,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 727,
+          "size": 1016,
+          "codepoint": 57386
+        },
+        {
+          "value": -132106,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 727,
+          "size": 1016,
+          "codepoint": 57387
+        },
+        {
+          "value": 250125,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 727,
+          "size": 1016,
+          "codepoint": 57388
+        },
+        {
+          "value": 250125,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 727,
+          "size": 1016,
+          "codepoint": 57389
+        },
+        {
+          "value": -250125,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 727,
+          "size": 1016,
+          "codepoint": 57390
+        },
+        {
+          "value": -250125,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 727,
+          "size": 1016,
+          "codepoint": 57391
+        }
+      ]
+    },
+    {
+      "name": "03-factor-2030",
+      "source": "03-factor-2030.zpl",
+      "sha256": "abdcfe6a580262066dba310e713b5f520337a21272c6a435c303cc06a6e9e451",
+      "dimensions": [
+        832,
+        832
+      ],
+      "probes": [
+        {
+          "value": 1,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 55,
+          "size": 2030,
+          "codepoint": 57344
+        },
+        {
+          "value": 1,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 55,
+          "size": 2030,
+          "codepoint": 57345
+        },
+        {
+          "value": -1,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 55,
+          "size": 2030,
+          "codepoint": 57346
+        },
+        {
+          "value": -1,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 55,
+          "size": 2030,
+          "codepoint": 57347
+        },
+        {
+          "value": 7,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 55,
+          "size": 2030,
+          "codepoint": 57348
+        },
+        {
+          "value": 7,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 55,
+          "size": 2030,
+          "codepoint": 57349
+        },
+        {
+          "value": -7,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 151,
+          "size": 2030,
+          "codepoint": 57350
+        },
+        {
+          "value": -7,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 151,
+          "size": 2030,
+          "codepoint": 57351
+        },
+        {
+          "value": 125,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 151,
+          "size": 2030,
+          "codepoint": 57352
+        },
+        {
+          "value": 125,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 151,
+          "size": 2030,
+          "codepoint": 57353
+        },
+        {
+          "value": -125,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 151,
+          "size": 2030,
+          "codepoint": 57354
+        },
+        {
+          "value": -125,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 151,
+          "size": 2030,
+          "codepoint": 57355
+        },
+        {
+          "value": 375,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 247,
+          "size": 2030,
+          "codepoint": 57356
+        },
+        {
+          "value": 375,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 247,
+          "size": 2030,
+          "codepoint": 57357
+        },
+        {
+          "value": -375,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 247,
+          "size": 2030,
+          "codepoint": 57358
+        },
+        {
+          "value": -375,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 247,
+          "size": 2030,
+          "codepoint": 57359
+        },
+        {
+          "value": 961,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 247,
+          "size": 2030,
+          "codepoint": 57360
+        },
+        {
+          "value": 961,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 247,
+          "size": 2030,
+          "codepoint": 57361
+        },
+        {
+          "value": -961,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 343,
+          "size": 2030,
+          "codepoint": 57362
+        },
+        {
+          "value": -961,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 343,
+          "size": 2030,
+          "codepoint": 57363
+        },
+        {
+          "value": 2375,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 343,
+          "size": 2030,
+          "codepoint": 57364
+        },
+        {
+          "value": 2375,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 343,
+          "size": 2030,
+          "codepoint": 57365
+        },
+        {
+          "value": -2375,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 343,
+          "size": 2030,
+          "codepoint": 57366
+        },
+        {
+          "value": -2375,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 343,
+          "size": 2030,
+          "codepoint": 57367
+        },
+        {
+          "value": 15936,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 439,
+          "size": 2030,
+          "codepoint": 57368
+        },
+        {
+          "value": 15936,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 439,
+          "size": 2030,
+          "codepoint": 57369
+        },
+        {
+          "value": -15936,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 439,
+          "size": 2030,
+          "codepoint": 57370
+        },
+        {
+          "value": -15936,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 439,
+          "size": 2030,
+          "codepoint": 57371
+        },
+        {
+          "value": 32749,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 439,
+          "size": 2030,
+          "codepoint": 57372
+        },
+        {
+          "value": 32749,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 439,
+          "size": 2030,
+          "codepoint": 57373
+        },
+        {
+          "value": -32749,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 535,
+          "size": 2030,
+          "codepoint": 57374
+        },
+        {
+          "value": -32749,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 535,
+          "size": 2030,
+          "codepoint": 57375
+        },
+        {
+          "value": 131071,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 535,
+          "size": 2030,
+          "codepoint": 57376
+        },
+        {
+          "value": 131071,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 535,
+          "size": 2030,
+          "codepoint": 57377
+        },
+        {
+          "value": -131071,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 535,
+          "size": 2030,
+          "codepoint": 57378
+        },
+        {
+          "value": -131071,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 535,
+          "size": 2030,
+          "codepoint": 57379
+        },
+        {
+          "value": 132105,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 631,
+          "size": 2030,
+          "codepoint": 57380
+        },
+        {
+          "value": 132105,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 631,
+          "size": 2030,
+          "codepoint": 57381
+        },
+        {
+          "value": -132105,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 631,
+          "size": 2030,
+          "codepoint": 57382
+        },
+        {
+          "value": -132105,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 631,
+          "size": 2030,
+          "codepoint": 57383
+        },
+        {
+          "value": 132106,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 631,
+          "size": 2030,
+          "codepoint": 57384
+        },
+        {
+          "value": 132106,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 631,
+          "size": 2030,
+          "codepoint": 57385
+        },
+        {
+          "value": -132106,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 727,
+          "size": 2030,
+          "codepoint": 57386
+        },
+        {
+          "value": -132106,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 727,
+          "size": 2030,
+          "codepoint": 57387
+        },
+        {
+          "value": 250125,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 727,
+          "size": 2030,
+          "codepoint": 57388
+        },
+        {
+          "value": 250125,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 727,
+          "size": 2030,
+          "codepoint": 57389
+        },
+        {
+          "value": -250125,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 727,
+          "size": 2030,
+          "codepoint": 57390
+        },
+        {
+          "value": -250125,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 727,
+          "size": 2030,
+          "codepoint": 57391
+        }
+      ]
+    },
+    {
+      "name": "04-factor-4060",
+      "source": "04-factor-4060.zpl",
+      "sha256": "b4b9cd9a43ca5e67fd151a267ea3fffebe58198a8bd49ca08706f715aae10688",
+      "dimensions": [
+        832,
+        832
+      ],
+      "probes": [
+        {
+          "value": 1,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 55,
+          "size": 4060,
+          "codepoint": 57344
+        },
+        {
+          "value": 1,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 55,
+          "size": 4060,
+          "codepoint": 57345
+        },
+        {
+          "value": -1,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 55,
+          "size": 4060,
+          "codepoint": 57346
+        },
+        {
+          "value": -1,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 55,
+          "size": 4060,
+          "codepoint": 57347
+        },
+        {
+          "value": 7,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 55,
+          "size": 4060,
+          "codepoint": 57348
+        },
+        {
+          "value": 7,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 55,
+          "size": 4060,
+          "codepoint": 57349
+        },
+        {
+          "value": -7,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 151,
+          "size": 4060,
+          "codepoint": 57350
+        },
+        {
+          "value": -7,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 151,
+          "size": 4060,
+          "codepoint": 57351
+        },
+        {
+          "value": 125,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 151,
+          "size": 4060,
+          "codepoint": 57352
+        },
+        {
+          "value": 125,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 151,
+          "size": 4060,
+          "codepoint": 57353
+        },
+        {
+          "value": -125,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 151,
+          "size": 4060,
+          "codepoint": 57354
+        },
+        {
+          "value": -125,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 151,
+          "size": 4060,
+          "codepoint": 57355
+        },
+        {
+          "value": 375,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 247,
+          "size": 4060,
+          "codepoint": 57356
+        },
+        {
+          "value": 375,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 247,
+          "size": 4060,
+          "codepoint": 57357
+        },
+        {
+          "value": -375,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 247,
+          "size": 4060,
+          "codepoint": 57358
+        },
+        {
+          "value": -375,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 247,
+          "size": 4060,
+          "codepoint": 57359
+        },
+        {
+          "value": 961,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 247,
+          "size": 4060,
+          "codepoint": 57360
+        },
+        {
+          "value": 961,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 247,
+          "size": 4060,
+          "codepoint": 57361
+        },
+        {
+          "value": -961,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 343,
+          "size": 4060,
+          "codepoint": 57362
+        },
+        {
+          "value": -961,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 343,
+          "size": 4060,
+          "codepoint": 57363
+        },
+        {
+          "value": 2375,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 343,
+          "size": 4060,
+          "codepoint": 57364
+        },
+        {
+          "value": 2375,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 343,
+          "size": 4060,
+          "codepoint": 57365
+        },
+        {
+          "value": -2375,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 343,
+          "size": 4060,
+          "codepoint": 57366
+        },
+        {
+          "value": -2375,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 343,
+          "size": 4060,
+          "codepoint": 57367
+        },
+        {
+          "value": 15936,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 439,
+          "size": 4060,
+          "codepoint": 57368
+        },
+        {
+          "value": 15936,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 439,
+          "size": 4060,
+          "codepoint": 57369
+        },
+        {
+          "value": -15936,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 439,
+          "size": 4060,
+          "codepoint": 57370
+        },
+        {
+          "value": -15936,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 439,
+          "size": 4060,
+          "codepoint": 57371
+        },
+        {
+          "value": 32749,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 439,
+          "size": 4060,
+          "codepoint": 57372
+        },
+        {
+          "value": 32749,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 439,
+          "size": 4060,
+          "codepoint": 57373
+        },
+        {
+          "value": -32749,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 535,
+          "size": 4060,
+          "codepoint": 57374
+        },
+        {
+          "value": -32749,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 535,
+          "size": 4060,
+          "codepoint": 57375
+        },
+        {
+          "value": 131071,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 535,
+          "size": 4060,
+          "codepoint": 57376
+        },
+        {
+          "value": 131071,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 535,
+          "size": 4060,
+          "codepoint": 57377
+        },
+        {
+          "value": -131071,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 535,
+          "size": 4060,
+          "codepoint": 57378
+        },
+        {
+          "value": -131071,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 535,
+          "size": 4060,
+          "codepoint": 57379
+        },
+        {
+          "value": 132105,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 631,
+          "size": 4060,
+          "codepoint": 57380
+        },
+        {
+          "value": 132105,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 631,
+          "size": 4060,
+          "codepoint": 57381
+        },
+        {
+          "value": -132105,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 631,
+          "size": 4060,
+          "codepoint": 57382
+        },
+        {
+          "value": -132105,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 631,
+          "size": 4060,
+          "codepoint": 57383
+        },
+        {
+          "value": 132106,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 631,
+          "size": 4060,
+          "codepoint": 57384
+        },
+        {
+          "value": 132106,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 631,
+          "size": 4060,
+          "codepoint": 57385
+        },
+        {
+          "value": -132106,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 727,
+          "size": 4060,
+          "codepoint": 57386
+        },
+        {
+          "value": -132106,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 727,
+          "size": 4060,
+          "codepoint": 57387
+        },
+        {
+          "value": 250125,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 727,
+          "size": 4060,
+          "codepoint": 57388
+        },
+        {
+          "value": 250125,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 727,
+          "size": 4060,
+          "codepoint": 57389
+        },
+        {
+          "value": -250125,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 727,
+          "size": 4060,
+          "codepoint": 57390
+        },
+        {
+          "value": -250125,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 727,
+          "size": 4060,
+          "codepoint": 57391
+        }
+      ]
+    },
+    {
+      "name": "05-factor-8120",
+      "source": "05-factor-8120.zpl",
+      "sha256": "af1591165a9cb5c9d6b9f488d9ebb770736d420ab5602db8245e641572678721",
+      "dimensions": [
+        832,
+        832
+      ],
+      "probes": [
+        {
+          "value": 1,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 55,
+          "size": 8120,
+          "codepoint": 57344
+        },
+        {
+          "value": 1,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 55,
+          "size": 8120,
+          "codepoint": 57345
+        },
+        {
+          "value": -1,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 55,
+          "size": 8120,
+          "codepoint": 57346
+        },
+        {
+          "value": -1,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 55,
+          "size": 8120,
+          "codepoint": 57347
+        },
+        {
+          "value": 7,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 55,
+          "size": 8120,
+          "codepoint": 57348
+        },
+        {
+          "value": 7,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 55,
+          "size": 8120,
+          "codepoint": 57349
+        },
+        {
+          "value": -7,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 151,
+          "size": 8120,
+          "codepoint": 57350
+        },
+        {
+          "value": -7,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 151,
+          "size": 8120,
+          "codepoint": 57351
+        },
+        {
+          "value": 125,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 151,
+          "size": 8120,
+          "codepoint": 57352
+        },
+        {
+          "value": 125,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 151,
+          "size": 8120,
+          "codepoint": 57353
+        },
+        {
+          "value": -125,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 151,
+          "size": 8120,
+          "codepoint": 57354
+        },
+        {
+          "value": -125,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 151,
+          "size": 8120,
+          "codepoint": 57355
+        },
+        {
+          "value": 375,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 247,
+          "size": 8120,
+          "codepoint": 57356
+        },
+        {
+          "value": 375,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 247,
+          "size": 8120,
+          "codepoint": 57357
+        },
+        {
+          "value": -375,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 247,
+          "size": 8120,
+          "codepoint": 57358
+        },
+        {
+          "value": -375,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 247,
+          "size": 8120,
+          "codepoint": 57359
+        },
+        {
+          "value": 961,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 247,
+          "size": 8120,
+          "codepoint": 57360
+        },
+        {
+          "value": 961,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 247,
+          "size": 8120,
+          "codepoint": 57361
+        },
+        {
+          "value": -961,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 343,
+          "size": 8120,
+          "codepoint": 57362
+        },
+        {
+          "value": -961,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 343,
+          "size": 8120,
+          "codepoint": 57363
+        },
+        {
+          "value": 2375,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 343,
+          "size": 8120,
+          "codepoint": 57364
+        },
+        {
+          "value": 2375,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 343,
+          "size": 8120,
+          "codepoint": 57365
+        },
+        {
+          "value": -2375,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 343,
+          "size": 8120,
+          "codepoint": 57366
+        },
+        {
+          "value": -2375,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 343,
+          "size": 8120,
+          "codepoint": 57367
+        },
+        {
+          "value": 15936,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 439,
+          "size": 8120,
+          "codepoint": 57368
+        },
+        {
+          "value": 15936,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 439,
+          "size": 8120,
+          "codepoint": 57369
+        },
+        {
+          "value": -15936,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 439,
+          "size": 8120,
+          "codepoint": 57370
+        },
+        {
+          "value": -15936,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 439,
+          "size": 8120,
+          "codepoint": 57371
+        },
+        {
+          "value": 32749,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 439,
+          "size": 8120,
+          "codepoint": 57372
+        },
+        {
+          "value": 32749,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 439,
+          "size": 8120,
+          "codepoint": 57373
+        },
+        {
+          "value": -32749,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 535,
+          "size": 8120,
+          "codepoint": 57374
+        },
+        {
+          "value": -32749,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 535,
+          "size": 8120,
+          "codepoint": 57375
+        },
+        {
+          "value": 131071,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 535,
+          "size": 8120,
+          "codepoint": 57376
+        },
+        {
+          "value": 131071,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 535,
+          "size": 8120,
+          "codepoint": 57377
+        },
+        {
+          "value": -131071,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 535,
+          "size": 8120,
+          "codepoint": 57378
+        },
+        {
+          "value": -131071,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 535,
+          "size": 8120,
+          "codepoint": 57379
+        },
+        {
+          "value": 132105,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 631,
+          "size": 8120,
+          "codepoint": 57380
+        },
+        {
+          "value": 132105,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 631,
+          "size": 8120,
+          "codepoint": 57381
+        },
+        {
+          "value": -132105,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 631,
+          "size": 8120,
+          "codepoint": 57382
+        },
+        {
+          "value": -132105,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 631,
+          "size": 8120,
+          "codepoint": 57383
+        },
+        {
+          "value": 132106,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 631,
+          "size": 8120,
+          "codepoint": 57384
+        },
+        {
+          "value": 132106,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 631,
+          "size": 8120,
+          "codepoint": 57385
+        },
+        {
+          "value": -132106,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 727,
+          "size": 8120,
+          "codepoint": 57386
+        },
+        {
+          "value": -132106,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 727,
+          "size": 8120,
+          "codepoint": 57387
+        },
+        {
+          "value": 250125,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 727,
+          "size": 8120,
+          "codepoint": 57388
+        },
+        {
+          "value": 250125,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 727,
+          "size": 8120,
+          "codepoint": 57389
+        },
+        {
+          "value": -250125,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 727,
+          "size": 8120,
+          "codepoint": 57390
+        },
+        {
+          "value": -250125,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 727,
+          "size": 8120,
+          "codepoint": 57391
+        }
+      ]
+    }
+  ],
+  "glyphs": [
+    {
+      "name": "1-wcvf",
+      "codepoint": 57344,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            1,
+            true
+          ],
+          [
+            1,
+            1,
+            true
+          ],
+          [
+            1,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b002b000b00170b00045206661b8100063b81000600148b003b000b00170b00045206661b8100063b8100060014801b000b0004801b001b0004800b000b0004800b001b801004800b002b801004800b003b00048",
+      "advance": 1
+    },
+    {
+      "name": "1-wcvf_repeat",
+      "codepoint": 57345,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            1,
+            true
+          ],
+          [
+            1,
+            1,
+            true
+          ],
+          [
+            1,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b002b000b00170b00045206661b8100063b81000600148b003b000b00170b00045206661b8100063b8100060014801b000b0004801b001b0004800b000b0004800b001b801004800b002b801004800b003b00048",
+      "advance": 1
+    },
+    {
+      "name": "-1-wcvf",
+      "codepoint": 57346,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            1,
+            true
+          ],
+          [
+            1,
+            1,
+            true
+          ],
+          [
+            1,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b002b000b8ffff70b00045206661b8100063b81000600148b003b000b8ffff70b00045206661b8100063b8100060014801b000b0004801b001b0004800b000b0004800b001b801004800b002b801004800b003b00048",
+      "advance": 1
+    },
+    {
+      "name": "-1-wcvf_repeat",
+      "codepoint": 57347,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            1,
+            true
+          ],
+          [
+            1,
+            1,
+            true
+          ],
+          [
+            1,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b002b000b8ffff70b00045206661b8100063b81000600148b003b000b8ffff70b00045206661b8100063b8100060014801b000b0004801b001b0004800b000b0004800b001b801004800b002b801004800b003b00048",
+      "advance": 1
+    },
+    {
+      "name": "7-wcvf",
+      "codepoint": 57348,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            1,
+            true
+          ],
+          [
+            1,
+            1,
+            true
+          ],
+          [
+            1,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b002b000b00770b00045206661b8100063b81000600148b003b000b00770b00045206661b8100063b8100060014801b000b0004801b001b0004800b000b0004800b001b801004800b002b801004800b003b00048",
+      "advance": 1
+    },
+    {
+      "name": "7-wcvf_repeat",
+      "codepoint": 57349,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            1,
+            true
+          ],
+          [
+            1,
+            1,
+            true
+          ],
+          [
+            1,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b002b000b00770b00045206661b8100063b81000600148b003b000b00770b00045206661b8100063b8100060014801b000b0004801b001b0004800b000b0004800b001b801004800b002b801004800b003b00048",
+      "advance": 1
+    },
+    {
+      "name": "-7-wcvf",
+      "codepoint": 57350,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            1,
+            true
+          ],
+          [
+            1,
+            1,
+            true
+          ],
+          [
+            1,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b002b000b8fff970b00045206661b8100063b81000600148b003b000b8fff970b00045206661b8100063b8100060014801b000b0004801b001b0004800b000b0004800b001b801004800b002b801004800b003b00048",
+      "advance": 1
+    },
+    {
+      "name": "-7-wcvf_repeat",
+      "codepoint": 57351,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            1,
+            true
+          ],
+          [
+            1,
+            1,
+            true
+          ],
+          [
+            1,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b002b000b8fff970b00045206661b8100063b81000600148b003b000b8fff970b00045206661b8100063b8100060014801b000b0004801b001b0004800b000b0004800b001b801004800b002b801004800b003b00048",
+      "advance": 1
+    },
+    {
+      "name": "125-wcvf",
+      "codepoint": 57352,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            1,
+            true
+          ],
+          [
+            1,
+            1,
+            true
+          ],
+          [
+            1,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b002b000b07d70b00045206661b8100063b81000600148b003b000b07d70b00045206661b8100063b8100060014801b000b0004801b001b0004800b000b0004800b001b801004800b002b801004800b003b00048",
+      "advance": 1
+    },
+    {
+      "name": "125-wcvf_repeat",
+      "codepoint": 57353,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            1,
+            true
+          ],
+          [
+            1,
+            1,
+            true
+          ],
+          [
+            1,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b002b000b07d70b00045206661b8100063b81000600148b003b000b07d70b00045206661b8100063b8100060014801b000b0004801b001b0004800b000b0004800b001b801004800b002b801004800b003b00048",
+      "advance": 1
+    },
+    {
+      "name": "-125-wcvf",
+      "codepoint": 57354,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            1,
+            true
+          ],
+          [
+            1,
+            1,
+            true
+          ],
+          [
+            1,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b002b000b8ff8370b00045206661b8100063b81000600148b003b000b8ff8370b00045206661b8100063b8100060014801b000b0004801b001b0004800b000b0004800b001b801004800b002b801004800b003b00048",
+      "advance": 1
+    },
+    {
+      "name": "-125-wcvf_repeat",
+      "codepoint": 57355,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            1,
+            true
+          ],
+          [
+            1,
+            1,
+            true
+          ],
+          [
+            1,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b002b000b8ff8370b00045206661b8100063b81000600148b003b000b8ff8370b00045206661b8100063b8100060014801b000b0004801b001b0004800b000b0004800b001b801004800b002b801004800b003b00048",
+      "advance": 1
+    },
+    {
+      "name": "375-wcvf",
+      "codepoint": 57356,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            1,
+            true
+          ],
+          [
+            1,
+            1,
+            true
+          ],
+          [
+            1,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b002b000b8017770b00045206661b8100063b81000600148b003b000b8017770b00045206661b8100063b8100060014801b000b0004801b001b0004800b000b0004800b001b801004800b002b801004800b003b00048",
+      "advance": 1
+    },
+    {
+      "name": "375-wcvf_repeat",
+      "codepoint": 57357,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            1,
+            true
+          ],
+          [
+            1,
+            1,
+            true
+          ],
+          [
+            1,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b002b000b8017770b00045206661b8100063b81000600148b003b000b8017770b00045206661b8100063b8100060014801b000b0004801b001b0004800b000b0004800b001b801004800b002b801004800b003b00048",
+      "advance": 1
+    },
+    {
+      "name": "-375-wcvf",
+      "codepoint": 57358,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            1,
+            true
+          ],
+          [
+            1,
+            1,
+            true
+          ],
+          [
+            1,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b002b000b8fe8970b00045206661b8100063b81000600148b003b000b8fe8970b00045206661b8100063b8100060014801b000b0004801b001b0004800b000b0004800b001b801004800b002b801004800b003b00048",
+      "advance": 1
+    },
+    {
+      "name": "-375-wcvf_repeat",
+      "codepoint": 57359,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            1,
+            true
+          ],
+          [
+            1,
+            1,
+            true
+          ],
+          [
+            1,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b002b000b8fe8970b00045206661b8100063b81000600148b003b000b8fe8970b00045206661b8100063b8100060014801b000b0004801b001b0004800b000b0004800b001b801004800b002b801004800b003b00048",
+      "advance": 1
+    },
+    {
+      "name": "961-wcvf",
+      "codepoint": 57360,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            1,
+            true
+          ],
+          [
+            1,
+            1,
+            true
+          ],
+          [
+            1,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b002b000b803c170b00045206661b8100063b81000600148b003b000b803c170b00045206661b8100063b8100060014801b000b0004801b001b0004800b000b0004800b001b801004800b002b801004800b003b00048",
+      "advance": 1
+    },
+    {
+      "name": "961-wcvf_repeat",
+      "codepoint": 57361,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            1,
+            true
+          ],
+          [
+            1,
+            1,
+            true
+          ],
+          [
+            1,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b002b000b803c170b00045206661b8100063b81000600148b003b000b803c170b00045206661b8100063b8100060014801b000b0004801b001b0004800b000b0004800b001b801004800b002b801004800b003b00048",
+      "advance": 1
+    },
+    {
+      "name": "-961-wcvf",
+      "codepoint": 57362,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            1,
+            true
+          ],
+          [
+            1,
+            1,
+            true
+          ],
+          [
+            1,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b002b000b8fc3f70b00045206661b8100063b81000600148b003b000b8fc3f70b00045206661b8100063b8100060014801b000b0004801b001b0004800b000b0004800b001b801004800b002b801004800b003b00048",
+      "advance": 1
+    },
+    {
+      "name": "-961-wcvf_repeat",
+      "codepoint": 57363,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            1,
+            true
+          ],
+          [
+            1,
+            1,
+            true
+          ],
+          [
+            1,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b002b000b8fc3f70b00045206661b8100063b81000600148b003b000b8fc3f70b00045206661b8100063b8100060014801b000b0004801b001b0004800b000b0004800b001b801004800b002b801004800b003b00048",
+      "advance": 1
+    },
+    {
+      "name": "2375-wcvf",
+      "codepoint": 57364,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            1,
+            true
+          ],
+          [
+            1,
+            1,
+            true
+          ],
+          [
+            1,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b002b000b8094770b00045206661b8100063b81000600148b003b000b8094770b00045206661b8100063b8100060014801b000b0004801b001b0004800b000b0004800b001b801004800b002b801004800b003b00048",
+      "advance": 1
+    },
+    {
+      "name": "2375-wcvf_repeat",
+      "codepoint": 57365,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            1,
+            true
+          ],
+          [
+            1,
+            1,
+            true
+          ],
+          [
+            1,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b002b000b8094770b00045206661b8100063b81000600148b003b000b8094770b00045206661b8100063b8100060014801b000b0004801b001b0004800b000b0004800b001b801004800b002b801004800b003b00048",
+      "advance": 1
+    },
+    {
+      "name": "-2375-wcvf",
+      "codepoint": 57366,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            1,
+            true
+          ],
+          [
+            1,
+            1,
+            true
+          ],
+          [
+            1,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b002b000b8f6b970b00045206661b8100063b81000600148b003b000b8f6b970b00045206661b8100063b8100060014801b000b0004801b001b0004800b000b0004800b001b801004800b002b801004800b003b00048",
+      "advance": 1
+    },
+    {
+      "name": "-2375-wcvf_repeat",
+      "codepoint": 57367,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            1,
+            true
+          ],
+          [
+            1,
+            1,
+            true
+          ],
+          [
+            1,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b002b000b8f6b970b00045206661b8100063b81000600148b003b000b8f6b970b00045206661b8100063b8100060014801b000b0004801b001b0004800b000b0004800b001b801004800b002b801004800b003b00048",
+      "advance": 1
+    },
+    {
+      "name": "15936-wcvf",
+      "codepoint": 57368,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            1,
+            true
+          ],
+          [
+            1,
+            1,
+            true
+          ],
+          [
+            1,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b002b000b83e4070b00045206661b8100063b81000600148b003b000b83e4070b00045206661b8100063b8100060014801b000b0004801b001b0004800b000b0004800b001b801004800b002b801004800b003b00048",
+      "advance": 1
+    },
+    {
+      "name": "15936-wcvf_repeat",
+      "codepoint": 57369,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            1,
+            true
+          ],
+          [
+            1,
+            1,
+            true
+          ],
+          [
+            1,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b002b000b83e4070b00045206661b8100063b81000600148b003b000b83e4070b00045206661b8100063b8100060014801b000b0004801b001b0004800b000b0004800b001b801004800b002b801004800b003b00048",
+      "advance": 1
+    },
+    {
+      "name": "-15936-wcvf",
+      "codepoint": 57370,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            1,
+            true
+          ],
+          [
+            1,
+            1,
+            true
+          ],
+          [
+            1,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b002b000b8c1c070b00045206661b8100063b81000600148b003b000b8c1c070b00045206661b8100063b8100060014801b000b0004801b001b0004800b000b0004800b001b801004800b002b801004800b003b00048",
+      "advance": 1
+    },
+    {
+      "name": "-15936-wcvf_repeat",
+      "codepoint": 57371,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            1,
+            true
+          ],
+          [
+            1,
+            1,
+            true
+          ],
+          [
+            1,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b002b000b8c1c070b00045206661b8100063b81000600148b003b000b8c1c070b00045206661b8100063b8100060014801b000b0004801b001b0004800b000b0004800b001b801004800b002b801004800b003b00048",
+      "advance": 1
+    },
+    {
+      "name": "32749-wcvf",
+      "codepoint": 57372,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            1,
+            true
+          ],
+          [
+            1,
+            1,
+            true
+          ],
+          [
+            1,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b002b000b87fed70b00045206661b8100063b81000600148b003b000b87fed70b00045206661b8100063b8100060014801b000b0004801b001b0004800b000b0004800b001b801004800b002b801004800b003b00048",
+      "advance": 1
+    },
+    {
+      "name": "32749-wcvf_repeat",
+      "codepoint": 57373,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            1,
+            true
+          ],
+          [
+            1,
+            1,
+            true
+          ],
+          [
+            1,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b002b000b87fed70b00045206661b8100063b81000600148b003b000b87fed70b00045206661b8100063b8100060014801b000b0004801b001b0004800b000b0004800b001b801004800b002b801004800b003b00048",
+      "advance": 1
+    },
+    {
+      "name": "-32749-wcvf",
+      "codepoint": 57374,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            1,
+            true
+          ],
+          [
+            1,
+            1,
+            true
+          ],
+          [
+            1,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b002b000b8801370b00045206661b8100063b81000600148b003b000b8801370b00045206661b8100063b8100060014801b000b0004801b001b0004800b000b0004800b001b801004800b002b801004800b003b00048",
+      "advance": 1
+    },
+    {
+      "name": "-32749-wcvf_repeat",
+      "codepoint": 57375,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            1,
+            true
+          ],
+          [
+            1,
+            1,
+            true
+          ],
+          [
+            1,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b002b000b8801370b00045206661b8100063b81000600148b003b000b8801370b00045206661b8100063b8100060014801b000b0004801b001b0004800b000b0004800b001b801004800b002b801004800b003b00048",
+      "advance": 1
+    },
+    {
+      "name": "131071-wcvf",
+      "codepoint": 57376,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            1,
+            true
+          ],
+          [
+            1,
+            1,
+            true
+          ],
+          [
+            1,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b002b000b87fff2060b001602060b0016070b00045206661b8100063b81000600148b003b000b87fff2060b001602060b0016070b00045206661b8100063b8100060014801b000b0004801b001b0004800b000b0004800b001b801004800b002b801004800b003b00048",
+      "advance": 1
+    },
+    {
+      "name": "131071-wcvf_repeat",
+      "codepoint": 57377,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            1,
+            true
+          ],
+          [
+            1,
+            1,
+            true
+          ],
+          [
+            1,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b002b000b87fff2060b001602060b0016070b00045206661b8100063b81000600148b003b000b87fff2060b001602060b0016070b00045206661b8100063b8100060014801b000b0004801b001b0004800b000b0004800b001b801004800b002b801004800b003b00048",
+      "advance": 1
+    },
+    {
+      "name": "-131071-wcvf",
+      "codepoint": 57378,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            1,
+            true
+          ],
+          [
+            1,
+            1,
+            true
+          ],
+          [
+            1,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b002b000b880002060b000602060b0016070b00045206661b8100063b81000600148b003b000b880002060b000602060b0016070b00045206661b8100063b8100060014801b000b0004801b001b0004800b000b0004800b001b801004800b002b801004800b003b00048",
+      "advance": 1
+    },
+    {
+      "name": "-131071-wcvf_repeat",
+      "codepoint": 57379,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            1,
+            true
+          ],
+          [
+            1,
+            1,
+            true
+          ],
+          [
+            1,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b002b000b880002060b000602060b0016070b00045206661b8100063b81000600148b003b000b880002060b000602060b0016070b00045206661b8100063b8100060014801b000b0004801b001b0004800b000b0004800b001b801004800b002b801004800b003b00048",
+      "advance": 1
+    },
+    {
+      "name": "132105-wcvf",
+      "codepoint": 57380,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            1,
+            true
+          ],
+          [
+            1,
+            1,
+            true
+          ],
+          [
+            1,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b002b000b840812060b000602060b000602060b0016070b00045206661b8100063b81000600148b003b000b840812060b000602060b000602060b0016070b00045206661b8100063b8100060014801b000b0004801b001b0004800b000b0004800b001b801004800b002b801004800b003b00048",
+      "advance": 1
+    },
+    {
+      "name": "132105-wcvf_repeat",
+      "codepoint": 57381,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            1,
+            true
+          ],
+          [
+            1,
+            1,
+            true
+          ],
+          [
+            1,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b002b000b840812060b000602060b000602060b0016070b00045206661b8100063b81000600148b003b000b840812060b000602060b000602060b0016070b00045206661b8100063b8100060014801b000b0004801b001b0004800b000b0004800b001b801004800b002b801004800b003b00048",
+      "advance": 1
+    },
+    {
+      "name": "-132105-wcvf",
+      "codepoint": 57382,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            1,
+            true
+          ],
+          [
+            1,
+            1,
+            true
+          ],
+          [
+            1,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b002b000b8bf7e2060b001602060b001602060b0016070b00045206661b8100063b81000600148b003b000b8bf7e2060b001602060b001602060b0016070b00045206661b8100063b8100060014801b000b0004801b001b0004800b000b0004800b001b801004800b002b801004800b003b00048",
+      "advance": 1
+    },
+    {
+      "name": "-132105-wcvf_repeat",
+      "codepoint": 57383,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            1,
+            true
+          ],
+          [
+            1,
+            1,
+            true
+          ],
+          [
+            1,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b002b000b8bf7e2060b001602060b001602060b0016070b00045206661b8100063b81000600148b003b000b8bf7e2060b001602060b001602060b0016070b00045206661b8100063b8100060014801b000b0004801b001b0004800b000b0004800b001b801004800b002b801004800b003b00048",
+      "advance": 1
+    },
+    {
+      "name": "132106-wcvf",
+      "codepoint": 57384,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            1,
+            true
+          ],
+          [
+            1,
+            1,
+            true
+          ],
+          [
+            1,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b002b000b840812060b000602060b001602060b0006070b00045206661b8100063b81000600148b003b000b840812060b000602060b001602060b0006070b00045206661b8100063b8100060014801b000b0004801b001b0004800b000b0004800b001b801004800b002b801004800b003b00048",
+      "advance": 1
+    },
+    {
+      "name": "132106-wcvf_repeat",
+      "codepoint": 57385,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            1,
+            true
+          ],
+          [
+            1,
+            1,
+            true
+          ],
+          [
+            1,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b002b000b840812060b000602060b001602060b0006070b00045206661b8100063b81000600148b003b000b840812060b000602060b001602060b0006070b00045206661b8100063b8100060014801b000b0004801b001b0004800b000b0004800b001b801004800b002b801004800b003b00048",
+      "advance": 1
+    },
+    {
+      "name": "-132106-wcvf",
+      "codepoint": 57386,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            1,
+            true
+          ],
+          [
+            1,
+            1,
+            true
+          ],
+          [
+            1,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b002b000b8bf7e2060b001602060b001602060b0006070b00045206661b8100063b81000600148b003b000b8bf7e2060b001602060b001602060b0006070b00045206661b8100063b8100060014801b000b0004801b001b0004800b000b0004800b001b801004800b002b801004800b003b00048",
+      "advance": 1
+    },
+    {
+      "name": "-132106-wcvf_repeat",
+      "codepoint": 57387,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            1,
+            true
+          ],
+          [
+            1,
+            1,
+            true
+          ],
+          [
+            1,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b002b000b8bf7e2060b001602060b001602060b0006070b00045206661b8100063b81000600148b003b000b8bf7e2060b001602060b001602060b0006070b00045206661b8100063b8100060014801b000b0004801b001b0004800b000b0004800b001b801004800b002b801004800b003b00048",
+      "advance": 1
+    },
+    {
+      "name": "250125-wcvf",
+      "codepoint": 57388,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            1,
+            true
+          ],
+          [
+            1,
+            1,
+            true
+          ],
+          [
+            1,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b002b000b87a212060b001602060b000602060b0016070b00045206661b8100063b81000600148b003b000b87a212060b001602060b000602060b0016070b00045206661b8100063b8100060014801b000b0004801b001b0004800b000b0004800b001b801004800b002b801004800b003b00048",
+      "advance": 1
+    },
+    {
+      "name": "250125-wcvf_repeat",
+      "codepoint": 57389,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            1,
+            true
+          ],
+          [
+            1,
+            1,
+            true
+          ],
+          [
+            1,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b002b000b87a212060b001602060b000602060b0016070b00045206661b8100063b81000600148b003b000b87a212060b001602060b000602060b0016070b00045206661b8100063b8100060014801b000b0004801b001b0004800b000b0004800b001b801004800b002b801004800b003b00048",
+      "advance": 1
+    },
+    {
+      "name": "-250125-wcvf",
+      "codepoint": 57390,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            1,
+            true
+          ],
+          [
+            1,
+            1,
+            true
+          ],
+          [
+            1,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b002b000b885de2060b000602060b001602060b0016070b00045206661b8100063b81000600148b003b000b885de2060b000602060b001602060b0016070b00045206661b8100063b8100060014801b000b0004801b001b0004800b000b0004800b001b801004800b002b801004800b003b00048",
+      "advance": 1
+    },
+    {
+      "name": "-250125-wcvf_repeat",
+      "codepoint": 57391,
+      "contours": [
+        [
+          [
+            0,
+            0,
+            true
+          ],
+          [
+            0,
+            1,
+            true
+          ],
+          [
+            1,
+            1,
+            true
+          ],
+          [
+            1,
+            0,
+            true
+          ]
+        ]
+      ],
+      "instructions": "b002b000b885de2060b000602060b001602060b0016070b00045206661b8100063b81000600148b003b000b885de2060b000602060b001602060b0016070b00045206661b8100063b8100060014801b000b0004801b001b0004800b000b0004800b001b801004800b002b801004800b003b00048",
+      "advance": 1
+    }
+  ],
+  "values": [
+    1,
+    -1,
+    7,
+    -7,
+    125,
+    -125,
+    375,
+    -375,
+    961,
+    -961,
+    2375,
+    -2375,
+    15936,
+    -15936,
+    32749,
+    -32749,
+    131071,
+    -131071,
+    132105,
+    -132105,
+    132106,
+    -132106,
+    250125,
+    -250125
+  ],
+  "units_per_em": 2000,
+  "bar_offset": 64
+}

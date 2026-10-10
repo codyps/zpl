@@ -70,6 +70,7 @@ typedef struct ZplCompatibility {
     uint8_t bitmap_font_maximum_dimensions;
     uint8_t bitmap_font_ft_dot_origin;
     uint8_t supplied_bitmap_font_metrics;
+    uint8_t supplied_truetype_printer_metrics;
     uint8_t linear_barcode_rotated_edge_loses_dot;
     uint8_t linear_barcode_clamps_negative_ink;
     uint8_t code93_extended_checksum_preview;

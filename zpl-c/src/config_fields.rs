@@ -62,6 +62,7 @@ configuration!(ZplCompatibility, zpl::render::compatibility::Compatibility, {
     bitmap_font_maximum_dimensions: u8,
     bitmap_font_ft_dot_origin: u8,
     supplied_bitmap_font_metrics: u8,
+    supplied_truetype_printer_metrics: u8,
     linear_barcode_rotated_edge_loses_dot: u8,
     linear_barcode_clamps_negative_ink: u8,
     code93_extended_checksum_preview: u8,

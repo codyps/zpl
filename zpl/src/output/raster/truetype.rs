@@ -24,6 +24,8 @@ pub enum ScanMode {
     Zd621V93,
 }
 
+mod zd621;
+
 type P = [f64; 2];
 type Edge = (P, P);
 fn err(message: &str) -> Error {
@@ -31,6 +33,61 @@ fn err(message: &str) -> Error {
 }
 fn midpoint(a: P, b: P) -> P {
     [(a[0] + b[0]) / 2., (a[1] + b[1]) / 2.]
+}
+fn printer_midpoint(a: P, b: P, implied: bool) -> P {
+    // Implied on-curve points truncate in 26.6; subdivision midpoints round
+    // with positive ties. Both operations use the device's Y-up coordinates.
+    // Independent SCFS and explicit-on-curve witnesses are documented in
+    // tests/fixtures/truetype-raster-zd621-v1/README.md.
+    let bias = if implied { 0. } else { 0.5 };
+    [
+        ((a[0] + b[0]) * 32. + bias).floor() / 64.,
+        -((-a[1] - b[1]) * 32. + bias).floor() / 64.,
+    ]
+}
+
+fn printer_quadratic(
+    a: P,
+    b: P,
+    c: P,
+    depth: Option<u8>,
+    edges: &mut Vec<Edge>,
+) -> Result<(), Error> {
+    if edges.len() >= 65_536 {
+        return Err(err("TrueType curve segment limit exceeded"));
+    }
+    let depth = depth.unwrap_or_else(|| {
+        // The initial straight-line test uses the unrounded second derivative.
+        // Subsequent depth selection uses a rounded midpoint and the norm
+        // max(dx,dy) + min(dx,dy)/2. Uniform subdivision preserves the original
+        // curve's depth even when one of its children becomes flat sooner.
+        let dx = (a[0] - 2. * b[0] + c[0]).abs();
+        let dy = (a[1] - 2. * b[1] + c[1]).abs();
+        if dx.max(dy) + dx.min(dy) / 2. <= 1. {
+            return 0;
+        }
+        let mid = printer_midpoint(a, c, false);
+        let dx = (b[0] - mid[0]).abs();
+        let dy = (b[1] - mid[1]).abs();
+        let error = dx.max(dy) + dx.min(dy) / 2.;
+        let mut depth = 0;
+        let mut limit = 0.5;
+        while error > limit && depth < 16 {
+            depth += 1;
+            limit *= 4.;
+        }
+        depth.max(1)
+    });
+    if depth == 0 {
+        edges.push((a, c));
+    } else {
+        let ab = printer_midpoint(a, b, false);
+        let bc = printer_midpoint(b, c, false);
+        let mid = printer_midpoint(ab, bc, false);
+        printer_quadratic(a, ab, mid, Some(depth - 1), edges)?;
+        printer_quadratic(mid, bc, c, Some(depth - 1), edges)?;
+    }
+    Ok(())
 }
 fn quadratic(
     a: P,
@@ -68,8 +125,28 @@ fn transform(p: Point, rotation: u8) -> P {
         _ => [y, -x],
     }
 }
-fn edges(outline: &Outline, rotation: u8, tolerance: f64) -> Result<Vec<Edge>, Error> {
+fn edges(
+    outline: &Outline,
+    rotation: u8,
+    tolerance: f64,
+    printer: bool,
+) -> Result<(Vec<Edge>, Vec<std::ops::Range<usize>>), Error> {
     let mut edges = Vec::new();
+    let mut contours = Vec::new();
+    let mid = |a, b| {
+        if printer {
+            printer_midpoint(a, b, true)
+        } else {
+            midpoint(a, b)
+        }
+    };
+    let curve = |a, b, c, edges: &mut Vec<Edge>| {
+        if printer {
+            printer_quadratic(a, b, c, None, edges)
+        } else {
+            quadratic(a, b, c, 0, tolerance, edges)
+        }
+    };
     if outline.contours.len() > 4096 {
         return Err(err("TrueType contour limit exceeded"));
     }
@@ -88,6 +165,7 @@ fn edges(outline: &Outline, rotation: u8, tolerance: f64) -> Result<Vec<Edge>, E
         {
             return Err(err("TrueType coordinate limit exceeded"));
         }
+        let contour_start = edges.len();
         let first = contour[0];
         let last = contour[contour.len() - 1];
         let (start, begin, end) = if first.on_curve {
@@ -96,7 +174,7 @@ fn edges(outline: &Outline, rotation: u8, tolerance: f64) -> Result<Vec<Edge>, E
             (transform(last, rotation), 0, contour.len() - 1)
         } else {
             (
-                midpoint(transform(first, rotation), transform(last, rotation)),
+                mid(transform(first, rotation), transform(last, rotation)),
                 0,
                 contour.len(),
             )
@@ -107,29 +185,30 @@ fn edges(outline: &Outline, rotation: u8, tolerance: f64) -> Result<Vec<Edge>, E
             let next = transform(*p, rotation);
             if p.on_curve {
                 if let Some(b) = control.take() {
-                    quadratic(current, b, next, 0, tolerance, &mut edges)?;
+                    curve(current, b, next, &mut edges)?;
                 } else {
                     edges.push((current, next));
                 }
                 current = next;
             } else {
                 if let Some(b) = control.replace(next) {
-                    let mid = midpoint(b, next);
-                    quadratic(current, b, mid, 0, tolerance, &mut edges)?;
-                    current = mid;
+                    let point = mid(b, next);
+                    curve(current, b, point, &mut edges)?;
+                    current = point;
                 }
             }
         }
         if let Some(b) = control {
-            quadratic(current, b, start, 0, tolerance, &mut edges)?;
+            curve(current, b, start, &mut edges)?;
         } else {
             edges.push((current, start));
         }
+        contours.push(contour_start..edges.len());
         if edges.len() > 65_536 {
             return Err(err("TrueType segment limit exceeded"));
         }
     }
-    Ok(edges)
+    Ok((edges, contours))
 }
 
 /// Rasterize after the requested quarter-turn rotation, in baseline coordinates.
@@ -145,12 +224,12 @@ pub fn rasterize(
     if quarter_turns > 3 || advance > 4096 {
         return Err(err("invalid glyph rotation or advance"));
     }
-    let tolerance = if mode == ScanMode::Zd621V93 {
-        1. / 4.
-    } else {
-        1. / 1024.
-    };
-    let edges = edges(outline, quarter_turns, tolerance)?;
+    let (edges, contours) = edges(
+        outline,
+        quarter_turns,
+        1. / 1024.,
+        mode == ScanMode::Zd621V93,
+    )?;
     let mut result = Glyph {
         codepoint,
         advance,
@@ -192,50 +271,54 @@ pub fn rasterize(
         return Err(err("TrueType scan-conversion work budget exceeded"));
     }
     let mut bitmap = vec![vec![0_u8; width.div_ceil(8)]; height];
-    let epsilon = if mode != ScanMode::Center { 1e-7 } else { 0. };
-    let mut crossings = Vec::new();
-    for (row, bits) in bitmap.iter_mut().enumerate() {
-        let scan = top as f64 + row as f64 + 0.5 - epsilon;
-        crossings.clear();
-        for &(a, b) in &edges {
-            if (a[1] <= scan && scan < b[1]) || (b[1] <= scan && scan < a[1]) {
-                crossings.push((
-                    a[0] + (scan - a[1]) * (b[0] - a[0]) / (b[1] - a[1]),
-                    if b[1] > a[1] { 1_i32 } else { -1 },
-                ));
-            }
-        }
-        crossings.sort_by(|a, b| a.0.total_cmp(&b.0));
-        let mut winding = 0;
-        let mut start = 0.;
-        let mut i = 0;
-        while i < crossings.len() {
-            let x = crossings[i].0;
-            let previous = winding;
-            // Shared contour edges must cancel before emitting spans/dropouts.
-            while i < crossings.len() && crossings[i].0 == x {
-                winding += crossings[i].1;
-                i += 1;
-            }
-            if previous == 0 && winding != 0 {
-                start = x;
-            }
-            if previous != 0 && winding == 0 {
-                let a = (start - 0.5 + epsilon).ceil() as i32;
-                let b = (x - 0.5 + epsilon).ceil() as i32;
-                for col in a..b {
-                    let col = (col - left) as usize;
-                    if col >= width {
-                        return Err(err("glyph coverage escaped bounds"));
-                    }
-                    bits[col / 8] |= 128 >> (col % 8);
+    if mode == ScanMode::Zd621V93 {
+        zd621::rasterize(&edges, &contours, &mut bitmap, left, top, width)?;
+    } else {
+        let epsilon = if mode != ScanMode::Center { 1e-7 } else { 0. };
+        let mut crossings = Vec::new();
+        for (row, bits) in bitmap.iter_mut().enumerate() {
+            let scan = top as f64 + row as f64 + 0.5 - epsilon;
+            crossings.clear();
+            for &(a, b) in &edges {
+                if (a[1] <= scan && scan < b[1]) || (b[1] <= scan && scan < a[1]) {
+                    crossings.push((
+                        a[0] + (scan - a[1]) * (b[0] - a[0]) / (b[1] - a[1]),
+                        if b[1] > a[1] { 1_i32 } else { -1 },
+                    ));
                 }
-                if mode != ScanMode::Center && a >= b && x > start {
-                    let col = (((start + x) / 2.).floor() as i32 - left) as usize;
-                    if col >= width {
-                        return Err(err("glyph dropout escaped bounds"));
+            }
+            crossings.sort_by(|a, b| a.0.total_cmp(&b.0));
+            let mut winding = 0;
+            let mut start = 0.;
+            let mut i = 0;
+            while i < crossings.len() {
+                let x = crossings[i].0;
+                let previous = winding;
+                // Shared contour edges must cancel before emitting spans/dropouts.
+                while i < crossings.len() && crossings[i].0 == x {
+                    winding += crossings[i].1;
+                    i += 1;
+                }
+                if previous == 0 && winding != 0 {
+                    start = x;
+                }
+                if previous != 0 && winding == 0 {
+                    let a = (start - 0.5 + epsilon).ceil() as i32;
+                    let b = (x - 0.5 + epsilon).ceil() as i32;
+                    for col in a..b {
+                        let col = (col - left) as usize;
+                        if col >= width {
+                            return Err(err("glyph coverage escaped bounds"));
+                        }
+                        bits[col / 8] |= 128 >> (col % 8);
                     }
-                    bits[col / 8] |= 128 >> (col % 8);
+                    if mode != ScanMode::Center && a >= b && x > start {
+                        let col = (((start + x) / 2.).floor() as i32 - left) as usize;
+                        if col >= width {
+                            return Err(err("glyph dropout escaped bounds"));
+                        }
+                        bits[col / 8] |= 128 >> (col % 8);
+                    }
                 }
             }
         }
@@ -274,6 +357,42 @@ pub fn rasterize(
         })
         .collect();
     Ok(result)
+}
+
+/// Keep layout in upright baseline coordinates after device-space scan conversion.
+/// The scene will apply the field rotation once. Rotating before scanning matters
+/// for directed edge ties and horizontal dropout (OpenType scan converter, above).
+pub(crate) fn unrotate_glyph(mut glyph: Glyph, quarter_turns: u8) -> Glyph {
+    if quarter_turns == 0 || glyph.width == 0 || glyph.height == 0 {
+        return glyph;
+    }
+    let (w, h) = (glyph.width, glyph.height);
+    let (left, top, width, height) = match quarter_turns {
+        1 => (glyph.top, -glyph.left - w as i32, h, w),
+        2 => (-glyph.left - w as i32, -glyph.top - h as i32, w, h),
+        3 => (-glyph.top - h as i32, glyph.left, h, w),
+        _ => unreachable!("validated quarter-turn rotation"),
+    };
+    let mut bitmap = vec![vec![0; width.div_ceil(8) as usize]; height as usize];
+    for y in 0..h {
+        for x in 0..w {
+            if glyph.bitmap[y as usize][x as usize / 8] & (128 >> (x % 8)) != 0 {
+                let (x, y) = match quarter_turns {
+                    1 => (y, w - 1 - x),
+                    2 => (w - 1 - x, h - 1 - y),
+                    3 => (h - 1 - y, x),
+                    _ => unreachable!(),
+                };
+                bitmap[y as usize][x as usize / 8] |= 128 >> (x % 8);
+            }
+        }
+    }
+    glyph.left = left;
+    glyph.top = top;
+    glyph.width = width;
+    glyph.height = height;
+    glyph.bitmap = bitmap;
+    glyph
 }
 
 #[cfg(test)]

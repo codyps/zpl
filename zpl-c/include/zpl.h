@@ -21,7 +21,7 @@ extern "C" {
  * a handle while another thread uses it. Errors are local to the calling thread.
  * Rust unwinding panics become ZPL_PANIC; process aborts/OOM cannot be caught.
  */
-#define ZPL_ABI_VERSION 1u
+#define ZPL_ABI_VERSION 2u
 #define ZPL_OK 0
 #define ZPL_INVALID_ARGUMENT 1
 #define ZPL_PARSE_ERROR 2

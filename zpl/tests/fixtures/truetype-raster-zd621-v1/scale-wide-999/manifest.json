@@ -1,0 +1,7151 @@
+{
+  "fonts": [
+    {
+      "object": "R:ZSCAL21.TTF",
+      "source": "/home/cody-ai/.cache/cargo-targets/zpl-scaling-rounding/binary-units/999/probe.ttf",
+      "sha256": "c0030435a18319e4d232762a3defc5d8e174906a635a05484c286f80fa044579",
+      "upload": "999/upload.zpl",
+      "units_per_em": 999
+    },
+    {
+      "object": "R:ZSCAL22.TTF",
+      "source": "/home/cody-ai/.cache/cargo-targets/zpl-scaling-rounding/binary-units/1000/probe.ttf",
+      "sha256": "0b65685d4a6efecc6cff875f811d4c6895b78510b353f96d07d7881b3d1a2cb6",
+      "upload": "1000/upload.zpl",
+      "units_per_em": 1000
+    },
+    {
+      "object": "R:ZSCAL23.TTF",
+      "source": "/home/cody-ai/.cache/cargo-targets/zpl-scaling-rounding/binary-units/1001/probe.ttf",
+      "sha256": "592e0171ffa6edf6c13b04b4135f4ec59df4d52aca9e62d38e74601353fab08e",
+      "upload": "1001/upload.zpl",
+      "units_per_em": 1001
+    },
+    {
+      "object": "R:ZSCAL24.TTF",
+      "source": "/home/cody-ai/.cache/cargo-targets/zpl-scaling-rounding/binary-units/1024/probe.ttf",
+      "sha256": "247721a81efcfc2532844f6bab58aa9faa65a22d9d05d4530b6fe27bf28cab21",
+      "upload": "1024/upload.zpl",
+      "units_per_em": 1024
+    },
+    {
+      "object": "R:ZSCAL25.TTF",
+      "source": "/home/cody-ai/.cache/cargo-targets/zpl-scaling-rounding/binary-units/1536/probe.ttf",
+      "sha256": "9251672e2c715400b7955b8c0066095bf741406ad1aab22312d804da27605878",
+      "upload": "1536/upload.zpl",
+      "units_per_em": 1536
+    },
+    {
+      "object": "R:ZSCAL26.TTF",
+      "source": "/home/cody-ai/.cache/cargo-targets/zpl-scaling-rounding/binary-units/2000/probe.ttf",
+      "sha256": "fc8f946fc1a27aa5aaa3dedbdb98eb1ac42c46167700f8ea7dcde127d8521867",
+      "upload": "2000/upload.zpl",
+      "units_per_em": 2000
+    },
+    {
+      "object": "R:ZSCAL27.TTF",
+      "source": "/home/cody-ai/.cache/cargo-targets/zpl-scaling-rounding/binary-units/2001/probe.ttf",
+      "sha256": "a5d539a9a7c91f2f368eafaca870df063e5fced6c1670d3ddc204159661246b2",
+      "upload": "2001/upload.zpl",
+      "units_per_em": 2001
+    },
+    {
+      "object": "R:ZSCAL28.TTF",
+      "source": "/home/cody-ai/.cache/cargo-targets/zpl-scaling-rounding/binary-units/2048/probe.ttf",
+      "sha256": "61fc11f08e9adca490a9f7e69f3d21b292d3194e1022989104e5f89023c3b578",
+      "upload": "2048/upload.zpl",
+      "units_per_em": 2048
+    }
+  ],
+  "pages": [
+    {
+      "name": "999-00-factor-127",
+      "source": "999/00-factor-127.zpl",
+      "sha256": "4b2ce61d2f83aa68659f8a46bf2aa23cf1d045cc433ab855743d70e1ba51a203",
+      "dimensions": [
+        832,
+        832
+      ],
+      "probes": [
+        {
+          "value": 1,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 55,
+          "size": 127,
+          "codepoint": 57344,
+          "units": 999
+        },
+        {
+          "value": 1,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 55,
+          "size": 127,
+          "codepoint": 57345,
+          "units": 999
+        },
+        {
+          "value": -1,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 55,
+          "size": 127,
+          "codepoint": 57346,
+          "units": 999
+        },
+        {
+          "value": -1,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 55,
+          "size": 127,
+          "codepoint": 57347,
+          "units": 999
+        },
+        {
+          "value": 7,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 55,
+          "size": 127,
+          "codepoint": 57348,
+          "units": 999
+        },
+        {
+          "value": 7,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 55,
+          "size": 127,
+          "codepoint": 57349,
+          "units": 999
+        },
+        {
+          "value": -7,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 151,
+          "size": 127,
+          "codepoint": 57350,
+          "units": 999
+        },
+        {
+          "value": -7,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 151,
+          "size": 127,
+          "codepoint": 57351,
+          "units": 999
+        },
+        {
+          "value": 125,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 151,
+          "size": 127,
+          "codepoint": 57352,
+          "units": 999
+        },
+        {
+          "value": 125,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 151,
+          "size": 127,
+          "codepoint": 57353,
+          "units": 999
+        },
+        {
+          "value": -125,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 151,
+          "size": 127,
+          "codepoint": 57354,
+          "units": 999
+        },
+        {
+          "value": -125,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 151,
+          "size": 127,
+          "codepoint": 57355,
+          "units": 999
+        },
+        {
+          "value": 375,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 247,
+          "size": 127,
+          "codepoint": 57356,
+          "units": 999
+        },
+        {
+          "value": 375,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 247,
+          "size": 127,
+          "codepoint": 57357,
+          "units": 999
+        },
+        {
+          "value": -375,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 247,
+          "size": 127,
+          "codepoint": 57358,
+          "units": 999
+        },
+        {
+          "value": -375,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 247,
+          "size": 127,
+          "codepoint": 57359,
+          "units": 999
+        },
+        {
+          "value": 961,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 247,
+          "size": 127,
+          "codepoint": 57360,
+          "units": 999
+        },
+        {
+          "value": 961,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 247,
+          "size": 127,
+          "codepoint": 57361,
+          "units": 999
+        },
+        {
+          "value": -961,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 343,
+          "size": 127,
+          "codepoint": 57362,
+          "units": 999
+        },
+        {
+          "value": -961,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 343,
+          "size": 127,
+          "codepoint": 57363,
+          "units": 999
+        },
+        {
+          "value": 2375,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 343,
+          "size": 127,
+          "codepoint": 57364,
+          "units": 999
+        },
+        {
+          "value": 2375,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 343,
+          "size": 127,
+          "codepoint": 57365,
+          "units": 999
+        },
+        {
+          "value": -2375,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 343,
+          "size": 127,
+          "codepoint": 57366,
+          "units": 999
+        },
+        {
+          "value": -2375,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 343,
+          "size": 127,
+          "codepoint": 57367,
+          "units": 999
+        },
+        {
+          "value": 15936,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 439,
+          "size": 127,
+          "codepoint": 57368,
+          "units": 999
+        },
+        {
+          "value": 15936,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 439,
+          "size": 127,
+          "codepoint": 57369,
+          "units": 999
+        },
+        {
+          "value": -15936,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 439,
+          "size": 127,
+          "codepoint": 57370,
+          "units": 999
+        },
+        {
+          "value": -15936,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 439,
+          "size": 127,
+          "codepoint": 57371,
+          "units": 999
+        },
+        {
+          "value": 32749,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 439,
+          "size": 127,
+          "codepoint": 57372,
+          "units": 999
+        },
+        {
+          "value": 32749,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 439,
+          "size": 127,
+          "codepoint": 57373,
+          "units": 999
+        },
+        {
+          "value": -32749,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 535,
+          "size": 127,
+          "codepoint": 57374,
+          "units": 999
+        },
+        {
+          "value": -32749,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 535,
+          "size": 127,
+          "codepoint": 57375,
+          "units": 999
+        },
+        {
+          "value": 131071,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 535,
+          "size": 127,
+          "codepoint": 57376,
+          "units": 999
+        },
+        {
+          "value": 131071,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 535,
+          "size": 127,
+          "codepoint": 57377,
+          "units": 999
+        },
+        {
+          "value": -131071,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 535,
+          "size": 127,
+          "codepoint": 57378,
+          "units": 999
+        },
+        {
+          "value": -131071,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 535,
+          "size": 127,
+          "codepoint": 57379,
+          "units": 999
+        },
+        {
+          "value": 132104,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 631,
+          "size": 127,
+          "codepoint": 57380,
+          "units": 999
+        },
+        {
+          "value": 132104,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 631,
+          "size": 127,
+          "codepoint": 57381,
+          "units": 999
+        },
+        {
+          "value": -132104,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 631,
+          "size": 127,
+          "codepoint": 57382,
+          "units": 999
+        },
+        {
+          "value": -132104,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 631,
+          "size": 127,
+          "codepoint": 57383,
+          "units": 999
+        },
+        {
+          "value": 132105,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 631,
+          "size": 127,
+          "codepoint": 57384,
+          "units": 999
+        },
+        {
+          "value": 132105,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 631,
+          "size": 127,
+          "codepoint": 57385,
+          "units": 999
+        },
+        {
+          "value": -132105,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 727,
+          "size": 127,
+          "codepoint": 57386,
+          "units": 999
+        },
+        {
+          "value": -132105,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 727,
+          "size": 127,
+          "codepoint": 57387,
+          "units": 999
+        },
+        {
+          "value": 250125,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 727,
+          "size": 127,
+          "codepoint": 57388,
+          "units": 999
+        },
+        {
+          "value": 250125,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 727,
+          "size": 127,
+          "codepoint": 57389,
+          "units": 999
+        },
+        {
+          "value": -250125,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 727,
+          "size": 127,
+          "codepoint": 57390,
+          "units": 999
+        },
+        {
+          "value": -250125,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 727,
+          "size": 127,
+          "codepoint": 57391,
+          "units": 999
+        }
+      ]
+    },
+    {
+      "name": "999-01-factor-1015",
+      "source": "999/01-factor-1015.zpl",
+      "sha256": "feaf78cb45331b6f3902cf42e8b1abc3e863934138f1dcb214e40482845e85bc",
+      "dimensions": [
+        832,
+        832
+      ],
+      "probes": [
+        {
+          "value": 1,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 55,
+          "size": 1015,
+          "codepoint": 57344,
+          "units": 999
+        },
+        {
+          "value": 1,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 55,
+          "size": 1015,
+          "codepoint": 57345,
+          "units": 999
+        },
+        {
+          "value": -1,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 55,
+          "size": 1015,
+          "codepoint": 57346,
+          "units": 999
+        },
+        {
+          "value": -1,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 55,
+          "size": 1015,
+          "codepoint": 57347,
+          "units": 999
+        },
+        {
+          "value": 7,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 55,
+          "size": 1015,
+          "codepoint": 57348,
+          "units": 999
+        },
+        {
+          "value": 7,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 55,
+          "size": 1015,
+          "codepoint": 57349,
+          "units": 999
+        },
+        {
+          "value": -7,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 151,
+          "size": 1015,
+          "codepoint": 57350,
+          "units": 999
+        },
+        {
+          "value": -7,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 151,
+          "size": 1015,
+          "codepoint": 57351,
+          "units": 999
+        },
+        {
+          "value": 125,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 151,
+          "size": 1015,
+          "codepoint": 57352,
+          "units": 999
+        },
+        {
+          "value": 125,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 151,
+          "size": 1015,
+          "codepoint": 57353,
+          "units": 999
+        },
+        {
+          "value": -125,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 151,
+          "size": 1015,
+          "codepoint": 57354,
+          "units": 999
+        },
+        {
+          "value": -125,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 151,
+          "size": 1015,
+          "codepoint": 57355,
+          "units": 999
+        },
+        {
+          "value": 375,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 247,
+          "size": 1015,
+          "codepoint": 57356,
+          "units": 999
+        },
+        {
+          "value": 375,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 247,
+          "size": 1015,
+          "codepoint": 57357,
+          "units": 999
+        },
+        {
+          "value": -375,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 247,
+          "size": 1015,
+          "codepoint": 57358,
+          "units": 999
+        },
+        {
+          "value": -375,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 247,
+          "size": 1015,
+          "codepoint": 57359,
+          "units": 999
+        },
+        {
+          "value": 961,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 247,
+          "size": 1015,
+          "codepoint": 57360,
+          "units": 999
+        },
+        {
+          "value": 961,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 247,
+          "size": 1015,
+          "codepoint": 57361,
+          "units": 999
+        },
+        {
+          "value": -961,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 343,
+          "size": 1015,
+          "codepoint": 57362,
+          "units": 999
+        },
+        {
+          "value": -961,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 343,
+          "size": 1015,
+          "codepoint": 57363,
+          "units": 999
+        },
+        {
+          "value": 2375,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 343,
+          "size": 1015,
+          "codepoint": 57364,
+          "units": 999
+        },
+        {
+          "value": 2375,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 343,
+          "size": 1015,
+          "codepoint": 57365,
+          "units": 999
+        },
+        {
+          "value": -2375,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 343,
+          "size": 1015,
+          "codepoint": 57366,
+          "units": 999
+        },
+        {
+          "value": -2375,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 343,
+          "size": 1015,
+          "codepoint": 57367,
+          "units": 999
+        },
+        {
+          "value": 15936,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 439,
+          "size": 1015,
+          "codepoint": 57368,
+          "units": 999
+        },
+        {
+          "value": 15936,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 439,
+          "size": 1015,
+          "codepoint": 57369,
+          "units": 999
+        },
+        {
+          "value": -15936,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 439,
+          "size": 1015,
+          "codepoint": 57370,
+          "units": 999
+        },
+        {
+          "value": -15936,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 439,
+          "size": 1015,
+          "codepoint": 57371,
+          "units": 999
+        },
+        {
+          "value": 32749,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 439,
+          "size": 1015,
+          "codepoint": 57372,
+          "units": 999
+        },
+        {
+          "value": 32749,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 439,
+          "size": 1015,
+          "codepoint": 57373,
+          "units": 999
+        },
+        {
+          "value": -32749,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 535,
+          "size": 1015,
+          "codepoint": 57374,
+          "units": 999
+        },
+        {
+          "value": -32749,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 535,
+          "size": 1015,
+          "codepoint": 57375,
+          "units": 999
+        },
+        {
+          "value": 131071,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 535,
+          "size": 1015,
+          "codepoint": 57376,
+          "units": 999
+        },
+        {
+          "value": 131071,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 535,
+          "size": 1015,
+          "codepoint": 57377,
+          "units": 999
+        },
+        {
+          "value": -131071,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 535,
+          "size": 1015,
+          "codepoint": 57378,
+          "units": 999
+        },
+        {
+          "value": -131071,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 535,
+          "size": 1015,
+          "codepoint": 57379,
+          "units": 999
+        },
+        {
+          "value": 132104,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 631,
+          "size": 1015,
+          "codepoint": 57380,
+          "units": 999
+        },
+        {
+          "value": 132104,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 631,
+          "size": 1015,
+          "codepoint": 57381,
+          "units": 999
+        },
+        {
+          "value": -132104,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 631,
+          "size": 1015,
+          "codepoint": 57382,
+          "units": 999
+        },
+        {
+          "value": -132104,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 631,
+          "size": 1015,
+          "codepoint": 57383,
+          "units": 999
+        },
+        {
+          "value": 132105,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 631,
+          "size": 1015,
+          "codepoint": 57384,
+          "units": 999
+        },
+        {
+          "value": 132105,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 631,
+          "size": 1015,
+          "codepoint": 57385,
+          "units": 999
+        },
+        {
+          "value": -132105,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 727,
+          "size": 1015,
+          "codepoint": 57386,
+          "units": 999
+        },
+        {
+          "value": -132105,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 727,
+          "size": 1015,
+          "codepoint": 57387,
+          "units": 999
+        },
+        {
+          "value": 250125,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 727,
+          "size": 1015,
+          "codepoint": 57388,
+          "units": 999
+        },
+        {
+          "value": 250125,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 727,
+          "size": 1015,
+          "codepoint": 57389,
+          "units": 999
+        },
+        {
+          "value": -250125,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 727,
+          "size": 1015,
+          "codepoint": 57390,
+          "units": 999
+        },
+        {
+          "value": -250125,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 727,
+          "size": 1015,
+          "codepoint": 57391,
+          "units": 999
+        }
+      ]
+    },
+    {
+      "name": "1000-00-factor-127",
+      "source": "1000/00-factor-127.zpl",
+      "sha256": "1aa8e53bb4db95836adc0f0c32fc49a4bb21315a6b5a14c981864beef07e757f",
+      "dimensions": [
+        832,
+        832
+      ],
+      "probes": [
+        {
+          "value": 1,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 55,
+          "size": 127,
+          "codepoint": 57344,
+          "units": 1000
+        },
+        {
+          "value": 1,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 55,
+          "size": 127,
+          "codepoint": 57345,
+          "units": 1000
+        },
+        {
+          "value": -1,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 55,
+          "size": 127,
+          "codepoint": 57346,
+          "units": 1000
+        },
+        {
+          "value": -1,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 55,
+          "size": 127,
+          "codepoint": 57347,
+          "units": 1000
+        },
+        {
+          "value": 7,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 55,
+          "size": 127,
+          "codepoint": 57348,
+          "units": 1000
+        },
+        {
+          "value": 7,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 55,
+          "size": 127,
+          "codepoint": 57349,
+          "units": 1000
+        },
+        {
+          "value": -7,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 151,
+          "size": 127,
+          "codepoint": 57350,
+          "units": 1000
+        },
+        {
+          "value": -7,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 151,
+          "size": 127,
+          "codepoint": 57351,
+          "units": 1000
+        },
+        {
+          "value": 125,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 151,
+          "size": 127,
+          "codepoint": 57352,
+          "units": 1000
+        },
+        {
+          "value": 125,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 151,
+          "size": 127,
+          "codepoint": 57353,
+          "units": 1000
+        },
+        {
+          "value": -125,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 151,
+          "size": 127,
+          "codepoint": 57354,
+          "units": 1000
+        },
+        {
+          "value": -125,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 151,
+          "size": 127,
+          "codepoint": 57355,
+          "units": 1000
+        },
+        {
+          "value": 375,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 247,
+          "size": 127,
+          "codepoint": 57356,
+          "units": 1000
+        },
+        {
+          "value": 375,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 247,
+          "size": 127,
+          "codepoint": 57357,
+          "units": 1000
+        },
+        {
+          "value": -375,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 247,
+          "size": 127,
+          "codepoint": 57358,
+          "units": 1000
+        },
+        {
+          "value": -375,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 247,
+          "size": 127,
+          "codepoint": 57359,
+          "units": 1000
+        },
+        {
+          "value": 961,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 247,
+          "size": 127,
+          "codepoint": 57360,
+          "units": 1000
+        },
+        {
+          "value": 961,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 247,
+          "size": 127,
+          "codepoint": 57361,
+          "units": 1000
+        },
+        {
+          "value": -961,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 343,
+          "size": 127,
+          "codepoint": 57362,
+          "units": 1000
+        },
+        {
+          "value": -961,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 343,
+          "size": 127,
+          "codepoint": 57363,
+          "units": 1000
+        },
+        {
+          "value": 2375,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 343,
+          "size": 127,
+          "codepoint": 57364,
+          "units": 1000
+        },
+        {
+          "value": 2375,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 343,
+          "size": 127,
+          "codepoint": 57365,
+          "units": 1000
+        },
+        {
+          "value": -2375,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 343,
+          "size": 127,
+          "codepoint": 57366,
+          "units": 1000
+        },
+        {
+          "value": -2375,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 343,
+          "size": 127,
+          "codepoint": 57367,
+          "units": 1000
+        },
+        {
+          "value": 15936,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 439,
+          "size": 127,
+          "codepoint": 57368,
+          "units": 1000
+        },
+        {
+          "value": 15936,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 439,
+          "size": 127,
+          "codepoint": 57369,
+          "units": 1000
+        },
+        {
+          "value": -15936,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 439,
+          "size": 127,
+          "codepoint": 57370,
+          "units": 1000
+        },
+        {
+          "value": -15936,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 439,
+          "size": 127,
+          "codepoint": 57371,
+          "units": 1000
+        },
+        {
+          "value": 32749,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 439,
+          "size": 127,
+          "codepoint": 57372,
+          "units": 1000
+        },
+        {
+          "value": 32749,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 439,
+          "size": 127,
+          "codepoint": 57373,
+          "units": 1000
+        },
+        {
+          "value": -32749,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 535,
+          "size": 127,
+          "codepoint": 57374,
+          "units": 1000
+        },
+        {
+          "value": -32749,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 535,
+          "size": 127,
+          "codepoint": 57375,
+          "units": 1000
+        },
+        {
+          "value": 131071,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 535,
+          "size": 127,
+          "codepoint": 57376,
+          "units": 1000
+        },
+        {
+          "value": 131071,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 535,
+          "size": 127,
+          "codepoint": 57377,
+          "units": 1000
+        },
+        {
+          "value": -131071,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 535,
+          "size": 127,
+          "codepoint": 57378,
+          "units": 1000
+        },
+        {
+          "value": -131071,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 535,
+          "size": 127,
+          "codepoint": 57379,
+          "units": 1000
+        },
+        {
+          "value": 132104,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 631,
+          "size": 127,
+          "codepoint": 57380,
+          "units": 1000
+        },
+        {
+          "value": 132104,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 631,
+          "size": 127,
+          "codepoint": 57381,
+          "units": 1000
+        },
+        {
+          "value": -132104,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 631,
+          "size": 127,
+          "codepoint": 57382,
+          "units": 1000
+        },
+        {
+          "value": -132104,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 631,
+          "size": 127,
+          "codepoint": 57383,
+          "units": 1000
+        },
+        {
+          "value": 132105,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 631,
+          "size": 127,
+          "codepoint": 57384,
+          "units": 1000
+        },
+        {
+          "value": 132105,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 631,
+          "size": 127,
+          "codepoint": 57385,
+          "units": 1000
+        },
+        {
+          "value": -132105,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 727,
+          "size": 127,
+          "codepoint": 57386,
+          "units": 1000
+        },
+        {
+          "value": -132105,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 727,
+          "size": 127,
+          "codepoint": 57387,
+          "units": 1000
+        },
+        {
+          "value": 250125,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 727,
+          "size": 127,
+          "codepoint": 57388,
+          "units": 1000
+        },
+        {
+          "value": 250125,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 727,
+          "size": 127,
+          "codepoint": 57389,
+          "units": 1000
+        },
+        {
+          "value": -250125,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 727,
+          "size": 127,
+          "codepoint": 57390,
+          "units": 1000
+        },
+        {
+          "value": -250125,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 727,
+          "size": 127,
+          "codepoint": 57391,
+          "units": 1000
+        }
+      ]
+    },
+    {
+      "name": "1000-01-factor-1015",
+      "source": "1000/01-factor-1015.zpl",
+      "sha256": "2d16f139e13bcdc6647b9e2dfee6746373aa027b257b7d4d06f7d2a866476d53",
+      "dimensions": [
+        832,
+        832
+      ],
+      "probes": [
+        {
+          "value": 1,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 55,
+          "size": 1015,
+          "codepoint": 57344,
+          "units": 1000
+        },
+        {
+          "value": 1,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 55,
+          "size": 1015,
+          "codepoint": 57345,
+          "units": 1000
+        },
+        {
+          "value": -1,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 55,
+          "size": 1015,
+          "codepoint": 57346,
+          "units": 1000
+        },
+        {
+          "value": -1,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 55,
+          "size": 1015,
+          "codepoint": 57347,
+          "units": 1000
+        },
+        {
+          "value": 7,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 55,
+          "size": 1015,
+          "codepoint": 57348,
+          "units": 1000
+        },
+        {
+          "value": 7,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 55,
+          "size": 1015,
+          "codepoint": 57349,
+          "units": 1000
+        },
+        {
+          "value": -7,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 151,
+          "size": 1015,
+          "codepoint": 57350,
+          "units": 1000
+        },
+        {
+          "value": -7,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 151,
+          "size": 1015,
+          "codepoint": 57351,
+          "units": 1000
+        },
+        {
+          "value": 125,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 151,
+          "size": 1015,
+          "codepoint": 57352,
+          "units": 1000
+        },
+        {
+          "value": 125,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 151,
+          "size": 1015,
+          "codepoint": 57353,
+          "units": 1000
+        },
+        {
+          "value": -125,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 151,
+          "size": 1015,
+          "codepoint": 57354,
+          "units": 1000
+        },
+        {
+          "value": -125,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 151,
+          "size": 1015,
+          "codepoint": 57355,
+          "units": 1000
+        },
+        {
+          "value": 375,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 247,
+          "size": 1015,
+          "codepoint": 57356,
+          "units": 1000
+        },
+        {
+          "value": 375,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 247,
+          "size": 1015,
+          "codepoint": 57357,
+          "units": 1000
+        },
+        {
+          "value": -375,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 247,
+          "size": 1015,
+          "codepoint": 57358,
+          "units": 1000
+        },
+        {
+          "value": -375,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 247,
+          "size": 1015,
+          "codepoint": 57359,
+          "units": 1000
+        },
+        {
+          "value": 961,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 247,
+          "size": 1015,
+          "codepoint": 57360,
+          "units": 1000
+        },
+        {
+          "value": 961,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 247,
+          "size": 1015,
+          "codepoint": 57361,
+          "units": 1000
+        },
+        {
+          "value": -961,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 343,
+          "size": 1015,
+          "codepoint": 57362,
+          "units": 1000
+        },
+        {
+          "value": -961,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 343,
+          "size": 1015,
+          "codepoint": 57363,
+          "units": 1000
+        },
+        {
+          "value": 2375,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 343,
+          "size": 1015,
+          "codepoint": 57364,
+          "units": 1000
+        },
+        {
+          "value": 2375,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 343,
+          "size": 1015,
+          "codepoint": 57365,
+          "units": 1000
+        },
+        {
+          "value": -2375,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 343,
+          "size": 1015,
+          "codepoint": 57366,
+          "units": 1000
+        },
+        {
+          "value": -2375,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 343,
+          "size": 1015,
+          "codepoint": 57367,
+          "units": 1000
+        },
+        {
+          "value": 15936,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 439,
+          "size": 1015,
+          "codepoint": 57368,
+          "units": 1000
+        },
+        {
+          "value": 15936,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 439,
+          "size": 1015,
+          "codepoint": 57369,
+          "units": 1000
+        },
+        {
+          "value": -15936,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 439,
+          "size": 1015,
+          "codepoint": 57370,
+          "units": 1000
+        },
+        {
+          "value": -15936,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 439,
+          "size": 1015,
+          "codepoint": 57371,
+          "units": 1000
+        },
+        {
+          "value": 32749,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 439,
+          "size": 1015,
+          "codepoint": 57372,
+          "units": 1000
+        },
+        {
+          "value": 32749,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 439,
+          "size": 1015,
+          "codepoint": 57373,
+          "units": 1000
+        },
+        {
+          "value": -32749,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 535,
+          "size": 1015,
+          "codepoint": 57374,
+          "units": 1000
+        },
+        {
+          "value": -32749,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 535,
+          "size": 1015,
+          "codepoint": 57375,
+          "units": 1000
+        },
+        {
+          "value": 131071,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 535,
+          "size": 1015,
+          "codepoint": 57376,
+          "units": 1000
+        },
+        {
+          "value": 131071,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 535,
+          "size": 1015,
+          "codepoint": 57377,
+          "units": 1000
+        },
+        {
+          "value": -131071,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 535,
+          "size": 1015,
+          "codepoint": 57378,
+          "units": 1000
+        },
+        {
+          "value": -131071,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 535,
+          "size": 1015,
+          "codepoint": 57379,
+          "units": 1000
+        },
+        {
+          "value": 132104,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 631,
+          "size": 1015,
+          "codepoint": 57380,
+          "units": 1000
+        },
+        {
+          "value": 132104,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 631,
+          "size": 1015,
+          "codepoint": 57381,
+          "units": 1000
+        },
+        {
+          "value": -132104,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 631,
+          "size": 1015,
+          "codepoint": 57382,
+          "units": 1000
+        },
+        {
+          "value": -132104,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 631,
+          "size": 1015,
+          "codepoint": 57383,
+          "units": 1000
+        },
+        {
+          "value": 132105,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 631,
+          "size": 1015,
+          "codepoint": 57384,
+          "units": 1000
+        },
+        {
+          "value": 132105,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 631,
+          "size": 1015,
+          "codepoint": 57385,
+          "units": 1000
+        },
+        {
+          "value": -132105,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 727,
+          "size": 1015,
+          "codepoint": 57386,
+          "units": 1000
+        },
+        {
+          "value": -132105,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 727,
+          "size": 1015,
+          "codepoint": 57387,
+          "units": 1000
+        },
+        {
+          "value": 250125,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 727,
+          "size": 1015,
+          "codepoint": 57388,
+          "units": 1000
+        },
+        {
+          "value": 250125,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 727,
+          "size": 1015,
+          "codepoint": 57389,
+          "units": 1000
+        },
+        {
+          "value": -250125,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 727,
+          "size": 1015,
+          "codepoint": 57390,
+          "units": 1000
+        },
+        {
+          "value": -250125,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 727,
+          "size": 1015,
+          "codepoint": 57391,
+          "units": 1000
+        }
+      ]
+    },
+    {
+      "name": "1001-00-factor-127",
+      "source": "1001/00-factor-127.zpl",
+      "sha256": "d8a8c00f7bd077e4f208c8a1fc0196f4a77846428a147e30d334a9535ec3f6f1",
+      "dimensions": [
+        832,
+        832
+      ],
+      "probes": [
+        {
+          "value": 1,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 55,
+          "size": 127,
+          "codepoint": 57344,
+          "units": 1001
+        },
+        {
+          "value": 1,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 55,
+          "size": 127,
+          "codepoint": 57345,
+          "units": 1001
+        },
+        {
+          "value": -1,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 55,
+          "size": 127,
+          "codepoint": 57346,
+          "units": 1001
+        },
+        {
+          "value": -1,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 55,
+          "size": 127,
+          "codepoint": 57347,
+          "units": 1001
+        },
+        {
+          "value": 7,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 55,
+          "size": 127,
+          "codepoint": 57348,
+          "units": 1001
+        },
+        {
+          "value": 7,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 55,
+          "size": 127,
+          "codepoint": 57349,
+          "units": 1001
+        },
+        {
+          "value": -7,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 151,
+          "size": 127,
+          "codepoint": 57350,
+          "units": 1001
+        },
+        {
+          "value": -7,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 151,
+          "size": 127,
+          "codepoint": 57351,
+          "units": 1001
+        },
+        {
+          "value": 125,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 151,
+          "size": 127,
+          "codepoint": 57352,
+          "units": 1001
+        },
+        {
+          "value": 125,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 151,
+          "size": 127,
+          "codepoint": 57353,
+          "units": 1001
+        },
+        {
+          "value": -125,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 151,
+          "size": 127,
+          "codepoint": 57354,
+          "units": 1001
+        },
+        {
+          "value": -125,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 151,
+          "size": 127,
+          "codepoint": 57355,
+          "units": 1001
+        },
+        {
+          "value": 375,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 247,
+          "size": 127,
+          "codepoint": 57356,
+          "units": 1001
+        },
+        {
+          "value": 375,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 247,
+          "size": 127,
+          "codepoint": 57357,
+          "units": 1001
+        },
+        {
+          "value": -375,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 247,
+          "size": 127,
+          "codepoint": 57358,
+          "units": 1001
+        },
+        {
+          "value": -375,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 247,
+          "size": 127,
+          "codepoint": 57359,
+          "units": 1001
+        },
+        {
+          "value": 961,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 247,
+          "size": 127,
+          "codepoint": 57360,
+          "units": 1001
+        },
+        {
+          "value": 961,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 247,
+          "size": 127,
+          "codepoint": 57361,
+          "units": 1001
+        },
+        {
+          "value": -961,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 343,
+          "size": 127,
+          "codepoint": 57362,
+          "units": 1001
+        },
+        {
+          "value": -961,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 343,
+          "size": 127,
+          "codepoint": 57363,
+          "units": 1001
+        },
+        {
+          "value": 2375,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 343,
+          "size": 127,
+          "codepoint": 57364,
+          "units": 1001
+        },
+        {
+          "value": 2375,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 343,
+          "size": 127,
+          "codepoint": 57365,
+          "units": 1001
+        },
+        {
+          "value": -2375,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 343,
+          "size": 127,
+          "codepoint": 57366,
+          "units": 1001
+        },
+        {
+          "value": -2375,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 343,
+          "size": 127,
+          "codepoint": 57367,
+          "units": 1001
+        },
+        {
+          "value": 15936,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 439,
+          "size": 127,
+          "codepoint": 57368,
+          "units": 1001
+        },
+        {
+          "value": 15936,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 439,
+          "size": 127,
+          "codepoint": 57369,
+          "units": 1001
+        },
+        {
+          "value": -15936,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 439,
+          "size": 127,
+          "codepoint": 57370,
+          "units": 1001
+        },
+        {
+          "value": -15936,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 439,
+          "size": 127,
+          "codepoint": 57371,
+          "units": 1001
+        },
+        {
+          "value": 32749,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 439,
+          "size": 127,
+          "codepoint": 57372,
+          "units": 1001
+        },
+        {
+          "value": 32749,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 439,
+          "size": 127,
+          "codepoint": 57373,
+          "units": 1001
+        },
+        {
+          "value": -32749,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 535,
+          "size": 127,
+          "codepoint": 57374,
+          "units": 1001
+        },
+        {
+          "value": -32749,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 535,
+          "size": 127,
+          "codepoint": 57375,
+          "units": 1001
+        },
+        {
+          "value": 131071,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 535,
+          "size": 127,
+          "codepoint": 57376,
+          "units": 1001
+        },
+        {
+          "value": 131071,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 535,
+          "size": 127,
+          "codepoint": 57377,
+          "units": 1001
+        },
+        {
+          "value": -131071,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 535,
+          "size": 127,
+          "codepoint": 57378,
+          "units": 1001
+        },
+        {
+          "value": -131071,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 535,
+          "size": 127,
+          "codepoint": 57379,
+          "units": 1001
+        },
+        {
+          "value": 132104,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 631,
+          "size": 127,
+          "codepoint": 57380,
+          "units": 1001
+        },
+        {
+          "value": 132104,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 631,
+          "size": 127,
+          "codepoint": 57381,
+          "units": 1001
+        },
+        {
+          "value": -132104,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 631,
+          "size": 127,
+          "codepoint": 57382,
+          "units": 1001
+        },
+        {
+          "value": -132104,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 631,
+          "size": 127,
+          "codepoint": 57383,
+          "units": 1001
+        },
+        {
+          "value": 132105,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 631,
+          "size": 127,
+          "codepoint": 57384,
+          "units": 1001
+        },
+        {
+          "value": 132105,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 631,
+          "size": 127,
+          "codepoint": 57385,
+          "units": 1001
+        },
+        {
+          "value": -132105,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 727,
+          "size": 127,
+          "codepoint": 57386,
+          "units": 1001
+        },
+        {
+          "value": -132105,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 727,
+          "size": 127,
+          "codepoint": 57387,
+          "units": 1001
+        },
+        {
+          "value": 250125,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 727,
+          "size": 127,
+          "codepoint": 57388,
+          "units": 1001
+        },
+        {
+          "value": 250125,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 727,
+          "size": 127,
+          "codepoint": 57389,
+          "units": 1001
+        },
+        {
+          "value": -250125,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 727,
+          "size": 127,
+          "codepoint": 57390,
+          "units": 1001
+        },
+        {
+          "value": -250125,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 727,
+          "size": 127,
+          "codepoint": 57391,
+          "units": 1001
+        }
+      ]
+    },
+    {
+      "name": "1001-01-factor-1015",
+      "source": "1001/01-factor-1015.zpl",
+      "sha256": "f66c0cb797ca4c88b041f55902a49f83b88f407538efc366ac20bb80e4073a90",
+      "dimensions": [
+        832,
+        832
+      ],
+      "probes": [
+        {
+          "value": 1,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 55,
+          "size": 1015,
+          "codepoint": 57344,
+          "units": 1001
+        },
+        {
+          "value": 1,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 55,
+          "size": 1015,
+          "codepoint": 57345,
+          "units": 1001
+        },
+        {
+          "value": -1,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 55,
+          "size": 1015,
+          "codepoint": 57346,
+          "units": 1001
+        },
+        {
+          "value": -1,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 55,
+          "size": 1015,
+          "codepoint": 57347,
+          "units": 1001
+        },
+        {
+          "value": 7,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 55,
+          "size": 1015,
+          "codepoint": 57348,
+          "units": 1001
+        },
+        {
+          "value": 7,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 55,
+          "size": 1015,
+          "codepoint": 57349,
+          "units": 1001
+        },
+        {
+          "value": -7,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 151,
+          "size": 1015,
+          "codepoint": 57350,
+          "units": 1001
+        },
+        {
+          "value": -7,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 151,
+          "size": 1015,
+          "codepoint": 57351,
+          "units": 1001
+        },
+        {
+          "value": 125,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 151,
+          "size": 1015,
+          "codepoint": 57352,
+          "units": 1001
+        },
+        {
+          "value": 125,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 151,
+          "size": 1015,
+          "codepoint": 57353,
+          "units": 1001
+        },
+        {
+          "value": -125,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 151,
+          "size": 1015,
+          "codepoint": 57354,
+          "units": 1001
+        },
+        {
+          "value": -125,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 151,
+          "size": 1015,
+          "codepoint": 57355,
+          "units": 1001
+        },
+        {
+          "value": 375,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 247,
+          "size": 1015,
+          "codepoint": 57356,
+          "units": 1001
+        },
+        {
+          "value": 375,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 247,
+          "size": 1015,
+          "codepoint": 57357,
+          "units": 1001
+        },
+        {
+          "value": -375,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 247,
+          "size": 1015,
+          "codepoint": 57358,
+          "units": 1001
+        },
+        {
+          "value": -375,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 247,
+          "size": 1015,
+          "codepoint": 57359,
+          "units": 1001
+        },
+        {
+          "value": 961,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 247,
+          "size": 1015,
+          "codepoint": 57360,
+          "units": 1001
+        },
+        {
+          "value": 961,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 247,
+          "size": 1015,
+          "codepoint": 57361,
+          "units": 1001
+        },
+        {
+          "value": -961,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 343,
+          "size": 1015,
+          "codepoint": 57362,
+          "units": 1001
+        },
+        {
+          "value": -961,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 343,
+          "size": 1015,
+          "codepoint": 57363,
+          "units": 1001
+        },
+        {
+          "value": 2375,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 343,
+          "size": 1015,
+          "codepoint": 57364,
+          "units": 1001
+        },
+        {
+          "value": 2375,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 343,
+          "size": 1015,
+          "codepoint": 57365,
+          "units": 1001
+        },
+        {
+          "value": -2375,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 343,
+          "size": 1015,
+          "codepoint": 57366,
+          "units": 1001
+        },
+        {
+          "value": -2375,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 343,
+          "size": 1015,
+          "codepoint": 57367,
+          "units": 1001
+        },
+        {
+          "value": 15936,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 439,
+          "size": 1015,
+          "codepoint": 57368,
+          "units": 1001
+        },
+        {
+          "value": 15936,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 439,
+          "size": 1015,
+          "codepoint": 57369,
+          "units": 1001
+        },
+        {
+          "value": -15936,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 439,
+          "size": 1015,
+          "codepoint": 57370,
+          "units": 1001
+        },
+        {
+          "value": -15936,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 439,
+          "size": 1015,
+          "codepoint": 57371,
+          "units": 1001
+        },
+        {
+          "value": 32749,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 439,
+          "size": 1015,
+          "codepoint": 57372,
+          "units": 1001
+        },
+        {
+          "value": 32749,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 439,
+          "size": 1015,
+          "codepoint": 57373,
+          "units": 1001
+        },
+        {
+          "value": -32749,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 535,
+          "size": 1015,
+          "codepoint": 57374,
+          "units": 1001
+        },
+        {
+          "value": -32749,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 535,
+          "size": 1015,
+          "codepoint": 57375,
+          "units": 1001
+        },
+        {
+          "value": 131071,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 535,
+          "size": 1015,
+          "codepoint": 57376,
+          "units": 1001
+        },
+        {
+          "value": 131071,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 535,
+          "size": 1015,
+          "codepoint": 57377,
+          "units": 1001
+        },
+        {
+          "value": -131071,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 535,
+          "size": 1015,
+          "codepoint": 57378,
+          "units": 1001
+        },
+        {
+          "value": -131071,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 535,
+          "size": 1015,
+          "codepoint": 57379,
+          "units": 1001
+        },
+        {
+          "value": 132104,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 631,
+          "size": 1015,
+          "codepoint": 57380,
+          "units": 1001
+        },
+        {
+          "value": 132104,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 631,
+          "size": 1015,
+          "codepoint": 57381,
+          "units": 1001
+        },
+        {
+          "value": -132104,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 631,
+          "size": 1015,
+          "codepoint": 57382,
+          "units": 1001
+        },
+        {
+          "value": -132104,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 631,
+          "size": 1015,
+          "codepoint": 57383,
+          "units": 1001
+        },
+        {
+          "value": 132105,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 631,
+          "size": 1015,
+          "codepoint": 57384,
+          "units": 1001
+        },
+        {
+          "value": 132105,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 631,
+          "size": 1015,
+          "codepoint": 57385,
+          "units": 1001
+        },
+        {
+          "value": -132105,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 727,
+          "size": 1015,
+          "codepoint": 57386,
+          "units": 1001
+        },
+        {
+          "value": -132105,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 727,
+          "size": 1015,
+          "codepoint": 57387,
+          "units": 1001
+        },
+        {
+          "value": 250125,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 727,
+          "size": 1015,
+          "codepoint": 57388,
+          "units": 1001
+        },
+        {
+          "value": 250125,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 727,
+          "size": 1015,
+          "codepoint": 57389,
+          "units": 1001
+        },
+        {
+          "value": -250125,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 727,
+          "size": 1015,
+          "codepoint": 57390,
+          "units": 1001
+        },
+        {
+          "value": -250125,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 727,
+          "size": 1015,
+          "codepoint": 57391,
+          "units": 1001
+        }
+      ]
+    },
+    {
+      "name": "1024-00-factor-127",
+      "source": "1024/00-factor-127.zpl",
+      "sha256": "331d7740eedf5a787f6a315f885737b178bf64146b535a1bfe7295e1150981a8",
+      "dimensions": [
+        832,
+        832
+      ],
+      "probes": [
+        {
+          "value": 1,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 55,
+          "size": 127,
+          "codepoint": 57344,
+          "units": 1024
+        },
+        {
+          "value": 1,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 55,
+          "size": 127,
+          "codepoint": 57345,
+          "units": 1024
+        },
+        {
+          "value": -1,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 55,
+          "size": 127,
+          "codepoint": 57346,
+          "units": 1024
+        },
+        {
+          "value": -1,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 55,
+          "size": 127,
+          "codepoint": 57347,
+          "units": 1024
+        },
+        {
+          "value": 7,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 55,
+          "size": 127,
+          "codepoint": 57348,
+          "units": 1024
+        },
+        {
+          "value": 7,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 55,
+          "size": 127,
+          "codepoint": 57349,
+          "units": 1024
+        },
+        {
+          "value": -7,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 151,
+          "size": 127,
+          "codepoint": 57350,
+          "units": 1024
+        },
+        {
+          "value": -7,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 151,
+          "size": 127,
+          "codepoint": 57351,
+          "units": 1024
+        },
+        {
+          "value": 125,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 151,
+          "size": 127,
+          "codepoint": 57352,
+          "units": 1024
+        },
+        {
+          "value": 125,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 151,
+          "size": 127,
+          "codepoint": 57353,
+          "units": 1024
+        },
+        {
+          "value": -125,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 151,
+          "size": 127,
+          "codepoint": 57354,
+          "units": 1024
+        },
+        {
+          "value": -125,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 151,
+          "size": 127,
+          "codepoint": 57355,
+          "units": 1024
+        },
+        {
+          "value": 375,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 247,
+          "size": 127,
+          "codepoint": 57356,
+          "units": 1024
+        },
+        {
+          "value": 375,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 247,
+          "size": 127,
+          "codepoint": 57357,
+          "units": 1024
+        },
+        {
+          "value": -375,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 247,
+          "size": 127,
+          "codepoint": 57358,
+          "units": 1024
+        },
+        {
+          "value": -375,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 247,
+          "size": 127,
+          "codepoint": 57359,
+          "units": 1024
+        },
+        {
+          "value": 961,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 247,
+          "size": 127,
+          "codepoint": 57360,
+          "units": 1024
+        },
+        {
+          "value": 961,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 247,
+          "size": 127,
+          "codepoint": 57361,
+          "units": 1024
+        },
+        {
+          "value": -961,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 343,
+          "size": 127,
+          "codepoint": 57362,
+          "units": 1024
+        },
+        {
+          "value": -961,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 343,
+          "size": 127,
+          "codepoint": 57363,
+          "units": 1024
+        },
+        {
+          "value": 2375,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 343,
+          "size": 127,
+          "codepoint": 57364,
+          "units": 1024
+        },
+        {
+          "value": 2375,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 343,
+          "size": 127,
+          "codepoint": 57365,
+          "units": 1024
+        },
+        {
+          "value": -2375,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 343,
+          "size": 127,
+          "codepoint": 57366,
+          "units": 1024
+        },
+        {
+          "value": -2375,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 343,
+          "size": 127,
+          "codepoint": 57367,
+          "units": 1024
+        },
+        {
+          "value": 15936,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 439,
+          "size": 127,
+          "codepoint": 57368,
+          "units": 1024
+        },
+        {
+          "value": 15936,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 439,
+          "size": 127,
+          "codepoint": 57369,
+          "units": 1024
+        },
+        {
+          "value": -15936,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 439,
+          "size": 127,
+          "codepoint": 57370,
+          "units": 1024
+        },
+        {
+          "value": -15936,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 439,
+          "size": 127,
+          "codepoint": 57371,
+          "units": 1024
+        },
+        {
+          "value": 32749,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 439,
+          "size": 127,
+          "codepoint": 57372,
+          "units": 1024
+        },
+        {
+          "value": 32749,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 439,
+          "size": 127,
+          "codepoint": 57373,
+          "units": 1024
+        },
+        {
+          "value": -32749,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 535,
+          "size": 127,
+          "codepoint": 57374,
+          "units": 1024
+        },
+        {
+          "value": -32749,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 535,
+          "size": 127,
+          "codepoint": 57375,
+          "units": 1024
+        },
+        {
+          "value": 131071,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 535,
+          "size": 127,
+          "codepoint": 57376,
+          "units": 1024
+        },
+        {
+          "value": 131071,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 535,
+          "size": 127,
+          "codepoint": 57377,
+          "units": 1024
+        },
+        {
+          "value": -131071,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 535,
+          "size": 127,
+          "codepoint": 57378,
+          "units": 1024
+        },
+        {
+          "value": -131071,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 535,
+          "size": 127,
+          "codepoint": 57379,
+          "units": 1024
+        },
+        {
+          "value": 132104,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 631,
+          "size": 127,
+          "codepoint": 57380,
+          "units": 1024
+        },
+        {
+          "value": 132104,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 631,
+          "size": 127,
+          "codepoint": 57381,
+          "units": 1024
+        },
+        {
+          "value": -132104,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 631,
+          "size": 127,
+          "codepoint": 57382,
+          "units": 1024
+        },
+        {
+          "value": -132104,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 631,
+          "size": 127,
+          "codepoint": 57383,
+          "units": 1024
+        },
+        {
+          "value": 132105,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 631,
+          "size": 127,
+          "codepoint": 57384,
+          "units": 1024
+        },
+        {
+          "value": 132105,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 631,
+          "size": 127,
+          "codepoint": 57385,
+          "units": 1024
+        },
+        {
+          "value": -132105,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 727,
+          "size": 127,
+          "codepoint": 57386,
+          "units": 1024
+        },
+        {
+          "value": -132105,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 727,
+          "size": 127,
+          "codepoint": 57387,
+          "units": 1024
+        },
+        {
+          "value": 250125,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 727,
+          "size": 127,
+          "codepoint": 57388,
+          "units": 1024
+        },
+        {
+          "value": 250125,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 727,
+          "size": 127,
+          "codepoint": 57389,
+          "units": 1024
+        },
+        {
+          "value": -250125,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 727,
+          "size": 127,
+          "codepoint": 57390,
+          "units": 1024
+        },
+        {
+          "value": -250125,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 727,
+          "size": 127,
+          "codepoint": 57391,
+          "units": 1024
+        }
+      ]
+    },
+    {
+      "name": "1024-01-factor-1015",
+      "source": "1024/01-factor-1015.zpl",
+      "sha256": "d7ac536fa544634d294e560f45de99dbfdb50144af22b09ec7378d892bfa5936",
+      "dimensions": [
+        832,
+        832
+      ],
+      "probes": [
+        {
+          "value": 1,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 55,
+          "size": 1015,
+          "codepoint": 57344,
+          "units": 1024
+        },
+        {
+          "value": 1,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 55,
+          "size": 1015,
+          "codepoint": 57345,
+          "units": 1024
+        },
+        {
+          "value": -1,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 55,
+          "size": 1015,
+          "codepoint": 57346,
+          "units": 1024
+        },
+        {
+          "value": -1,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 55,
+          "size": 1015,
+          "codepoint": 57347,
+          "units": 1024
+        },
+        {
+          "value": 7,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 55,
+          "size": 1015,
+          "codepoint": 57348,
+          "units": 1024
+        },
+        {
+          "value": 7,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 55,
+          "size": 1015,
+          "codepoint": 57349,
+          "units": 1024
+        },
+        {
+          "value": -7,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 151,
+          "size": 1015,
+          "codepoint": 57350,
+          "units": 1024
+        },
+        {
+          "value": -7,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 151,
+          "size": 1015,
+          "codepoint": 57351,
+          "units": 1024
+        },
+        {
+          "value": 125,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 151,
+          "size": 1015,
+          "codepoint": 57352,
+          "units": 1024
+        },
+        {
+          "value": 125,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 151,
+          "size": 1015,
+          "codepoint": 57353,
+          "units": 1024
+        },
+        {
+          "value": -125,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 151,
+          "size": 1015,
+          "codepoint": 57354,
+          "units": 1024
+        },
+        {
+          "value": -125,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 151,
+          "size": 1015,
+          "codepoint": 57355,
+          "units": 1024
+        },
+        {
+          "value": 375,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 247,
+          "size": 1015,
+          "codepoint": 57356,
+          "units": 1024
+        },
+        {
+          "value": 375,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 247,
+          "size": 1015,
+          "codepoint": 57357,
+          "units": 1024
+        },
+        {
+          "value": -375,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 247,
+          "size": 1015,
+          "codepoint": 57358,
+          "units": 1024
+        },
+        {
+          "value": -375,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 247,
+          "size": 1015,
+          "codepoint": 57359,
+          "units": 1024
+        },
+        {
+          "value": 961,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 247,
+          "size": 1015,
+          "codepoint": 57360,
+          "units": 1024
+        },
+        {
+          "value": 961,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 247,
+          "size": 1015,
+          "codepoint": 57361,
+          "units": 1024
+        },
+        {
+          "value": -961,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 343,
+          "size": 1015,
+          "codepoint": 57362,
+          "units": 1024
+        },
+        {
+          "value": -961,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 343,
+          "size": 1015,
+          "codepoint": 57363,
+          "units": 1024
+        },
+        {
+          "value": 2375,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 343,
+          "size": 1015,
+          "codepoint": 57364,
+          "units": 1024
+        },
+        {
+          "value": 2375,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 343,
+          "size": 1015,
+          "codepoint": 57365,
+          "units": 1024
+        },
+        {
+          "value": -2375,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 343,
+          "size": 1015,
+          "codepoint": 57366,
+          "units": 1024
+        },
+        {
+          "value": -2375,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 343,
+          "size": 1015,
+          "codepoint": 57367,
+          "units": 1024
+        },
+        {
+          "value": 15936,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 439,
+          "size": 1015,
+          "codepoint": 57368,
+          "units": 1024
+        },
+        {
+          "value": 15936,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 439,
+          "size": 1015,
+          "codepoint": 57369,
+          "units": 1024
+        },
+        {
+          "value": -15936,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 439,
+          "size": 1015,
+          "codepoint": 57370,
+          "units": 1024
+        },
+        {
+          "value": -15936,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 439,
+          "size": 1015,
+          "codepoint": 57371,
+          "units": 1024
+        },
+        {
+          "value": 32749,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 439,
+          "size": 1015,
+          "codepoint": 57372,
+          "units": 1024
+        },
+        {
+          "value": 32749,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 439,
+          "size": 1015,
+          "codepoint": 57373,
+          "units": 1024
+        },
+        {
+          "value": -32749,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 535,
+          "size": 1015,
+          "codepoint": 57374,
+          "units": 1024
+        },
+        {
+          "value": -32749,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 535,
+          "size": 1015,
+          "codepoint": 57375,
+          "units": 1024
+        },
+        {
+          "value": 131071,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 535,
+          "size": 1015,
+          "codepoint": 57376,
+          "units": 1024
+        },
+        {
+          "value": 131071,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 535,
+          "size": 1015,
+          "codepoint": 57377,
+          "units": 1024
+        },
+        {
+          "value": -131071,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 535,
+          "size": 1015,
+          "codepoint": 57378,
+          "units": 1024
+        },
+        {
+          "value": -131071,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 535,
+          "size": 1015,
+          "codepoint": 57379,
+          "units": 1024
+        },
+        {
+          "value": 132104,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 631,
+          "size": 1015,
+          "codepoint": 57380,
+          "units": 1024
+        },
+        {
+          "value": 132104,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 631,
+          "size": 1015,
+          "codepoint": 57381,
+          "units": 1024
+        },
+        {
+          "value": -132104,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 631,
+          "size": 1015,
+          "codepoint": 57382,
+          "units": 1024
+        },
+        {
+          "value": -132104,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 631,
+          "size": 1015,
+          "codepoint": 57383,
+          "units": 1024
+        },
+        {
+          "value": 132105,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 631,
+          "size": 1015,
+          "codepoint": 57384,
+          "units": 1024
+        },
+        {
+          "value": 132105,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 631,
+          "size": 1015,
+          "codepoint": 57385,
+          "units": 1024
+        },
+        {
+          "value": -132105,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 727,
+          "size": 1015,
+          "codepoint": 57386,
+          "units": 1024
+        },
+        {
+          "value": -132105,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 727,
+          "size": 1015,
+          "codepoint": 57387,
+          "units": 1024
+        },
+        {
+          "value": 250125,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 727,
+          "size": 1015,
+          "codepoint": 57388,
+          "units": 1024
+        },
+        {
+          "value": 250125,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 727,
+          "size": 1015,
+          "codepoint": 57389,
+          "units": 1024
+        },
+        {
+          "value": -250125,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 727,
+          "size": 1015,
+          "codepoint": 57390,
+          "units": 1024
+        },
+        {
+          "value": -250125,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 727,
+          "size": 1015,
+          "codepoint": 57391,
+          "units": 1024
+        }
+      ]
+    },
+    {
+      "name": "1536-00-factor-127",
+      "source": "1536/00-factor-127.zpl",
+      "sha256": "6330bbfee92c9a5f4c9ea765f69c1c01ca7095752b18cfc0c2974e944b12bbd1",
+      "dimensions": [
+        832,
+        832
+      ],
+      "probes": [
+        {
+          "value": 1,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 55,
+          "size": 127,
+          "codepoint": 57344,
+          "units": 1536
+        },
+        {
+          "value": 1,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 55,
+          "size": 127,
+          "codepoint": 57345,
+          "units": 1536
+        },
+        {
+          "value": -1,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 55,
+          "size": 127,
+          "codepoint": 57346,
+          "units": 1536
+        },
+        {
+          "value": -1,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 55,
+          "size": 127,
+          "codepoint": 57347,
+          "units": 1536
+        },
+        {
+          "value": 7,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 55,
+          "size": 127,
+          "codepoint": 57348,
+          "units": 1536
+        },
+        {
+          "value": 7,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 55,
+          "size": 127,
+          "codepoint": 57349,
+          "units": 1536
+        },
+        {
+          "value": -7,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 151,
+          "size": 127,
+          "codepoint": 57350,
+          "units": 1536
+        },
+        {
+          "value": -7,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 151,
+          "size": 127,
+          "codepoint": 57351,
+          "units": 1536
+        },
+        {
+          "value": 125,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 151,
+          "size": 127,
+          "codepoint": 57352,
+          "units": 1536
+        },
+        {
+          "value": 125,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 151,
+          "size": 127,
+          "codepoint": 57353,
+          "units": 1536
+        },
+        {
+          "value": -125,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 151,
+          "size": 127,
+          "codepoint": 57354,
+          "units": 1536
+        },
+        {
+          "value": -125,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 151,
+          "size": 127,
+          "codepoint": 57355,
+          "units": 1536
+        },
+        {
+          "value": 375,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 247,
+          "size": 127,
+          "codepoint": 57356,
+          "units": 1536
+        },
+        {
+          "value": 375,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 247,
+          "size": 127,
+          "codepoint": 57357,
+          "units": 1536
+        },
+        {
+          "value": -375,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 247,
+          "size": 127,
+          "codepoint": 57358,
+          "units": 1536
+        },
+        {
+          "value": -375,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 247,
+          "size": 127,
+          "codepoint": 57359,
+          "units": 1536
+        },
+        {
+          "value": 961,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 247,
+          "size": 127,
+          "codepoint": 57360,
+          "units": 1536
+        },
+        {
+          "value": 961,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 247,
+          "size": 127,
+          "codepoint": 57361,
+          "units": 1536
+        },
+        {
+          "value": -961,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 343,
+          "size": 127,
+          "codepoint": 57362,
+          "units": 1536
+        },
+        {
+          "value": -961,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 343,
+          "size": 127,
+          "codepoint": 57363,
+          "units": 1536
+        },
+        {
+          "value": 2375,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 343,
+          "size": 127,
+          "codepoint": 57364,
+          "units": 1536
+        },
+        {
+          "value": 2375,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 343,
+          "size": 127,
+          "codepoint": 57365,
+          "units": 1536
+        },
+        {
+          "value": -2375,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 343,
+          "size": 127,
+          "codepoint": 57366,
+          "units": 1536
+        },
+        {
+          "value": -2375,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 343,
+          "size": 127,
+          "codepoint": 57367,
+          "units": 1536
+        },
+        {
+          "value": 15936,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 439,
+          "size": 127,
+          "codepoint": 57368,
+          "units": 1536
+        },
+        {
+          "value": 15936,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 439,
+          "size": 127,
+          "codepoint": 57369,
+          "units": 1536
+        },
+        {
+          "value": -15936,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 439,
+          "size": 127,
+          "codepoint": 57370,
+          "units": 1536
+        },
+        {
+          "value": -15936,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 439,
+          "size": 127,
+          "codepoint": 57371,
+          "units": 1536
+        },
+        {
+          "value": 32749,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 439,
+          "size": 127,
+          "codepoint": 57372,
+          "units": 1536
+        },
+        {
+          "value": 32749,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 439,
+          "size": 127,
+          "codepoint": 57373,
+          "units": 1536
+        },
+        {
+          "value": -32749,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 535,
+          "size": 127,
+          "codepoint": 57374,
+          "units": 1536
+        },
+        {
+          "value": -32749,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 535,
+          "size": 127,
+          "codepoint": 57375,
+          "units": 1536
+        },
+        {
+          "value": 131071,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 535,
+          "size": 127,
+          "codepoint": 57376,
+          "units": 1536
+        },
+        {
+          "value": 131071,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 535,
+          "size": 127,
+          "codepoint": 57377,
+          "units": 1536
+        },
+        {
+          "value": -131071,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 535,
+          "size": 127,
+          "codepoint": 57378,
+          "units": 1536
+        },
+        {
+          "value": -131071,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 535,
+          "size": 127,
+          "codepoint": 57379,
+          "units": 1536
+        },
+        {
+          "value": 132104,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 631,
+          "size": 127,
+          "codepoint": 57380,
+          "units": 1536
+        },
+        {
+          "value": 132104,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 631,
+          "size": 127,
+          "codepoint": 57381,
+          "units": 1536
+        },
+        {
+          "value": -132104,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 631,
+          "size": 127,
+          "codepoint": 57382,
+          "units": 1536
+        },
+        {
+          "value": -132104,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 631,
+          "size": 127,
+          "codepoint": 57383,
+          "units": 1536
+        },
+        {
+          "value": 132105,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 631,
+          "size": 127,
+          "codepoint": 57384,
+          "units": 1536
+        },
+        {
+          "value": 132105,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 631,
+          "size": 127,
+          "codepoint": 57385,
+          "units": 1536
+        },
+        {
+          "value": -132105,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 727,
+          "size": 127,
+          "codepoint": 57386,
+          "units": 1536
+        },
+        {
+          "value": -132105,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 727,
+          "size": 127,
+          "codepoint": 57387,
+          "units": 1536
+        },
+        {
+          "value": 250125,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 727,
+          "size": 127,
+          "codepoint": 57388,
+          "units": 1536
+        },
+        {
+          "value": 250125,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 727,
+          "size": 127,
+          "codepoint": 57389,
+          "units": 1536
+        },
+        {
+          "value": -250125,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 727,
+          "size": 127,
+          "codepoint": 57390,
+          "units": 1536
+        },
+        {
+          "value": -250125,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 727,
+          "size": 127,
+          "codepoint": 57391,
+          "units": 1536
+        }
+      ]
+    },
+    {
+      "name": "1536-01-factor-1015",
+      "source": "1536/01-factor-1015.zpl",
+      "sha256": "e3a8feec51fdde4ff2e91cebe35ab35d0fc56c884168f6b46dfdea4ddf9a2fba",
+      "dimensions": [
+        832,
+        832
+      ],
+      "probes": [
+        {
+          "value": 1,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 55,
+          "size": 1015,
+          "codepoint": 57344,
+          "units": 1536
+        },
+        {
+          "value": 1,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 55,
+          "size": 1015,
+          "codepoint": 57345,
+          "units": 1536
+        },
+        {
+          "value": -1,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 55,
+          "size": 1015,
+          "codepoint": 57346,
+          "units": 1536
+        },
+        {
+          "value": -1,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 55,
+          "size": 1015,
+          "codepoint": 57347,
+          "units": 1536
+        },
+        {
+          "value": 7,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 55,
+          "size": 1015,
+          "codepoint": 57348,
+          "units": 1536
+        },
+        {
+          "value": 7,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 55,
+          "size": 1015,
+          "codepoint": 57349,
+          "units": 1536
+        },
+        {
+          "value": -7,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 151,
+          "size": 1015,
+          "codepoint": 57350,
+          "units": 1536
+        },
+        {
+          "value": -7,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 151,
+          "size": 1015,
+          "codepoint": 57351,
+          "units": 1536
+        },
+        {
+          "value": 125,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 151,
+          "size": 1015,
+          "codepoint": 57352,
+          "units": 1536
+        },
+        {
+          "value": 125,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 151,
+          "size": 1015,
+          "codepoint": 57353,
+          "units": 1536
+        },
+        {
+          "value": -125,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 151,
+          "size": 1015,
+          "codepoint": 57354,
+          "units": 1536
+        },
+        {
+          "value": -125,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 151,
+          "size": 1015,
+          "codepoint": 57355,
+          "units": 1536
+        },
+        {
+          "value": 375,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 247,
+          "size": 1015,
+          "codepoint": 57356,
+          "units": 1536
+        },
+        {
+          "value": 375,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 247,
+          "size": 1015,
+          "codepoint": 57357,
+          "units": 1536
+        },
+        {
+          "value": -375,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 247,
+          "size": 1015,
+          "codepoint": 57358,
+          "units": 1536
+        },
+        {
+          "value": -375,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 247,
+          "size": 1015,
+          "codepoint": 57359,
+          "units": 1536
+        },
+        {
+          "value": 961,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 247,
+          "size": 1015,
+          "codepoint": 57360,
+          "units": 1536
+        },
+        {
+          "value": 961,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 247,
+          "size": 1015,
+          "codepoint": 57361,
+          "units": 1536
+        },
+        {
+          "value": -961,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 343,
+          "size": 1015,
+          "codepoint": 57362,
+          "units": 1536
+        },
+        {
+          "value": -961,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 343,
+          "size": 1015,
+          "codepoint": 57363,
+          "units": 1536
+        },
+        {
+          "value": 2375,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 343,
+          "size": 1015,
+          "codepoint": 57364,
+          "units": 1536
+        },
+        {
+          "value": 2375,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 343,
+          "size": 1015,
+          "codepoint": 57365,
+          "units": 1536
+        },
+        {
+          "value": -2375,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 343,
+          "size": 1015,
+          "codepoint": 57366,
+          "units": 1536
+        },
+        {
+          "value": -2375,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 343,
+          "size": 1015,
+          "codepoint": 57367,
+          "units": 1536
+        },
+        {
+          "value": 15936,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 439,
+          "size": 1015,
+          "codepoint": 57368,
+          "units": 1536
+        },
+        {
+          "value": 15936,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 439,
+          "size": 1015,
+          "codepoint": 57369,
+          "units": 1536
+        },
+        {
+          "value": -15936,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 439,
+          "size": 1015,
+          "codepoint": 57370,
+          "units": 1536
+        },
+        {
+          "value": -15936,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 439,
+          "size": 1015,
+          "codepoint": 57371,
+          "units": 1536
+        },
+        {
+          "value": 32749,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 439,
+          "size": 1015,
+          "codepoint": 57372,
+          "units": 1536
+        },
+        {
+          "value": 32749,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 439,
+          "size": 1015,
+          "codepoint": 57373,
+          "units": 1536
+        },
+        {
+          "value": -32749,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 535,
+          "size": 1015,
+          "codepoint": 57374,
+          "units": 1536
+        },
+        {
+          "value": -32749,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 535,
+          "size": 1015,
+          "codepoint": 57375,
+          "units": 1536
+        },
+        {
+          "value": 131071,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 535,
+          "size": 1015,
+          "codepoint": 57376,
+          "units": 1536
+        },
+        {
+          "value": 131071,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 535,
+          "size": 1015,
+          "codepoint": 57377,
+          "units": 1536
+        },
+        {
+          "value": -131071,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 535,
+          "size": 1015,
+          "codepoint": 57378,
+          "units": 1536
+        },
+        {
+          "value": -131071,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 535,
+          "size": 1015,
+          "codepoint": 57379,
+          "units": 1536
+        },
+        {
+          "value": 132104,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 631,
+          "size": 1015,
+          "codepoint": 57380,
+          "units": 1536
+        },
+        {
+          "value": 132104,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 631,
+          "size": 1015,
+          "codepoint": 57381,
+          "units": 1536
+        },
+        {
+          "value": -132104,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 631,
+          "size": 1015,
+          "codepoint": 57382,
+          "units": 1536
+        },
+        {
+          "value": -132104,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 631,
+          "size": 1015,
+          "codepoint": 57383,
+          "units": 1536
+        },
+        {
+          "value": 132105,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 631,
+          "size": 1015,
+          "codepoint": 57384,
+          "units": 1536
+        },
+        {
+          "value": 132105,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 631,
+          "size": 1015,
+          "codepoint": 57385,
+          "units": 1536
+        },
+        {
+          "value": -132105,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 727,
+          "size": 1015,
+          "codepoint": 57386,
+          "units": 1536
+        },
+        {
+          "value": -132105,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 727,
+          "size": 1015,
+          "codepoint": 57387,
+          "units": 1536
+        },
+        {
+          "value": 250125,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 727,
+          "size": 1015,
+          "codepoint": 57388,
+          "units": 1536
+        },
+        {
+          "value": 250125,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 727,
+          "size": 1015,
+          "codepoint": 57389,
+          "units": 1536
+        },
+        {
+          "value": -250125,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 727,
+          "size": 1015,
+          "codepoint": 57390,
+          "units": 1536
+        },
+        {
+          "value": -250125,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 727,
+          "size": 1015,
+          "codepoint": 57391,
+          "units": 1536
+        }
+      ]
+    },
+    {
+      "name": "2000-00-factor-127",
+      "source": "2000/00-factor-127.zpl",
+      "sha256": "c751ef467f52887d5791d858245e3f0e1fdff5c09788a7f7df3eb433edd76a73",
+      "dimensions": [
+        832,
+        832
+      ],
+      "probes": [
+        {
+          "value": 1,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 55,
+          "size": 127,
+          "codepoint": 57344,
+          "units": 2000
+        },
+        {
+          "value": 1,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 55,
+          "size": 127,
+          "codepoint": 57345,
+          "units": 2000
+        },
+        {
+          "value": -1,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 55,
+          "size": 127,
+          "codepoint": 57346,
+          "units": 2000
+        },
+        {
+          "value": -1,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 55,
+          "size": 127,
+          "codepoint": 57347,
+          "units": 2000
+        },
+        {
+          "value": 7,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 55,
+          "size": 127,
+          "codepoint": 57348,
+          "units": 2000
+        },
+        {
+          "value": 7,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 55,
+          "size": 127,
+          "codepoint": 57349,
+          "units": 2000
+        },
+        {
+          "value": -7,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 151,
+          "size": 127,
+          "codepoint": 57350,
+          "units": 2000
+        },
+        {
+          "value": -7,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 151,
+          "size": 127,
+          "codepoint": 57351,
+          "units": 2000
+        },
+        {
+          "value": 125,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 151,
+          "size": 127,
+          "codepoint": 57352,
+          "units": 2000
+        },
+        {
+          "value": 125,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 151,
+          "size": 127,
+          "codepoint": 57353,
+          "units": 2000
+        },
+        {
+          "value": -125,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 151,
+          "size": 127,
+          "codepoint": 57354,
+          "units": 2000
+        },
+        {
+          "value": -125,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 151,
+          "size": 127,
+          "codepoint": 57355,
+          "units": 2000
+        },
+        {
+          "value": 375,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 247,
+          "size": 127,
+          "codepoint": 57356,
+          "units": 2000
+        },
+        {
+          "value": 375,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 247,
+          "size": 127,
+          "codepoint": 57357,
+          "units": 2000
+        },
+        {
+          "value": -375,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 247,
+          "size": 127,
+          "codepoint": 57358,
+          "units": 2000
+        },
+        {
+          "value": -375,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 247,
+          "size": 127,
+          "codepoint": 57359,
+          "units": 2000
+        },
+        {
+          "value": 961,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 247,
+          "size": 127,
+          "codepoint": 57360,
+          "units": 2000
+        },
+        {
+          "value": 961,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 247,
+          "size": 127,
+          "codepoint": 57361,
+          "units": 2000
+        },
+        {
+          "value": -961,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 343,
+          "size": 127,
+          "codepoint": 57362,
+          "units": 2000
+        },
+        {
+          "value": -961,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 343,
+          "size": 127,
+          "codepoint": 57363,
+          "units": 2000
+        },
+        {
+          "value": 2375,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 343,
+          "size": 127,
+          "codepoint": 57364,
+          "units": 2000
+        },
+        {
+          "value": 2375,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 343,
+          "size": 127,
+          "codepoint": 57365,
+          "units": 2000
+        },
+        {
+          "value": -2375,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 343,
+          "size": 127,
+          "codepoint": 57366,
+          "units": 2000
+        },
+        {
+          "value": -2375,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 343,
+          "size": 127,
+          "codepoint": 57367,
+          "units": 2000
+        },
+        {
+          "value": 15936,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 439,
+          "size": 127,
+          "codepoint": 57368,
+          "units": 2000
+        },
+        {
+          "value": 15936,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 439,
+          "size": 127,
+          "codepoint": 57369,
+          "units": 2000
+        },
+        {
+          "value": -15936,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 439,
+          "size": 127,
+          "codepoint": 57370,
+          "units": 2000
+        },
+        {
+          "value": -15936,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 439,
+          "size": 127,
+          "codepoint": 57371,
+          "units": 2000
+        },
+        {
+          "value": 32749,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 439,
+          "size": 127,
+          "codepoint": 57372,
+          "units": 2000
+        },
+        {
+          "value": 32749,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 439,
+          "size": 127,
+          "codepoint": 57373,
+          "units": 2000
+        },
+        {
+          "value": -32749,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 535,
+          "size": 127,
+          "codepoint": 57374,
+          "units": 2000
+        },
+        {
+          "value": -32749,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 535,
+          "size": 127,
+          "codepoint": 57375,
+          "units": 2000
+        },
+        {
+          "value": 131071,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 535,
+          "size": 127,
+          "codepoint": 57376,
+          "units": 2000
+        },
+        {
+          "value": 131071,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 535,
+          "size": 127,
+          "codepoint": 57377,
+          "units": 2000
+        },
+        {
+          "value": -131071,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 535,
+          "size": 127,
+          "codepoint": 57378,
+          "units": 2000
+        },
+        {
+          "value": -131071,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 535,
+          "size": 127,
+          "codepoint": 57379,
+          "units": 2000
+        },
+        {
+          "value": 132104,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 631,
+          "size": 127,
+          "codepoint": 57380,
+          "units": 2000
+        },
+        {
+          "value": 132104,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 631,
+          "size": 127,
+          "codepoint": 57381,
+          "units": 2000
+        },
+        {
+          "value": -132104,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 631,
+          "size": 127,
+          "codepoint": 57382,
+          "units": 2000
+        },
+        {
+          "value": -132104,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 631,
+          "size": 127,
+          "codepoint": 57383,
+          "units": 2000
+        },
+        {
+          "value": 132105,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 631,
+          "size": 127,
+          "codepoint": 57384,
+          "units": 2000
+        },
+        {
+          "value": 132105,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 631,
+          "size": 127,
+          "codepoint": 57385,
+          "units": 2000
+        },
+        {
+          "value": -132105,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 727,
+          "size": 127,
+          "codepoint": 57386,
+          "units": 2000
+        },
+        {
+          "value": -132105,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 727,
+          "size": 127,
+          "codepoint": 57387,
+          "units": 2000
+        },
+        {
+          "value": 250125,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 727,
+          "size": 127,
+          "codepoint": 57388,
+          "units": 2000
+        },
+        {
+          "value": 250125,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 727,
+          "size": 127,
+          "codepoint": 57389,
+          "units": 2000
+        },
+        {
+          "value": -250125,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 727,
+          "size": 127,
+          "codepoint": 57390,
+          "units": 2000
+        },
+        {
+          "value": -250125,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 727,
+          "size": 127,
+          "codepoint": 57391,
+          "units": 2000
+        }
+      ]
+    },
+    {
+      "name": "2000-01-factor-1015",
+      "source": "2000/01-factor-1015.zpl",
+      "sha256": "9a95f944c9f03b6824b5034f9672426f32f153ae03d412833d26c2f28389ecfd",
+      "dimensions": [
+        832,
+        832
+      ],
+      "probes": [
+        {
+          "value": 1,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 55,
+          "size": 1015,
+          "codepoint": 57344,
+          "units": 2000
+        },
+        {
+          "value": 1,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 55,
+          "size": 1015,
+          "codepoint": 57345,
+          "units": 2000
+        },
+        {
+          "value": -1,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 55,
+          "size": 1015,
+          "codepoint": 57346,
+          "units": 2000
+        },
+        {
+          "value": -1,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 55,
+          "size": 1015,
+          "codepoint": 57347,
+          "units": 2000
+        },
+        {
+          "value": 7,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 55,
+          "size": 1015,
+          "codepoint": 57348,
+          "units": 2000
+        },
+        {
+          "value": 7,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 55,
+          "size": 1015,
+          "codepoint": 57349,
+          "units": 2000
+        },
+        {
+          "value": -7,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 151,
+          "size": 1015,
+          "codepoint": 57350,
+          "units": 2000
+        },
+        {
+          "value": -7,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 151,
+          "size": 1015,
+          "codepoint": 57351,
+          "units": 2000
+        },
+        {
+          "value": 125,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 151,
+          "size": 1015,
+          "codepoint": 57352,
+          "units": 2000
+        },
+        {
+          "value": 125,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 151,
+          "size": 1015,
+          "codepoint": 57353,
+          "units": 2000
+        },
+        {
+          "value": -125,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 151,
+          "size": 1015,
+          "codepoint": 57354,
+          "units": 2000
+        },
+        {
+          "value": -125,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 151,
+          "size": 1015,
+          "codepoint": 57355,
+          "units": 2000
+        },
+        {
+          "value": 375,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 247,
+          "size": 1015,
+          "codepoint": 57356,
+          "units": 2000
+        },
+        {
+          "value": 375,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 247,
+          "size": 1015,
+          "codepoint": 57357,
+          "units": 2000
+        },
+        {
+          "value": -375,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 247,
+          "size": 1015,
+          "codepoint": 57358,
+          "units": 2000
+        },
+        {
+          "value": -375,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 247,
+          "size": 1015,
+          "codepoint": 57359,
+          "units": 2000
+        },
+        {
+          "value": 961,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 247,
+          "size": 1015,
+          "codepoint": 57360,
+          "units": 2000
+        },
+        {
+          "value": 961,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 247,
+          "size": 1015,
+          "codepoint": 57361,
+          "units": 2000
+        },
+        {
+          "value": -961,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 343,
+          "size": 1015,
+          "codepoint": 57362,
+          "units": 2000
+        },
+        {
+          "value": -961,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 343,
+          "size": 1015,
+          "codepoint": 57363,
+          "units": 2000
+        },
+        {
+          "value": 2375,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 343,
+          "size": 1015,
+          "codepoint": 57364,
+          "units": 2000
+        },
+        {
+          "value": 2375,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 343,
+          "size": 1015,
+          "codepoint": 57365,
+          "units": 2000
+        },
+        {
+          "value": -2375,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 343,
+          "size": 1015,
+          "codepoint": 57366,
+          "units": 2000
+        },
+        {
+          "value": -2375,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 343,
+          "size": 1015,
+          "codepoint": 57367,
+          "units": 2000
+        },
+        {
+          "value": 15936,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 439,
+          "size": 1015,
+          "codepoint": 57368,
+          "units": 2000
+        },
+        {
+          "value": 15936,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 439,
+          "size": 1015,
+          "codepoint": 57369,
+          "units": 2000
+        },
+        {
+          "value": -15936,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 439,
+          "size": 1015,
+          "codepoint": 57370,
+          "units": 2000
+        },
+        {
+          "value": -15936,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 439,
+          "size": 1015,
+          "codepoint": 57371,
+          "units": 2000
+        },
+        {
+          "value": 32749,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 439,
+          "size": 1015,
+          "codepoint": 57372,
+          "units": 2000
+        },
+        {
+          "value": 32749,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 439,
+          "size": 1015,
+          "codepoint": 57373,
+          "units": 2000
+        },
+        {
+          "value": -32749,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 535,
+          "size": 1015,
+          "codepoint": 57374,
+          "units": 2000
+        },
+        {
+          "value": -32749,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 535,
+          "size": 1015,
+          "codepoint": 57375,
+          "units": 2000
+        },
+        {
+          "value": 131071,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 535,
+          "size": 1015,
+          "codepoint": 57376,
+          "units": 2000
+        },
+        {
+          "value": 131071,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 535,
+          "size": 1015,
+          "codepoint": 57377,
+          "units": 2000
+        },
+        {
+          "value": -131071,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 535,
+          "size": 1015,
+          "codepoint": 57378,
+          "units": 2000
+        },
+        {
+          "value": -131071,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 535,
+          "size": 1015,
+          "codepoint": 57379,
+          "units": 2000
+        },
+        {
+          "value": 132104,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 631,
+          "size": 1015,
+          "codepoint": 57380,
+          "units": 2000
+        },
+        {
+          "value": 132104,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 631,
+          "size": 1015,
+          "codepoint": 57381,
+          "units": 2000
+        },
+        {
+          "value": -132104,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 631,
+          "size": 1015,
+          "codepoint": 57382,
+          "units": 2000
+        },
+        {
+          "value": -132104,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 631,
+          "size": 1015,
+          "codepoint": 57383,
+          "units": 2000
+        },
+        {
+          "value": 132105,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 631,
+          "size": 1015,
+          "codepoint": 57384,
+          "units": 2000
+        },
+        {
+          "value": 132105,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 631,
+          "size": 1015,
+          "codepoint": 57385,
+          "units": 2000
+        },
+        {
+          "value": -132105,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 727,
+          "size": 1015,
+          "codepoint": 57386,
+          "units": 2000
+        },
+        {
+          "value": -132105,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 727,
+          "size": 1015,
+          "codepoint": 57387,
+          "units": 2000
+        },
+        {
+          "value": 250125,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 727,
+          "size": 1015,
+          "codepoint": 57388,
+          "units": 2000
+        },
+        {
+          "value": 250125,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 727,
+          "size": 1015,
+          "codepoint": 57389,
+          "units": 2000
+        },
+        {
+          "value": -250125,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 727,
+          "size": 1015,
+          "codepoint": 57390,
+          "units": 2000
+        },
+        {
+          "value": -250125,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 727,
+          "size": 1015,
+          "codepoint": 57391,
+          "units": 2000
+        }
+      ]
+    },
+    {
+      "name": "2001-00-factor-127",
+      "source": "2001/00-factor-127.zpl",
+      "sha256": "36904f2e7facec5bdd5460f172eb838f3e20a99b52b4f4f164c5c2a571379c87",
+      "dimensions": [
+        832,
+        832
+      ],
+      "probes": [
+        {
+          "value": 1,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 55,
+          "size": 127,
+          "codepoint": 57344,
+          "units": 2001
+        },
+        {
+          "value": 1,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 55,
+          "size": 127,
+          "codepoint": 57345,
+          "units": 2001
+        },
+        {
+          "value": -1,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 55,
+          "size": 127,
+          "codepoint": 57346,
+          "units": 2001
+        },
+        {
+          "value": -1,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 55,
+          "size": 127,
+          "codepoint": 57347,
+          "units": 2001
+        },
+        {
+          "value": 7,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 55,
+          "size": 127,
+          "codepoint": 57348,
+          "units": 2001
+        },
+        {
+          "value": 7,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 55,
+          "size": 127,
+          "codepoint": 57349,
+          "units": 2001
+        },
+        {
+          "value": -7,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 151,
+          "size": 127,
+          "codepoint": 57350,
+          "units": 2001
+        },
+        {
+          "value": -7,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 151,
+          "size": 127,
+          "codepoint": 57351,
+          "units": 2001
+        },
+        {
+          "value": 125,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 151,
+          "size": 127,
+          "codepoint": 57352,
+          "units": 2001
+        },
+        {
+          "value": 125,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 151,
+          "size": 127,
+          "codepoint": 57353,
+          "units": 2001
+        },
+        {
+          "value": -125,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 151,
+          "size": 127,
+          "codepoint": 57354,
+          "units": 2001
+        },
+        {
+          "value": -125,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 151,
+          "size": 127,
+          "codepoint": 57355,
+          "units": 2001
+        },
+        {
+          "value": 375,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 247,
+          "size": 127,
+          "codepoint": 57356,
+          "units": 2001
+        },
+        {
+          "value": 375,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 247,
+          "size": 127,
+          "codepoint": 57357,
+          "units": 2001
+        },
+        {
+          "value": -375,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 247,
+          "size": 127,
+          "codepoint": 57358,
+          "units": 2001
+        },
+        {
+          "value": -375,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 247,
+          "size": 127,
+          "codepoint": 57359,
+          "units": 2001
+        },
+        {
+          "value": 961,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 247,
+          "size": 127,
+          "codepoint": 57360,
+          "units": 2001
+        },
+        {
+          "value": 961,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 247,
+          "size": 127,
+          "codepoint": 57361,
+          "units": 2001
+        },
+        {
+          "value": -961,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 343,
+          "size": 127,
+          "codepoint": 57362,
+          "units": 2001
+        },
+        {
+          "value": -961,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 343,
+          "size": 127,
+          "codepoint": 57363,
+          "units": 2001
+        },
+        {
+          "value": 2375,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 343,
+          "size": 127,
+          "codepoint": 57364,
+          "units": 2001
+        },
+        {
+          "value": 2375,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 343,
+          "size": 127,
+          "codepoint": 57365,
+          "units": 2001
+        },
+        {
+          "value": -2375,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 343,
+          "size": 127,
+          "codepoint": 57366,
+          "units": 2001
+        },
+        {
+          "value": -2375,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 343,
+          "size": 127,
+          "codepoint": 57367,
+          "units": 2001
+        },
+        {
+          "value": 15936,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 439,
+          "size": 127,
+          "codepoint": 57368,
+          "units": 2001
+        },
+        {
+          "value": 15936,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 439,
+          "size": 127,
+          "codepoint": 57369,
+          "units": 2001
+        },
+        {
+          "value": -15936,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 439,
+          "size": 127,
+          "codepoint": 57370,
+          "units": 2001
+        },
+        {
+          "value": -15936,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 439,
+          "size": 127,
+          "codepoint": 57371,
+          "units": 2001
+        },
+        {
+          "value": 32749,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 439,
+          "size": 127,
+          "codepoint": 57372,
+          "units": 2001
+        },
+        {
+          "value": 32749,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 439,
+          "size": 127,
+          "codepoint": 57373,
+          "units": 2001
+        },
+        {
+          "value": -32749,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 535,
+          "size": 127,
+          "codepoint": 57374,
+          "units": 2001
+        },
+        {
+          "value": -32749,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 535,
+          "size": 127,
+          "codepoint": 57375,
+          "units": 2001
+        },
+        {
+          "value": 131071,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 535,
+          "size": 127,
+          "codepoint": 57376,
+          "units": 2001
+        },
+        {
+          "value": 131071,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 535,
+          "size": 127,
+          "codepoint": 57377,
+          "units": 2001
+        },
+        {
+          "value": -131071,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 535,
+          "size": 127,
+          "codepoint": 57378,
+          "units": 2001
+        },
+        {
+          "value": -131071,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 535,
+          "size": 127,
+          "codepoint": 57379,
+          "units": 2001
+        },
+        {
+          "value": 132104,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 631,
+          "size": 127,
+          "codepoint": 57380,
+          "units": 2001
+        },
+        {
+          "value": 132104,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 631,
+          "size": 127,
+          "codepoint": 57381,
+          "units": 2001
+        },
+        {
+          "value": -132104,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 631,
+          "size": 127,
+          "codepoint": 57382,
+          "units": 2001
+        },
+        {
+          "value": -132104,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 631,
+          "size": 127,
+          "codepoint": 57383,
+          "units": 2001
+        },
+        {
+          "value": 132105,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 631,
+          "size": 127,
+          "codepoint": 57384,
+          "units": 2001
+        },
+        {
+          "value": 132105,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 631,
+          "size": 127,
+          "codepoint": 57385,
+          "units": 2001
+        },
+        {
+          "value": -132105,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 727,
+          "size": 127,
+          "codepoint": 57386,
+          "units": 2001
+        },
+        {
+          "value": -132105,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 727,
+          "size": 127,
+          "codepoint": 57387,
+          "units": 2001
+        },
+        {
+          "value": 250125,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 727,
+          "size": 127,
+          "codepoint": 57388,
+          "units": 2001
+        },
+        {
+          "value": 250125,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 727,
+          "size": 127,
+          "codepoint": 57389,
+          "units": 2001
+        },
+        {
+          "value": -250125,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 727,
+          "size": 127,
+          "codepoint": 57390,
+          "units": 2001
+        },
+        {
+          "value": -250125,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 727,
+          "size": 127,
+          "codepoint": 57391,
+          "units": 2001
+        }
+      ]
+    },
+    {
+      "name": "2001-01-factor-1015",
+      "source": "2001/01-factor-1015.zpl",
+      "sha256": "af024c96148982eff0813628e58cac795103ccf888f8c4507ac1d53e798f19f3",
+      "dimensions": [
+        832,
+        832
+      ],
+      "probes": [
+        {
+          "value": 1,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 55,
+          "size": 1015,
+          "codepoint": 57344,
+          "units": 2001
+        },
+        {
+          "value": 1,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 55,
+          "size": 1015,
+          "codepoint": 57345,
+          "units": 2001
+        },
+        {
+          "value": -1,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 55,
+          "size": 1015,
+          "codepoint": 57346,
+          "units": 2001
+        },
+        {
+          "value": -1,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 55,
+          "size": 1015,
+          "codepoint": 57347,
+          "units": 2001
+        },
+        {
+          "value": 7,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 55,
+          "size": 1015,
+          "codepoint": 57348,
+          "units": 2001
+        },
+        {
+          "value": 7,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 55,
+          "size": 1015,
+          "codepoint": 57349,
+          "units": 2001
+        },
+        {
+          "value": -7,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 151,
+          "size": 1015,
+          "codepoint": 57350,
+          "units": 2001
+        },
+        {
+          "value": -7,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 151,
+          "size": 1015,
+          "codepoint": 57351,
+          "units": 2001
+        },
+        {
+          "value": 125,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 151,
+          "size": 1015,
+          "codepoint": 57352,
+          "units": 2001
+        },
+        {
+          "value": 125,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 151,
+          "size": 1015,
+          "codepoint": 57353,
+          "units": 2001
+        },
+        {
+          "value": -125,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 151,
+          "size": 1015,
+          "codepoint": 57354,
+          "units": 2001
+        },
+        {
+          "value": -125,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 151,
+          "size": 1015,
+          "codepoint": 57355,
+          "units": 2001
+        },
+        {
+          "value": 375,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 247,
+          "size": 1015,
+          "codepoint": 57356,
+          "units": 2001
+        },
+        {
+          "value": 375,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 247,
+          "size": 1015,
+          "codepoint": 57357,
+          "units": 2001
+        },
+        {
+          "value": -375,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 247,
+          "size": 1015,
+          "codepoint": 57358,
+          "units": 2001
+        },
+        {
+          "value": -375,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 247,
+          "size": 1015,
+          "codepoint": 57359,
+          "units": 2001
+        },
+        {
+          "value": 961,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 247,
+          "size": 1015,
+          "codepoint": 57360,
+          "units": 2001
+        },
+        {
+          "value": 961,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 247,
+          "size": 1015,
+          "codepoint": 57361,
+          "units": 2001
+        },
+        {
+          "value": -961,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 343,
+          "size": 1015,
+          "codepoint": 57362,
+          "units": 2001
+        },
+        {
+          "value": -961,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 343,
+          "size": 1015,
+          "codepoint": 57363,
+          "units": 2001
+        },
+        {
+          "value": 2375,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 343,
+          "size": 1015,
+          "codepoint": 57364,
+          "units": 2001
+        },
+        {
+          "value": 2375,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 343,
+          "size": 1015,
+          "codepoint": 57365,
+          "units": 2001
+        },
+        {
+          "value": -2375,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 343,
+          "size": 1015,
+          "codepoint": 57366,
+          "units": 2001
+        },
+        {
+          "value": -2375,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 343,
+          "size": 1015,
+          "codepoint": 57367,
+          "units": 2001
+        },
+        {
+          "value": 15936,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 439,
+          "size": 1015,
+          "codepoint": 57368,
+          "units": 2001
+        },
+        {
+          "value": 15936,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 439,
+          "size": 1015,
+          "codepoint": 57369,
+          "units": 2001
+        },
+        {
+          "value": -15936,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 439,
+          "size": 1015,
+          "codepoint": 57370,
+          "units": 2001
+        },
+        {
+          "value": -15936,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 439,
+          "size": 1015,
+          "codepoint": 57371,
+          "units": 2001
+        },
+        {
+          "value": 32749,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 439,
+          "size": 1015,
+          "codepoint": 57372,
+          "units": 2001
+        },
+        {
+          "value": 32749,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 439,
+          "size": 1015,
+          "codepoint": 57373,
+          "units": 2001
+        },
+        {
+          "value": -32749,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 535,
+          "size": 1015,
+          "codepoint": 57374,
+          "units": 2001
+        },
+        {
+          "value": -32749,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 535,
+          "size": 1015,
+          "codepoint": 57375,
+          "units": 2001
+        },
+        {
+          "value": 131071,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 535,
+          "size": 1015,
+          "codepoint": 57376,
+          "units": 2001
+        },
+        {
+          "value": 131071,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 535,
+          "size": 1015,
+          "codepoint": 57377,
+          "units": 2001
+        },
+        {
+          "value": -131071,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 535,
+          "size": 1015,
+          "codepoint": 57378,
+          "units": 2001
+        },
+        {
+          "value": -131071,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 535,
+          "size": 1015,
+          "codepoint": 57379,
+          "units": 2001
+        },
+        {
+          "value": 132104,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 631,
+          "size": 1015,
+          "codepoint": 57380,
+          "units": 2001
+        },
+        {
+          "value": 132104,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 631,
+          "size": 1015,
+          "codepoint": 57381,
+          "units": 2001
+        },
+        {
+          "value": -132104,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 631,
+          "size": 1015,
+          "codepoint": 57382,
+          "units": 2001
+        },
+        {
+          "value": -132104,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 631,
+          "size": 1015,
+          "codepoint": 57383,
+          "units": 2001
+        },
+        {
+          "value": 132105,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 631,
+          "size": 1015,
+          "codepoint": 57384,
+          "units": 2001
+        },
+        {
+          "value": 132105,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 631,
+          "size": 1015,
+          "codepoint": 57385,
+          "units": 2001
+        },
+        {
+          "value": -132105,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 727,
+          "size": 1015,
+          "codepoint": 57386,
+          "units": 2001
+        },
+        {
+          "value": -132105,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 727,
+          "size": 1015,
+          "codepoint": 57387,
+          "units": 2001
+        },
+        {
+          "value": 250125,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 727,
+          "size": 1015,
+          "codepoint": 57388,
+          "units": 2001
+        },
+        {
+          "value": 250125,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 727,
+          "size": 1015,
+          "codepoint": 57389,
+          "units": 2001
+        },
+        {
+          "value": -250125,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 727,
+          "size": 1015,
+          "codepoint": 57390,
+          "units": 2001
+        },
+        {
+          "value": -250125,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 727,
+          "size": 1015,
+          "codepoint": 57391,
+          "units": 2001
+        }
+      ]
+    },
+    {
+      "name": "2048-00-factor-127",
+      "source": "2048/00-factor-127.zpl",
+      "sha256": "5be9fba085f5d3ff109c565aa2213ad771ee4cc9cf89ba6135694ab15162950d",
+      "dimensions": [
+        832,
+        832
+      ],
+      "probes": [
+        {
+          "value": 1,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 55,
+          "size": 127,
+          "codepoint": 57344,
+          "units": 2048
+        },
+        {
+          "value": 1,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 55,
+          "size": 127,
+          "codepoint": 57345,
+          "units": 2048
+        },
+        {
+          "value": -1,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 55,
+          "size": 127,
+          "codepoint": 57346,
+          "units": 2048
+        },
+        {
+          "value": -1,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 55,
+          "size": 127,
+          "codepoint": 57347,
+          "units": 2048
+        },
+        {
+          "value": 7,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 55,
+          "size": 127,
+          "codepoint": 57348,
+          "units": 2048
+        },
+        {
+          "value": 7,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 55,
+          "size": 127,
+          "codepoint": 57349,
+          "units": 2048
+        },
+        {
+          "value": -7,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 151,
+          "size": 127,
+          "codepoint": 57350,
+          "units": 2048
+        },
+        {
+          "value": -7,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 151,
+          "size": 127,
+          "codepoint": 57351,
+          "units": 2048
+        },
+        {
+          "value": 125,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 151,
+          "size": 127,
+          "codepoint": 57352,
+          "units": 2048
+        },
+        {
+          "value": 125,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 151,
+          "size": 127,
+          "codepoint": 57353,
+          "units": 2048
+        },
+        {
+          "value": -125,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 151,
+          "size": 127,
+          "codepoint": 57354,
+          "units": 2048
+        },
+        {
+          "value": -125,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 151,
+          "size": 127,
+          "codepoint": 57355,
+          "units": 2048
+        },
+        {
+          "value": 375,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 247,
+          "size": 127,
+          "codepoint": 57356,
+          "units": 2048
+        },
+        {
+          "value": 375,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 247,
+          "size": 127,
+          "codepoint": 57357,
+          "units": 2048
+        },
+        {
+          "value": -375,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 247,
+          "size": 127,
+          "codepoint": 57358,
+          "units": 2048
+        },
+        {
+          "value": -375,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 247,
+          "size": 127,
+          "codepoint": 57359,
+          "units": 2048
+        },
+        {
+          "value": 961,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 247,
+          "size": 127,
+          "codepoint": 57360,
+          "units": 2048
+        },
+        {
+          "value": 961,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 247,
+          "size": 127,
+          "codepoint": 57361,
+          "units": 2048
+        },
+        {
+          "value": -961,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 343,
+          "size": 127,
+          "codepoint": 57362,
+          "units": 2048
+        },
+        {
+          "value": -961,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 343,
+          "size": 127,
+          "codepoint": 57363,
+          "units": 2048
+        },
+        {
+          "value": 2375,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 343,
+          "size": 127,
+          "codepoint": 57364,
+          "units": 2048
+        },
+        {
+          "value": 2375,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 343,
+          "size": 127,
+          "codepoint": 57365,
+          "units": 2048
+        },
+        {
+          "value": -2375,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 343,
+          "size": 127,
+          "codepoint": 57366,
+          "units": 2048
+        },
+        {
+          "value": -2375,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 343,
+          "size": 127,
+          "codepoint": 57367,
+          "units": 2048
+        },
+        {
+          "value": 15936,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 439,
+          "size": 127,
+          "codepoint": 57368,
+          "units": 2048
+        },
+        {
+          "value": 15936,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 439,
+          "size": 127,
+          "codepoint": 57369,
+          "units": 2048
+        },
+        {
+          "value": -15936,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 439,
+          "size": 127,
+          "codepoint": 57370,
+          "units": 2048
+        },
+        {
+          "value": -15936,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 439,
+          "size": 127,
+          "codepoint": 57371,
+          "units": 2048
+        },
+        {
+          "value": 32749,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 439,
+          "size": 127,
+          "codepoint": 57372,
+          "units": 2048
+        },
+        {
+          "value": 32749,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 439,
+          "size": 127,
+          "codepoint": 57373,
+          "units": 2048
+        },
+        {
+          "value": -32749,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 535,
+          "size": 127,
+          "codepoint": 57374,
+          "units": 2048
+        },
+        {
+          "value": -32749,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 535,
+          "size": 127,
+          "codepoint": 57375,
+          "units": 2048
+        },
+        {
+          "value": 131071,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 535,
+          "size": 127,
+          "codepoint": 57376,
+          "units": 2048
+        },
+        {
+          "value": 131071,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 535,
+          "size": 127,
+          "codepoint": 57377,
+          "units": 2048
+        },
+        {
+          "value": -131071,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 535,
+          "size": 127,
+          "codepoint": 57378,
+          "units": 2048
+        },
+        {
+          "value": -131071,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 535,
+          "size": 127,
+          "codepoint": 57379,
+          "units": 2048
+        },
+        {
+          "value": 132104,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 631,
+          "size": 127,
+          "codepoint": 57380,
+          "units": 2048
+        },
+        {
+          "value": 132104,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 631,
+          "size": 127,
+          "codepoint": 57381,
+          "units": 2048
+        },
+        {
+          "value": -132104,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 631,
+          "size": 127,
+          "codepoint": 57382,
+          "units": 2048
+        },
+        {
+          "value": -132104,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 631,
+          "size": 127,
+          "codepoint": 57383,
+          "units": 2048
+        },
+        {
+          "value": 132105,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 631,
+          "size": 127,
+          "codepoint": 57384,
+          "units": 2048
+        },
+        {
+          "value": 132105,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 631,
+          "size": 127,
+          "codepoint": 57385,
+          "units": 2048
+        },
+        {
+          "value": -132105,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 727,
+          "size": 127,
+          "codepoint": 57386,
+          "units": 2048
+        },
+        {
+          "value": -132105,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 727,
+          "size": 127,
+          "codepoint": 57387,
+          "units": 2048
+        },
+        {
+          "value": 250125,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 727,
+          "size": 127,
+          "codepoint": 57388,
+          "units": 2048
+        },
+        {
+          "value": 250125,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 727,
+          "size": 127,
+          "codepoint": 57389,
+          "units": 2048
+        },
+        {
+          "value": -250125,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 727,
+          "size": 127,
+          "codepoint": 57390,
+          "units": 2048
+        },
+        {
+          "value": -250125,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 727,
+          "size": 127,
+          "codepoint": 57391,
+          "units": 2048
+        }
+      ]
+    },
+    {
+      "name": "2048-01-factor-1015",
+      "source": "2048/01-factor-1015.zpl",
+      "sha256": "819d84feff26c84fe23e0fbccbccd9a7dd4ff26552280084e9e319962b4ffc5f",
+      "dimensions": [
+        832,
+        832
+      ],
+      "probes": [
+        {
+          "value": 1,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 55,
+          "size": 1015,
+          "codepoint": 57344,
+          "units": 2048
+        },
+        {
+          "value": 1,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 55,
+          "size": 1015,
+          "codepoint": 57345,
+          "units": 2048
+        },
+        {
+          "value": -1,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 55,
+          "size": 1015,
+          "codepoint": 57346,
+          "units": 2048
+        },
+        {
+          "value": -1,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 55,
+          "size": 1015,
+          "codepoint": 57347,
+          "units": 2048
+        },
+        {
+          "value": 7,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 55,
+          "size": 1015,
+          "codepoint": 57348,
+          "units": 2048
+        },
+        {
+          "value": 7,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 55,
+          "size": 1015,
+          "codepoint": 57349,
+          "units": 2048
+        },
+        {
+          "value": -7,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 151,
+          "size": 1015,
+          "codepoint": 57350,
+          "units": 2048
+        },
+        {
+          "value": -7,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 151,
+          "size": 1015,
+          "codepoint": 57351,
+          "units": 2048
+        },
+        {
+          "value": 125,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 151,
+          "size": 1015,
+          "codepoint": 57352,
+          "units": 2048
+        },
+        {
+          "value": 125,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 151,
+          "size": 1015,
+          "codepoint": 57353,
+          "units": 2048
+        },
+        {
+          "value": -125,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 151,
+          "size": 1015,
+          "codepoint": 57354,
+          "units": 2048
+        },
+        {
+          "value": -125,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 151,
+          "size": 1015,
+          "codepoint": 57355,
+          "units": 2048
+        },
+        {
+          "value": 375,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 247,
+          "size": 1015,
+          "codepoint": 57356,
+          "units": 2048
+        },
+        {
+          "value": 375,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 247,
+          "size": 1015,
+          "codepoint": 57357,
+          "units": 2048
+        },
+        {
+          "value": -375,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 247,
+          "size": 1015,
+          "codepoint": 57358,
+          "units": 2048
+        },
+        {
+          "value": -375,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 247,
+          "size": 1015,
+          "codepoint": 57359,
+          "units": 2048
+        },
+        {
+          "value": 961,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 247,
+          "size": 1015,
+          "codepoint": 57360,
+          "units": 2048
+        },
+        {
+          "value": 961,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 247,
+          "size": 1015,
+          "codepoint": 57361,
+          "units": 2048
+        },
+        {
+          "value": -961,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 343,
+          "size": 1015,
+          "codepoint": 57362,
+          "units": 2048
+        },
+        {
+          "value": -961,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 343,
+          "size": 1015,
+          "codepoint": 57363,
+          "units": 2048
+        },
+        {
+          "value": 2375,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 343,
+          "size": 1015,
+          "codepoint": 57364,
+          "units": 2048
+        },
+        {
+          "value": 2375,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 343,
+          "size": 1015,
+          "codepoint": 57365,
+          "units": 2048
+        },
+        {
+          "value": -2375,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 343,
+          "size": 1015,
+          "codepoint": 57366,
+          "units": 2048
+        },
+        {
+          "value": -2375,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 343,
+          "size": 1015,
+          "codepoint": 57367,
+          "units": 2048
+        },
+        {
+          "value": 15936,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 439,
+          "size": 1015,
+          "codepoint": 57368,
+          "units": 2048
+        },
+        {
+          "value": 15936,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 439,
+          "size": 1015,
+          "codepoint": 57369,
+          "units": 2048
+        },
+        {
+          "value": -15936,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 439,
+          "size": 1015,
+          "codepoint": 57370,
+          "units": 2048
+        },
+        {
+          "value": -15936,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 439,
+          "size": 1015,
+          "codepoint": 57371,
+          "units": 2048
+        },
+        {
+          "value": 32749,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 439,
+          "size": 1015,
+          "codepoint": 57372,
+          "units": 2048
+        },
+        {
+          "value": 32749,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 439,
+          "size": 1015,
+          "codepoint": 57373,
+          "units": 2048
+        },
+        {
+          "value": -32749,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 535,
+          "size": 1015,
+          "codepoint": 57374,
+          "units": 2048
+        },
+        {
+          "value": -32749,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 535,
+          "size": 1015,
+          "codepoint": 57375,
+          "units": 2048
+        },
+        {
+          "value": 131071,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 535,
+          "size": 1015,
+          "codepoint": 57376,
+          "units": 2048
+        },
+        {
+          "value": 131071,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 535,
+          "size": 1015,
+          "codepoint": 57377,
+          "units": 2048
+        },
+        {
+          "value": -131071,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 535,
+          "size": 1015,
+          "codepoint": 57378,
+          "units": 2048
+        },
+        {
+          "value": -131071,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 535,
+          "size": 1015,
+          "codepoint": 57379,
+          "units": 2048
+        },
+        {
+          "value": 132104,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 631,
+          "size": 1015,
+          "codepoint": 57380,
+          "units": 2048
+        },
+        {
+          "value": 132104,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 631,
+          "size": 1015,
+          "codepoint": 57381,
+          "units": 2048
+        },
+        {
+          "value": -132104,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 631,
+          "size": 1015,
+          "codepoint": 57382,
+          "units": 2048
+        },
+        {
+          "value": -132104,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 631,
+          "size": 1015,
+          "codepoint": 57383,
+          "units": 2048
+        },
+        {
+          "value": 132105,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 631,
+          "size": 1015,
+          "codepoint": 57384,
+          "units": 2048
+        },
+        {
+          "value": 132105,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 631,
+          "size": 1015,
+          "codepoint": 57385,
+          "units": 2048
+        },
+        {
+          "value": -132105,
+          "variant": "wcvf",
+          "x": 8,
+          "y": 727,
+          "size": 1015,
+          "codepoint": 57386,
+          "units": 2048
+        },
+        {
+          "value": -132105,
+          "variant": "wcvf_repeat",
+          "x": 145,
+          "y": 727,
+          "size": 1015,
+          "codepoint": 57387,
+          "units": 2048
+        },
+        {
+          "value": 250125,
+          "variant": "wcvf",
+          "x": 282,
+          "y": 727,
+          "size": 1015,
+          "codepoint": 57388,
+          "units": 2048
+        },
+        {
+          "value": 250125,
+          "variant": "wcvf_repeat",
+          "x": 419,
+          "y": 727,
+          "size": 1015,
+          "codepoint": 57389,
+          "units": 2048
+        },
+        {
+          "value": -250125,
+          "variant": "wcvf",
+          "x": 556,
+          "y": 727,
+          "size": 1015,
+          "codepoint": 57390,
+          "units": 2048
+        },
+        {
+          "value": -250125,
+          "variant": "wcvf_repeat",
+          "x": 693,
+          "y": 727,
+          "size": 1015,
+          "codepoint": 57391,
+          "units": 2048
+        }
+      ]
+    }
+  ],
+  "bar_offset": 64
+}

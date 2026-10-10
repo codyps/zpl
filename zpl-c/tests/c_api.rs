@@ -24,7 +24,7 @@ fn run(command: &mut Command) {
 fn check_consumer(source: &str, cpp: bool, example: bool) {
     // Referencing the Rust library also makes the native library build dependency
     // explicit. No nested Cargo invocation or shared-target lock is needed.
-    assert_eq!(zpl_c::zpl_abi_version(), 1);
+    assert_eq!(zpl_c::zpl_abi_version(), 2);
     let crate_dir = Path::new(env!("CARGO_MANIFEST_DIR"));
     let deps = std::env::current_exe()
         .unwrap()
