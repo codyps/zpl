@@ -28,6 +28,15 @@ The [Release-plz workflow](../.github/workflows/release-plz.yml) runs on pushes 
 `raster-diff`, `zpl-bitmap-fonts`, and `zpl` are publishable and managed by
 release-plz. The empty `zplkit` 0.0.0 placeholder is published separately and
 explicitly excluded from release-plz; it does not implement the Python bindings.
+The binding names [`zpl-wasm`](https://crates.io/crates/zpl-wasm),
+[`zpl-c`](https://crates.io/crates/zpl-c), and
+[`zpl-elixir`](https://crates.io/crates/zpl-elixir) also have one-off empty 0.0.0
+placeholders published separately. These expose no API and contain none of the
+binding implementations. The implemented workspace crates keep `publish = false`
+and remain excluded from automated crates.io releases. The registry treats the
+Elixir crate's hyphenated name and its workspace spelling `zpl_elixir` as the
+same crate name.
+
 The remaining workspace packages set `publish = false`. Release-plz
 derives dependency order and publishes the raster and bitmap-font dependencies
 before `zpl`. Tags and GitHub releases use `<crate>-v<version>`.
@@ -332,8 +341,8 @@ merging. Custom version-regex/release-commit policies require updating the helpe
 it fails visibly instead of silently applying a different binding policy.
 
 The C binding is available in the repository source archive for `zpl-v<version>`;
-there is currently no prebuilt C library upload or crates.io publication for
-`zpl-c`. Build and distribute its matching headers and library as described in
+there is currently no prebuilt C library upload or implemented C binding on
+crates.io. The `zpl-c` 0.0.0 registry package is only an empty placeholder. Build and distribute its matching headers and library as described in
 the [C API guide](../zpl-c/README.md). Package version alignment does not change
 the separate C ABI version.
 
