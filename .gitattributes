@@ -1,3 +1,9 @@
 # Preserve checked-in bytes on every platform, including raw ZPL streams and
 # hash-verified capture fixtures. Do not let core.autocrlf rewrite them.
 * -text
+
+# Collapse generated Go binding artifacts in GitHub diffs. Keep the generation
+# manifest visible for review of tool versions and artifact hashes.
+# https://github.com/github-linguist/linguist/blob/main/docs/overrides.md#generated-code
+zpl-go/guest.wasm linguist-generated=true
+zpl-go/internal/translated/** linguist-generated=true

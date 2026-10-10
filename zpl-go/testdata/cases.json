@@ -1,0 +1,1592 @@
+[
+  {
+    "Name": "boxes-p0-f0",
+    "Input": "inputs/boxes.zpl",
+    "Format": 0,
+    "Profile": 0,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "4ca854a1b123cb81d0c18fafcb46d46118880bcb486b79a4361db0a70ee3d94a"
+  },
+  {
+    "Name": "boxes-p0-f1",
+    "Input": "inputs/boxes.zpl",
+    "Format": 1,
+    "Profile": 0,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "44e5721d2397214020c2a397d14c383f878f381b11121828b2b738f6fae9400d"
+  },
+  {
+    "Name": "boxes-p0-f2",
+    "Input": "inputs/boxes.zpl",
+    "Format": 2,
+    "Profile": 0,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "4fb4c938dc435eadfd4260441a0a8a388f8d6227ee8ab8e2066deddc2185053f"
+  },
+  {
+    "Name": "boxes-p0-f3",
+    "Input": "inputs/boxes.zpl",
+    "Format": 3,
+    "Profile": 0,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "efc6c274a9ba14c4f6bf381bf61525b223a5acee5cf19c56ad2637cd941d1228"
+  },
+  {
+    "Name": "boxes-p1-f0",
+    "Input": "inputs/boxes.zpl",
+    "Format": 0,
+    "Profile": 1,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "4ca854a1b123cb81d0c18fafcb46d46118880bcb486b79a4361db0a70ee3d94a"
+  },
+  {
+    "Name": "boxes-p1-f1",
+    "Input": "inputs/boxes.zpl",
+    "Format": 1,
+    "Profile": 1,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "44e5721d2397214020c2a397d14c383f878f381b11121828b2b738f6fae9400d"
+  },
+  {
+    "Name": "boxes-p1-f2",
+    "Input": "inputs/boxes.zpl",
+    "Format": 2,
+    "Profile": 1,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "4fb4c938dc435eadfd4260441a0a8a388f8d6227ee8ab8e2066deddc2185053f"
+  },
+  {
+    "Name": "boxes-p1-f3",
+    "Input": "inputs/boxes.zpl",
+    "Format": 3,
+    "Profile": 1,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "efc6c274a9ba14c4f6bf381bf61525b223a5acee5cf19c56ad2637cd941d1228"
+  },
+  {
+    "Name": "boxes-p2-f0",
+    "Input": "inputs/boxes.zpl",
+    "Format": 0,
+    "Profile": 2,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "f49a16ea3ca718ec7d005f51b57191144e34eeb4f6f771afd398cad678e0c4fd"
+  },
+  {
+    "Name": "boxes-p2-f1",
+    "Input": "inputs/boxes.zpl",
+    "Format": 1,
+    "Profile": 2,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "4095fc038d5cb2b862d93d2b8dc9eaf8a12b2829a8d6275ccd57c5dc6c57f25d"
+  },
+  {
+    "Name": "boxes-p2-f2",
+    "Input": "inputs/boxes.zpl",
+    "Format": 2,
+    "Profile": 2,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "14c03fd056b4a81e92606ad292fd8be10e75b0a26d904fdec942479ef131649f"
+  },
+  {
+    "Name": "boxes-p2-f3",
+    "Input": "inputs/boxes.zpl",
+    "Format": 3,
+    "Profile": 2,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "6e7d2410c6681a034c1f0b1bee04f19eb7cf607fd863897676efc58fcb5e8a60"
+  },
+  {
+    "Name": "text-p0-f0",
+    "Input": "inputs/text.zpl",
+    "Format": 0,
+    "Profile": 0,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "1e828fea02dbb4d8dd24fa04a7cd04aed2f9200a7224b0f9493dec49f366d020"
+  },
+  {
+    "Name": "text-p0-f1",
+    "Input": "inputs/text.zpl",
+    "Format": 1,
+    "Profile": 0,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "bde7c8643e45fb214fde7603f1fb18310bd3b76fbece9cb060547cfb9563d099"
+  },
+  {
+    "Name": "text-p0-f2",
+    "Input": "inputs/text.zpl",
+    "Format": 2,
+    "Profile": 0,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "cd818c83a40a60c0bfe62f010cd5965b49571f5ca5a1382da85863188c0eb96b"
+  },
+  {
+    "Name": "text-p0-f3",
+    "Input": "inputs/text.zpl",
+    "Format": 3,
+    "Profile": 0,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "fe51de57b809e2174c7b22f4677ad67d07233727732b2dd1dc60382259f9f134"
+  },
+  {
+    "Name": "text-p1-f0",
+    "Input": "inputs/text.zpl",
+    "Format": 0,
+    "Profile": 1,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "1e828fea02dbb4d8dd24fa04a7cd04aed2f9200a7224b0f9493dec49f366d020"
+  },
+  {
+    "Name": "text-p1-f1",
+    "Input": "inputs/text.zpl",
+    "Format": 1,
+    "Profile": 1,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "bde7c8643e45fb214fde7603f1fb18310bd3b76fbece9cb060547cfb9563d099"
+  },
+  {
+    "Name": "text-p1-f2",
+    "Input": "inputs/text.zpl",
+    "Format": 2,
+    "Profile": 1,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "cd818c83a40a60c0bfe62f010cd5965b49571f5ca5a1382da85863188c0eb96b"
+  },
+  {
+    "Name": "text-p1-f3",
+    "Input": "inputs/text.zpl",
+    "Format": 3,
+    "Profile": 1,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "fe51de57b809e2174c7b22f4677ad67d07233727732b2dd1dc60382259f9f134"
+  },
+  {
+    "Name": "text-p2-f0",
+    "Input": "inputs/text.zpl",
+    "Format": 0,
+    "Profile": 2,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "b9da8c757a61fb32fae714f66742c22e2379df0bb36bde84ba31c415ca0c50d5"
+  },
+  {
+    "Name": "text-p2-f1",
+    "Input": "inputs/text.zpl",
+    "Format": 1,
+    "Profile": 2,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "75cc3efcbb92560e9966c6238c9cdd5ea49aa0efd2a56d2d18720a417046a447"
+  },
+  {
+    "Name": "text-p2-f2",
+    "Input": "inputs/text.zpl",
+    "Format": 2,
+    "Profile": 2,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "8d0bd7d796edefde87e86ac10d7bdbda4ffeabac4edde224dff0b43a30693da6"
+  },
+  {
+    "Name": "text-p2-f3",
+    "Input": "inputs/text.zpl",
+    "Format": 3,
+    "Profile": 2,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "8fbfb61f5305a80bbcd9e0c632120093c17c7e65352af784b08f99565456fd33"
+  },
+  {
+    "Name": "dense-p0-f0",
+    "Input": "inputs/dense.zpl",
+    "Format": 0,
+    "Profile": 0,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "7d71af594c208f5524b0c645775a7b3473d7bda36f3433b26679e3d170e4fba2"
+  },
+  {
+    "Name": "dense-p0-f1",
+    "Input": "inputs/dense.zpl",
+    "Format": 1,
+    "Profile": 0,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "cf63baa75aae0ed8ed6df79380bb94a26293f58581706d08ca7be1e84ffeda23"
+  },
+  {
+    "Name": "dense-p0-f2",
+    "Input": "inputs/dense.zpl",
+    "Format": 2,
+    "Profile": 0,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "18757c0e6141ee4afe3783ba410d6fde64f12731e41d735d0352d181ace38340"
+  },
+  {
+    "Name": "dense-p0-f3",
+    "Input": "inputs/dense.zpl",
+    "Format": 3,
+    "Profile": 0,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "49730b172f7ee02ce2f6fa72e7e921ccba227b8da1d53b05f47e88ee59d0625b"
+  },
+  {
+    "Name": "dense-p1-f0",
+    "Input": "inputs/dense.zpl",
+    "Format": 0,
+    "Profile": 1,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "7d71af594c208f5524b0c645775a7b3473d7bda36f3433b26679e3d170e4fba2"
+  },
+  {
+    "Name": "dense-p1-f1",
+    "Input": "inputs/dense.zpl",
+    "Format": 1,
+    "Profile": 1,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "cf63baa75aae0ed8ed6df79380bb94a26293f58581706d08ca7be1e84ffeda23"
+  },
+  {
+    "Name": "dense-p1-f2",
+    "Input": "inputs/dense.zpl",
+    "Format": 2,
+    "Profile": 1,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "18757c0e6141ee4afe3783ba410d6fde64f12731e41d735d0352d181ace38340"
+  },
+  {
+    "Name": "dense-p1-f3",
+    "Input": "inputs/dense.zpl",
+    "Format": 3,
+    "Profile": 1,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "49730b172f7ee02ce2f6fa72e7e921ccba227b8da1d53b05f47e88ee59d0625b"
+  },
+  {
+    "Name": "dense-p2-f0",
+    "Input": "inputs/dense.zpl",
+    "Format": 0,
+    "Profile": 2,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "0e8f075dfdf9fa99068b47d13469ab4ced7aaa1a1802768940fc164d316b4529"
+  },
+  {
+    "Name": "dense-p2-f1",
+    "Input": "inputs/dense.zpl",
+    "Format": 1,
+    "Profile": 2,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "937ff4eddee19d1d616dc299d518196c52b6579bb96f85f8e0eb38c207550382"
+  },
+  {
+    "Name": "dense-p2-f2",
+    "Input": "inputs/dense.zpl",
+    "Format": 2,
+    "Profile": 2,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "5798f3fb14718f106f5bebedfdc0dbf82cea734c41e1feca38d1c5951ad320a8"
+  },
+  {
+    "Name": "dense-p2-f3",
+    "Input": "inputs/dense.zpl",
+    "Format": 3,
+    "Profile": 2,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "14c9f2dfec8fd2daa28bc9ef107323a13df47a0c9ec7da68807bb73ffe98b31b"
+  },
+  {
+    "Name": "barcodes-p0-f0",
+    "Input": "inputs/barcodes.zpl",
+    "Format": 0,
+    "Profile": 0,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "566e7bc63a52f89df47f7d3c42d6c16ae7ed6048fbc4e679f4cf4061e79c84e5"
+  },
+  {
+    "Name": "barcodes-p0-f1",
+    "Input": "inputs/barcodes.zpl",
+    "Format": 1,
+    "Profile": 0,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "615841f398553913c132287e168199b92f33b36fb95dd6b63a9fd49a991ccfaf"
+  },
+  {
+    "Name": "barcodes-p0-f2",
+    "Input": "inputs/barcodes.zpl",
+    "Format": 2,
+    "Profile": 0,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "6b7d0ef02bb9d54ebc6c1662edf600b9e5a2650745978049f145cbe6bb3221ce"
+  },
+  {
+    "Name": "barcodes-p0-f3",
+    "Input": "inputs/barcodes.zpl",
+    "Format": 3,
+    "Profile": 0,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "567c9e3095b04c3bf26fe1c8c14c224163c78bb88fa4f7740e1ebfe2008e02e2"
+  },
+  {
+    "Name": "barcodes-p1-f0",
+    "Input": "inputs/barcodes.zpl",
+    "Format": 0,
+    "Profile": 1,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "05ba0ed1d85ebc5ae613e324cc29e6b8e7c3e29ebd7d8ec9a02bf00689c58c39"
+  },
+  {
+    "Name": "barcodes-p1-f1",
+    "Input": "inputs/barcodes.zpl",
+    "Format": 1,
+    "Profile": 1,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "4f00929ab88b52f7628fb0cac69fa9dd819b09438122985ae7031d719622c7cd"
+  },
+  {
+    "Name": "barcodes-p1-f2",
+    "Input": "inputs/barcodes.zpl",
+    "Format": 2,
+    "Profile": 1,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "5ea50b11813fed5186d7e65bdf36fcf8aca373842eb26f92bd4b26705ba415b7"
+  },
+  {
+    "Name": "barcodes-p1-f3",
+    "Input": "inputs/barcodes.zpl",
+    "Format": 3,
+    "Profile": 1,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "0816baee64da2240ff9756a27e5c87e4c7299d71cfc8d650b971d1650ae42212"
+  },
+  {
+    "Name": "barcodes-p2-f0",
+    "Input": "inputs/barcodes.zpl",
+    "Format": 0,
+    "Profile": 2,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "c98c7b191fa539f72c665935d41f1c30adfdacd42c59f6ba0c308519160146d6"
+  },
+  {
+    "Name": "barcodes-p2-f1",
+    "Input": "inputs/barcodes.zpl",
+    "Format": 1,
+    "Profile": 2,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "405fb1cf1b3fce419906aff2b0ba250bd1e700f1919cf2f9f9f10c57d21d83fa"
+  },
+  {
+    "Name": "barcodes-p2-f2",
+    "Input": "inputs/barcodes.zpl",
+    "Format": 2,
+    "Profile": 2,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "8be5f532402e5a25ca683381479d3776e77e37a79935c07f905509de407bf139"
+  },
+  {
+    "Name": "barcodes-p2-f3",
+    "Input": "inputs/barcodes.zpl",
+    "Format": 3,
+    "Profile": 2,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "a199ff7678bd9ea2f1a7f36695fa72680c5f30de5fb38b192d577befe412c6b8"
+  },
+  {
+    "Name": "curves-p0-f0",
+    "Input": "inputs/curves.zpl",
+    "Format": 0,
+    "Profile": 0,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "3d2b63d4253dcf8a2098cdef1d1da80b90b8fa8da16a6f4f39899e1d216b79c3"
+  },
+  {
+    "Name": "curves-p0-f1",
+    "Input": "inputs/curves.zpl",
+    "Format": 1,
+    "Profile": 0,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "991ed0eaaa4d3de03d3a03bd240867f819f0804787c32dde5122763dc3342d0d"
+  },
+  {
+    "Name": "curves-p0-f2",
+    "Input": "inputs/curves.zpl",
+    "Format": 2,
+    "Profile": 0,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "d33ba52c6c74eb17a793043f52e266a79a8c78022b639ecab344673ac2e0d0b0"
+  },
+  {
+    "Name": "curves-p0-f3",
+    "Input": "inputs/curves.zpl",
+    "Format": 3,
+    "Profile": 0,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "24f08da3d458907af1ba57e90e377776545df01f02b025a0f38f8ebad9f23605"
+  },
+  {
+    "Name": "curves-p1-f0",
+    "Input": "inputs/curves.zpl",
+    "Format": 0,
+    "Profile": 1,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "ce7d8948ff01f768f4ea6c4d3d0ea85a0e81b2edb15749583a6d2930063f5afc"
+  },
+  {
+    "Name": "curves-p1-f1",
+    "Input": "inputs/curves.zpl",
+    "Format": 1,
+    "Profile": 1,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "a48487eb21f9e829129378e4249f1d36566c0ff0f00ab75d0c13cf6b8d65a872"
+  },
+  {
+    "Name": "curves-p1-f2",
+    "Input": "inputs/curves.zpl",
+    "Format": 2,
+    "Profile": 1,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "b97851111fb09420327babd54c93b8c60da9b2a626487e8bc9040ced2ea06d6b"
+  },
+  {
+    "Name": "curves-p1-f3",
+    "Input": "inputs/curves.zpl",
+    "Format": 3,
+    "Profile": 1,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "8ec4d921a3501f54eed3048dec85ec8b36305a288df28a434683c7409ecc03a2"
+  },
+  {
+    "Name": "curves-p2-f0",
+    "Input": "inputs/curves.zpl",
+    "Format": 0,
+    "Profile": 2,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "43daee0e35fe13f39b0a6c3c34c6db18ff0b792d747f5dddceae436aec4ea6ee"
+  },
+  {
+    "Name": "curves-p2-f1",
+    "Input": "inputs/curves.zpl",
+    "Format": 1,
+    "Profile": 2,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "04ffe44ed3fe899a3510618258212fd311742d464ce030b5ed177bf9f15e4466"
+  },
+  {
+    "Name": "curves-p2-f2",
+    "Input": "inputs/curves.zpl",
+    "Format": 2,
+    "Profile": 2,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "e4463ea92e0856b086bec3bcf6c5f0e349aa5d1d6173013b0cfe2b44d4e2a337"
+  },
+  {
+    "Name": "curves-p2-f3",
+    "Input": "inputs/curves.zpl",
+    "Format": 3,
+    "Profile": 2,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "696f80e9fbc5b804fff78ffc1dc476b0c99417a7214f86038cc14c4be5dd0499"
+  },
+  {
+    "Name": "rotated-p0-f0",
+    "Input": "inputs/rotated.zpl",
+    "Format": 0,
+    "Profile": 0,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "9101091a3f320119bae59311cef85d5e02ccd47906aa0fc6ebbba09146f92234"
+  },
+  {
+    "Name": "rotated-p0-f1",
+    "Input": "inputs/rotated.zpl",
+    "Format": 1,
+    "Profile": 0,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "00d0886940564bdae5af459b8a3a108ac9e64bcfa67d6426a0d5f22168a6a0ee"
+  },
+  {
+    "Name": "rotated-p0-f2",
+    "Input": "inputs/rotated.zpl",
+    "Format": 2,
+    "Profile": 0,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "6a3adedddd265ea51270ff3fe01d8e1b343d7d733c15b6c6a490033c2352fb24"
+  },
+  {
+    "Name": "rotated-p0-f3",
+    "Input": "inputs/rotated.zpl",
+    "Format": 3,
+    "Profile": 0,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "b53b988b17a2099d9bfa26e282f28c2853283d2e6cd25ac1b1a8c757993b2937"
+  },
+  {
+    "Name": "rotated-p1-f0",
+    "Input": "inputs/rotated.zpl",
+    "Format": 0,
+    "Profile": 1,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "16892703545207fece5157fe5205bd558e82a68635fe16ae6f89cdb12c982375"
+  },
+  {
+    "Name": "rotated-p1-f1",
+    "Input": "inputs/rotated.zpl",
+    "Format": 1,
+    "Profile": 1,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "b5f34644a8c5416dff77e108633e4a7f136bdc24b7dc082fb4daa47fe3840662"
+  },
+  {
+    "Name": "rotated-p1-f2",
+    "Input": "inputs/rotated.zpl",
+    "Format": 2,
+    "Profile": 1,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "24a5ab0ca6b2991308a19ccba175498d3799f95365d36811b306b6fedfd3a3bd"
+  },
+  {
+    "Name": "rotated-p1-f3",
+    "Input": "inputs/rotated.zpl",
+    "Format": 3,
+    "Profile": 1,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "2d97278685fae95729e36dc21f6244d7f340f5989d444047ee426eb9e747d6cd"
+  },
+  {
+    "Name": "rotated-p2-f0",
+    "Input": "inputs/rotated.zpl",
+    "Format": 0,
+    "Profile": 2,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "b3f82138b2033d3c4b7af9bacf7e8dd5c10cc40286e98c2f609eed7b14f4c687"
+  },
+  {
+    "Name": "rotated-p2-f1",
+    "Input": "inputs/rotated.zpl",
+    "Format": 1,
+    "Profile": 2,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "6b5b160ba91c66880e1eadfb99624d6e2e069e1a8e1d3b6fcd73121175286db6"
+  },
+  {
+    "Name": "rotated-p2-f2",
+    "Input": "inputs/rotated.zpl",
+    "Format": 2,
+    "Profile": 2,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "6ccae093e47f5158daf743ea712ef5d8d2b40eae62d6ca3f0def4e6e5280c79e"
+  },
+  {
+    "Name": "rotated-p2-f3",
+    "Input": "inputs/rotated.zpl",
+    "Format": 3,
+    "Profile": 2,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "4a03b7cf1653af313d60ac1c03d957b3430ca1e460ce720c9762ed6e03081914"
+  },
+  {
+    "Name": "binary-p0-f0",
+    "Input": "inputs/binary.zpl",
+    "Format": 0,
+    "Profile": 0,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "4e10d3b60cb7c16514abc3f0cca621a59374a51ed01e37a24b2f915a04f2cbc9"
+  },
+  {
+    "Name": "binary-p0-f1",
+    "Input": "inputs/binary.zpl",
+    "Format": 1,
+    "Profile": 0,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "0853e01cbac0ea497473e0afdc3045f7adf4ae49b9e1d36010daefd3347e4eb1"
+  },
+  {
+    "Name": "binary-p0-f2",
+    "Input": "inputs/binary.zpl",
+    "Format": 2,
+    "Profile": 0,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "ce76f777df76f1c15917ceedce3515214a9859a7f68607fbf551b253a2967bc9"
+  },
+  {
+    "Name": "binary-p0-f3",
+    "Input": "inputs/binary.zpl",
+    "Format": 3,
+    "Profile": 0,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "fa2dba37ef66ea4deac295cb1376a0ddad8da1006509d2c6ec6026faf835b25e"
+  },
+  {
+    "Name": "binary-p1-f0",
+    "Input": "inputs/binary.zpl",
+    "Format": 0,
+    "Profile": 1,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "4e10d3b60cb7c16514abc3f0cca621a59374a51ed01e37a24b2f915a04f2cbc9"
+  },
+  {
+    "Name": "binary-p1-f1",
+    "Input": "inputs/binary.zpl",
+    "Format": 1,
+    "Profile": 1,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "0853e01cbac0ea497473e0afdc3045f7adf4ae49b9e1d36010daefd3347e4eb1"
+  },
+  {
+    "Name": "binary-p1-f2",
+    "Input": "inputs/binary.zpl",
+    "Format": 2,
+    "Profile": 1,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "ce76f777df76f1c15917ceedce3515214a9859a7f68607fbf551b253a2967bc9"
+  },
+  {
+    "Name": "binary-p1-f3",
+    "Input": "inputs/binary.zpl",
+    "Format": 3,
+    "Profile": 1,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "fa2dba37ef66ea4deac295cb1376a0ddad8da1006509d2c6ec6026faf835b25e"
+  },
+  {
+    "Name": "binary-p2-f0",
+    "Input": "inputs/binary.zpl",
+    "Format": 0,
+    "Profile": 2,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "e70dec5fb324b5a2318cd53b1d88e1614dac9b326c1da6887bd6171d02856a11"
+  },
+  {
+    "Name": "binary-p2-f1",
+    "Input": "inputs/binary.zpl",
+    "Format": 1,
+    "Profile": 2,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "45805ca9dfe60009a2539e4c74c5dfaad19d3498fe566e0c3994de31424aff97"
+  },
+  {
+    "Name": "binary-p2-f2",
+    "Input": "inputs/binary.zpl",
+    "Format": 2,
+    "Profile": 2,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "39efcd64abff56939c29f63c6f5fb57b197843ed653e6370924fd77b36483535"
+  },
+  {
+    "Name": "binary-p2-f3",
+    "Input": "inputs/binary.zpl",
+    "Format": 3,
+    "Profile": 2,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "3dcf3cf0ad5892a7bb51464e8fa080b74c856c0517b3f7586fb500ae15b3e274"
+  },
+  {
+    "Name": "graphic-p0-f0",
+    "Input": "inputs/graphic.zpl",
+    "Format": 0,
+    "Profile": 0,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "1f3e5b60f7e6580b278fe9a153996f8f5682289db4f9f9fb2d337d2028db64e3"
+  },
+  {
+    "Name": "graphic-p0-f1",
+    "Input": "inputs/graphic.zpl",
+    "Format": 1,
+    "Profile": 0,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "9e3731e18de71799d4d8b8498c2baf8fa9aa8d91716ab6a746bbd39eb341202e"
+  },
+  {
+    "Name": "graphic-p0-f2",
+    "Input": "inputs/graphic.zpl",
+    "Format": 2,
+    "Profile": 0,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "ca2fc5cb7a533c61fd36b6343bdac341c2cb684dda1f43b4b9cc5df5df558db8"
+  },
+  {
+    "Name": "graphic-p0-f3",
+    "Input": "inputs/graphic.zpl",
+    "Format": 3,
+    "Profile": 0,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "1b12d90af3690bf34f70eb349c6947a6443429c830aa1267b52fd2e05dc0f0f7"
+  },
+  {
+    "Name": "graphic-p1-f0",
+    "Input": "inputs/graphic.zpl",
+    "Format": 0,
+    "Profile": 1,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "1f3e5b60f7e6580b278fe9a153996f8f5682289db4f9f9fb2d337d2028db64e3"
+  },
+  {
+    "Name": "graphic-p1-f1",
+    "Input": "inputs/graphic.zpl",
+    "Format": 1,
+    "Profile": 1,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "9e3731e18de71799d4d8b8498c2baf8fa9aa8d91716ab6a746bbd39eb341202e"
+  },
+  {
+    "Name": "graphic-p1-f2",
+    "Input": "inputs/graphic.zpl",
+    "Format": 2,
+    "Profile": 1,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "ca2fc5cb7a533c61fd36b6343bdac341c2cb684dda1f43b4b9cc5df5df558db8"
+  },
+  {
+    "Name": "graphic-p1-f3",
+    "Input": "inputs/graphic.zpl",
+    "Format": 3,
+    "Profile": 1,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "1b12d90af3690bf34f70eb349c6947a6443429c830aa1267b52fd2e05dc0f0f7"
+  },
+  {
+    "Name": "graphic-p2-f0",
+    "Input": "inputs/graphic.zpl",
+    "Format": 0,
+    "Profile": 2,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "04f8bafcbe327137ce73a051db4885599ffa3515dde44423c3ccea6c6fa1020d"
+  },
+  {
+    "Name": "graphic-p2-f1",
+    "Input": "inputs/graphic.zpl",
+    "Format": 1,
+    "Profile": 2,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "b38e5fa25b28b3a68e6e12b06d076055a916ec525dac23659592903ce68a44ef"
+  },
+  {
+    "Name": "graphic-p2-f2",
+    "Input": "inputs/graphic.zpl",
+    "Format": 2,
+    "Profile": 2,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "90c29d2e5e6efb9a4af83134df3323002756cda7874c681d170057a54c3719fd"
+  },
+  {
+    "Name": "graphic-p2-f3",
+    "Input": "inputs/graphic.zpl",
+    "Format": 3,
+    "Profile": 2,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "057f4921ba8b44ed591e23ce3e7adda6e1f2fe747500e85faf082535c15369ba"
+  },
+  {
+    "Name": "multipage-p0-f0",
+    "Input": "inputs/multipage.zpl",
+    "Format": 0,
+    "Profile": 0,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "a20ac05d162a92b356ad32f1b4721b2fd6cc7b003fdccdb98f5006d55e07f87f"
+  },
+  {
+    "Name": "multipage-p0-f1",
+    "Input": "inputs/multipage.zpl",
+    "Format": 1,
+    "Profile": 0,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "7cdde24ced289b8d01f4cfeb1b7af88f9819c43ce70a151a199442562561e857"
+  },
+  {
+    "Name": "multipage-p0-f2",
+    "Input": "inputs/multipage.zpl",
+    "Format": 2,
+    "Profile": 0,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "6f4181888d8881b3bc5a7f9696141575fca24f8b1048613aa8a392db4833bacc"
+  },
+  {
+    "Name": "multipage-p0-f3",
+    "Input": "inputs/multipage.zpl",
+    "Format": 3,
+    "Profile": 0,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "c295b34721dae17f182e27c0a3e93be83d3f80a4a33d2ca2fce38a0ca860970e"
+  },
+  {
+    "Name": "multipage-p1-f0",
+    "Input": "inputs/multipage.zpl",
+    "Format": 0,
+    "Profile": 1,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "a20ac05d162a92b356ad32f1b4721b2fd6cc7b003fdccdb98f5006d55e07f87f"
+  },
+  {
+    "Name": "multipage-p1-f1",
+    "Input": "inputs/multipage.zpl",
+    "Format": 1,
+    "Profile": 1,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "7cdde24ced289b8d01f4cfeb1b7af88f9819c43ce70a151a199442562561e857"
+  },
+  {
+    "Name": "multipage-p1-f2",
+    "Input": "inputs/multipage.zpl",
+    "Format": 2,
+    "Profile": 1,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "6f4181888d8881b3bc5a7f9696141575fca24f8b1048613aa8a392db4833bacc"
+  },
+  {
+    "Name": "multipage-p1-f3",
+    "Input": "inputs/multipage.zpl",
+    "Format": 3,
+    "Profile": 1,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "c295b34721dae17f182e27c0a3e93be83d3f80a4a33d2ca2fce38a0ca860970e"
+  },
+  {
+    "Name": "multipage-p2-f0",
+    "Input": "inputs/multipage.zpl",
+    "Format": 0,
+    "Profile": 2,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "cd78bba6ee76beff458cc9a1fd73cf788fbf0875bb1229ed7c258fc8f0ccd584"
+  },
+  {
+    "Name": "multipage-p2-f1",
+    "Input": "inputs/multipage.zpl",
+    "Format": 1,
+    "Profile": 2,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "28aa014ff55f36a43100a40856ff1e118de19aa2eba9d3bb1e57f9ed6c0ede15"
+  },
+  {
+    "Name": "multipage-p2-f2",
+    "Input": "inputs/multipage.zpl",
+    "Format": 2,
+    "Profile": 2,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "bba3d1500d75e612cbfed0afecaa0870b42d82fdf353d43415541dc36b4fba24"
+  },
+  {
+    "Name": "multipage-p2-f3",
+    "Input": "inputs/multipage.zpl",
+    "Format": 3,
+    "Profile": 2,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "6c8dee0bf02008bb9fb0d748744156d2ff3ed0cd2e2fb3be437ff41431c09720"
+  },
+  {
+    "Name": "empty-p0-f0",
+    "Input": "inputs/empty.zpl",
+    "Format": 0,
+    "Profile": 0,
+    "Width": 512,
+    "Height": 512,
+    "Status": 2,
+    "OracleSHA256": "e0998e32ac5ad742a36c49d94a9d857249ede1c3441b6e6933f84208a663e01f"
+  },
+  {
+    "Name": "empty-p0-f1",
+    "Input": "inputs/empty.zpl",
+    "Format": 1,
+    "Profile": 0,
+    "Width": 512,
+    "Height": 512,
+    "Status": 2,
+    "OracleSHA256": "e0998e32ac5ad742a36c49d94a9d857249ede1c3441b6e6933f84208a663e01f"
+  },
+  {
+    "Name": "empty-p0-f2",
+    "Input": "inputs/empty.zpl",
+    "Format": 2,
+    "Profile": 0,
+    "Width": 512,
+    "Height": 512,
+    "Status": 2,
+    "OracleSHA256": "e0998e32ac5ad742a36c49d94a9d857249ede1c3441b6e6933f84208a663e01f"
+  },
+  {
+    "Name": "empty-p0-f3",
+    "Input": "inputs/empty.zpl",
+    "Format": 3,
+    "Profile": 0,
+    "Width": 512,
+    "Height": 512,
+    "Status": 2,
+    "OracleSHA256": "e0998e32ac5ad742a36c49d94a9d857249ede1c3441b6e6933f84208a663e01f"
+  },
+  {
+    "Name": "empty-p1-f0",
+    "Input": "inputs/empty.zpl",
+    "Format": 0,
+    "Profile": 1,
+    "Width": 512,
+    "Height": 512,
+    "Status": 2,
+    "OracleSHA256": "e0998e32ac5ad742a36c49d94a9d857249ede1c3441b6e6933f84208a663e01f"
+  },
+  {
+    "Name": "empty-p1-f1",
+    "Input": "inputs/empty.zpl",
+    "Format": 1,
+    "Profile": 1,
+    "Width": 512,
+    "Height": 512,
+    "Status": 2,
+    "OracleSHA256": "e0998e32ac5ad742a36c49d94a9d857249ede1c3441b6e6933f84208a663e01f"
+  },
+  {
+    "Name": "empty-p1-f2",
+    "Input": "inputs/empty.zpl",
+    "Format": 2,
+    "Profile": 1,
+    "Width": 512,
+    "Height": 512,
+    "Status": 2,
+    "OracleSHA256": "e0998e32ac5ad742a36c49d94a9d857249ede1c3441b6e6933f84208a663e01f"
+  },
+  {
+    "Name": "empty-p1-f3",
+    "Input": "inputs/empty.zpl",
+    "Format": 3,
+    "Profile": 1,
+    "Width": 512,
+    "Height": 512,
+    "Status": 2,
+    "OracleSHA256": "e0998e32ac5ad742a36c49d94a9d857249ede1c3441b6e6933f84208a663e01f"
+  },
+  {
+    "Name": "empty-p2-f0",
+    "Input": "inputs/empty.zpl",
+    "Format": 0,
+    "Profile": 2,
+    "Width": 512,
+    "Height": 512,
+    "Status": 2,
+    "OracleSHA256": "e0998e32ac5ad742a36c49d94a9d857249ede1c3441b6e6933f84208a663e01f"
+  },
+  {
+    "Name": "empty-p2-f1",
+    "Input": "inputs/empty.zpl",
+    "Format": 1,
+    "Profile": 2,
+    "Width": 512,
+    "Height": 512,
+    "Status": 2,
+    "OracleSHA256": "e0998e32ac5ad742a36c49d94a9d857249ede1c3441b6e6933f84208a663e01f"
+  },
+  {
+    "Name": "empty-p2-f2",
+    "Input": "inputs/empty.zpl",
+    "Format": 2,
+    "Profile": 2,
+    "Width": 512,
+    "Height": 512,
+    "Status": 2,
+    "OracleSHA256": "e0998e32ac5ad742a36c49d94a9d857249ede1c3441b6e6933f84208a663e01f"
+  },
+  {
+    "Name": "empty-p2-f3",
+    "Input": "inputs/empty.zpl",
+    "Format": 3,
+    "Profile": 2,
+    "Width": 512,
+    "Height": 512,
+    "Status": 2,
+    "OracleSHA256": "e0998e32ac5ad742a36c49d94a9d857249ede1c3441b6e6933f84208a663e01f"
+  },
+  {
+    "Name": "invalid-p0-f0",
+    "Input": "inputs/invalid.zpl",
+    "Format": 0,
+    "Profile": 0,
+    "Width": 512,
+    "Height": 512,
+    "Status": 2,
+    "OracleSHA256": "d7e37c253e3b11219cd4bfd7edfb0a07e6cb42944163cd496084da57f25b1498"
+  },
+  {
+    "Name": "invalid-p0-f1",
+    "Input": "inputs/invalid.zpl",
+    "Format": 1,
+    "Profile": 0,
+    "Width": 512,
+    "Height": 512,
+    "Status": 2,
+    "OracleSHA256": "d7e37c253e3b11219cd4bfd7edfb0a07e6cb42944163cd496084da57f25b1498"
+  },
+  {
+    "Name": "invalid-p0-f2",
+    "Input": "inputs/invalid.zpl",
+    "Format": 2,
+    "Profile": 0,
+    "Width": 512,
+    "Height": 512,
+    "Status": 2,
+    "OracleSHA256": "d7e37c253e3b11219cd4bfd7edfb0a07e6cb42944163cd496084da57f25b1498"
+  },
+  {
+    "Name": "invalid-p0-f3",
+    "Input": "inputs/invalid.zpl",
+    "Format": 3,
+    "Profile": 0,
+    "Width": 512,
+    "Height": 512,
+    "Status": 2,
+    "OracleSHA256": "d7e37c253e3b11219cd4bfd7edfb0a07e6cb42944163cd496084da57f25b1498"
+  },
+  {
+    "Name": "invalid-p1-f0",
+    "Input": "inputs/invalid.zpl",
+    "Format": 0,
+    "Profile": 1,
+    "Width": 512,
+    "Height": 512,
+    "Status": 2,
+    "OracleSHA256": "d7e37c253e3b11219cd4bfd7edfb0a07e6cb42944163cd496084da57f25b1498"
+  },
+  {
+    "Name": "invalid-p1-f1",
+    "Input": "inputs/invalid.zpl",
+    "Format": 1,
+    "Profile": 1,
+    "Width": 512,
+    "Height": 512,
+    "Status": 2,
+    "OracleSHA256": "d7e37c253e3b11219cd4bfd7edfb0a07e6cb42944163cd496084da57f25b1498"
+  },
+  {
+    "Name": "invalid-p1-f2",
+    "Input": "inputs/invalid.zpl",
+    "Format": 2,
+    "Profile": 1,
+    "Width": 512,
+    "Height": 512,
+    "Status": 2,
+    "OracleSHA256": "d7e37c253e3b11219cd4bfd7edfb0a07e6cb42944163cd496084da57f25b1498"
+  },
+  {
+    "Name": "invalid-p1-f3",
+    "Input": "inputs/invalid.zpl",
+    "Format": 3,
+    "Profile": 1,
+    "Width": 512,
+    "Height": 512,
+    "Status": 2,
+    "OracleSHA256": "d7e37c253e3b11219cd4bfd7edfb0a07e6cb42944163cd496084da57f25b1498"
+  },
+  {
+    "Name": "invalid-p2-f0",
+    "Input": "inputs/invalid.zpl",
+    "Format": 0,
+    "Profile": 2,
+    "Width": 512,
+    "Height": 512,
+    "Status": 2,
+    "OracleSHA256": "d7e37c253e3b11219cd4bfd7edfb0a07e6cb42944163cd496084da57f25b1498"
+  },
+  {
+    "Name": "invalid-p2-f1",
+    "Input": "inputs/invalid.zpl",
+    "Format": 1,
+    "Profile": 2,
+    "Width": 512,
+    "Height": 512,
+    "Status": 2,
+    "OracleSHA256": "d7e37c253e3b11219cd4bfd7edfb0a07e6cb42944163cd496084da57f25b1498"
+  },
+  {
+    "Name": "invalid-p2-f2",
+    "Input": "inputs/invalid.zpl",
+    "Format": 2,
+    "Profile": 2,
+    "Width": 512,
+    "Height": 512,
+    "Status": 2,
+    "OracleSHA256": "d7e37c253e3b11219cd4bfd7edfb0a07e6cb42944163cd496084da57f25b1498"
+  },
+  {
+    "Name": "invalid-p2-f3",
+    "Input": "inputs/invalid.zpl",
+    "Format": 3,
+    "Profile": 2,
+    "Width": 512,
+    "Height": 512,
+    "Status": 2,
+    "OracleSHA256": "d7e37c253e3b11219cd4bfd7edfb0a07e6cb42944163cd496084da57f25b1498"
+  },
+  {
+    "Name": "capture-qr-p0-f0",
+    "Input": "inputs/capture-qr.zpl",
+    "Format": 0,
+    "Profile": 0,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "9396b38d2809e878bb11fe9c60df07fd50d25898fafeabfc666734e9e14898d6"
+  },
+  {
+    "Name": "capture-qr-p0-f1",
+    "Input": "inputs/capture-qr.zpl",
+    "Format": 1,
+    "Profile": 0,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "826e9ddd86c11240acc74bb2094b24741603c5862795b0d31a286d9156f3a476"
+  },
+  {
+    "Name": "capture-qr-p0-f2",
+    "Input": "inputs/capture-qr.zpl",
+    "Format": 2,
+    "Profile": 0,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "85edef528534e0da8ca0948c221519482795aa57acc7264a632f3d570e9a5ca3"
+  },
+  {
+    "Name": "capture-qr-p0-f3",
+    "Input": "inputs/capture-qr.zpl",
+    "Format": 3,
+    "Profile": 0,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "b8be83918644ebaa3a169ef85e0d5dc84233788e6a985405fb3d6dfe8338a153"
+  },
+  {
+    "Name": "capture-qr-p1-f0",
+    "Input": "inputs/capture-qr.zpl",
+    "Format": 0,
+    "Profile": 1,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "f46da5fef12bfee28172050e6033e738a06283e6aa12a9fa65446d06ac33d528"
+  },
+  {
+    "Name": "capture-qr-p1-f1",
+    "Input": "inputs/capture-qr.zpl",
+    "Format": 1,
+    "Profile": 1,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "9a6b53deab79da93d8075458f7be023d3a529735b1217302220c8d2ed84f0229"
+  },
+  {
+    "Name": "capture-qr-p1-f2",
+    "Input": "inputs/capture-qr.zpl",
+    "Format": 2,
+    "Profile": 1,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "7ccf14f041593f030b9a8d64e2cc1e7f766b84e3a5232f29e46bb010b9d5812a"
+  },
+  {
+    "Name": "capture-qr-p1-f3",
+    "Input": "inputs/capture-qr.zpl",
+    "Format": 3,
+    "Profile": 1,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "a36617c50b54ed5c6533d09824fc1f1847a778241fb1d58636f6991e77cd6910"
+  },
+  {
+    "Name": "capture-qr-p2-f0",
+    "Input": "inputs/capture-qr.zpl",
+    "Format": 0,
+    "Profile": 2,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "05a2786d1882a7aadce4009819623391a7e14cca9790d75cdb17d622d5703da4"
+  },
+  {
+    "Name": "capture-qr-p2-f1",
+    "Input": "inputs/capture-qr.zpl",
+    "Format": 1,
+    "Profile": 2,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "1482c826263feaf7baa5223e5b118065bfc2eaf371dda3aff3b6250dc985f754"
+  },
+  {
+    "Name": "capture-qr-p2-f2",
+    "Input": "inputs/capture-qr.zpl",
+    "Format": 2,
+    "Profile": 2,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "4c5358b2e3b828057e54f646ce2dcb6c8b5fec92e60dc49b99fddbe926b0c4e8"
+  },
+  {
+    "Name": "capture-qr-p2-f3",
+    "Input": "inputs/capture-qr.zpl",
+    "Format": 3,
+    "Profile": 2,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "3cbf7e80f7d5d1ceaebff09c2b26710bd7123cb185e05299ae437d3f6b86060d"
+  },
+  {
+    "Name": "capture-code128-p0-f0",
+    "Input": "inputs/capture-code128.zpl",
+    "Format": 0,
+    "Profile": 0,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "f6b3135ba6cfe05a4b8176be09cc81d04a1a9b3ce767a12ecf3ec50d1651e5fd"
+  },
+  {
+    "Name": "capture-code128-p0-f1",
+    "Input": "inputs/capture-code128.zpl",
+    "Format": 1,
+    "Profile": 0,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "d8b58aecd0b5549c50c1a18a75e0edf3617269de107967509e9c671e7b53760a"
+  },
+  {
+    "Name": "capture-code128-p0-f2",
+    "Input": "inputs/capture-code128.zpl",
+    "Format": 2,
+    "Profile": 0,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "981afd492d57d0e9283d5f0c5668f59739944753b8504493f7e8d987705bbc35"
+  },
+  {
+    "Name": "capture-code128-p0-f3",
+    "Input": "inputs/capture-code128.zpl",
+    "Format": 3,
+    "Profile": 0,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "ea20068b985f2b0f3645c1c6f78c76b73fe5cec5c7dc70c5d269f16804895a15"
+  },
+  {
+    "Name": "capture-code128-p1-f0",
+    "Input": "inputs/capture-code128.zpl",
+    "Format": 0,
+    "Profile": 1,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "f6b3135ba6cfe05a4b8176be09cc81d04a1a9b3ce767a12ecf3ec50d1651e5fd"
+  },
+  {
+    "Name": "capture-code128-p1-f1",
+    "Input": "inputs/capture-code128.zpl",
+    "Format": 1,
+    "Profile": 1,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "d8b58aecd0b5549c50c1a18a75e0edf3617269de107967509e9c671e7b53760a"
+  },
+  {
+    "Name": "capture-code128-p1-f2",
+    "Input": "inputs/capture-code128.zpl",
+    "Format": 2,
+    "Profile": 1,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "981afd492d57d0e9283d5f0c5668f59739944753b8504493f7e8d987705bbc35"
+  },
+  {
+    "Name": "capture-code128-p1-f3",
+    "Input": "inputs/capture-code128.zpl",
+    "Format": 3,
+    "Profile": 1,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "ea20068b985f2b0f3645c1c6f78c76b73fe5cec5c7dc70c5d269f16804895a15"
+  },
+  {
+    "Name": "capture-code128-p2-f0",
+    "Input": "inputs/capture-code128.zpl",
+    "Format": 0,
+    "Profile": 2,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "f17ff97c62d2dfb4b056116b9ac107282895545996e35597ab02d383f23ab591"
+  },
+  {
+    "Name": "capture-code128-p2-f1",
+    "Input": "inputs/capture-code128.zpl",
+    "Format": 1,
+    "Profile": 2,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "0a38ee9eb7199d05ec4a981eece58506d4f456ea27ce8f62d5afd24e9075f226"
+  },
+  {
+    "Name": "capture-code128-p2-f2",
+    "Input": "inputs/capture-code128.zpl",
+    "Format": 2,
+    "Profile": 2,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "a2098d53f8901c6b7fe744ba6d756fd38779af028e688a53c6087d6325eac90e"
+  },
+  {
+    "Name": "capture-code128-p2-f3",
+    "Input": "inputs/capture-code128.zpl",
+    "Format": 3,
+    "Profile": 2,
+    "Width": 512,
+    "Height": 512,
+    "Status": 0,
+    "OracleSHA256": "db5002523ad6bfbf20a06af26b2481df7a9dfc44c623b017c3248ae1c152f15a"
+  },
+  {
+    "Name": "bad-format",
+    "Input": "inputs/boxes.zpl",
+    "Format": 99,
+    "Profile": 0,
+    "Width": 512,
+    "Height": 512,
+    "Status": 1,
+    "OracleSHA256": "31ec8cf91790384025c374fac0de261c240179336af06349a5e2160bebada731"
+  },
+  {
+    "Name": "bad-profile",
+    "Input": "inputs/boxes.zpl",
+    "Format": 0,
+    "Profile": 99,
+    "Width": 512,
+    "Height": 512,
+    "Status": 1,
+    "OracleSHA256": "97beb35e53a12cca3d8db83cd43872890444ea0af1d0ea3a440293ecfc976d3c"
+  },
+  {
+    "Name": "zero-width",
+    "Input": "inputs/boxes.zpl",
+    "Format": 0,
+    "Profile": 0,
+    "Width": 0,
+    "Height": 512,
+    "Status": 1,
+    "OracleSHA256": "0f8764ee34d24b4830d0f8386d0c21e344238e681230dca9efbd6b4f54ac3443"
+  }
+]

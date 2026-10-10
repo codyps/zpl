@@ -1,0 +1,18 @@
+{
+  "wasm2go": "v0.4.16",
+  "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)",
+  "target": "wasm32-unknown-unknown",
+  "max_memory_bytes": 268435456,
+  "translation_flags": [
+    "-embed",
+    "-pkg",
+    "translated",
+    "-tags",
+    "!backend_cgo && !backend_purego && !backend_wazero"
+  ],
+  "sha256": {
+    "guest.wasm": "7136e1edb63dce9f55ffdf7408e31c1c84b538a5178eab54796b2676d4ab21e9",
+    "internal/translated/module.dat": "756e2f89ce6d853ee2e8600dba23ea8d9667c89d0d302d1a1b5170f34ae592ec",
+    "internal/translated/module.go": "3b7e55e822f71470b2bc71cc27455fd22eb6c429d1b59811a35c54696b6ccaab"
+  }
+}
