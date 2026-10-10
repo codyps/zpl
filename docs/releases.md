@@ -241,15 +241,26 @@ The [Elixir distribution workflow](../.github/workflows/elixir-package.yml) runs
 in PR CI and on completed stable renderer releases. It tests Elixir 1.15/OTP 25
 and Elixir 1.18/OTP 28, then retains the tested source archive from the latter.
 The archive includes this checkout's Rust runtime sources and a pruned copy of
-the workspace lockfile. Consumers need Rust to compile the NIF; no prebuilt NIFs
-are published. Generated HexDocs are not currently published.
+the workspace lockfile. It also contains SHA-256 checksums for NIF ABI 2.15
+prebuilts on Linux GNU x86_64/ARM64, macOS Intel/Apple Silicon, and Windows MSVC
+x86_64. Each native matrix job tests download, NIF loading, and a consumer release
+with Cargo/rustc blocked. Linux package jobs additionally check forced source
+builds and checksum rejection on both supported Elixir/OTP pairs. See the
+[package README](../zpl-elixir/README.md) for platform baselines and `ZPL_BUILD=true`.
+Git/path checkouts without generated checksums always compile their own source.
+Generated HexDocs are not currently published.
 
 The same shared release selector used by npm/PyPI requires the exact checked-out
 commit's `zpl-v<version>` tag and a completed stable GitHub release. CI stamps
 that version into the Mix project, binding Cargo manifest, and root lock entry.
 The installed package version must match `Zpl.library_version()` before upload.
+The separate publishing job uploads the tested `.tar.gz` NIF assets to that
+GitHub release before publishing the Hex archive. It compares existing assets
+byte-for-byte on retries and never replaces them. Checksums are generated from
+the complete five-target artifact set; missing targets block publication.
 Elixir-only changes automatically prepare a renderer bump. Release PRs commit the
 aligned Mix/Cargo versions and root lock entry; publication stamping is idempotent.
+
 
 Before the first automatic release:
 

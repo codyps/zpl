@@ -20,7 +20,47 @@ module is `Zpl`, and the workspace Cargo package is `zpl_elixir`.
 Stable renderer releases automatically publish the same version to Hex after the
 one-time [publishing setup](https://github.com/codyps/zpl/blob/main/docs/releases.md#hex-publishing-setup).
 Once the first release is published, use `{:zpl, "~> <released-version>"}`.
-The package does not ship precompiled NIFs.
+New releases use checksum-verified precompiled NIFs on the following targets:
+
+| Platform | Minimum build baseline |
+| --- | --- |
+| Linux x86_64 (GNU libc) | Ubuntu 22.04 / glibc 2.35 |
+| Linux ARM64 (GNU libc) | Ubuntu 24.04 / glibc 2.39 |
+| macOS Intel / Apple Silicon | macOS 15 |
+| Windows x86_64 | MSVC, Windows Server 2025 build runner |
+
+Prebuilts use NIF ABI 2.15, compatible with the supported OTP 25+ runtimes.
+Rust is not required to install a published package on these targets. Downloads
+come from the matching `zpl-v<version>` GitHub release and are verified against
+SHA-256 checksums inside the Hex package. Release 0.2.1 and earlier are source-only.
+An unavailable target, failed download, or checksum mismatch fails explicitly;
+it does not silently switch to compiling Rust.
+
+To disable prebuilts (also required for other targets or older libc/macOS):
+
+```sh
+ZPL_BUILD=true mix deps.compile zpl --force
+```
+
+Set `ZPL_BUILD=true` throughout fresh builds, or put this in `config/config.exs`:
+
+```elixir
+config :rustler_precompiled, :force_build, zpl: true
+```
+
+The standard `RUSTLER_PRECOMPILED_FORCE_BUILD_ALL=true` override also works.
+Source builds require Rust and a native linker. Git/path dependencies without the
+release-generated checksum manifest automatically build their actual source:
+
+```elixir
+{:zpl, git: "https://github.com/codyps/zpl", subdir: "zpl-elixir"}
+```
+
+Use `subdir`, which retains the sibling Rust crates. A sparse checkout of just
+`zpl-elixir` cannot build the workspace. For an offline install, populate
+`RUSTLER_PRECOMPILED_GLOBAL_CACHE_PATH` with the matching `.tar.gz` release asset;
+checksums are still enforced. A mirror can be selected at compile time with
+`config :zpl, :precompiled_base_url, "https://mirror.example/zpl-v<version>/"`.
 
 ## Render and encode
 
@@ -161,8 +201,14 @@ workspace without fetching older published renderer sources. No crate-local
 lockfile is maintained in the checkout. Build archives from the staged directory;
 running `mix hex.build` directly in the checkout is rejected because its sibling
 Rust crates would be omitted.
-The archive includes tests and the native parity example. CI unpacks it outside
-the repository and runs the same tests. The release workflow stamps the renderer version, tests the archive on two
-Elixir/OTP versions, and uploads the exact artifact in a separate publishing job.
+The archive includes tests and the native parity example. Without a checksum
+manifest, locally staged archives compile from source. Release CI builds and
+tests native artifacts on all five targets, then generates
+`checksum-Elixir.Zpl.Native.exs` from those exact artifacts before `mix hex.build`.
+CI unpacks the archive outside the repository, runs the same source tests, and
+builds independent consumer releases with both downloads and forced source
+compilation. Download tests block Cargo/rustc and check rejection of corrupt
+artifacts. The release workflow uploads immutable NIF assets before publishing
+the exact tested Hex archive; reruns refuse to overwrite different asset bytes.
 See the release guide for initial account setup and checksum-checked retries.
 OSL-3.0 covers the package and its bundled workspace sources.
