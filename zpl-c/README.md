@@ -17,8 +17,11 @@ and put the DLL beside the executable. For static linking, obtain required syste
 libraries with `cargo rustc --locked --release -p zpl-c -- --print native-static-libs`.
 Distribute both `include/zpl.h` and `include/zpl_config.h` alongside the library.
 The header supports C11 and C++; no Rust toolchain is needed by consumers of the
-built artifacts. ABI version 1 requires matching headers/library releases; struct
+built artifacts. ABI version 2 requires matching headers/library releases; struct
 layouts may change in a future ABI version. Check `zpl_abi_version()` at startup.
+ABI 2 adds `supplied_truetype_printer_metrics` to the compatibility configuration.
+Recompile callers against the matching header and library; ABI 1 configuration
+layouts are incompatible.
 
 The API exposes:
 

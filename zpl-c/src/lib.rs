@@ -135,7 +135,7 @@ unsafe fn output_limits(value: *const ZplOutputLimits) -> Result<output::Limits>
 
 #[no_mangle]
 pub extern "C" fn zpl_abi_version() -> u32 {
-    1
+    2
 }
 #[no_mangle]
 pub extern "C" fn zpl_library_version() -> ZplBytes {
