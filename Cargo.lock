@@ -4243,7 +4243,7 @@ checksum = "29666d0abbfad1e3dc4dcf6144730dd3a3ab225bbbdac83319345b1b44ccfc1b"
 
 [[package]]
 name = "zpl"
-version = "0.2.1"
+version = "0.3.0"
 dependencies = [
  "anyd",
  "encoding_rs",
@@ -4267,7 +4267,7 @@ version = "0.1.0"
 
 [[package]]
 name = "zpl-c"
-version = "0.2.1"
+version = "0.3.0"
 dependencies = [
  "cc",
  "tempfile",
@@ -4346,7 +4346,7 @@ dependencies = [
 
 [[package]]
 name = "zpl-python"
-version = "0.2.1"
+version = "0.3.0"
 dependencies = [
  "pyo3",
  "zpl",
@@ -4364,7 +4364,7 @@ dependencies = [
 
 [[package]]
 name = "zpl-wasm"
-version = "0.2.1"
+version = "0.3.0"
 dependencies = [
  "js-sys",
  "wasm-bindgen",
@@ -4373,7 +4373,7 @@ dependencies = [
 
 [[package]]
 name = "zpl_elixir"
-version = "0.2.1"
+version = "0.3.0"
 dependencies = [
  "rustler",
  "zpl",

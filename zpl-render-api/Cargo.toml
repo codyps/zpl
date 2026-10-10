@@ -9,7 +9,7 @@ publish = false
 crate-type = ["cdylib", "rlib"]
 
 [dependencies]
-zpl = { version = "0.2.1", path = "../zpl" }
+zpl = { version = "0.3.0", path = "../zpl" }
 wasm-bindgen = "=0.2.128"
 # Compression belongs to the service adapter, preserving the core PNG contract.
 png = "0.18.1"

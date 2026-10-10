@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0](https://github.com/codyps/zpl/compare/zpl-v0.2.1...zpl-v0.3.0) - 2026-10-10
+
+<!-- binding-release-notes -->
+### Bindings
+
+- fix(render)!: preserve resident fonts for automatic barcode captions ([3633551](https://github.com/codyps/zpl/commit/363355100fb7d0d0c33fa122362360e48a296161))
+- fix(release): register Go modules with renderer releases (#72) ([9a3be06](https://github.com/codyps/zpl/commit/9a3be061a002a95c76e447e6b34c63e3cb62a1db))
+- feat(go): add interchangeable bindings with wasm2go default (#70) ([350a268](https://github.com/codyps/zpl/commit/350a268096d24f3c24a80ce949b30d77c6572438))
+- feat(elixir): distribute checksum-verified prebuilt NIFs (#67) ([756cfb3](https://github.com/codyps/zpl/commit/756cfb3a502371093e7310dad4c6418386e06839))
+<!-- /binding-release-notes -->
+
+### Fixed
+
+- *(render)* [**breaking**] preserve resident fonts for automatic barcode captions
+- *(render)* [**breaking**] match ZD621 TrueType output ([#71](https://github.com/codyps/zpl/pull/71))
+
 ## [0.2.1](https://github.com/codyps/zpl/compare/zpl-v0.2.0...zpl-v0.2.1) - 2026-10-09
 
 ### Added
