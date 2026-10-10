@@ -1,0 +1,55 @@
+# Build constraints: https://pkg.go.dev/cmd/go#hdr-Build_constraints
+name: Go package
+
+on:
+  push:
+    branches:
+      - '**'
+      - '!release-plz-*-tmp-*'
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: go-package-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  package:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      CARGO_NET_RETRY: 2
+      CARGO_HTTP_TIMEOUT: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6
+        with:
+          go-version: '1.27.2'
+          cache-dependency-path: zpl-go/go.sum
+      - uses: dtolnay/rust-toolchain@6bed0761d98439e5a578e2877258200ad565ba87 # stable action, pinned compiler for generated artifacts
+        with:
+          toolchain: '1.98.1'
+          targets: wasm32-unknown-unknown
+      - name: Test distributable Go files without generation
+        run: python3 zpl-go/check_package.py
+      - name: Verify generated module and translation
+        run: python3 zpl-go/generate.py --check
+      - name: Check backend selection and formatting
+        run: |
+          python3 zpl-go/check_selection.py
+          test -z "$(gofmt -l zpl-go/*.go zpl-go/cmd/probe/*.go)"
+      - name: Test all explicit backends
+        run: |
+          cargo build --locked --release -p zpl-go-prototype
+          export ZPL_GO_LIBRARY="$PWD/target/release/libzpl_go_prototype.so"
+          export CGO_LDFLAGS="-L$PWD/target/release -Wl,-rpath,$PWD/target/release"
+          cd zpl-go
+          for backend in cgo purego wazero wasm2go; do
+            if [ "$backend" = cgo ]; then export CGO_ENABLED=1; else export CGO_ENABLED=0; fi
+            go test -count=1 -tags "backend_$backend" ./...
+          done

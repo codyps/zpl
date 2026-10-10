@@ -8,6 +8,7 @@ members = [
     "zpl-wasm",
     "zpl-python",
     "zpl-c",
+    "zpl-go/bridge",
     "zpl-elixir",
     "zplkit",
     "zpl-cmd",

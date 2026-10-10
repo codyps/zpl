@@ -1,0 +1,12 @@
+[package]
+name = "zpl-go-prototype"
+version = "0.1.0"
+edition = "2021"
+license.workspace = true
+publish = false
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+zpl = { path = "../../zpl" }

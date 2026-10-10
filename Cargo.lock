@@ -4299,6 +4299,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "zpl-go-prototype"
+version = "0.1.0"
+dependencies = [
+ "zpl",
+]
+
+[[package]]
 name = "zpl-proxy-api"
 version = "0.1.0"
 dependencies = [
