@@ -192,6 +192,16 @@ class BindingReleaseTests(unittest.TestCase):
         self.git('tag', 'zpl-v10.0.0-alpha.1')
         self.assertEqual(release.baseline(self.root), ((0, 2, 1), 'zpl-v0.2.1'))
 
+    def test_path_only_go_bridge_dependency_is_preserved(self):
+        manifest = self.root / "Cargo.toml"
+        text = manifest.read_text().replace('"consumer",', '"consumer", "zpl-go/bridge",')
+        manifest.write_text(text)
+        bridge = '[package]\nname = "zpl-go-prototype"\nversion = "0.1.0"\n\n[dependencies]\nzpl = { path = "../../zpl" }\n'
+        self.write("zpl-go/bridge/Cargo.toml", bridge)
+        release.stamp(self.root, "0.2.2")
+        self.assert_versions("0.2.2")
+        self.assertEqual((self.root / "zpl-go/bridge/Cargo.toml").read_text(), bridge)
+
     def test_bad_lock_does_not_partially_stamp(self):
         self.write('Cargo.lock', 'version = 4\n')
         before = self.snapshot()

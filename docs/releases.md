@@ -18,7 +18,9 @@ The [Release-plz workflow](../.github/workflows/release-plz.yml) runs on pushes 
 4. `elixir-version` selects the same completed stable renderer release. `elixir-build`
    builds and tests a portable source archive, and `elixir-release` publishes
    `zpl` to **Hex** with the renderer version.
-5. After all four registries succeed, `release-pr` runs `release-plz update` using
+5. `go-release` verifies and tests the committed Go package, publishes its
+   `zpl-go/v<version>` tag, and requests registration with the public Go proxy.
+6. After every publisher succeeds, `release-pr` runs `release-plz update` using
    published crates.io versions as the baseline, then includes binding changes
    with `scripts/bindings-release.py`. A pinned create-pull-request action creates
    or updates `release-plz-auto` with all versions, changelogs, and workspace
@@ -308,6 +310,42 @@ does. No live publication is needed to review this change.
 
 ## Releasing and verifying
 
+### Go module releases
+
+The `go-release` job runs after the Rust publisher in the same workflow. It
+requires a completed stable `zpl-v<version>` GitHub release at the exact checkout,
+verifies generated artifacts, and tests the standalone default and wazero
+packages before publishing `zpl-go/v<version>` at that same commit. Go requires
+this [subdirectory tag prefix](https://go.dev/ref/mod#vcs-version); the renderer's
+`zpl-v<version>` tag alone does not publish a Go module version.
+
+The job then downloads `github.com/codyps/zpl/zpl-go@v<version>` through
+`https://proxy.golang.org` with a fresh module cache, public checksum verification,
+and no direct/private fallback. This requests public proxy registration using
+Go's [module publishing procedure](https://go.dev/doc/modules/publishing).
+Consumers can install the published version with:
+
+```sh
+go get github.com/codyps/zpl/zpl-go@v<version>
+```
+
+The job uses `GITHUB_TOKEN` with `contents: write` to create the tag through the
+GitHub API; no separate registry secret is needed. Existing tags must resolve to
+the same release commit and are never moved. A rerun reuses a matching tag and
+repeats proxy registration, including after a proxy/network failure. Errors fail
+the job and block preparation of the next release PR. Rerun the failed workflow
+at its original release commit to recover; do not replace a published tag.
+Ordinary commits do not create Go tags. Versions v2 and later deliberately fail
+until the Go module and import paths have been migrated.
+
+Release preparation regenerates the embedded Wasm and translated Go artifacts
+with the pinned compiler/tool versions after selecting the renderer version, and
+includes those files in the release PR for review and normal Go CI. Publication
+checks those committed artifacts rather than updating a released commit. The Go
+bridge's internal Cargo package version is independent; the Go module's public
+version comes from its Git tag. Native backends still require a separately built
+matching shared library; this does not publish native binary assets.
+
 ### Binding-only releases
 
 Release-plz's registry comparison covers the public Rust crates. The workflow
@@ -316,7 +354,7 @@ runs that analysis first, including its Rust API compatibility checks, then the
 binding files against the highest stable `zpl-v<version>` tag reachable from the
 checkout. Full history and a matching tagged renderer manifest are required.
 
-The helper tracks C, Wasm, Node, Python, and Elixir directories, the Node build
+The helper tracks C, Wasm, Node, Python, Elixir, and Go directories, the Node build
 script, and the Elixir source-packaging script. A net change prepares a renderer
 release even when release-plz found no Rust changes. Conventional Commit `!`
 markers and `BREAKING CHANGE:` / `BREAKING-CHANGE:` footers raise the required

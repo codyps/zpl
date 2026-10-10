@@ -15,7 +15,7 @@ import re
 import subprocess
 import tomllib
 
-BINDINGS = ("zpl-c", "zpl-wasm", "zpl-node", "zpl-python", "zpl-elixir")
+BINDINGS = ("zpl-c", "zpl-wasm", "zpl-node", "zpl-python", "zpl-elixir", "zpl-go")
 PATHS = (*BINDINGS, "scripts/build-node.sh", "scripts/elixir-package.py")
 CRATES = {"zpl": "zpl", "zpl-c": "zpl-c", "zpl-wasm": "zpl-wasm",
           "zpl-python": "zpl-python", "zpl-elixir": "zpl_elixir"}
@@ -113,10 +113,11 @@ def stamp(root, target):
             old = re.escape(manifest["package"]["version"])
             text = replace_one(rf'^version = "{old}"$', f'version = "{target}"', text, str(path))
         # Workspace renderer dependencies currently use this inline-table style.
-        # Fail rather than silently omit a dependency after a manifest refactor.
+        # Path-only dependencies (the private Go bridge) need no version stamp.
+        # Fail rather than silently omit a versioned dependency after a refactor.
         for section in ("dependencies", "dev-dependencies", "build-dependencies"):
             dep = manifest.get(section, {}).get("zpl")
-            if dep is not None:
+            if dep is not None and "version" in dep:
                 old = re.escape(dep["version"])
                 text = replace_one(rf'^(zpl = \{{ version = "){old}(",)',
                                    lambda m: f'{m[1]}{target}{m[2]}', text, f'{path} zpl requirement')
@@ -210,7 +211,7 @@ def pr_body(root):
                 raise ValueError(f"Missing release notes for {directory} {new}")
             notes.append(f"### {directory}: {old} → {new}\n\n{section[1].strip()}")
     return ("Prepare the next release from release-plz's Rust analysis and binding changes.\n\n"
-            "C, Wasm/Node, Python, and Elixir versions follow the renderer. "
+            "C, Wasm/Node, Python, Elixir, and Go versions follow the renderer. "
             "Merging this PR runs the existing registry publishers; C remains source-only.\n\n"
             + "\n\n".join(notes) + "\n")
 
