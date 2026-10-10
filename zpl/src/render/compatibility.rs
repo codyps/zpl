@@ -270,6 +270,10 @@ pub struct Compatibility {
     /// and bitmap pivots, whether registered through the API, resolved by name,
     /// or downloaded with ~DB. See downloaded-bitmap-zd621-v1 printer controls.
     pub supplied_bitmap_font_metrics: bool,
+    /// Use measured ZD621 V93.21.33Z scaling and scan conversion for supplied
+    /// TrueType fonts, including downloads and named resources. See the native
+    /// external-fonts-zd621-v1 and truetype-regression captures.
+    pub supplied_truetype_printer_metrics: bool,
     /// Remove the farthest bar-height dot for R at x <= 0 and I at y <= 0.
     /// This uses the final bar ink position, after ^FO/^FT, home and shift.
     /// Captured for ^B1/^B2/^B3/^BA/^BC in barcode-boundary-zd621-v1;

@@ -520,13 +520,26 @@ impl<'a> Font<'a> {
             |v: i32, axis: u16| -> Result<i32> { instance.environment.scale(v, axis, self.units) };
         let (advance, bearing) = self.metric(glyph)?;
         let mut linear = scale(advance as i32, instance.size.x)?;
+        let outline_scale = |v: i32, axis: u16| -> Result<i32> {
+            if matches!(instance.environment, super::Environment::Zd621V93 { .. }) {
+                // Native GC witnesses place aspect projection before device
+                // scaling, rounding in integer font units. Directly scaling
+                // each axis to 26.6 changes narrow stretched contours. See
+                // tests/fixtures/truetype-raster-zd621-v1/README.md.
+                let base = instance.size.x.max(instance.size.y);
+                let v = (f64::from(v) * instance.environment.cvt_ratio(axis, base)).round() as i32;
+                scale(v, base)
+            } else {
+                scale(v, axis)
+            }
+        };
         let mut points = raw
             .points
             .iter()
             .map(|p| {
                 Ok(Point {
-                    x: scale(p.x, instance.size.x)?,
-                    y: scale(p.y, instance.size.y)?,
+                    x: outline_scale(p.x, instance.size.x)?,
+                    y: outline_scale(p.y, instance.size.y)?,
                     on_curve: p.on_curve,
                 })
             })

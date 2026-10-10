@@ -79,6 +79,7 @@ pub(super) struct Font<'a> {
     custom: Option<&'a super::fonts::Face<'a>>,
     face: Selection,
     block_flow: Option<BlockFlow>,
+    truetype_environment: crate::truetype::Environment,
 }
 impl std::ops::Deref for Font<'_> {
     type Target = Selection;
@@ -115,7 +116,20 @@ impl<'a> Font<'a> {
             custom: None,
             face: Selection::new(id, legacy_backslash),
             block_flow: None,
+            truetype_environment: crate::truetype::Environment::Standard,
         }
+    }
+    pub(super) fn with_truetype_environment(mut self, enabled: bool, rotation: u8) -> Self {
+        if enabled {
+            let quarter_turns = match rotation {
+                b'R' => 1,
+                b'I' => 2,
+                b'B' => 3,
+                _ => 0,
+            };
+            self.truetype_environment = crate::truetype::Environment::Zd621V93 { quarter_turns };
+        }
+        self
     }
     pub(super) fn with_serial_zero_source(mut self, enabled: bool) -> Self {
         self.face = self.face.with_serial_zero_source(enabled);
@@ -1071,5 +1085,5 @@ fn resolved_glyph<'a>(
     w: f64,
     h: f64,
 ) -> Result<(GlyphView<'a>, f64, f64), String> {
-    crate::fonts::resolve_glyph(font.face, font.custom, key, w, h)
+    crate::fonts::resolve_glyph(font.face, font.custom, key, w, h, font.truetype_environment)
 }

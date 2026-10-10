@@ -6,7 +6,7 @@ use std::{fs, path::Path};
 mod digest;
 
 #[test]
-fn supplied_truetype_preserves_native_origin_and_exact_residuals() {
+fn supplied_truetype_matches_all_controlled_native_canvases() {
     let root = Path::new(env!("CARGO_MANIFEST_DIR")).join("tests/fixtures/external-fonts-zd621-v1");
     let manifest: serde_json::Value =
         serde_json::from_slice(&fs::read(root.join("manifest.json")).unwrap()).unwrap();
@@ -29,7 +29,7 @@ fn supplied_truetype_preserves_native_origin_and_exact_residuals() {
         .insert_truetype('0', &data, zpl::truetype::Hinting::Native)
         .unwrap();
     let cases = manifest["cases"].as_array().unwrap();
-    assert_eq!(cases.len(), 14);
+    assert_eq!(cases.len(), 35);
     for case in cases {
         let name = case["name"].as_str().unwrap();
         let source = fs::read(root.join(format!("{name}.zpl"))).unwrap();
@@ -39,47 +39,63 @@ fn supplied_truetype_preserves_native_origin_and_exact_residuals() {
         assert_eq!(digest::sha256(&png), case["png_sha256"]);
         assert_eq!(digest::sha256(&submitted), case["submitted_sha256"]);
         let reference = raster_diff::Raster::decode_png(&png).unwrap();
-        let doc =
-            zpl::render::render_with_fonts(&source, zpl::render::profiles::ZD621_203_DPI, &fonts)
-                .unwrap();
-        assert_eq!(doc.labels.len(), 1);
-        let candidate = zpl::output::raster::rasterize(&doc.labels[0]).unwrap();
-        assert_eq!(
-            (candidate.width, candidate.height),
-            (reference.width, reference.height),
-            "{name}"
-        );
-        assert_eq!(
-            (reference.width as u64, reference.height as u64),
-            (
-                case["printer_dimensions"][0].as_u64().unwrap(),
-                case["printer_dimensions"][1].as_u64().unwrap()
-            )
-        );
-        let diff = raster_diff::compare_stats(&reference, &candidate, false).unwrap();
-        assert_eq!(
-            (diff.reference_only as u64, diff.candidate_only as u64),
-            (
-                case["reference_only"].as_u64().unwrap(),
-                case["candidate_only"].as_u64().unwrap()
-            ),
-            "{name}"
-        );
-        let shared = reference
-            .pixels
-            .iter()
-            .zip(&candidate.pixels)
-            .filter(|(a, b)| **a == 0 && **b == 0)
-            .count();
-        assert_eq!(
-            shared as u64,
-            case["shared_ink"].as_u64().unwrap(),
-            "{name}"
-        );
-        assert_eq!(
-            digest::sha256(&candidate.pixels),
-            case["candidate_pixels_sha256"],
-            "{name}"
-        );
+        // Keep the former standard-engine result exact as an opt-out contract.
+        // Both variants use unchanged native canvases and the captured profile.
+        for enabled in [false, true] {
+            let mut options = zpl::render::profiles::ZD621_203_DPI;
+            options.compatibility.supplied_truetype_printer_metrics = enabled;
+            let expected = if enabled {
+                case
+            } else {
+                &case["standard_rendering"]
+            };
+            let doc = zpl::render::render_with_fonts(&source, options, &fonts).unwrap();
+            assert_eq!(doc.labels.len(), 1);
+            let candidate = zpl::output::raster::rasterize(&doc.labels[0]).unwrap();
+            assert_eq!(
+                (candidate.width, candidate.height),
+                (reference.width, reference.height),
+                "{name}"
+            );
+            assert_eq!(
+                (reference.width as u64, reference.height as u64),
+                (
+                    case["printer_dimensions"][0].as_u64().unwrap(),
+                    case["printer_dimensions"][1].as_u64().unwrap()
+                )
+            );
+            let diff = raster_diff::compare_stats(&reference, &candidate, false).unwrap();
+            if enabled {
+                assert_eq!(
+                    (diff.reference_only, diff.candidate_only),
+                    (0, 0),
+                    "{name}: native parity"
+                );
+            }
+            assert_eq!(
+                (diff.reference_only as u64, diff.candidate_only as u64),
+                (
+                    expected["reference_only"].as_u64().unwrap(),
+                    expected["candidate_only"].as_u64().unwrap()
+                ),
+                "{name}"
+            );
+            let shared = reference
+                .pixels
+                .iter()
+                .zip(&candidate.pixels)
+                .filter(|(a, b)| **a == 0 && **b == 0)
+                .count();
+            assert_eq!(
+                shared as u64,
+                expected["shared_ink"].as_u64().unwrap(),
+                "{name}"
+            );
+            assert_eq!(
+                digest::sha256(&candidate.pixels),
+                expected["candidate_pixels_sha256"],
+                "{name}"
+            );
+        }
     }
 }

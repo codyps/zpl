@@ -653,3 +653,86 @@ fn bitmap_provider_rejects_bad_glyphs_and_propagates_lookup_errors() {
         );
     }
 }
+
+#[test]
+fn printer_truetype_scans_in_device_space_for_every_resource_route() {
+    use zpl::{
+        output::raster::truetype::{rasterize, ScanMode},
+        render::profiles::ZD621_203_DPI,
+        truetype::{Environment, Font, Size},
+    };
+    // Constructed curve, half-dot diagonal and GETINFO stretch witnesses.
+    // OpenType scan conversion/GETINFO: rotating an already scanned bitmap
+    // loses device-axis dropout and font-program orientation information.
+    // https://learn.microsoft.com/en-us/typography/opentype/spec/ttch01#the-scan-converter
+    // https://learn.microsoft.com/en-us/typography/opentype/spec/tt_instructions#get-information-getinfo
+    let font = Font::parse(TTF).unwrap();
+    let mut resources = Fonts::new();
+    resources
+        .insert_truetype('Z', TTF, Hinting::Native)
+        .unwrap();
+    resources
+        .insert_named_truetype("R:PROBE.TTF", TTF, Hinting::Native)
+        .unwrap();
+    let mut callback = Fonts::new();
+    callback.set_resolver(|_| zpl::fonts::Face::truetype(TTF, Hinting::Native).map(Some));
+    for (w, h) in [(31, 24), (32, 32), (1, 1)] {
+        for (turns, rotation) in ['N', 'R', 'I', 'B'].into_iter().enumerate() {
+            let instance = font
+                .instance(
+                    Size::new(w.max(10), h.max(10)).unwrap(),
+                    Hinting::Native,
+                    Environment::Zd621V93 {
+                        quarter_turns: turns as u8,
+                    },
+                )
+                .unwrap();
+            for c in ['5', 'E', 'S'] {
+                let glyph = rasterize(
+                    &instance.glyph(c).unwrap(),
+                    c as u32,
+                    instance
+                        .layout_advance(font.glyph_index(c).unwrap())
+                        .unwrap(),
+                    turns as u8,
+                    ScanMode::Zd621V93,
+                )
+                .unwrap();
+                let mut expected = vec![255; 192 * 192];
+                for y in 0..glyph.height as usize {
+                    for x in 0..glyph.width as usize {
+                        if glyph.bitmap[y][x / 8] & (128 >> (x % 8)) != 0 {
+                            let x = 96 + glyph.left + x as i32;
+                            let y = 96 + glyph.top + y as i32;
+                            assert!((0..192).contains(&x) && (0..192).contains(&y));
+                            expected[(y * 192 + x) as usize] = 0;
+                        }
+                    }
+                }
+                let named = format!("^A@{rotation},{h},{w},R:PROBE.TTF");
+                let download = format!("~DYR:PROBE.TTF,B,T,{},,", TTF.len()).into_bytes();
+                for (selection, resources, download) in [
+                    (format!("^AZ{rotation},{h},{w}"), &resources, None),
+                    (named.clone(), &resources, None),
+                    (named.clone(), &callback, None),
+                    (named.clone(), &resources, Some(download)),
+                ] {
+                    let mut source = Vec::new();
+                    if let Some(download) = download {
+                        source.extend(download);
+                        source.extend(TTF);
+                    }
+                    for flow in ["", "^FPH,1"] {
+                        let mut source = source.clone();
+                        source.extend(
+                            format!("^XA^PW192^LL192^FT96,96{selection}{flow}^FD{c}^FS^XZ").bytes(),
+                        );
+                        let doc = render_with_fonts(&source, ZD621_203_DPI, resources).unwrap();
+                        let actual = zpl::output::raster::rasterize(&doc.labels[0]).unwrap();
+                        assert_eq!(actual.pixels, expected, "{selection}{flow} {c}");
+                    }
+                }
+            }
+        }
+    }
+}

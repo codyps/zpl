@@ -1,0 +1,127 @@
+{
+  "started": "2026-10-10T02:41:42.668433+00:00",
+  "host": "d7j211001302.bed.einic.org",
+  "pages": [
+    {
+      "name": "00-control-start",
+      "source_sha256": "358f6c2413b21f6690578bda0554004f5efa2b30d3e101f31ae1ea4628929e6e",
+      "started": "2026-10-10T02:41:42.760675+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "bba3993eb0619c434c448ba43e7e72ffc3b5b68cf635c6f56560e702c534b514",
+      "finished": "2026-10-10T02:41:42.883922+00:00"
+    },
+    {
+      "name": "00-curves-repeat-0",
+      "source_sha256": "92145d82e2c9b76f917495f0457b765235ebe2a39c2f32800d4f11383925af37",
+      "started": "2026-10-10T02:41:44.919277+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "a5a3fc55078603da947cdcf6d0ea157ef35ee03375db90f012fc7a8a3bcbba2f",
+      "finished": "2026-10-10T02:41:45.540737+00:00"
+    },
+    {
+      "name": "01-curves-repeat-0",
+      "source_sha256": "9bf558adc2b8e48b19d730ec2900fa8c0598fadc32331e85d116f7c1f1581bd4",
+      "started": "2026-10-10T02:41:46.541618+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "36204e5a8bb0789cdf7c05d68ec9eeac8aa35dd29f9563ea0fd916795dc245a6",
+      "finished": "2026-10-10T02:41:47.157920+00:00"
+    },
+    {
+      "name": "02-curves-repeat-0",
+      "source_sha256": "ab12cffe2f243288f660d7f34423862286295f60d4144ad440422b55b89cd487",
+      "started": "2026-10-10T02:41:48.158568+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "b4bede47ab2ce99bb1b838b3883765f90881521e18632300b149affe0369691e",
+      "finished": "2026-10-10T02:41:48.773767+00:00"
+    },
+    {
+      "name": "03-curves-repeat-0",
+      "source_sha256": "8fcf8f2c44d722f4e8f78008690fb39355febcdfa53be4ddf68a02fef3313109",
+      "started": "2026-10-10T02:41:49.774192+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "ce25a6932d78653d28fdd3954ee915eac515b576adcc7d15b7c0743a35413fc9",
+      "finished": "2026-10-10T02:41:50.390243+00:00"
+    },
+    {
+      "name": "00-curves-repeat-1",
+      "source_sha256": "92145d82e2c9b76f917495f0457b765235ebe2a39c2f32800d4f11383925af37",
+      "started": "2026-10-10T02:41:51.390801+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "a5a3fc55078603da947cdcf6d0ea157ef35ee03375db90f012fc7a8a3bcbba2f",
+      "finished": "2026-10-10T02:41:51.975241+00:00"
+    },
+    {
+      "name": "01-curves-repeat-1",
+      "source_sha256": "9bf558adc2b8e48b19d730ec2900fa8c0598fadc32331e85d116f7c1f1581bd4",
+      "started": "2026-10-10T02:41:52.976095+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "36204e5a8bb0789cdf7c05d68ec9eeac8aa35dd29f9563ea0fd916795dc245a6",
+      "finished": "2026-10-10T02:41:53.555296+00:00"
+    },
+    {
+      "name": "02-curves-repeat-1",
+      "source_sha256": "ab12cffe2f243288f660d7f34423862286295f60d4144ad440422b55b89cd487",
+      "started": "2026-10-10T02:41:54.555947+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "b4bede47ab2ce99bb1b838b3883765f90881521e18632300b149affe0369691e",
+      "finished": "2026-10-10T02:41:55.137762+00:00"
+    },
+    {
+      "name": "03-curves-repeat-1",
+      "source_sha256": "8fcf8f2c44d722f4e8f78008690fb39355febcdfa53be4ddf68a02fef3313109",
+      "started": "2026-10-10T02:41:56.138402+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "ce25a6932d78653d28fdd3954ee915eac515b576adcc7d15b7c0743a35413fc9",
+      "finished": "2026-10-10T02:41:56.721740+00:00"
+    },
+    {
+      "name": "99-control-end",
+      "source_sha256": "358f6c2413b21f6690578bda0554004f5efa2b30d3e101f31ae1ea4628929e6e",
+      "started": "2026-10-10T02:41:57.722267+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "bba3993eb0619c434c448ba43e7e72ffc3b5b68cf635c6f56560e702c534b514",
+      "finished": "2026-10-10T02:41:57.805683+00:00"
+    }
+  ],
+  "owned": [
+    "R:ZRASL01.TTF"
+  ],
+  "status": "complete",
+  "identity": {
+    "device.product_name": "ZD621",
+    "device.unique_id": "D7J211001302",
+    "appl.name": "V93.21.33Z"
+  },
+  "cleanup_errors": [],
+  "finished": "2026-10-10T02:41:59.392747+00:00"
+}

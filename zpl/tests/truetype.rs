@@ -198,14 +198,14 @@ fn check_native_printer_probe_canvases(calibrated: bool) {
             (0, 0, 416),
             (0, 0, 432),
             (0, 0, 416),
-            (135, 57, 2433),
-            (169, 62, 2443),
-            (133, 54, 2463),
-            (139, 112, 2462),
-            (58, 19, 743),
-            (134, 49, 863),
-            (128, 128, 2784),
-            (157, 126, 1636),
+            (24, 0, 2376),
+            (4, 0, 2381),
+            (27, 0, 2409),
+            (4, 2, 2352),
+            (0, 0, 724),
+            (0, 0, 814),
+            (0, 0, 2656),
+            (16, 1, 1511),
         ]
     } else {
         expected
@@ -635,23 +635,23 @@ fn zd621_point_quantization_rounding_and_spacing_match_native_canvases() {
                 // distinct from the larger error against resident Font 0.
                 let expected = [
                     (0, 0, 52),
-                    (5, 4, 4934),
-                    (3, 3, 2555),
-                    (9, 12, 11798),
-                    (5, 8, 3909),
+                    (5, 0, 4930),
+                    (3, 0, 2552),
+                    (0, 0, 11786),
+                    (0, 0, 3901),
                 ];
                 assert_eq!(actual, expected[page_index], "{directory}/{name}");
             } else if directory == "reconstruction-replay-20261003" {
                 // Automatically fitted quadratic geometry and derived hints;
                 // same generated TTF on both sides, native unaligned canvases.
-                let expected = [(0, 0, 52), (43, 41, 20632), (4, 16, 990)];
+                let expected = [(0, 0, 52), (1, 0, 20591), (1, 0, 974)];
                 assert_eq!(actual, expected[page_index], "{directory}/{name}");
             } else if directory == "joint-replay-20261003" {
                 // Frozen joint-search proposal, retained despite rejection by
                 // reconstruction acceptance. This checks execution of that TTF,
                 // not its resemblance to resident Font 0 or production fitness.
                 assert_eq!(manifest["variant"], "proposal");
-                let expected = [(0, 0, 52), (36, 44, 18693), (2, 11, 1964)];
+                let expected = [(0, 0, 52), (12, 9, 18658), (0, 0, 1953)];
                 assert_eq!(actual, expected[page_index], "{directory}/{name}");
             } else if directory == "expanded-replay-20261004" {
                 // Same generated font on 294 independently reserved square,
@@ -659,32 +659,32 @@ fn zd621_point_quantization_rounding_and_spacing_match_native_canvases() {
                 assert_eq!(manifest["variant"], "proposal");
                 let expected = [
                     (0, 0, 52),
-                    (81, 103, 8334),
-                    (114, 178, 31750),
-                    (33, 31, 6368),
-                    (23, 69, 43383),
-                    (85, 156, 33988),
-                    (47, 71, 28049),
-                    (56, 42, 41219),
-                    (33, 44, 47944),
-                    (27, 18, 20282),
+                    (43, 42, 8273),
+                    (64, 58, 31630),
+                    (16, 16, 6353),
+                    (0, 0, 43314),
+                    (66, 73, 33905),
+                    (23, 23, 28001),
+                    (0, 0, 41177),
+                    (0, 0, 47900),
+                    (0, 0, 20264),
                 ];
                 assert_eq!(actual, expected[page_index], "{directory}/{name}");
             } else if directory == "accuracy-feature-replay-20261004" {
                 // Additive local-curve feature experiment, frozen before these
                 // 96 Font 0 targets were captured. This measures execution of
                 // the same TTF, separately from its reconstruction accuracy.
-                let expected = [(0, 0, 52), (22, 37, 6808), (19, 53, 22212)];
+                let expected = [(0, 0, 52), (0, 1, 6772), (4, 6, 22165)];
                 assert_eq!(actual, expected[page_index], "{directory}/{name}");
             } else if directory == "structured-baseline-replay-20261004" {
                 // Paired baseline on 240 fresh dimensions/rotations near the
                 // coarse hint branches. Keep every native pixel accounted for.
                 let expected = [
                     (0, 0, 52),
-                    (87, 118, 9612),
-                    (73, 67, 11435),
-                    (58, 83, 14750),
-                    (46, 64, 6639),
+                    (53, 56, 9550),
+                    (34, 38, 11406),
+                    (43, 40, 14707),
+                    (36, 47, 6622),
                 ];
                 assert_eq!(actual, expected[page_index], "{directory}/{name}");
             } else if directory == "structured-candidate-replay-20261004" {
@@ -692,10 +692,10 @@ fn zd621_point_quantization_rounding_and_spacing_match_native_canvases() {
                 // branches execute on the printer; Font 0 fit is scored apart.
                 let expected = [
                     (0, 0, 52),
-                    (87, 108, 9627),
-                    (77, 74, 11452),
-                    (55, 85, 14764),
-                    (52, 65, 6659),
+                    (52, 55, 9574),
+                    (34, 38, 11416),
+                    (42, 42, 14721),
+                    (36, 41, 6635),
                 ];
                 assert_eq!(actual, expected[page_index], "{directory}/{name}");
             } else if directory == "ascii-cmap-20261004" {
@@ -708,7 +708,7 @@ fn zd621_point_quantization_rounding_and_spacing_match_native_canvases() {
                 // Fractional placement, optical programs, and disconnected
                 // feature controls on known training cases. This diagnoses
                 // execution; it is not an independent reconstruction holdout.
-                let expected = [(0, 0, 52), (19, 28, 3457), (21, 32, 6035), (26, 9, 4640)];
+                let expected = [(0, 0, 52), (16, 8, 3437), (15, 11, 6014), (24, 1, 4632)];
                 assert_eq!(actual, expected[page_index], "{directory}/{name}");
             } else if directory == "ascii-baseline-replay-20261004" {
                 // Full ASCII, frozen before the 1,504 small/transformed
@@ -716,30 +716,30 @@ fn zd621_point_quantization_rounding_and_spacing_match_native_canvases() {
                 // of Font 0 fitting scores and preserve every native pixel.
                 let expected = [
                     (0, 0, 52),
-                    (29, 48, 22185),
-                    (16, 24, 16360),
-                    (32, 5, 14692),
-                    (14, 18, 7893),
-                    (28, 21, 10314),
-                    (18, 21, 14337),
-                    (29, 51, 17395),
-                    (27, 23, 14131),
-                    (23, 17, 14378),
-                    (26, 27, 15896),
-                    (31, 45, 16561),
-                    (18, 23, 16195),
-                    (29, 20, 16911),
-                    (13, 13, 8711),
-                    (25, 22, 9511),
-                    (44, 30, 21151),
-                    (43, 33, 12030),
-                    (11, 19, 8084),
-                    (14, 20, 5497),
-                    (29, 27, 8644),
-                    (38, 105, 8901),
-                    (40, 21, 13790),
-                    (30, 49, 10862),
-                    (12, 8, 4627),
+                    (7, 3, 22140),
+                    (4, 4, 16340),
+                    (8, 0, 14687),
+                    (2, 4, 7879),
+                    (9, 2, 10295),
+                    (5, 3, 14319),
+                    (12, 13, 17357),
+                    (7, 4, 14112),
+                    (6, 3, 14364),
+                    (17, 13, 15882),
+                    (21, 17, 16533),
+                    (4, 3, 16175),
+                    (3, 0, 16891),
+                    (5, 1, 8699),
+                    (10, 3, 9492),
+                    (21, 14, 21135),
+                    (14, 12, 12009),
+                    (8, 2, 8067),
+                    (7, 6, 5483),
+                    (17, 9, 8626),
+                    (5, 2, 8798),
+                    (8, 6, 13775),
+                    (9, 9, 10822),
+                    (1, 0, 4619),
                 ];
                 assert_eq!(actual, expected[page_index], "{directory}/{name}");
             } else if directory == "ascii-candidate-replay-20261004" {
@@ -748,92 +748,92 @@ fn zd621_point_quantization_rounding_and_spacing_match_native_canvases() {
                 // of Font 0 fitting scores and preserve every native pixel.
                 let expected = [
                     (0, 0, 52),
-                    (64, 111, 22284),
-                    (89, 107, 16518),
-                    (88, 40, 14852),
-                    (53, 37, 7905),
-                    (80, 71, 10353),
-                    (60, 65, 14412),
-                    (70, 83, 17484),
-                    (64, 86, 14300),
-                    (55, 92, 14542),
-                    (54, 40, 16005),
-                    (68, 112, 16648),
-                    (75, 95, 16309),
-                    (51, 38, 16965),
-                    (84, 40, 8833),
-                    (56, 46, 9569),
-                    (52, 62, 21358),
-                    (51, 53, 12080),
-                    (75, 62, 8113),
-                    (50, 33, 5522),
-                    (57, 48, 8693),
-                    (126, 146, 9025),
-                    (93, 36, 13841),
-                    (51, 56, 10940),
-                    (89, 41, 4745),
+                    (42, 67, 22240),
+                    (77, 86, 16497),
+                    (74, 32, 14844),
+                    (43, 22, 7890),
+                    (61, 51, 10333),
+                    (47, 41, 14388),
+                    (49, 53, 17454),
+                    (33, 54, 14268),
+                    (38, 62, 14512),
+                    (33, 24, 15989),
+                    (58, 82, 16618),
+                    (76, 89, 16303),
+                    (35, 22, 16949),
+                    (70, 33, 8826),
+                    (36, 38, 9561),
+                    (32, 47, 21343),
+                    (30, 36, 12063),
+                    (69, 45, 8096),
+                    (29, 14, 5503),
+                    (49, 25, 8670),
+                    (73, 45, 8924),
+                    (37, 16, 13821),
+                    (40, 32, 10916),
+                    (65, 30, 4734),
                 ];
                 assert_eq!(actual, expected[page_index], "{directory}/{name}");
             } else if directory == "line-vector-20261005" {
                 let expected = [
                     (0, 0, 52),
-                    (0, 4, 49),
-                    (0, 8, 122),
-                    (0, 7, 224),
-                    (0, 9, 492),
-                    (0, 2, 168),
-                    (0, 2, 164),
-                    (0, 1, 167),
-                    (0, 1, 167),
-                    (0, 1, 167),
+                    (0, 0, 45),
+                    (0, 0, 114),
+                    (0, 0, 217),
+                    (0, 0, 483),
+                    (0, 0, 166),
+                    (0, 0, 162),
+                    (0, 0, 166),
+                    (0, 0, 166),
+                    (0, 0, 166),
                 ];
                 assert_eq!(actual, expected[page_index], "{directory}/{name}");
             } else if directory == "repair-baseline-replay-20261005" {
                 let expected = [
                     (0, 0, 52),
-                    (13, 24, 4268),
-                    (28, 23, 10920),
-                    (22, 11, 8854),
-                    (73, 102, 10243),
-                    (64, 76, 7638),
-                    (25, 54, 3262),
+                    (12, 8, 4252),
+                    (16, 11, 10908),
+                    (9, 4, 8847),
+                    (57, 42, 10183),
+                    (60, 41, 7603),
+                    (13, 16, 3224),
                 ];
                 assert_eq!(actual, expected[page_index], "{directory}/{name}");
             } else if directory == "repair-targeted-replay-20261005" {
                 let expected = [
                     (0, 0, 52),
-                    (14, 29, 4262),
-                    (37, 27, 10943),
-                    (29, 11, 8857),
-                    (73, 105, 10237),
-                    (67, 78, 7646),
-                    (27, 55, 3264),
+                    (16, 10, 4243),
+                    (24, 13, 10929),
+                    (9, 4, 8850),
+                    (57, 43, 10175),
+                    (62, 42, 7610),
+                    (15, 17, 3226),
                 ];
                 assert_eq!(actual, expected[page_index], "{directory}/{name}");
             } else if directory == "curve-first-experiment-20261005/baseline-replay" {
                 let expected = [
                     (0, 0, 52),
                     (0, 0, 23357),
-                    (13, 11, 17702),
-                    (0, 20, 27707),
-                    (5, 19, 24955),
-                    (2, 0, 70409),
-                    (9, 22, 53112),
-                    (30, 16, 82923),
-                    (32, 7, 74761),
+                    (0, 0, 17691),
+                    (0, 0, 27687),
+                    (0, 0, 24936),
+                    (0, 0, 70409),
+                    (0, 0, 53090),
+                    (0, 0, 82907),
+                    (0, 0, 74754),
                     (0, 0, 95534),
-                    (14, 30, 72429),
-                    (34, 24, 113109),
-                    (24, 22, 101739),
-                    (4, 189, 57305),
-                    (36, 22, 43649),
-                    (681, 24, 68477),
-                    (40, 18, 61338),
-                    (12, 4, 57617),
-                    (10, 51, 43568),
-                    (12, 18, 68037),
-                    (29, 27, 61276),
-                    (20, 44, 5289),
+                    (0, 0, 72399),
+                    (0, 0, 113085),
+                    (0, 0, 101717),
+                    (0, 0, 57116),
+                    (0, 0, 43627),
+                    (0, 0, 68453),
+                    (0, 0, 61320),
+                    (0, 0, 57613),
+                    (0, 0, 43517),
+                    (0, 0, 68019),
+                    (0, 0, 61249),
+                    (16, 12, 5257),
                 ];
                 assert_eq!(actual, expected[page_index], "{directory}/{name}");
             } else if directory == "curve-first-experiment-20261005/curve-replay" {
@@ -841,27 +841,27 @@ fn zd621_point_quantization_rounding_and_spacing_match_native_canvases() {
                 // same-font interpreter/raster residuals, not Font 0 IoUs.
                 let expected = [
                     (0, 0, 52),
-                    (6, 8, 23294),
-                    (5, 37, 17669),
-                    (0, 14, 27869),
-                    (12, 42, 24905),
-                    (4, 8, 69238),
-                    (20, 5, 53325),
-                    (8, 6, 82731),
-                    (13, 22, 74831),
-                    (3, 16, 94639),
-                    (21, 10, 72260),
-                    (18, 3, 113059),
-                    (26, 29, 101728),
-                    (4, 10, 57150),
-                    (25, 24, 43390),
-                    (44, 7, 67914),
-                    (28, 57, 61471),
-                    (5, 15, 56818),
-                    (17, 26, 43625),
-                    (11, 15, 67987),
-                    (13, 39, 61325),
-                    (18, 55, 5429),
+                    (0, 0, 23286),
+                    (0, 0, 17632),
+                    (0, 0, 27855),
+                    (0, 0, 24863),
+                    (0, 0, 69230),
+                    (0, 0, 53320),
+                    (0, 0, 82725),
+                    (0, 0, 74809),
+                    (0, 0, 94623),
+                    (0, 0, 72250),
+                    (0, 0, 113056),
+                    (0, 0, 101699),
+                    (10, 4, 57144),
+                    (15, 15, 43381),
+                    (34, 8, 67915),
+                    (9, 33, 61447),
+                    (1, 2, 56805),
+                    (8, 15, 43614),
+                    (7, 14, 67986),
+                    (13, 15, 61301),
+                    (5, 2, 5376),
                 ];
                 assert_eq!(actual, expected[page_index], "{directory}/{name}");
             } else {

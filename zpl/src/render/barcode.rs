@@ -512,6 +512,10 @@ impl Barcode {
             let (id, fw, fh) = font.unwrap_or(('A', 5. * self.module, 9. * self.module));
             let caption_font = super::font::Font::from(id)
                 .with_fonts(fonts)
+                .with_truetype_environment(
+                    self.compatibility.supplied_truetype_printer_metrics,
+                    rotation,
+                )
                 .with_character_map(character_map);
             let cap_caption = font.is_none()
                 && self.compatibility.bitmap_font_maximum_dimensions

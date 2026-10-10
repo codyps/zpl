@@ -167,9 +167,10 @@ impl<'a> Fonts<'a> {
     /// errors through the existing TrueType engine. Data must outlive this set.
     /// Sizes are dots per em, rounded to whole dots (1..=4096); width and height
     /// scale independently. The ZPL cell baseline is 3/4 of the rounded height,
-    /// not the font's typographic ascender. Uses standard hinting/scan semantics
-    /// independently of the resident printer compatibility profile. No kerning or shaping is
-    /// added beyond the renderer's existing Unicode processing.
+    /// not the font's typographic ascender. The specification profile uses standard
+    /// hinting/scan semantics. `supplied_truetype_printer_metrics` selects measured
+    /// ZD621 scaling, minimum dimensions, spacing and device-space scan conversion.
+    /// No kerning or shaping is added beyond the existing Unicode processing.
     pub fn insert_truetype(
         &mut self,
         id: char,
@@ -256,10 +257,15 @@ pub(crate) struct RenderFonts<'r, 'a, 'd> {
     registered_faces: BTreeMap<char, Face<'a>>,
     registered_named: BTreeMap<String, Face<'a>>,
     printer_metrics: bool,
+    pub(crate) truetype_printer_metrics: bool,
 }
 
 impl<'r, 'a, 'd> RenderFonts<'r, 'a, 'd> {
-    pub(crate) fn new(resources: &'r Fonts<'a>, printer_metrics: bool) -> Self {
+    pub(crate) fn new(
+        resources: &'r Fonts<'a>,
+        printer_metrics: bool,
+        truetype_printer_metrics: bool,
+    ) -> Self {
         Self {
             registered_faces: resources
                 .faces
@@ -278,6 +284,7 @@ impl<'r, 'a, 'd> RenderFonts<'r, 'a, 'd> {
                 })
                 .collect(),
             printer_metrics,
+            truetype_printer_metrics,
             resources,
             aliases: BTreeMap::new(),
             selected_name: None,
@@ -639,6 +646,7 @@ impl Face<'_> {
         c: char,
         w: f64,
         h: f64,
+        environment: Environment,
     ) -> Result<(Cow<'_, Glyph>, f64, f64), String> {
         self.dimensions(w, h)?;
         match &self.source {
@@ -689,13 +697,23 @@ impl Face<'_> {
                 let size =
                     Size::new(w.round() as u16, h.round() as u16).map_err(|e| e.to_string())?;
                 let instance = font
-                    .instance(size, *hinting, Environment::Standard)
+                    .instance(size, *hinting, environment)
                     .map_err(|e| e.to_string())?;
                 let outline = instance.outline(index).map_err(|e| e.to_string())?;
                 let advance = instance.layout_advance(index).map_err(|e| e.to_string())?;
-                let glyph = rasterize(&outline, c as u32, advance, 0, ScanMode::Center)
+                let (mode, turns) = match environment {
+                    Environment::Zd621V93 { quarter_turns } => (ScanMode::Zd621V93, quarter_turns),
+                    _ => (ScanMode::Center, 0),
+                };
+                let glyph = rasterize(&outline, c as u32, advance, turns, mode)
                     .map_err(|e| e.to_string())?;
-                Ok((Cow::Owned(glyph), 1., 1.))
+                Ok((
+                    Cow::Owned(crate::output::raster::truetype::unrotate_glyph(
+                        glyph, turns,
+                    )),
+                    1.,
+                    1.,
+                ))
             }
         }
     }
@@ -707,6 +725,7 @@ pub(crate) fn resolve_glyph<'a>(
     key: crate::fonts::resident::GlyphKey,
     w: f64,
     h: f64,
+    environment: Environment,
 ) -> Result<(resident::GlyphView<'a>, f64, f64), String> {
     if let Some(custom) = custom {
         if let Some(face) = custom.compact() {
@@ -722,7 +741,7 @@ pub(crate) fn resolve_glyph<'a>(
         let crate::fonts::resident::GlyphKey::Unicode(c) = key else {
             return Err("invalid custom font key".into());
         };
-        let (g, sx, sy) = custom.glyph(c, w, h)?;
+        let (g, sx, sy) = custom.glyph(c, w, h, environment)?;
         return Ok((
             resident::GlyphView {
                 advance: g.advance,

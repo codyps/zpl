@@ -1,0 +1,281 @@
+{
+  "started": "2026-10-10T04:30:12.989382+00:00",
+  "host": "d7j211001302.bed.einic.org",
+  "pages": [
+    {
+      "name": "00-control-start",
+      "source_sha256": "358f6c2413b21f6690578bda0554004f5efa2b30d3e101f31ae1ea4628929e6e",
+      "started": "2026-10-10T04:30:13.082842+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "bba3993eb0619c434c448ba43e7e72ffc3b5b68cf635c6f56560e702c534b514",
+      "finished": "2026-10-10T04:30:13.164802+00:00"
+    },
+    {
+      "name": "00-binary-repeat-0",
+      "source_sha256": "29c8ebaad6a05aafd905d1d606dbe9be22ff351657c175dd8c17e0b723da0728",
+      "started": "2026-10-10T04:30:15.202369+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "fcba6eb332762d0d14948e9491783eeb98cb080605fb51daefb409661ed9cc54",
+      "finished": "2026-10-10T04:30:15.688023+00:00"
+    },
+    {
+      "name": "01-binary-repeat-0",
+      "source_sha256": "4673a8d95118f8ed5070e2443ddbcdc5e07b9f2b619525b579420717820c8880",
+      "started": "2026-10-10T04:30:16.688978+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "cb330ede80a45a42d2aa7233817e1ffd64fdd99e1eb9191a235009cc645f33a0",
+      "finished": "2026-10-10T04:30:17.169050+00:00"
+    },
+    {
+      "name": "02-binary-repeat-0",
+      "source_sha256": "f8f9945e68c07d5fb6c0cf94914d919bfc76d2af0f297ad12521f4054a154470",
+      "started": "2026-10-10T04:30:18.169587+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "d8b9cc15145754caa53566bcab97591033da4583623e8e7fdc54cc389c1127a9",
+      "finished": "2026-10-10T04:30:18.648039+00:00"
+    },
+    {
+      "name": "03-binary-repeat-0",
+      "source_sha256": "13ff92b8174a13ad2ba4fac35a9ab4a425e04ae1b3e569c9846c8b6f1ecb8dfb",
+      "started": "2026-10-10T04:30:19.648921+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "193d604918abcc91f6ca69bf4b2af4072a3c48bf16daf3440cb3de2dba1e8f21",
+      "finished": "2026-10-10T04:30:20.129748+00:00"
+    },
+    {
+      "name": "04-binary-repeat-0",
+      "source_sha256": "07086ffb214f414b03686fdc16fa37862f49f8d61e8950f17dc6fe2f652b4e24",
+      "started": "2026-10-10T04:30:21.130786+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "00a178c709b962a8a226112d3ac20b213d42f6e72b0b0a0d5c9d41f7f8baa531",
+      "finished": "2026-10-10T04:30:21.611486+00:00"
+    },
+    {
+      "name": "05-binary-repeat-0",
+      "source_sha256": "400ce8f88669edbd2d5881cbcdacb83537c43421261a52d044f92746a9bc8057",
+      "started": "2026-10-10T04:30:22.612245+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "aedc0dee1dbee008fc10e8d79641f6e2549ba58466e92ccb6b7ca2762844dc7e",
+      "finished": "2026-10-10T04:30:23.090737+00:00"
+    },
+    {
+      "name": "06-binary-repeat-0",
+      "source_sha256": "3cc18b0cf62a9696593bffc87f560de3b8967e0bf0dc7afef3b75313452b89fe",
+      "started": "2026-10-10T04:30:24.091753+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "9813af8265be909b8ab14d3afa12ce9eed2323baf628bf0fdafd5d0f8ecd9350",
+      "finished": "2026-10-10T04:30:24.573085+00:00"
+    },
+    {
+      "name": "07-binary-repeat-0",
+      "source_sha256": "47e54687b80cbb70d7463e50aede1c06186ca03c3ab7f3a47e19aa94729c10a2",
+      "started": "2026-10-10T04:30:25.573958+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "e6418264f91570d7c5d5a43f08193b487fbacef006b1c102173ab1d60545cac9",
+      "finished": "2026-10-10T04:30:26.056837+00:00"
+    },
+    {
+      "name": "08-binary-repeat-0",
+      "source_sha256": "a7a32dd7eaba0f6198cd849a8b2138e2b7fc618b328e136b31afef2196d1d729",
+      "started": "2026-10-10T04:30:27.057829+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "d141eb52d0cdc8d7e83f411f3407275cdc6e437da1d9bcd739dec8b05b65d3e9",
+      "finished": "2026-10-10T04:30:27.535982+00:00"
+    },
+    {
+      "name": "09-binary-repeat-0",
+      "source_sha256": "d577ca3255409b9f0fc9272577bafdcc677c312bbb6692207183644d233108d4",
+      "started": "2026-10-10T04:30:28.537109+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "5451021b0bf723189418a473f3e0a01ca15ce892b1b8b08cbcbce33a95c2fafe",
+      "finished": "2026-10-10T04:30:29.021202+00:00"
+    },
+    {
+      "name": "10-binary-repeat-0",
+      "source_sha256": "2940e6d63c3210f31be90850747b7719ee626407e242d405e15498ed3ebf50fa",
+      "started": "2026-10-10T04:30:30.022529+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "6b9a274f9906ff74d99f4c53ca195729b20cffd55e4bdcb78c751e255c6d05ad",
+      "finished": "2026-10-10T04:30:30.305888+00:00"
+    },
+    {
+      "name": "00-binary-repeat-1",
+      "source_sha256": "29c8ebaad6a05aafd905d1d606dbe9be22ff351657c175dd8c17e0b723da0728",
+      "started": "2026-10-10T04:30:31.307090+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "fcba6eb332762d0d14948e9491783eeb98cb080605fb51daefb409661ed9cc54",
+      "finished": "2026-10-10T04:30:31.761070+00:00"
+    },
+    {
+      "name": "01-binary-repeat-1",
+      "source_sha256": "4673a8d95118f8ed5070e2443ddbcdc5e07b9f2b619525b579420717820c8880",
+      "started": "2026-10-10T04:30:32.762104+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "cb330ede80a45a42d2aa7233817e1ffd64fdd99e1eb9191a235009cc645f33a0",
+      "finished": "2026-10-10T04:30:33.214539+00:00"
+    },
+    {
+      "name": "02-binary-repeat-1",
+      "source_sha256": "f8f9945e68c07d5fb6c0cf94914d919bfc76d2af0f297ad12521f4054a154470",
+      "started": "2026-10-10T04:30:34.215578+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "d8b9cc15145754caa53566bcab97591033da4583623e8e7fdc54cc389c1127a9",
+      "finished": "2026-10-10T04:30:34.669470+00:00"
+    },
+    {
+      "name": "03-binary-repeat-1",
+      "source_sha256": "13ff92b8174a13ad2ba4fac35a9ab4a425e04ae1b3e569c9846c8b6f1ecb8dfb",
+      "started": "2026-10-10T04:30:35.670742+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "193d604918abcc91f6ca69bf4b2af4072a3c48bf16daf3440cb3de2dba1e8f21",
+      "finished": "2026-10-10T04:30:36.125557+00:00"
+    },
+    {
+      "name": "04-binary-repeat-1",
+      "source_sha256": "07086ffb214f414b03686fdc16fa37862f49f8d61e8950f17dc6fe2f652b4e24",
+      "started": "2026-10-10T04:30:37.126735+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "00a178c709b962a8a226112d3ac20b213d42f6e72b0b0a0d5c9d41f7f8baa531",
+      "finished": "2026-10-10T04:30:37.579601+00:00"
+    },
+    {
+      "name": "05-binary-repeat-1",
+      "source_sha256": "400ce8f88669edbd2d5881cbcdacb83537c43421261a52d044f92746a9bc8057",
+      "started": "2026-10-10T04:30:38.580300+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "aedc0dee1dbee008fc10e8d79641f6e2549ba58466e92ccb6b7ca2762844dc7e",
+      "finished": "2026-10-10T04:30:39.030703+00:00"
+    },
+    {
+      "name": "06-binary-repeat-1",
+      "source_sha256": "3cc18b0cf62a9696593bffc87f560de3b8967e0bf0dc7afef3b75313452b89fe",
+      "started": "2026-10-10T04:30:40.031856+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "9813af8265be909b8ab14d3afa12ce9eed2323baf628bf0fdafd5d0f8ecd9350",
+      "finished": "2026-10-10T04:30:40.483746+00:00"
+    },
+    {
+      "name": "07-binary-repeat-1",
+      "source_sha256": "47e54687b80cbb70d7463e50aede1c06186ca03c3ab7f3a47e19aa94729c10a2",
+      "started": "2026-10-10T04:30:41.484937+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "e6418264f91570d7c5d5a43f08193b487fbacef006b1c102173ab1d60545cac9",
+      "finished": "2026-10-10T04:30:41.936964+00:00"
+    },
+    {
+      "name": "08-binary-repeat-1",
+      "source_sha256": "a7a32dd7eaba0f6198cd849a8b2138e2b7fc618b328e136b31afef2196d1d729",
+      "started": "2026-10-10T04:30:42.938129+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "d141eb52d0cdc8d7e83f411f3407275cdc6e437da1d9bcd739dec8b05b65d3e9",
+      "finished": "2026-10-10T04:30:43.391975+00:00"
+    },
+    {
+      "name": "09-binary-repeat-1",
+      "source_sha256": "d577ca3255409b9f0fc9272577bafdcc677c312bbb6692207183644d233108d4",
+      "started": "2026-10-10T04:30:44.393134+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "5451021b0bf723189418a473f3e0a01ca15ce892b1b8b08cbcbce33a95c2fafe",
+      "finished": "2026-10-10T04:30:44.852534+00:00"
+    },
+    {
+      "name": "10-binary-repeat-1",
+      "source_sha256": "2940e6d63c3210f31be90850747b7719ee626407e242d405e15498ed3ebf50fa",
+      "started": "2026-10-10T04:30:45.853866+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "6b9a274f9906ff74d99f4c53ca195729b20cffd55e4bdcb78c751e255c6d05ad",
+      "finished": "2026-10-10T04:30:46.121827+00:00"
+    },
+    {
+      "name": "99-control-end",
+      "source_sha256": "358f6c2413b21f6690578bda0554004f5efa2b30d3e101f31ae1ea4628929e6e",
+      "started": "2026-10-10T04:30:47.122854+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "bba3993eb0619c434c448ba43e7e72ffc3b5b68cf635c6f56560e702c534b514",
+      "finished": "2026-10-10T04:30:47.206345+00:00"
+    }
+  ],
+  "owned": [
+    "R:ZSCAL07.TTF"
+  ],
+  "status": "complete",
+  "identity": {
+    "device.product_name": "ZD621",
+    "device.unique_id": "D7J211001302",
+    "appl.name": "V93.21.33Z"
+  },
+  "cleanup_errors": [],
+  "finished": "2026-10-10T04:30:48.787818+00:00"
+}

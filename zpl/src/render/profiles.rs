@@ -70,6 +70,7 @@ pub const SPECIFICATION: Options = Options {
         bitmap_font_maximum_dimensions: false,
         bitmap_font_ft_dot_origin: false,
         supplied_bitmap_font_metrics: false,
+        supplied_truetype_printer_metrics: false,
         linear_barcode_rotated_edge_loses_dot: false,
         linear_barcode_clamps_negative_ink: false,
         code93_extended_checksum_preview: false,
@@ -225,6 +226,7 @@ pub const ZD621_203_DPI: Options = Options {
         bitmap_font_maximum_dimensions: true,
         bitmap_font_ft_dot_origin: true,
         supplied_bitmap_font_metrics: true,
+        supplied_truetype_printer_metrics: true,
         linear_barcode_rotated_edge_loses_dot: true,
         linear_barcode_clamps_negative_ink: true,
         code93_extended_checksum_preview: true,
@@ -329,6 +331,8 @@ pub const ZQ610_PLUS_203_DPI: Options = Options {
         preview_max_width: Some(384),
         preview_width_latched_at_first_draw: true,
         preview_ignores_label_length: true,
+        // Supplied TrueType scaling has only been validated on ZD621.
+        supplied_truetype_printer_metrics: false,
         // Automatic QR segmentation evidence is ZD621-only.
         qr_printer_segmentation: false,
         // SurePost run-boundary evidence is ZD621-only.

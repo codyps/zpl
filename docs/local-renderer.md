@@ -274,9 +274,24 @@ the rounded height, independent of the font's `hhea` ascender. The
 faces: it floors the `^FO` baseline to match measured ZD621 positioning. Bitmap
 faces retain their supplied baseline metrics; `^FT` remains baseline-anchored.
 `Hinting::None` skips hint execution; `Hinting::Native` reports unsupported
-instructions instead of silently ignoring them. Standard font-engine and scan
-semantics apply, even with a printer compatibility profile. Existing Unicode
-processing still applies, but this adds no OpenType shaping or kerning.
+instructions instead of silently ignoring them. `SPECIFICATION` uses standard
+font-engine and scan semantics. The ZD621 profile enables
+`supplied_truetype_printer_metrics`: a 10-dot minimum on both dimensions,
+measured outline and advance scaling, and scan conversion in the field's device
+orientation before scene placement. This applies to registrations, named fonts,
+resolver callbacks, downloads, and ordinary captions. Disable that option to
+retain the standard engine under a printer layout profile. ZQ610 does not enable
+this ZD621-only calibration. Existing Unicode processing still applies, but this
+adds no OpenType shaping or kerning. The 35 unchanged controlled-Heros captures in
+`tests/fixtures/external-fonts-zd621-v1` now match pixel for pixel at their native
+origins, including rotations, aspect ratios and field blocks. The measured
+scanner rounds quadratic midpoints and subdivisions in device coordinates and
+applies printer-specific directed ties and dropout handling. Independent contour
+witnesses and scaling probes are pinned in `tests/fixtures/truetype-raster-zd621-v1`:
+all 36 native canvases match exactly. Scaling preserves the measured rational
+path when point-size/DPI factors cancel by binary shifts, including its signed
+half-tie rules; otherwise it rounds the ppem and coordinate multiplier to 16.16.
+These captures do not establish parity for every TrueType program or device.
 
 Custom text, field blocks, bounded text, and ordinary barcode captions resolve
 into the same scene paths consumed by PNG/SVG/PDF. Barcode-specific built-in

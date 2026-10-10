@@ -98,6 +98,7 @@ configuration!(Compatibility, zpl::render::compatibility::Compatibility, zpl::re
     bitmap_font_maximum_dimensions: bool,
     bitmap_font_ft_dot_origin: bool,
     supplied_bitmap_font_metrics: bool,
+    supplied_truetype_printer_metrics: bool,
     linear_barcode_rotated_edge_loses_dot: bool,
     linear_barcode_clamps_negative_ink: bool,
     code93_extended_checksum_preview: bool,

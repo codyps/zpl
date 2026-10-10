@@ -113,23 +113,71 @@ impl Environment {
 
     pub(super) fn ppem(self, dots: u16, layout: bool) -> f64 {
         if matches!(self, Self::Zd621V93 { .. }) {
-            // Oct 3 scale/CVT and advance probes: nominal 203-DPI dots become
-            // sixteenths of a point, down for outlines and up for text advances.
-            // The 8-dot/mm point-to-pixel matrix is rounded up to 16.16:
+            // Native controlled-Heros advances distinguish continuous layout
+            // scaling from the earlier ceil-to-sixteenths hypothesis. The shared
+            // 204/203 ratio preserves all constructed-font spacing witnesses and
+            // predicts H at 16, j/space at 24, and W/m at 65 and 96 dots.
+            // This is an empirical rule, not a claim about firmware internals.
+            // See tests/fixtures/external-fonts-zd621-v1/README.md.
+            if layout {
+                return f64::from(dots.max(10)) * 204. / 203.;
+            }
+            // Font-program distances retain the calibrated sixteenths-of-a-
+            // point size and the 8-dot/mm matrix rounded up to 16.16:
             // ceil((203.2 / 72) * 65536) == 184958. This shared model predicts
             // the 1..64 sweep; see docs/swiss-font-rendering.md and fixtures.
+            // Point/CVT coordinates use the two rounded coefficients in scale().
             let numerator = u32::from(dots.max(10)) * 1152;
-            let points = if layout {
-                numerator.div_ceil(203)
-            } else {
-                numerator / 203
-            };
+            let points = numerator / 203;
             f64::from(points) * 184958. / (16. * 65536.)
         } else {
             f64::from(dots)
         }
     }
     pub(super) fn scale(self, value: i32, dots: u16, units: u16) -> Result<i32> {
+        if matches!(self, Self::Zd621V93 { .. }) {
+            let points = i64::from(dots.max(10)) * 1152 / 203;
+            // The native scaler retains a rational multiplier when the point
+            // size cancels the DPI denominator through a binary shift. Its
+            // numerator is 508 * 32; the denominator must remain integral.
+            // GC, RCVT and WCVTF captures distinguish this from always rounding
+            // a 16.16 multiplier, including odd em sizes and signed half-ties.
+            // See tests/fixtures/truetype-raster-zd621-v1/README.md.
+            let binary_scale = (points / 45) as u64;
+            if points % 45 == 0
+                && binary_scale.is_power_of_two()
+                && (u64::from(units) * 32) % binary_scale == 0
+            {
+                let denominator = (u64::from(units) * 32 / binary_scale) as i32;
+                // The shift path uses signed arithmetic (ties toward +infinity).
+                // Division rounds the magnitude, then restores the input sign.
+                // Large WCVTF witnesses also expose a wrapping 32-bit product
+                // and rounding addition; keep wrapping explicit and bounded.
+                let result = if (denominator as u32).is_power_of_two() {
+                    value.wrapping_mul(16_256).wrapping_add(denominator / 2)
+                        >> denominator.trailing_zeros()
+                } else {
+                    value
+                        .wrapping_abs()
+                        .wrapping_mul(16_256)
+                        .wrapping_add(denominator / 2)
+                        / denominator
+                        * value.signum()
+                };
+                return bounded(i64::from(result));
+            }
+            // Two rounded coefficients, not one floating-point multiplication:
+            // sixteenths of a point -> 16.16 ppem at 203.2 DPI -> 16.16
+            // multiplier for 26.6 coordinates. Rounding only the DPI matrix
+            // moves the stretched controlled-font W by one pixel. Rounding
+            // only the final multiplier fails the 1024-unit 32-dot GC witness.
+            // See tests/fixtures/truetype-raster-zd621-v1/README.md. This is
+            // an empirical device rule, not a TrueType specification requirement.
+            let ppem = (points * 508 * 65_536 + 1440) / 2880;
+            let coefficient = (ppem * 64 + i64::from(units) / 2) / i64::from(units);
+            let result = (i64::from(value).abs() * coefficient + 32_768) / 65_536;
+            return bounded(result * i64::from(value.signum()));
+        }
         bounded((f64::from(value) * self.ppem(dots, false) * 64. / f64::from(units)).round() as i64)
     }
 }

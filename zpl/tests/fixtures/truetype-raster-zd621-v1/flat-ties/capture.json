@@ -1,0 +1,105 @@
+{
+  "started": "2026-10-10T03:12:14.476459+00:00",
+  "host": "d7j211001302.bed.einic.org",
+  "pages": [
+    {
+      "name": "00-control-start",
+      "source_sha256": "358f6c2413b21f6690578bda0554004f5efa2b30d3e101f31ae1ea4628929e6e",
+      "started": "2026-10-10T03:12:14.569439+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "bba3993eb0619c434c448ba43e7e72ffc3b5b68cf635c6f56560e702c534b514",
+      "finished": "2026-10-10T03:12:14.650589+00:00"
+    },
+    {
+      "name": "00-depth-repeat-0",
+      "source_sha256": "b1fbc574c99dc3b59fcf7d7af0d15a1a0eee1ebc46102acf9a68e793686fefe4",
+      "started": "2026-10-10T03:12:16.686540+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "19304e1214a50a8a42ce1610c40f7a0ebf11a25838285b903c4bbce870f4e476",
+      "finished": "2026-10-10T03:12:17.315436+00:00"
+    },
+    {
+      "name": "01-depth-repeat-0",
+      "source_sha256": "73240959f422a949a898193008c8ff698bf2c53189c56c5f8f45cc96f98ba636",
+      "started": "2026-10-10T03:12:18.316222+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "1b5a842673e411eff8749a8edee3987f7490affcc310bd942573d6f2e70a272b",
+      "finished": "2026-10-10T03:12:18.915231+00:00"
+    },
+    {
+      "name": "02-depth-repeat-0",
+      "source_sha256": "57814125b3dbba95f1c40498053045e7dc3fd961d087ab661edea67c40883eda",
+      "started": "2026-10-10T03:12:19.916331+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "3b71bc015bd8aa65cef7a0503107dc74aa1ad4b501c21a74c24d27e3f6985de2",
+      "finished": "2026-10-10T03:12:20.516269+00:00"
+    },
+    {
+      "name": "00-depth-repeat-1",
+      "source_sha256": "b1fbc574c99dc3b59fcf7d7af0d15a1a0eee1ebc46102acf9a68e793686fefe4",
+      "started": "2026-10-10T03:12:21.517210+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "19304e1214a50a8a42ce1610c40f7a0ebf11a25838285b903c4bbce870f4e476",
+      "finished": "2026-10-10T03:12:22.083676+00:00"
+    },
+    {
+      "name": "01-depth-repeat-1",
+      "source_sha256": "73240959f422a949a898193008c8ff698bf2c53189c56c5f8f45cc96f98ba636",
+      "started": "2026-10-10T03:12:23.084623+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "1b5a842673e411eff8749a8edee3987f7490affcc310bd942573d6f2e70a272b",
+      "finished": "2026-10-10T03:12:23.649264+00:00"
+    },
+    {
+      "name": "02-depth-repeat-1",
+      "source_sha256": "57814125b3dbba95f1c40498053045e7dc3fd961d087ab661edea67c40883eda",
+      "started": "2026-10-10T03:12:24.650208+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "3b71bc015bd8aa65cef7a0503107dc74aa1ad4b501c21a74c24d27e3f6985de2",
+      "finished": "2026-10-10T03:12:25.216617+00:00"
+    },
+    {
+      "name": "99-control-end",
+      "source_sha256": "358f6c2413b21f6690578bda0554004f5efa2b30d3e101f31ae1ea4628929e6e",
+      "started": "2026-10-10T03:12:26.217347+00:00",
+      "dimensions": [
+        832,
+        832
+      ],
+      "png_sha256": "bba3993eb0619c434c448ba43e7e72ffc3b5b68cf635c6f56560e702c534b514",
+      "finished": "2026-10-10T03:12:26.305000+00:00"
+    }
+  ],
+  "owned": [
+    "R:ZRASD03.TTF"
+  ],
+  "status": "complete",
+  "identity": {
+    "device.product_name": "ZD621",
+    "device.unique_id": "D7J211001302",
+    "appl.name": "V93.21.33Z"
+  },
+  "cleanup_errors": [],
+  "finished": "2026-10-10T03:12:27.891868+00:00"
+}
