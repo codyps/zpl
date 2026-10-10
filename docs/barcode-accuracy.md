@@ -36,7 +36,7 @@ changing native output for identical requests, which a deterministic renderer
 cannot reproduce. MaxiCode mode 5 previews contain only finder/orientation
 marks, so they are also diagnostic even when their pixels match exactly.
 
-The reviewed inventory has 1,719 frames: 1,659 exact positive frames, thirteen
+The reviewed inventory has 1,729 frames: 1,669 exact positive frames, thirteen
 positive text-residual frames, one unmet accuracy target, and 46 diagnostic
 controls. The original three shipping-label residuals still have 6 underpaint
 and 9 overpaint pixels each. The original diagnostics comprise 26 blank previews
@@ -45,7 +45,9 @@ captures, and nine finder-only MaxiCode mode 5 captures. The 22 added public
 documents contribute seven exact frames, ten positive text-residual frames,
 one known gap, and four malformed-barcode diagnostics. Counts describe saved previews, not fresh device measurements or
 physical printing. The source inventory count is pinned to prevent silent loss
-of cases; extensions require deliberate review.
+of cases; extensions require deliberate review. The ten controlled resident-caption
+captures in `downloaded-bitmap-zd621-v1` are exact positives, replayed with their
+bitmap download bundle and manifest-selected printer profile.
 
 The [public-document campaign](../zpl/tests/fixtures/public-zpl-zd621-v1/README.md)
 retains the Shopify label's text error above 20% as an explicitly unmet target,
