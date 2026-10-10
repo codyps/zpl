@@ -830,6 +830,60 @@
       "submitted_sha256": "d5aaaa165be53d82b9f0cceeff5a17f68d8c6985773a5fcf22768e0305a4af1b",
       "width": 832
     },
+    "benchmarks/accuracy/conformance-reference/probe-code128-text-NN.png": {
+      "captured_utc": "2026-10-08T02:24:38Z",
+      "height": 300,
+      "png_sha256": "b99ee78c67ab55fb2f21f47aff965dcd7123034323528963d1011f4f949f4be4",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        300
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/probe-code128-text-NN.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/probe-code128-text-NN.zpl",
+      "source_sha256": "9e906dfcf5462878dd46eb138f238e92a85f43ab4b3cd52c018ea08640b35ec8",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/probe-code128-text-NN.zpl",
+      "submitted_sha256": "dbf38d9a0d7884663c3607fd1b8ae682d39bdb2daddb82f9ccd58adff780e649",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/probe-code128-text-YN.png": {
+      "captured_utc": "2026-10-08T02:24:39Z",
+      "height": 300,
+      "png_sha256": "c4fb67c68eee8908854fe0ea519e3fc7673fcbd345a8921a4c637b448207bf06",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        300
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/probe-code128-text-YN.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/probe-code128-text-YN.zpl",
+      "source_sha256": "7e4cc1552c37ed1467fc9ad3ef4c7bcfb51345a793d3c535c035ba104ed3bb01",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/probe-code128-text-YN.zpl",
+      "submitted_sha256": "eb100ebcff2dc33b34f8097ffad9d0b76780dd45be33051b5db2b1415a85bb02",
+      "width": 832
+    },
+    "benchmarks/accuracy/conformance-reference/probe-code128-text-YY.png": {
+      "captured_utc": "2026-10-08T02:24:39Z",
+      "height": 300,
+      "png_sha256": "e8a91f2259065669d2afd93bcf3057d297ca87807d5e5a2adc426e5f554e22bc",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        300
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/probe-code128-text-YY.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/probe-code128-text-YY.zpl",
+      "source_sha256": "5fd32597c24df42dc1fe26627cf36dc852b42b8fc4c7d954c208ff8c6448dd8d",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/probe-code128-text-YY.zpl",
+      "submitted_sha256": "ded6614107d13cd7ff2ca1065a527670a0d3ea0595a78a8d3b3cf1dd3e80c4ee",
+      "width": 832
+    },
     "benchmarks/accuracy/conformance-reference/probe-font-A.png": {
       "captured_utc": "2026-10-08T02:24:26Z",
       "height": 300,
@@ -1226,6 +1280,78 @@
       "submitted_sha256": "7d2d18f8ee32e74863b1f5a78a2e1a20b8f765fc22af09fdbb02ecb38f9a5cf8",
       "width": 832
     },
+    "benchmarks/accuracy/conformance-reference/symbol-logmars.png": {
+      "captured_utc": "2026-10-08T02:24:55Z",
+      "height": 1218,
+      "png_sha256": "6bbbf0006b53955e509b281740fa815d4dcb74f57d09a4d8304a1e14a85cc4a1",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/conformance-reference/symbol-logmars.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/conformance-reference/symbol-logmars.zpl",
+      "source_sha256": "cf9c5f0b149e47e80a6356bbc49074d34d19429412cd5b3be799128cc21b5986",
+      "submitted": "submitted/benchmarks/accuracy/conformance-reference/symbol-logmars.zpl",
+      "submitted_sha256": "0f2fda06ec3ebe3af131f961351566a80eaa3cb1e03d6fe425efd51b6b455874",
+      "width": 832
+    },
+    "benchmarks/accuracy/reference/code128-text-NN.png": {
+      "captured_utc": "2026-10-08T02:24:17Z",
+      "height": 300,
+      "png_sha256": "b99ee78c67ab55fb2f21f47aff965dcd7123034323528963d1011f4f949f4be4",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        300
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/reference/code128-text-NN.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/reference/code128-text-NN.zpl",
+      "source_sha256": "2cdc85216044404a33ad2a6d4ae940828e5285f21291d5ba26dcd8989007f574",
+      "submitted": "submitted/benchmarks/accuracy/reference/code128-text-NN.zpl",
+      "submitted_sha256": "2161aae7d23065f25496ddf95368435990a859a34b314796b75253634440d99e",
+      "width": 832
+    },
+    "benchmarks/accuracy/reference/code128-text-YN.png": {
+      "captured_utc": "2026-10-08T02:24:17Z",
+      "height": 300,
+      "png_sha256": "c4fb67c68eee8908854fe0ea519e3fc7673fcbd345a8921a4c637b448207bf06",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        300
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/reference/code128-text-YN.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/reference/code128-text-YN.zpl",
+      "source_sha256": "38826815ddf5c3a0df8287d46dcc08603ca2e8bf4a700bac0dca297e43ac1585",
+      "submitted": "submitted/benchmarks/accuracy/reference/code128-text-YN.zpl",
+      "submitted_sha256": "cd8a7598586e53244c8ec05936c728039d76b114985d850639f54fd6972f490d",
+      "width": 832
+    },
+    "benchmarks/accuracy/reference/code128-text-YY.png": {
+      "captured_utc": "2026-10-08T02:24:18Z",
+      "height": 300,
+      "png_sha256": "e8a91f2259065669d2afd93bcf3057d297ca87807d5e5a2adc426e5f554e22bc",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        300
+      ],
+      "ram_resources": false,
+      "reference": "benchmarks/accuracy/reference/code128-text-YY.png",
+      "session": 1,
+      "source": "benchmarks/accuracy/reference/code128-text-YY.zpl",
+      "source_sha256": "5d694c134748c8d98484c1f7e26be99a493d58f1486b730c0af945bc71c388a0",
+      "submitted": "submitted/benchmarks/accuracy/reference/code128-text-YY.zpl",
+      "submitted_sha256": "4c01c02ee47fcfbbf15972cc8979b2b77da392e4d0bc4f7552d389cf0f2c720d",
+      "width": 832
+    },
     "benchmarks/accuracy/reference/font-A.png": {
       "captured_utc": "2026-10-08T02:24:05Z",
       "height": 300,
@@ -1261,6 +1387,60 @@
       "submitted": "submitted/benchmarks/accuracy/reference/font-D.zpl",
       "submitted_sha256": "9cfc542cffa2759e646814013ea80831c3d3d1c325848669357088d566ca18a1",
       "width": 832
+    },
+    "references/barcodes-zd621-v1/logmars.png": {
+      "captured_utc": "2026-10-08T02:27:56Z",
+      "height": 1218,
+      "png_sha256": "6bbbf0006b53955e509b281740fa815d4dcb74f57d09a4d8304a1e14a85cc4a1",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        1218
+      ],
+      "ram_resources": false,
+      "reference": "references/barcodes-zd621-v1/logmars.png",
+      "session": 1,
+      "source": "references/barcodes-zd621-v1/logmars.zpl",
+      "source_sha256": "cf9c5f0b149e47e80a6356bbc49074d34d19429412cd5b3be799128cc21b5986",
+      "submitted": "submitted/references/barcodes-zd621-v1/logmars.zpl",
+      "submitted_sha256": "0f2fda06ec3ebe3af131f961351566a80eaa3cb1e03d6fe425efd51b6b455874",
+      "width": 832
+    },
+    "references/zq610-plus-v1/barcode-logmars/zd621.png": {
+      "captured_utc": "2026-10-08T02:28:17Z",
+      "height": 2030,
+      "png_sha256": "868a6e7a510000ab9f4986490d1a991add5473935246b85a7c150e5c5456c327",
+      "printer": "zd621",
+      "printer_dimensions": [
+        832,
+        2030
+      ],
+      "ram_resources": false,
+      "reference": "references/zq610-plus-v1/barcode-logmars/zd621.png",
+      "session": 1,
+      "source": "references/zq610-plus-v1/barcode-logmars/zd621.zpl",
+      "source_sha256": "c1c4901b901798642b627df6006c42d29d30b2e9237ad3a9c9391ba08400eab1",
+      "submitted": "submitted/references/zq610-plus-v1/barcode-logmars/zd621.zpl",
+      "submitted_sha256": "1b8ae71ec2ce95b38bf4b8e5a6d6745f0e8e0ee07fca93fd05c96ee42f1a7f22",
+      "width": 832
+    },
+    "references/zq610-plus-v1/barcode-logmars/zq610.png": {
+      "captured_utc": "2026-10-08T02:32:07Z",
+      "height": 2030,
+      "png_sha256": "174f633be729da2315a57978436f6d20b79e4f1b59ba864a3be590f06f7fc7e8",
+      "printer": "zq610",
+      "printer_dimensions": [
+        384,
+        2030
+      ],
+      "ram_resources": false,
+      "reference": "references/zq610-plus-v1/barcode-logmars/zq610.png",
+      "session": 3,
+      "source": "references/zq610-plus-v1/barcode-logmars/zq610.zpl",
+      "source_sha256": "4ee246b5f5bfb98aa5c29417a4490081452d734c18536022db8b505010d85dcf",
+      "submitted": "submitted/references/zq610-plus-v1/barcode-logmars/zq610.zpl",
+      "submitted_sha256": "79290b2dbcd4b83228efd4577fe4325eb1355cc65004c5f65a23cffdbdeae994",
+      "width": 384
     },
     "references/zq610-plus-v1/text-A-B/zd621.png": {
       "captured_utc": "2026-10-08T02:28:35Z",

@@ -9,6 +9,8 @@ use std::{
 use zpl::parse::{Element, ParseContext};
 #[path = "support/digest.rs"]
 mod digest;
+#[path = "support/downloaded_bitmap.rs"]
+mod downloaded_bitmap;
 mod support;
 
 // Zebra ZPL Programming Guide, barcode commands ^B0–^BZ, pp. 64–150.
@@ -104,6 +106,19 @@ fn barcode_reference_coverage_and_error_budget() {
     let report_path = std::env::var_os("ZPL_BARCODE_REPORT");
     let mut report = report_path.as_ref().map(|_| String::from("path\tcommands\tinput_sha256\tprinter_sha256\tstatus\tintersection\tunderpaint\toverpaint\terror_percent\tdiagnostic\tprofile\treference_size\tlocal_size\tlocal_pixel_sha256\tclassification\treason\n"));
     let (mut count, mut positive, mut over_budget, mut blank, mut diagnostics) = (0, 0, 0, 0, 0);
+    // This campaign downloaded bitmap objects before each saved submission.
+    // Its manifest records the printer per frame, including nested ZQ610 captures.
+    let bitmap_root = "zpl/tests/fixtures/downloaded-bitmap-zd621-v1/";
+    let bitmap_models: BTreeMap<_, _> =
+        include_str!("fixtures/downloaded-bitmap-zd621-v1/manifest.tsv")
+            .lines()
+            .skip(1)
+            .map(|row| {
+                let mut fields = row.split('\t');
+                (fields.next().unwrap(), fields.next().unwrap())
+            })
+            .collect();
+    let bitmap_fonts = downloaded_bitmap::fonts();
     let observations = support::map(&paths, |path| {
         let input = fs::read(path).unwrap();
         let codes = commands(&input);
@@ -127,7 +142,14 @@ fn barcode_reference_coverage_and_error_budget() {
         let png = fs::read(&png_path).unwrap();
         let reference = raster_diff::Raster::decode_png(&png).unwrap();
         let reference_ink = reference.pixels.iter().filter(|&&p| p < 128).count();
-        let (profile_name, profile) = if name.starts_with("zpl/tests/fixtures/zq610-plus-v1/") {
+        let bitmap_model = name.strip_prefix(bitmap_root).map(|relative| {
+            *bitmap_models
+                .get(relative)
+                .expect("downloaded capture must have provenance")
+        });
+        let (profile_name, profile) = if name.starts_with("zpl/tests/fixtures/zq610-plus-v1/")
+            || bitmap_model == Some("zq610")
+        {
             (
                 "ZQ610_PLUS_203_DPI",
                 zpl::render::profiles::ZQ610_PLUS_203_DPI,
@@ -147,8 +169,17 @@ fn barcode_reference_coverage_and_error_budget() {
         if reset {
             replay.extend_from_slice(include_bytes!("fixtures/conformance-zd621-v1/reset.zpl"));
         }
+        if bitmap_model.is_some() {
+            replay.extend_from_slice(include_bytes!(
+                "fixtures/downloaded-bitmap-zd621-v1/bitmap-download.zpl"
+            ));
+        }
         replay.extend_from_slice(&input);
-        let rendered = zpl::render(&replay, profile);
+        let rendered = if bitmap_model.is_some() {
+            zpl::render::render_with_fonts(&replay, profile, &bitmap_fonts)
+        } else {
+            zpl::render(&replay, profile)
+        };
         let (mut local_size, mut local_hash) = ("-".to_owned(), "-".to_owned());
         let (status, both, under, over, diagnostic) = match rendered {
             Err(error) => ("render-error", 0, reference_ink, 0, error.to_string()),
@@ -349,9 +380,10 @@ fn barcode_reference_coverage_and_error_budget() {
         fs::write(output, report.unwrap()).unwrap();
     }
     assert_eq!(
-        // Existing 1,707 frames plus twelve QR segmentation/Labelixa frames.
+        // Existing 1,719 frames plus ten controlled resident-caption captures.
+        // Provenance: fixtures/downloaded-bitmap-zd621-v1/README.md.
         count,
-        1719,
+        1729,
         "review inventory changes; do not silently drop captures"
     );
     for model in ["ZD621_203_DPI", "ZQ610_PLUS_203_DPI"] {

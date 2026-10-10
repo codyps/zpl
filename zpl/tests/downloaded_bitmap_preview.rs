@@ -1,16 +1,14 @@
 //! Native, unaligned printer comparisons. Capture identities, sessions and source
 //! hashes: fixtures/downloaded-bitmap-zd621-v1/README.md and provenance.json.
 use std::{fs, path::Path};
-use zpl::{
-    bitmap_font::{Glyph, Settings},
-    fonts::Fonts,
-    render::{
-        profiles::{ZD621_203_DPI, ZQ610_PLUS_203_DPI},
-        render_with_fonts,
-    },
+use zpl::render::{
+    profiles::{ZD621_203_DPI, ZQ610_PLUS_203_DPI},
+    render_with_fonts,
 };
 #[path = "support/digest.rs"]
 mod digest;
+#[path = "support/downloaded_bitmap.rs"]
+mod downloaded_bitmap;
 
 #[test]
 fn downloaded_bitmap_faces_match_saved_printer_canvases() {
@@ -23,31 +21,7 @@ fn downloaded_bitmap_faces_match_saved_printer_canvases() {
         digest::sha256(&bundle),
         manifest["sha256"]["bitmap-download.zpl"]
     );
-    // Preserve the exact saved submissions, including their unused font-0 alias.
-    // These fixtures explicitly select bitmap text. A sentinel face makes any
-    // accidental font-0 text an error instead of importing an unrelated TTF.
-    let mut fonts = Fonts::new();
-    fonts
-        .insert_named_bitmap(
-            "R:FC0.TTF",
-            Settings {
-                font: '0',
-                width: 1,
-                height: 1,
-                dpi: 203,
-            },
-            vec![Glyph {
-                codepoint: 0x10ffff,
-                advance: 1,
-                left: 0,
-                top: 0,
-                width: 0,
-                height: 0,
-                bitmap: vec![],
-            }],
-            0.,
-        )
-        .unwrap();
+    let fonts = downloaded_bitmap::fonts();
     let mut failures = Vec::new();
     let mut count = 0;
     for row in include_str!("fixtures/downloaded-bitmap-zd621-v1/manifest.tsv")
@@ -80,6 +54,6 @@ fn downloaded_bitmap_faces_match_saved_printer_canvases() {
         }
         count += 1;
     }
-    assert_eq!(count, 100);
+    assert_eq!(count, 110);
     assert!(failures.is_empty(), "{}", failures.join("\n"));
 }

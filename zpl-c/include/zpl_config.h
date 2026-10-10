@@ -111,6 +111,7 @@ typedef struct ZplCompatibility {
     uint8_t composite_linear_quiet_zone;
     uint8_t right_justified_inverted_text_uses_ink_margin;
     uint8_t barcode_interpretation_printer_layout;
+    uint8_t barcode_implicit_caption_uses_resident_font;
     uint8_t barcode_fo_uses_bar_height;
     uint8_t code128_fo_uses_bar_width;
     uint8_t barcode_above_text_keeps_bar_origin;

@@ -510,8 +510,20 @@ impl Barcode {
             // ^BC p. 94 permits an explicit preceding font command. Without
             // one, resident A scales with ^BY, independently of ^CF.
             let (id, fw, fh) = font.unwrap_or(('A', 5. * self.module, 9. * self.module));
-            let caption_font = super::font::Font::from(id)
-                .with_fonts(fonts)
+            // Automatic captions use the printer's internal resident A, even
+            // when ^CW replaces public font A. See the controlled LOGMARS and
+            // Code 128 submissions in downloaded-bitmap-zd621-v1.
+            let caption_font = super::font::Font::from(id);
+            let caption_font = if font.is_none()
+                && self
+                    .compatibility
+                    .barcode_implicit_caption_uses_resident_font
+            {
+                caption_font
+            } else {
+                caption_font.with_fonts(fonts)
+            };
+            let caption_font = caption_font
                 .with_truetype_environment(
                     self.compatibility.supplied_truetype_printer_metrics,
                     rotation,

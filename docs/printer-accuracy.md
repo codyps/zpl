@@ -1375,3 +1375,20 @@ both ZD621 and ZQ610 Plus. The original controlled A/D accuracy cases improve
 from 23.05%/17.16% foreground IoU to 100%, with zero underpaint or overpaint.
 This is replay of identified printer evidence, not a fresh capture or a claim
 about unsampled sizes, rotated downloaded P–V/FT, or other firmware.
+
+
+## Controlled-font automatic barcode captions
+
+The font-controlled LOGMARS and Code 128 caption offsets came from resolving
+public font A through the supplied font registry. The printer retains internal
+resident A for automatic captions despite `^CWA` replacement. The independently
+selectable `barcode_implicit_caption_uses_resident_font` option now reproduces
+that behavior in the printer profiles; explicit font selection and SPECIFICATION
+retain supplied-font lookup.
+
+Ten saved native controls extend `downloaded_bitmap_preview` to 110 frames.
+Visible Code 128 controls improve from 228 underpaint/228 overpaint pixels to
+zero, and LOGMARS from 256/256 to zero. They cover above/below/hidden Code 128
+captions and LOGMARS on ZD621 and ZQ610 Plus. All comparisons use unchanged
+submissions and full native canvases, without alignment. See the
+[capture provenance and scope](../zpl/tests/fixtures/downloaded-bitmap-zd621-v1/README.md).

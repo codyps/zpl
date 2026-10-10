@@ -103,6 +103,7 @@ configuration!(ZplCompatibility, zpl::render::compatibility::Compatibility, {
     composite_linear_quiet_zone: u8,
     right_justified_inverted_text_uses_ink_margin: u8,
     barcode_interpretation_printer_layout: u8,
+    barcode_implicit_caption_uses_resident_font: u8,
     barcode_fo_uses_bar_height: u8,
     code128_fo_uses_bar_width: u8,
     barcode_above_text_keeps_bar_origin: u8,
