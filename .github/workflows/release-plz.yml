@@ -229,7 +229,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     permissions:
-      contents: read
+      contents: write
     concurrency:
       group: release-hex
       cancel-in-progress: false
@@ -243,6 +243,18 @@ jobs:
         with:
           name: elixir-source
           path: dist
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        if: needs.elixir-version.outputs.released == 'true'
+        with:
+          pattern: elixir-nif-*
+          merge-multiple: true
+          path: prebuilt
+      - name: Upload immutable NIF assets before publishing Hex metadata
+        if: needs.elixir-version.outputs.released == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_VERSION: ${{ needs.elixir-version.outputs.version }}
+        run: python3 scripts/elixir-prebuilt.py publish "$RELEASE_VERSION" prebuilt
       - name: Publish tested archive to Hex
         if: needs.elixir-version.outputs.released == 'true'
         # Hex 2.5.1 supports API keys; native OIDC is not yet in a stable release.

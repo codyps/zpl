@@ -7,14 +7,18 @@ defmodule Zpl.MixProject do
       version: "0.2.1",
       elixir: "~> 1.15",
       start_permanent: Mix.env() == :prod,
-      deps: [{:rustler, "~> 0.38.0", runtime: false}],
+      deps: [
+        {:rustler, "~> 0.38.0", runtime: false},
+        # 0.10 requires Elixir 1.16; retain our documented Elixir 1.15 minimum.
+        {:rustler_precompiled, "~> 0.9.0", runtime: false}
+      ],
       aliases: ["hex.build": [&ensure_bundled_sources/1, "hex.build"]],
       description: "Local ZPL parsing and rendering powered by the Rust zpl crate",
       package: [
         licenses: ["OSL-3.0"],
         links: %{"GitHub" => "https://github.com/codyps/zpl"},
         files:
-          ~w(lib src native test examples Cargo.toml Cargo.lock mix.exs README.md LICENSE .formatter.exs)
+          ~w(lib src native test examples Cargo.toml Cargo.lock mix.exs README.md LICENSE .formatter.exs checksum-Elixir.Zpl.Native.exs)
       ]
     ]
   end

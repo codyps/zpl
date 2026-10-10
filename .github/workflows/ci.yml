@@ -161,6 +161,8 @@ jobs:
         env:
           RELEASE_PLZ_BIN: release-plz
         run: python3 -m unittest discover -s scripts -p 'test_*release.py' -v
+      - name: Test Elixir prebuilt packaging
+        run: python3 -m unittest discover -s scripts -p test_elixir_prebuilt.py -v
       - name: Check generated C configuration
         run: python3 zpl-c/generate-config.py --check
       - name: Verify compact capture tables
