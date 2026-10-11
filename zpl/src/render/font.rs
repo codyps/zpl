@@ -9,7 +9,180 @@ pub(super) use crate::fonts::resident::printer_ft_offset;
 use crate::fonts::resident::{compact_glyph, resident, CP850};
 use crate::fonts::resident::{glyph_from, selected, GlyphSet, GlyphView, Pixels, Selection};
 use crate::output::{Path, Point, Segment};
-use std::collections::BTreeMap;
+use std::{
+    cell::{Cell, OnceCell, RefCell},
+    collections::BTreeMap,
+    rc::Rc,
+};
+
+// Only immutable resident resources are cached, for the duration of a render.
+// ^CI key namespaces remain distinct; size and capture-selection flags are part
+// of the key. See ^CI pp. 156–159 and font tables pp. 1582–1584 linked above.
+#[derive(Default)]
+pub(super) struct GlyphCache {
+    entries: RefCell<CacheEntries>,
+    geometry_units: Cell<usize>,
+}
+const MAX_CACHED_GLYPHS: usize = 256;
+const MAX_GEOMETRY_UNITS: usize = 16_384;
+#[derive(Default)]
+struct CacheEntries {
+    groups: Vec<GlyphGroup>,
+    count: usize,
+}
+#[derive(Clone, Copy, PartialEq, Eq)]
+struct FontKey {
+    selection: (char, u8, u8),
+    width: u64,
+    height: u64,
+}
+struct GlyphGroup {
+    font: FontKey,
+    // Most text reuses a small ASCII alphabet. Direct slots avoid hashing the
+    // selection/size/key tuple for each layout and measurement pass.
+    ascii: Box<[Option<Rc<CachedGlyph>>; 128]>,
+    other: Vec<(crate::fonts::resident::GlyphKey, Rc<CachedGlyph>)>,
+}
+impl GlyphGroup {
+    fn ascii_index(key: crate::fonts::resident::GlyphKey) -> Option<usize> {
+        match key {
+            crate::fonts::resident::GlyphKey::Unicode(c) if c.is_ascii() => Some(c as usize),
+            _ => None,
+        }
+    }
+    fn get(&self, key: crate::fonts::resident::GlyphKey) -> Option<&Rc<CachedGlyph>> {
+        if let Some(index) = Self::ascii_index(key) {
+            self.ascii[index].as_ref()
+        } else {
+            self.other.iter().find(|(k, _)| *k == key).map(|(_, g)| g)
+        }
+    }
+    fn insert(&mut self, key: crate::fonts::resident::GlyphKey, glyph: Rc<CachedGlyph>) {
+        if let Some(index) = Self::ascii_index(key) {
+            self.ascii[index] = Some(glyph);
+        } else {
+            self.other.push((key, glyph));
+        }
+    }
+}
+struct CachedGlyph {
+    glyph: GlyphView<'static>,
+    sx: f64,
+    sy: f64,
+    primary: bool,
+    spans: OnceCell<Rc<Vec<(usize, usize, usize)>>>,
+    path: OnceCell<Rc<Path>>,
+}
+impl GlyphCache {
+    fn get(
+        &self,
+        font: Font<'_>,
+        key: crate::fonts::resident::GlyphKey,
+        w: f64,
+        h: f64,
+    ) -> Result<Option<Rc<CachedGlyph>>, String> {
+        let font_key = FontKey {
+            selection: font.face.resident_cache_key(),
+            width: w.to_bits(),
+            height: h.to_bits(),
+        };
+        let mut entries = self.entries.borrow_mut();
+        let group = entries.groups.iter().position(|g| g.font == font_key);
+        if let Some(glyph) = group.and_then(|i| entries.groups[i].get(key)) {
+            return Ok(Some(Rc::clone(glyph)));
+        }
+        // Full caches use the original resolver without allocating temporary
+        // cache entries or geometry. Existing entries remain reusable.
+        if entries.count >= MAX_CACHED_GLYPHS || (group.is_none() && entries.groups.len() >= 8) {
+            return Ok(None);
+        }
+        let (set, sx, sy) = selected(font, w, h);
+        let (glyph, sx, sy, primary) = match glyph_from(set, key) {
+            Ok(glyph) => (glyph, sx, sy, true),
+            Err(error) if !font.has_glyph_fallback() => return Err(error),
+            Err(_) => {
+                let (set, sx, sy) = selected_for_char(font, key, w, h);
+                (glyph_from(set, key)?, sx, sy, false)
+            }
+        };
+        let glyph = Rc::new(CachedGlyph {
+            glyph,
+            sx,
+            sy,
+            primary,
+            spans: OnceCell::new(),
+            path: OnceCell::new(),
+        });
+        let group = group.unwrap_or_else(|| {
+            let index = entries.groups.len();
+            entries.groups.push(GlyphGroup {
+                font: font_key,
+                ascii: Box::new(std::array::from_fn(|_| None)),
+                other: Vec::new(),
+            });
+            index
+        });
+        entries.groups[group].insert(key, Rc::clone(&glyph));
+        entries.count += 1;
+        Ok(Some(glyph))
+    }
+    fn retain_geometry(&self, units: usize) -> bool {
+        // Native spans and output segments share one retention budget. Document
+        // segment admission still runs when paths are copied into the scene.
+        if units > MAX_GEOMETRY_UNITS - self.geometry_units.get() {
+            return false;
+        }
+        self.geometry_units.set(self.geometry_units.get() + units);
+        true
+    }
+    fn spans(&self, glyph: &CachedGlyph) -> Rc<Vec<(usize, usize, usize)>> {
+        if let Some(spans) = glyph.spans.get() {
+            return Rc::clone(spans);
+        }
+        let mut spans = Vec::new();
+        glyph
+            .glyph
+            .for_each_span(|y, left, right| spans.push((y, left, right)));
+        let spans = Rc::new(spans);
+        if self.retain_geometry(spans.len()) {
+            let _ = glyph.spans.set(Rc::clone(&spans));
+        }
+        spans
+    }
+    fn path(&self, glyph: &CachedGlyph, baseline: f64) -> Rc<Path> {
+        if let Some(path) = glyph.path.get() {
+            return Rc::clone(path);
+        }
+        // Merged text uses only spans. Construct the individual path lazily,
+        // so short labels with many faces/sizes do not pay for unused geometry.
+        let mut path = RowPath::default();
+        let g = &glyph.glyph;
+        for &(y, left, right) in self.spans(glyph).iter() {
+            path.rect(
+                (g.left as f64 + left as f64) * glyph.sx,
+                baseline + (g.top + y as i32) as f64 * glyph.sy,
+                (right - left) as f64 * glyph.sx,
+                glyph.sy,
+            );
+        }
+        let path = Rc::new(path.into_path());
+        if self.retain_geometry(path.segments.len()) {
+            let _ = glyph.path.set(Rc::clone(&path));
+        }
+        path
+    }
+}
+fn cached_glyph(
+    font: Font<'_>,
+    key: crate::fonts::resident::GlyphKey,
+    w: f64,
+    h: f64,
+) -> Result<Option<Rc<CachedGlyph>>, String> {
+    match font.cache.filter(|_| font.custom.is_none()) {
+        Some(cache) => cache.get(font, key, w, h),
+        None => Ok(None),
+    }
+}
 
 /// Emit sorted bitmap rows, extending identical runs that touch vertically.
 /// Joining only exactly shared edges preserves the even-odd region, including
@@ -77,6 +250,7 @@ impl RowPath {
 #[derive(Clone, Copy)]
 pub(super) struct Font<'a> {
     custom: Option<&'a super::fonts::Face<'a>>,
+    cache: Option<&'a GlyphCache>,
     face: Selection,
     block_flow: Option<BlockFlow>,
     truetype_environment: crate::truetype::Environment,
@@ -114,10 +288,15 @@ impl<'a> Font<'a> {
     pub(super) fn new(id: char, legacy_backslash: bool) -> Self {
         Self {
             custom: None,
+            cache: None,
             face: Selection::new(id, legacy_backslash),
             block_flow: None,
             truetype_environment: crate::truetype::Environment::Standard,
         }
+    }
+    pub(super) fn with_cache(mut self, cache: &'a GlyphCache) -> Self {
+        self.cache = Some(cache);
+        self
     }
     pub(super) fn with_truetype_environment(mut self, enabled: bool, rotation: u8) -> Self {
         if enabled {
@@ -419,22 +598,27 @@ pub(super) fn text_parts_for<'a>(
             continue;
         }
         let c = font.map_char(c)?;
-        let (g, sx, sy) = resolved_glyph(font, c, w, h)?;
+        let (advance, sx, mut path) = if let Some(glyph) = cached_glyph(font, c, w, h)? {
+            let path = font.cache.unwrap().path(&glyph, baseline);
+            (glyph.glyph.advance, glyph.sx, path.as_ref().clone())
+        } else {
+            let (g, sx, sy) = resolved_glyph(font, c, w, h)?;
+            let mut path = RowPath::default();
+            g.for_each_span(|y, left, right| {
+                path.rect(
+                    (g.left as f64 + left as f64) * sx,
+                    baseline + (g.top + y as i32) as f64 * sy,
+                    (right - left) as f64 * sx,
+                    sy,
+                );
+            });
+            (g.advance, sx, path.into_path())
+        };
         // A single bitmap glyph already has disjoint row spans. Unlike a
         // complete proportional string, it needs no BTreeMap or union/sort
         // pass to prevent even-odd cancellation of overlapping glyph ink.
-        let mut path = RowPath::default();
-        g.for_each_span(|y, left, right| {
-            path.rect(
-                (g.left as f64 + left as f64) * sx,
-                baseline + (g.top + y as i32) as f64 * sy,
-                (right - left) as f64 * sx,
-                sy,
-            );
-        });
-        let mut path = path.into_path();
         path.transform(|p| crate::output::Point::new(p.x + pen, p.y));
-        pen += g.advance as f64 * sx;
+        pen += advance as f64 * sx;
         if !path.segments.is_empty() {
             parts.push(path);
         }
@@ -462,7 +646,11 @@ pub(super) fn text_for<'a>(
     if font.has_glyph_fallback() {
         for c in s.chars().filter(|&c| !font.is_tab(c)) {
             let c = font.map_char(c)?;
-            if glyph_from(glyphs, c).is_err() {
+            let missing = match cached_glyph(font, c, w, h)? {
+                Some(glyph) => !glyph.primary,
+                None => glyph_from(glyphs, c).is_err(),
+            };
+            if missing {
                 if s.chars().count() == 1 {
                     (glyphs, sx, sy) = selected_for_char(font, c, w, h);
                 } else {
@@ -489,15 +677,31 @@ pub(super) fn text_for<'a>(
             pen = next_tab(pen * sx) / sx;
             continue;
         }
-        let g = glyph_from(glyphs, font.map_char(c)?)?;
-        g.for_each_span(|y, left, right| {
+        let key = font.map_char(c)?;
+        let cached = cached_glyph(font, key, w, h)?;
+        let uncached;
+        let g = match &cached {
+            Some(glyph) => &glyph.glyph,
+            None => {
+                uncached = glyph_from(glyphs, key)?;
+                &uncached
+            }
+        };
+        let mut emit = |y, left, right| {
             rows.entry(g.top + y as i32)
                 .or_insert_with(|| Vec::with_capacity(row_capacity))
                 .push((
                     pen + g.left as f64 + left as f64,
                     pen + g.left as f64 + right as f64,
                 ));
-        });
+        };
+        if let Some(glyph) = &cached {
+            for &(y, left, right) in font.cache.unwrap().spans(glyph).iter() {
+                emit(y, left, right);
+            }
+        } else {
+            g.for_each_span(emit);
+        }
         pen += g.advance as f64;
     }
     let mut path = RowPath::default();
@@ -610,6 +814,104 @@ pub(super) fn cull_outside(path: &mut Path, width: u32, height: u32) {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn cached_resident_layout_preserves_paths_metrics_and_errors() {
+        // Exact output-neutral geometry, including fractional endpoints and
+        // enriched fallbacks. Source namespaces: ^CI pp. 156–159 linked above.
+        for id in [
+            '0', 'A', 'B', 'D', 'E', 'F', 'G', 'H', 'P', 'Q', 'R', 'S', 'T', 'U', 'V',
+        ] {
+            let cache = GlyphCache::default();
+            for (w, h) in [(10., 16.), (32., 32.), (17.3, 29.7), (22., 18.)] {
+                for font in [
+                    Font::new(id, false),
+                    Font::new(id, true)
+                        .with_default_glyph(true)
+                        .with_control_glyphs(true, false),
+                    Font::new(id, false).with_encoding(27).with_tab_stops(true),
+                    Font::new(id, true)
+                        .with_encoding(13)
+                        .with_legacy_codepage(true)
+                        .with_serial_zero_source(true),
+                ] {
+                    for value in [
+                        "Item 00",
+                        "Wi i",
+                        "A¢Wé",
+                        "A\tA",
+                        "אب",
+                        "\u{1b}0\u{7f}",
+                        "\\",
+                        "\u{378}",
+                        "漢",
+                        "",
+                    ] {
+                        let cached = font.with_cache(&cache);
+                        assert_eq!(
+                            text_for(cached, value, w, h),
+                            text_for(font, value, w, h),
+                            "{id} {value:?} {w}x{h}"
+                        );
+                        assert_eq!(
+                            text_parts_for(cached, value, w, h),
+                            text_parts_for(font, value, w, h),
+                            "parts {id} {value:?} {w}x{h}"
+                        );
+                        assert_eq!(width_for(cached, value, w, h), width_for(font, value, w, h));
+                        assert_eq!(
+                            inverted_text_margin(cached, value, w, h, 0.),
+                            inverted_text_margin(font, value, w, h, 0.)
+                        );
+                    }
+                }
+            }
+        }
+        // A changed remap must not reuse a previous source/Unicode key. ^CI's
+        // explicit source flags and ^SN's CI13 zero keep separate namespaces.
+        let cache = GlyphCache::default();
+        for id in ['0', 'A', 'B', 'D', 'E', 'F', 'G', 'H'] {
+            let font = Font::new(id, false);
+            assert_eq!(
+                text_parts_for(font.with_cache(&cache), "ABBA", 16., 24.),
+                text_parts_for(font, "ABBA", 16., 24.)
+            );
+        }
+        let mut map = std::array::from_fn(|i| i as u8);
+        map[b'A' as usize] = b'B';
+        let font = Font::new('A', false).with_character_map(Some(map));
+        assert_eq!(
+            text_parts_for(font.with_cache(&cache), "ABA", 10., 18.),
+            text_parts_for(font, "ABA", 10., 18.)
+        );
+        assert!(cache.entries.borrow().count <= MAX_CACHED_GLYPHS);
+        assert!(cache.geometry_units.get() <= MAX_GEOMETRY_UNITS);
+    }
+
+    #[test]
+    fn full_glyph_cache_keeps_uncached_layout_and_errors() {
+        // Cache admission is independent of path validation/admission. Exhaust
+        // both cache budgets, then verify geometry and missing-glyph diagnostics.
+        let cache = GlyphCache::default();
+        for h in [10., 16., 24., 32.] {
+            let font = Font::new('0', false).with_cache(&cache);
+            let value: String = (' '..='~').collect();
+            text_parts_for(font, &value, h, h).unwrap();
+        }
+        assert_eq!(cache.entries.borrow().count, MAX_CACHED_GLYPHS);
+        assert!(cache.geometry_units.get() <= MAX_GEOMETRY_UNITS);
+        for value in ["WWi i", "A¢Wé", "漢"] {
+            let font = Font::new('0', false);
+            assert_eq!(
+                text_for(font.with_cache(&cache), value, 17.3, 29.7),
+                text_for(font, value, 17.3, 29.7)
+            );
+            assert_eq!(
+                text_parts_for(font.with_cache(&cache), value, 17.3, 29.7),
+                text_parts_for(font, value, 17.3, 29.7)
+            );
+        }
+    }
 
     #[test]
     fn packed_span_scans_preserve_every_glyph_pixel() {
@@ -1085,5 +1387,8 @@ fn resolved_glyph<'a>(
     w: f64,
     h: f64,
 ) -> Result<(GlyphView<'a>, f64, f64), String> {
+    if let Some(glyph) = cached_glyph(font, key, w, h)? {
+        return Ok((glyph.glyph.clone(), glyph.sx, glyph.sy));
+    }
     crate::fonts::resolve_glyph(font.face, font.custom, key, w, h, font.truetype_environment)
 }

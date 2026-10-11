@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Regenerate the shipped Wasm and Go translation; --check only verifies them.
-Requires the full Rust workspace, wasm32-unknown-unknown, Go and pinned wasm2go.
+Requires the full Rust workspace, wasm32-unknown-unknown, Go and patch.
 Consumers use the checked-in artifacts and do not run this script.
 """
 import argparse
@@ -16,6 +16,7 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 VERSION = "v0.4.16"
 TAGS = "!backend_cgo && !backend_purego && !backend_wazero"
+PATCH = HERE / "wasm2go-memory.patch"
 parser = argparse.ArgumentParser()
 parser.add_argument("--check", action="store_true")
 args = parser.parse_args()
@@ -41,8 +42,21 @@ run(["cargo", "rustc", "--locked", "--release", "-p", "zpl-go-prototype",
 # Resolve the pinned tool independently of any unrelated wasm2go on PATH.
 with tempfile.TemporaryDirectory(prefix="zpl-go-generate-", dir=target) as directory:
     stage = Path(directory)
-    env["GOBIN"] = str(stage)
-    run(["go", "install", "github.com/ncruces/wasm2go@" + VERSION])
+    # Go verifies the pinned module through its normal module checksum rules.
+    # Patch a writable copy of the translator, never the shared module cache.
+    # https://go.dev/ref/mod#go-mod-download
+    module = json.loads(subprocess.check_output(
+        ["go", "mod", "download", "-json", "github.com/ncruces/wasm2go@" + VERSION],
+        cwd=stage, env=env, text=True, timeout=600,
+    ))
+    tool_source = stage / "wasm2go-source"
+    shutil.copytree(module["Dir"], tool_source)
+    for path in [tool_source, *tool_source.rglob("*")]:
+        if not path.is_symlink():
+            path.chmod(0o755 if path.is_dir() else 0o644)
+    # No fuzzy application: a changed upstream helper template must be reviewed.
+    run(["patch", "--batch", "--fuzz=0", "-p1", "-i", str(PATCH)], cwd=tool_source)
+    run(["go", "build", "-buildvcs=false", "-o", str(stage / "wasm2go"), "."], cwd=tool_source)
     shutil.copyfile(target / "wasm32-unknown-unknown/release/zpl_go_prototype.wasm", stage / "guest.wasm")
     (stage / "internal/translated").mkdir(parents=True)
     run([str(stage / "wasm2go"), "-embed", "-pkg", "translated", "-tags", TAGS,
@@ -50,6 +64,10 @@ with tempfile.TemporaryDirectory(prefix="zpl-go-generate-", dir=target) as direc
     files = ["guest.wasm"] + [str(p.relative_to(stage)) for p in sorted((stage / "internal/translated").iterdir())]
     metadata = {
         "wasm2go": VERSION,
+        "wasm2go_patch": {
+            "file": PATCH.name,
+            "sha256": hashlib.sha256(PATCH.read_bytes()).hexdigest(),
+        },
         "rustc": subprocess.check_output(["rustc", "--version"], env=env, text=True).strip(),
         "target": "wasm32-unknown-unknown",
         "max_memory_bytes": 268435456,
