@@ -38,10 +38,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let png = diff.png(64)?; // Each input pixel becomes a 64 × 64 block.
     // Save with std::fs::write("diff.png", &png)?;
-#   assert_eq!(diff.both_black, 1);
-#   assert_eq!(diff.both_white, 1);
-#   assert_eq!(diff.ink_iou(), 1.0 / 3.0);
-#   assert!(png.starts_with(b"\x89PNG\r\n\x1a\n"));
+    assert_eq!(diff.both_black, 1);
+    assert_eq!(diff.both_white, 1);
+    assert_eq!(diff.ink_iou(), 1.0 / 3.0);
+    assert!(png.starts_with(b"\x89PNG\r\n\x1a\n"));
     Ok(())
 }
 ```

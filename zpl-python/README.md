@@ -1,29 +1,28 @@
 # zplkit
 
-Python bindings for the [codyps/zpl](https://github.com/codyps/zpl) Rust `zpl`
-crate, linked directly from this workspace's `zpl/` directory. Parsing and rendering run
-locally with no printer, subprocess, network service, or Python runtime
-dependencies. The distribution is named `zplkit`; the import is `zplkit`.
-Use a separate environment if another package already provides that import.
+Parse Zebra Programming Language (ZPL) and render labels locally to PNG, SVG,
+or multipage PDF, powered by the [Rust `zpl` renderer](https://crates.io/crates/zpl).
+No printer, subprocess, network service, or Python runtime dependencies are needed.
+Both the PyPI distribution and Python import are named `zplkit`.
 
-## Install from this checkout
+## Installation
 
-Python 3.10+ and a Rust toolchain are required to build from source. From the
-repository root:
+Requires Python 3.10 or newer. Install from PyPI, preferably in a virtual environment:
 
 ```sh
-python3 -m venv .venv
-. .venv/bin/activate
-python -m pip install ./zpl-python
+python -m pip install zplkit
 ```
 
-A built wheel needs no Rust toolchain. These bindings use PyO3's Python 3.10
-stable ABI. Stable renderer releases automatically publish `zplkit` to PyPI
-with the same version, after the one-time
-[trusted-publisher setup](../docs/releases.md#pypi-publishing-setup). Once the
-first release is published, install it with `python -m pip install zplkit`.
+Prebuilt wheels need no Rust toolchain. Wheels are available for Linux
+x86_64/ARM64 (glibc 2.28+), macOS Intel/Apple Silicon, and Windows x86_64.
+On other platforms, pip builds the source distribution, which requires a stable
+Rust toolchain and a native linker. To require a prebuilt wheel:
 
-## Render
+```sh
+python -m pip install --only-binary=:all: zplkit
+```
+
+## Quick start
 
 ```python
 from pathlib import Path
@@ -47,7 +46,7 @@ buffers with `bytes(buffer)` before calling.
 `specification`, and `zq610-plus`; their native initial dimensions and DPI apply
 unless overridden. ZPL `^PW` and `^LL` can also change dimensions. The printer
 profiles have the same firmware/capture scope and fidelity limitations as the
-[Rust renderer](../docs/local-renderer.md).
+[Rust renderer](https://github.com/codyps/zpl/blob/main/docs/local-renderer.md).
 
 All compatibility fields are available independently. Configurations are
 immutable; `replace` returns a changed copy. `Compatibility()` starts with all
@@ -129,27 +128,12 @@ limits, rendered documents/scenes, and output adapters. It does not yet expose
 custom font-provider callbacks, TrueType/bitmap decoding utilities, arbitrary
 scene construction/editing, or custom raster destination callbacks.
 
-## Development and packaging
+## Links and license
 
-The package uses [PyO3](https://pyo3.rs/v0.29.3/) and
-[Maturin's mixed project layout](https://www.maturin.rs/project_layout.html).
-From the repository root, with the virtual environment active:
+- [Renderer coverage](https://github.com/codyps/zpl/blob/main/docs/local-renderer.md)
+- [Barcode support](https://github.com/codyps/zpl/blob/main/docs/barcodes.md)
+- [Source and issues](https://github.com/codyps/zpl)
+- [Contributor build instructions](https://github.com/codyps/zpl/blob/main/docs/releases.md#python)
 
-```sh
-python -m pip install 'maturin>=1.15,<2'
-maturin develop --locked --manifest-path zpl-python/Cargo.toml
-python -m unittest discover -s zpl-python/tests -v
-cargo test --locked -p zpl-python
-maturin build --locked --release --manifest-path zpl-python/Cargo.toml --out dist
-maturin sdist --manifest-path zpl-python/Cargo.toml --out dist
-```
-
-The source distribution includes the local Rust dependencies and workspace
-lockfile. Maturin trims unrelated workspace members in the archive; installation
-allows Cargo to prune their lockfile entries. Checkout wheel builds use `--locked`.
-CI builds and installs a wheel, tests it, and rebuilds a wheel from the source
-distribution. Release builds publish five native wheels (Linux x86_64/aarch64,
-macOS Intel/Apple Silicon, Windows x86_64) and a source archive. Linux wheels
-require glibc 2.28 or newer; other platforms can build from source. See the
-[release policy](../docs/releases.md#pypi-publishing-setup) for versioning and retries.
-OSL-3.0 applies to both the bindings and linked workspace crates.
+The bindings and linked workspace crates are licensed under the
+[Open Software License 3.0](https://github.com/codyps/zpl/blob/main/LICENSE).
