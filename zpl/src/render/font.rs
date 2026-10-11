@@ -70,11 +70,8 @@ struct CachedGlyph {
     sx: f64,
     sy: f64,
     primary: bool,
-    geometry: OnceCell<Rc<BitmapGeometry>>,
-}
-struct BitmapGeometry {
-    spans: Vec<(usize, usize, usize)>,
-    path: Path,
+    spans: OnceCell<Rc<Vec<(usize, usize, usize)>>>,
+    path: OnceCell<Rc<Path>>,
 }
 impl GlyphCache {
     fn get(
@@ -83,7 +80,7 @@ impl GlyphCache {
         key: crate::fonts::resident::GlyphKey,
         w: f64,
         h: f64,
-    ) -> Result<Rc<CachedGlyph>, String> {
+    ) -> Result<Option<Rc<CachedGlyph>>, String> {
         let font_key = FontKey {
             selection: font.face.resident_cache_key(),
             width: w.to_bits(),
@@ -92,7 +89,12 @@ impl GlyphCache {
         let mut entries = self.entries.borrow_mut();
         let group = entries.groups.iter().position(|g| g.font == font_key);
         if let Some(glyph) = group.and_then(|i| entries.groups[i].get(key)) {
-            return Ok(Rc::clone(glyph));
+            return Ok(Some(Rc::clone(glyph)));
+        }
+        // Full caches use the original resolver without allocating temporary
+        // cache entries or geometry. Existing entries remain reusable.
+        if entries.count >= MAX_CACHED_GLYPHS || (group.is_none() && entries.groups.len() >= 8) {
+            return Ok(None);
         }
         let (set, sx, sy) = selected(font, w, h);
         let (glyph, sx, sy, primary) = match glyph_from(set, key) {
@@ -108,59 +110,66 @@ impl GlyphCache {
             sx,
             sy,
             primary,
-            geometry: OnceCell::new(),
+            spans: OnceCell::new(),
+            path: OnceCell::new(),
         });
-        // Cache admission affects performance only. Once full, compute normally.
-        // Cap groups too, bounding their direct-slot tables and lookup length.
-        if entries.count < MAX_CACHED_GLYPHS {
-            let group = group.or_else(|| {
-                if entries.groups.len() >= 8 {
-                    return None;
-                }
-                let index = entries.groups.len();
-                entries.groups.push(GlyphGroup {
-                    font: font_key,
-                    ascii: Box::new(std::array::from_fn(|_| None)),
-                    other: Vec::new(),
-                });
-                Some(index)
+        let group = group.unwrap_or_else(|| {
+            let index = entries.groups.len();
+            entries.groups.push(GlyphGroup {
+                font: font_key,
+                ascii: Box::new(std::array::from_fn(|_| None)),
+                other: Vec::new(),
             });
-            if let Some(group) = group {
-                entries.groups[group].insert(key, Rc::clone(&glyph));
-                entries.count += 1;
-            }
-        }
-        Ok(glyph)
+            index
+        });
+        entries.groups[group].insert(key, Rc::clone(&glyph));
+        entries.count += 1;
+        Ok(Some(glyph))
     }
-    fn geometry(&self, glyph: &CachedGlyph, baseline: f64) -> Rc<BitmapGeometry> {
-        if let Some(geometry) = glyph.geometry.get() {
-            return Rc::clone(geometry);
+    fn retain_geometry(&self, units: usize) -> bool {
+        // Native spans and output segments share one retention budget. Document
+        // segment admission still runs when paths are copied into the scene.
+        if units > MAX_GEOMETRY_UNITS - self.geometry_units.get() {
+            return false;
+        }
+        self.geometry_units.set(self.geometry_units.get() + units);
+        true
+    }
+    fn spans(&self, glyph: &CachedGlyph) -> Rc<Vec<(usize, usize, usize)>> {
+        if let Some(spans) = glyph.spans.get() {
+            return Rc::clone(spans);
         }
         let mut spans = Vec::new();
+        glyph
+            .glyph
+            .for_each_span(|y, left, right| spans.push((y, left, right)));
+        let spans = Rc::new(spans);
+        if self.retain_geometry(spans.len()) {
+            let _ = glyph.spans.set(Rc::clone(&spans));
+        }
+        spans
+    }
+    fn path(&self, glyph: &CachedGlyph, baseline: f64) -> Rc<Path> {
+        if let Some(path) = glyph.path.get() {
+            return Rc::clone(path);
+        }
+        // Merged text uses only spans. Construct the individual path lazily,
+        // so short labels with many faces/sizes do not pay for unused geometry.
         let mut path = RowPath::default();
         let g = &glyph.glyph;
-        g.for_each_span(|y, left, right| {
-            spans.push((y, left, right));
+        for &(y, left, right) in self.spans(glyph).iter() {
             path.rect(
                 (g.left as f64 + left as f64) * glyph.sx,
                 baseline + (g.top + y as i32) as f64 * glyph.sy,
                 (right - left) as f64 * glyph.sx,
                 glyph.sy,
             );
-        });
-        let geometry = Rc::new(BitmapGeometry {
-            spans,
-            path: path.into_path(),
-        });
-        // Bound retained geometry independently of document segment admission.
-        // Native spans and output segments are both charged; no limit/error is
-        // bypassed when a cached path is copied into a document.
-        let units = geometry.spans.len() + geometry.path.segments.len();
-        if units <= MAX_GEOMETRY_UNITS - self.geometry_units.get() {
-            self.geometry_units.set(self.geometry_units.get() + units);
-            let _ = glyph.geometry.set(Rc::clone(&geometry));
         }
-        geometry
+        let path = Rc::new(path.into_path());
+        if self.retain_geometry(path.segments.len()) {
+            let _ = glyph.path.set(Rc::clone(&path));
+        }
+        path
     }
 }
 fn cached_glyph(
@@ -170,7 +179,7 @@ fn cached_glyph(
     h: f64,
 ) -> Result<Option<Rc<CachedGlyph>>, String> {
     match font.cache.filter(|_| font.custom.is_none()) {
-        Some(cache) => cache.get(font, key, w, h).map(Some),
+        Some(cache) => cache.get(font, key, w, h),
         None => Ok(None),
     }
 }
@@ -590,8 +599,8 @@ pub(super) fn text_parts_for<'a>(
         }
         let c = font.map_char(c)?;
         let (advance, sx, mut path) = if let Some(glyph) = cached_glyph(font, c, w, h)? {
-            let geometry = font.cache.unwrap().geometry(&glyph, baseline);
-            (glyph.glyph.advance, glyph.sx, geometry.path.clone())
+            let path = font.cache.unwrap().path(&glyph, baseline);
+            (glyph.glyph.advance, glyph.sx, path.as_ref().clone())
         } else {
             let (g, sx, sy) = resolved_glyph(font, c, w, h)?;
             let mut path = RowPath::default();
@@ -687,7 +696,7 @@ pub(super) fn text_for<'a>(
                 ));
         };
         if let Some(glyph) = &cached {
-            for &(y, left, right) in &font.cache.unwrap().geometry(glyph, baseline).spans {
+            for &(y, left, right) in font.cache.unwrap().spans(glyph).iter() {
                 emit(y, left, right);
             }
         } else {
