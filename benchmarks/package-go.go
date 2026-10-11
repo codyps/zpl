@@ -22,6 +22,14 @@ func positive(value string) int {
 	return n
 }
 
+func dimension(value string) uint32 {
+	n, err := strconv.ParseUint(value, 10, 32)
+	if err != nil || n == 0 || n > 0xffffffff {
+		panic("expected dimension from 1 to 4294967295")
+	}
+	return uint32(n)
+}
+
 func main() {
 	ctx := context.Background()
 	start := time.Now()
@@ -41,7 +49,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	width, height := uint32(positive(os.Args[3])), uint32(positive(os.Args[4]))
+	width, height := dimension(os.Args[3]), dimension(os.Args[4])
 	duration := time.Duration(positive(os.Args[5])) * time.Millisecond
 	request := zpl.Request{Input: input, Format: zpl.PNG, Profile: zpl.ZD621, Width: width, Height: height}
 	render := func() []byte {
