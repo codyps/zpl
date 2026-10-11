@@ -103,7 +103,7 @@ Before the first automatic npm release:
    the corresponding npm scope.
 2. Merge the Node package and publishing workflow into `main`.
 3. Create the initial public npm package from the reviewed checkout, using the
-   [Node build prerequisites](../zpl-node/README.md#build-and-install-from-this-checkout):
+   [Node build prerequisites](#nodejs):
 
    ```sh
    npm login
@@ -434,3 +434,155 @@ References:
 - [Release-PR merge gate](https://release-plz.dev/docs/config#the-release_always-field)
 - [crates.io trusted publishing](https://crates.io/docs/trusted-publishing)
 - [Cargo package verification](https://doc.rust-lang.org/cargo/commands/cargo-package.html)
+
+## Local binding development
+
+Package READMEs describe registry installation and application usage. The commands
+below are for contributors working from a complete repository checkout.
+
+### Node.js
+
+Requires Node.js 22+, npm, Rust, the `wasm32-unknown-unknown` target, and
+`wasm-bindgen-cli` 0.2.128 (aligned with `zpl-wasm/Cargo.toml`):
+
+```sh
+rustup target add wasm32-unknown-unknown
+cargo install wasm-bindgen-cli --version 0.2.128 --locked
+cd zpl-node
+npm run build
+npm test
+npm pack
+# In your application, install the generated archive:
+npm install /path/to/zpl-node/generated-package.tgz
+```
+
+The repository development shell includes `lld` and the exact
+`wasm-bindgen-cli` 0.2.128 package, including on Intel macOS. After updating the
+flake, reload direnv (or enter `nix develop`) to pick up these tools. The Wasm
+Rust target is still required.
+
+The Cargo package is named `wasm-bindgen-cli`, but its executable is
+`wasm-bindgen`. Check `wasm-bindgen --version`: it must be exactly `0.2.128`.
+If a Nix/direnv shell provides an older version, put Cargo's installed binaries
+first when invoking npm, for example:
+
+```sh
+PATH="${CARGO_HOME:-$HOME/.cargo}/bin:$PATH" npm run build
+```
+
+Use the same PATH prefix for `npm pack` or `npm publish` in that shell.
+
+`npm pack` rebuilds the Wasm binary from the workspace's locked dependencies.
+The archive is ready to install; this does not publish it to npm.
+
+### Python
+
+Python 3.10+ and a Rust toolchain are required to build from source. From the
+repository root:
+
+```sh
+python3 -m venv .venv
+. .venv/bin/activate
+python -m pip install ./zpl-python
+```
+
+The package uses [PyO3](https://pyo3.rs/v0.29.3/) and
+[Maturin's mixed project layout](https://www.maturin.rs/project_layout.html).
+From the repository root, with the virtual environment active:
+
+```sh
+python -m pip install 'maturin>=1.15,<2'
+maturin develop --locked --manifest-path zpl-python/Cargo.toml
+python -m unittest discover -s zpl-python/tests -v
+cargo test --locked -p zpl-python
+maturin build --locked --release --manifest-path zpl-python/Cargo.toml --out dist
+maturin sdist --manifest-path zpl-python/Cargo.toml --out dist
+```
+
+The source distribution includes the local Rust dependencies and workspace
+lockfile. Maturin trims unrelated workspace members in the archive; installation
+allows Cargo to prune their lockfile entries. Checkout wheel builds use `--locked`.
+CI builds and installs a wheel, tests it, and rebuilds a wheel from the source
+distribution. Release builds publish five native wheels (Linux x86_64/aarch64,
+macOS Intel/Apple Silicon, Windows x86_64) and a source archive. Linux wheels
+require glibc 2.28 or newer; other platforms can build from source. See the
+[release policy](#pypi-publishing-setup) for versioning and retries.
+
+### Elixir
+
+Git/path checkouts require Elixir 1.15+, OTP 25+, Rust and a native linker.
+Dependencies without the release-generated checksum manifest automatically build their actual source:
+
+```elixir
+{:zpl, git: "https://github.com/codyps/zpl", subdir: "zpl-elixir"}
+```
+
+Use `subdir`, which retains the sibling Rust crates. A sparse checkout of just
+`zpl-elixir` cannot build the workspace.
+
+From `zpl-elixir/`:
+
+```sh
+mix deps.get
+mix format --check-formatted
+mix test
+cargo clippy --locked -p zpl_elixir --all-targets -- -D warnings
+```
+
+ExUnit checks binary framing, diagnostics, limits, exact raster pixels, resource
+lifetime/concurrency, and byte-for-byte PNG/SVG/PDF/raster parity against direct
+Rust calls for every profile. The parity test builds the `reference` Rust example.
+These test the binding contract; printer accuracy remains in the Rust corpus.
+
+To stage sources for a portable Hex archive, run from the repository root:
+
+```sh
+cargo fetch --locked
+python3 scripts/elixir-package.py zpl-elixir/_package
+cd zpl-elixir/_package
+mix deps.get
+```
+
+Use a new staging directory on each run. The staging script includes the runtime
+sources of `zpl`, `zpl-bitmap-fonts`, and `raster-diff`, copies the root lockfile,
+and lets Cargo prune unrelated entries offline. This creates a self-contained
+workspace without fetching older published renderer sources. No crate-local
+lockfile is maintained in the checkout. Build archives from the staged directory;
+running `mix hex.build` directly in the checkout is rejected because its sibling
+Rust crates would be omitted.
+The staged sources include tests and the native parity example. Checkouts without
+a checksum manifest compile from source. The current package file list requires
+`checksum-Elixir.Zpl.Native.exs` for `mix hex.build`; staging alone does not generate
+it. Release CI builds and tests native artifacts on all five targets, then generates
+`checksum-Elixir.Zpl.Native.exs` from those exact artifacts before `mix hex.build`.
+CI unpacks the archive outside the repository, runs the same source tests, and
+builds independent consumer releases with both downloads and forced source
+compilation. Download tests block Cargo/rustc and check rejection of corrupt
+artifacts. The release workflow uploads immutable NIF assets before publishing
+the exact tested Hex archive; reruns refuse to overwrite different asset bytes.
+See the release guide for initial account setup and checksum-checked retries.
+
+## Package README checks
+
+Registry READMEs should lead with the package's purpose, supported runtimes,
+registry installation, and a usable example. Keep contributor commands and
+publishing setup in this guide. Use absolute links for repository documentation
+and images, and ordinary fenced Markdown code without rustdoc-only hidden lines.
+
+Cargo packages select `README.md` through `package.readme`. npm includes the
+root README automatically, even when it is omitted from `files`. Maturin uses
+`project.readme` as PyPI's Markdown description; check built wheels and source
+archives with `python -m twine check --strict dist/*`. Hex includes the README
+in its archive, but does not use it as the package-page description; the `README`
+metadata link points readers to the usage guide until HexDocs are published.
+
+README and metadata changes reach registries on the next package release.
+The crates.io 0.0.0 placeholders are separate from the implemented bindings;
+their READMEs must continue to identify them as empty and point to working packages.
+
+References:
+
+- [Cargo README metadata](https://doc.rust-lang.org/cargo/reference/manifest.html#the-readme-field)
+- [npm package READMEs](https://docs.npmjs.com/about-package-readme-files/)
+- [PyPI README formatting and validation](https://packaging.python.org/en/latest/guides/making-a-pypi-friendly-readme/)
+- [Hex package metadata and documentation](https://hex.pm/docs/publish#adding-metadata-to-mixexs)

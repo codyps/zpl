@@ -4,23 +4,21 @@ Elixir bindings for the [Rust `zpl` crate](https://github.com/codyps/zpl), using
 [Rustler 0.38](https://hexdocs.pm/rustler/). Parsing, rendering, and output encoding
 run locally on BEAM dirty CPU schedulers. No printer or external service is used.
 
-## Install from a checkout
+## Installation
 
-Requires Elixir 1.15+, Erlang/OTP 25+, a current stable Rust toolchain, and a native
-linker. Add this dependency to your application's `mix.exs`, pointing at a complete
-checkout (the binding links directly to sibling workspace crates):
+Requires Elixir 1.15 or newer and Erlang/OTP 25 or newer. Add `zpl` to the
+`deps` list in your application's `mix.exs`:
 
 ```elixir
-{:zpl, path: "../zpl/zpl-elixir"}
+{:zpl, "~> 0.2.1"}
 ```
 
-Then run `mix deps.get`. Mix compiles the native library automatically; production
-builds use Rust's release profile. The Mix/OTP application is `:zpl`, the public
-module is `Zpl`, and the workspace Cargo package is `zpl_elixir`.
-Stable renderer releases automatically publish the same version to Hex after the
-one-time [publishing setup](https://github.com/codyps/zpl/blob/main/docs/releases.md#hex-publishing-setup).
-Once the first release is published, use `{:zpl, "~> <released-version>"}`.
-New releases use checksum-verified precompiled NIFs on the following targets:
+Then run `mix deps.get`. The Mix application is `:zpl` and the public module
+is `Zpl`.
+
+**Release 0.2.1 and earlier compile from source** and require a stable Rust
+toolchain and a native linker. Later releases use checksum-verified precompiled
+NIFs on the following targets:
 
 | Platform | Minimum build baseline |
 | --- | --- |
@@ -30,9 +28,9 @@ New releases use checksum-verified precompiled NIFs on the following targets:
 | Windows x86_64 | MSVC, Windows Server 2025 build runner |
 
 Prebuilts use NIF ABI 2.15, compatible with the supported OTP 25+ runtimes.
-Rust is not required to install a published package on these targets. Downloads
+Releases with prebuilts need no Rust toolchain on these targets. Downloads
 come from the matching `zpl-v<version>` GitHub release and are verified against
-SHA-256 checksums inside the Hex package. Release 0.2.1 and earlier are source-only.
+SHA-256 checksums inside the Hex package.
 An unavailable target, failed download, or checksum mismatch fails explicitly;
 it does not silently switch to compiling Rust.
 
@@ -49,20 +47,12 @@ config :rustler_precompiled, :force_build, zpl: true
 ```
 
 The standard `RUSTLER_PRECOMPILED_FORCE_BUILD_ALL=true` override also works.
-Source builds require Rust and a native linker. Git/path dependencies without the
-release-generated checksum manifest automatically build their actual source:
-
-```elixir
-{:zpl, git: "https://github.com/codyps/zpl", subdir: "zpl-elixir"}
-```
-
-Use `subdir`, which retains the sibling Rust crates. A sparse checkout of just
-`zpl-elixir` cannot build the workspace. For an offline install, populate
+Source builds require Rust and a native linker. For an offline install, populate
 `RUSTLER_PRECOMPILED_GLOBAL_CACHE_PATH` with the matching `.tar.gz` release asset;
 checksums are still enforced. A mirror can be selected at compile time with
 `config :zpl, :precompiled_base_url, "https://mirror.example/zpl-v<version>/"`.
 
-## Render and encode
+## Quick start
 
 ```elixir
 document = Zpl.render!(
@@ -160,55 +150,21 @@ be finite and nonnegative; Elixir integers are also accepted for these ceilings.
 and optional `offset` and parser `kind`. Native diagnostics are preserved.
 Incorrect Elixir call shapes (non-binary input, non-atom keys, or forged native
 references) raise standard Elixir argument/function errors.
-`Zpl.library_version()` identifies the linked Rust library; the Mix package has
-its own version.
+`Zpl.library_version()` identifies the linked Rust library. Published Hex packages
+use the same version as the renderer.
 
 The bindings cover framing, rendering options/profiles/compatibility, limits,
 documents, scenes, and output adapters. They do not expose custom font-provider
 callbacks, font decoding utilities, arbitrary scene construction/editing, or
 custom raster destinations.
 
-## Develop and package
+## Links and license
 
-From this directory:
+- [Module documentation in source](https://github.com/codyps/zpl/tree/main/zpl-elixir/lib)
+- [Renderer coverage](https://github.com/codyps/zpl/blob/main/docs/local-renderer.md)
+- [Barcode support](https://github.com/codyps/zpl/blob/main/docs/barcodes.md)
+- [Source and issues](https://github.com/codyps/zpl)
+- [Contributor build instructions](https://github.com/codyps/zpl/blob/main/docs/releases.md#elixir)
 
-```sh
-mix deps.get
-mix format --check-formatted
-mix test
-cargo clippy --locked -p zpl_elixir --all-targets -- -D warnings
-```
-
-ExUnit checks binary framing, diagnostics, limits, exact raster pixels, resource
-lifetime/concurrency, and byte-for-byte PNG/SVG/PDF/raster parity against direct
-Rust calls for every profile. The parity test builds the `reference` Rust example.
-These test the binding contract; printer accuracy remains in the Rust corpus.
-
-To build a portable Hex source archive, run from the repository root:
-
-```sh
-cargo fetch --locked
-python3 scripts/elixir-package.py zpl-elixir/_package
-cd zpl-elixir/_package
-mix deps.get
-mix hex.build
-```
-
-Use a new staging directory on each run. The staging script includes the runtime
-sources of `zpl`, `zpl-bitmap-fonts`, and `raster-diff`, copies the root lockfile,
-and lets Cargo prune unrelated entries offline. This creates a self-contained
-workspace without fetching older published renderer sources. No crate-local
-lockfile is maintained in the checkout. Build archives from the staged directory;
-running `mix hex.build` directly in the checkout is rejected because its sibling
-Rust crates would be omitted.
-The archive includes tests and the native parity example. Without a checksum
-manifest, locally staged archives compile from source. Release CI builds and
-tests native artifacts on all five targets, then generates
-`checksum-Elixir.Zpl.Native.exs` from those exact artifacts before `mix hex.build`.
-CI unpacks the archive outside the repository, runs the same source tests, and
-builds independent consumer releases with both downloads and forced source
-compilation. Download tests block Cargo/rustc and check rejection of corrupt
-artifacts. The release workflow uploads immutable NIF assets before publishing
-the exact tested Hex archive; reruns refuse to overwrite different asset bytes.
-See the release guide for initial account setup and checksum-checked retries.
-OSL-3.0 covers the package and its bundled workspace sources.
+The package and bundled workspace sources are licensed under the
+[Open Software License 3.0](https://github.com/codyps/zpl/blob/main/LICENSE).
