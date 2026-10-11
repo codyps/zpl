@@ -159,6 +159,25 @@ callers. The old packed-bit reader and duplicate dataset have been removed.
 The `glyph()` source-position view returns tightly cropped pixels over the shared
 padded records. Use `row_offset()` when scanning `bitmap()` rows.
 
+### Regenerating bundled tables
+
+From the repository root, compile the bundled preview dataset into a fresh directory:
+
+```sh
+cargo run --locked -p zpl-font-extract -- compile \
+  zpl-bitmap-fonts/data/zd621/fonts.json --out _zd621-generated
+```
+
+Keep `fonts.rs` and `bitmaps.bin` adjacent. `catalog.json` records source/output
+hashes and compact array sizes. The JSON retains evidence digests; raw captures
+are not included. Tests check the JSON against the reader, exact regeneration,
+and the golden digest for the previous source-key behavior.
+
+Regenerate the fixed scalable-font captures with
+`python3 zpl-bitmap-fonts/data/compile_captures.py`, or add `--check` to verify
+the checked-in outputs. The fixed corpus and compiler are packaged alongside
+the generated tables; consumers need no Python installation or code generation.
+
 ## Validation
 
 ```sh

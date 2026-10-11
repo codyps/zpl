@@ -16,7 +16,10 @@ defmodule Zpl.MixProject do
       description: "Local ZPL parsing and rendering powered by the Rust zpl crate",
       package: [
         licenses: ["OSL-3.0"],
-        links: %{"GitHub" => "https://github.com/codyps/zpl"},
+        links: %{
+          "GitHub" => "https://github.com/codyps/zpl",
+          "README" => "https://github.com/codyps/zpl/blob/main/zpl-elixir/README.md"
+        },
         files:
           ~w(lib src native test examples Cargo.toml Cargo.lock mix.exs README.md LICENSE .formatter.exs checksum-Elixir.Zpl.Native.exs)
       ]

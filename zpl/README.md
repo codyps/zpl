@@ -9,7 +9,7 @@ Add the crate to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-zpl = "0.1"
+zpl = "0.2"
 ```
 
 Render a 400 × 180-dot label with text and a Code 128 barcode:
@@ -37,11 +37,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let pdf = Pdf.encode(label)?;
     // Save the bytes with std::fs::write("label.png", &png)?;
     // Or return them from your application as image/png, image/svg+xml or application/pdf.
-#   assert_eq!(document.labels.len(), 1);
-#   assert_eq!((label.width, label.height), (400, 180));
-#   assert!(pdf.starts_with(b"%PDF-1.7"));
-#   assert!(png.starts_with(b"\x89PNG\r\n\x1a\n"));
-#   assert!(std::str::from_utf8(&svg)?.starts_with("<svg "));
+    assert_eq!(document.labels.len(), 1);
+    assert_eq!((label.width, label.height), (400, 180));
+    assert!(pdf.starts_with(b"%PDF-1.7"));
+    assert!(png.starts_with(b"\x89PNG\r\n\x1a\n"));
+    assert!(std::str::from_utf8(&svg)?.starts_with("<svg "));
     Ok(())
 }
 ```
