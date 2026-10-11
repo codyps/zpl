@@ -34,6 +34,57 @@ and comparison/hashing are excluded. Timings include allocation and destruction.
 Each binary validates one nonblank label at the expected dimensions before timing.
 Existing renderer correctness and printer-capture tests remain separate CI checks.
 
+### Go and Node packages
+
+CI also records twelve package operations: `go` and `node` PNG rendering for
+`text`, `bitmap-text`, `barcodes`, `graphics`, and `dense`, plus separate
+`go/initialize` and `node/initialize` timings. The first four labels use 812 × 600
+canvases; dense uses 400 × 300 and repeats 48 small font-0 fields. Fixtures and
+external harnesses are identical for both revisions and are hashed into the
+measurement protocol. These workloads exercise each package's public API,
+including argument/result conversion, allocation, and PNG encoding. File I/O,
+PNG validation, and output hashing are outside render timing.
+
+Go builds its shipped default wasm2go translation and embedded data with
+`CGO_ENABLED=0`; the benchmark does not regenerate or substitute another backend.
+One `Engine` is reused throughout each rendering process. Node builds its own
+Wasm and generated JavaScript through `scripts/build-node.sh` and calls the
+CommonJS public `render()` wrapper. The locked wasm-bindgen version is installed
+independently for each revision when necessary. Go and Node versions are recorded;
+Go cannot silently switch toolchains. Both builds use the same physical source
+path, with clean Cargo targets and Go caches between revisions.
+
+Each rendering process warms for 250 ms before the timed loop. Initialization
+uses one fresh process per sample, with no rendering or warm-up: Go times
+`New()` with `Close()` outside the timer; Node times the first `require()` of the
+package, including synchronous Wasm loading. Process startup is outside both
+timers; Node module loading and Go construction are different package-specific
+contracts, not directly comparable cold-start metrics. OS filesystem caches may
+already be warm.
+
+Each package has its own input and executable fingerprint. Go inventories the
+production files and embeds selected by `go list`; excluded backends and tests
+are not compilation inputs. Node inventories the resolved Wasm dependency graph,
+resident assets and wrapper sources, and fingerprints its executable Wasm,
+JavaScript and loader metadata together. Matching native Rust executables cannot
+suppress a Go-only or Node-only alert. A/A and inconclusive controls apply
+independently to all three implementations.
+
+Schema 2 records add package build provenance, output evidence, runtime versions,
+and all twelve package sample series. Original schema 1 records remain readable
+and retain their native-only history. New package series appear automatically in
+the dashboard. PNG preflight checks reject wrong dimensions and blank/solid
+outputs; Go/Node bytes must agree within each revision, and remain deterministic
+through the run. Base/head outputs may differ intentionally, so hashes and PNGs
+are retained rather than requiring unchanged rendering between revisions.
+
+The same paired thresholds and advisory PR comments apply to package timings,
+including initialization. Timing alerts remain informational and do not fail
+CI. Invalid builds, incomplete samples, invalid output, or cross-package output
+differences do fail collection. The trusted comment publisher must reach `main`
+before it can read schema 2 artifacts; until then, use the PR job summary. No PR
+code or retained executable runs in the privileged publisher.
+
 The runner builds a standalone harness against each revision's `zpl` path using
 that revision's locked dependency versions. It rejects unexpected dependency
 resolution changes. Both binaries use the same harness and compiler. Each revision
@@ -163,13 +214,16 @@ and trigger the combined deployment. PRs test the page and measurement tooling.
 
 ## Local checks
 
-Python 3.11+, Rust/Cargo, and Node.js are required:
+Python 3.11+, Rust/Cargo, and Node.js are required. Package recording also requires
+Go, the `wasm32-unknown-unknown` Rust target, and a matching wasm-bindgen CLI
+(installed by the runner if missing):
 
 ```sh
 python3 -m unittest discover -s benchmarks -p 'test_*.py' -v
 node --test benchmarks/dashboard.test.mjs
 rustfmt --edition 2021 --check benchmarks/harness.rs
 python3 benchmarks/run.py --base /path/to/base --head /path/to/head --output /tmp/zpl-perf-new
+python3 benchmarks/run.py --packages --base /path/to/base --head /path/to/head --output /tmp/zpl-packages-new
 ```
 
 The output directory must not already exist and needs room for the exported source
@@ -185,8 +239,8 @@ paired statistics, raw evidence, exact environment metadata, job summaries,
 scheduled/manual runs, durable history and an interactive dashboard. PR comments
 add the remaining reporting step, including clearing alerts and stale-run checks.
 
-Useful measurement extensions are PNG encoding (currently excluded, despite
-being part of rendering to PNG), allocation counts for text-heavy labels, and a
+Useful measurement extensions are native PNG encoding (package PNG timings already
+include encoding), allocation counts for text-heavy labels, and a
 Wasm benchmark for the browser preview. Stage timings do not provide an independent
 machine-noise control such as coarsetime's stdlib workloads. These require new
 measurements; native timing data cannot substantiate Wasm or allocation claims.

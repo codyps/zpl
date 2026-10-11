@@ -100,6 +100,15 @@ jobs:
           path: baseline
           persist-credentials: false
       - uses: dtolnay/rust-toolchain@6bed0761d98439e5a578e2877258200ad565ba87 # stable
+        with:
+          targets: wasm32-unknown-unknown
+      - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6
+        with:
+          go-version: '1.27.2'
+          cache: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24'
       - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
           python-version: '3.13'
@@ -107,10 +116,10 @@ jobs:
         run: python3 -m unittest discover -s tooling/benchmarks -p 'test_*.py' -v
       - name: Compare current target and PR merge on this worker
         if: github.event_name == 'pull_request'
-        run: python3 tooling/benchmarks/run.py --base baseline --head candidate --output results
+        run: python3 tooling/benchmarks/run.py --packages --base baseline --head candidate --output results
       - name: Measure main
         if: github.event_name != 'pull_request'
-        run: python3 tooling/benchmarks/run.py --head candidate --output results
+        run: python3 tooling/benchmarks/run.py --packages --head candidate --output results
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         if: always()
         with:
@@ -120,5 +129,6 @@ jobs:
             results/raw.txt
             results/summary.md
             results/builds/
+            results/outputs/
           retention-days: 30
           if-no-files-found: warn

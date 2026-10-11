@@ -10,7 +10,8 @@ import subprocess
 import time
 
 from build import METHOD, build_revision
-from common import COMPARISON_NOTES, NAMES, compare, comparison_kind
+from common import (COMPARISON_NOTES, NAMES, PACKAGE_NAMES, PACKAGE_METHOD, build_hashes,
+                    compare, comparison_kind, measurement_names)
 
 HERE = Path(__file__).resolve().parent
 
@@ -41,6 +42,7 @@ def main():
     parser.add_argument('--head', type=Path, required=True)
     parser.add_argument('--base', type=Path)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--packages', action='store_true', help='Also measure public Go and Node packages')
     args = parser.parse_args()
     pr_head = os.getenv('PR_HEAD_SHA', '')
     if os.getenv('GITHUB_EVENT_NAME') == 'pull_request':
@@ -50,7 +52,11 @@ def main():
     config = json.loads((HERE / 'config.json').read_text())
     harness = (HERE / 'harness.rs').read_bytes()
     protocol = hashlib.sha256()
-    for name in ('harness.rs', 'run.py', 'build.py', 'common.py', 'config.json'):
+    protocol_files = ['harness.rs', 'run.py', 'build.py', 'common.py', 'config.json']
+    if args.packages:
+        protocol_files += ['packages.py', 'package-go.go', 'package-node.cjs']
+        protocol_files += [p.relative_to(HERE).as_posix() for p in sorted((HERE / 'fixtures').glob('*.zpl'))]
+    for name in protocol_files:
         protocol.update((HERE / name).read_bytes())
     cpu = next(
         (line.split(':', 1)[1].strip() for line in Path('/proc/cpuinfo').read_text().splitlines()
@@ -68,6 +74,11 @@ def main():
                                    rustflags=os.getenv('RUSTFLAGS', ''), profile='release'))
     if record['event'] == 'pull_request':
         record['pr_head_sha'] = pr_head
+    programs = {}
+    if args.packages:
+        from packages import build_packages, measure as package_measure, png_evidence
+        record.update(schema=2, package_method=PACKAGE_METHOD, package_builds={}, outputs={})
+        record['environment'].update(go=command(['go', 'version']), node=command(['node', '--version']))
     binaries = {}
     for label, checkout in (('base', args.base), ('head', args.head)):
         if checkout is None:
@@ -80,21 +91,56 @@ def main():
         print(f'{label}: {json.dumps(provenance)}', flush=True)
         binaries[label] = binary
         record['samples'][label] = {name: [] for name in NAMES}
+        if args.packages:
+            package_commit, programs[label], record['package_builds'][label] = build_packages(
+                checkout, output / 'package-build', output / 'builds' / label / 'packages', output / 'tools')
+            if package_commit != commit:
+                raise ValueError('Package source revision changed during build')
+            record['samples'][label].update({name: [] for name in PACKAGE_NAMES})
+            record['outputs'][label] = {}
     # Warm both retained executables after the final build, before paired rounds.
     for binary in binaries.values():
         for name in NAMES:
             measure(binary, name, 25)  # validates nonblank native canvas, then warms up
+    names = measurement_names(record)
+    images = output / 'outputs'
+    if args.packages:
+        images.mkdir()
+        for label, packages in programs.items():
+            for name in PACKAGE_NAMES:
+                package, case, *_ = name.split('/')
+                image = images / (label + '-' + name.replace('/', '-') + '.png')
+                package_measure(packages[package], name, 25, image)
+                if case != 'initialize':
+                    record['outputs'][label][name] = png_evidence(image, case)
+            # Both frontends must render the same fixture. Base/head output may
+            # change intentionally; retain those hashes rather than hiding it.
+            for name in record['outputs'][label]:
+                other = name.replace('go/', 'node/', 1) if name.startswith('go/') else name.replace('node/', 'go/', 1)
+                if record['outputs'][label][name] != record['outputs'][label][other]:
+                    raise ValueError('Go/Node package output differs: ' + name)
     with (output / 'raw.txt').open('w') as log:
         for round_id in range(config['rounds']):
             print(f"Round {round_id + 1}/{config['rounds']}", flush=True)
-            names = NAMES if round_id % 2 == 0 else NAMES[::-1]
+            ordered_names = names if round_id % 2 == 0 else names[::-1]
             labels = list(binaries) if round_id % 2 == 0 else list(reversed(binaries))
-            for name in names:
+            for name in ordered_names:
                 for label in labels:
-                    ns, raw = measure(binaries[label], name, config['milliseconds'])
+                    if name in PACKAGE_NAMES:
+                        package = name.split('/')[0]
+                        image = images / (label + '-' + name.replace('/', '-') + '.png')
+                        ns, raw = package_measure(programs[label][package], name, config['milliseconds'], image)
+                    else:
+                        ns, raw = measure(binaries[label], name, config['milliseconds'])
                     record['samples'][label][name].append(ns)
                     log.write(f'{round_id} {label} {name} {raw}\n')
                     log.flush()
+    if args.packages:
+        for label, outputs in record['outputs'].items():
+            for name, expected in outputs.items():
+                image = images / (label + '-' + name.replace('/', '-') + '.png')
+                if png_evidence(image, name.split('/')[1]) != expected:
+                    raise ValueError('Nondeterministic package output: ' + name)
     (output / 'result.json').write_text(json.dumps(record, indent=2) + '\n')
     report = summary(record)
     (output / 'summary.md').write_text(report)
@@ -105,25 +151,28 @@ def main():
 
 def summary(record):
     config = record['config']
-    kind = comparison_kind(record) if 'base' in record['samples'] else None
     lines = ['## Rendering performance', '']
     if record.get('pr_head_sha'):
         lines += [f"Target `{record['commits']['base']}` → PR merge `{record['commits']['head']}` "
                   f"(PR head `{record['pr_head_sha']}`).", '']
-    if kind in COMPARISON_NOTES:
-        lines += [COMPARISON_NOTES[kind], '']
+    if 'base' in record['samples']:
+        for group in ('rust', 'go', 'node') if record.get('schema') == 2 else ('rust',):
+            kind = comparison_kind(record, group)
+            if kind in COMPARISON_NOTES:
+                lines += [f'{group}: ' + COMPARISON_NOTES[kind], '']
     candidate = 'PR merge' if record.get('pr_head_sha') else 'Head'
     lines += [f'| Case/stage | {candidate} ns/op | Observed paired timing change | Flag |',
              '| --- | ---: | ---: | --- |']
-    for name in NAMES:
+    for name in measurement_names(record):
+        kind = comparison_kind(record, name) if 'base' in record['samples'] else None
         value = statistics.median(record['samples']['head'][name])
         change = compare(record['samples']['base'][name], record['samples']['head'][name], config) if kind else None
         delta = f"{change['percent']:+.1f}%" if change else '—'
         flagged = kind == 'measured' and change['alert']
         lines.append(f"| {name} | {value:.0f} | {delta} | {'change' if flagged else '—'} |")
     lines += ['', 'Positive change means slower. Flags require ≥10%, ≥1 µs, and a 99% paired-bootstrap interval excluding zero. Informational only.']
-    for label, build in record['builds'].items():
-        lines += ['', f"{label} executable SHA-256: `{build['binary_sha256']}`; "
+    for group, label, build in build_hashes(record):
+        lines += ['', f"{group}/{label} executable SHA-256: `{build['binary_sha256']}`; "
                   f"package inputs SHA-256: `{build['inputs_sha256']}`."]
     return '\n'.join(lines) + '\n'
 

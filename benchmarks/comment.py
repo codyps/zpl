@@ -11,7 +11,7 @@ import re
 import statistics
 import subprocess
 
-from common import COMPARISON_NOTES, NAMES, compare, comparison_kind
+from common import COMPARISON_NOTES, build_hashes, compare, comparison_kind, measurement_names
 from publish import read_records
 
 MARKER = '<!-- zpl-benchmarks -->'
@@ -32,7 +32,7 @@ def comment_body(records, run, repo, config):
              f"Target `{records[0]['commits']['base'][:12]}` → "
              f"PR merge `{records[0]['commits']['head'][:12]}` "
              f"(PR head `{run['head_sha'][:12]}`).", '',
-             'Both revisions use the same harness and compiler on a GitHub-hosted Linux worker, '
+             'Both revisions use identical harnesses and toolchains on a GitHub-hosted Linux worker, '
              'with ten alternating paired rounds.',
              f"Flags require ≥{config['threshold_percent']}% and ≥{config['threshold_ns'] / 1000:g} µs/op "
              'median paired change, with a 99% paired-bootstrap interval excluding zero. '
@@ -40,11 +40,14 @@ def comment_body(records, run, repo, config):
     rows = []
     notes = []
     for record in records:
-        kind = comparison_kind(record)
-        if kind != 'measured':
-            notes.append(COMPARISON_NOTES[kind])
-            continue
-        for name in NAMES:
+        for name in measurement_names(record):
+            kind = comparison_kind(record, name)
+            if kind != 'measured':
+                group = name.split('/')[0] if name.startswith(('go/', 'node/')) else 'rust'
+                note = group + ': ' + COMPARISON_NOTES[kind]
+                if note not in notes:
+                    notes.append(note)
+                continue
             before = record['samples']['base'][name]
             after = record['samples']['head'][name]
             change = compare(before, after, config)
@@ -60,11 +63,12 @@ def comment_body(records, run, repo, config):
         lines += ['No measured stage crosses the reporting thresholds in this run.']
     lines += notes
     for record in records:
-        for label, build in record.get('builds', {}).items():
-            lines += ['', f"{label} executable SHA-256: `{build['binary_sha256']}`; "
+        for group, label, build in build_hashes(record):
+            lines += ['', f"{group}/{label} executable SHA-256: `{build['binary_sha256']}`; "
                       f"package inputs SHA-256: `{build['inputs_sha256']}`."]
     lines += ['', 'Informational only. Same-worker pairing reduces drift but does not eliminate noise; '
-              'the interval is not a correction for multiple comparisons. PNG encoding is excluded.',
+              'the interval is not a correction for multiple comparisons. Native stages exclude PNG encoding; '
+              'Go and Node PNG measurements include public bindings and encoding. Initialization is separate.',
               f"[All measurements and raw samples](https://github.com/{repo}/actions/runs/{run['id']}) · "
               f"[Historical dashboard](https://{repo.split('/')[0]}.github.io/{repo.split('/')[1]}/perf/)"]
     return '\n'.join(lines), bool(rows)

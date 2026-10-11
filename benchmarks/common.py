@@ -6,6 +6,15 @@ import statistics
 NAMES = tuple(f"{case}/{stage}" for case in ("text", "bitmap-text", "barcodes", "graphics")
               for stage in ("scene", "raster", "total"))
 RUNNERS = {"ubuntu-24.04"}
+PACKAGE_CASES = ('text', 'bitmap-text', 'barcodes', 'graphics', 'dense')
+PACKAGE_NAMES = tuple(name for package in ('go', 'node')
+                      for name in [*(f'{package}/{case}/png' for case in PACKAGE_CASES),
+                                   f'{package}/initialize'])
+PACKAGE_METHOD = 'same-path-package-v1'
+
+
+def measurement_names(record):
+    return NAMES + PACKAGE_NAMES if record.get('schema') == 2 else NAMES
 
 COMPARISON_NOTES = {
     'unchanged': 'No relevant input changes: the resolved package inputs and independently built '
@@ -21,14 +30,25 @@ COMPARISON_NOTES = {
 }
 
 
-def comparison_kind(record):
-    if not record.get('builds'):
+def comparison_kind(record, name=''):
+    package = name.split('/')[0]
+    builds = ({label: build[package] for label, build in record.get('package_builds', {}).items()}
+              if package in ('go', 'node') else record.get('builds'))
+    if not builds:
         return 'legacy'
-    base, head = (record['builds'][label] for label in ('base', 'head'))
+    base, head = (builds[label] for label in ('base', 'head'))
     same_inputs = base['inputs_sha256'] == head['inputs_sha256']
     if base['binary_sha256'] == head['binary_sha256']:
         return 'unchanged' if same_inputs else 'identical'
     return 'unreproducible' if same_inputs else 'measured'
+
+
+def build_hashes(record):
+    for label, build in record.get('builds', {}).items():
+        yield 'rust', label, build
+    for label, packages in record.get('package_builds', {}).items():
+        for package, build in packages.items():
+            yield package, label, build
 
 
 def compare(before, after, config):
