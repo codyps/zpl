@@ -37,6 +37,19 @@ def verify_pr_merge(base, head, pr_head):
         raise ValueError('Candidate must merge the measured target and PR head')
 
 
+def write_record(output, record):
+    # Keep the artifact readable by the trusted schema 1 publisher during rollout.
+    # Updated publishers prefer the complete package record in the same artifact.
+    legacy = record
+    if record['schema'] == 2:
+        (output / 'result-packages.json').write_text(json.dumps(record, indent=2) + '\n')
+        legacy = {key: value for key, value in record.items()
+                  if key not in ('package_method', 'package_builds', 'outputs')}
+        legacy.update(schema=1, samples={label: {name: samples[name] for name in NAMES}
+                                         for label, samples in record['samples'].items()})
+    (output / 'result.json').write_text(json.dumps(legacy, indent=2) + '\n')
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--head', type=Path, required=True)
@@ -130,6 +143,10 @@ def main():
                         package = name.split('/')[0]
                         image = images / (label + '-' + name.replace('/', '-') + '.png')
                         ns, raw = package_measure(programs[label][package], name, config['milliseconds'], image)
+                        if not name.endswith('/initialize'):
+                            output_sha = hashlib.sha256(image.read_bytes()).hexdigest()
+                            if output_sha != record['outputs'][label][name]['sha256']:
+                                raise ValueError('Nondeterministic package output: ' + name)
                     else:
                         ns, raw = measure(binaries[label], name, config['milliseconds'])
                     record['samples'][label][name].append(ns)
@@ -141,7 +158,7 @@ def main():
                 image = images / (label + '-' + name.replace('/', '-') + '.png')
                 if png_evidence(image, name.split('/')[1]) != expected:
                     raise ValueError('Nondeterministic package output: ' + name)
-    (output / 'result.json').write_text(json.dumps(record, indent=2) + '\n')
+    write_record(output, record)
     report = summary(record)
     (output / 'summary.md').write_text(report)
     if os.getenv('GITHUB_STEP_SUMMARY'):

@@ -141,6 +141,9 @@ def read_records(incoming, run):
     sources = sorted(incoming.glob('result.json')) + sorted(incoming.glob('render-benchmark-*/result.json'))
     records = []
     for path in sources:
+        packages = path.with_name('result-packages.json')
+        if packages.exists() or packages.is_symlink():
+            path = packages
         raw = path.with_name('raw.txt')
         if path.parent.is_symlink() or any(
                 p.is_symlink() or not p.is_file() or p.stat().st_size > 1_000_000 for p in (path, raw)):

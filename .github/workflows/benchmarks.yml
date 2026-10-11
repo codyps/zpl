@@ -126,6 +126,7 @@ jobs:
           name: render-benchmark-ubuntu-24.04
           path: |
             results/result.json
+            results/result-packages.json
             results/raw.txt
             results/summary.md
             results/builds/

@@ -81,9 +81,12 @@ are retained rather than requiring unchanged rendering between revisions.
 The same paired thresholds and advisory PR comments apply to package timings,
 including initialization. Timing alerts remain informational and do not fail
 CI. Invalid builds, incomplete samples, invalid output, or cross-package output
-differences do fail collection. The trusted comment publisher must reach `main`
-before it can read schema 2 artifacts; until then, use the PR job summary. No PR
-code or retained executable runs in the privileged publisher.
+differences do fail collection. Full schema 2 data is saved as
+`result-packages.json`; `result.json` retains the native schema 1 view so the
+current trusted publisher keeps working during rollout. Updated publishers
+prefer the full record. The trusted comment publisher must reach `main` before
+package PR comments appear; until then, use the PR job summary. No PR code or
+retained executable runs in the privileged publisher.
 
 The runner builds a standalone harness against each revision's `zpl` path using
 that revision's locked dependency versions. It rejects unexpected dependency

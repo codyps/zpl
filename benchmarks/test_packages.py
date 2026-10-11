@@ -11,8 +11,8 @@ import zlib
 from common import PACKAGE_CASES, PACKAGE_NAMES, PACKAGE_METHOD, comparison_kind
 from comment import comment_body
 from packages import go_inputs, inventory, invocation, measure, png_evidence
-from publish import archive, validate
-from run import summary
+from publish import archive, read_records, validate
+from run import summary, write_record
 from test_comment import comparison, REPO
 from test_benchmarks import CONFIG
 
@@ -99,6 +99,22 @@ class PackageBenchmarks(unittest.TestCase):
             index = json.loads((root/'data/index.json').read_text())
             self.assertEqual(index[0]['medians']['go/dense/png'], 10000)
             self.assertEqual(index[0]['medians']['node/initialize'], 10000)
+
+    def test_rollout_artifact_supports_old_and_new_trusted_publishers(self):
+        record, run = package_record()
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            write_record(root, record)
+            (root/'raw.txt').write_text('all raw samples')
+            legacy = json.loads((root/'result.json').read_text())
+            self.assertEqual(legacy['schema'], 1)
+            self.assertNotIn('package_builds', legacy)
+            self.assertNotIn('go/dense/png', legacy['samples']['head'])
+            validate(legacy, run)
+            self.assertEqual(read_records(root, run), [(record, 'all raw samples')])
+            (root/'result-packages.json').write_text('{}')
+            with self.assertRaises(ValueError):
+                read_records(root, run)
 
     def test_go_inventory_tracks_selected_helpers_embeds_and_wrapper_but_not_tests(self):
         with tempfile.TemporaryDirectory() as temp:
