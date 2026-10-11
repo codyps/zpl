@@ -255,6 +255,7 @@ fn render_expanded(
         options.compatibility.supplied_bitmap_font_metrics,
         options.compatibility.supplied_truetype_printer_metrics,
     );
+    let glyph_cache = font::GlyphCache::default();
     let number = |p: &[&str], i, default| number(p, i, default, limits.number_abs);
     let numbered = numbered::plan(input, options.compatibility, limits.field_bytes)?;
     let mut pending_terminator = None;
@@ -1204,6 +1205,7 @@ fn render_expanded(
                                         && options.compatibility.utf8_uses_legacy_backslash),
                             )
                             .with_fonts(&fonts)
+                            .with_cache(&glyph_cache)
                             .with_truetype_environment(
                                 options.compatibility.supplied_truetype_printer_metrics,
                                 field.rotation,

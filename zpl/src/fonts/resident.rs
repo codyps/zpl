@@ -23,7 +23,7 @@ pub(crate) struct Selection {
 }
 /// Lookup keys retain their namespace across Unicode-aware layout.
 /// Printer source slots are not Unicode private-use characters.
-#[derive(Clone, Copy, Debug)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub(crate) enum GlyphKey {
     Unicode(char),
     Source(u8),
@@ -35,6 +35,13 @@ impl From<char> for GlyphKey {
     }
 }
 impl Selection {
+    pub(crate) fn resident_cache_key(self) -> (char, u8, u8) {
+        let variants = u8::from(self.legacy_backslash)
+            | (u8::from(self.default_glyph) << 1)
+            | (u8::from(self.legacy_controls) << 2);
+        (self.id, variants, self.encoding)
+    }
+
     pub(crate) fn new(id: char, legacy_backslash: bool) -> Self {
         Self {
             id,
@@ -272,10 +279,12 @@ pub(crate) enum GlyphSet {
     Captured(&'static zpl_bitmap_fonts::captures::Strike),
     Compact(&'static zpl_bitmap_fonts::Font, bool, u8),
 }
+#[derive(Clone)]
 pub(crate) enum Pixels<'a> {
     Compact(zpl_bitmap_fonts::Glyph),
     Custom(std::borrow::Cow<'a, crate::bitmap_font::Glyph>),
 }
+#[derive(Clone)]
 pub(crate) struct GlyphView<'a> {
     pub(crate) advance: u32,
     pub(crate) left: i32,

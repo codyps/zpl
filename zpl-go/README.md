@@ -140,10 +140,16 @@ python3 zpl-go/generate.py --check
 # Equivalent regeneration from zpl-go: go generate
 ```
 
-The generator installs pinned wasm2go v0.4.16 into a temporary directory and
-translates the same `guest.wasm` used by wazero. It splits generated code/data with
-`-embed`; build constraints exclude both when another backend is selected.
-Source paths are normalized, and `generated.json` records hashes and versions.
+The generator downloads pinned wasm2go v0.4.16, applies the checked-in
+[`wasm2go-memory.patch`](wasm2go-memory.patch) to a temporary source copy, and
+builds that translator. This requires `patch`. The patch uses fixed-width memory
+windows with capacity capped at the logical memory length; it preserves range
+checks, overflow traps, and validation before writes. Regression tests cover
+spare capacity, extreme addresses, rejected stores, and memory growth.
+It translates the same `guest.wasm` used by wazero and splits generated code/data
+with `-embed`; build constraints exclude both when another backend is selected.
+Source paths are normalized, and `generated.json` records artifact hashes,
+versions, and the translator patch hash.
 `--check` compares rebuilt artifacts without modifying shipped files. Review
 changes to `guest.wasm`, `internal/translated/module.go`, `module.dat`, and
 `generated.json` together. Update [upstream notices](licenses/README.md) when

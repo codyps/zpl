@@ -1,5 +1,9 @@
 {
   "wasm2go": "v0.4.16",
+  "wasm2go_patch": {
+    "file": "wasm2go-memory.patch",
+    "sha256": "d749dd257f3cec689b0eecc8e72709140b96a30c71728fffb89ace56215da894"
+  },
   "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)",
   "target": "wasm32-unknown-unknown",
   "max_memory_bytes": 268435456,
@@ -11,8 +15,8 @@
     "!backend_cgo && !backend_purego && !backend_wazero"
   ],
   "sha256": {
-    "guest.wasm": "310754ae1222e2b9a0c67fb964f3a2272171f58bea5bc53e8efef49d777c2f14",
-    "internal/translated/module.dat": "1c13cbee576f7f9b417e6f3acde632da5fc06df8ee8cc0caeb489386b7017d92",
-    "internal/translated/module.go": "b0cfd37aa2769a0e4a4ef23dd9e0e1fe6857cd7d397f1a165b8e3bf9bb5c2733"
+    "guest.wasm": "05b5e8a2f79a484a546a9e5cbe9d51e6e76f3c22c19e011eb1ec1bbd2b7ccb46",
+    "internal/translated/module.dat": "373befe16c8274f796b73a0a2096d9ad7577608ced0c203fdc10e7ade495ac7f",
+    "internal/translated/module.go": "ed97d149dd5aa42d701f75e1c83598e3a2f3485e3667c0b80986182e694a99cd"
   }
 }
