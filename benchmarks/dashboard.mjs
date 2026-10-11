@@ -48,7 +48,7 @@ export function draw(records, runner, operation, document) {
       dot.append(title);
       const row = table.insertRow();
       for (const text of [record.timestamp, record.commits.head.slice(0, 10), (value / 1000).toFixed(2),
-        record.environment.rust.split('\n')[0], record.environment.cpu,
+        [record.environment.rust.split('\n')[0], record.environment.go, record.environment.node].filter(Boolean).join(' · '), record.environment.cpu,
         `Series ${group + 1} · ${record.harness.slice(0, 8)} · ${record.environment.os} · ${record.environment.image}`]) row.insertCell().textContent = text;
       const cell = row.insertCell();
       for (const [label, file] of [['JSON', record.file], ['Raw', record.file.replace(/\.json$/, '.txt')]]) {

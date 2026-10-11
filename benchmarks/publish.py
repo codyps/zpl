@@ -16,7 +16,7 @@ import statistics
 import subprocess
 import tempfile
 
-from common import NAMES, RUNNERS
+from common import PACKAGE_CASES, PACKAGE_NAMES, PACKAGE_METHOD, RUNNERS, measurement_names
 from build import METHOD
 
 
@@ -27,7 +27,7 @@ def command(*args, cwd=None):
 def validate(record, run):
     labels = {'base', 'head'} if run['event'] == 'pull_request' else {'head'}
     commits = record.get('commits', {})
-    if (record.get('schema') != 1 or record.get('run_id') != run['id']
+    if (record.get('schema') not in (1, 2) or record.get('run_id') != run['id']
             or record.get('run_attempt') != run['run_attempt']
             or record.get('event') != run['event']
             or record.get('runner') not in RUNNERS
@@ -60,10 +60,43 @@ def validate(record, run):
                     not isinstance(value, str) or not re.fullmatch('[0-9a-f]{64}', value)
                     for value in build.values()):
                 raise ValueError('Invalid build hashes')
+    if record['schema'] == 2:
+        packages = record.get('package_builds')
+        if (not record.get('builds') or record.get('package_method') != PACKAGE_METHOD
+                or not isinstance(packages, dict) or set(packages) != labels
+                or not all(isinstance(record['environment'].get(key), str) for key in ('go', 'node'))):
+            raise ValueError('Invalid package provenance')
+        for builds in packages.values():
+            if not isinstance(builds, dict) or set(builds) != {'go', 'node'}:
+                raise ValueError('Missing package builds')
+            for build in builds.values():
+                if not isinstance(build, dict) or set(build) != {'inputs_sha256', 'binary_sha256'} or any(
+                        not isinstance(value, str) or not re.fullmatch('[0-9a-f]{64}', value)
+                        for value in build.values()):
+                    raise ValueError('Invalid package hashes')
+        outputs = record.get('outputs')
+        expected = {name for name in PACKAGE_NAMES if not name.endswith('/initialize')}
+        if not isinstance(outputs, dict) or set(outputs) != labels:
+            raise ValueError('Missing package output evidence')
+        for evidence in outputs.values():
+            if not isinstance(evidence, dict) or set(evidence) != expected:
+                raise ValueError('Incomplete package output evidence')
+            for name, output in evidence.items():
+                dimensions = (400, 300) if name.split('/')[1] == 'dense' else (812, 600)
+                if (not isinstance(output, dict) or set(output) != {'sha256', 'bytes', 'width', 'height', 'black_pixels'}
+                        or not isinstance(output['sha256'], str) or not re.fullmatch('[0-9a-f]{64}', output['sha256'])
+                        or any(type(output[key]) is not int for key in ('bytes', 'width', 'height', 'black_pixels'))
+                        or (output['width'], output['height']) != dimensions
+                        or not 0 < output['bytes'] < 10_000_000
+                        or not 0 < output['black_pixels'] < dimensions[0]*dimensions[1]):
+                    raise ValueError('Invalid package output evidence')
+            for case in PACKAGE_CASES:
+                if evidence[f'go/{case}/png'] != evidence[f'node/{case}/png']:
+                    raise ValueError('Go/Node output differs')
     if set(record.get('samples', {})) != labels:
         raise ValueError('Missing benchmarks')
     for revision in labels:
-        if set(record['samples'][revision]) != set(NAMES):
+        if set(record['samples'][revision]) != set(measurement_names(record)):
             raise ValueError('Missing benchmarks')
         for samples in record['samples'][revision].values():
             if not isinstance(samples, list) or len(samples) != 10 or any(
@@ -108,6 +141,9 @@ def read_records(incoming, run):
     sources = sorted(incoming.glob('result.json')) + sorted(incoming.glob('render-benchmark-*/result.json'))
     records = []
     for path in sources:
+        packages = path.with_name('result-packages.json')
+        if packages.exists() or packages.is_symlink():
+            path = packages
         raw = path.with_name('raw.txt')
         if path.parent.is_symlink() or any(
                 p.is_symlink() or not p.is_file() or p.stat().st_size > 1_000_000 for p in (path, raw)):

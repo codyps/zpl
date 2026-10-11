@@ -12,7 +12,7 @@ svg { width: 100%; background: white; border: 1px solid #ccd7da; } svg text { fo
 </style>
 <nav><a href="../">Label preview</a><a href="https://github.com/codyps/zpl/blob/main/benchmarks/README.md">Measurement method</a></nav>
 <h1>Rendering performance</h1>
-<p>Native ZD621 profile · 812 × 600 dots · median of ten rounds. Scene measures parsing and scene construction; raster measures a prepared scene; total measures both. PNG encoding is excluded.</p>
+<p>ZD621 profile · median of ten rounds. Native scene/raster/total stages exclude PNG encoding. Go and Node PNG workloads include the public package bindings and encoding, with engine reuse and separate initialization measurements. Canvases are 812 × 600 dots; dense uses 400 × 300.</p>
 <p id="status" role="status">Loading performance history…</p>
 <label>Platform <select id="runner" aria-label="Platform"></select></label>
 <label>Workload / stage <select id="operation" aria-label="Workload and stage"></select></label>
