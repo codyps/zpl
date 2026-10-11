@@ -23,9 +23,10 @@ func positive(value string) int {
 }
 
 func dimension(value string) uint32 {
-	n, err := strconv.ParseUint(value, 10, 32)
-	if err != nil || n == 0 || n > 0xffffffff {
-		panic("expected dimension from 1 to 4294967295")
+	// These bounded benchmark canvases also fit the translated Wasm i32 ABI.
+	n, err := strconv.ParseInt(value, 10, 32)
+	if err != nil || n <= 0 || n > 0x7fffffff {
+		panic("expected dimension from 1 to 2147483647")
 	}
 	return uint32(n)
 }
