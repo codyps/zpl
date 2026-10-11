@@ -10,7 +10,7 @@ import zlib
 
 from common import PACKAGE_CASES, PACKAGE_NAMES, PACKAGE_METHOD, comparison_kind
 from comment import comment_body
-from packages import go_inputs, inventory, invocation, measure, png_evidence
+from packages import go_inputs, node_inputs, invocation, measure, png_evidence
 from publish import archive, read_records, validate
 from run import summary, write_record
 from test_comment import comparison, REPO
@@ -143,6 +143,27 @@ class PackageBenchmarks(unittest.TestCase):
                      dict(iterations=1, ns=-1, checksum=1), dict(iterations=1, ns=1000, checksum=0)]:
             with patch('packages.command', return_value=json.dumps(data)), self.assertRaises(ValueError):
                 measure(['go'], 'go/initialize', 200, 'unused')
+
+    def test_node_inventory_tracks_build_script_wrapper_and_selected_wasm_sources(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp); source = root/'source'
+            files = ('Cargo.toml', 'Cargo.lock', 'scripts/build-node.sh', 'zpl-node/index.cjs',
+                     'zpl-wasm/Cargo.toml', 'zpl-wasm/src/lib.rs', 'zpl-proxy-api/src/lib.rs')
+            for name in files:
+                path = source/name; path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text('original')
+            (root/'package-node.cjs').write_text('harness')
+            metadata = dict(packages=[dict(id='wasm', name='zpl-wasm', source=None,
+                                          manifest_path=str(source/'zpl-wasm/Cargo.toml'))],
+                            resolve=dict(nodes=[dict(id='wasm', dependencies=[])]))
+            with patch('packages.command', return_value=json.dumps(metadata)):
+                original = node_inputs(root, source, {})
+                for name in ('scripts/build-node.sh', 'zpl-node/index.cjs', 'zpl-wasm/src/lib.rs'):
+                    (source/name).write_text('changed')
+                    self.assertNotEqual(node_inputs(root, source, {}), original)
+                    (source/name).write_text('original')
+                (source/'zpl-proxy-api/src/lib.rs').write_text('changed')
+                self.assertEqual(node_inputs(root, source, {}), original)
 
     def test_png_evidence_rejects_blank_dimensions_and_invalid_pixels(self):
         def png(width=400, height=300, value=255, depth=8, mark=True):

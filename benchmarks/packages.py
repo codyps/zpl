@@ -82,7 +82,7 @@ def node_inputs(build, source, env):
             selected.add(key)
             pending.extend(nodes[key]['dependencies'])
     packages = [p for p in metadata['packages'] if p['id'] in selected]
-    paths = [source / 'Cargo.toml', source / 'Cargo.lock']
+    paths = [source / 'Cargo.toml', source / 'Cargo.lock', source / 'scripts/build-node.sh']
     for package in packages:
         if package['source'] is None:
             directory = Path(package['manifest_path']).parent
