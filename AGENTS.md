@@ -10,6 +10,8 @@ This Rust 2021 Cargo workspace contains these crates:
 - `zpl-cmd/`: Local CLI with `zpl-cmd render` for PNG, SVG, and multipage PDF output.
 - `zpl/`: ZPL parsing, command/format types, and rendering. Parser unit tests live in `src/parse/test.rs`; renderer unit tests are colocated with their modules; integration tests and printer captures live in `tests/`.
 - `zebra-http-api/`: Zebra printer HTTP rendering client, with a `zebra-render` example.
+- `zebra-sgd-parser/`: Classic SGD and SGD JSON request parsing.
+- `zebra-simulator/`: TCP/HTTP printer simulation, SQLite request history, and realtime preview UI.
 - `zebra-firmware/`: Raw TCP firmware update CLI with printer identity checks and loopback simulator tests.
 - `zpl-proxy-api/`: Axum proxy, SQLite render cache and request history, Diesel models and migrations, and browser assets in `assets/`.
 

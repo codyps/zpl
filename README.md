@@ -10,6 +10,10 @@ extraction tools live in a [separate private repository](https://github.com/cody
 Recover bitmap fonts end to end with the [automatic font CLI](docs/automatic-bitmap-fonts.md),
 including cached printer previews, verified JSON and compact Rust font tables.
 
+Run the [Zebra printer simulator](zebra-simulator/README.md) to capture network
+print, SGD, and SGD JSON requests in SQLite with a realtime preview log.
+The [SGD parser](zebra-sgd-parser/README.md) provides transport-independent request parsing.
+
 Use the [firmware update CLI](docs/firmware-updates.md) to inspect network Zebra
 printers and apply local firmware files with model and serial checks.
 
