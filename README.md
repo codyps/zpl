@@ -4,8 +4,7 @@
 
 Rust tools for parsing Zebra Programming Language (ZPL), rendering labels locally
 to PNG, SVG and PDF, and comparing previews from Zebra printers. The workspace also
-includes a browser editor and a printer-backed HTTP proxy. Font research and
-extraction tools live in a [separate private repository](https://github.com/codyps/zpl-font-extract).
+includes a browser editor and a printer-backed HTTP proxy.
 
 Recover bitmap fonts end to end with the [automatic font CLI](docs/automatic-bitmap-fonts.md),
 including cached printer previews, verified JSON and compact Rust font tables.
