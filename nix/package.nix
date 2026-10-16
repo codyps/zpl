@@ -13,6 +13,7 @@ rustPlatform.buildRustPackage {
       ../zpl
       ../zpl-cmd
       ../zpl-c
+      ../zpl-go/bridge
       ../zpl-python
       ../zpl-elixir
       ../zplkit
@@ -20,6 +21,8 @@ rustPlatform.buildRustPackage {
       ../zpl-wasm
       ../raster-diff
       ../zebra-sgd
+      ../zebra-sgd-parser
+      ../zebra-simulator
       ../zpl-font-extract
       ../zpl-bitmap-fonts
       ../zebra-firmware

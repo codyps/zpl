@@ -2,6 +2,8 @@
 members = [
     "zebra-firmware",
     "zebra-sgd",
+    "zebra-sgd-parser",
+    "zebra-simulator",
     "zpl-font-extract",
     "zpl-bitmap-fonts",
     "raster-diff",

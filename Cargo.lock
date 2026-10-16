@@ -4150,6 +4150,35 @@ dependencies = [
 ]
 
 [[package]]
+name = "zebra-sgd-parser"
+version = "0.1.0"
+dependencies = [
+ "serde",
+ "serde_json",
+]
+
+[[package]]
+name = "zebra-simulator"
+version = "0.1.0"
+dependencies = [
+ "axum",
+ "clap",
+ "diesel",
+ "diesel_migrations",
+ "eyre",
+ "futures-util",
+ "reqwest",
+ "serde",
+ "serde_json",
+ "tempfile",
+ "tokio",
+ "zebra-http-api",
+ "zebra-sgd",
+ "zebra-sgd-parser",
+ "zpl",
+]
+
+[[package]]
 name = "zerocopy"
 version = "0.8.57"
 source = "registry+https://github.com/rust-lang/crates.io-index"

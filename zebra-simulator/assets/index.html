@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zebra simulator · Request log</title>
+<style>
+:root { color-scheme: light; font-family: system-ui, sans-serif; color: #172b36; background: #f3f6f7; }
+* { box-sizing: border-box; }
+body { margin: 0; }
+header { background: #143c40; color: white; padding: 1.25rem 2rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+h1 { font-size: 1.35rem; margin: 0; }
+header p { margin: .35rem 0 0; color: #c2dadd; font-size: .9rem; }
+#live { font-size: .85rem; white-space: nowrap; }
+main { max-width: 1440px; margin: 1.5rem auto; padding: 0 1.5rem; }
+.workspace { display: grid; grid-template-columns: minmax(300px, 390px) minmax(0, 1fr); gap: 1.25rem; align-items: start; }
+.panel { background: white; border: 1px solid #d8e2e5; border-radius: .7rem; padding: 1.25rem; }
+h2 { font-size: 1rem; margin: 0 0 1rem; }
+.tools { display: flex; gap: .5rem; margin-bottom: 1rem; }
+input, select, button, textarea { font: inherit; border: 1px solid #b2c3c7; border-radius: .3rem; padding: .5rem .7rem; background: white; color: inherit; }
+input { width: 100%; min-width: 0; }
+button { cursor: pointer; }
+button:hover { background: #e8f3f2; }
+button:disabled { opacity: .55; cursor: wait; }
+#requests { display: grid; gap: .5rem; max-height: 68vh; overflow-y: auto; }
+.request { text-align: left; width: 100%; padding: .7rem; border-color: #e0e8e9; }
+.request[aria-pressed="true"] { border-color: #147b73; background: #e8f4f1; }
+.request strong { display: flex; justify-content: space-between; gap: .5rem; font-size: .9rem; }
+.request small { display: block; color: #5d737d; margin-top: .4rem; }
+.bad { color: #a33128; }
+.ok { color: #236c61; }
+#older { margin-top: 1rem; width: 100%; }
+pre { white-space: pre-wrap; overflow-wrap: anywhere; background: #f5f7f8; padding: 1rem; border-radius: .4rem; font-size: .85rem; max-height: 24rem; overflow: auto; }
+#metadata { color: #5d737d; font-size: .9rem; line-height: 1.7; }
+#previews { display: grid; gap: 1rem; }
+figure { margin: 0; padding: 1rem; background: #eef2f3; border-radius: .5rem; }
+figure img { display: block; max-width: 100%; max-height: 650px; width: auto; height: auto; border: 1px solid #ccd7da; background: white; }
+figcaption { margin-bottom: .75rem; font-size: .85rem; }
+a { color: #167068; }
+#empty { padding: 3rem 1rem; color: #5d737d; text-align: center; }
+#submit-panel { margin-top: 1.25rem; }
+textarea { width: 100%; font-family: monospace; margin: .6rem 0; }
+label { font-size: .9rem; }
+#notice { min-height: 1.2em; }
+@media (max-width: 800px) { .workspace { grid-template-columns: 1fr; } header { padding: 1rem; } main { padding: 0 .75rem; } #requests { max-height: 320px; } }
+</style>
+</head>
+<body>
+<header><div><h1>Zebra printer simulator</h1><p>Printer traffic, responses, and label previews</p></div><span id="live" role="status">Connecting…</span></header>
+<main>
+<p id="notice" role="alert" class="bad"></p>
+<div class="workspace">
+<section class="panel" aria-label="Request history">
+<h2>Request log <span id="count"></span></h2>
+<div class="tools"><input id="search" aria-label="Filter loaded requests" placeholder="Filter loaded requests…"><select id="filter" aria-label="Request type"><option value="">All types</option><option>label</option><option>preview</option><option>sgd</option><option>sgd-json</option><option>zpl-control</option><option>invalid</option></select></div>
+<div id="requests"></div><p id="no-requests" hidden>No requests yet. Submit a label below or connect a printer client.</p>
+<button id="older" hidden>Load older requests</button>
+</section>
+<section class="panel" aria-label="Request details">
+<div id="empty">Select a request to inspect its data and previews.</div>
+<div id="detail" hidden>
+<h2 id="title"></h2><p id="metadata"></p><p id="error" class="bad" role="alert"></p><div id="warnings"></div>
+<div id="previews"></div>
+<h2 style="margin-top:1.5rem">Request data</h2><a id="download">Download original bytes</a><pre id="data"></pre>
+<details><summary>Request bytes (hex)</summary><pre id="hex"></pre></details>
+<h2 style="margin-top:1.5rem">Printer response</h2><pre id="response"></pre>
+</div>
+</section>
+</div>
+<section class="panel" id="submit-panel">
+<h2>Send a label to this simulator</h2>
+<form id="print-form"><label for="zpl">ZPL</label><textarea id="zpl" rows="5" spellcheck="false">^XA^PW400^LL200^FO25,25^A0N,32,32^FDHello, Zebra!^FS^XZ</textarea><button id="print-button">Submit print request</button> <span id="submit-status" role="status"></span></form>
+</section>
+</main>
+<script>
+const $ = id => document.getElementById(id);
+const records = new Map();
+let newest = 0, oldest, selected, selection = 0, loading = false, refreshAgain = false;
+async function json(url) {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`Unable to load request history (${response.status}).`);
+    return response.json();
+}
+function showError(cause) { $('notice').textContent = cause.message; }
+function add(rows) {
+    for (const row of rows) { records.set(row.id, row); newest = Math.max(newest, row.id); oldest = Math.min(oldest ?? row.id, row.id); }
+    draw();
+}
+function draw() {
+    const query = $('search').value.toLowerCase(), kind = $('filter').value;
+    const rows = [...records.values()].sort((a,b) => b.id - a.id).filter(row => (!kind || row.kind === kind) && `${row.id} ${row.kind} ${row.transport} ${row.connection_id} ${row.error ?? ''}`.toLowerCase().includes(query));
+    $('count').textContent = `· ${records.size} loaded`;
+    $('no-requests').hidden = records.size !== 0;
+    $('requests').replaceChildren(...rows.map(row => {
+        const button = document.createElement('button'); button.className = 'request'; button.setAttribute('aria-pressed', String(row.id === selected));
+        const title = document.createElement('strong'); title.textContent = `#${row.id} · ${row.kind}`;
+        const state = document.createElement('span'); state.className = row.error ? 'bad' : 'ok'; state.textContent = row.error ? 'Error' : row.label_count ? `${row.label_count} label${row.label_count === 1 ? '' : 's'}` : 'Recorded'; title.append(state);
+        const meta = document.createElement('small'); meta.textContent = `${new Date(row.created_at).toLocaleString()} · ${row.transport}`;
+        button.append(title, meta); button.onclick = () => select(row.id); return button;
+    }));
+}
+async function select(id) {
+    selected = id; const generation = ++selection; draw();
+    try {
+        const row = await json(`api/requests/${id}`);
+        if (generation !== selection) return;
+        $('empty').hidden = true; $('detail').hidden = false;
+        $('title').textContent = `Request #${row.id} · ${row.kind}`;
+        $('metadata').textContent = `${new Date(row.created_at).toLocaleString()} · ${row.transport} · Connection ${row.connection_id} · ${row.raw.length} bytes`;
+        $('error').textContent = row.error ?? '';
+        const warnings = JSON.parse(row.warnings);
+        $('warnings').replaceChildren(...warnings.map(text => { const p = document.createElement('p'); p.textContent = text; return p; }));
+        $('data').textContent = row.text; $('response').textContent = row.response_text || '(No response bytes)';
+        $('hex').textContent = row.raw.map(byte => byte.toString(16).padStart(2,'0')).join(' ');
+        $('download').href = `api/requests/${id}/raw`;
+        $('previews').replaceChildren(...Array.from({length: row.label_count}, (_,page) => {
+            const figure = document.createElement('figure'); const caption = document.createElement('figcaption');
+            const link = document.createElement('a'); link.href = `api/requests/${id}/labels/${page}`; link.textContent = `Label ${page+1} · Download PNG`; link.download = `request-${id}-label-${page+1}.png`; caption.append(link);
+            const img = document.createElement('img'); img.src = link.href; img.alt = `Request ${id}, label ${page+1}`; img.loading = 'lazy'; figure.append(caption,img); return figure;
+        }));
+    } catch (cause) { showError(cause); }
+}
+async function refresh() {
+    if (loading) { refreshAgain = true; return; }
+    loading = true;
+    try {
+        do {
+            refreshAgain = false;
+            let rows;
+            do { rows = await json(`api/requests?after=${newest}`); add(rows); } while (rows.length === 100);
+        } while (refreshAgain);
+        $('notice').textContent = '';
+    } catch (cause) { showError(cause); } finally { loading = false; }
+}
+$('search').oninput = draw; $('filter').onchange = draw;
+$('older').onclick = async () => {
+    $('older').disabled = true;
+    try { const rows = await json(`api/requests?before=${oldest}`); add(rows); $('older').hidden = rows.length < 100; } catch (cause) { showError(cause); }
+    finally { $('older').disabled = false; }
+};
+$('print-form').onsubmit = async event => {
+    event.preventDefault(); $('print-button').disabled = true; $('submit-status').textContent = 'Submitting…';
+    try {
+        const response = await fetch('pstprnt', {method:'POST', headers:{'Content-Type':'application/octet-stream'}, body:$('zpl').value});
+        if (!response.ok) throw new Error(await response.text());
+        $('submit-status').textContent = 'Print request recorded.';
+    } catch (cause) { $('submit-status').textContent = cause.message; }
+    finally { $('print-button').disabled = false; refresh(); }
+};
+(async () => {
+    try {
+        const rows = await json('api/requests'); add(rows); $('older').hidden = rows.length < 100;
+        const events = new EventSource('api/events');
+        events.onopen = () => { $('live').textContent = '● Live'; refresh(); };
+        events.onerror = () => { $('live').textContent = 'Reconnecting…'; };
+        events.addEventListener('requests', refresh);
+    } catch (cause) { showError(cause); $('live').textContent = 'History unavailable'; }
+})();
+</script>
+</body>
+</html>
