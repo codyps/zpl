@@ -15,4 +15,4 @@ tokio = { version = "1.53.1", features = ["macros", "rt-multi-thread", "time"] }
 reqwest = { workspace = true }
 zebra-http-api = { path = "../zebra-http-api" }
 zpl-bitmap-fonts = { path = "../zpl-bitmap-fonts" }
-raster-diff = { version = "0.1.1", path = "../raster-diff" }
+raster-diff = { version = "0.1.2", path = "../raster-diff" }
