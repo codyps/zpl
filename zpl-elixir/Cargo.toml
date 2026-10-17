@@ -1,6 +1,6 @@
 [package]
 name = "zpl_elixir"
-version = "0.2.1"
+version = "0.3.0"
 edition = "2021"
 license.workspace = true
 publish = false
@@ -13,4 +13,4 @@ crate-type = ["cdylib", "rlib"]
 
 [dependencies]
 rustler = "0.38.0"
-zpl = { version = "0.2.1", path = "../zpl" }
+zpl = { version = "0.3.0", path = "../zpl" }
