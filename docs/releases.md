@@ -336,6 +336,21 @@ package to repair missing docs. Hex allows documentation uploads after the
 package replacement window has closed; see
 [publishing documentation](https://hexdocs.pm/hex/Mix.Tasks.Hex.Publish.html#module-publishing-documentation).
 
+The **Release-plz** workflow also accepts a `hexdocs_version` manual input. Set
+it to the published version and select a branch with that Mix version and the
+documentation tooling. For example:
+
+```sh
+gh workflow run release-plz.yml --repo codyps/zpl --ref <branch> -f hexdocs_version=0.3.0
+```
+
+This mode skips normal package releases. It checks that binding/runtime sources,
+tests, README, and the Cargo lockfile match the selected release tag, then tests
+the bindings and builds the docs without publishing credentials. A separate job
+uploads the docs using the repository's `HEX_API_KEY` secret. The workflow can run
+on the docs-fix branch before merging, because Release-plz already supports manual
+dispatch on the default branch.
+
 If crates.io succeeds and Hex fails, fix the account/secret and use **Re-run
 failed jobs** on the original Actions run within the artifact's 14-day retention.
 This preserves the original release commit and tested bytes. A manual workflow
