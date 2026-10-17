@@ -201,5 +201,134 @@ class ReleaseTest(unittest.TestCase):
         stamp.assert_not_called()
 
 
+class DocsTest(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.root = Path(self.temp.name)
+        self.docs = self.root / "doc"
+        self.docs.mkdir()
+        for name in release.DOC_PAGES:
+            (self.docs / name).write_text(f"<html>{name}</html>")
+        (self.docs / "dist").mkdir()
+        (self.docs / "dist/app.js").write_text("// asset")
+        self.archive = self.root / "zpl-1.2.3-docs.tar.gz"
+        release.build_docs(self.docs, self.archive, "1.2.3")
+        self.metadata = {"version": "1.2.3", "retirement": None, "has_docs": False}
+
+    def test_archive_has_pages_and_assets_at_root(self):
+        with tarfile.open(self.archive, "r:gz") as archive:
+            self.assertEqual(set(archive.getnames()), release.DOC_PAGES | {"dist/app.js"})
+            self.assertEqual(
+                archive.extractfile("Zpl.html").read(), b"<html>Zpl.html</html>"
+            )
+
+    def test_missing_pages_fail_build(self):
+        for name in release.DOC_PAGES:
+            page = self.docs / name
+            original = page.read_bytes()
+            page.unlink()
+            with self.subTest(name=name), self.assertRaisesRegex(ValueError, "missing"):
+                release.build_docs(self.docs, self.archive, "1.2.3")
+            page.write_bytes(original)
+
+    def test_wrong_version_fails_before_network(self):
+        with (
+            patch.object(release, "registry_release") as get,
+            self.assertRaisesRegex(ValueError, "filename"),
+        ):
+            release.publish_docs(self.archive, "1.2.4")
+        get.assert_not_called()
+
+    def test_invalid_entries_fail_before_network(self):
+        for name, kind in [
+            ("../index.html", tarfile.REGTYPE),
+            ("/index.html", tarfile.REGTYPE),
+            ("index.html", tarfile.SYMTYPE),
+            ("index.html", tarfile.REGTYPE),  # duplicate
+        ]:
+            release.build_docs(self.docs, self.archive, "1.2.3")
+            with tarfile.open(self.archive, "r:gz") as archive:
+                entries = [(m, archive.extractfile(m).read()) for m in archive]
+            with tarfile.open(self.archive, "w:gz") as archive:
+                for member, data in entries:
+                    archive.addfile(member, io.BytesIO(data))
+                entry = tarfile.TarInfo(name)
+                entry.type = kind
+                archive.addfile(entry)
+            with (
+                self.subTest(name=name, kind=kind),
+                patch.object(release, "registry_release") as get,
+                self.assertRaisesRegex(ValueError, "entry"),
+            ):
+                release.publish_docs(self.archive, "1.2.3")
+            get.assert_not_called()
+
+    def test_docs_upload_repairs_an_existing_package(self):
+        with (
+            patch.object(release, "registry_release", return_value=self.metadata),
+            patch.dict(os.environ, {"HEX_API_KEY": "test-key"}),
+            patch.object(
+                release.urllib.request, "urlopen", return_value=io.BytesIO()
+            ) as post,
+        ):
+            release.publish_docs(self.archive, "1.2.3")
+        post.assert_called_once()
+        request = post.call_args.args[0]
+        self.assertEqual(request.data, self.archive.read_bytes())
+        self.assertEqual(request.method, "POST")
+        self.assertEqual(
+            request.full_url, "https://hex.pm/api/packages/zpl/releases/1.2.3/docs"
+        )
+        self.assertEqual(request.get_header("Authorization"), "test-key")
+
+    def test_existing_docs_skip_upload_without_credentials(self):
+        with (
+            patch.object(
+                release, "registry_release",
+                return_value=self.metadata | {"has_docs": True},
+            ),
+            patch.dict(os.environ, {}, clear=True),
+            patch.object(release.urllib.request, "urlopen") as post,
+        ):
+            release.publish_docs(self.archive, "1.2.3")
+        post.assert_not_called()
+
+    def test_missing_retired_or_wrong_release_fails_before_upload(self):
+        for metadata in [
+            None,
+            self.metadata | {"retirement": {}},
+            self.metadata | {"version": "1.2.4"},
+        ]:
+            with (
+                self.subTest(metadata=metadata),
+                patch.object(release, "registry_release", return_value=metadata),
+                patch.object(release.urllib.request, "urlopen") as post,
+                self.assertRaisesRegex(ValueError, "existing, non-retired"),
+            ):
+                release.publish_docs(self.archive, "1.2.3")
+            post.assert_not_called()
+
+    def test_missing_key_fails_before_upload(self):
+        with (
+            patch.object(release, "registry_release", return_value=self.metadata),
+            patch.dict(os.environ, {}, clear=True),
+            patch.object(release.urllib.request, "urlopen") as post,
+            self.assertRaisesRegex(ValueError, "HEX_API_KEY"),
+        ):
+            release.publish_docs(self.archive, "1.2.3")
+        post.assert_not_called()
+
+    def test_failed_upload_is_not_retried(self):
+        with (
+            patch.object(release, "registry_release", return_value=self.metadata),
+            patch.dict(os.environ, {"HEX_API_KEY": "test-key"}),
+            patch.object(release.urllib.request, "urlopen", side_effect=TimeoutError) as post,
+            self.assertRaises(TimeoutError),
+        ):
+            release.publish_docs(self.archive, "1.2.3")
+        post.assert_called_once()
+
+
 if __name__ == "__main__":
     unittest.main()

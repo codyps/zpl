@@ -5,6 +5,12 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      hexdocs_version:
+        description: Backfill docs only for this published version; empty for normal release
+        required: false
+        default: ''
+        type: string
 
 permissions: {}
 
@@ -16,7 +22,7 @@ env:
 
 jobs:
   release:
-    if: github.repository == 'codyps/zpl' && github.ref == 'refs/heads/main'
+    if: github.repository == 'codyps/zpl' && github.ref == 'refs/heads/main' && inputs.hexdocs_version == ''
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     permissions:
@@ -48,6 +54,90 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # Leave CARGO_REGISTRY_TOKEN unset: release-plz obtains a short-lived
           # crates.io token through GitHub OIDC only when publication is needed.
+
+  hexdocs-build:
+    if: github.repository == 'codyps/zpl' && github.event_name == 'workflow_dispatch' && inputs.hexdocs_version != ''
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    env:
+      RELEASE_VERSION: ${{ inputs.hexdocs_version }}
+      ZPL_BUILD: 'true'
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Require sources matching the selected release
+        run: |
+          python3 - <<'PYTHON'
+          import importlib.util
+          import os
+          import re
+          import sys
+          from pathlib import Path
+          sys.path.insert(0, "scripts")
+          spec = importlib.util.spec_from_file_location("elixir_release", "scripts/elixir-release.py")
+          release = importlib.util.module_from_spec(spec)
+          spec.loader.exec_module(release)
+          version = os.environ["RELEASE_VERSION"]
+          release.stable(version)
+          versions = re.findall(r'^\s*version: "([^"]+)",$', Path("zpl-elixir/mix.exs").read_text(), re.M)
+          if versions != [version]:
+              raise ValueError("Checkout Mix version must match the selected release")
+          metadata = release.registry_release(version)
+          if metadata is None or metadata["version"] != version or metadata["retirement"] is not None:
+              raise ValueError("Expected an existing, non-retired Hex release")
+          PYTHON
+          git diff --exit-code "zpl-v$RELEASE_VERSION" -- \
+            Cargo.lock zpl-elixir/lib zpl-elixir/src zpl-elixir/test \
+            zpl-elixir/README.md zpl-elixir/Cargo.toml \
+            zpl/src zpl/Cargo.toml zpl-bitmap-fonts/src zpl-bitmap-fonts/Cargo.toml \
+            raster-diff/src raster-diff/Cargo.toml
+      - uses: dtolnay/rust-toolchain@6bed0761d98439e5a578e2877258200ad565ba87 # stable
+      - uses: erlef/setup-beam@54075bcc5e249e4758d363f27d099f55d843f124 # v1.24.1
+        with:
+          elixir-version: '1.18'
+          otp-version: '28'
+      - run: mix local.hex 2.5.1 --force
+      - name: Test and generate docs without publishing credentials
+        working-directory: zpl-elixir
+        run: |
+          mix deps.get
+          mix test
+          mix docs --warnings-as-errors --formatter html
+          mkdir -p ../dist
+          python3 ../scripts/elixir-release.py build-docs "$RELEASE_VERSION" doc "../dist/zpl-$RELEASE_VERSION-docs.tar.gz"
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: hexdocs-backfill
+          path: dist/*-docs.tar.gz
+          if-no-files-found: error
+          retention-days: 14
+
+  hexdocs-publish:
+    needs: hexdocs-build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    concurrency:
+      group: release-hex
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: hexdocs-backfill
+          path: dist
+      - name: Publish documentation only
+        env:
+          HEX_API_KEY: ${{ secrets.HEX_API_KEY }}
+          RELEASE_VERSION: ${{ inputs.hexdocs_version }}
+        run: python3 scripts/elixir-release.py publish-docs "$RELEASE_VERSION" "dist/zpl-$RELEASE_VERSION-docs.tar.gz"
 
   npm-release:
     needs: release
@@ -246,6 +336,11 @@ jobs:
       - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         if: needs.elixir-version.outputs.released == 'true'
         with:
+          name: elixir-docs
+          path: dist
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        if: needs.elixir-version.outputs.released == 'true'
+        with:
           pattern: elixir-nif-*
           merge-multiple: true
           path: prebuilt
@@ -263,6 +358,12 @@ jobs:
           HEX_API_KEY: ${{ secrets.HEX_API_KEY }}
           RELEASE_VERSION: ${{ needs.elixir-version.outputs.version }}
         run: python3 scripts/elixir-release.py publish "$RELEASE_VERSION" "dist/zpl-$RELEASE_VERSION.tar"
+      - name: Publish tested documentation to HexDocs
+        if: needs.elixir-version.outputs.released == 'true'
+        env:
+          HEX_API_KEY: ${{ secrets.HEX_API_KEY }}
+          RELEASE_VERSION: ${{ needs.elixir-version.outputs.version }}
+        run: python3 scripts/elixir-release.py publish-docs "$RELEASE_VERSION" "dist/zpl-$RELEASE_VERSION-docs.tar.gz"
 
   go-release:
     needs: release

@@ -10,8 +10,11 @@ defmodule Zpl.MixProject do
       deps: [
         {:rustler, "~> 0.38.0", runtime: false},
         # 0.10 requires Elixir 1.16; retain our documented Elixir 1.15 minimum.
-        {:rustler_precompiled, "~> 0.9.0", runtime: false}
+        {:rustler_precompiled, "~> 0.9.0", runtime: false},
+        {:ex_doc, "~> 0.40.3", only: :dev, runtime: false}
       ],
+      source_url: "https://github.com/codyps/zpl",
+      docs: &docs/0,
       aliases: ["hex.build": [&ensure_bundled_sources/1, "hex.build"]],
       description: "Local ZPL parsing and rendering powered by the Rust zpl crate",
       package: [
@@ -23,6 +26,17 @@ defmodule Zpl.MixProject do
         files:
           ~w(lib src native test examples Cargo.toml Cargo.lock mix.exs README.md LICENSE .formatter.exs checksum-Elixir.Zpl.Native.exs)
       ]
+    ]
+  end
+
+  defp docs do
+    tag = "zpl-v#{Mix.Project.config()[:version]}"
+
+    [
+      main: "readme",
+      extras: ["README.md"],
+      source_ref: tag,
+      source_url_pattern: "https://github.com/codyps/zpl/blob/#{tag}/zpl-elixir/%{path}#L%{line}"
     ]
   end
 
