@@ -163,6 +163,15 @@ jobs:
           mix test
           cargo check --locked -p zpl_elixir
 
+      - name: Build HexDocs from the unpacked archive
+        env:
+          ZPL_BUILD: 'true'
+        run: |
+          cd "$RUNNER_TEMP/elixir-unpacked"
+          mix docs --warnings-as-errors --formatter html
+          VERSION=$(python3 -c 'import tomllib; print(tomllib.load(open("Cargo.toml", "rb"))["package"]["version"])')
+          python3 "$GITHUB_WORKSPACE/scripts/elixir-release.py" build-docs "$VERSION" doc "$GITHUB_WORKSPACE/dist/zpl-$VERSION-docs.tar.gz"
+
       - name: Test archive consumer with and without prebuilts
         run: |
           python3 scripts/elixir-consumer.py "$RUNNER_TEMP/elixir-unpacked" --artifacts prebuilt
@@ -175,5 +184,12 @@ jobs:
         with:
           name: elixir-source
           path: dist/*.tar
+          if-no-files-found: error
+          retention-days: 14
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: matrix.otp == '28'
+        with:
+          name: elixir-docs
+          path: dist/*-docs.tar.gz
           if-no-files-found: error
           retention-days: 14

@@ -14,5 +14,6 @@ zpl-node/node_modules/
 .direnv/
 
 zpl-elixir/deps/
+zpl-elixir/doc/
 zpl-elixir/priv/native/
 zpl-elixir/*.tar

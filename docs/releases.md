@@ -260,7 +260,10 @@ with Cargo/rustc blocked. Linux package jobs additionally check forced source
 builds and checksum rejection on both supported Elixir/OTP pairs. See the
 [package README](../zpl-elixir/README.md) for platform baselines and `ZPL_BUILD=true`.
 Git/path checkouts without generated checksums always compile their own source.
-Generated HexDocs are not currently published.
+ExDoc builds the README and public API reference from the unpacked Hex archive
+on both Elixir/OTP pairs, with documentation warnings treated as errors. The
+Elixir 1.18 job retains the generated HTML as a separate `elixir-docs` artifact.
+ExDoc is a development-only dependency and is not installed by package consumers.
 
 The same shared release selector used by npm/PyPI requires the exact checked-out
 commit's `zpl-v<version>` tag and a completed stable GitHub release. CI stamps
@@ -298,12 +301,40 @@ release and account-side configuration.
 The separate `elixir-release` job downloads the original tested artifact and
 uploads those exact bytes through Hex's
 [release API](https://github.com/hexpm/hex/blob/v2.5.1/src/mix_hex_api_release.erl).
-It does not rebuild the tarball, publish documentation, or replace a release.
+It does not rebuild the tarball or replace a release.
 Before upload it validates the archive's package/application/version metadata
 and queries Hex. Only HTTP 404 means the version is absent. An existing version
 is skipped only when its outer SHA-256 checksum matches and it is not retired.
 A changed checksum, retired release, malformed response, or network/auth error
 fails visibly. POST requests are never automatically retried.
+
+After package publication succeeds (including a matching package already present
+on a rerun), the job uploads the tested documentation archive through Hex's
+[documentation API](https://github.com/hexpm/hex/blob/v2.5.1/lib/hex/api/release_docs.ex).
+It requires an existing, non-retired release and skips versions that already have
+docs. A failed docs upload fails the job; rerunning can finish the docs upload
+without replacing the package. The README is the landing page at
+[hexdocs.pm/zpl](https://hexdocs.pm/zpl/), with API pages for `Zpl`, `Zpl.Scene`,
+`Zpl.Document`, and the public data types. Source links include the release tag
+and the `zpl-elixir/` subdirectory.
+
+To backfill missing docs for an already published version, build from that
+version's sources with the ExDoc dependency and `docs` configuration in
+`zpl-elixir/mix.exs`. Confirm the Mix version matches the published version. For
+example, from `zpl-elixir/` for version 0.3.0:
+
+```sh
+mix deps.get
+mix docs --warnings-as-errors --formatter html
+python3 ../scripts/elixir-release.py build-docs 0.3.0 doc /tmp/zpl-0.3.0-docs.tar.gz
+# With HEX_API_KEY supplied through the environment:
+python3 ../scripts/elixir-release.py publish-docs 0.3.0 /tmp/zpl-0.3.0-docs.tar.gz
+```
+
+This uploads documentation only. Do not rebuild or replace the existing Hex
+package to repair missing docs. Hex allows documentation uploads after the
+package replacement window has closed; see
+[publishing documentation](https://hexdocs.pm/hex/Mix.Tasks.Hex.Publish.html#module-publishing-documentation).
 
 If crates.io succeeds and Hex fails, fix the account/secret and use **Re-run
 failed jobs** on the original Actions run within the artifact's 14-day retention.
@@ -583,8 +614,9 @@ Cargo packages select `README.md` through `package.readme`. npm includes the
 root README automatically, even when it is omitted from `files`. Maturin uses
 `project.readme` as PyPI's Markdown description; check built wheels and source
 archives with `python -m twine check --strict dist/*`. Hex includes the README
-in its archive, but does not use it as the package-page description; the `README`
-metadata link points readers to the usage guide until HexDocs are published.
+in its archive, but does not use it as the package-page description. ExDoc renders
+it as the HexDocs landing page; the `README` metadata link also points to the
+usage guide in the repository.
 
 README and metadata changes reach registries on the next package release.
 The crates.io 0.0.0 placeholders are separate from the implemented bindings;

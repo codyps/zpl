@@ -246,6 +246,11 @@ jobs:
       - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         if: needs.elixir-version.outputs.released == 'true'
         with:
+          name: elixir-docs
+          path: dist
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        if: needs.elixir-version.outputs.released == 'true'
+        with:
           pattern: elixir-nif-*
           merge-multiple: true
           path: prebuilt
@@ -263,6 +268,12 @@ jobs:
           HEX_API_KEY: ${{ secrets.HEX_API_KEY }}
           RELEASE_VERSION: ${{ needs.elixir-version.outputs.version }}
         run: python3 scripts/elixir-release.py publish "$RELEASE_VERSION" "dist/zpl-$RELEASE_VERSION.tar"
+      - name: Publish tested documentation to HexDocs
+        if: needs.elixir-version.outputs.released == 'true'
+        env:
+          HEX_API_KEY: ${{ secrets.HEX_API_KEY }}
+          RELEASE_VERSION: ${{ needs.elixir-version.outputs.version }}
+        run: python3 scripts/elixir-release.py publish-docs "$RELEASE_VERSION" "dist/zpl-$RELEASE_VERSION-docs.tar.gz"
 
   go-release:
     needs: release

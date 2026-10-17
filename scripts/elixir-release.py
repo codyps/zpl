@@ -3,6 +3,8 @@
 
 Release API and outer SHA-256 checksum contract:
 https://github.com/hexpm/hex/blob/v2.5.1/src/mix_hex_api_release.erl
+https://github.com/hexpm/hex/blob/v2.5.1/lib/hex/api/release_docs.ex
+https://github.com/hexpm/hex/blob/v2.5.1/src/mix_hex_tarball.erl
 https://hex.pm/docs/publish
 No POST retries or replacement uploads: reruns check the published checksum first.
 """
@@ -24,6 +26,7 @@ from renderer_release import release_version
 PACKAGE = "zpl"
 CRATE = "zpl_elixir"
 API = "https://hex.pm/api"
+DOC_PAGES = {"index.html", "readme.html", "Zpl.html", "Zpl.Scene.html", "Zpl.Document.html"}
 
 
 def stable(version):
@@ -151,6 +154,68 @@ def publish(path, version, *, check_only=False):
     print(f"Published {PACKAGE} {version} ({checksum})")
 
 
+def docs_bytes(path, version):
+    stable(version)
+    if path.name != f"{PACKAGE}-{version}-docs.tar.gz":
+        raise ValueError("Unexpected HexDocs archive filename")
+    data = path.read_bytes()
+    with tarfile.open(fileobj=io.BytesIO(data), mode="r:gz") as archive:
+        names = set()
+        for member in archive:
+            if (
+                not member.isfile()
+                or member.name.startswith("/")
+                or ".." in Path(member.name).parts
+                or member.name in names
+            ):
+                raise ValueError("Invalid HexDocs archive entry")
+            names.add(member.name)
+        if not DOC_PAGES <= names:
+            raise ValueError("HexDocs archive is missing README or public API pages")
+    return data
+
+
+def build_docs(directory, path, version):
+    # Hex documentation is a plain gzip-compressed tar, with index.html at root.
+    with tarfile.open(path, "w:gz") as archive:
+        for file in sorted(directory.rglob("*")):
+            if file.is_file():
+                archive.add(file, arcname=file.relative_to(directory), recursive=False)
+    docs_bytes(path, version)
+
+
+def publish_docs(path, version):
+    data = docs_bytes(path, version)
+    metadata = registry_release(version)
+    if (
+        metadata is None
+        or metadata["version"] != version
+        or metadata["retirement"] is not None
+    ):
+        raise ValueError("HexDocs requires an existing, non-retired package release")
+    if metadata["has_docs"]:
+        print("docs=false")
+        return
+    key = os.environ.get("HEX_API_KEY")
+    if not key:
+        raise ValueError("Configure the HEX_API_KEY repository secret before publishing")
+    request = urllib.request.Request(
+        f"{API}/packages/{PACKAGE}/releases/{version}/docs",
+        data=data,
+        method="POST",
+        headers={
+            "Authorization": key,
+            "Content-Type": "application/octet-stream",
+            "User-Agent": "codyps-zpl-release",
+        },
+    )
+    # Separate from package publication: a rerun can repair missing documentation
+    # even when the exact package bytes have already been published successfully.
+    with urllib.request.urlopen(request, timeout=60):
+        pass
+    print(f"Published documentation at https://hexdocs.pm/{PACKAGE}/{version}/")
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     commands = parser.add_subparsers(dest="command", required=True)
@@ -161,12 +226,23 @@ def main():
         upload = commands.add_parser(command)
         upload.add_argument("version")
         upload.add_argument("archive", type=Path)
+    docs = commands.add_parser("build-docs")
+    docs.add_argument("version")
+    docs.add_argument("directory", type=Path)
+    docs.add_argument("archive", type=Path)
+    docs_upload = commands.add_parser("publish-docs")
+    docs_upload.add_argument("version")
+    docs_upload.add_argument("archive", type=Path)
     args = parser.parse_args()
     root = Path(__file__).resolve().parent.parent
     if args.command == "prepare":
         prepare(root)
     elif args.command == "stamp":
         stamp(root, args.version)
+    elif args.command == "build-docs":
+        build_docs(args.directory, args.archive, args.version)
+    elif args.command == "publish-docs":
+        publish_docs(args.archive, args.version)
     else:
         publish(args.archive, args.version, check_only=args.command == "check")
 
