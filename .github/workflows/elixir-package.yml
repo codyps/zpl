@@ -89,6 +89,8 @@ jobs:
           project-dir: .
           target: ${{ matrix.target }}
           nif-version: '2.15'
+          # Native runners need no cross. The action's default string "false" is truthy.
+          use-cross: ''
           cargo-args: --locked -p zpl_elixir
       - name: Stage native artifact and portable sources
         env:
