@@ -2,12 +2,11 @@
 name: CI
 
 on:
+  # PR updates run once against the merge commit; main pushes also refresh caches.
+  # Branches without a PR can still use workflow_dispatch.
+  # https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#onpushbranchestagsbranches-ignoretags-ignore
   push:
-    # Temporary release-plz branches duplicate main and release-PR checks.
-    # https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#onpushbranchestagsbranches-ignoretags-ignore
-    branches:
-      - '**'
-      - '!release-plz-*-tmp-*'
+    branches: [main]
   pull_request:
   workflow_dispatch:
 
@@ -249,8 +248,20 @@ jobs:
       # One Cargo build and one scheduler across every package, including zpl-c's
       # compiled C/C++ consumers. Do not run competing Cargo processes per crate.
       # https://nexte.st/docs/running/
+      - name: Build workspace tests
+        run: cargo test --locked --workspace --no-run --timings
       - name: Test workspace in parallel
         run: cargo nextest run --locked --workspace --profile ci
       # Nextest does not run doctests; retain the coverage of cargo test.
       - name: Test workspace documentation
         run: cargo test --locked --workspace --doc
+      # Preserve compile timings even if a later test fails.
+      # https://doc.rust-lang.org/cargo/reference/timings.html
+      - name: Upload build timings
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: rust-build-timings-${{ matrix.platform }}
+          path: target/cargo-timings/
+          if-no-files-found: ignore
+          retention-days: 7

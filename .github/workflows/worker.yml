@@ -1,8 +1,11 @@
 # Local workerd checks do not contact Cloudflare or a printer.
 name: Renderer API
 on:
+  # PR updates run once against the merge commit; main pushes also refresh caches.
+  # Branches without a PR can still use workflow_dispatch.
+  # https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#onpushbranchestagsbranches-ignoretags-ignore
   push:
-    branches: ['**']
+    branches: [main]
   pull_request:
   workflow_dispatch:
     inputs:

@@ -48,9 +48,19 @@ binary is pinned separately. Publishing jobs are serialized, and an active publi
 is not cancelled by newer pushes; release-PR jobs are also serialized. Release jobs
 are restricted to `codyps/zpl` on `main` and have bounded execution time.
 
-CI excludes pushes to release-plz's temporary `release-plz-*-tmp-*` branches to
-avoid duplicate builds and cancellation noise. The lasting release branch,
-release PR, and `main` retain their normal CI checks.
+CI, Go package, and Renderer API checks run on pull requests and pushes to `main`.
+A PR update runs each workflow once against GitHub's merge commit, including
+updates to the release PR. Branch pushes do not launch a second copy of the same
+matrix, and release-plz's temporary branches do not launch checks. Use manual
+workflow dispatch to check a branch before opening a PR. Main pushes retain the
+full checks and populate the caches available to subsequent PRs.
+
+Rust matrix jobs build the workspace tests once with
+`cargo test --locked --workspace --no-run --timings`, execute those binaries
+through Nextest, and run doctests separately.
+The `rust-build-timings-<platform>` artifacts retain Cargo's HTML compilation
+reports for seven days, including when a later test fails. A successful build
+step establishes compilation only; both test steps must pass before merging.
 
 ## Trusted publishing setup
 
