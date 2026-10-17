@@ -2,10 +2,11 @@
 name: Go package
 
 on:
+  # PR updates run once against the merge commit; main pushes also refresh caches.
+  # Branches without a PR can still use workflow_dispatch.
+  # https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#onpushbranchestagsbranches-ignoretags-ignore
   push:
-    branches:
-      - '**'
-      - '!release-plz-*-tmp-*'
+    branches: [main]
   pull_request:
   workflow_dispatch:
 
