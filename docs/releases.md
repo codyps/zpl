@@ -273,6 +273,19 @@ The separate publishing job uploads the tested `.tar.gz` NIF assets to that
 GitHub release before publishing the Hex archive. It compares existing assets
 byte-for-byte on retries and never replaces them. Checksums are generated from
 the complete five-target artifact set; missing targets block publication.
+Native jobs use the upstream
+[`philss/rustler-precompiled-action`](https://github.com/philss/rustler-precompiled-action)
+to build and name archives, running at the Cargo workspace root with
+`--locked -p zpl_elixir` and NIF ABI 2.15. The checksum helper runs
+`mix rustler_precompiled.download Zpl.Native --all --print` against a temporary
+loopback mirror of the collected CI artifacts, following the upstream
+[release flow](https://github.com/philss/rustler_precompiled/blob/v0.9.0/PRECOMPILATION_GUIDE.md#the-release-flow).
+Each native job uses `--only-local` for its own artifact. Source compilation
+bootstraps the module metadata before the checksum manifest exists. The temporary
+mirror configuration and download cache are not included in the Hex package.
+The upstream archives carry timestamps: publication retries must reuse the original
+tested artifacts; rebuilding a version can produce different bytes and is rejected
+if an existing asset differs.
 Elixir-only changes automatically prepare a renderer bump. Release PRs commit the
 aligned Mix/Cargo versions and root lock entry; publication stamping is idempotent.
 
@@ -609,8 +622,8 @@ Rust crates would be omitted.
 The staged sources include tests and the native parity example. Checkouts without
 a checksum manifest compile from source. The current package file list requires
 `checksum-Elixir.Zpl.Native.exs` for `mix hex.build`; staging alone does not generate
-it. Release CI builds and tests native artifacts on all five targets, then generates
-`checksum-Elixir.Zpl.Native.exs` from those exact artifacts before `mix hex.build`.
+it. Release CI builds native artifacts on all five targets with the upstream action,
+then uses the upstream checksum task on those exact artifacts before `mix hex.build`.
 CI unpacks the archive outside the repository, runs the same source tests, and
 builds independent consumer releases with both downloads and forced source
 compilation. Download tests block Cargo/rustc and check rejection of corrupt
