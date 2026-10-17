@@ -1,23 +1,23 @@
 #!/usr/bin/env python3
-"""Package Rustler NIFs, pin their checksums, and upload immutable release assets.
+"""Validate upstream NIF archives, generate checksums, and publish immutable assets.
 
-Filename/checksum contract (including .so on macOS):
+CI builds/archives NIFs with philss/rustler-precompiled-action. Checksums use
+the upstream Mix task against a loopback mirror of those exact CI artifacts:
 https://hexdocs.pm/rustler_precompiled/precompilation_guide.html
 NIF 2.15 is Rustler 0.38's default and runs on our minimum OTP 25 and newer.
 """
 
 import argparse
-import gzip
-import hashlib
-import io
+import functools
+import http.server
 import json
+import os
 import re
 import subprocess
 import tarfile
 import tempfile
+import threading
 from pathlib import Path
-
-import tomllib
 
 TARGETS = (
     "x86_64-unknown-linux-gnu",
@@ -38,24 +38,6 @@ def filename(version, target):
     return f"{prefix}zpl_elixir-v{version}-nif-2.15-{target}.{extension}.tar.gz"
 
 
-def pack(version, target, library, destination):
-    name = filename(version, target)
-    data = library.read_bytes()
-    destination.mkdir(parents=True, exist_ok=True)
-    path = destination / name
-    # Stable tar/gzip metadata makes retries independent of timestamps/paths.
-    with (
-        path.open("wb") as output,
-        gzip.GzipFile(fileobj=output, mode="wb", filename="", mtime=0) as zipped,
-        tarfile.open(fileobj=zipped, mode="w") as archive,
-    ):
-        entry = tarfile.TarInfo(name.removesuffix(".tar.gz"))
-        entry.mode = 0o755
-        entry.size = len(data)
-        archive.addfile(entry, io.BytesIO(data))
-    return path
-
-
 def artifacts(version, directory, targets=TARGETS):
     expected = {filename(version, target) for target in targets}
     found = {p.name for p in directory.glob("*.tar.gz")}
@@ -63,12 +45,7 @@ def artifacts(version, directory, targets=TARGETS):
         raise ValueError(
             f"Prebuilt artifact set mismatch: missing={expected - found}, extra={found - expected}"
         )
-    return [directory / name for name in sorted(expected)]
-
-
-def checksums(version, directory, package, targets=TARGETS):
-    paths = artifacts(version, directory, targets)
-    entries = []
+    paths = [directory / name for name in sorted(expected)]
     for path in paths:
         with tarfile.open(path) as archive:
             members = archive.getmembers()
@@ -78,9 +55,56 @@ def checksums(version, directory, package, targets=TARGETS):
                 or members[0].name != path.name.removesuffix(".tar.gz")
             ):
                 raise ValueError(f"Invalid NIF archive: {path.name}")
-        digest = hashlib.sha256(path.read_bytes()).hexdigest()
-        entries.append(f'  "{path.name}" => "sha256:{digest}",\n')
-    (package / CHECKSUM).write_text("%{\n" + "".join(entries) + "}\n")
+    return paths
+
+
+def checksums(version, directory, package, targets=TARGETS):
+    artifacts(version, directory, targets)
+    if targets != TARGETS and len(targets) != 1:
+        raise ValueError("Generate checksums for every target or just the native target")
+    handler = functools.partial(
+        http.server.SimpleHTTPRequestHandler, directory=str(directory.resolve())
+    )
+    # The upstream task downloads before hashing; nothing must be published to
+    # GitHub until these artifacts and the resulting Hex archive pass CI.
+    with (
+        http.server.ThreadingHTTPServer(("127.0.0.1", 0), handler) as server,
+        tempfile.TemporaryDirectory(prefix="zpl-checksums-") as tmp,
+    ):
+        threading.Thread(target=server.serve_forever, daemon=True).start()
+        try:
+            config = Path(tmp) / "config.exs"
+            config.write_text(
+                "import Config\n"
+                f'config :zpl, :precompiled_base_url, "http://127.0.0.1:{server.server_port}/"\n'
+            )
+            env = os.environ.copy()
+            env["MIX_ENV"] = "prod"
+            # Bootstrap metadata by compiling the staged sources: there is no
+            # checksum manifest yet. The download task then writes that manifest.
+            env["ZPL_BUILD"] = "true"
+            env["RUSTLER_PRECOMPILED_GLOBAL_CACHE_PATH"] = str(Path(tmp) / "cache")
+            env["NO_PROXY"] = env.get("NO_PROXY", "") + ",127.0.0.1,localhost"
+            env["no_proxy"] = env["NO_PROXY"]
+            mix = "mix.bat" if os.name == "nt" else "mix"
+            subprocess.run([mix, "deps.get"], cwd=package, env=env, check=True)
+            subprocess.run(
+                [
+                    mix,
+                    "do",
+                    "loadconfig",
+                    f"{config},",
+                    "rustler_precompiled.download",
+                    "Zpl.Native",
+                    "--all" if targets == TARGETS else "--only-local",
+                    "--print",
+                ],
+                cwd=package,
+                env=env,
+                check=True,
+            )
+        finally:
+            server.shutdown()
 
 
 def publish(version, directory):
@@ -136,26 +160,21 @@ def publish(version, directory):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     commands = parser.add_subparsers(dest="command", required=True)
-    build = commands.add_parser("pack")
-    build.add_argument("target", choices=TARGETS)
-    build.add_argument("library", type=Path)
-    build.add_argument("destination", type=Path)
     for name in ("checksums", "publish"):
         command = commands.add_parser(name)
         command.add_argument("version")
         command.add_argument("directory", type=Path)
         if name == "checksums":
             command.add_argument("package", type=Path)
-            command.add_argument("--target", choices=TARGETS, action="append")
+            command.add_argument("--target", choices=TARGETS)
     args = parser.parse_args()
-    if args.command == "pack":
-        root = Path(__file__).resolve().parent.parent
-        version = tomllib.loads((root / "zpl-elixir/Cargo.toml").read_text())[
-            "package"
-        ]["version"]
-        print(pack(version, args.target, args.library, args.destination))
-    elif args.command == "checksums":
-        checksums(args.version, args.directory, args.package, args.target or TARGETS)
+    if args.command == "checksums":
+        checksums(
+            args.version,
+            args.directory,
+            args.package,
+            (args.target,) if args.target else TARGETS,
+        )
     else:
         publish(args.version, args.directory)
 

@@ -1,6 +1,5 @@
 """Distribution completeness, checksum and immutable retry contracts."""
 
-import hashlib
 import importlib.util
 import json
 import tarfile
@@ -8,6 +7,7 @@ import tempfile
 import unittest
 from pathlib import Path
 from unittest.mock import patch
+from urllib.request import urlopen
 
 spec = importlib.util.spec_from_file_location(
     "prebuilt", Path(__file__).with_name("elixir-prebuilt.py")
@@ -26,25 +26,20 @@ class PrebuiltTest(unittest.TestCase):
         self.dist = self.root / "dist"
 
     def build_all(self):
-        return [
-            prebuilt.pack("1.2.3", target, self.library, self.dist)
-            for target in prebuilt.TARGETS
-        ]
+        # Model the action's single-library tarballs, without retaining a second
+        # production implementation of its packaging or timestamp policy.
+        self.dist.mkdir(exist_ok=True)
+        paths = []
+        for target in prebuilt.TARGETS:
+            path = self.dist / prebuilt.filename("1.2.3", target)
+            with tarfile.open(path, "w:gz") as archive:
+                archive.add(self.library, arcname=path.name.removesuffix(".tar.gz"))
+            paths.append(path)
+        return paths
 
-    def test_archives_are_deterministic_and_use_loader_filenames(self):
-        for path in self.build_all():
-            original = path.read_bytes()
-            target = next(t for t in prebuilt.TARGETS if t in path.name)
-            prebuilt.pack("1.2.3", target, self.library, self.dist)
-            self.assertEqual(path.read_bytes(), original)
-            with tarfile.open(path) as archive:
-                self.assertEqual(
-                    archive.getnames(), [path.name.removesuffix(".tar.gz")]
-                )
-                self.assertEqual(
-                    archive.extractfile(archive.getmembers()[0]).read(),
-                    self.library.read_bytes(),
-                )
+    def test_accept_upstream_archives_with_platform_specific_names(self):
+        paths = self.build_all()
+        self.assertEqual(set(prebuilt.artifacts("1.2.3", self.dist)), set(paths))
         self.assertTrue(
             prebuilt.filename("1.2.3", "x86_64-pc-windows-msvc").startswith(
                 "zpl_elixir-"
@@ -54,15 +49,10 @@ class PrebuiltTest(unittest.TestCase):
             prebuilt.filename("1.2.3", "aarch64-apple-darwin").endswith(".so.tar.gz")
         )
 
-    def test_checksums_pin_every_archive_and_reject_missing_extra_or_invalid(self):
+    def test_reject_missing_extra_or_invalid_archives_before_generating_checksums(self):
         paths = self.build_all()
-        prebuilt.checksums("1.2.3", self.dist, self.root)
-        checksum = (self.root / prebuilt.CHECKSUM).read_text()
-        for path in paths:
-            self.assertIn(
-                f'"{path.name}" => "sha256:{hashlib.sha256(path.read_bytes()).hexdigest()}"',
-                checksum,
-            )
+        checksum = "existing checksum manifest"
+        (self.root / prebuilt.CHECKSUM).write_text(checksum)
         paths[0].unlink()
         with self.assertRaises(ValueError):
             prebuilt.checksums("1.2.3", self.dist, self.root)
@@ -76,6 +66,32 @@ class PrebuiltTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             prebuilt.checksums("1.2.3", self.dist, self.root)
         self.assertEqual((self.root / prebuilt.CHECKSUM).read_text(), checksum)
+
+    def test_upstream_checksum_task_downloads_the_exact_artifacts_from_loopback(self):
+        paths = self.build_all()
+        config_paths = []
+
+        def run(args, **kwargs):
+            self.assertEqual(kwargs["cwd"], self.root)
+            if args[1] == "deps.get":
+                return
+            self.assertEqual(args[1:3], ["do", "loadconfig"])
+            config = Path(args[3].removesuffix(","))
+            config_paths.append(config)
+            url = config.read_text().split('"')[1]
+            self.assertTrue(url.startswith("http://127.0.0.1:"))
+            self.assertEqual(
+                args[4:],
+                ["rustler_precompiled.download", "Zpl.Native", "--all", "--print"],
+            )
+            for path in paths:
+                with urlopen(url + path.name) as response:
+                    self.assertEqual(response.read(), path.read_bytes())
+
+        with patch.object(prebuilt.subprocess, "run", side_effect=run):
+            prebuilt.checksums("1.2.3", self.dist, self.root)
+        self.assertEqual(len(config_paths), 1)
+        self.assertFalse(config_paths[0].exists())
 
     def test_upload_only_missing_and_never_overwrite_changed_assets(self):
         paths = self.build_all()
