@@ -17,6 +17,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     ] {
         let document = zpl::render(source, profile)?;
         fs::write(
+            directory.join(format!("{name}-warnings.txt")),
+            document.warnings.join("\n"),
+        )?;
+        fs::write(
             directory.join(format!("{name}-pages.pdf")),
             Pdf.encode_pages(&document.labels)?,
         )?;
@@ -32,5 +36,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             )?;
         }
     }
+    fs::write(
+        directory.join("probe.ttf"),
+        include_bytes!(
+            "../../zpl/tests/fixtures/truetype-regression/font-probes-20261002/probe.ttf"
+        ),
+    )?;
     Ok(())
 }

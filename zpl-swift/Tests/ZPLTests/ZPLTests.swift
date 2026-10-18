@@ -13,6 +13,8 @@ final class ZPLTests: XCTestCase {
         for profile in Profile.allCases {
             let document = try ZPL.render(source, options: RenderOptions(profile: profile))
             XCTAssertEqual(document.labelCount, 2)
+            XCTAssertEqual(try document.warnings.joined(separator: "\n"),
+                           String(decoding: try fixture("\(profile)-warnings.txt"), as: UTF8.self))
             XCTAssertEqual(try document.pdf(), try fixture("\(profile)-pages.pdf"))
             for index in 0..<document.labelCount {
                 let scene = try document.label(at: index)
@@ -94,7 +96,14 @@ final class ZPLTests: XCTestCase {
         XCTAssertThrowsError(try fonts.addTrueType(Data([1, 2, 3]), id: 65)) { error in
             XCTAssertEqual((error as? ZPLError)?.status, .fontError)
         }
-        let document = try ZPL.render("^XA^PW32^LL24^XZ", fonts: fonts)
+        var data = try fixture("probe.ttf")
+        try fonts.addTrueType(data, id: 65)
+        try fonts.addTrueType(data, filename: "R:PROBE.TTF")
+        data.removeAll() // The font collection must own its copied native bytes.
+        let document = try ZPL.render("^XA^PW64^LL48^FO4,4^AAN,20,20^FDA^FS^XZ", fonts: fonts)
         XCTAssertEqual(document.labelCount, 1)
+        let pixels = try document.label(at: 0).encode(.grayscale)
+        XCTAssertTrue(pixels.contains(0))
+        XCTAssertTrue(pixels.contains(255))
     }
 }
