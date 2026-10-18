@@ -18,7 +18,7 @@ const string label = "^XA^FO2,2^GB20,10,1^FS^XZ";
 using (var defaults = Renderer.Render(label))
     Assert(defaults.LabelCount == 1, "Omitted configuration uses native defaults");
 
-foreach (Profile profile in Enum.GetValues<Profile>())
+foreach (Profile profile in Enum.GetValues(typeof(Profile)))
 {
     var profileOptions = RenderOptions.Create(profile);
     Assert(profileOptions.Dpi == 203 && profileOptions.Width > 0, "Profile initialized");
@@ -63,7 +63,7 @@ Assert(Throws<ZplException>(() => Renderer.Render(label, invalidOptions)).Status
 using (var live = Renderer.Render(label, options))
     Assert(Throws<ZplException>(() => live.GetLabel(99)).Status == Status.InvalidArgument, "Bad label index");
 
-byte[] input = Encoding.Latin1.GetBytes("prefix^XA^FO1,1^FDa\0\xffb^FS^XZ");
+byte[] input = Encoding.GetEncoding(28591).GetBytes("prefix^XA^FO1,1^FDa\0\xffb^FS^XZ");
 var parsed = Parser.Parse(input);
 Assert(parsed.Elements.SelectMany(element => element.Data).SequenceEqual(input), "Lossless binary parser");
 Assert(parsed.Elements[0].ByteOffset == 0 && parsed.FinalSyntax.FormatPrefix == (byte)'^', "Parser offsets and syntax");
@@ -81,7 +81,7 @@ using (var fonts = new Fonts())
     byte[] font = File.ReadAllBytes(args[1]);
     fonts.AddTrueType((uint)'Z', font, Hinting.None);
     fonts.AddTrueType("R:PROBE.TTF", font, Hinting.None);
-    Array.Clear(font); // Registration copies input, rather than retaining a pin.
+    Array.Clear(font, 0, font.Length); // Registration copies input, rather than retaining a pin.
     using (var idDocument = Renderer.Render("^XA^FO2,2^AZN,24,24^FD!^FS^XZ", options, fonts: fonts))
     using (var namedDocument = Renderer.Render("^XA^FO2,2^A@N,24,24,R:PROBE.TTF^FD!^FS^XZ", options, fonts: fonts))
     using (var idScene = idDocument.GetLabel(0))

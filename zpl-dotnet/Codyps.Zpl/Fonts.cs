@@ -6,7 +6,10 @@ public sealed unsafe class Fonts : IDisposable
 {
     internal readonly FontsHandle Handle;
     internal readonly object Gate = new();
-    internal void EnsureOpen() => ObjectDisposedException.ThrowIf(Handle.IsClosed, this);
+    internal void EnsureOpen()
+    {
+        if (Handle.IsClosed) throw new ObjectDisposedException(GetType().FullName);
+    }
 
     public Fonts()
     {
@@ -27,7 +30,7 @@ public sealed unsafe class Fonts : IDisposable
 
     public void AddTrueType(string name, ReadOnlySpan<byte> data, Hinting hinting = Hinting.Native)
     {
-        ArgumentNullException.ThrowIfNull(name);
+        if (name is null) throw new ArgumentNullException(nameof(name));
         byte[] utf8 = Encoding.UTF8.GetBytes(name);
         lock (Gate)
         {

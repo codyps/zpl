@@ -1,7 +1,7 @@
 # Codyps.Zpl for .NET
 
 Local ZPL parsing and rendering through the same Rust engine as `zpl`. Install
-the NuGet package in a .NET 8 or later project using PackageReference:
+the NuGet package using PackageReference:
 
 ```sh
 dotnet add package Codyps.Zpl
@@ -20,18 +20,45 @@ File.WriteAllBytes("label.png", label.ToPng());
 File.WriteAllBytes("labels.pdf", document.ToPdf());
 ```
 
-The package bundles native libraries for Windows x64, Linux x64/ARM64, and
-macOS x64/ARM64. Consumers need no Rust compiler. The managed API uses the
-`Codyps.Zpl` namespace. Windows ARM64/x86, Linux musl/Alpine, .NET Framework, browser
-Wasm, and mobile targets are not included. Linux x64 binaries are built on
+The package targets .NET 8, .NET Standard 2.0, and .NET Framework 4.7.2.
+.NET Standard allows older .NET consumers to use the same API; it does not add
+native support for other operating systems. The package bundles native libraries
+for Windows x64, Linux x64/ARM64, and macOS x64/ARM64. Consumers need no Rust
+compiler. The managed API uses the `Codyps.Zpl` namespace. Windows ARM64/x86,
+Linux musl/Alpine, browser Wasm, and mobile targets are not included. Linux x64 binaries are built on
 Ubuntu 22.04 (glibc 2.35); Linux ARM64 on Ubuntu 24.04 (glibc 2.39). macOS
 binaries target macOS 11 or later; the installed .NET runtime also has its own
 OS requirements. Windows uses Rust's MSVC target and requires the matching
 Microsoft Visual C++ runtime.
 
 Native binaries follow NuGet's `runtimes/<rid>/native` conventions; both ordinary
-build/run and RID-specific framework-dependent publish are tested in CI.
+build/run and RID-specific framework-dependent publish are tested in CI with
+.NET 8 and a .NET 6 consumer of the .NET Standard assembly.
 See [Microsoft's native package guidance](https://learn.microsoft.com/en-us/nuget/create-packages/native-files-in-net-packages).
+
+### .NET Framework
+
+.NET Framework 4.7.2 and later are supported on **Windows x64**, with either
+PackageReference or `packages.config`. Set the application's platform target:
+
+```xml
+<PropertyGroup>
+  <PlatformTarget>x64</PlatformTarget>
+</PropertyGroup>
+```
+
+The package's MSBuild targets copy `zpl_c.dll` beside the application, including
+through transitive PackageReferences. Keep this DLL with the deployed application.
+Enable automatic binding redirects for desktop applications that also depend on
+other versions of `System.Memory` or its dependencies:
+
+```xml
+<AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+```
+
+The .NET Standard and Framework assemblies depend on `System.Memory` for the
+span-based API. CI compiles consumers targeting 4.7.2 and 4.8 and runs them on the
+Windows runner's installed Framework runtime, using both NuGet project formats.
 
 ## API and ownership
 
@@ -84,7 +111,16 @@ Substitute the current project version, RID and library filename on other system
 Set MSBuild `NativeRoot` to use another staging directory. A local package can
 contain just the current platform; release verification requires all five native
 libraries. CI assembles one complete package, then tests that exact archive on
-each platform, with isolated feeds/caches and no source project references.
+each platform, with isolated package caches. Install the .NET 6 SDK as well to
+run `check-package.py --framework net6.0`. On Windows, the Framework checks are:
+
+```sh
+python3 zpl-dotnet/check-package.py zpl-dotnet/dist VERSION win-x64 --framework net472
+python3 zpl-dotnet/check-framework.py zpl-dotnet/dist VERSION --framework net472
+```
+
+The classic `packages.config` check also requires `nuget` and Visual Studio
+`msbuild` on PATH. Substitute `net48` to test the later Framework target.
 
 NuGet versions follow the renderer. The release pipeline builds/tests before
 publishing; see [release setup](../docs/releases.md#nuget-publication).

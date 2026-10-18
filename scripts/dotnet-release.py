@@ -26,6 +26,13 @@ NATIVES = {
     'osx-x64': 'libzpl_c.dylib',
     'osx-arm64': 'libzpl_c.dylib',
 }
+MANAGED_ASSETS = {
+    'ref/net8.0/Codyps.Zpl.dll', 'runtimes/any/lib/net8.0/Codyps.Zpl.dll',
+    'ref/netstandard2.0/Codyps.Zpl.dll', 'runtimes/any/lib/netstandard2.0/Codyps.Zpl.dll',
+    'ref/net472/Codyps.Zpl.dll', 'runtimes/any/lib/net472/Codyps.Zpl.dll',
+    'lib/net472/Codyps.Zpl.dll',
+    'build/Codyps.Zpl.targets', 'buildTransitive/Codyps.Zpl.targets',
+}
 
 
 def check_version(version):
@@ -83,7 +90,7 @@ def payload(data, version, required_rids=None):
         native_paths = {f'runtimes/{rid}/native/{name}' for rid, name in NATIVES.items()}
         required = {f'runtimes/{rid}/native/{NATIVES[rid]}' for rid in
                     (NATIVES if required_rids is None else required_rids)}
-        required |= {'ref/net8.0/Codyps.Zpl.dll', 'runtimes/any/lib/net8.0/Codyps.Zpl.dll', 'README.md', 'LICENSE'}
+        required |= MANAGED_ASSETS | {'README.md', 'LICENSE'}
         if not required.issubset(names):
             raise ValueError(f'Incomplete NuGet package: missing {sorted(required - set(names))}')
         actual_native = {name for name in names if '/native/' in name}

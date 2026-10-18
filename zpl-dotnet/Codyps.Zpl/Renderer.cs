@@ -9,7 +9,7 @@ public static unsafe class Renderer
     public static Document Render(string zpl, RenderOptions? options = null,
         RenderLimits? limits = null, Fonts? fonts = null)
     {
-        ArgumentNullException.ThrowIfNull(zpl);
+        if (zpl is null) throw new ArgumentNullException(nameof(zpl));
         return Render(Encoding.UTF8.GetBytes(zpl), options, limits, fonts);
     }
 
@@ -44,7 +44,10 @@ public sealed unsafe class Document : IDisposable
     private readonly DocumentHandle handle;
     private readonly object gate = new();
     internal Document(IntPtr value) => handle = new(value);
-    private void EnsureOpen() => ObjectDisposedException.ThrowIf(handle.IsClosed, this);
+    private void EnsureOpen()
+    {
+        if (handle.IsClosed) throw new ObjectDisposedException(GetType().FullName);
+    }
 
     public int LabelCount
     {
@@ -71,7 +74,7 @@ public sealed unsafe class Document : IDisposable
 
     public Scene GetLabel(int index)
     {
-        ArgumentOutOfRangeException.ThrowIfNegative(index);
+        if (index < 0) throw new ArgumentOutOfRangeException(nameof(index));
         lock (gate)
         {
             EnsureOpen();
@@ -100,7 +103,10 @@ public sealed unsafe class Scene : IDisposable
     private readonly SceneHandle handle;
     private readonly object gate = new();
     internal Scene(IntPtr value) => handle = new(value);
-    private void EnsureOpen() => ObjectDisposedException.ThrowIf(handle.IsClosed, this);
+    private void EnsureOpen()
+    {
+        if (handle.IsClosed) throw new ObjectDisposedException(GetType().FullName);
+    }
 
     public SceneInfo Info
     {

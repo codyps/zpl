@@ -32,7 +32,7 @@ public sealed class ZplException : Exception
     internal ZplException(NativeError error) : base(error.Message.Text())
     {
         Status = (Status)error.Status;
-        ByteOffset = error.Offset == nuint.MaxValue ? null : error.Offset;
+        ByteOffset = error.Offset == unchecked((nuint)(-1)) ? null : error.Offset;
     }
 }
 
@@ -70,6 +70,10 @@ internal static unsafe class Native
     internal const uint AbiVersion = 3;
     static Native()
     {
+#if NETFRAMEWORK
+        if (Environment.OSVersion.Platform != PlatformID.Win32NT || !Environment.Is64BitProcess)
+            throw new PlatformNotSupportedException("Codyps.Zpl requires Windows x64 on .NET Framework.");
+#endif
         uint actual = zpl_abi_version();
         if (actual != AbiVersion)
             throw new NotSupportedException($"ZPL ABI {actual} is incompatible with expected ABI {AbiVersion}.");

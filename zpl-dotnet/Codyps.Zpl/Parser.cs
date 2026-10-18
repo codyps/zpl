@@ -9,7 +9,7 @@ public static unsafe class Parser
 {
     public static ParseResult Parse(string zpl, Syntax? syntax = null)
     {
-        ArgumentNullException.ThrowIfNull(zpl);
+        if (zpl is null) throw new ArgumentNullException(nameof(zpl));
         return Parse(Encoding.UTF8.GetBytes(zpl), syntax);
     }
 
