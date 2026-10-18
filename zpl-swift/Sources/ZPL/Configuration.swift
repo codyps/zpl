@@ -836,4 +836,3 @@ public struct Syntax {
         set { raw.delimiter = newValue }
     }
 }
-

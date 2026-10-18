@@ -52,7 +52,7 @@ def generate():
             text += (f'\n    public var {prop}: {swift} {{\n        get {{ {read} }}\n'
                      f'        set {{ raw.{field} = {write} }}\n    }}\n')
         text += '}\n\n'
-    return text
+    return text.rstrip() + '\n'
 
 
 if __name__ == '__main__':
