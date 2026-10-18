@@ -1,14 +1,23 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework Condition="'$(TargetFramework)' == ''">net8.0</TargetFramework>
+    <LangVersion>12.0</LangVersion>
+    <!-- net6.0 deliberately exercises the netstandard2.0 package asset. -->
+    <CheckEolTargetFramework>false</CheckEolTargetFramework>
+    <PlatformTarget Condition="'$(TargetFramework)' == 'net472' or '$(TargetFramework)' == 'net48'">x64</PlatformTarget>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <PackageVersion Condition="'$(PackageVersion)' == ''">0.3.0</PackageVersion>
   </PropertyGroup>
   <ItemGroup>
-    <!-- Intentionally consume the packed package, never a ProjectReference. -->
+    <!-- The smoke API always comes from the packed package; the checker also
+         moves this reference into a library to test transitive deployment. -->
     <PackageReference Include="Codyps.Zpl" Version="$(PackageVersion)" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net472' or '$(TargetFramework)' == 'net48'">
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
   </ItemGroup>
 </Project>

@@ -29,8 +29,7 @@ class DotnetReleaseTests(unittest.TestCase):
     def archive(self, missing=(), changed=None, signature=False):
         files = {f'runtimes/{rid}/native/{name}': b'native' for rid, name in release.NATIVES.items()}
         files.update({
-            'ref/net8.0/Codyps.Zpl.dll': b'managed',
-            'runtimes/any/lib/net8.0/Codyps.Zpl.dll': b'managed',
+            **{path: b'managed' for path in release.MANAGED_ASSETS},
             'README.md': b'readme', 'LICENSE': b'license',
             'Codyps.Zpl.nuspec': b'<package><metadata><id>Codyps.Zpl</id><version>1.2.3</version><license>OSL-3.0</license></metadata></package>',
             '_rels/.rels': b'relationships', 'package/services/core-properties/id.psmdcp': b'metadata',
@@ -75,7 +74,7 @@ class DotnetReleaseTests(unittest.TestCase):
                 release.payload(self.archive(missing=[f'runtimes/{rid}/native/{name}']), '1.2.3')
 
     def test_managed_compile_runtime_and_license_are_required(self):
-        for path in ('ref/net8.0/Codyps.Zpl.dll', 'runtimes/any/lib/net8.0/Codyps.Zpl.dll', 'LICENSE'):
+        for path in sorted(release.MANAGED_ASSETS | {'LICENSE'}):
             with self.subTest(path=path), self.assertRaisesRegex(ValueError, 'Incomplete'):
                 release.payload(self.archive(missing=[path]), '1.2.3')
 

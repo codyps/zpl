@@ -472,11 +472,15 @@ the separate C ABI version.
 
 ## NuGet publication
 
-`Codyps.Zpl` contains a .NET 8 assembly and native shared libraries for
+`Codyps.Zpl` contains .NET 8, .NET Standard 2.0, and .NET Framework 4.7.2
+assemblies and native shared libraries for
 `win-x64`, `linux-x64`, `linux-arm64`, `osx-x64`, and `osx-arm64`. The reusable
 `dotnet-package.yml` workflow builds each native library on its platform, packs
 one archive, verifies all required assets, then restores/runs and RID-publishes
-a separate consumer of that exact archive on every platform. Builds have read-only
+a separate .NET 8 and .NET 6 consumer of that exact archive on every platform.
+Windows jobs also build and run Framework 4.7.2/4.8 consumers with PackageReference
+(direct and transitive) and `packages.config`, verifying native DLL deployment
+and rejecting x86 applications. Builds have read-only
 repository permissions and no publishing credential. Ordinary PR/main CI runs
 the same workflow without publication. See the [.NET guide](../zpl-dotnet/README.md)
 for API usage and OS/runtime requirements.

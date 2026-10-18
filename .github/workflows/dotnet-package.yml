@@ -150,7 +150,9 @@ jobs:
           python-version: '3.13'
       - uses: actions/setup-dotnet@26b0ec14cb23fa6904739307f278c14f94c95bf1 # v5
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: |
+            8.0.x
+            6.0.x
       - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           name: dotnet-package
@@ -159,4 +161,43 @@ jobs:
         env:
           PACKAGE_VERSION: ${{ needs.pack.outputs.version }}
           NATIVE_RID: ${{ matrix.rid }}
-        run: python zpl-dotnet/check-package.py dist "$PACKAGE_VERSION" "$NATIVE_RID"
+        run: |
+          python zpl-dotnet/check-package.py dist "$PACKAGE_VERSION" "$NATIVE_RID"
+          python zpl-dotnet/check-package.py dist "$PACKAGE_VERSION" "$NATIVE_RID" --framework net6.0
+
+  framework:
+    needs: pack
+    strategy:
+      fail-fast: false
+      matrix:
+        framework: [net472, net48]
+    runs-on: windows-2025
+    timeout-minutes: 15
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.13'
+      - uses: actions/setup-dotnet@26b0ec14cb23fa6904739307f278c14f94c95bf1 # v5
+        with:
+          dotnet-version: '8.0.x'
+      - uses: microsoft/setup-msbuild@6fb02220983dee41ce7ae257b6f4d8f9bf5ed4ce # v2
+      - uses: NuGet/setup-nuget@d105a947828025cd7a980103c35ba2bfae586d0f # v2
+        with:
+          nuget-version: '7.9.0'
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: dotnet-package
+          path: dist
+      - name: Test Framework package references, transitive references, and packages.config
+        env:
+          PACKAGE_VERSION: ${{ needs.pack.outputs.version }}
+          TARGET_FRAMEWORK: ${{ matrix.framework }}
+        run: |
+          python zpl-dotnet/check-package.py dist "$PACKAGE_VERSION" win-x64 --framework "$TARGET_FRAMEWORK"
+          python zpl-dotnet/check-framework.py dist "$PACKAGE_VERSION" --framework "$TARGET_FRAMEWORK"

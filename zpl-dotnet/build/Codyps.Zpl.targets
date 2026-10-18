@@ -1,0 +1,25 @@
+<Project>
+  <!-- Framework does not use .deps.json native probing. Import this file from
+       build/ (packages.config) or buildTransitive/ (PackageReference).
+       https://learn.microsoft.com/en-us/nuget/create-packages/native-files-in-net-packages#projects-targeting-net-framework -->
+  <!-- NuGet may import targets before SDK framework inference. Add the item
+       during execution, once the framework is known, before copy paths resolve.
+       One named target also prevents duplication if both folders are imported. -->
+  <Target Name="IncludeCodypsZplNative" BeforeTargets="AssignTargetPaths" Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
+    <ItemGroup>
+      <Content Include="$(MSBuildThisFileDirectory)..\runtimes\win-x64\native\zpl_c.dll">
+        <Link>zpl_c.dll</Link>
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        <Visible>false</Visible>
+        <Pack>false</Pack>
+      </Content>
+    </ItemGroup>
+  </Target>
+  <Target Name="ValidateCodypsZplFramework" BeforeTargets="PrepareForBuild" Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
+    <Error Condition="$([MSBuild]::VersionLessThan('$(TargetFrameworkVersion.TrimStart('v'))', '4.7.2'))"
+           Text="Codyps.Zpl supports .NET Framework 4.7.2 or later on Windows x64." />
+    <Error Condition="('$(OutputType)' == 'Exe' or '$(OutputType)' == 'WinExe') and '$(PlatformTarget)' != 'x64'"
+           Text="Codyps.Zpl requires a Windows x64 process on .NET Framework. Set PlatformTarget to x64." />
+  </Target>
+</Project>
