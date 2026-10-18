@@ -43,6 +43,7 @@ class BindingReleaseTests(unittest.TestCase):
         self.write("zpl-node/package.json", '{"name": "@codyps/zpl", "version": "0.2.1"}\n')
         self.write("zpl-node/index.cjs", '// Initial wrapper\n')
         self.write("zpl-elixir/mix.exs", 'app: :zpl,\nversion: "0.2.1",\n')
+        self.write("zpl-dotnet/Codyps.Zpl/Codyps.Zpl.csproj", '<Project><PropertyGroup><PackageId>Codyps.Zpl</PackageId><Version>0.2.1</Version></PropertyGroup></Project>\n')
         self.commit("chore: prepare release")
         self.git("tag", "zpl-v0.2.1")
 
@@ -72,6 +73,7 @@ class BindingReleaseTests(unittest.TestCase):
                 self.assertEqual(package["version"], expected)
         self.assertEqual(json.loads((self.root / "zpl-node/package.json").read_text())["version"], expected)
         self.assertIn(f'version: "{expected}"', (self.root / "zpl-elixir/mix.exs").read_text())
+        self.assertIn(f'<Version>{expected}</Version>', (self.root / 'zpl-dotnet/Codyps.Zpl/Codyps.Zpl.csproj').read_text())
         consumer = tomllib.loads((self.root / "consumer/Cargo.toml").read_text())
         self.assertEqual(consumer["dependencies"]["zpl"]["version"], expected)
         self.assertEqual(consumer["package"]["version"], "0.2.1")
@@ -81,7 +83,7 @@ class BindingReleaseTests(unittest.TestCase):
             with self.subTest(binding=binding):
                 self.git("reset", "--hard", "zpl-v0.2.1")
                 self.git("clean", "-fd")
-                path = binding if binding.endswith(".py") or binding.endswith(".sh") else f"{binding}/new-file"
+                path = binding if binding.endswith((".py", ".sh", ".yml")) else f"{binding}/new-file"
                 self.write(path, 'new binding functionality\n')
                 self.commit("feat(binding): add capability")
                 release.prepare(self.root)

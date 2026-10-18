@@ -8,6 +8,7 @@ Run after `release-plz update` in a clean CI checkout with full history/tags.
 """
 
 import argparse
+import importlib
 from datetime import datetime, timezone
 import json
 from pathlib import Path
@@ -15,8 +16,9 @@ import re
 import subprocess
 import tomllib
 
-BINDINGS = ("zpl-c", "zpl-wasm", "zpl-node", "zpl-python", "zpl-elixir", "zpl-go")
-PATHS = (*BINDINGS, "scripts/build-node.sh", "scripts/elixir-package.py")
+BINDINGS = ("zpl-c", "zpl-wasm", "zpl-node", "zpl-python", "zpl-elixir", "zpl-go", "zpl-dotnet")
+PATHS = (*BINDINGS, "scripts/build-node.sh", "scripts/elixir-package.py",
+         "scripts/dotnet-release.py", ".github/workflows/dotnet-package.yml")
 CRATES = {"zpl": "zpl", "zpl-c": "zpl-c", "zpl-wasm": "zpl-wasm",
           "zpl-python": "zpl-python", "zpl-elixir": "zpl_elixir"}
 REPO = "https://github.com/codyps/zpl"
@@ -138,6 +140,8 @@ def stamp(root, target):
     mix_path = root / "zpl-elixir/mix.exs"
     edits[mix_path] = replace_one(r'^(\s*version: ")[^"]+(",)$',
                                  lambda m: f'{m[1]}{target}{m[2]}', mix_path.read_text(), "Mix version")
+    dotnet = importlib.import_module("dotnet-release")
+    edits[root / dotnet.PROJECT] = dotnet.stamp_text(root, target)
     for path, text in edits.items():
         path.write_text(text)
 
@@ -211,8 +215,8 @@ def pr_body(root):
                 raise ValueError(f"Missing release notes for {directory} {new}")
             notes.append(f"### {directory}: {old} → {new}\n\n{section[1].strip()}")
     return ("Prepare the next release from release-plz's Rust analysis and binding changes.\n\n"
-            "C, Wasm/Node, Python, Elixir, and Go versions follow the renderer. "
-            "Merging this PR runs the existing registry publishers; C remains source-only.\n\n"
+            "C, Wasm/Node, Python, Elixir, Go, and NuGet versions follow the renderer. "
+            "Merging this PR runs the registry publishers, including NuGet with bundled native C libraries.\n\n"
             + "\n\n".join(notes) + "\n")
 
 

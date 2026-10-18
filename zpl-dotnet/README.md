@@ -1,0 +1,90 @@
+# Codyps.Zpl for .NET
+
+Local ZPL parsing and rendering through the same Rust engine as `zpl`. Install
+the NuGet package in a .NET 8 or later project using PackageReference:
+
+```sh
+dotnet add package Codyps.Zpl
+```
+
+```csharp
+using Codyps.Zpl;
+
+var options = RenderOptions.Create(Profile.Zd621);
+options.Width = 812;
+options.Height = 1218;
+using var document = Renderer.Render(
+    "^XA^FO20,20^A0N,40,40^FDHello, C#!^FS^XZ", options);
+using var label = document.GetLabel(0);
+File.WriteAllBytes("label.png", label.ToPng());
+File.WriteAllBytes("labels.pdf", document.ToPdf());
+```
+
+The package bundles native libraries for Windows x64, Linux x64/ARM64, and
+macOS x64/ARM64. Consumers need no Rust compiler. The managed API uses the
+`Codyps.Zpl` namespace. Windows ARM64/x86, Linux musl/Alpine, .NET Framework, browser
+Wasm, and mobile targets are not included. Linux x64 binaries are built on
+Ubuntu 22.04 (glibc 2.35); Linux ARM64 on Ubuntu 24.04 (glibc 2.39). macOS
+binaries target macOS 11 or later; the installed .NET runtime also has its own
+OS requirements. Windows uses Rust's MSVC target and requires the matching
+Microsoft Visual C++ runtime.
+
+Native binaries follow NuGet's `runtimes/<rid>/native` conventions; both ordinary
+build/run and RID-specific framework-dependent publish are tested in CI.
+See [Microsoft's native package guidance](https://learn.microsoft.com/en-us/nuget/create-packages/native-files-in-net-packages).
+
+## API and ownership
+
+- `Renderer.Render(string)` encodes the string as UTF-8. Select `^CI28` in ZPL
+  when using UTF-8 text. Pass `ReadOnlySpan<byte>` for legacy encodings, downloaded
+  graphics, binary fonts, and embedded NULs. No network or printer access occurs.
+- `RenderOptions.Create(profile)` initializes every field from the native profile.
+  The default profile is ZD621; `Specification` and `Zq610Plus` are also available.
+  `Compatibility` exposes every C ABI setting, with boolean flags represented by
+  byte values 0/1 and optional values by `OptionalUInt32`, `OptionalUInt16`, or
+  `OptionalFileId`. Configuration layouts are generated from the C header.
+- Omitted options/limits select native bounded defaults. Start overrides with
+  `RenderLimits.Create()` and `OutputLimits.Create()`; `default`/`new()` are zero
+  configurations, not native defaults. Invalid values raise `ZplException`.
+- Dispose `Document`, `Scene`, and `Fonts` with `using`. SafeHandle also releases
+  abandoned handles. A scene survives disposal of its document; returned bytes,
+  warning strings, parser elements, and error messages are managed copies.
+  Concurrent immutable operations and renders are supported; access and disposal
+  on the same wrapper are serialized.
+- `Scene.Info`, `ToPng()`, `ToSvg()`, `ToPdf()`, and `ToGrayscale()` expose output.
+  Grayscale is row-major, one byte per dot, 0 black/255 white, without padding.
+  `Document.ToPdf()` includes every label.
+- `Parser.Parse()` returns copied lossless elements with byte offsets and final
+  syntax. It frames input, not validates or authorizes it. Bound input size before
+  parsing; renderer resource limits do not apply to this standalone parser.
+- `Fonts.AddTrueType(id, bytes)` and `AddTrueType("R:FONT.TTF", bytes)` copy font
+  data. IDs are Unicode scalar values, e.g. `(uint)'Z'`. Pass `fonts:` to Render.
+  Resident and ZPL-downloaded fonts retain native behavior. Managed bitmap font
+  callbacks are not exposed by this wrapper.
+- `ZplException.Status` and `ByteOffset` preserve native diagnostics. Offsets are
+  null when unavailable. The wrapper checks C ABI 3 before using native structs.
+  `Renderer.LibraryVersion` reports the linked renderer version.
+
+## Building and checking locally
+
+Use Rust, Python 3.11+, and the .NET 8 SDK. From the repository root, on Linux x64:
+
+```sh
+python3 zpl-c/generate-config.py --check
+python3 zpl-dotnet/generate-config.py --check
+cargo build --locked --release -p zpl-c
+mkdir -p zpl-dotnet/native/linux-x64/native
+cp target/release/libzpl_c.so zpl-dotnet/native/linux-x64/native/
+dotnet pack zpl-dotnet/Codyps.Zpl/Codyps.Zpl.csproj -c Release -o zpl-dotnet/dist
+python3 scripts/dotnet-release.py verify 0.3.0 zpl-dotnet/dist/Codyps.Zpl.0.3.0.nupkg --rid linux-x64
+python3 zpl-dotnet/check-package.py zpl-dotnet/dist 0.3.0 linux-x64
+```
+
+Substitute the current project version, RID and library filename on other systems.
+Set MSBuild `NativeRoot` to use another staging directory. A local package can
+contain just the current platform; release verification requires all five native
+libraries. CI assembles one complete package, then tests that exact archive on
+each platform, with isolated feeds/caches and no source project references.
+
+NuGet versions follow the renderer. The release pipeline builds/tests before
+publishing; see [release setup](../docs/releases.md#nuget-publication).

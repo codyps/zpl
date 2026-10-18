@@ -22,6 +22,11 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  dotnet:
+    uses: ./.github/workflows/dotnet-package.yml
+    permissions:
+      contents: read
+
   elixir:
     uses: ./.github/workflows/elixir-package.yml
     permissions:
