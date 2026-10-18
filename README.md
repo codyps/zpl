@@ -79,6 +79,13 @@ The [`zpl-c` library](zpl-c/README.md) provides a C header and shared/static lib
 for lossless parsing, rendering with configurable profiles and limits, and
 PNG, SVG, PDF, or grayscale output. Build it with `cargo build --locked --release -p zpl-c`.
 
+## Use the renderer in Swift
+
+The [`ZPL` Swift package](zpl-swift/README.md) provides local parsing and
+PNG/SVG/PDF/grayscale rendering for macOS and iOS. Swift Package Manager downloads
+a matching XCFramework; consumers do not need Rust. Releases are distributed from
+[`codyps/zpl-swift`](https://github.com/codyps/zpl-swift).
+
 ## Use the renderer in Go
 
 The [`zpl-go` package](zpl-go/README.md) provides one Go API for PNG, SVG,

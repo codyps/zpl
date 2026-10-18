@@ -711,3 +711,61 @@ References:
 - [npm package READMEs](https://docs.npmjs.com/about-package-readme-files/)
 - [PyPI README formatting and validation](https://packaging.python.org/en/latest/guides/making-a-pypi-friendly-readme/)
 - [Hex package metadata and documentation](https://hex.pm/docs/publish#adding-metadata-to-mixexs)
+
+## Swift package publication
+
+The Swift sources and tests live in `zpl-swift/`. The generated
+[`codyps/zpl-swift`](https://github.com/codyps/zpl-swift) repository exposes the
+`ZPL` product with ordinary `major.minor.patch` Git tags. SwiftPM cannot consume
+our existing `zpl-v…` renderer tags as semantic versions, and a separate small
+repository avoids fetching the renderer's entire fixture corpus.
+
+The reusable `swift-package.yml` workflow builds static `zpl-c` libraries for
+macOS ARM64/x86_64, iOS ARM64, and iOS simulator ARM64/x86_64. It combines only
+architectures for the same platform with `lipo`, then creates `CZpl.xcframework`
+with Xcode. Deployment targets are macOS 11 and iOS 13. Mac Catalyst and other
+Apple platforms are not currently included. C headers and the Clang module map
+are bundled in every slice. `Package.swift` links the Rust static library's
+`iconv` system dependency; consumers need Swift/Xcode, not Rust.
+
+CI compares Swift PNG/SVG/PDF/grayscale output with direct Rust output for all
+three renderer profiles, checks parsing, errors, limits, and ownership, runs an
+independent consumer with Cargo/rustc blocked, builds an iOS device consumer,
+runs the test suite on an iOS simulator, and tests the exact Intel macOS slice on
+an Intel runner. Ordinary PR/main CI and release builds use the same workflow
+with read-only permissions. Artifacts are retained for 14 days.
+
+The release workflow selects only a completed stable renderer release at the
+exact checkout. Swift-only wrapper, configuration, packaging, or CI changes
+participate in binding release preparation, so their public version follows the
+renderer without a separate version stamp. The publisher uploads the tested ZIP
+as `CZpl-VERSION.xcframework.zip` on `zpl-vVERSION`, then tests its actual HTTPS
+URL/checksum from the generated manifest before pushing the distribution commit
+and version tag together with an atomic Git push. The generated `release.json`
+records the source commit and SHA-256 checksum. Existing asset bytes and tagged
+package contents must match exactly on reruns; different contents fail visibly.
+No published asset or tag is overwritten.
+
+The existing `RELEASE_PLZ_TOKEN` secret is the publishing identity. It must have
+contents write access to **both** `codyps/zpl` (release asset upload) and
+`codyps/zpl-swift` (distribution commits/tags). For a fine-grained token, include
+both repositories; a token limited to the source repository cannot publish the
+Swift package. No registry account, signing certificate, or additional token is
+needed. The distribution repository must exist with a `main` branch before the
+first release. Keep it dedicated to generated package contents; the publisher
+replaces its tracked files at each new version. Edit sources in `zpl-swift/` here.
+
+On macOS with Xcode, Rust, and all five targets installed:
+
+```sh
+cargo run --locked -p zpl-c --example swift_reference -- zpl-swift/Tests/ZPLTests/Fixtures
+python3 scripts/swift-package.py build /tmp/zpl-swift-build
+# Substitute the renderer manifest version for VERSION.
+python3 scripts/swift-package.py stage VERSION /tmp/zpl-swift-build/CZpl-VERSION.xcframework.zip /tmp/zpl-swift-local --local
+swift test --package-path /tmp/zpl-swift-local
+```
+
+These commands build/test without publishing. To recover a failed publisher,
+rerun its original job with its original artifacts. Do not relabel a newer source
+checkout as an older release or regenerate a changed payload under a published
+tag. `release-pr` waits for Swift publication alongside the other publishers.

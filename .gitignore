@@ -22,3 +22,9 @@ zpl-dotnet/**/bin/
 zpl-dotnet/**/obj/
 zpl-dotnet/native/
 zpl-dotnet/dist/
+
+zpl-swift/.build/
+zpl-swift/CZpl.xcframework/
+zpl-swift/Tests/ZPLTests/Fixtures/*
+!zpl-swift/Tests/ZPLTests/Fixtures/.gitkeep
+zpl-swift/Tests/Consumer/.build/

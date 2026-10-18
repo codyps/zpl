@@ -16,9 +16,11 @@ import re
 import subprocess
 import tomllib
 
-BINDINGS = ("zpl-c", "zpl-wasm", "zpl-node", "zpl-python", "zpl-elixir", "zpl-go", "zpl-dotnet")
+BINDINGS = ("zpl-c", "zpl-wasm", "zpl-node", "zpl-python", "zpl-elixir", "zpl-go", "zpl-dotnet", "zpl-swift")
 PATHS = (*BINDINGS, "scripts/build-node.sh", "scripts/elixir-package.py",
-         "scripts/dotnet-release.py", ".github/workflows/dotnet-package.yml")
+         "scripts/dotnet-release.py", ".github/workflows/dotnet-package.yml",
+         "scripts/swift-package.py", "scripts/swift-release.py",
+         "zpl-c/examples/swift_reference.rs", ".github/workflows/swift-package.yml")
 CRATES = {"zpl": "zpl", "zpl-c": "zpl-c", "zpl-wasm": "zpl-wasm",
           "zpl-python": "zpl-python", "zpl-elixir": "zpl_elixir"}
 REPO = "https://github.com/codyps/zpl"
@@ -215,7 +217,7 @@ def pr_body(root):
                 raise ValueError(f"Missing release notes for {directory} {new}")
             notes.append(f"### {directory}: {old} → {new}\n\n{section[1].strip()}")
     return ("Prepare the next release from release-plz's Rust analysis and binding changes.\n\n"
-            "C, Wasm/Node, Python, Elixir, Go, and NuGet versions follow the renderer. "
+            "C, Wasm/Node, Python, Elixir, Go, NuGet, and Swift versions follow the renderer. "
             "Merging this PR runs the registry publishers, including NuGet with bundled native C libraries.\n\n"
             + "\n\n".join(notes) + "\n")
 
