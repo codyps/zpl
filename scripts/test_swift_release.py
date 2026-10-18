@@ -4,7 +4,6 @@ import io
 import json
 from pathlib import Path
 import plistlib
-import subprocess
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -69,6 +68,9 @@ class SwiftReleaseTests(unittest.TestCase):
         for crate in ('zpl', 'zpl-c'):
             (self.root / crate / 'Cargo.toml').write_text('[package]\nversion = "1.2.3"\n')
         (self.root / 'LICENSE').write_text('license')
+        (self.root / 'zpl-c/include').mkdir()
+        for name in ('zpl.h', 'zpl_config.h'):
+            (self.root / 'zpl-c/include' / name).write_text(name)
         swift = self.root / 'zpl-swift'
         (swift / 'Sources').mkdir(parents=True)
         (swift / 'Tests/ZPLTests').mkdir(parents=True)

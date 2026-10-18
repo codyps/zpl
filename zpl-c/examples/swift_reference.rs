@@ -8,6 +8,7 @@ use zpl::{
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let directory = PathBuf::from(env::args().nth(1).expect("fixture output directory"));
     fs::create_dir_all(&directory)?;
+    fs::write(directory.join("version.txt"), env!("CARGO_PKG_VERSION"))?;
     let source = b"^XA^PW64^LL48^FO4,4^GB12,8,2^FS^FO24,4^A0N,18,12^FDZ^FS^XZ^XA^PW64^LL48^FO8,8^GB20,12,3^FS^XZ";
     fs::write(directory.join("source.zpl"), source)?;
     for (name, profile) in [

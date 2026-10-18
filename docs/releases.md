@@ -426,8 +426,8 @@ runs that analysis first, including its Rust API compatibility checks, then the
 binding files against the highest stable `zpl-v<version>` tag reachable from the
 checkout. Full history and a matching tagged renderer manifest are required.
 
-The helper tracks C, Wasm, Node, Python, Elixir, Go, and .NET directories, the Node
-build script, the Elixir source-packaging script, and NuGet release tooling.
+The helper tracks C, Wasm, Node, Python, Elixir, Go, .NET, and Swift directories, the Node
+build script, the Elixir source-packaging script, NuGet release tooling, and Swift packaging/publication tooling.
 A net change prepares a renderer
 release even when release-plz found no Rust changes. Conventional Commit `!`
 markers and `BREAKING CHANGE:` / `BREAKING-CHANGE:` footers raise the required

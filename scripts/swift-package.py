@@ -14,7 +14,6 @@ import plistlib
 import re
 import shutil
 import subprocess
-import tempfile
 import tomllib
 import zipfile
 
@@ -137,6 +136,11 @@ def stage(version, artifact, destination, local=False):
         if tomllib.loads((ROOT / crate / 'Cargo.toml').read_text())['package']['version'] != version:
             raise ValueError('Swift artifact, C binding and renderer versions must match')
     checksum = verify(artifact)
+    with zipfile.ZipFile(artifact) as archive:
+        for identifier in SLICES:
+            for name in ('zpl.h', 'zpl_config.h'):
+                if archive.read(f'CZpl.xcframework/{identifier}/Headers/{name}') != (ROOT / 'zpl-c/include' / name).read_bytes():
+                    raise ValueError('XCFramework headers do not match the source release')
     if artifact.name != filename(version):
         raise ValueError('Incorrect XCFramework archive name')
     if destination.exists():

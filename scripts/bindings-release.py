@@ -218,7 +218,7 @@ def pr_body(root):
             notes.append(f"### {directory}: {old} → {new}\n\n{section[1].strip()}")
     return ("Prepare the next release from release-plz's Rust analysis and binding changes.\n\n"
             "C, Wasm/Node, Python, Elixir, Go, NuGet, and Swift versions follow the renderer. "
-            "Merging this PR runs the registry publishers, including NuGet with bundled native C libraries.\n\n"
+            "Merging this PR runs the package publishers, including NuGet with native C libraries and Swift with a checksummed XCFramework.\n\n"
             + "\n\n".join(notes) + "\n")
 
 

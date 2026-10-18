@@ -10,6 +10,8 @@ final class ZPLTests: XCTestCase {
 
     func testDirectRustParityForEveryProfileAndOutput() throws {
         let source = try fixture("source.zpl")
+        let expectedVersion = String(decoding: try fixture("version.txt"), as: UTF8.self)
+        XCTAssertEqual(ZPL.libraryVersion, expectedVersion)
         for profile in Profile.allCases {
             let document = try ZPL.render(source, options: RenderOptions(profile: profile))
             XCTAssertEqual(document.labelCount, 2)
