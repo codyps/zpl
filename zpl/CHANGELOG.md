@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.2](https://github.com/codyps/zpl/compare/zpl-v0.3.1...zpl-v0.3.2) - 2026-10-18
+
+<!-- binding-release-notes -->
+### Bindings
+
+- fix(dotnet): add relevant NuGet discovery tags (#85) ([c93d85f](https://github.com/codyps/zpl/commit/c93d85fb351ea1108acc14fb16d5a9b045fda6b8))
+<!-- /binding-release-notes -->
+
 ## [0.3.1](https://github.com/codyps/zpl/compare/zpl-v0.3.0...zpl-v0.3.1) - 2026-10-18
 
 <!-- binding-release-notes -->
