@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.1](https://github.com/codyps/zpl/compare/zpl-v0.3.0...zpl-v0.3.1) - 2026-10-18
+
+<!-- binding-release-notes -->
+### Bindings
+
+- feat(dotnet): add C# bindings and trusted NuGet releases (#84) ([3fdef96](https://github.com/codyps/zpl/commit/3fdef963bb5cbebab1cb65b2c5ed1e172169dd71))
+- fix(elixir): build and publish HexDocs for bindings (#81) ([ad721e5](https://github.com/codyps/zpl/commit/ad721e575064b7b0740161e50a6009c0b6094dcf))
+<!-- /binding-release-notes -->
+
 ## [0.3.0](https://github.com/codyps/zpl/compare/zpl-v0.2.1...zpl-v0.3.0) - 2026-10-17
 
 <!-- binding-release-notes -->
