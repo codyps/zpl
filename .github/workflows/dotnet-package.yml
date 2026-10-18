@@ -1,0 +1,162 @@
+# Build and test without a publishing identity; publication lives in release-plz.yml.
+name: .NET package
+
+on:
+  workflow_call:
+    inputs:
+      version:
+        description: Completed renderer release, or empty for ordinary CI
+        required: false
+        default: ''
+        type: string
+
+permissions:
+  contents: read
+
+env:
+  CARGO_NET_RETRY: 2
+  CARGO_HTTP_TIMEOUT: 30
+  DOTNET_CLI_TELEMETRY_OPTOUT: 1
+  DOTNET_NOLOGO: 1
+
+jobs:
+  native:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-22.04
+            rid: linux-x64
+            library: libzpl_c.so
+          - runner: ubuntu-24.04-arm
+            rid: linux-arm64
+            library: libzpl_c.so
+          - runner: macos-15-intel
+            rid: osx-x64
+            library: libzpl_c.dylib
+          - runner: macos-15
+            rid: osx-arm64
+            library: libzpl_c.dylib
+          - runner: windows-2025
+            rid: win-x64
+            library: zpl_c.dll
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 20
+    defaults:
+      run:
+        shell: bash
+    env:
+      MACOSX_DEPLOYMENT_TARGET: '11.0'
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: dtolnay/rust-toolchain@6bed0761d98439e5a578e2877258200ad565ba87 # stable
+      - name: Build native C ABI
+        run: cargo build --locked --release -p zpl-c
+      - name: Stage native library
+        env:
+          NATIVE_RID: ${{ matrix.rid }}
+          NATIVE_LIBRARY: ${{ matrix.library }}
+        run: |
+          mkdir -p "zpl-dotnet/native/$NATIVE_RID/native"
+          cp "target/release/$NATIVE_LIBRARY" "zpl-dotnet/native/$NATIVE_RID/native/"
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: dotnet-native-${{ matrix.rid }}
+          path: zpl-dotnet/native/
+          if-no-files-found: error
+          retention-days: 14
+
+  pack:
+    needs: native
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@26b0ec14cb23fa6904739307f278c14f94c95bf1 # v5
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          pattern: dotnet-native-*
+          path: zpl-dotnet/native
+          merge-multiple: true
+      - name: Verify layouts and synchronized versions
+        id: version
+        env:
+          RELEASE_VERSION: ${{ inputs.version }}
+        run: |
+          python3 zpl-c/generate-config.py --check
+          python3 zpl-dotnet/generate-config.py --check
+          python3 - <<'PYTHON'
+          import os, sys, tomllib
+          from pathlib import Path
+          sys.path.insert(0, 'scripts')
+          import importlib
+          release = importlib.import_module('dotnet-release')
+          root = Path.cwd()
+          version = tomllib.loads(Path('zpl/Cargo.toml').read_text())['package']['version']
+          assert release.project_version(root) == version
+          assert tomllib.loads(Path('zpl-c/Cargo.toml').read_text())['package']['version'] == version
+          assert not os.environ['RELEASE_VERSION'] or os.environ['RELEASE_VERSION'] == version
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
+              print(f'version={version}', file=output)
+          PYTHON
+      - name: Pack and verify complete distribution
+        env:
+          PACKAGE_VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          dotnet pack zpl-dotnet/Codyps.Zpl/Codyps.Zpl.csproj -c Release -o dist
+          python3 scripts/dotnet-release.py verify "$PACKAGE_VERSION" "dist/Codyps.Zpl.$PACKAGE_VERSION.nupkg"
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: dotnet-package
+          path: dist/*.nupkg
+          if-no-files-found: error
+          retention-days: 14
+
+  consumer:
+    needs: pack
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-22.04
+            rid: linux-x64
+          - runner: ubuntu-24.04-arm
+            rid: linux-arm64
+          - runner: macos-15-intel
+            rid: osx-x64
+          - runner: macos-15
+            rid: osx-arm64
+          - runner: windows-2025
+            rid: win-x64
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 10
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.13'
+      - uses: actions/setup-dotnet@26b0ec14cb23fa6904739307f278c14f94c95bf1 # v5
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: dotnet-package
+          path: dist
+      - name: Run installed package and published application
+        env:
+          PACKAGE_VERSION: ${{ needs.pack.outputs.version }}
+          NATIVE_RID: ${{ matrix.rid }}
+        run: python zpl-dotnet/check-package.py dist "$PACKAGE_VERSION" "$NATIVE_RID"

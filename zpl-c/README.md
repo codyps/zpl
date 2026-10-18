@@ -4,6 +4,9 @@
 It builds `libzpl_c.so` (Linux), `libzpl_c.dylib` (macOS), or `zpl_c.dll`
 (Windows), plus a static library. It adds no runtime dependencies to `zpl`.
 
+For C#, use the [.NET wrapper and NuGet package](../zpl-dotnet/README.md), which
+bundles matching shared libraries for its supported platforms.
+
 ```sh
 cargo build --locked --release -p zpl-c
 cc -std=c11 -Wall -Wextra -Werror -Izpl-c/include zpl-c/examples/render.c \

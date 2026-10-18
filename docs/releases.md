@@ -20,7 +20,10 @@ The [Release-plz workflow](../.github/workflows/release-plz.yml) runs on pushes 
    `zpl` to **Hex** with the renderer version.
 5. `go-release` verifies and tests the committed Go package, publishes its
    `zpl-go/v<version>` tag, and requests registration with the public Go proxy.
-6. After every publisher succeeds, `release-pr` runs `release-plz update` using
+6. `dotnet-version` selects the same completed stable renderer release.
+   `dotnet-build` assembles and tests `Codyps.Zpl` with native binaries on five
+   platforms, then `dotnet-release` publishes the tested archive to **NuGet**.
+7. After every publisher succeeds, `release-pr` runs `release-plz update` using
    published crates.io versions as the baseline, then includes binding changes
    with `scripts/bindings-release.py`. A pinned create-pull-request action creates
    or updates `release-plz-auto` with all versions, changelogs, and workspace
@@ -423,8 +426,9 @@ runs that analysis first, including its Rust API compatibility checks, then the
 binding files against the highest stable `zpl-v<version>` tag reachable from the
 checkout. Full history and a matching tagged renderer manifest are required.
 
-The helper tracks C, Wasm, Node, Python, Elixir, and Go directories, the Node build
-script, and the Elixir source-packaging script. A net change prepares a renderer
+The helper tracks C, Wasm, Node, Python, Elixir, Go, and .NET directories, the Node
+build script, the Elixir source-packaging script, and NuGet release tooling.
+A net change prepares a renderer
 release even when release-plz found no Rust changes. Conventional Commit `!`
 markers and `BREAKING CHANGE:` / `BREAKING-CHANGE:` footers raise the required
 version. It mirrors the current pre-1.0 policy: additive changes increment the
@@ -433,10 +437,10 @@ features increment the minor and breaking changes increment the major.
 
 The final renderer version is the higher of release-plz's result and the binding
 requirement. The helper aligns C, Wasm, Python, and Elixir Cargo versions, the
-Node manifest, Mix version, root lock entries, and workspace renderer dependency
+Node manifest, Mix version, C# project version, root lock entries, and workspace renderer dependency
 requirements. It adds binding commit links while preserving native release notes.
-All bindings follow the shared renderer release even if only one changed. They
-remain `publish = false`; this automation does not add crates.io packages.
+All bindings follow the shared renderer release even if only one changed. Binding
+Cargo crates remain `publish = false`; this automation does not add crates.io packages.
 
 Unrelated changes, fully reverted binding changes, and reruns immediately after
 a completed release do not generate a binding bump. Re-running preparation for
@@ -458,13 +462,64 @@ Neither command pushes or publishes. Review the generated diff and PR CI before
 merging. Custom version-regex/release-commit policies require updating the helper;
 it fails visibly instead of silently applying a different binding policy.
 
-The C binding is available in the repository source archive for `zpl-v<version>`;
-there is currently no prebuilt C library upload or implemented C binding on
-crates.io. The `zpl-c` 0.0.0 registry package is only an empty placeholder. Build and distribute its matching headers and library as described in
+The C binding is available in the repository source archive for `zpl-v<version>`.
+Prebuilt shared libraries are bundled in `Codyps.Zpl` NuGet packages; there is
+no standalone C library upload or implemented C binding on crates.io. The
+`zpl-c` 0.0.0 registry package is only an empty placeholder. Build and distribute
+matching headers and libraries as described in
 the [C API guide](../zpl-c/README.md). Package version alignment does not change
 the separate C ABI version.
 
-### Publication checks
+## NuGet publication
+
+`Codyps.Zpl` contains a .NET 8 assembly and native shared libraries for
+`win-x64`, `linux-x64`, `linux-arm64`, `osx-x64`, and `osx-arm64`. The reusable
+`dotnet-package.yml` workflow builds each native library on its platform, packs
+one archive, verifies all required assets, then restores/runs and RID-publishes
+a separate consumer of that exact archive on every platform. Builds have read-only
+repository permissions and no publishing credential. Ordinary PR/main CI runs
+the same workflow without publication. See the [.NET guide](../zpl-dotnet/README.md)
+for API usage and OS/runtime requirements.
+
+Publication uses [NuGet trusted publishing](https://learn.microsoft.com/en-us/nuget/nuget-org/trusted-publishing)
+through the pinned official `NuGet/login` action. The `dotnet-release` job
+requests `id-token: write`. After package validation and registry checks, it exchanges
+GitHub OIDC for a temporary NuGet key immediately before upload. No persistent
+`NUGET_API_KEY` secret is required, and an already-published identical package
+does not request a credential.
+
+Before the first release:
+
+1. Set the repository Actions **variable** `NUGET_USER` to the nuget.org profile
+   username used for authentication (not an email address or organization name).
+2. In that NuGet account's **Trusted Publishing** settings, add a GitHub policy
+   with repository owner **`codyps`**, repository **`zpl`**, workflow filename
+   **`release-plz.yml`** (without `.github/workflows/`), and no environment. The
+   upload job runs directly in this workflow, not in `dotnet-package.yml`.
+3. Select the intended package owner and scope the policy to **`Codyps.Zpl`**,
+   allowing new package creation for the first release and new versions after
+   that. Verify the package ID is available or owned by that account/organization.
+
+If NuGet marks the policy as pending full activation, publish within its seven-day
+activation window or reactivate it before retrying. This repository change does
+not configure the external account or upload a package.
+
+`dotnet-release.py prepare` uses the existing exact-commit, completed-stable-release
+gate and requires renderer, C binding, and .NET versions to match. The binding
+release helper stamps the C# project and includes .NET-only changes in the next
+renderer release. `release-pr` waits for NuGet alongside every other publisher.
+The serialized publisher downloads the tested package, validates the complete
+five-platform payload, and checks nuget.org before pushing. An identical existing
+payload is skipped, ignoring only package signature/generated ZIP metadata;
+different code or nuspec content under the same immutable version fails visibly.
+Push failures are not blindly retried or hidden by `--skip-duplicate`.
+
+For a failed publication, fix the trust policy/username/access issue and rerun
+the failed publisher job using the original build artifacts (retained 14 days). Ordinary commits do
+not trigger backfill publication. Do not change a published version's payload;
+prepare a new renderer release for corrections.
+
+## Publication checks
 
 Once this workflow is on `main`, let the release preparation job update its PR
 and wait for the normal CI checks, then merge it. Its push to `main` runs `release`,

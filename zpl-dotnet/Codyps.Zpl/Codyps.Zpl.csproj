@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Version>0.3.0</Version>
+    <PackageId>Codyps.Zpl</PackageId>
+    <Authors>Cody P Schafer</Authors>
+    <Description>Local ZPL parsing and rendering to PNG, SVG, PDF and grayscale, powered by the Rust zpl renderer.</Description>
+    <PackageLicenseExpression>OSL-3.0</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/codyps/zpl</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/codyps/zpl</PackageProjectUrl>
+    <RepositoryType>git</RepositoryType>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NativeRoot Condition="'$(NativeRoot)' == ''">$(MSBuildThisFileDirectory)../native</NativeRoot>
+    <!-- Follow Microsoft's native package layout; no packages.config support.
+         https://learn.microsoft.com/en-us/nuget/create-packages/native-files-in-net-packages -->
+    <BuildOutputTargetFolder>ref;runtimes/any/lib</BuildOutputTargetFolder>
+    <!-- NU5131 assumes packages.config references; this package deliberately
+         supports PackageReference only, with ref/ and runtimes/ assets.
+         https://github.com/NuGet/Home/discussions/11097 -->
+    <NoWarn>$(NoWarn);NU5131</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="../README.md" Pack="true" PackagePath="/" />
+    <None Include="../../LICENSE" Pack="true" PackagePath="/" />
+    <None Include="$(NativeRoot)/**/*" Pack="true" PackagePath="runtimes/" />
+  </ItemGroup>
+</Project>

@@ -71,6 +71,10 @@ WebAssembly and supports CommonJS, ESM, and TypeScript. Build and pack it from
 
 ## Use the renderer in C or C++
 
+The [`Codyps.Zpl` NuGet package](zpl-dotnet/README.md) provides a C# wrapper for
+.NET 8+, with native libraries for Windows x64, Linux x64/ARM64, and macOS
+x64/ARM64. It supports parsing and local rendering to PNG, SVG, PDF, and grayscale.
+
 The [`zpl-c` library](zpl-c/README.md) provides a C header and shared/static libraries
 for lossless parsing, rendering with configurable profiles and limits, and
 PNG, SVG, PDF, or grayscale output. Build it with `cargo build --locked --release -p zpl-c`.

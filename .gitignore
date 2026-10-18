@@ -17,3 +17,8 @@ zpl-elixir/deps/
 zpl-elixir/doc/
 zpl-elixir/priv/native/
 zpl-elixir/*.tar
+
+zpl-dotnet/**/bin/
+zpl-dotnet/**/obj/
+zpl-dotnet/native/
+zpl-dotnet/dist/
