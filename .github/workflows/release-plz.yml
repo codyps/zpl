@@ -494,14 +494,82 @@ jobs:
         run: |
           dotnet nuget push "dist/Codyps.Zpl.$RELEASE_VERSION.nupkg" --api-key "$NUGET_API_KEY" --source https://api.nuget.org/v3/index.json --timeout 300
 
+  swift-version:
+    needs: release
+    if: github.repository == 'codyps/zpl' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    outputs:
+      released: ${{ steps.renderer.outputs.released }}
+      version: ${{ steps.renderer.outputs.version }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Select completed renderer release
+        id: renderer
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/swift-release.py prepare >> "$GITHUB_OUTPUT"
+
+  swift-build:
+    needs: swift-version
+    if: needs.swift-version.outputs.released == 'true'
+    permissions:
+      contents: read
+    uses: ./.github/workflows/swift-package.yml
+    with:
+      version: ${{ needs.swift-version.outputs.version }}
+
+  swift-release:
+    needs: [swift-version, swift-build]
+    if: >-
+      !cancelled() && needs.swift-version.result == 'success' &&
+      (needs.swift-version.outputs.released != 'true' || needs.swift-build.result == 'success')
+    runs-on: macos-15
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    concurrency:
+      group: release-swift
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        if: needs.swift-version.outputs.released == 'true'
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        if: needs.swift-version.outputs.released == 'true'
+        with:
+          name: swift-package
+          path: dist
+      - name: Restore tested Swift distribution
+        if: needs.swift-version.outputs.released == 'true'
+        run: |
+          mkdir -p "$RUNNER_TEMP/swift-release"
+          tar -xzf dist/swift-package.tar.gz -C "$RUNNER_TEMP/swift-release"
+          cp -R "$RUNNER_TEMP/swift-release/zpl-swift/Tests/ZPLTests/Fixtures/." zpl-swift/Tests/ZPLTests/Fixtures/
+      - name: Publish immutable binary asset and Swift package tag
+        if: needs.swift-version.outputs.released == 'true'
+        env:
+          # Existing release identity must also write codyps/zpl-swift.
+          GH_TOKEN: ${{ secrets.RELEASE_PLZ_TOKEN }}
+          RELEASE_VERSION: ${{ needs.swift-version.outputs.version }}
+        run: python3 scripts/swift-release.py publish "$RELEASE_VERSION" "dist/CZpl-$RELEASE_VERSION.xcframework.zip" "$RUNNER_TEMP/swift-release/zpl-swift"
+
   release-pr:
     # Use published versions only after every publisher succeeds.
-    needs: [release, npm-release, python-release, elixir-release, go-release, dotnet-release]
+    needs: [release, npm-release, python-release, elixir-release, go-release, dotnet-release, swift-release]
     if: >-
       !cancelled() && github.repository == 'codyps/zpl' && github.ref == 'refs/heads/main' &&
       needs.release.result == 'success' && needs.npm-release.result == 'success' &&
       needs.python-release.result == 'success' && needs.elixir-release.result == 'success' &&
-      needs.go-release.result == 'success' && needs.dotnet-release.result == 'success'
+      needs.go-release.result == 'success' && needs.dotnet-release.result == 'success' &&
+      needs.swift-release.result == 'success'
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     permissions:
