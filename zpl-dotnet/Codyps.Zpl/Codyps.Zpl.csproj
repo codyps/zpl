@@ -5,6 +5,7 @@
     <PackageId>Codyps.Zpl</PackageId>
     <Authors>Cody P Schafer</Authors>
     <Description>Local ZPL parsing and rendering to PNG, SVG, PDF and grayscale, powered by the Rust zpl renderer.</Description>
+    <PackageTags>Zebra;ZPL;ZPL2;Label;Thermal;Barcode;ZPLParser;ZPLViewer;ZPLConverter;ZPLEmulator;ZPL2PNG;ZPL2PDF;ZPL2Image;ZPLtoPNG;ZPLtoPDF;ZPLtoImage;PNG;PDF;SVG</PackageTags>
     <PackageLicenseExpression>OSL-3.0</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/codyps/zpl</RepositoryUrl>
