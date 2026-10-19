@@ -13,6 +13,15 @@
 /// initial value: the renderer does not reapply it after you change an option.
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct Compatibility {
+    /// Select fixed GX430t V56.17.17Z scalable strikes instead of the ZD621's.
+    /// This is firmware-specific hinting, independently of printhead density.
+    /// Acquisition and holdouts: tests/fixtures/gx430t-300-v1.
+    pub gx430t_scalable_strikes: bool,
+    /// Reject modern ^FE concatenation on legacy printers without that command.
+    /// Zebra's supported-printer list for ^FE excludes GX430t; native literal
+    /// fallback previews are diagnostics, not successful concatenation.
+    /// https://docs.zebra.com/us/en/printers/software/zpl-pg/zpl-commands/%5Efe.html
+    pub reject_field_concatenation: bool,
     /// Finish an inline GF field before FO, FT or BY without an explicit FS.
     /// ZD621 V93.21.33Z public Example2; disabled: require FS (^GF p. 215).
     pub inline_graphic_implicit_separator: bool,
@@ -38,6 +47,10 @@ pub struct Compatibility {
     /// Cap the logical preview width before rounding. ZQ610 Plus's 203-DPI
     /// printhead is 384 dots; None preserves the requested width.
     pub preview_max_width: Option<u32>,
+    /// Clip centered ink to the logical PW on GX430t V56.17.17Z.
+    /// Native boundary controls retain one extra dot when PW modulo 64 is 1.
+    /// See gx430t-300-v1/dpi-controls and boundary-controls.
+    pub preview_clips_logical_width: bool,
     /// Preserve the current canvas width once a field has added drawing paths.
     /// Later PW still sets the next label's initial width. Measured ZQ610 Plus
     /// width-late-grow/shrink previews retain the width used by the first field.
@@ -213,6 +226,11 @@ pub struct Compatibility {
     /// glyph's ink origin independently after FO/FT. Disabled: clip negative coordinates at the canvas.
     /// Measured on ZD621; ^FO p. 201, ^FT p. 205 and ^FB pp. 186–187.
     pub text_clamps_negative_origins: bool,
+    /// Clamp OCR E/H bitmap cells along the reading axis using byte-padded
+    /// native widths, instead of visible ink bounds. Right-justified FO-I
+    /// margins use the same padded width. GX430t V56.17.17Z rotated OCR edge holdouts verify
+    /// this independently of printhead density (gx430t-300-v1).
+    pub ocr_text_uses_padded_cells: bool,
     /// Round centered FB line positions down before rotating their paths.
     /// Disabled: keep fractional centers through rasterization (^FB p. 187).
     pub block_center_rounds_down: bool,
@@ -391,6 +409,10 @@ pub struct Compatibility {
     /// disabled uses shared B runs directly. At capacity, shared runs remain
     /// available even when enabled, rather than rejecting valid messages.
     pub maxicode_printer_run_boundaries: bool,
+    /// End short MaxiCode set-A runs at spaces while shifted from set B.
+    /// GX430t V56.17.17Z native mixed-payload and independent run sweeps;
+    /// ISO/IEC 16023 Annex F permits these alternative code-set choices.
+    pub maxicode_a_runs_stop_at_space: bool,
     /// Use the captured ZD621 dot template for MaxiCode modules and finder rings.
     /// Includes the full 199-dot symbol baseline for ^FT. Default: nominal
     /// physical geometry from ISO/IEC 16023:2000 §4.11.

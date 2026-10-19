@@ -26,7 +26,7 @@ defmodule Zpl.ParityTest do
     assert status == 0, log
     source = "^XA^FO2,3^GB10,8,2^FS^XZ^XA^FO1,1^GB3,4,1^FS^XZ"
 
-    for profile <- [:specification, :zd621, :zq610_plus] do
+    for profile <- [:specification, :zd621, :zq610_plus, :gx430t] do
       document = Zpl.render!(source, profile: profile, width: 32, height: 24)
       assert document.warnings == []
       assert Zpl.Document.pdf!(document) == File.read!(Path.join(directory, "#{profile}.pdf"))

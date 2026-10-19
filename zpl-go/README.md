@@ -3,7 +3,8 @@
 `github.com/codyps/zpl/zpl-go` provides one Go API for the Rust ZPL renderer.
 **wasm2go is the default backend**. Generated Go, its embedded data, and the Wasm
 module are included, so ordinary Go builds need neither Rust nor code generation.
-The API is experimental. Releases follow the renderer version and publish the
+The API is experimental. `GX430t` selects the native 300-DPI profile; its
+caller-supplied canvas height must match the configured printer preview height. Releases follow the renderer version and publish the
 Go module with a `zpl-go/v<version>` repository tag, then register it with the
 public Go proxy. After publication, install with
 `go get github.com/codyps/zpl/zpl-go@v<version>`; see the
@@ -55,7 +56,7 @@ result, err := engine.Render(ctx, zpl.Request{
 ```
 
 The [executable example](example_test.go) is tested under every backend.
-PNG, SVG, multipage PDF, grayscale pixels, all three native profiles, dimensions,
+PNG, SVG, multipage PDF, grayscale pixels, all four native profiles, dimensions,
 label counts, warnings, and error byte offsets are supported. PNG/SVG/grayscale
 return the first label; PDF returns all labels. Input is binary-safe and capped
 at 1 MiB. Dimensions must be 1..4096. DPI comes from the profile. Native render
@@ -113,7 +114,9 @@ CGO_ENABLED=0 go test -count=1 -tags backend_wazero ./...
 
 The fixed corpus in `testdata` contains input bytes and 159 native-oracle hashes.
 Tests compare complete encoded output and metadata, including error diagnostics,
-under all three profiles; no local oracle generation is needed. Tests also cover
+under the original three profiles; three additional native GX430t raster hashes
+verify OCR density, scalable strikes and mixed-payload MaxiCode. No local
+oracle generation is needed. Tests also cover
 ownership, concurrent callers, closure, invalid responses and cancellation.
 Capture input provenance remains in
 `../zpl/tests/fixtures/zq610-plus-v1/`. These are runtime-equivalence tests, not new
@@ -131,7 +134,8 @@ unsupported purego platform, and the default with cgo enabled. The second tests 
 copy containing only distributable files, without ignored artifacts or a C
 compiler. CI runs these checks and all four explicit backends.
 
-Maintainers regenerate artifacts from the full Rust workspace with Rust 1.98.1,
+Maintainers regenerate artifacts on Linux (including WSL), matching CI, from
+the full Rust workspace with Rust 1.98.1,
 the `wasm32-unknown-unknown` target, Go 1.27.2 and Python 3:
 
 ```sh
@@ -139,6 +143,10 @@ python3 zpl-go/generate.py
 python3 zpl-go/generate.py --check
 # Equivalent regeneration from zpl-go: go generate
 ```
+
+Rust embeds host-specific path separators in panic locations; prefix remapping
+alone does not make Windows-generated Wasm byte-identical to Linux output.
+The portable Go backends continue to run on Windows.
 
 The generator downloads pinned wasm2go v0.4.16, applies the checked-in
 [`wasm2go-memory.patch`](wasm2go-memory.patch) to a temporary source copy, and

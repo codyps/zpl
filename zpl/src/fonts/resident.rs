@@ -8,6 +8,8 @@ use crate::bitmap_font::GRAPHIC_SYMBOLS;
 #[derive(Clone, Copy)]
 pub(crate) struct Selection {
     pub(crate) id: char,
+    dpi: u32,
+    gx430t_strikes: bool,
     pub(crate) legacy_backslash: bool,
     legacy_codepage: bool,
     serial_zero_source: bool,
@@ -38,13 +40,16 @@ impl Selection {
     pub(crate) fn resident_cache_key(self) -> (char, u8, u8) {
         let variants = u8::from(self.legacy_backslash)
             | (u8::from(self.default_glyph) << 1)
-            | (u8::from(self.legacy_controls) << 2);
+            | (u8::from(self.legacy_controls) << 2)
+            | (u8::from(self.gx430t_strikes) << 3);
         (self.id, variants, self.encoding)
     }
 
     pub(crate) fn new(id: char, legacy_backslash: bool) -> Self {
         Self {
             id,
+            dpi: 203,
+            gx430t_strikes: false,
             legacy_backslash,
             legacy_codepage: false,
             serial_zero_source: false,
@@ -58,6 +63,17 @@ impl Selection {
             legacy_controls: false,
             control_spaces: false,
         }
+    }
+    pub(crate) fn with_gx430t_strikes(mut self, enabled: bool) -> Self {
+        self.gx430t_strikes = enabled;
+        self
+    }
+    pub(crate) fn with_dpi(mut self, dpi: u32) -> Self {
+        self.dpi = dpi;
+        self
+    }
+    fn resident(self) -> Option<&'static zpl_bitmap_fonts::Font> {
+        zpl_bitmap_fonts::resident_at_dpi(self.id, self.dpi)
     }
     pub(crate) fn with_serial_zero_source(mut self, enabled: bool) -> Self {
         self.serial_zero_source = enabled;
@@ -111,7 +127,7 @@ impl Selection {
         } else {
             Some(c as usize)
         };
-        if !self.custom && (self.compact.is_some() || resident(self.id).is_some()) {
+        if !self.custom && (self.compact.is_some() || self.resident().is_some()) {
             if let Some(source) = self
                 .character_map
                 .and_then(|map| image.and_then(|i| map.get(i).copied()))
@@ -124,7 +140,7 @@ impl Selection {
                 }
             }
         }
-        if !self.custom && (self.compact.is_some() || resident(self.id).is_some()) {
+        if !self.custom && (self.compact.is_some() || self.resident().is_some()) {
             // Legacy text was decoded for Unicode-aware layout. Recover its
             // byte index here; layout-generated characters use measured Unicode.
             let source = if self.legacy_codepage {
@@ -192,7 +208,7 @@ pub(crate) fn selected(id: impl Into<Selection> + Copy, w: f64, h: f64) -> (Glyp
     // C and D share the 18x10 matrix (ZPL Programming Guide Table 31,
     // p. 1583); resident-bc-zd621-v1 verifies the alias across all ASCII.
     let font = id.into();
-    if let Some(face) = resident(font.id) {
+    if let Some(face) = font.resident() {
         let metrics = face.cell_metrics().expect("resident cell metrics");
         return (
             GlyphSet::Compact(face, font.legacy_backslash, font.encoding),
@@ -239,9 +255,14 @@ fn fallback(font: Selection, w: f64, h: f64) -> (GlyphSet, f64, f64) {
     )
 }
 fn variants(font: Selection) -> &'static [&'static zpl_bitmap_fonts::captures::Strike] {
-    zpl_bitmap_fonts::captures::zd621::VARIANTS[usize::from(font.legacy_backslash)
+    let flags = usize::from(font.legacy_backslash)
         + 2 * usize::from(font.default_glyph)
-        + 4 * usize::from(font.legacy_controls)]
+        + 4 * usize::from(font.legacy_controls);
+    if matches!(font.id, '0' | 'P'..='V') && font.gx430t_strikes {
+        zpl_bitmap_fonts::captures::gx430t::VARIANTS[flags]
+    } else {
+        zpl_bitmap_fonts::captures::zd621::VARIANTS[flags]
+    }
 }
 // Native strikes may cover only ASCII. Keep the enriched base strike's
 // Unicode, legacy and default glyphs available with their original scale.
@@ -253,7 +274,12 @@ pub(crate) fn selected_for_char(
 ) -> (GlyphSet, f64, f64) {
     let face = selected(font, w, h);
     if font.id == '0' && glyph_from(face.0, c).is_err() {
-        for &settings in zpl_bitmap_fonts::captures::zd621::RETAIL {
+        let retail = if font.gx430t_strikes {
+            zpl_bitmap_fonts::captures::gx430t::RETAIL
+        } else {
+            zpl_bitmap_fonts::captures::zd621::RETAIL
+        };
+        for &settings in retail {
             let sw = if settings.width == 0 {
                 settings.height
             } else {
@@ -324,6 +350,7 @@ pub(crate) fn glyph_from(
         pixels: Pixels::Compact(glyph),
     })
 }
+#[cfg(test)]
 pub(crate) fn resident(id: char) -> Option<&'static zpl_bitmap_fonts::Font> {
     zpl_bitmap_fonts::resident(id)
 }
@@ -391,8 +418,9 @@ pub(crate) fn compact_glyph(
         })
 }
 pub(crate) fn baseline_for(id: impl Into<Selection> + Copy, h: f64) -> f64 {
-    let id = id.into().id;
-    if let Some(face) = resident(id) {
+    let selection = id.into();
+    let id = selection.id;
+    if let Some(face) = selection.resident() {
         let metrics = face.cell_metrics().expect("resident cell metrics");
         return h * (f64::from(metrics.baseline) - 1.) / f64::from(metrics.cell_height);
     }
@@ -456,13 +484,14 @@ pub(crate) fn code_page(ci: u8) -> Option<&'static encoding_rs::Encoding> {
 pub(crate) fn dimensions(
     (w, h): (f64, f64),
     (default_w, default_h): (f64, f64),
-    id: char,
+    selection: Selection,
     clamp_minimum: bool,
     clamp_maximum: bool,
 ) -> Result<(f64, f64), String> {
+    let id = selection.id;
     if id != '0' {
         // ZPL Programming Guide Table 31, pp. 1583–1584: native bitmap matrices.
-        let (nh, nw) = if let Some(face) = zpl_bitmap_fonts::resident(id) {
+        let (nh, nw) = if let Some(face) = selection.resident() {
             let metrics = face.cell_metrics().expect("resident cell metrics");
             (
                 f64::from(metrics.cell_height),
@@ -537,18 +566,15 @@ pub(crate) fn dimensions(
 /// and the subsequent resident-font suites (through resident-h-zd621-v1),
 /// with ^FT p. 205
 /// Table 7 in the Programming Guide.
-pub(crate) fn printer_ft_offset(id: char, height: f64, rotation: u8) -> (f64, f64) {
-    let native = match id {
-        'A' => 9.,
-        'B' => 11.,
-        'C' | 'D' => 18.,
-        'E' => 28.,
-        'F' => 26.,
-        'G' => 60.,
-        'H' => 21.,
-        GRAPHIC_SYMBOLS => 24.,
-        _ => return (0., 0.),
+pub(crate) fn printer_ft_offset(id: char, height: f64, rotation: u8, dpi: u32) -> (f64, f64) {
+    let Some(face) = zpl_bitmap_fonts::resident_at_dpi(id, dpi) else {
+        return (0., 0.);
     };
+    let native = f64::from(
+        face.cell_metrics()
+            .expect("resident cell metrics")
+            .cell_height,
+    );
     let scale = height / native;
     match rotation {
         b'R' => (scale, 0.),
@@ -577,20 +603,26 @@ pub(crate) fn block_metrics(id: impl Into<Selection>, h: f64, printer_s: bool) -
     (pitch * scale, ascent * scale - baseline_for('S', h))
 }
 
-pub(crate) fn inverted_margin(id: char, w: f64) -> Option<f64> {
+pub(crate) fn inverted_margin(font: impl Into<Selection>, w: f64, padded_ocr: bool) -> Option<f64> {
+    let font = font.into();
+    let id = font.id;
+    if matches!(id, 'E' | 'H') {
+        let metrics = font.resident()?.cell_metrics()?;
+        let width = f64::from(metrics.cell_width);
+        let gap = if padded_ocr {
+            // GX430t FO-I justification uses the byte-padded blit width.
+            // Independent ocr-justification-v1 native controls at 1x and 2x.
+            f64::from(metrics.space_advance) - f64::from(metrics.cell_width.div_ceil(8) * 8)
+        } else {
+            f64::from(metrics.space_advance - metrics.cell_width) + f64::from(id == 'E')
+        };
+        return Some(gap * w / width + 2.);
+    }
     if id == 'A' {
         return Some(w / 5. + 2.);
     }
     if id == 'B' {
         return Some(2. * w / 7. + 2.);
-    }
-    if id == 'E' {
-        // resident-e-zd621-v1: OCR-B's inverted margin is six native dots,
-        // although its ordinary advance includes only five gap dots.
-        return Some(6. * w / 15. + 2.);
-    }
-    if id == 'H' {
-        return Some(6. * w / 13. + 2.);
     }
     if id == 'G' {
         return Some(8. * w / 40. + 2.);
@@ -690,6 +722,28 @@ pub(crate) fn adjust_baseline(id: char, baseline: f64, h: f64, graphic_last_row:
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn ocr_rotation_offsets_use_the_density_specific_cell_height() {
+        // ^FT Table 7 and Font Matrices Tables 29/31 (links above).
+        // Bundled measured E12/H12 cells are 41/30 rows; nominal table
+        // sizes differ. Use actual face metrics, preserving ZD621 captures.
+        for (id, height) in [('E', 41.), ('H', 30.)] {
+            assert_eq!(printer_ft_offset(id, height, b'R', 300), (1., 0.));
+            assert_eq!(printer_ft_offset(id, height * 2., b'B', 300), (-1., 1.));
+            assert_eq!(
+                dimensions(
+                    (0., height),
+                    (0., 32.),
+                    Selection::from(id).with_dpi(300),
+                    false,
+                    false
+                )
+                .unwrap(),
+                (if id == 'E' { 20. } else { 19. }, height)
+            );
+        }
+    }
 
     #[test]
     fn unicode_private_use_is_not_a_printer_source_slot() {

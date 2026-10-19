@@ -20,8 +20,12 @@ and put the DLL beside the executable. For static linking, obtain required syste
 libraries with `cargo rustc --locked --release -p zpl-c -- --print native-static-libs`.
 Distribute both `include/zpl.h` and `include/zpl_config.h` alongside the library.
 The header supports C11 and C++; no Rust toolchain is needed by consumers of the
-built artifacts. ABI version 3 requires matching headers/library releases; struct
+built artifacts. ABI version 4 requires matching headers/library releases; struct
 layouts may change in a future ABI version. Check `zpl_abi_version()` at startup.
+ABI 4 adds GX430t scalable-strike selection, logical preview clipping, padded
+OCR cells, MaxiCode space boundaries, and rejection of unsupported field concatenation to the compatibility layout. Rebuild consumers with the matching
+headers and library. Existing profile numeric IDs retain their meanings.
+
 ABI 3 adds `barcode_implicit_caption_uses_resident_font` to the compatibility
 configuration. Recompile callers against the matching header and library; ABI 1
 and ABI 2 configuration layouts are incompatible.
@@ -30,7 +34,7 @@ The API exposes:
 
 - Lossless complete-stream parsing, byte offsets, element kinds, initial/final
   syntax, unknown commands, and binary payloads.
-- All three renderer profiles, dimensions/DPI, every independent compatibility
+- All four renderer profiles, dimensions/DPI, every independent compatibility
   setting, and all render/output resource budgets.
 - Bitmap font providers and copied TrueType fonts, registered by ID or virtual filename.
 - Multiple labels, warning text, scene dimensions, PNG, SVG, single/multipage PDF,
@@ -58,6 +62,7 @@ needed. All profiles currently defined in `zpl::render::profiles` are available:
 | `ZPL_PROFILE_SPECIFICATION` | `SPECIFICATION` |
 | `ZPL_PROFILE_ZD621` | `ZD621_203_DPI` |
 | `ZPL_PROFILE_ZQ610_PLUS` | `ZQ610_PLUS_203_DPI` |
+| `ZPL_PROFILE_GX430T` | `GX430T_300_DPI` |
 
 ```c
 ZplOptions options;

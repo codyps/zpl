@@ -72,7 +72,7 @@ outputLimits.pixels = 4_000_000
 let pixels = try document.label(at: 0).encode(.grayscale, limits: outputLimits)
 ```
 
-Profiles are `.zd621` (the default), `.specification`, and `.zq610Plus`. Every C
+Profiles are `.zd621` (the default), `.specification`, `.zq610Plus`, and 300-DPI `.gx430t`. Every C
 compatibility option and render/output budget has a typed Swift property. Always
 initialize configuration values using their initializer to obtain native defaults.
 Grayscale data has one byte per dot, row-major with no padding: 0 black, 255 white.

@@ -1111,3 +1111,55 @@ fn code128_shift_is_consumed_by_an_invoked_data_character() {
         BarcodeFormat::CODE_128,
     );
 }
+
+#[test]
+fn gx430t_maxicode_short_a_runs_decode_native_and_local_payloads() {
+    // ISO/IEC 16023 Annex A/F: A shifts and B spaces are valid alternative
+    // code-set choices. Native frame parity alone does not prove payloads.
+    // Acquisition: fixtures/gx430t-300-v1/{maxicode-a-runs,latin-holdouts}.
+    let root =
+        std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("tests/fixtures/gx430t-300-v1");
+    let middles = [
+        "0 ", "01 ", "012 ", "0123 ", "0,", "0:", "0.", "A ", "AB ", "ABC ", "ABCD ", " AB", "A,B",
+        "A:B",
+    ];
+    let mut cases: Vec<_> = middles
+        .iter()
+        .map(|middle| {
+            let hex: String = middle.bytes().map(|b| format!("{b:02x}")).collect();
+            ("maxicode-a-runs", format!("run-{hex}"), 100, 100)
+        })
+        .collect();
+    cases.push(("latin-holdouts", "maxicode-FO-N".to_owned(), 400, 500));
+    for (campaign, name, origin_x, origin_y) in cases {
+        let path = root.join(campaign).join(&name);
+        let source = std::fs::read(path.with_extension("zpl")).unwrap();
+        let start = source.windows(3).position(|s| s == b"^FD").unwrap() + 3;
+        let end = source[start..]
+            .windows(3)
+            .position(|s| s == b"^FS")
+            .unwrap()
+            + start;
+        let payload = std::str::from_utf8(&source[start..end]).unwrap();
+        let native =
+            raster_diff::Raster::decode_png(&std::fs::read(path.with_extension("png")).unwrap())
+                .unwrap();
+        let doc = render(&source, zpl::render::profiles::GX430T_300_DPI).unwrap();
+        let local = rasterize(&doc.labels[0]).unwrap();
+        for raster in [native, local] {
+            let mut matrix = anyd::output::BitMatrix::new(30, 33, 0);
+            for y in 0..33 {
+                for x in 0..30 {
+                    // Native dot centers; no image registration or resampling.
+                    let px = origin_x + 1 + x * 10 + (y % 2) * 4 + 4;
+                    let py = origin_y + 1 + y * 9 + 4;
+                    matrix.set(x, y, raster.pixels[py * raster.width as usize + px] < 128);
+                }
+            }
+            let decoded = anyd::codes::maxicode::MaxiCodeDecoder::new()
+                .decode_matrix(&matrix)
+                .unwrap();
+            assert_eq!(decoded.text().unwrap(), payload, "{name}");
+        }
+    }
+}

@@ -294,6 +294,14 @@ impl<'a> Font<'a> {
             truetype_environment: crate::truetype::Environment::Standard,
         }
     }
+    pub(super) fn with_gx430t_strikes(mut self, enabled: bool) -> Self {
+        self.face = self.face.with_gx430t_strikes(enabled);
+        self
+    }
+    pub(super) fn with_dpi(mut self, dpi: u32) -> Self {
+        self.face = self.face.with_dpi(dpi);
+        self
+    }
     pub(super) fn with_cache(mut self, cache: &'a GlyphCache) -> Self {
         self.cache = Some(cache);
         self
@@ -534,10 +542,19 @@ pub(super) fn inverted_margin<'a>(
     value: &str,
     w: f64,
     h: f64,
+    padded_ocr: bool,
 ) -> Result<f64, String> {
     let font = id.into();
     let id = if font.custom.is_some() { '\0' } else { font.id };
-    if let Some(margin) = crate::fonts::resident::inverted_margin(id, w) {
+    if let Some(margin) = crate::fonts::resident::inverted_margin(
+        if id == '\0' {
+            Selection::from(id)
+        } else {
+            font.face
+        },
+        w,
+        padded_ocr,
+    ) {
         return Ok(margin);
     }
     let Some(c) = value.chars().last() else {
@@ -556,12 +573,37 @@ fn text(s: &str, w: f64, h: f64) -> Result<Path, String> {
 }
 // Preserve individual glyph ink for printer edge placement. The regular
 // text path remains merged, so unclamped output does not change.
+#[derive(Clone)]
+pub(super) struct TextPart {
+    pub path: Path,
+    pub cell: Option<Path>,
+}
+impl TextPart {
+    pub fn transform(&mut self, f: impl Fn(Point) -> Point + Copy) {
+        self.path.transform(f);
+        if let Some(cell) = &mut self.cell {
+            cell.transform(f);
+        }
+    }
+}
 pub(super) fn text_parts_for<'a>(
     id: impl Into<Font<'a>> + Copy,
     s: &str,
     w: f64,
     h: f64,
 ) -> Result<Vec<Path>, String> {
+    Ok(text_parts_with_bounds_for(id, s, w, h, false)?
+        .into_iter()
+        .map(|p| p.path)
+        .collect())
+}
+pub(super) fn text_parts_with_bounds_for<'a>(
+    id: impl Into<Font<'a>> + Copy,
+    s: &str,
+    w: f64,
+    h: f64,
+    padded: bool,
+) -> Result<Vec<TextPart>, String> {
     let font = id.into();
     if let Some(flow) = font.block_flow {
         let plain = Font {
@@ -579,7 +621,7 @@ pub(super) fn text_parts_for<'a>(
             let mut path = text_for(plain, &value, w, h)?;
             path.transform(|p| crate::output::Point::new(p.x + x, p.y + y));
             if !path.segments.is_empty() {
-                parts.push(path);
+                parts.push(TextPart { path, cell: None });
             }
             match flow.direction {
                 b'H' => x += advance,
@@ -620,7 +662,24 @@ pub(super) fn text_parts_for<'a>(
         path.transform(|p| crate::output::Point::new(p.x + pen, p.y));
         pen += advance as f64 * sx;
         if !path.segments.is_empty() {
-            parts.push(path);
+            let cell = if padded && font.custom.is_none() && matches!(font.id, 'E' | 'H') {
+                match selected(font, w, h) {
+                    (GlyphSet::Compact(face, ..), sx, sy) => face.cell_metrics().map(|metrics| {
+                        let mut cell = Path::default();
+                        cell.rect(
+                            pen - advance as f64 * sx,
+                            0.,
+                            f64::from(metrics.cell_width.div_ceil(8) * 8) * sx,
+                            f64::from(metrics.cell_height) * sy,
+                        );
+                        cell
+                    }),
+                    _ => None,
+                }
+            } else {
+                None
+            };
+            parts.push(TextPart { path, cell });
         }
     }
     Ok(parts)

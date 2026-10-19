@@ -242,14 +242,23 @@ class Printer:
         return page, image_url, self.fetch(image_url)
 
 
-def identity(page):
+def identity(page, configuration=None):
     text = html.unescape(page.decode("latin1"))
     model = re.search(r"ZTC [^<\r\n]+", text)
     firmware = re.search(r"Firmware Version</TD>\s*<TD>([^<]+)", text, re.I)
     serial = re.search(r"BT Friendly Name</TD><TD>([^<]+)", text, re.I)
-    if not all((model, firmware, serial)):
-        raise ValueError("cannot identify model, firmware and serial from status page")
-    return {"model": model[0], "firmware": firmware[1], "serial": serial[1], "dpi": 203}
+    density = re.search(r"-(\d+)dpi", model[0]) if model else None
+    dpi = int(density[1]) if density else None
+    if configuration is not None:
+        config = html.unescape(configuration.decode("latin1"))
+        firmware = re.search(r"^\s*(V\S+)\s+<-\s+FIRMWARE\s*$", config, re.M)
+        serial = re.search(r"^\s*(\S+)\s+SERIAL NUMBER\s*$", config, re.M)
+        resolution = re.search(r"\b(6|8|12|24)/MM\s+FULL\s+RESOLUTION", config)
+        if resolution:
+            dpi = {6: 152, 8: 203, 12: 300, 24: 600}[int(resolution[1])]
+    if not all((model, firmware, serial, dpi)):
+        raise ValueError("cannot identify model, firmware, serial and DPI")
+    return {"model": model[0], "firmware": firmware[1], "serial": serial[1], "dpi": dpi}
 
 
 def main():
@@ -258,7 +267,8 @@ def main():
     ap.add_argument("--comparison", type=Path)
     ap.add_argument("--fonts", type=Path, help="optional separate private font research checkout")
     ap.add_argument("--output", type=Path, required=True)
-    ap.add_argument("--width", type=int, default=384)
+    ap.add_argument("--profile", choices=("zq610-plus", "gx430t"), default="zq610-plus")
+    ap.add_argument("--width", type=int, help="maximum canvas width in dots; default depends on profile")
     ap.add_argument("--host", help="printer origin; required with --capture")
     ap.add_argument("--capture", action="store_true", help="perform previews; otherwise inventory only")
     ap.add_argument("--verify", action="store_true", help="verify saved hashes offline")
@@ -272,9 +282,17 @@ def main():
         manifest = verify(args.output)
         print(f"Verified {len(manifest['files'])} files; status: {manifest['status']}")
         return
-    if not 1 <= args.width <= 384 or args.interval < 0 or (args.limit is not None and args.limit < 1):
-        ap.error("width must be 1..384, interval nonnegative, limit positive")
-    roots = {"zpl": args.zpl.resolve(), "zpl-comparison": (args.comparison or args.zpl.parent / "zpl-comparison").resolve()}
+    maximum_width = {"zq610-plus": 384, "gx430t": 1280}[args.profile]
+    if args.width is None:
+        args.width = maximum_width
+    if not 1 <= args.width <= maximum_width or args.interval < 0 or (args.limit is not None and args.limit < 1):
+        ap.error(f"width must be 1..{maximum_width}, interval nonnegative, limit positive")
+    roots = {"zpl": args.zpl.resolve()}
+    comparison = (args.comparison or args.zpl.parent / "zpl-comparison").resolve()
+    if comparison.is_dir():
+        roots["zpl-comparison"] = comparison
+    elif args.comparison:
+        ap.error("explicit comparison checkout does not exist")
     if args.fonts:
         roots["zpl-font-extract"] = args.fonts.resolve()
     plan = inventory(roots, args.width)
@@ -296,9 +314,11 @@ def main():
         return
     printer = Printer(args.host)
     home = printer.fetch("/")
-    device = identity(home)
-    if "ZQ610 Plus-203dpi" not in device["model"]:
-        raise ValueError("expected ZQ610 Plus 203dpi")
+    configuration = printer.fetch("config.html") if args.profile == "gx430t" else None
+    device = identity(home, configuration)
+    expected = {"zq610-plus": ("ZQ610 Plus-203dpi", 203), "gx430t": ("GX430t", 300)}[args.profile]
+    if expected[0] not in device["model"] or device["dpi"] != expected[1]:
+        raise ValueError(f"expected {expected[0]} at {expected[1]} DPI")
     manifest_file = args.output / "provenance.json"
     if args.resume and manifest_file.exists():
         manifest = verify(args.output)
@@ -316,9 +336,11 @@ def main():
     session = {"started_utc": now(), "tool_sha256": sha(Path(__file__).read_bytes())}
     manifest["sessions"].append(session)
     store(f"status-{len(manifest['sessions'])}.html", home)
+    if configuration is not None:
+        store(f"config-{len(manifest['sessions'])}.html", configuration)
     store("reset.zpl", reset())
     save(manifest_file, manifest)
-    control, _ = adapt(b"^XA^FO20,20^A0N,24,24^FDZQ610 capture control^FS^XZ", args.width, 200)
+    control, _ = adapt(b"^XA^FO20,20^A0N,24,24^FDPrinter capture control^FS^XZ", args.width, 200)
     def capture_control(label):
         prefix = f"controls/session-{len(manifest['sessions'])}-{label}"
         session[label + "_started_utc"] = now()

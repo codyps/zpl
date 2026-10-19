@@ -107,3 +107,33 @@ func TestDecodeRejectsInvalidWire(t *testing.T) {
 		}
 	}
 }
+
+// Native GX430t V56.17.17Z 300-DPI pixels, with original source/origin/canvas.
+// Provenance: zpl/tests/fixtures/gx430t-300-v1/{main,dpi-controls}.
+func TestGX430tNativeDensityAndStrikes(t *testing.T) {
+	ctx := context.Background()
+	e, err := New(ctx)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer e.Close(ctx)
+	for _, c := range []struct{ name, hash string }{
+		{"ocr", "c46677d9d948b5a1276796021472147d7bb0b6d129c0a60a7d83005606aa47b7"},
+		{"font0", "c2a80a21ed2b86bb8a2f2ddcc7e109144eaebc7d234824b78316d513fb19a3c5"},
+		{"maxicode", "1296483435c4f030a7e796b54effcbc77a2989dce17890de8507c523c4e72b4e"},
+	} {
+		t.Run(c.name, func(t *testing.T) {
+			input, err := os.ReadFile("testdata/inputs/gx430t-" + c.name + ".zpl")
+			if err != nil {
+				t.Fatal(err)
+			}
+			got, err := e.Render(ctx, Request{Input: input, Format: Gray8, Profile: GX430t, Width: 832, Height: 2558})
+			if err != nil {
+				t.Fatal(err)
+			}
+			if got.Width != 832 || got.Height != 2558 || len(got.Body) != 832*2558 || fmt.Sprintf("%x", sha256.Sum256(got.Body)) != c.hash {
+				t.Fatalf("GX430t native raster mismatch: %dx%d", got.Width, got.Height)
+			}
+		})
+	}
+}

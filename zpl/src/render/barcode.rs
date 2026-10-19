@@ -120,7 +120,7 @@ pub(super) struct Rendered {
 impl Barcode {
     fn uses_retail_caption(&self) -> bool {
         self.compatibility.retail_interpretation_printer_layout
-            && self.dpi == 203
+            && matches!(self.dpi, 203 | 300)
             && self.show
             && !self.above
             && matches!(self.name.as_str(), "B8" | "B9" | "BE" | "BU")
@@ -458,7 +458,11 @@ impl Barcode {
         }
         let mut baseline = height;
         if self.name == "BD" && self.compatibility.maxicode_printer_dot_geometry {
-            baseline = 199. * self.dpi as f64 / 203.;
+            baseline = if self.dpi == 300 {
+                299.
+            } else {
+                199. * self.dpi as f64 / 203.
+            };
         }
         if self.name == "BQ" && self.compatibility.qr_ft_includes_margin {
             // ^FT includes a three-module lower margin, less one dot. Verified
@@ -513,7 +517,9 @@ impl Barcode {
             // Automatic captions use the printer's internal resident A, even
             // when ^CW replaces public font A. See the controlled LOGMARS and
             // Code 128 submissions in downloaded-bitmap-zd621-v1.
-            let caption_font = super::font::Font::from(id);
+            let caption_font = super::font::Font::from(id)
+                .with_gx430t_strikes(self.compatibility.gx430t_scalable_strikes)
+                .with_dpi(self.dpi);
             let caption_font = if font.is_none()
                 && self
                     .compatibility

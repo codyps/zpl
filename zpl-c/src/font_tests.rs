@@ -128,6 +128,7 @@ fn bitmap_callback_matches_native_across_profiles_and_selection() {
             render::profiles::SPECIFICATION,
             render::profiles::ZD621_203_DPI,
             render::profiles::ZQ610_PLUS_203_DPI,
+            render::profiles::GX430T_300_DPI,
         ] {
             let options = zpl::Options {
                 width: 64,

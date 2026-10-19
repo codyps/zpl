@@ -155,7 +155,10 @@ pub(super) fn layout(
             // above a line origin. Font paths are unions of axis-aligned runs.
             part.transform(|p| Point::new(p.x + x, (p.y + y).min(height)));
             path.segments.extend(part.segments.iter().cloned());
-            parts.push(part);
+            parts.push(font::TextPart {
+                path: part,
+                cell: None,
+            });
         }
     }
     Ok(TextLayout {

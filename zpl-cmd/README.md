@@ -19,7 +19,7 @@ zpl-cmd render input.zpl output.png
 
 The output extension selects the format. PNG and SVG require one label; PDF
 includes one page per label, preserving physical size using the scene DPI.
-`--profile` selects `zd621` (default), `zd621-preview`, `zq610-plus`, or
+`--profile` selects `zd621` (default), `zd621-preview`, `zq610-plus`, `gx430t`, or
 `specification`. `--explicit-qr-mask` honors QR mask operands instead of selecting
 masks using printer compatibility behavior. Options can precede or follow the
 file paths. Warnings and errors go to stderr; failures return a nonzero exit code.

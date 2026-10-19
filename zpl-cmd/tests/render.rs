@@ -157,6 +157,7 @@ fn profile_and_explicit_mask_options_match_the_library_in_either_order() {
         ("zd621", profiles::ZD621_203_DPI),
         ("zd621-preview", preview),
         ("zq610-plus", profiles::ZQ610_PLUS_203_DPI),
+        ("gx430t", profiles::GX430T_300_DPI),
         ("specification", profiles::SPECIFICATION),
     ] {
         for explicit in [false, true] {

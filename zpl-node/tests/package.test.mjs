@@ -7,6 +7,11 @@ import { fileURLToPath } from 'node:url';
 import { test } from 'node:test';
 
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
+// npm test supplies its CLI path. Invoke that JavaScript entry with Node so
+// Windows does not need to spawn npm.cmd as an executable (Node child_process).
+const npm = (args, options) => process.env.npm_execpath
+  ? execFileSync(process.execPath, [process.env.npm_execpath, ...args], options)
+  : execFileSync('npm', args, options);
 
 test('packed archive installs and runs independently of the checkout', () => {
   const directory = mkdtempSync(join(tmpdir(), 'zpl-node-package-'));
@@ -16,13 +21,13 @@ test('packed archive installs and runs independently of the checkout', () => {
   try {
     // Build first with npm run build. Avoid recursively executing lifecycle hooks.
     // https://docs.npmjs.com/cli/commands/npm-pack
-    const [pack] = JSON.parse(execFileSync('npm', ['pack', '--ignore-scripts', '--json', '--pack-destination', directory], {
+    const [pack] = JSON.parse(npm(['pack', '--ignore-scripts', '--json', '--pack-destination', directory], {
       cwd: root, env, encoding: 'utf8',
     }));
     assert.ok(pack.files.some(file => file.path === 'pkg/zpl_wasm_bg.wasm'));
     assert.ok(pack.files.some(file => file.path === 'LICENSE'));
     assert.ok(pack.files.every(file => /^(index\.(cjs|mjs|d\.ts)|package\.json|README\.md|LICENSE|pkg\/[^/]+\.(js|wasm))$/.test(file.path)));
-    execFileSync('npm', ['install', '--offline', '--ignore-scripts', '--no-audit', '--no-fund', '--no-package-lock', join(directory, pack.filename)], {
+    npm(['install', '--offline', '--ignore-scripts', '--no-audit', '--no-fund', '--no-package-lock', join(directory, pack.filename)], {
       cwd: directory, env, stdio: 'pipe',
     });
     copyFileSync(join(root, 'tests/render.test.mjs'), join(directory, 'render.test.mjs'));

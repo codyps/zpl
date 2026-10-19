@@ -67,7 +67,7 @@ internal sealed class FontsHandle(IntPtr value) : ZplHandle(value)
 internal static unsafe class Native
 {
     private const string Library = "zpl_c";
-    internal const uint AbiVersion = 3;
+    internal const uint AbiVersion = 4;
     static Native()
     {
 #if NETFRAMEWORK

@@ -36,7 +36,7 @@ function render(input, options = {}) {
   }
   const { format = 'png', profile = 'zd621', width, height, dpi, label, resolveFont, limits = {} } = options;
   if (!['png', 'svg', 'pdf'].includes(format)) throw new TypeError('format must be png, svg, or pdf');
-  if (!['specification', 'zd621', 'zq610-plus'].includes(profile)) throw new TypeError('Unknown rendering profile');
+  if (!['specification', 'zd621', 'zq610-plus', 'gx430t'].includes(profile)) throw new TypeError('Unknown rendering profile');
   if (resolveFont !== undefined && typeof resolveFont !== 'function') {
     throw new TypeError('resolveFont must be a synchronous function');
   }

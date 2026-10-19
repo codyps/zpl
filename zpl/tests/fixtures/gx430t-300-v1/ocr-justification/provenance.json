@@ -1,0 +1,565 @@
+{
+  "printer": {
+    "model": "GX430t",
+    "serial": "32J193600198",
+    "firmware": "V56.17.17Z",
+    "dpi": 300,
+    "host": "http://192.168.6.142/"
+  },
+  "started": "2026-10-18T22:24:29.283073+00:00",
+  "cases": [
+    {
+      "name": "control-start",
+      "started": "2026-10-18T22:24:29.631887+00:00",
+      "source_sha256": "f83921827fbbd64256e05c2b52567d26c48290abc34e150da38297bbd96658e6",
+      "status": "captured",
+      "png_sha256": "42d9aa9f52d7c76961389aa5172083fb45504c9a47dc77feb2befb6adf302fb5",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP246&otype=PNG",
+      "finished": "2026-10-18T22:24:30.143175+00:00"
+    },
+    {
+      "name": "justify-E-41-20-FO-N",
+      "started": "2026-10-18T22:24:30.344119+00:00",
+      "source_sha256": "e61dacb99f098d447f63c9f8e83b57db4280ee1c1a4344a91cea63e8dc9cc446",
+      "status": "captured",
+      "png_sha256": "c23af628efb3dc24feac97f2c68b2d0dca53e4472b89a56527298d9fbb69e241",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP247&otype=PNG",
+      "finished": "2026-10-18T22:24:30.926818+00:00"
+    },
+    {
+      "name": "justify-E-41-20-FO-R",
+      "started": "2026-10-18T22:24:31.128240+00:00",
+      "source_sha256": "5fb9dd92f209de379afe1823f3054dc49e5907c8051f50e1fa022bbe6593533f",
+      "status": "captured",
+      "png_sha256": "7d7b5bb2f3b42f5fc0b2278f568c2781580abd80a7408b863ed5443de57a6a7d",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP248&otype=PNG",
+      "finished": "2026-10-18T22:24:31.710555+00:00"
+    },
+    {
+      "name": "justify-E-41-20-FO-I",
+      "started": "2026-10-18T22:24:31.912082+00:00",
+      "source_sha256": "e2da89fb9c976716c56ad571b081441e45102b31d0cb94bd18e5a42fbc92fdef",
+      "status": "captured",
+      "png_sha256": "0b67354c8274c5e2cd03847db2250c8068822cf454067e5fed186fa10ee288aa",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP249&otype=PNG",
+      "finished": "2026-10-18T22:24:32.479008+00:00"
+    },
+    {
+      "name": "justify-E-41-20-FO-B",
+      "started": "2026-10-18T22:24:32.681041+00:00",
+      "source_sha256": "2565467e841a1cd921b84031ca1daf4da4f2f020399947cca23c6480219f33fd",
+      "status": "captured",
+      "png_sha256": "8ce75fcc6da9382d7d382fdc2d45bb8c7f4f68aeeee42fddca66a8fb563c84ba",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP250&otype=PNG",
+      "finished": "2026-10-18T22:24:33.264180+00:00"
+    },
+    {
+      "name": "justify-E-41-20-FT-N",
+      "started": "2026-10-18T22:24:33.465519+00:00",
+      "source_sha256": "5dad25be6bac4244ff4d408b0db8283d5a4186b2c8d042fdc4caee112b16c627",
+      "status": "captured",
+      "png_sha256": "7cf9d584fce9008b8a31035822f72ff15ef5b405b650075e0f340b6d0fcc9951",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP251&otype=PNG",
+      "finished": "2026-10-18T22:24:34.047774+00:00"
+    },
+    {
+      "name": "justify-E-41-20-FT-R",
+      "started": "2026-10-18T22:24:34.249316+00:00",
+      "source_sha256": "80363ea047a01518dbcd740fdc1836baa76c1b62fecbf20e35b4a1bf781f1a19",
+      "status": "captured",
+      "png_sha256": "e73240dc6b8137cb87aa4a90d00a10d1607a5b788a47d13bb5612a8b93cb362c",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP252&otype=PNG",
+      "finished": "2026-10-18T22:24:34.832240+00:00"
+    },
+    {
+      "name": "justify-E-41-20-FT-I",
+      "started": "2026-10-18T22:24:35.034022+00:00",
+      "source_sha256": "5be439ea1edd47f0a9e876bd1b6748205ae3dd2847dac3a646b14a5af72aba0b",
+      "status": "captured",
+      "png_sha256": "563583fcc76432bbfd53a2aec16ad13069165b20029ca5bcc588fac363cefa56",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP253&otype=PNG",
+      "finished": "2026-10-18T22:24:35.610066+00:00"
+    },
+    {
+      "name": "justify-E-41-20-FT-B",
+      "started": "2026-10-18T22:24:35.811762+00:00",
+      "source_sha256": "b59d011bbdc55ad74c6bc0ea89453057303d03cc578d5037877f49d7577b10b2",
+      "status": "captured",
+      "png_sha256": "a1e8df2fd8cab0ca96c096db69182b869664777ff912f5305a434101aa1cc9cf",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP254&otype=PNG",
+      "finished": "2026-10-18T22:24:36.417267+00:00"
+    },
+    {
+      "name": "justify-E-82-40-FO-N",
+      "started": "2026-10-18T22:24:36.618766+00:00",
+      "source_sha256": "67c3f16ea6a7c329cf003a2d10c39369b582cab9ecd9794f86ae28624be3e24e",
+      "status": "captured",
+      "png_sha256": "3212d8ecd981a209861e4e28d13c84506bea03177e7a991dcba9b3abe07c1350",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP255&otype=PNG",
+      "finished": "2026-10-18T22:24:37.201149+00:00"
+    },
+    {
+      "name": "justify-E-82-40-FO-R",
+      "started": "2026-10-18T22:24:37.403400+00:00",
+      "source_sha256": "7a5e6bfffb8aa44bf11dc6afe596bb5f9d1d07d98448515003dc5e5820b6bd2d",
+      "status": "captured",
+      "png_sha256": "fb4db8fa3430b822361cc97bbf5320b4b26bdb4c3478a0b736f1400caf476366",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP256&otype=PNG",
+      "finished": "2026-10-18T22:24:38.009493+00:00"
+    },
+    {
+      "name": "justify-E-82-40-FO-I",
+      "started": "2026-10-18T22:24:38.210957+00:00",
+      "source_sha256": "589d9d797c7ed96356a529a529d0dcd23e79307ecf7bc907c8e94a23d9e293c0",
+      "status": "captured",
+      "png_sha256": "19dc50467065e5fb1250ca97ea35f481c7fd84ababa4ab9982fc82d61f5ca9ab",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP257&otype=PNG",
+      "finished": "2026-10-18T22:24:38.795219+00:00"
+    },
+    {
+      "name": "justify-E-82-40-FO-B",
+      "started": "2026-10-18T22:24:38.996757+00:00",
+      "source_sha256": "039f4d8c0581e0cf81d21b24620cd89e45c26e4d409d3a84a630bd159fb474ee",
+      "status": "captured",
+      "png_sha256": "1e9ace219b1af2841883308a3319b05b17921d1cbfc036a95333c3af7fb19603",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP258&otype=PNG",
+      "finished": "2026-10-18T22:24:39.578522+00:00"
+    },
+    {
+      "name": "justify-E-82-40-FT-N",
+      "started": "2026-10-18T22:24:39.779765+00:00",
+      "source_sha256": "3d23113761a2be155d08da88f27c15745da6f5728f09af31690fa17ba866f49a",
+      "status": "captured",
+      "png_sha256": "1cfffa7699afdcbf5bce7f0a50540fc2c08a8eba5d4b287b498c511262ae956b",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP259&otype=PNG",
+      "finished": "2026-10-18T22:24:40.345527+00:00"
+    },
+    {
+      "name": "justify-E-82-40-FT-R",
+      "started": "2026-10-18T22:24:40.547123+00:00",
+      "source_sha256": "ca3e9daf19bc66e92ca9b4c56c8ee9c106de4839ec860591b28f29dfa64079bb",
+      "status": "captured",
+      "png_sha256": "e61955144d0333ed181fe5698ecc8e2ab010f3b90bce986e619e618cd1d626e9",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP260&otype=PNG",
+      "finished": "2026-10-18T22:24:41.130985+00:00"
+    },
+    {
+      "name": "justify-E-82-40-FT-I",
+      "started": "2026-10-18T22:24:41.332587+00:00",
+      "source_sha256": "a0bce69b032615194c864a59afeb2ada42d8987f78ad17b4a3be89f37280d818",
+      "status": "captured",
+      "png_sha256": "8c9945fb06e3104d92aea9b27b09ab43b7f392634335ab59e98bc0e161806a96",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP261&otype=PNG",
+      "finished": "2026-10-18T22:24:41.858990+00:00"
+    },
+    {
+      "name": "justify-E-82-40-FT-B",
+      "started": "2026-10-18T22:24:42.060940+00:00",
+      "source_sha256": "e499d3acc1470a94467b01c49320fa65e0144d5a7354ca723bb22996df87ebd8",
+      "status": "captured",
+      "png_sha256": "f3edb2129509e436dc0f78c920a074af821b4870b1148318f68c8ca688802bf6",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP262&otype=PNG",
+      "finished": "2026-10-18T22:24:42.619801+00:00"
+    },
+    {
+      "name": "justify-H-30-19-FO-N",
+      "started": "2026-10-18T22:24:42.820954+00:00",
+      "source_sha256": "4cc7db3e8d57cac58c6c56d639f062d34fcc226c4c9b3b41d81126e6629241ad",
+      "status": "captured",
+      "png_sha256": "f4069b5b3c5718784ad088bfbbed90c586455870b924c5558743c36b6342d4b0",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP263&otype=PNG",
+      "finished": "2026-10-18T22:24:43.388421+00:00"
+    },
+    {
+      "name": "justify-H-30-19-FO-R",
+      "started": "2026-10-18T22:24:43.589773+00:00",
+      "source_sha256": "77619aedc1388c1d1d517568873e08b7699eae85c035bfc094428854668e7668",
+      "status": "captured",
+      "png_sha256": "d995a912ae9d580cf6e6f50c890cb0cf61984986e5436335fa4958356ff4830f",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP264&otype=PNG",
+      "finished": "2026-10-18T22:24:44.196490+00:00"
+    },
+    {
+      "name": "justify-H-30-19-FO-I",
+      "started": "2026-10-18T22:24:44.397822+00:00",
+      "source_sha256": "e191989e8fe9cba97c6d514b9210f45e52f36289f34ff4befaf5aec1518d8736",
+      "status": "captured",
+      "png_sha256": "c84dc2887be7499b6a1c78902df5fc72832392000401d4084e41d8c614a5bbe5",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP265&otype=PNG",
+      "finished": "2026-10-18T22:24:44.974275+00:00"
+    },
+    {
+      "name": "justify-H-30-19-FO-B",
+      "started": "2026-10-18T22:24:45.175856+00:00",
+      "source_sha256": "4ffb1fb2142d9fb9d5c55e9a3856e90855d2bb552dabb752ae9a2256a1931e03",
+      "status": "captured",
+      "png_sha256": "a3504f97938b8ba6ec0867a7950299eea0624443ef29eb24601b23d5c3c830b6",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP266&otype=PNG",
+      "finished": "2026-10-18T22:24:45.741581+00:00"
+    },
+    {
+      "name": "justify-H-30-19-FT-N",
+      "started": "2026-10-18T22:24:45.943263+00:00",
+      "source_sha256": "778ce3afad0a85d75cbd91fc3abeb4751b75850074c54238a901fe66ec2eb83d",
+      "status": "captured",
+      "png_sha256": "9d9077ec1f433af921493c8c837f50e41ab6a0d1b2caae8c2292cd341bf77ebc",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP267&otype=PNG",
+      "finished": "2026-10-18T22:24:46.518141+00:00"
+    },
+    {
+      "name": "justify-H-30-19-FT-R",
+      "started": "2026-10-18T22:24:46.720079+00:00",
+      "source_sha256": "4fc5ed8b2630fc770a0fc1c1f0c83b3899eb87f713e1c1f65df04b0b8969a8c1",
+      "status": "captured",
+      "png_sha256": "48cf59f94b7ef55bc0e0a84d422172439457af516cd72733bc7e3c4a4fde2ef2",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP268&otype=PNG",
+      "finished": "2026-10-18T22:24:47.334525+00:00"
+    },
+    {
+      "name": "justify-H-30-19-FT-I",
+      "started": "2026-10-18T22:24:47.536114+00:00",
+      "source_sha256": "096f3a2ada17a1f51f970873d8778f067facbb658de85b7907e289adee1f7917",
+      "status": "captured",
+      "png_sha256": "533cfdb7dbd9d1f603f1c2db60fd486b4934a9d0dc501f300b35354619b226bb",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP269&otype=PNG",
+      "finished": "2026-10-18T22:24:48.061476+00:00"
+    },
+    {
+      "name": "justify-H-30-19-FT-B",
+      "started": "2026-10-18T22:24:48.263818+00:00",
+      "source_sha256": "6e60555b4d6976ac5213c576fe2bae5d59a5d1a8d304cd1089044b3acd965801",
+      "status": "captured",
+      "png_sha256": "56647fd186a0c5a519df40b08e8e1323c5b0bd12141b307a07f17285dd7dd363",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP270&otype=PNG",
+      "finished": "2026-10-18T22:24:48.822550+00:00"
+    },
+    {
+      "name": "justify-H-60-38-FO-N",
+      "started": "2026-10-18T22:24:49.023962+00:00",
+      "source_sha256": "54747f14f23611efd02c9eeff908c61afa69ebd4957fe1d43bcdb15a080d3e5b",
+      "status": "captured",
+      "png_sha256": "4e7aef3bff111cb3b94916818fb09dca8ffa0c33a3e8eff90b2b5589ffb6439f",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP271&otype=PNG",
+      "finished": "2026-10-18T22:24:49.630822+00:00"
+    },
+    {
+      "name": "justify-H-60-38-FO-R",
+      "started": "2026-10-18T22:24:49.832129+00:00",
+      "source_sha256": "8a16bad27611737a4295a84f206feda394c83ccbeabbb9ebdaafc232182c9d70",
+      "status": "captured",
+      "png_sha256": "3e025816f41dc393a2ba1cdf33ea9bc48baf0072beddbda021b02964dad88375",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP272&otype=PNG",
+      "finished": "2026-10-18T22:24:50.430207+00:00"
+    },
+    {
+      "name": "justify-H-60-38-FO-I",
+      "started": "2026-10-18T22:24:50.631741+00:00",
+      "source_sha256": "01ba45e3b22bdfad994bc88091d4b9a175e656d797e8c156b3e3db7c6eec8212",
+      "status": "captured",
+      "png_sha256": "4273bf2ba830df3348bd679b7c720a35a99d6971dc5454c78682fb2194aa6193",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP273&otype=PNG",
+      "finished": "2026-10-18T22:24:51.222142+00:00"
+    },
+    {
+      "name": "justify-H-60-38-FO-B",
+      "started": "2026-10-18T22:24:51.424077+00:00",
+      "source_sha256": "ff64b893c281bdd8a79c3d28eaa7d9153af6c8ff50d91ad456c822ab890cf130",
+      "status": "captured",
+      "png_sha256": "26ad2e7796d69b1c4060334f8dfed302139dc504e1d260d27865cf82db0f6a48",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP274&otype=PNG",
+      "finished": "2026-10-18T22:24:52.006430+00:00"
+    },
+    {
+      "name": "justify-H-60-38-FT-N",
+      "started": "2026-10-18T22:24:52.209182+00:00",
+      "source_sha256": "838027681d6055c43b7a4deda184c8d02dfe4726f2775213309101cfa9d79786",
+      "status": "captured",
+      "png_sha256": "42f493ae32597888a59f3c1820eb1068e8a467ca7201ea75d13e84206f1ee5df",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP275&otype=PNG",
+      "finished": "2026-10-18T22:24:52.815754+00:00"
+    },
+    {
+      "name": "justify-H-60-38-FT-R",
+      "started": "2026-10-18T22:24:53.017092+00:00",
+      "source_sha256": "e5af1932aa8230866f51ed1e009f3a9da4239a74b3bacefa550ea27280c1a1bf",
+      "status": "captured",
+      "png_sha256": "d4506cd309083a743fb1a5872ee4f1b4a95e7d095769ab2cb7c5d979f17d40ce",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP276&otype=PNG",
+      "finished": "2026-10-18T22:24:53.591645+00:00"
+    },
+    {
+      "name": "justify-H-60-38-FT-I",
+      "started": "2026-10-18T22:24:53.793322+00:00",
+      "source_sha256": "2c95264602e9bcf6828e07ff045d56dbb23fc5a01b0f24ffd2440bf19609f983",
+      "status": "captured",
+      "png_sha256": "0d21e1751fef76939408b12dadd5a5dcb7c5d1e40f9aa3a94a79e53403b239e0",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP277&otype=PNG",
+      "finished": "2026-10-18T22:24:54.319808+00:00"
+    },
+    {
+      "name": "justify-H-60-38-FT-B",
+      "started": "2026-10-18T22:24:54.521700+00:00",
+      "source_sha256": "03578efc877e224e88887569c699ec52bc62a94d53ee70e280bb912a484c11e6",
+      "status": "captured",
+      "png_sha256": "ee265d57f87e2a7b32f8bfcabf15dddee0364780d8eb9dfa33758f1ea38e1b99",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP278&otype=PNG",
+      "finished": "2026-10-18T22:24:55.095998+00:00"
+    },
+    {
+      "name": "control-end",
+      "started": "2026-10-18T22:24:55.297722+00:00",
+      "source_sha256": "f83921827fbbd64256e05c2b52567d26c48290abc34e150da38297bbd96658e6",
+      "status": "captured",
+      "png_sha256": "42d9aa9f52d7c76961389aa5172083fb45504c9a47dc77feb2befb6adf302fb5",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP279&otype=PNG",
+      "finished": "2026-10-18T22:24:55.791338+00:00"
+    }
+  ],
+  "finished": "2026-10-18T22:24:55.992852+00:00",
+  "files": {
+    "control-end.png": "42d9aa9f52d7c76961389aa5172083fb45504c9a47dc77feb2befb6adf302fb5",
+    "control-end.zpl": "f83921827fbbd64256e05c2b52567d26c48290abc34e150da38297bbd96658e6",
+    "control-start.png": "42d9aa9f52d7c76961389aa5172083fb45504c9a47dc77feb2befb6adf302fb5",
+    "control-start.zpl": "f83921827fbbd64256e05c2b52567d26c48290abc34e150da38297bbd96658e6",
+    "justify-E-41-20-FO-B.png": "8ce75fcc6da9382d7d382fdc2d45bb8c7f4f68aeeee42fddca66a8fb563c84ba",
+    "justify-E-41-20-FO-B.zpl": "2565467e841a1cd921b84031ca1daf4da4f2f020399947cca23c6480219f33fd",
+    "justify-E-41-20-FO-I.png": "0b67354c8274c5e2cd03847db2250c8068822cf454067e5fed186fa10ee288aa",
+    "justify-E-41-20-FO-I.zpl": "e2da89fb9c976716c56ad571b081441e45102b31d0cb94bd18e5a42fbc92fdef",
+    "justify-E-41-20-FO-N.png": "c23af628efb3dc24feac97f2c68b2d0dca53e4472b89a56527298d9fbb69e241",
+    "justify-E-41-20-FO-N.zpl": "e61dacb99f098d447f63c9f8e83b57db4280ee1c1a4344a91cea63e8dc9cc446",
+    "justify-E-41-20-FO-R.png": "7d7b5bb2f3b42f5fc0b2278f568c2781580abd80a7408b863ed5443de57a6a7d",
+    "justify-E-41-20-FO-R.zpl": "5fb9dd92f209de379afe1823f3054dc49e5907c8051f50e1fa022bbe6593533f",
+    "justify-E-41-20-FT-B.png": "a1e8df2fd8cab0ca96c096db69182b869664777ff912f5305a434101aa1cc9cf",
+    "justify-E-41-20-FT-B.zpl": "b59d011bbdc55ad74c6bc0ea89453057303d03cc578d5037877f49d7577b10b2",
+    "justify-E-41-20-FT-I.png": "563583fcc76432bbfd53a2aec16ad13069165b20029ca5bcc588fac363cefa56",
+    "justify-E-41-20-FT-I.zpl": "5be439ea1edd47f0a9e876bd1b6748205ae3dd2847dac3a646b14a5af72aba0b",
+    "justify-E-41-20-FT-N.png": "7cf9d584fce9008b8a31035822f72ff15ef5b405b650075e0f340b6d0fcc9951",
+    "justify-E-41-20-FT-N.zpl": "5dad25be6bac4244ff4d408b0db8283d5a4186b2c8d042fdc4caee112b16c627",
+    "justify-E-41-20-FT-R.png": "e73240dc6b8137cb87aa4a90d00a10d1607a5b788a47d13bb5612a8b93cb362c",
+    "justify-E-41-20-FT-R.zpl": "80363ea047a01518dbcd740fdc1836baa76c1b62fecbf20e35b4a1bf781f1a19",
+    "justify-E-82-40-FO-B.png": "1e9ace219b1af2841883308a3319b05b17921d1cbfc036a95333c3af7fb19603",
+    "justify-E-82-40-FO-B.zpl": "039f4d8c0581e0cf81d21b24620cd89e45c26e4d409d3a84a630bd159fb474ee",
+    "justify-E-82-40-FO-I.png": "19dc50467065e5fb1250ca97ea35f481c7fd84ababa4ab9982fc82d61f5ca9ab",
+    "justify-E-82-40-FO-I.zpl": "589d9d797c7ed96356a529a529d0dcd23e79307ecf7bc907c8e94a23d9e293c0",
+    "justify-E-82-40-FO-N.png": "3212d8ecd981a209861e4e28d13c84506bea03177e7a991dcba9b3abe07c1350",
+    "justify-E-82-40-FO-N.zpl": "67c3f16ea6a7c329cf003a2d10c39369b582cab9ecd9794f86ae28624be3e24e",
+    "justify-E-82-40-FO-R.png": "fb4db8fa3430b822361cc97bbf5320b4b26bdb4c3478a0b736f1400caf476366",
+    "justify-E-82-40-FO-R.zpl": "7a5e6bfffb8aa44bf11dc6afe596bb5f9d1d07d98448515003dc5e5820b6bd2d",
+    "justify-E-82-40-FT-B.png": "f3edb2129509e436dc0f78c920a074af821b4870b1148318f68c8ca688802bf6",
+    "justify-E-82-40-FT-B.zpl": "e499d3acc1470a94467b01c49320fa65e0144d5a7354ca723bb22996df87ebd8",
+    "justify-E-82-40-FT-I.png": "8c9945fb06e3104d92aea9b27b09ab43b7f392634335ab59e98bc0e161806a96",
+    "justify-E-82-40-FT-I.zpl": "a0bce69b032615194c864a59afeb2ada42d8987f78ad17b4a3be89f37280d818",
+    "justify-E-82-40-FT-N.png": "1cfffa7699afdcbf5bce7f0a50540fc2c08a8eba5d4b287b498c511262ae956b",
+    "justify-E-82-40-FT-N.zpl": "3d23113761a2be155d08da88f27c15745da6f5728f09af31690fa17ba866f49a",
+    "justify-E-82-40-FT-R.png": "e61955144d0333ed181fe5698ecc8e2ab010f3b90bce986e619e618cd1d626e9",
+    "justify-E-82-40-FT-R.zpl": "ca3e9daf19bc66e92ca9b4c56c8ee9c106de4839ec860591b28f29dfa64079bb",
+    "justify-H-30-19-FO-B.png": "a3504f97938b8ba6ec0867a7950299eea0624443ef29eb24601b23d5c3c830b6",
+    "justify-H-30-19-FO-B.zpl": "4ffb1fb2142d9fb9d5c55e9a3856e90855d2bb552dabb752ae9a2256a1931e03",
+    "justify-H-30-19-FO-I.png": "c84dc2887be7499b6a1c78902df5fc72832392000401d4084e41d8c614a5bbe5",
+    "justify-H-30-19-FO-I.zpl": "e191989e8fe9cba97c6d514b9210f45e52f36289f34ff4befaf5aec1518d8736",
+    "justify-H-30-19-FO-N.png": "f4069b5b3c5718784ad088bfbbed90c586455870b924c5558743c36b6342d4b0",
+    "justify-H-30-19-FO-N.zpl": "4cc7db3e8d57cac58c6c56d639f062d34fcc226c4c9b3b41d81126e6629241ad",
+    "justify-H-30-19-FO-R.png": "d995a912ae9d580cf6e6f50c890cb0cf61984986e5436335fa4958356ff4830f",
+    "justify-H-30-19-FO-R.zpl": "77619aedc1388c1d1d517568873e08b7699eae85c035bfc094428854668e7668",
+    "justify-H-30-19-FT-B.png": "56647fd186a0c5a519df40b08e8e1323c5b0bd12141b307a07f17285dd7dd363",
+    "justify-H-30-19-FT-B.zpl": "6e60555b4d6976ac5213c576fe2bae5d59a5d1a8d304cd1089044b3acd965801",
+    "justify-H-30-19-FT-I.png": "533cfdb7dbd9d1f603f1c2db60fd486b4934a9d0dc501f300b35354619b226bb",
+    "justify-H-30-19-FT-I.zpl": "096f3a2ada17a1f51f970873d8778f067facbb658de85b7907e289adee1f7917",
+    "justify-H-30-19-FT-N.png": "9d9077ec1f433af921493c8c837f50e41ab6a0d1b2caae8c2292cd341bf77ebc",
+    "justify-H-30-19-FT-N.zpl": "778ce3afad0a85d75cbd91fc3abeb4751b75850074c54238a901fe66ec2eb83d",
+    "justify-H-30-19-FT-R.png": "48cf59f94b7ef55bc0e0a84d422172439457af516cd72733bc7e3c4a4fde2ef2",
+    "justify-H-30-19-FT-R.zpl": "4fc5ed8b2630fc770a0fc1c1f0c83b3899eb87f713e1c1f65df04b0b8969a8c1",
+    "justify-H-60-38-FO-B.png": "26ad2e7796d69b1c4060334f8dfed302139dc504e1d260d27865cf82db0f6a48",
+    "justify-H-60-38-FO-B.zpl": "ff64b893c281bdd8a79c3d28eaa7d9153af6c8ff50d91ad456c822ab890cf130",
+    "justify-H-60-38-FO-I.png": "4273bf2ba830df3348bd679b7c720a35a99d6971dc5454c78682fb2194aa6193",
+    "justify-H-60-38-FO-I.zpl": "01ba45e3b22bdfad994bc88091d4b9a175e656d797e8c156b3e3db7c6eec8212",
+    "justify-H-60-38-FO-N.png": "4e7aef3bff111cb3b94916818fb09dca8ffa0c33a3e8eff90b2b5589ffb6439f",
+    "justify-H-60-38-FO-N.zpl": "54747f14f23611efd02c9eeff908c61afa69ebd4957fe1d43bcdb15a080d3e5b",
+    "justify-H-60-38-FO-R.png": "3e025816f41dc393a2ba1cdf33ea9bc48baf0072beddbda021b02964dad88375",
+    "justify-H-60-38-FO-R.zpl": "8a16bad27611737a4295a84f206feda394c83ccbeabbb9ebdaafc232182c9d70",
+    "justify-H-60-38-FT-B.png": "ee265d57f87e2a7b32f8bfcabf15dddee0364780d8eb9dfa33758f1ea38e1b99",
+    "justify-H-60-38-FT-B.zpl": "03578efc877e224e88887569c699ec52bc62a94d53ee70e280bb912a484c11e6",
+    "justify-H-60-38-FT-I.png": "0d21e1751fef76939408b12dadd5a5dcb7c5d1e40f9aa3a94a79e53403b239e0",
+    "justify-H-60-38-FT-I.zpl": "2c95264602e9bcf6828e07ff045d56dbb23fc5a01b0f24ffd2440bf19609f983",
+    "justify-H-60-38-FT-N.png": "42f493ae32597888a59f3c1820eb1068e8a467ca7201ea75d13e84206f1ee5df",
+    "justify-H-60-38-FT-N.zpl": "838027681d6055c43b7a4deda184c8d02dfe4726f2775213309101cfa9d79786",
+    "justify-H-60-38-FT-R.png": "d4506cd309083a743fb1a5872ee4f1b4a95e7d095769ab2cb7c5d979f17d40ce",
+    "justify-H-60-38-FT-R.zpl": "e5af1932aa8230866f51ed1e009f3a9da4239a74b3bacefa550ea27280c1a1bf",
+    "reset.zpl": "ae46810376fdda94779341c37244a9651939b9fc1d0a5944b7b63bac24a60445"
+  },
+  "capture_tool_sha256": "b5d9e7e741f0e3eb0d27f448409802e09075ed79aecd0eb416cad9275301f7ea",
+  "omitted_html_sha256": {
+    "config-start.html": "3d60cad3589775f59decfd4ad85f8adef0ef7d43d02d6db617694ce83fb00368",
+    "control-end.html": "3c32c48f05ecff87f3df76582cb822f284ec61d125afbe7ead8135bc972c79d6",
+    "control-start.html": "4af631b34f10a2b6cebafe9fb9c6bc06f0eaad389d2bf7efa03d2483392cc790",
+    "justify-E-41-20-FO-B.html": "3f71be77e64382ed28f89c7c03adf58900c059925527b5fc50484049fd0bf571",
+    "justify-E-41-20-FO-I.html": "0e7a6552840a2aee8bc26a4588a66017f59fdceeb8d1f26015ac033a559c6e03",
+    "justify-E-41-20-FO-N.html": "2683808500c2e6b12fbf6eff1e2b0657aa6d3ba6009da3649730e497e6ec837e",
+    "justify-E-41-20-FO-R.html": "7739c2ea97ecffa4e5dcb7ad02b46de30669621e6b8a7f04e5b9d5c6c794b8b0",
+    "justify-E-41-20-FT-B.html": "7c9308df516321517b7323b15fe0702ced1735f21e634bbfb45ca367cb254839",
+    "justify-E-41-20-FT-I.html": "5965fb11fd5b47965e00865bdeafdbcf450b20ecd47008db264572b3b2b9a0bb",
+    "justify-E-41-20-FT-N.html": "fd153fd12226b41608e9569dd15fd01fc474a7377786102214cdb96e9d7ced72",
+    "justify-E-41-20-FT-R.html": "4f45d9a3e5378d1ebcfaa1df39eea9d2e1962bb468c27f9996a3ed7940fdaaa4",
+    "justify-E-82-40-FO-B.html": "c50b76f90ed8066daec4ecfa5f83ca7623328154ac8a81333e7b4ebf5e5ab973",
+    "justify-E-82-40-FO-I.html": "d04491022926fb015842bd7347bc95b0ee428fdf67da8d1ac21f02fa84dba608",
+    "justify-E-82-40-FO-N.html": "a072e25c6d52affb1c3407c85aa2c5d575c9261d61deacb587eebc3351e67694",
+    "justify-E-82-40-FO-R.html": "88b6eebd6173e499a88bd72907dcb9e5bc0606a274159b6c8d8a07a7fb52f8c0",
+    "justify-E-82-40-FT-B.html": "7f97c606de876895bf8f2af78ce0a3b877e97a69d2ce85d82f9e542111fc8c44",
+    "justify-E-82-40-FT-I.html": "0903dd7d167bd6e6f745a48f870db63b80659b8fd64dc3762c13539c59c31b0d",
+    "justify-E-82-40-FT-N.html": "dd6561ec5b5f3b64eb782408e765b2beb368bf32524d1ba9d5500180361fc026",
+    "justify-E-82-40-FT-R.html": "e00a2c1907e644f56cb6a51d161e31b25640ae13a0c7acb9d22418ef66e36871",
+    "justify-H-30-19-FO-B.html": "d992e5347d6622c73986d5d17a64c4c76f49fe8708a5ace956a61bb5ee3a1dd7",
+    "justify-H-30-19-FO-I.html": "80c7752cb847713153c5d5e2888b0d6ab8e8d25842d8a3c9c372155c544e2570",
+    "justify-H-30-19-FO-N.html": "768d46142bba958769e5385a56adada029778a67f3520dbda5e60c350f12a91e",
+    "justify-H-30-19-FO-R.html": "e1da74cfe2a394cb46ef457cd9d556efe116129240b562bc4153a3f03e8259f5",
+    "justify-H-30-19-FT-B.html": "bc633cd97bd0ff47ea0f7ec3772b7a1d3c49ab725138f26b93dacc7115585b2a",
+    "justify-H-30-19-FT-I.html": "bb4e1eca667c2e1874b65d8c5142a95c529200101dc4514ecbf92f84fea0f5a1",
+    "justify-H-30-19-FT-N.html": "e0ea43b9aa6cc2129027f323bad51a4a43d9d794a5a9c658b69731550ede5934",
+    "justify-H-30-19-FT-R.html": "f833ea39b734a8b00355a25732b4b972d4ae517a3b1af78edd8b62604c1ebe04",
+    "justify-H-60-38-FO-B.html": "bb163348f16f39ad808bf93a046af447c8d221f8cb004694af007211a513e43e",
+    "justify-H-60-38-FO-I.html": "cacd3f65ed205bf6787a9ef6ea6857393f88505fc296a458593c54c2eb562834",
+    "justify-H-60-38-FO-N.html": "3b0606ab899eabe85b0886e30d524e79ad2cdf802b4e71f9d23bf4b729ca89ac",
+    "justify-H-60-38-FO-R.html": "e033065a1bb807d261619d418e84be7051a6191ec009fe44211beaca2aefeb32",
+    "justify-H-60-38-FT-B.html": "619ecdf2a444238b40f00143596d1d4eb86e1f9436bec98692340c527646b7fc",
+    "justify-H-60-38-FT-I.html": "53c61ce715c0e04beac4d07373763b3a62ce529a9e8daebb51b011eaf36999e2",
+    "justify-H-60-38-FT-N.html": "8f1c2e4c45199a1482ca7356783b17a8ea1a09d03abf91beb82c5c6e6888329d",
+    "justify-H-60-38-FT-R.html": "6e238b53eb9504f8f7c808bdbc5a274b46033f270fdc10db65765187931322a1",
+    "status-start.html": "3c2201ab8d3e078abc49c5cc118ed4d64ffe5fd76309fe2b21d0a605ef4090e8"
+  }
+}

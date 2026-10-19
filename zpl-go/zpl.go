@@ -29,6 +29,7 @@ const (
 	Specification Profile = iota
 	ZD621
 	ZQ610Plus
+	GX430t
 )
 
 type Request struct {

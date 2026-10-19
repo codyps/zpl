@@ -53,7 +53,8 @@ select the matching ZPL `^CI` mode in the source. It returns:
 Options `width`, `height`, and `dpi` override the selected profile's initial
 settings. ZPL commands and profile behavior can change the resulting dimensions.
 `profile` supports `zd621` (the Rust default, 832 × 1218 at 203 DPI),
-`specification` (812 × 1218 at 203 DPI), and `zq610-plus` (384 × 2030 at 203 DPI).
+`specification` (812 × 1218 at 203 DPI), `zq610-plus` (384 × 2030 at 203 DPI),
+and `gx430t` (1280 × 2558 at 300 DPI).
 Printer profiles reflect measured preview behavior, not universal device parity.
 
 `label` is a zero-based index. PNG and SVG select label 0 by default. PDF includes

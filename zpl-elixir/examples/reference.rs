@@ -14,6 +14,7 @@ fn main() {
         ("specification", profiles::SPECIFICATION),
         ("zd621", profiles::ZD621_203_DPI),
         ("zq610_plus", profiles::ZQ610_PLUS_203_DPI),
+        ("gx430t", profiles::GX430T_300_DPI),
     ] {
         let document = zpl::render(
             input,

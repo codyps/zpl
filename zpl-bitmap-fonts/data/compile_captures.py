@@ -110,7 +110,7 @@ def compile_data(source):
             faces.append(strike(c, gs))
         variants.append(faces)
     retail = [strike(captures[n], glyphs(captures[n])) for n in
-              ['font0-25-14-retail.zbf', 'font0-32-0-retail.zbf']]
+              source.get('retail_order', ['font0-25-14-retail.zbf', 'font0-32-0-retail.zbf'])]
     lines.append(f'static METRICS: &[[u16; 5]] = &{metrics};')
     lines.append(f'static OFFSETS: &[u32] = &{offsets};')
     lines.append('static POOL: Pool = Pool { metrics: METRICS, offsets: OFFSETS, bits: include_bytes!("captures.bin") };')
@@ -134,12 +134,16 @@ def compile_data(source):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--check', action='store_true')
+    parser.add_argument('--dataset', choices=('zd621', 'gx430t'), default='zd621')
     args = parser.parse_args()
     root = Path(__file__).resolve().parent.parent
-    source = json.loads((root / 'data/captures.json').read_text())
+    source_path = 'data/captures.json' if args.dataset == 'zd621' else 'data/gx430t/captures.json'
+    source = json.loads((root / source_path).read_text())
     rust, bitmap, records, maps = compile_data(source)
     for name, data in [('captures.rs', rust), ('captures.bin', bitmap)]:
-        target = root / 'src/zd621' / name
+        target = root / 'src' / args.dataset / name
+        if not args.check:
+            target.parent.mkdir(parents=True, exist_ok=True)
         if args.check:
             assert target.read_bytes() == data, f'{target} requires regeneration'
         else:

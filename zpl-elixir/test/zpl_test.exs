@@ -56,6 +56,7 @@ defmodule ZplTest do
   test "native profile defaults and independent compatibility overrides" do
     assert %{width: 832, height: 1218, dpi: 203} = Zpl.options()
     assert %{width: 384, height: 2030} = Zpl.options(:zq610_plus)
+    assert %{width: 1280, height: 2558, dpi: 300} = Zpl.options(:gx430t)
     assert Zpl.options().compatibility.qr_printer_mask_selection
     refute Zpl.options(:specification).compatibility.qr_printer_mask_selection
     refute Zpl.compatibility().box_zero_thickness_as_one

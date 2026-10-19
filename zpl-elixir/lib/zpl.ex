@@ -9,7 +9,7 @@ defmodule Zpl do
   """
 
   @type config :: map() | keyword()
-  @type profile :: :zd621 | :specification | :zq610_plus
+  @type profile :: :zd621 | :specification | :zq610_plus | :gx430t
   @type result(value) :: {:ok, value} | {:error, Zpl.Error.t()}
 
   @doc "The linked Rust renderer version."

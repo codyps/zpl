@@ -61,7 +61,7 @@ pub struct Document {
 struct TextLayout {
     path: Path,
     baseline: f64,
-    parts: Vec<Path>,
+    parts: Vec<font::TextPart>,
     center_overflow: Vec<bool>,
 }
 #[derive(Clone)]
@@ -92,7 +92,7 @@ struct Field {
     inverted_margin: f64,
     leading_tab_advance: f64,
     text_size: Option<(f64, f64)>,
-    text_parts: Vec<Path>,
+    text_parts: Vec<font::TextPart>,
     center_overflow: Vec<bool>,
     graphic_size: Option<(f64, f64)>,
     graphic_bitmap: bool,
@@ -421,6 +421,7 @@ fn render_expanded(
                         | "FW"
                         | "BY"
                         | "CI"
+                        | "MC"
                 )
             {
                 return Err("field or label terminator outside label".into());
@@ -594,9 +595,38 @@ fn render_expanded(
                                 .validate(limits.coordinate_abs)
                                 .map_err(|e| e.to_string())?;
                         }
-                        // The firmware clips against the rounded canvas, not
-                        // the requested PW: width-boundary-1/65 retain ink in
-                        // the added right-hand area. Do not erase that margin.
+                        if options.compatibility.preview_clips_logical_width {
+                            // GX430t V56.17.17Z centers PW, then masks its margins.
+                            // Native width-1/65/129/193 retain one extra right dot.
+                            // ZQ610 Plus instead retains the entire rounded area.
+                            let end = offset + logical_width + u32::from(logical_width % 64 == 1);
+                            let mut mask = Path::default();
+                            if offset > 0 {
+                                mask.rect(0., 0., offset as f64, sc.height as f64);
+                            }
+                            if end < rounded_width {
+                                mask.rect(
+                                    end as f64,
+                                    0.,
+                                    (rounded_width - end) as f64,
+                                    sc.height as f64,
+                                );
+                            }
+                            if !mask.segments.is_empty() {
+                                total_segments = total_segments
+                                    .checked_add(mask.segments.len())
+                                    .ok_or("document path count overflow")?;
+                                if total_segments > limits.segments {
+                                    return Err("document path limit exceeded".into());
+                                }
+                                mask.validate(limits.coordinate_abs)
+                                    .map_err(|e| e.to_string())?;
+                                sc.draws.push(Draw {
+                                    path: mask,
+                                    paint: Paint::White,
+                                });
+                            }
+                        }
                     }
                     labels.push(sc);
                     if labels.len() > limits.labels {
@@ -643,6 +673,14 @@ fn render_expanded(
                         "Y" => mirror = true,
                         "N" => mirror = false,
                         _ => {}
+                    }
+                }
+                "MC" => {
+                    // ^MC, Programming Guide p. 300: clear the bitmap after
+                    // each label. Each local scene starts empty already.
+                    // Retaining the previous label's bitmap is not implemented.
+                    if p.len() != 1 || !matches!(p[0], "" | "Y") {
+                        return Err("retained label bitmap is unsupported".into());
                     }
                 }
                 "PO" => {
@@ -838,7 +876,7 @@ fn render_expanded(
                         &fonts,
                         &p,
                         (dw, dh),
-                        font_id,
+                        font_resources::Selection::from(font_id).with_dpi(options.dpi),
                         options.compatibility.font0_minimum_dimensions,
                         options.compatibility.bitmap_font_maximum_dimensions,
                         limits.number_abs,
@@ -912,7 +950,7 @@ fn render_expanded(
                         &fonts,
                         &p,
                         (dw, dh),
-                        font_id,
+                        font_resources::Selection::from(font_id).with_dpi(options.dpi),
                         options.compatibility.font0_minimum_dimensions,
                         options.compatibility.bitmap_font_maximum_dimensions,
                         limits.number_abs,
@@ -933,7 +971,7 @@ fn render_expanded(
                         &fonts,
                         &p,
                         (default_requested_w, default_requested_h),
-                        font_id,
+                        font_resources::Selection::from(font_id).with_dpi(options.dpi),
                         options.compatibility.font0_minimum_dimensions,
                         options.compatibility.bitmap_font_maximum_dimensions,
                         limits.number_abs,
@@ -1204,6 +1242,8 @@ fn render_expanded(
                                     || (encoding == 28
                                         && options.compatibility.utf8_uses_legacy_backslash),
                             )
+                            .with_gx430t_strikes(options.compatibility.gx430t_scalable_strikes)
+                            .with_dpi(options.dpi)
                             .with_fonts(&fonts)
                             .with_cache(&glyph_cache)
                             .with_truetype_environment(
@@ -1323,7 +1363,15 @@ fn render_expanded(
                                         field.justification == 1,
                                     )?;
                                     field.direction_metrics = layout.metrics;
-                                    (layout.path, layout.parts, Some(layout.size))
+                                    (
+                                        layout.path,
+                                        layout
+                                            .parts
+                                            .into_iter()
+                                            .map(|path| font::TextPart { path, cell: None })
+                                            .collect(),
+                                        Some(layout.size),
+                                    )
                                 } else {
                                     (path, parts, None)
                                 };
@@ -1363,7 +1411,13 @@ fn render_expanded(
                                             field.direction.1,
                                         )?
                                     } else {
-                                        font::inverted_margin(text_font, value, font_w, font_h)?
+                                        font::inverted_margin(
+                                            text_font,
+                                            value,
+                                            font_w,
+                                            font_h,
+                                            options.compatibility.ocr_text_uses_padded_cells,
+                                        )?
                                     };
                             }
                             field.text_size = Some(if let Some(size) = field.bounded {
@@ -1683,7 +1737,12 @@ fn render_expanded(
                                 Some(face) => face
                                     .bitmap_ft_offset(font_h, field.rotation)
                                     .unwrap_or((0., 0.)),
-                                None => font::printer_ft_offset(font_id, font_h, field.rotation),
+                                None => font::printer_ft_offset(
+                                    font_id,
+                                    font_h,
+                                    field.rotation,
+                                    options.dpi,
+                                ),
                             }
                         } else {
                             (0., 0.)
@@ -1975,7 +2034,8 @@ fn render_expanded(
                                     // and translation. Transform its ink bounds
                                     // once instead of repeating all printer
                                     // placement rules for every bitmap vertex.
-                                    let (left, top, right, bottom) = part
+                                    let clamp_path = part.cell.as_ref().unwrap_or(&part.path);
+                                    let (left, top, right, bottom) = clamp_path
                                         .segments
                                         .iter()
                                         .filter_map(|s| match s {
@@ -1999,7 +2059,7 @@ fn render_expanded(
                                                 )
                                             },
                                         );
-                                    let (min_x, min_y) = if part.segments.is_empty() {
+                                    let (min_x, min_y) = if clamp_path.segments.is_empty() {
                                         (f64::INFINITY, f64::INFINITY)
                                     } else {
                                         [
@@ -2013,6 +2073,31 @@ fn render_expanded(
                                         .fold((f64::INFINITY, f64::INFINITY), |(x, y), p| {
                                             (x.min(p.x), y.min(p.y))
                                         })
+                                    };
+                                    // Legacy OCR blits clamp byte-padded cells along
+                                    // the reading axis. Cross-axis clipping still uses ink.
+                                    let (min_x, min_y) = if part.cell.is_some() {
+                                        let (ink_x, ink_y) = part
+                                            .path
+                                            .segments
+                                            .iter()
+                                            .filter_map(|s| match s {
+                                                crate::output::Segment::Move(p)
+                                                | crate::output::Segment::Line(p) => {
+                                                    Some(transform(*p))
+                                                }
+                                                _ => None,
+                                            })
+                                            .fold((f64::INFINITY, f64::INFINITY), |(x, y), p| {
+                                                (x.min(p.x), y.min(p.y))
+                                            });
+                                        if matches!(field.rotation, b'R' | b'B') {
+                                            (ink_x, min_y)
+                                        } else {
+                                            (min_x, ink_y)
+                                        }
+                                    } else {
+                                        (min_x, min_y)
                                     };
                                     let (mut dx, mut dy) =
                                         if options.compatibility.text_clamps_negative_origins {
@@ -2057,7 +2142,7 @@ fn render_expanded(
                                         b'B' => (-dy, dx),
                                         _ => (dx, dy),
                                     };
-                                    let mut component = part.clone();
+                                    let mut component = part.path.clone();
                                     component.transform(|p| Point::new(p.x + dx, p.y + dy));
                                     shifted.segments.extend(component.segments);
                                 }
@@ -2242,7 +2327,13 @@ fn text_block(
     let Some((width, max_lines, spacing, align, indent)) = block else {
         let path = font::text_for(font_id, value, w, h)?;
         let parts = if collect_parts {
-            font::text_parts_for(font_id, value, w, h)?
+            font::text_parts_with_bounds_for(
+                font_id,
+                value,
+                w,
+                h,
+                compatibility.ocr_text_uses_padded_cells,
+            )?
         } else {
             Vec::new()
         };
@@ -2362,7 +2453,13 @@ fn text_block(
                 let position = font_id.block_position(position);
                 word_path.transform(|p| Point::new(p.x + position, p.y));
                 if collect_parts {
-                    for mut part in font::text_parts_for(font_id, paint_word, w, h)? {
+                    for mut part in font::text_parts_with_bounds_for(
+                        font_id,
+                        paint_word,
+                        w,
+                        h,
+                        compatibility.ocr_text_uses_padded_cells,
+                    )? {
                         part.transform(|p| Point::new(p.x + position, p.y));
                         line_parts.push(part);
                     }
@@ -2379,7 +2476,13 @@ fn text_block(
             p
         } else {
             if collect_parts {
-                line_parts = font::text_parts_for(font_id, paint_line, w, h)?;
+                line_parts = font::text_parts_with_bounds_for(
+                    font_id,
+                    paint_line,
+                    w,
+                    h,
+                    compatibility.ocr_text_uses_padded_cells,
+                )?;
             }
             font::text_for(font_id, paint_line, w, h)?
         };
@@ -2438,13 +2541,13 @@ fn supplied_font_dimensions(
     fonts: &fonts::RenderFonts<'_, '_, '_>,
     p: &[&str],
     default_size: (f64, f64),
-    id: char,
+    selection: font_resources::Selection,
     clamp_minimum: bool,
     clamp_maximum: bool,
     number_abs: f64,
 ) -> Result<(f64, f64), String> {
     let (default_w, default_h) = default_size;
-    if let Some(face) = fonts.get(id) {
+    if let Some(face) = fonts.get(selection.id) {
         let h = number(p, 1, 0., number_abs)?;
         let w = number(p, 2, 0., number_abs)?;
         let (w, h) = if w == 0. && h == 0. {
@@ -2465,7 +2568,7 @@ fn supplied_font_dimensions(
         p,
         default_w,
         default_h,
-        id,
+        selection,
         clamp_minimum,
         clamp_maximum,
         number_abs,
@@ -2476,7 +2579,7 @@ fn font_dimensions(
     p: &[&str],
     default_w: f64,
     default_h: f64,
-    id: char,
+    selection: font_resources::Selection,
     clamp_minimum: bool,
     clamp_maximum: bool,
     number_abs: f64,
@@ -2486,7 +2589,7 @@ fn font_dimensions(
     font_resources::dimensions(
         (w, h),
         (default_w, default_h),
-        id,
+        selection,
         clamp_minimum,
         clamp_maximum,
     )

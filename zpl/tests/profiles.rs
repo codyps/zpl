@@ -1418,3 +1418,64 @@ fn maxicode_shared_run_boundaries_are_independently_selectable() {
             .maxicode_printer_run_boundaries
     );
 }
+
+#[test]
+fn map_clear_y_preserves_fresh_label_scenes_and_rejects_retention() {
+    // ^MC, Programming Guide p. 300: clear after each label by default.
+    // https://docs.zebra.com/us/en/printers/software/zpl-pg/zpl-commands/%5Emc.html
+    let source = b"^XA^MCY^FO20,20^GB10,10,10^FS^XZ^XA^MC^XZ";
+    let document = render(source, SPECIFICATION).unwrap();
+    let plain = render(b"^XA^FO20,20^GB10,10,10^FS^XZ^XA^XZ", SPECIFICATION).unwrap();
+    for (actual, expected) in document.labels.iter().zip(&plain.labels) {
+        assert_eq!(rasterize(actual).unwrap(), rasterize(expected).unwrap());
+    }
+    assert_eq!(document.labels.len(), 2);
+    assert!(render(b"^XA^MCN^XZ", SPECIFICATION)
+        .unwrap_err()
+        .message
+        .contains("retained label bitmap"));
+}
+
+#[test]
+fn resident_ocr_matrices_follow_printhead_density_including_rotated_geometry() {
+    // Programming Guide, Font Matrices, Tables 29/31, pp. 1582–1584:
+    // https://docs.zebra.com/us/en/printers/software/zpl-pg/fonts-and-barcodes/font-matrices.html
+    // Compare resident aliases with the independently named native ROM faces.
+    for (dpi, suffix, e, h) in [
+        (152, "6", (21, 10), (17, 11)),
+        (203, "8", (28, 15), (21, 13)),
+        (300, "12", (41, 20), (30, 19)),
+        (600, "24", (82, 40), (60, 38)),
+    ] {
+        for (id, (height, width)) in [('E', e), ('H', h)] {
+            for scale in [1, 2] {
+                for rotation in ['N', 'R', 'I', 'B'] {
+                    let origin = "FO";
+                    {
+                        let body = format!(
+                            "^{origin}200,200^A{id}{rotation},{},{}^FD1234567890",
+                            height * scale,
+                            width * scale
+                        );
+                        let named = format!(
+                            "^{origin}200,200^A@{rotation},{},{},Z:{id}{suffix}.FNT^FD1234567890",
+                            height * scale,
+                            width * scale
+                        );
+                        let options = Options {
+                            dpi,
+                            ..ZD621_203_DPI
+                        };
+                        let alias = raster(&body, options);
+                        let direct = raster(&named, options);
+                        assert!(
+                            alias.pixels == direct.pixels,
+                            "{dpi} DPI {id} {origin} {rotation} scale {scale}"
+                        );
+                        assert!(alias.pixels.contains(&0));
+                    }
+                }
+            }
+        }
+    }
+}

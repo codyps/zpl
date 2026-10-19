@@ -66,7 +66,7 @@ Windows runner's installed Framework runtime, using both NuGet project formats.
   when using UTF-8 text. Pass `ReadOnlySpan<byte>` for legacy encodings, downloaded
   graphics, binary fonts, and embedded NULs. No network or printer access occurs.
 - `RenderOptions.Create(profile)` initializes every field from the native profile.
-  The default profile is ZD621; `Specification` and `Zq610Plus` are also available.
+  The default profile is ZD621; `Specification`, `Zq610Plus`, and 300-DPI `Gx430t` are also available.
   `Compatibility` exposes every C ABI setting, with boolean flags represented by
   byte values 0/1 and optional values by `OptionalUInt32`, `OptionalUInt16`, or
   `OptionalFileId`. Configuration layouts are generated from the C header.

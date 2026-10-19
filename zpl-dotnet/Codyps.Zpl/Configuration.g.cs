@@ -29,6 +29,8 @@ public partial struct OptionalFileId
 [StructLayout(LayoutKind.Sequential)]
 public partial struct Compatibility
 {
+    public byte Gx430tScalableStrikes;
+    public byte RejectFieldConcatenation;
     public byte InlineGraphicImplicitSeparator;
     public byte QrMalformedHeaderUsesDefaults;
     public byte Code39NormalizeInput;
@@ -36,6 +38,7 @@ public partial struct Compatibility
     public byte BoxZeroThicknessAsOne;
     public OptionalUInt32 PreviewWidthQuantum;
     public OptionalUInt32 PreviewMaxWidth;
+    public byte PreviewClipsLogicalWidth;
     public byte PreviewWidthLatchedAtFirstDraw;
     public byte PreviewIgnoresLabelLength;
     public byte QrPrinterMaskSelection;
@@ -78,6 +81,7 @@ public partial struct Compatibility
     public byte BlockBackslashWithoutCi13;
     public byte BlockFoRightJustificationPrinterLayout;
     public byte TextClampsNegativeOrigins;
+    public byte OcrTextUsesPaddedCells;
     public byte BlockCenterRoundsDown;
     public byte BlockNarrowPrinterLayout;
     public byte GraphicClampsNegativeOrigin;
@@ -120,6 +124,7 @@ public partial struct Compatibility
     public byte MaxicodeNulTerminatesData;
     public byte MaxicodeTerminalLatch;
     public byte MaxicodePrinterRunBoundaries;
+    public byte MaxicodeARunsStopAtSpace;
     public byte MaxicodePrinterDotGeometry;
     public byte MaxicodeMode5PreviewOmitsData;
     public byte DataMatrixDefaultTildeEscape;

@@ -2,7 +2,7 @@ import CZpl
 import Foundation
 
 public enum Profile: UInt32, CaseIterable, Sendable {
-    case zd621 = 0, specification = 1, zq610Plus = 2
+    case zd621 = 0, specification = 1, zq610Plus = 2, gx430t = 3
 }
 
 public enum OutputFormat: UInt32, CaseIterable, Sendable {

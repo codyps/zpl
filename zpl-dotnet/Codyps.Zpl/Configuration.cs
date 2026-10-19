@@ -1,6 +1,6 @@
 namespace Codyps.Zpl;
 
-public enum Profile : uint { Zd621 = 0, Specification = 1, Zq610Plus = 2 }
+public enum Profile : uint { Zd621 = 0, Specification = 1, Zq610Plus = 2, Gx430t = 3 }
 public enum OutputFormat : uint { Png = 0, Svg = 1, Pdf = 2, Gray8 = 3 }
 public enum Hinting : uint { None = 0, Native = 1 }
 public enum Status { InvalidArgument = 1, ParseError = 2, RenderError = 3, OutputError = 4, Panic = 5, FontError = 6 }

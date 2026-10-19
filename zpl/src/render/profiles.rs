@@ -12,6 +12,8 @@ pub const SPECIFICATION: Options = Options {
     height: 1218,
     dpi: 203,
     compatibility: Compatibility {
+        gx430t_scalable_strikes: false,
+        reject_field_concatenation: false,
         inline_graphic_implicit_separator: false,
         qr_malformed_header_uses_defaults: false,
         code39_normalize_input: false,
@@ -20,6 +22,7 @@ pub const SPECIFICATION: Options = Options {
 
         preview_width_quantum: None,
         preview_max_width: None,
+        preview_clips_logical_width: false,
         preview_width_latched_at_first_draw: false,
         preview_ignores_label_length: false,
         qr_printer_mask_selection: false,
@@ -60,6 +63,7 @@ pub const SPECIFICATION: Options = Options {
         block_backslash_without_ci13: false,
         block_fo_right_justification_printer_layout: false,
         text_clamps_negative_origins: false,
+        ocr_text_uses_padded_cells: false,
         block_center_rounds_down: false,
         block_narrow_printer_layout: false,
         graphic_clamps_negative_origin: false,
@@ -101,6 +105,7 @@ pub const SPECIFICATION: Options = Options {
         maxicode_nul_terminates_data: false,
         maxicode_terminal_latch: false,
         maxicode_printer_run_boundaries: false,
+        maxicode_a_runs_stop_at_space: false,
         maxicode_printer_dot_geometry: false,
         maxicode_mode5_preview_omits_data: false,
         data_matrix_default_tilde_escape: false,
@@ -169,6 +174,8 @@ pub const ZD621_203_DPI: Options = Options {
     height: 1218,
     dpi: 203,
     compatibility: Compatibility {
+        gx430t_scalable_strikes: false,
+        reject_field_concatenation: false,
         inline_graphic_implicit_separator: true,
         qr_malformed_header_uses_defaults: true,
         code39_normalize_input: true,
@@ -177,6 +184,7 @@ pub const ZD621_203_DPI: Options = Options {
 
         preview_width_quantum: None,
         preview_max_width: None,
+        preview_clips_logical_width: false,
         preview_width_latched_at_first_draw: false,
         preview_ignores_label_length: false,
         qr_printer_mask_selection: true,
@@ -217,6 +225,7 @@ pub const ZD621_203_DPI: Options = Options {
         block_backslash_without_ci13: true,
         block_fo_right_justification_printer_layout: true,
         text_clamps_negative_origins: true,
+        ocr_text_uses_padded_cells: false,
         block_center_rounds_down: true,
         block_narrow_printer_layout: true,
         graphic_clamps_negative_origin: true,
@@ -258,6 +267,7 @@ pub const ZD621_203_DPI: Options = Options {
         maxicode_nul_terminates_data: true,
         maxicode_terminal_latch: true,
         maxicode_printer_run_boundaries: true,
+        maxicode_a_runs_stop_at_space: false,
         maxicode_printer_dot_geometry: true,
         maxicode_mode5_preview_omits_data: true,
         data_matrix_default_tilde_escape: true,
@@ -345,4 +355,25 @@ pub const ZQ610_PLUS_203_DPI: Options = Options {
         ..ZD621_203_DPI.compatibility
     },
     ..ZD621_203_DPI
+};
+
+/// Zebra GX430t, 300 DPI, V56.17.17Z HTTP preview.
+/// The initial height reflects the captured device configuration; callers must
+/// set `height` for a different configured label length.
+pub const GX430T_300_DPI: Options = Options {
+    width: 1280,
+    height: 2558,
+    dpi: 300,
+    compatibility: Compatibility {
+        gx430t_scalable_strikes: true,
+        maxicode_a_runs_stop_at_space: true,
+        reject_field_concatenation: true,
+        preview_width_quantum: Some(64),
+        preview_max_width: Some(1280),
+        preview_clips_logical_width: true,
+        ocr_text_uses_padded_cells: true,
+        preview_width_latched_at_first_draw: true,
+        preview_ignores_label_length: true,
+        ..ZD621_203_DPI.compatibility
+    },
 };

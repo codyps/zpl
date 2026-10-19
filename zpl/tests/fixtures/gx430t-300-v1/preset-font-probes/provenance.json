@@ -1,0 +1,199 @@
+{
+  "printer": {
+    "model": "GX430t",
+    "serial": "32J193600198",
+    "firmware": "V56.17.17Z",
+    "dpi": 300,
+    "host": "http://192.168.6.142/"
+  },
+  "started": "2026-10-18T21:51:55.911711+00:00",
+  "cases": [
+    {
+      "name": "control-start",
+      "started": "2026-10-18T21:51:56.259612+00:00",
+      "source_sha256": "f83921827fbbd64256e05c2b52567d26c48290abc34e150da38297bbd96658e6",
+      "status": "captured",
+      "png_sha256": "42d9aa9f52d7c76961389aa5172083fb45504c9a47dc77feb2befb6adf302fb5",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP735&otype=PNG",
+      "finished": "2026-10-18T21:51:56.774481+00:00"
+    },
+    {
+      "name": "fontP-40-18-page-0",
+      "started": "2026-10-18T21:51:56.975472+00:00",
+      "source_sha256": "0a686a85472d02aef2fbc3a443b41e6f25e39e356da15529d9af1cd945161267",
+      "status": "captured",
+      "png_sha256": "35964b5ad7bfa974797e658682a0b95abc105d489261df2002752bae2a7b46f2",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP736&otype=PNG",
+      "finished": "2026-10-18T21:51:58.319641+00:00"
+    },
+    {
+      "name": "fontQ-28-24-page-0",
+      "started": "2026-10-18T21:51:58.520997+00:00",
+      "source_sha256": "f0b3e25f2dc9add3d25c64933a6867c4974676dbf3ad4ce56cf30c4b7a0437eb",
+      "status": "captured",
+      "png_sha256": "6b758dcdba2d76c3c9c8ad8d67506a4217b7bfb22dc165ac35bdc015094172c4",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP737&otype=PNG",
+      "finished": "2026-10-18T21:51:59.889009+00:00"
+    },
+    {
+      "name": "fontR-35-31-page-0",
+      "started": "2026-10-18T21:52:00.090366+00:00",
+      "source_sha256": "087b9fde8bc8b4d75faa0b7d3c7afd223951a09a4e4fe234e36d5d7d1d8dc1de",
+      "status": "captured",
+      "png_sha256": "2b0a3ce869e5f0ea1b047d187a490701f0b7abbe253ba1028507065c0c124f1d",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP738&otype=PNG",
+      "finished": "2026-10-18T21:52:01.432140+00:00"
+    },
+    {
+      "name": "fontS-40-35-page-0",
+      "started": "2026-10-18T21:52:01.633458+00:00",
+      "source_sha256": "727f40fd9fe16326751394ed59bf27a6ff648d53f8b125d7a02a15c070d21a8f",
+      "status": "captured",
+      "png_sha256": "ec208f2f03600a97ee65de970823492d9a4f621b076166e38a4c96e93288c9a1",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP739&otype=PNG",
+      "finished": "2026-10-18T21:52:03.031697+00:00"
+    },
+    {
+      "name": "fontT-48-42-page-0",
+      "started": "2026-10-18T21:52:03.232904+00:00",
+      "source_sha256": "1e97ce1f3c4a0bfe409dc595ca9b0a42de6fc35f4ca1cfdbfc528d40b98f30d7",
+      "status": "captured",
+      "png_sha256": "b2a99daad579afabd675948ebc8360f71b2141d6b796a60d923cf2dfd03cfc19",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP740&otype=PNG",
+      "finished": "2026-10-18T21:52:04.666783+00:00"
+    },
+    {
+      "name": "fontU-59-53-page-0",
+      "started": "2026-10-18T21:52:04.868059+00:00",
+      "source_sha256": "2eba5c08abb344c696f3668c4d09847102803c4928665f8d75bdace8a363c9f5",
+      "status": "captured",
+      "png_sha256": "b12b1172bdd0383dc130b28ba4bdce99b51e578a486600c550b9b4e970a66499",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP741&otype=PNG",
+      "finished": "2026-10-18T21:52:06.280282+00:00"
+    },
+    {
+      "name": "fontU-59-53-page-1",
+      "started": "2026-10-18T21:52:06.481332+00:00",
+      "source_sha256": "3b99a680e7b357e33c6cd2c3c04bfe4577a9f82a8c171f339dad1f57d3fe59db",
+      "status": "captured",
+      "png_sha256": "8be5c8419ccf7b895ca448a3ff30aa302599337c8b75cddcd1ed65441b8d0da0",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP742&otype=PNG",
+      "finished": "2026-10-18T21:52:07.169139+00:00"
+    },
+    {
+      "name": "fontV-80-71-page-0",
+      "started": "2026-10-18T21:52:07.370365+00:00",
+      "source_sha256": "2e800d070a17b264eb50172200ea1c5605a993c4e69e28f7a4229f5bea929d15",
+      "status": "captured",
+      "png_sha256": "1c1330c315e08db9253b5e81910ed2eded2580a25519478da7107cb83643aa71",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP743&otype=PNG",
+      "finished": "2026-10-18T21:52:08.548656+00:00"
+    },
+    {
+      "name": "fontV-80-71-page-1",
+      "started": "2026-10-18T21:52:08.749713+00:00",
+      "source_sha256": "e440ce2b5f035485e91824b0c881f7087fc828bfe09bdc9b664a27051f4c70d4",
+      "status": "captured",
+      "png_sha256": "a382d9b7f4a80bc1defbb301a9f4b0a8899fb962635cc588b43c2010d8af3806",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP744&otype=PNG",
+      "finished": "2026-10-18T21:52:09.757534+00:00"
+    },
+    {
+      "name": "control-end",
+      "started": "2026-10-18T21:52:09.959139+00:00",
+      "source_sha256": "f83921827fbbd64256e05c2b52567d26c48290abc34e150da38297bbd96658e6",
+      "status": "captured",
+      "png_sha256": "42d9aa9f52d7c76961389aa5172083fb45504c9a47dc77feb2befb6adf302fb5",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP745&otype=PNG",
+      "finished": "2026-10-18T21:52:10.492772+00:00"
+    }
+  ],
+  "finished": "2026-10-18T21:52:10.694248+00:00",
+  "files": {
+    "control-end.png": "42d9aa9f52d7c76961389aa5172083fb45504c9a47dc77feb2befb6adf302fb5",
+    "control-end.zpl": "f83921827fbbd64256e05c2b52567d26c48290abc34e150da38297bbd96658e6",
+    "control-start.png": "42d9aa9f52d7c76961389aa5172083fb45504c9a47dc77feb2befb6adf302fb5",
+    "control-start.zpl": "f83921827fbbd64256e05c2b52567d26c48290abc34e150da38297bbd96658e6",
+    "fontP-40-18-page-0.png": "35964b5ad7bfa974797e658682a0b95abc105d489261df2002752bae2a7b46f2",
+    "fontP-40-18-page-0.zpl": "0a686a85472d02aef2fbc3a443b41e6f25e39e356da15529d9af1cd945161267",
+    "fontQ-28-24-page-0.png": "6b758dcdba2d76c3c9c8ad8d67506a4217b7bfb22dc165ac35bdc015094172c4",
+    "fontQ-28-24-page-0.zpl": "f0b3e25f2dc9add3d25c64933a6867c4974676dbf3ad4ce56cf30c4b7a0437eb",
+    "fontR-35-31-page-0.png": "2b0a3ce869e5f0ea1b047d187a490701f0b7abbe253ba1028507065c0c124f1d",
+    "fontR-35-31-page-0.zpl": "087b9fde8bc8b4d75faa0b7d3c7afd223951a09a4e4fe234e36d5d7d1d8dc1de",
+    "fontS-40-35-page-0.png": "ec208f2f03600a97ee65de970823492d9a4f621b076166e38a4c96e93288c9a1",
+    "fontS-40-35-page-0.zpl": "727f40fd9fe16326751394ed59bf27a6ff648d53f8b125d7a02a15c070d21a8f",
+    "fontT-48-42-page-0.png": "b2a99daad579afabd675948ebc8360f71b2141d6b796a60d923cf2dfd03cfc19",
+    "fontT-48-42-page-0.zpl": "1e97ce1f3c4a0bfe409dc595ca9b0a42de6fc35f4ca1cfdbfc528d40b98f30d7",
+    "fontU-59-53-page-0.png": "b12b1172bdd0383dc130b28ba4bdce99b51e578a486600c550b9b4e970a66499",
+    "fontU-59-53-page-0.zpl": "2eba5c08abb344c696f3668c4d09847102803c4928665f8d75bdace8a363c9f5",
+    "fontU-59-53-page-1.png": "8be5c8419ccf7b895ca448a3ff30aa302599337c8b75cddcd1ed65441b8d0da0",
+    "fontU-59-53-page-1.zpl": "3b99a680e7b357e33c6cd2c3c04bfe4577a9f82a8c171f339dad1f57d3fe59db",
+    "fontV-80-71-page-0.png": "1c1330c315e08db9253b5e81910ed2eded2580a25519478da7107cb83643aa71",
+    "fontV-80-71-page-0.zpl": "2e800d070a17b264eb50172200ea1c5605a993c4e69e28f7a4229f5bea929d15",
+    "fontV-80-71-page-1.png": "a382d9b7f4a80bc1defbb301a9f4b0a8899fb962635cc588b43c2010d8af3806",
+    "fontV-80-71-page-1.zpl": "e440ce2b5f035485e91824b0c881f7087fc828bfe09bdc9b664a27051f4c70d4",
+    "layout.json": "fcaabd1af89880d231fbc6c9a6805a74236d568f0f4ce329a5764be64c745670",
+    "reset.zpl": "ae46810376fdda94779341c37244a9651939b9fc1d0a5944b7b63bac24a60445"
+  },
+  "capture_tool_sha256": "1956ab0b8fe814e5296a8f3b5702cd7ee1094aaa4abdfb9efaa0624dfaff321c",
+  "repository_commit": "1eb6725d0c5eb60754b8fa8a8e38aee8b15a35ae",
+  "omitted_html_sha256": {
+    "config-start.html": "3d60cad3589775f59decfd4ad85f8adef0ef7d43d02d6db617694ce83fb00368",
+    "control-end.html": "051279d68687e21f843a512c7cc66376d478d2c2409ab0392604fbf159d1969d",
+    "control-start.html": "6b6735458c47948ee8579f8fc6526fabb77ee25132cc135a730e382349d2dd51",
+    "fontP-40-18-page-0.html": "2237ef9fa0f2740433dd5f27d8e19435cc4354cbbcb42f3ecb78d90a0a77c3dd",
+    "fontQ-28-24-page-0.html": "83bc2ad64d350a850b83df647d1de3019a829c7168cb45d57038816b9b83f408",
+    "fontR-35-31-page-0.html": "9377bcf1cb31d6226f188989ad5005d5debfbf5be5463ccdbef75ca59084ef7a",
+    "fontS-40-35-page-0.html": "6790a11199959f2636b82fe58fbf0491dce0e6ee0026dee9804c4774e634a996",
+    "fontT-48-42-page-0.html": "5685edeb0d5e05751d349b383268a5394e8b825209f70303a677a71127e9e7e6",
+    "fontU-59-53-page-0.html": "92b9b52448e40c1e0c4c25c3a650336e8a16aa291abc4d7b1408948d3b795157",
+    "fontU-59-53-page-1.html": "6c8f71d21af31be9c4947610d757553938c867e15cc6ee861751a728dcf90cc4",
+    "fontV-80-71-page-0.html": "1332f24732099b23da80b5c97fa6ccebe02c1cd1f79564f3342a4e251013462a",
+    "fontV-80-71-page-1.html": "3e86659f3488e1244bf6a3db10f11f6a2ae6dab67e94fc89f4fb23bdd3a0969a",
+    "status-start.html": "3c2201ab8d3e078abc49c5cc118ed4d64ffe5fd76309fe2b21d0a605ef4090e8"
+  }
+}

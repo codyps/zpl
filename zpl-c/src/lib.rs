@@ -135,7 +135,7 @@ unsafe fn output_limits(value: *const ZplOutputLimits) -> Result<output::Limits>
 
 #[no_mangle]
 pub extern "C" fn zpl_abi_version() -> u32 {
-    3
+    4
 }
 #[no_mangle]
 pub extern "C" fn zpl_library_version() -> ZplBytes {
@@ -167,6 +167,7 @@ pub unsafe extern "C" fn zpl_options_init(profile: u32, out: *mut ZplOptions) ->
             0 => render::profiles::ZD621_203_DPI,
             1 => render::profiles::SPECIFICATION,
             2 => render::profiles::ZQ610_PLUS_203_DPI,
+            3 => render::profiles::GX430T_300_DPI,
             _ => return Err(Failure::argument("unknown profile")),
         };
         *unsafe { destination(out)? } = value.into();

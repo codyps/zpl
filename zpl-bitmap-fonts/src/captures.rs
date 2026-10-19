@@ -36,3 +36,8 @@ pub struct Capture {
 #[cfg(feature = "zd621")]
 #[path = "zd621/captures.rs"]
 pub mod zd621;
+
+/// Fixed GX430t V56.17.17Z 300-DPI scalable strikes and acquisition hashes.
+#[cfg(feature = "gx430t")]
+#[path = "gx430t/captures.rs"]
+pub mod gx430t;

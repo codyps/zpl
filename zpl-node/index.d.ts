@@ -12,7 +12,7 @@ export interface Options {
   /** PNG by default. PDF includes all labels unless label is supplied. */
   format?: 'png' | 'svg' | 'pdf';
   /** Matches the Rust default: zd621. */
-  profile?: 'specification' | 'zd621' | 'zq610-plus';
+  profile?: 'specification' | 'zd621' | 'zq610-plus' | 'gx430t';
   /** Initial canvas dimensions in dots; ZPL and the profile can override them. */
   width?: number;
   height?: number;

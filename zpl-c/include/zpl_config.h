@@ -8,6 +8,8 @@ typedef struct { uint8_t present; uint32_t value; } ZplOptionalU32;
 typedef struct { uint8_t present; uint16_t value; } ZplOptionalU16;
 typedef struct { uint8_t present; uint16_t value[3]; } ZplOptionalFileId;
 typedef struct ZplCompatibility {
+    uint8_t gx430t_scalable_strikes;
+    uint8_t reject_field_concatenation;
     uint8_t inline_graphic_implicit_separator;
     uint8_t qr_malformed_header_uses_defaults;
     uint8_t code39_normalize_input;
@@ -15,6 +17,7 @@ typedef struct ZplCompatibility {
     uint8_t box_zero_thickness_as_one;
     ZplOptionalU32 preview_width_quantum;
     ZplOptionalU32 preview_max_width;
+    uint8_t preview_clips_logical_width;
     uint8_t preview_width_latched_at_first_draw;
     uint8_t preview_ignores_label_length;
     uint8_t qr_printer_mask_selection;
@@ -57,6 +60,7 @@ typedef struct ZplCompatibility {
     uint8_t block_backslash_without_ci13;
     uint8_t block_fo_right_justification_printer_layout;
     uint8_t text_clamps_negative_origins;
+    uint8_t ocr_text_uses_padded_cells;
     uint8_t block_center_rounds_down;
     uint8_t block_narrow_printer_layout;
     uint8_t graphic_clamps_negative_origin;
@@ -99,6 +103,7 @@ typedef struct ZplCompatibility {
     uint8_t maxicode_nul_terminates_data;
     uint8_t maxicode_terminal_latch;
     uint8_t maxicode_printer_run_boundaries;
+    uint8_t maxicode_a_runs_stop_at_space;
     uint8_t maxicode_printer_dot_geometry;
     uint8_t maxicode_mode5_preview_omits_data;
     uint8_t data_matrix_default_tilde_escape;
