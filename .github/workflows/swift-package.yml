@@ -189,8 +189,14 @@ jobs:
           path: dist
       - name: Test exact packaged desktop library without Rust
         run: |
-          mkdir -p "$RUNNER_TEMP/swift-desktop"
-          tar -xzf dist/swift-package.tar.gz -C "$RUNNER_TEMP/swift-desktop"
+          python - <<'PYTHON'
+          import os, tarfile
+          from pathlib import Path
+          destination = Path(os.environ['RUNNER_TEMP']) / 'swift-desktop'
+          destination.mkdir(parents=True)
+          with tarfile.open('dist/swift-package.tar.gz') as archive:
+              archive.extractall(destination, filter='data')
+          PYTHON
           python scripts/swift-localize.py "$RUNNER_TEMP/swift-desktop/zpl-swift" dist
           if [ "$RUNNER_OS" = Linux ]; then
             docker run --rm -v "$RUNNER_TEMP/swift-desktop:/test" -v "$PWD:/repo:ro" -w /test swift:6.3.3-noble bash -ec '
