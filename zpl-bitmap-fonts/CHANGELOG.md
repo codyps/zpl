@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0](https://github.com/codyps/zpl/compare/zpl-bitmap-fonts-v0.1.1...zpl-bitmap-fonts-v0.2.0) - 2026-10-19
+
+### Added
+
+- *(render)* [**breaking**] add calibrated GX430t 300-DPI previews
+
 ## [0.1.1](https://github.com/codyps/zpl/compare/zpl-bitmap-fonts-v0.1.0...zpl-bitmap-fonts-v0.1.1) - 2026-10-17
 
 ### Other
