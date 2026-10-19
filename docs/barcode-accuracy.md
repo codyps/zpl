@@ -7,7 +7,8 @@ coverage of all 29 barcode commands separately for each printer model. No
 network requests occur in this test.
 
 The audit uses `ZD621_203_DPI` for ZD621 V93.21.33Z captures and
-`ZQ610_PLUS_203_DPI` for ZQ610 Plus V100.21.21Z captures. The fixture READMEs,
+`ZQ610_PLUS_203_DPI` for ZQ610 Plus V100.21.21Z captures, and
+`GX430T_300_DPI` for GX430t V56.17.17Z captures. The fixture READMEs,
 JSON capture records and manifests retain device identity and acquisition
 provenance. The conformance and original barcode campaigns' separate reset
 is replayed before their candidate label. Other captured inputs carry their
@@ -86,3 +87,12 @@ Run the stronger main and conformance gates alongside this inventory:
 cargo test --locked -p zpl --test barcode_accuracy \
   --test printer_accuracy --test conformance_preview
 ```
+
+The GX430t adds 342 native barcode frames, including an independently captured
+short-A-run MaxiCode sweep. Its 334 positive exact frames and one shipping-label
+text residual meet the existing contract; seven individual diagnostic controls
+retain exact observations (four blanks, invalid UPC-E and two finder-only mode-5
+previews). The combined inventory is 2,071 frames: 2,003 exact positive frames,
+14 positive text residuals, one existing unmet ZD621 target and 53 diagnostic
+controls. All 29 barcode commands have positive coverage for each of the three
+printer profiles. The existing ZD621 gap and stronger exact baselines are unchanged.

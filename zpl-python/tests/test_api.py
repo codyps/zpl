@@ -63,6 +63,9 @@ class BindingsTest(unittest.TestCase):
         self.assertFalse(self.options.compatibility.qr_printer_mask_selection)
         mobile = Options(profile="zq610-plus")
         self.assertEqual((mobile.width, mobile.height), (384, 2030))
+        gx = Options(profile="gx430t")
+        self.assertEqual((gx.width, gx.height, gx.dpi), (1280, 2558, 300))
+        self.assertTrue(gx.compatibility.gx430t_scalable_strikes)
         custom = default.compatibility.replace(
             qr_printer_mask_selection=False, macro_pdf417_file_id=(1, 2, 3)
         )

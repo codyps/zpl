@@ -149,6 +149,7 @@ pub fn render_encoded(
         "specification" => profiles::SPECIFICATION,
         "zd621" => profiles::ZD621_203_DPI,
         "zq610-plus" => profiles::ZQ610_PLUS_203_DPI,
+        "gx430t" => profiles::GX430T_300_DPI,
         _ => return Err(JsError::new("Unknown rendering profile")),
     };
     let data = FontData::default();

@@ -43,7 +43,7 @@ Use bytes for other printer encodings and binary downloads. Convert mutable
 buffers with `bytes(buffer)` before calling.
 
 `Options()` uses the native ZD621 203-DPI defaults. Profiles are `zd621`,
-`specification`, and `zq610-plus`; their native initial dimensions and DPI apply
+`specification`, `zq610-plus`, and `gx430t`; their native initial dimensions and DPI apply
 unless overridden. ZPL `^PW` and `^LL` can also change dimensions. The printer
 profiles have the same firmware/capture scope and fidelity limitations as the
 [Rust renderer](https://github.com/codyps/zpl/blob/main/docs/local-renderer.md).

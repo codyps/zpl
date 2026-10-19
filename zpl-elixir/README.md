@@ -73,7 +73,7 @@ The `!` variants raise the same error. Input is a binary, preserving all bytes,
 including NULs, printer encodings, and binary downloads. Elixir strings are UTF-8
 binaries; select `^CI28` explicitly when that is the intended printer encoding.
 
-The profiles are `:zd621` (default), `:specification`, and `:zq610_plus`.
+The profiles are `:zd621` (default), `:specification`, `:zq610_plus`, and `:gx430t`.
 Dimensions are dots; DPI controls physical output size. ZPL `^PW` and `^LL` can
 change label dimensions according to the selected profile. Fidelity and capture
 scope are exactly those of the

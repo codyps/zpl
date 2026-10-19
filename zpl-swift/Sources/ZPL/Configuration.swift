@@ -5,6 +5,16 @@ public struct Compatibility {
     internal var raw: ZplCompatibility
     internal init(raw: ZplCompatibility) { self.raw = raw }
 
+    public var gx430tScalableStrikes: Bool {
+        get { raw.gx430t_scalable_strikes != 0 }
+        set { raw.gx430t_scalable_strikes = newValue ? 1 : 0 }
+    }
+
+    public var rejectFieldConcatenation: Bool {
+        get { raw.reject_field_concatenation != 0 }
+        set { raw.reject_field_concatenation = newValue ? 1 : 0 }
+    }
+
     public var inlineGraphicImplicitSeparator: Bool {
         get { raw.inline_graphic_implicit_separator != 0 }
         set { raw.inline_graphic_implicit_separator = newValue ? 1 : 0 }
@@ -38,6 +48,11 @@ public struct Compatibility {
     public var previewMaxWidth: UInt32? {
         get { raw.preview_max_width.present == 0 ? nil : raw.preview_max_width.value }
         set { raw.preview_max_width = ZplOptionalU32(present: newValue == nil ? 0 : 1, value: newValue ?? 0) }
+    }
+
+    public var previewClipsLogicalWidth: Bool {
+        get { raw.preview_clips_logical_width != 0 }
+        set { raw.preview_clips_logical_width = newValue ? 1 : 0 }
     }
 
     public var previewWidthLatchedAtFirstDraw: Bool {
@@ -250,6 +265,11 @@ public struct Compatibility {
         set { raw.text_clamps_negative_origins = newValue ? 1 : 0 }
     }
 
+    public var ocrTextUsesPaddedCells: Bool {
+        get { raw.ocr_text_uses_padded_cells != 0 }
+        set { raw.ocr_text_uses_padded_cells = newValue ? 1 : 0 }
+    }
+
     public var blockCenterRoundsDown: Bool {
         get { raw.block_center_rounds_down != 0 }
         set { raw.block_center_rounds_down = newValue ? 1 : 0 }
@@ -458,6 +478,11 @@ public struct Compatibility {
     public var maxicodePrinterRunBoundaries: Bool {
         get { raw.maxicode_printer_run_boundaries != 0 }
         set { raw.maxicode_printer_run_boundaries = newValue ? 1 : 0 }
+    }
+
+    public var maxicodeARunsStopAtSpace: Bool {
+        get { raw.maxicode_a_runs_stop_at_space != 0 }
+        set { raw.maxicode_a_runs_stop_at_space = newValue ? 1 : 0 }
     }
 
     public var maxicodePrinterDotGeometry: Bool {

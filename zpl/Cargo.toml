@@ -12,6 +12,7 @@ include = ["src/**", "LICENSE", "README.md", "CHANGELOG.md"]
 [dependencies]
 zpl-bitmap-fonts = { version = "0.1.1", path = "../zpl-bitmap-fonts", features = [
     "zd621",
+    "gx430t",
 ] }
 encoding_rs = "0.8.41"
 unicode-normalization = "0.1.25"

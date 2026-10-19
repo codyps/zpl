@@ -122,3 +122,23 @@ Run focused offline tests with:
 ```sh
 python3 -m unittest discover -s scripts -p 'test_capture_printer_previews.py'
 ```
+
+
+## GX430t at 300 DPI
+
+Select `--profile gx430t` to identify a legacy GX430t through its home and
+`config.html` pages. The default maximum width becomes 1280 dots; `--width`
+can choose a narrower native canvas. The reported 12-dot/mm resolution is
+recorded as 300 DPI, and firmware and serial come from configuration rather
+than a Bluetooth friendly-name field. Without a sibling comparison checkout,
+only this repository is inventoried; an explicitly supplied missing checkout
+is an error. Native images are still preserved without rescaling.
+
+The 2026-10-18 capture used USB serial `32J193600198`, firmware `V56.17.17Z`.
+Ethernet was already active at `192.168.6.142`, with its MAC confirmed over USB.
+Head-open/paused campaigns exhausted the legacy format queue and stalled HTTP;
+those incomplete attempts were retained as diagnostics. Closing the head,
+clearing the exclusive queue and releasing pause restored repeatable previews,
+without requiring media to be loaded. Printer resets and queue cancellation
+were explicitly authorized; this tool does not automatically reset or print.
+See the [fixed native evidence](../zpl/tests/fixtures/gx430t-300-v1/README.md).

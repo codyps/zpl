@@ -64,7 +64,7 @@ fn character(c: u8) -> (usize, usize) {
 }
 // ISO/IEC 16023:2000 Annex A pp. 24–25, Annex F.1–F.4 pp. 32–33.
 // Original implementation of the recommended run-based switching rules.
-fn compact(data: &[u8], include_shared_b: bool) -> (Vec<usize>, usize) {
+fn compact(data: &[u8], include_shared_b: bool, a_stops_at_space: bool) -> (Vec<usize>, usize) {
     fn value(c: u8, set: usize) -> Option<usize> {
         if set == 0 {
             return set_a(c);
@@ -107,7 +107,9 @@ fn compact(data: &[u8], include_shared_b: bool) -> (Vec<usize>, usize) {
         }
         let run = |target| {
             tail.iter()
-                .take_while(|&&c| value(c, target).is_some())
+                .take_while(|&&c| {
+                    value(c, target).is_some() && !(a_stops_at_space && target == 0 && c == b' ')
+                })
                 .count()
         };
         if set == 1 && data[i] != b' ' && run(0) >= 4 {
@@ -212,14 +214,17 @@ fn encode(b: &Barcode, data: &[u8]) -> Result<Matrix, String> {
     if total > 1 {
         stream.extend([33, (number - 1) * 8 + total - 1]);
     }
-    let (mut encoded, mut final_set) =
-        compact(body, !b.compatibility.maxicode_printer_run_boundaries);
+    let (mut encoded, mut final_set) = compact(
+        body,
+        !b.compatibility.maxicode_printer_run_boundaries,
+        b.compatibility.maxicode_a_runs_stop_at_space,
+    );
     if stream.len() + encoded.len() > capacity {
         // Annex A permits shared punctuation in B. The native run heuristic
         // above can waste shifts on alternating B/shared characters. Retain
         // the wider-run encoding when it is needed to fit a valid message;
         // this also preserves inputs accepted before the native run fix.
-        let alternative = compact(body, true);
+        let alternative = compact(body, true, b.compatibility.maxicode_a_runs_stop_at_space);
         if alternative.0.len() < encoded.len() {
             (encoded, final_set) = alternative;
         }
@@ -332,6 +337,9 @@ pub(super) fn render(b: &Barcode, data: &[u8]) -> Result<Path, String> {
 /// pixel-centre distances in the captured concentric finder. These are printer
 /// calibration values, not the nominal millimetre radii in ISO 16023 §4.11.
 fn printer_geometry(m: &Matrix, dpi: u32) -> Path {
+    if dpi == 300 {
+        return gx430t_300_geometry(m);
+    }
     let scale = dpi as f64 / 203.;
     let mut p = Path::default();
     for y in 0..33 {
@@ -373,6 +381,50 @@ fn printer_geometry(m: &Matrix, dpi: u32) -> Path {
         }
     }
     p
+}
+
+// GX430t V56.17.17Z native 300-DPI preview controls: modes 2–6 in
+// tests/fixtures/gx430t-300-v1. Integer dot matrices are density-specific;
+// scaling the 203-DPI stencil changes pitch, finder edges and canvas extent.
+// This is measured geometry, independent of the encoded payload (ISO 16023 §4.11).
+fn gx430t_300_geometry(m: &Matrix) -> Path {
+    let mut path = Path::default();
+    for y in 0..33 {
+        for x in 0..30 {
+            if m.get(x, y) {
+                for (dy, width) in [3, 5, 7, 9, 9, 9, 9, 7, 5, 3].into_iter().enumerate() {
+                    path.rect(
+                        (1 + x * 10 + (y % 2) * 4 + (9 - width) / 2) as f64,
+                        (1 + y * 9 + dy) as f64,
+                        width as f64,
+                        1.,
+                    );
+                }
+            }
+        }
+    }
+    // The finder is identical in native modes 2, 3, 4 and 6. Preserve its
+    // native scan conversion rather than resampling the 203-DPI circle mask.
+    const FINDER: &[u8; 1128] = include_bytes!("maxicode_gx430t_finder.bin");
+    for y in 0..94 {
+        let mut start = None;
+        for x in 0..=94 {
+            let black = x < 94 && FINDER[y * 12 + x / 8] & (0x80 >> (x % 8)) != 0;
+            if black && start.is_none() {
+                start = Some(x);
+            } else if !black {
+                if let Some(first) = start.take() {
+                    path.rect(
+                        (99 + first) as f64,
+                        (104 + y) as f64,
+                        (x - first) as f64,
+                        1.,
+                    );
+                }
+            }
+        }
+    }
+    path
 }
 
 #[cfg(test)]

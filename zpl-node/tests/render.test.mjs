@@ -65,6 +65,8 @@ test('profile defaults match Rust and specification honors PW/LL', () => {
   assert.equal(render('^XA^XZ', { format: 'svg' }).width, 832);
   assert.equal(render('^XA^XZ', { format: 'svg', profile: 'specification' }).width, 812);
   assert.equal(render('^XA^XZ', { format: 'svg', profile: 'zq610-plus' }).width, 384);
+  const gx = render('^XA^XZ', { format: 'svg', profile: 'gx430t' });
+  assert.deepEqual([gx.width, gx.height], [1280, 2558]);
   const result = render('^XA^PW17^LL19^XZ', { ...options, format: 'svg' });
   assert.deepEqual([result.width, result.height], [17, 19]);
 });

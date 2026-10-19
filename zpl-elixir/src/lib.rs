@@ -10,7 +10,7 @@ use zpl::{output, parse as framing, render as rendering};
 
 mod atoms {
     rustler::atoms! {
-        argument, parse, render, output, profile, specification, zd621, zq610_plus,
+        argument, parse, render, output, profile, specification, zd621, zq610_plus, gx430t,
         options, compatibility, render_limits, output_limits, syntax,
         before_first_command, format_command, control_command, control_character,
         png, svg, pdf
@@ -77,6 +77,8 @@ fn profile(profile: Atom) -> Result<zpl::Options, BindingError> {
         Ok(rendering::profiles::SPECIFICATION)
     } else if profile == atoms::zq610_plus() {
         Ok(rendering::profiles::ZQ610_PLUS_203_DPI)
+    } else if profile == atoms::gx430t() {
+        Ok(rendering::profiles::GX430T_300_DPI)
     } else {
         Err(failure("argument", "unknown profile", None, None))
     }

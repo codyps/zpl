@@ -36,6 +36,8 @@ macro_rules! configuration {
 }
 
 configuration!(Compatibility, zpl::render::compatibility::Compatibility, zpl::render::compatibility::Compatibility::default(), {
+    gx430t_scalable_strikes: bool,
+    reject_field_concatenation: bool,
     inline_graphic_implicit_separator: bool,
     qr_malformed_header_uses_defaults: bool,
     code39_normalize_input: bool,
@@ -43,6 +45,7 @@ configuration!(Compatibility, zpl::render::compatibility::Compatibility, zpl::re
     box_zero_thickness_as_one: bool,
     preview_width_quantum: Option<u32>,
     preview_max_width: Option<u32>,
+    preview_clips_logical_width: bool,
     preview_width_latched_at_first_draw: bool,
     preview_ignores_label_length: bool,
     qr_printer_mask_selection: bool,
@@ -85,6 +88,7 @@ configuration!(Compatibility, zpl::render::compatibility::Compatibility, zpl::re
     block_backslash_without_ci13: bool,
     block_fo_right_justification_printer_layout: bool,
     text_clamps_negative_origins: bool,
+    ocr_text_uses_padded_cells: bool,
     block_center_rounds_down: bool,
     block_narrow_printer_layout: bool,
     graphic_clamps_negative_origin: bool,
@@ -127,6 +131,7 @@ configuration!(Compatibility, zpl::render::compatibility::Compatibility, zpl::re
     maxicode_nul_terminates_data: bool,
     maxicode_terminal_latch: bool,
     maxicode_printer_run_boundaries: bool,
+    maxicode_a_runs_stop_at_space: bool,
     maxicode_printer_dot_geometry: bool,
     maxicode_mode5_preview_omits_data: bool,
     data_matrix_default_tilde_escape: bool,

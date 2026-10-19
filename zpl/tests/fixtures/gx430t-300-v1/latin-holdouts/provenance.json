@@ -1,0 +1,247 @@
+{
+  "printer": {
+    "model": "GX430t",
+    "serial": "32J193600198",
+    "firmware": "V56.17.17Z",
+    "dpi": 300,
+    "host": "http://192.168.6.142/"
+  },
+  "started": "2026-10-18T21:55:42.469404+00:00",
+  "cases": [
+    {
+      "name": "control-start",
+      "started": "2026-10-18T21:55:42.836432+00:00",
+      "source_sha256": "f83921827fbbd64256e05c2b52567d26c48290abc34e150da38297bbd96658e6",
+      "status": "captured",
+      "png_sha256": "42d9aa9f52d7c76961389aa5172083fb45504c9a47dc77feb2befb6adf302fb5",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP905&otype=PNG",
+      "finished": "2026-10-18T21:55:43.346658+00:00"
+    },
+    {
+      "name": "latin-page-0",
+      "started": "2026-10-18T21:55:43.547972+00:00",
+      "source_sha256": "a5e6db16d34c0299b27e31714fcffe05dc6885be2452241e59ca3f5815688c20",
+      "status": "captured",
+      "png_sha256": "cd06232ac846a5810df91a7d11ade1a2b0306499e6c777e6f4b264fde111f768",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP906&otype=PNG",
+      "finished": "2026-10-18T21:55:45.098401+00:00"
+    },
+    {
+      "name": "latin-page-1",
+      "started": "2026-10-18T21:55:45.299402+00:00",
+      "source_sha256": "90bedf855088675967ee8b91c86cf7e08d754e7329bcbf818740f81656ba527f",
+      "status": "captured",
+      "png_sha256": "ac15bbfc170ea4b4fb48126ad29d0af788507802e025552de7754bf66e0e4d12",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP907&otype=PNG",
+      "finished": "2026-10-18T21:55:46.485882+00:00"
+    },
+    {
+      "name": "unicode-default-32-32",
+      "started": "2026-10-18T21:55:46.686891+00:00",
+      "source_sha256": "5a0de181fc068bf02f08e40f78c7c3e8a6083fdd5ae4feefc4e5684ec10c472d",
+      "status": "captured",
+      "png_sha256": "e688a8567c667a48288eb76772950e311965e2c38fb9e89b4736bdd60f30de79",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP908&otype=PNG",
+      "finished": "2026-10-18T21:55:48.198061+00:00"
+    },
+    {
+      "name": "unicode-default-40-24",
+      "started": "2026-10-18T21:55:48.399810+00:00",
+      "source_sha256": "92b477fa3efad25a0e80cd1abb04c47908a6655e5d6705a362d7305943062cc9",
+      "status": "captured",
+      "png_sha256": "c116a35bf94fdba2a118c1848ba27e738cf73c3324d6d1fb6762539ececc3364",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP909&otype=PNG",
+      "finished": "2026-10-18T21:55:49.847404+00:00"
+    },
+    {
+      "name": "maxicode-FO-N",
+      "started": "2026-10-18T21:55:50.048869+00:00",
+      "source_sha256": "7facea5badd42e2ac1178f31b8357726134b152ba9b01e894e9743c7ddf3bd09",
+      "status": "captured",
+      "png_sha256": "4f5061086cb263bbd22cf4d07c7df38a57ca00cb2c61382fde6bd612e0937601",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP910&otype=PNG",
+      "finished": "2026-10-18T21:55:50.711075+00:00"
+    },
+    {
+      "name": "maxicode-FT-N",
+      "started": "2026-10-18T21:55:50.912474+00:00",
+      "source_sha256": "999e9b215227fd7f4bc577ea0a9cdd7a7a5b3f2e126d8f026bb38ed220db3d3a",
+      "status": "captured",
+      "png_sha256": "3f5fa4d7a7affef69f3481d8098baffa78053da70ffc508af6fb19507344b471",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP911&otype=PNG",
+      "finished": "2026-10-18T21:55:51.576557+00:00"
+    },
+    {
+      "name": "maxicode-FO-R",
+      "started": "2026-10-18T21:55:51.777865+00:00",
+      "source_sha256": "d864cf83364fa1364c2e66913388e5c5e6ebe3217eed08d1397229c611e37f15",
+      "status": "captured",
+      "png_sha256": "4f5061086cb263bbd22cf4d07c7df38a57ca00cb2c61382fde6bd612e0937601",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP912&otype=PNG",
+      "finished": "2026-10-18T21:55:52.448009+00:00"
+    },
+    {
+      "name": "maxicode-FT-R",
+      "started": "2026-10-18T21:55:52.649653+00:00",
+      "source_sha256": "3801e8236922b4d4f14e1f83b8fdea9d28c3757004690c50226bbfbbbba9323c",
+      "status": "captured",
+      "png_sha256": "3f5fa4d7a7affef69f3481d8098baffa78053da70ffc508af6fb19507344b471",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP913&otype=PNG",
+      "finished": "2026-10-18T21:55:53.311462+00:00"
+    },
+    {
+      "name": "maxicode-FO-I",
+      "started": "2026-10-18T21:55:53.512859+00:00",
+      "source_sha256": "d3ee4d67c602538573e56ca2955b8a151f5c3ea171269fa420546be302cd5ec1",
+      "status": "captured",
+      "png_sha256": "4f5061086cb263bbd22cf4d07c7df38a57ca00cb2c61382fde6bd612e0937601",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP914&otype=PNG",
+      "finished": "2026-10-18T21:55:54.193293+00:00"
+    },
+    {
+      "name": "maxicode-FT-I",
+      "started": "2026-10-18T21:55:54.394591+00:00",
+      "source_sha256": "14312b4b6827ab8067b3d4e3c176f2223a21580070826b723576a38833820ba2",
+      "status": "captured",
+      "png_sha256": "3f5fa4d7a7affef69f3481d8098baffa78053da70ffc508af6fb19507344b471",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP915&otype=PNG",
+      "finished": "2026-10-18T21:55:55.072415+00:00"
+    },
+    {
+      "name": "maxicode-FO-B",
+      "started": "2026-10-18T21:55:55.273816+00:00",
+      "source_sha256": "dbbd2a19f8236a26deeb8097e0e701701ed82a4762708c8d956c860504c74deb",
+      "status": "captured",
+      "png_sha256": "4f5061086cb263bbd22cf4d07c7df38a57ca00cb2c61382fde6bd612e0937601",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP916&otype=PNG",
+      "finished": "2026-10-18T21:55:55.952890+00:00"
+    },
+    {
+      "name": "maxicode-FT-B",
+      "started": "2026-10-18T21:55:56.153904+00:00",
+      "source_sha256": "cf359439bdc1a7fd0e8ad8d09234ee7af49eee89566a2a6b986a4bf596ab79e8",
+      "status": "captured",
+      "png_sha256": "3f5fa4d7a7affef69f3481d8098baffa78053da70ffc508af6fb19507344b471",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP917&otype=PNG",
+      "finished": "2026-10-18T21:55:56.802807+00:00"
+    },
+    {
+      "name": "control-end",
+      "started": "2026-10-18T21:55:57.003790+00:00",
+      "source_sha256": "f83921827fbbd64256e05c2b52567d26c48290abc34e150da38297bbd96658e6",
+      "status": "captured",
+      "png_sha256": "42d9aa9f52d7c76961389aa5172083fb45504c9a47dc77feb2befb6adf302fb5",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP918&otype=PNG",
+      "finished": "2026-10-18T21:55:57.514866+00:00"
+    }
+  ],
+  "finished": "2026-10-18T21:55:57.716407+00:00",
+  "files": {
+    "control-end.png": "42d9aa9f52d7c76961389aa5172083fb45504c9a47dc77feb2befb6adf302fb5",
+    "control-end.zpl": "f83921827fbbd64256e05c2b52567d26c48290abc34e150da38297bbd96658e6",
+    "control-start.png": "42d9aa9f52d7c76961389aa5172083fb45504c9a47dc77feb2befb6adf302fb5",
+    "control-start.zpl": "f83921827fbbd64256e05c2b52567d26c48290abc34e150da38297bbd96658e6",
+    "latin-page-0.png": "cd06232ac846a5810df91a7d11ade1a2b0306499e6c777e6f4b264fde111f768",
+    "latin-page-0.zpl": "a5e6db16d34c0299b27e31714fcffe05dc6885be2452241e59ca3f5815688c20",
+    "latin-page-1.png": "ac15bbfc170ea4b4fb48126ad29d0af788507802e025552de7754bf66e0e4d12",
+    "latin-page-1.zpl": "90bedf855088675967ee8b91c86cf7e08d754e7329bcbf818740f81656ba527f",
+    "layout.json": "04d08d742510cae39c7ee3a39ce3a2396c975ea9cc2bc14b29e3da03c9fa30ba",
+    "maxicode-FO-B.png": "4f5061086cb263bbd22cf4d07c7df38a57ca00cb2c61382fde6bd612e0937601",
+    "maxicode-FO-B.zpl": "dbbd2a19f8236a26deeb8097e0e701701ed82a4762708c8d956c860504c74deb",
+    "maxicode-FO-I.png": "4f5061086cb263bbd22cf4d07c7df38a57ca00cb2c61382fde6bd612e0937601",
+    "maxicode-FO-I.zpl": "d3ee4d67c602538573e56ca2955b8a151f5c3ea171269fa420546be302cd5ec1",
+    "maxicode-FO-N.png": "4f5061086cb263bbd22cf4d07c7df38a57ca00cb2c61382fde6bd612e0937601",
+    "maxicode-FO-N.zpl": "7facea5badd42e2ac1178f31b8357726134b152ba9b01e894e9743c7ddf3bd09",
+    "maxicode-FO-R.png": "4f5061086cb263bbd22cf4d07c7df38a57ca00cb2c61382fde6bd612e0937601",
+    "maxicode-FO-R.zpl": "d864cf83364fa1364c2e66913388e5c5e6ebe3217eed08d1397229c611e37f15",
+    "maxicode-FT-B.png": "3f5fa4d7a7affef69f3481d8098baffa78053da70ffc508af6fb19507344b471",
+    "maxicode-FT-B.zpl": "cf359439bdc1a7fd0e8ad8d09234ee7af49eee89566a2a6b986a4bf596ab79e8",
+    "maxicode-FT-I.png": "3f5fa4d7a7affef69f3481d8098baffa78053da70ffc508af6fb19507344b471",
+    "maxicode-FT-I.zpl": "14312b4b6827ab8067b3d4e3c176f2223a21580070826b723576a38833820ba2",
+    "maxicode-FT-N.png": "3f5fa4d7a7affef69f3481d8098baffa78053da70ffc508af6fb19507344b471",
+    "maxicode-FT-N.zpl": "999e9b215227fd7f4bc577ea0a9cdd7a7a5b3f2e126d8f026bb38ed220db3d3a",
+    "maxicode-FT-R.png": "3f5fa4d7a7affef69f3481d8098baffa78053da70ffc508af6fb19507344b471",
+    "maxicode-FT-R.zpl": "3801e8236922b4d4f14e1f83b8fdea9d28c3757004690c50226bbfbbbba9323c",
+    "reset.zpl": "ae46810376fdda94779341c37244a9651939b9fc1d0a5944b7b63bac24a60445",
+    "unicode-default-32-32.png": "e688a8567c667a48288eb76772950e311965e2c38fb9e89b4736bdd60f30de79",
+    "unicode-default-32-32.zpl": "5a0de181fc068bf02f08e40f78c7c3e8a6083fdd5ae4feefc4e5684ec10c472d",
+    "unicode-default-40-24.png": "c116a35bf94fdba2a118c1848ba27e738cf73c3324d6d1fb6762539ececc3364",
+    "unicode-default-40-24.zpl": "92b477fa3efad25a0e80cd1abb04c47908a6655e5d6705a362d7305943062cc9"
+  },
+  "capture_tool_sha256": "ea5f774997c6968f2ae1cd116ae361bd3cfa8261c08b3679dcd17f00ae0a18f8",
+  "repository_commit": "1eb6725d0c5eb60754b8fa8a8e38aee8b15a35ae",
+  "omitted_html_sha256": {
+    "config-start.html": "3d60cad3589775f59decfd4ad85f8adef0ef7d43d02d6db617694ce83fb00368",
+    "control-end.html": "f1e4463878cb39fdbace45410385a2d547b4839d54ec2ffd9be307d7eca547e7",
+    "control-start.html": "4743bdc2e2e529d7fdab43ae79bd121786775779a2e673c18d012eb3f7940b4e",
+    "latin-page-0.html": "1c9994fb305b58fc8cecef79026ad2bba6254f01fe22ee26f9c7a96e70e3ec96",
+    "latin-page-1.html": "84b785283bcb0fb177b4c20056f10d1ad32f8e339257dfeec92539bd70b3ad59",
+    "maxicode-FO-B.html": "0e1d8f8ac3322634cd5cb0abb33636f5ea7d4fc162245baf137f2fef6e928262",
+    "maxicode-FO-I.html": "dc3e50fd567c82602ec3138fa1f7794e0ae4b7643b3a79684950948c6a7f9095",
+    "maxicode-FO-N.html": "71d8ed3d3f6861737e2e45f5b3da3f4429c8a11b4e4a95e7d58e4b61226d9aca",
+    "maxicode-FO-R.html": "48a7fdb2a8c7c4f4ad737d473799d8825866b23dcb26daa6807c9f4516254aee",
+    "maxicode-FT-B.html": "3c7153682faeb5d1e0456e6f4d2ba313a239d2cabc238edc0a4f660ae471a1de",
+    "maxicode-FT-I.html": "97c9d6fbc4cd44d0bb53e11446ee1327827065889600320243730d472c694be9",
+    "maxicode-FT-N.html": "11136802c622e8b95aa9b90528db27b33530979d486f6195ecc450050716c70b",
+    "maxicode-FT-R.html": "75b5afa9761e3350888f77149e23daa40a37e097fb1609e1633540085acf480e",
+    "status-start.html": "3c2201ab8d3e078abc49c5cc118ed4d64ffe5fd76309fe2b21d0a605ef4090e8",
+    "unicode-default-32-32.html": "ec989d392b0a195f44c1843e8e8fcdb08088a2d1046eb1ecaa733dc99839fcfe",
+    "unicode-default-40-24.html": "e9032d682b8ad6a7a9a4f9324ad5887f384f7854aa0fbf2befd73ba86f2bdc09"
+  }
+}

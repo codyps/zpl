@@ -68,9 +68,10 @@ impl Options {
             "zd621" => rendering::profiles::ZD621_203_DPI,
             "specification" => rendering::profiles::SPECIFICATION,
             "zq610-plus" => rendering::profiles::ZQ610_PLUS_203_DPI,
+            "gx430t" => rendering::profiles::GX430T_300_DPI,
             _ => {
                 return Err(PyValueError::new_err(
-                    "profile must be 'zd621', 'specification', or 'zq610-plus'",
+                    "profile must be 'zd621', 'specification', 'zq610-plus', or 'gx430t'",
                 ))
             }
         };
@@ -395,7 +396,7 @@ mod tests {
         Python::initialize();
         Python::attach(|py| {
             let input = b"^XA^FO2,3^GB10,8,2^FS^XZ^XA^FO1,1^GB3,4,1^FS^XZ";
-            for profile in ["specification", "zd621", "zq610-plus"] {
+            for profile in ["specification", "zd621", "zq610-plus", "gx430t"] {
                 let options = Options::new(profile, Some(32), Some(24), None, None).unwrap();
                 let native = zpl::render(input, options.inner).unwrap();
                 let bound =

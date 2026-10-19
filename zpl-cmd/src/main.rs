@@ -161,6 +161,7 @@ enum Profile {
     Zd621,
     Zd621Preview,
     Zq610Plus,
+    Gx430t,
     Specification,
 }
 
@@ -175,6 +176,7 @@ impl Profile {
                 options
             }
             Self::Zq610Plus => profiles::ZQ610_PLUS_203_DPI,
+            Self::Gx430t => profiles::GX430T_300_DPI,
             Self::Specification => profiles::SPECIFICATION,
         }
     }

@@ -63,13 +63,26 @@ pub(super) fn caption(
     character_map: Option<[u8; 256]>,
 ) -> Result<(Path, Vec<super::CaptionPart>), String> {
     let m = b.module;
-    let (id, fw, fh) = if m < 3. {
+    // Native OCR-B cells change with printhead density. The transition is
+    // three modules for E8 (203 DPI), five for E12 (300 DPI). GX430t module
+    // 1–6 controls in gx430t-300-v1 pin both sides of that transition.
+    let metrics = zpl_bitmap_fonts::resident_at_dpi('E', b.dpi)
+        .and_then(|face| face.cell_metrics())
+        .expect("resident OCR-B metrics");
+    let ocr_module = if b.dpi == 300 { 5. } else { 3. };
+    let (id, fw, fh) = if m < ocr_module {
         ('A', 5. * m, 9. * m)
     } else {
-        let scale = (m / 3.).floor();
-        ('E', 15. * scale, 28. * scale)
+        let scale = (m / ocr_module).floor();
+        (
+            'E',
+            f64::from(metrics.cell_width) * scale,
+            f64::from(metrics.cell_height) * scale,
+        )
     };
-    let id = super::super::font::Font::from(id).with_character_map(character_map);
+    let id = super::super::font::Font::from(id)
+        .with_dpi(b.dpi)
+        .with_character_map(character_map);
     let advance = super::super::font::width_for(id, "0", fw, fh)?;
     let digits = match b.name.as_str() {
         "B8" => checked(bytes, 8)?,

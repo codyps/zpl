@@ -5,12 +5,15 @@ class Compatibility:
         self,
         *,
         inline_graphic_implicit_separator: bool = ...,
+        gx430t_scalable_strikes: bool = ...,
+        reject_field_concatenation: bool = ...,
         qr_malformed_header_uses_defaults: bool = ...,
         code39_normalize_input: bool = ...,
         barcode_module_width_through_12: bool = ...,
         box_zero_thickness_as_one: bool = ...,
         preview_width_quantum: int | None = ...,
         preview_max_width: int | None = ...,
+        preview_clips_logical_width: bool = ...,
         preview_width_latched_at_first_draw: bool = ...,
         preview_ignores_label_length: bool = ...,
         qr_printer_mask_selection: bool = ...,
@@ -53,6 +56,7 @@ class Compatibility:
         block_backslash_without_ci13: bool = ...,
         block_fo_right_justification_printer_layout: bool = ...,
         text_clamps_negative_origins: bool = ...,
+        ocr_text_uses_padded_cells: bool = ...,
         block_center_rounds_down: bool = ...,
         block_narrow_printer_layout: bool = ...,
         graphic_clamps_negative_origin: bool = ...,
@@ -95,6 +99,7 @@ class Compatibility:
         maxicode_nul_terminates_data: bool = ...,
         maxicode_terminal_latch: bool = ...,
         maxicode_printer_run_boundaries: bool = ...,
+        maxicode_a_runs_stop_at_space: bool = ...,
         maxicode_printer_dot_geometry: bool = ...,
         maxicode_mode5_preview_omits_data: bool = ...,
         data_matrix_default_tilde_escape: bool = ...,
@@ -144,12 +149,15 @@ class Compatibility:
         self,
         *,
         inline_graphic_implicit_separator: bool = ...,
+        gx430t_scalable_strikes: bool = ...,
+        reject_field_concatenation: bool = ...,
         qr_malformed_header_uses_defaults: bool = ...,
         code39_normalize_input: bool = ...,
         barcode_module_width_through_12: bool = ...,
         box_zero_thickness_as_one: bool = ...,
         preview_width_quantum: int | None = ...,
         preview_max_width: int | None = ...,
+        preview_clips_logical_width: bool = ...,
         preview_width_latched_at_first_draw: bool = ...,
         preview_ignores_label_length: bool = ...,
         qr_printer_mask_selection: bool = ...,
@@ -192,6 +200,7 @@ class Compatibility:
         block_backslash_without_ci13: bool = ...,
         block_fo_right_justification_printer_layout: bool = ...,
         text_clamps_negative_origins: bool = ...,
+        ocr_text_uses_padded_cells: bool = ...,
         block_center_rounds_down: bool = ...,
         block_narrow_printer_layout: bool = ...,
         graphic_clamps_negative_origin: bool = ...,
@@ -234,6 +243,7 @@ class Compatibility:
         maxicode_nul_terminates_data: bool = ...,
         maxicode_terminal_latch: bool = ...,
         maxicode_printer_run_boundaries: bool = ...,
+        maxicode_a_runs_stop_at_space: bool = ...,
         maxicode_printer_dot_geometry: bool = ...,
         maxicode_mode5_preview_omits_data: bool = ...,
         data_matrix_default_tilde_escape: bool = ...,
@@ -282,6 +292,10 @@ class Compatibility:
     @property
     def inline_graphic_implicit_separator(self) -> bool: ...
     @property
+    def gx430t_scalable_strikes(self) -> bool: ...
+    @property
+    def reject_field_concatenation(self) -> bool: ...
+    @property
     def qr_malformed_header_uses_defaults(self) -> bool: ...
     @property
     def code39_normalize_input(self) -> bool: ...
@@ -293,6 +307,8 @@ class Compatibility:
     def preview_width_quantum(self) -> int | None: ...
     @property
     def preview_max_width(self) -> int | None: ...
+    @property
+    def preview_clips_logical_width(self) -> bool: ...
     @property
     def preview_width_latched_at_first_draw(self) -> bool: ...
     @property
@@ -378,6 +394,8 @@ class Compatibility:
     @property
     def text_clamps_negative_origins(self) -> bool: ...
     @property
+    def ocr_text_uses_padded_cells(self) -> bool: ...
+    @property
     def block_center_rounds_down(self) -> bool: ...
     @property
     def block_narrow_printer_layout(self) -> bool: ...
@@ -461,6 +479,8 @@ class Compatibility:
     def maxicode_terminal_latch(self) -> bool: ...
     @property
     def maxicode_printer_run_boundaries(self) -> bool: ...
+    @property
+    def maxicode_a_runs_stop_at_space(self) -> bool: ...
     @property
     def maxicode_printer_dot_geometry(self) -> bool: ...
     @property
@@ -676,7 +696,7 @@ class Options:
     def __init__(
         self,
         *,
-        profile: Literal["zd621", "specification", "zq610-plus"] = ...,
+        profile: Literal["zd621", "specification", "zq610-plus", "gx430t"] = ...,
         width: int | None = ...,
         height: int | None = ...,
         dpi: int | None = ...,

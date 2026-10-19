@@ -9,6 +9,14 @@ The exploratory TAB and legacy ESC/DEL gaps are also covered by native
 regressions. This meets the accuracy targets for the tested corpora, not every
 possible ZPL input. Later sections record the evidence and scope limits.
 
+The GX430t 300-DPI gate now has 524 exact main/control frames and a separate
+complete 512-case conformance capture. Its 24 text-residual frames have minimum
+per-field foreground IoU 99.4558%; non-text regions are exact. Five modern FE
+cases are explicitly unsupported by the legacy profile, alongside the same
+invalid barcode and nine blank diagnostics. Existing ZD621 baselines are unchanged.
+See [GX430t evidence and provenance](../zpl/tests/fixtures/gx430t-300-v1/README.md)
+and run `cargo test --locked -p zpl --test gx430t_preview`.
+
 Automatic QR masks match all 235 affected frames, including 32 fresh holdout
 symbols and extended Model 1 versions; see [the algorithm](qr-mask-selection.md).
 Earlier entries below are a chronological record and may describe gaps that
@@ -69,7 +77,7 @@ A blank printer image is an observation, not evidence of barcode correctness.
 
 ## Rendering options used by the tests
 
-Every captured-font, hardware barcode and corpus accuracy test starts with
+ZD621 captured-font, hardware barcode and corpus accuracy tests start with
 `zpl::render::profiles::ZD621_203_DPI`, overriding canvas dimensions as needed.
 The profile enables the independently selectable compatibility options described
 in [printer profiles](local-renderer.md#printer-profiles). Existing pixel hashes

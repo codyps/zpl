@@ -6,7 +6,7 @@
 extern "C" {
 #endif
 
-/* ABI 1. Compile and link against headers and library from the same release.
+/* ABI 4. Compile and link against headers and library from the same release.
  * All functions use the platform C calling convention. Do not pack these structs.
  * All input pointers must be aligned and valid for the call. Mutable outputs must
  * not overlap inputs or other live library objects. A null input byte pointer is
@@ -21,7 +21,7 @@ extern "C" {
  * a handle while another thread uses it. Errors are local to the calling thread.
  * Rust unwinding panics become ZPL_PANIC; process aborts/OOM cannot be caught.
  */
-#define ZPL_ABI_VERSION 3u
+#define ZPL_ABI_VERSION 4u
 #define ZPL_OK 0
 #define ZPL_INVALID_ARGUMENT 1
 #define ZPL_PARSE_ERROR 2
@@ -32,6 +32,7 @@ extern "C" {
 #define ZPL_PROFILE_ZD621 0u
 #define ZPL_PROFILE_SPECIFICATION 1u
 #define ZPL_PROFILE_ZQ610_PLUS 2u
+#define ZPL_PROFILE_GX430T 3u
 #define ZPL_FORMAT_PNG 0u
 #define ZPL_FORMAT_SVG 1u
 #define ZPL_FORMAT_PDF 2u
@@ -61,7 +62,7 @@ ZplBytes zpl_library_version(void);
 ZplError zpl_last_error(void);
 /* options_init copies the complete native Rust profile: dimensions, DPI, and
  * every compatibility setting. No field needs manual initialization. Select
- * SPECIFICATION, ZD621 (ZD621_203_DPI), or ZQ610_PLUS (ZQ610_PLUS_203_DPI), then
+ * SPECIFICATION, ZD621 (ZD621_203_DPI), ZQ610_PLUS (ZQ610_PLUS_203_DPI), or GX430T (GX430T_300_DPI), then
  * override only the fields you want to change. NULL render options use ZD621.
  * Initialize configurations before editing fields. Compatibility flags must be
  * 0 or 1. Optional presence flags distinguish None from Some(0). See the native

@@ -17,6 +17,7 @@ fn outputs_and_profiles_match_native_and_survive_document() {
             render::profiles::ZD621_203_DPI,
             render::profiles::SPECIFICATION,
             render::profiles::ZQ610_PLUS_203_DPI,
+            render::profiles::GX430T_300_DPI,
         ]
         .into_iter()
         .enumerate()

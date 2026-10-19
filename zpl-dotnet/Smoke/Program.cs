@@ -21,7 +21,7 @@ using (var defaults = Renderer.Render(label))
 foreach (Profile profile in Enum.GetValues(typeof(Profile)))
 {
     var profileOptions = RenderOptions.Create(profile);
-    Assert(profileOptions.Dpi == 203 && profileOptions.Width > 0, "Profile initialized");
+    Assert(profileOptions.Dpi == (profile == Profile.Gx430t ? 300u : 203u) && profileOptions.Width > 0, "Profile initialized");
     using var profileDocument = Renderer.Render(label, profileOptions);
     Assert(profileDocument.LabelCount == 1, "Profile renders");
 }

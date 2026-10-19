@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Regenerate the shipped Wasm and Go translation; --check only verifies them.
-Requires the full Rust workspace, wasm32-unknown-unknown, Go and patch.
+Regenerate on Linux, matching CI: Rust embeds host-specific path separators
+in panic locations even after prefix remapping. Requires the full Rust
+workspace, wasm32-unknown-unknown, Go and patch.
 Consumers use the checked-in artifacts and do not run this script.
 """
 import argparse
@@ -20,6 +22,10 @@ PATCH = HERE / "wasm2go-memory.patch"
 parser = argparse.ArgumentParser()
 parser.add_argument("--check", action="store_true")
 args = parser.parse_args()
+if os.name == "nt":
+    raise SystemExit("Regenerate on Linux (for example WSL), matching Go package CI; "
+                     "Rust source-path separators otherwise change the Wasm artifact")
+
 env = os.environ.copy()
 target = Path(env.get("CARGO_TARGET_DIR", ROOT / "target/go-package")).resolve()
 env["CARGO_TARGET_DIR"] = str(target)
@@ -61,7 +67,7 @@ with tempfile.TemporaryDirectory(prefix="zpl-go-generate-", dir=target) as direc
     (stage / "internal/translated").mkdir(parents=True)
     run([str(stage / "wasm2go"), "-embed", "-pkg", "translated", "-tags", TAGS,
          "-o", "internal/translated/module.go", "guest.wasm"], cwd=stage)
-    files = ["guest.wasm"] + [str(p.relative_to(stage)) for p in sorted((stage / "internal/translated").iterdir())]
+    files = ["guest.wasm"] + [p.relative_to(stage).as_posix() for p in sorted((stage / "internal/translated").iterdir())]
     metadata = {
         "wasm2go": VERSION,
         "wasm2go_patch": {
@@ -74,7 +80,7 @@ with tempfile.TemporaryDirectory(prefix="zpl-go-generate-", dir=target) as direc
         "translation_flags": ["-embed", "-pkg", "translated", "-tags", TAGS],
         "sha256": {name: hashlib.sha256((stage / name).read_bytes()).hexdigest() for name in files},
     }
-    (stage / "generated.json").write_text(json.dumps(metadata, indent=2) + "\n")
+    (stage / "generated.json").write_bytes((json.dumps(metadata, indent=2) + "\n").encode("utf-8"))
     files.append("generated.json")
     for name in files:
         source, destination = stage / name, HERE / name

@@ -1,0 +1,600 @@
+{
+  "printer": {
+    "model": "GX430t",
+    "serial": "32J193600198",
+    "firmware": "V56.17.17Z",
+    "dpi": 300,
+    "host": "http://192.168.6.142/"
+  },
+  "started": "2026-10-18T21:42:53.199079+00:00",
+  "cases": [
+    {
+      "name": "control-start",
+      "started": "2026-10-18T21:42:53.643328+00:00",
+      "source_sha256": "f83921827fbbd64256e05c2b52567d26c48290abc34e150da38297bbd96658e6",
+      "status": "captured",
+      "png_sha256": "42d9aa9f52d7c76961389aa5172083fb45504c9a47dc77feb2befb6adf302fb5",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP185&otype=PNG",
+      "finished": "2026-10-18T21:42:54.161533+00:00"
+    },
+    {
+      "name": "font0-10-32-page-0",
+      "started": "2026-10-18T21:42:54.362813+00:00",
+      "source_sha256": "288cc3f963d5381cfaa056535c956a337840d2c70563a263982106c3a54c49fc",
+      "status": "captured",
+      "png_sha256": "70228be609246fcc92aede7914d52ecf7c7faa7b7a7dcd8f04318d9e5eef67cd",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP186&otype=PNG",
+      "finished": "2026-10-18T21:42:55.730783+00:00"
+    },
+    {
+      "name": "font0-15-15-page-0",
+      "started": "2026-10-18T21:42:55.932033+00:00",
+      "source_sha256": "500deb74d57213d3626d6da4bdc9031719974c2839a2beb01a68c8b80a5d39b4",
+      "status": "captured",
+      "png_sha256": "e43caac9978edcbb5718482daa8d0d42b89d9da871dea5a707031c4654b926a9",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP187&otype=PNG",
+      "finished": "2026-10-18T21:42:57.290491+00:00"
+    },
+    {
+      "name": "font0-16-10-page-0",
+      "started": "2026-10-18T21:42:57.491728+00:00",
+      "source_sha256": "b7e8fd2d461bc2c97ec461a7a633e104f463940f0e3724ef15c81422209e4e4c",
+      "status": "captured",
+      "png_sha256": "d56867425c4805ef912ac60a6bbf82e158436e1bb1fd1a5ed3e3ee8fe0700fa5",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP188&otype=PNG",
+      "finished": "2026-10-18T21:42:58.876227+00:00"
+    },
+    {
+      "name": "font0-16-64-page-0",
+      "started": "2026-10-18T21:42:59.077794+00:00",
+      "source_sha256": "c040262d241b18760ccee21ce96db886061375be4e56a3b00e8c7bb6ae7f13ae",
+      "status": "captured",
+      "png_sha256": "e45334bb8465658350ed6ee55ae83360fa3847eeec542d41b30a83fb6083274c",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP189&otype=PNG",
+      "finished": "2026-10-18T21:43:00.507943+00:00"
+    },
+    {
+      "name": "font0-17-17-page-0",
+      "started": "2026-10-18T21:43:00.709543+00:00",
+      "source_sha256": "50cce0dc1e2f211f9b8207ace820adf39078573f362d00840a91324a479c01f1",
+      "status": "captured",
+      "png_sha256": "5ab4545dc8f43d6093b32fb8fd0e366981da63fdc37d7c7d463b5ec07ea32c2e",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP190&otype=PNG",
+      "finished": "2026-10-18T21:43:02.138874+00:00"
+    },
+    {
+      "name": "font0-20-10-page-0",
+      "started": "2026-10-18T21:43:02.340332+00:00",
+      "source_sha256": "7a7895b85b7a78579afd1a801a2bab0cf3995985bfce13bcdaaeb4d6a80c47dd",
+      "status": "captured",
+      "png_sha256": "35bf8e046d4d9445ba9dbaa0482b703c40a4850f885fbd535d80fac62a71c421",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP191&otype=PNG",
+      "finished": "2026-10-18T21:43:03.788041+00:00"
+    },
+    {
+      "name": "font0-20-12-page-0",
+      "started": "2026-10-18T21:43:03.989763+00:00",
+      "source_sha256": "d3774844fb94a49744f5e49bb201e7a80004183598c9c846f2eb78501e6b1f07",
+      "status": "captured",
+      "png_sha256": "6b9da0b0cdbd23baff855860a73154c51965ede4c3ae360d9bc4b2145b78f587",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP192&otype=PNG",
+      "finished": "2026-10-18T21:43:05.375414+00:00"
+    },
+    {
+      "name": "font0-24-12-page-0",
+      "started": "2026-10-18T21:43:05.576525+00:00",
+      "source_sha256": "addc5e0faa495c642d2d9e755fb6884ba7b616ddb4bb4bde29d093f74de79158",
+      "status": "captured",
+      "png_sha256": "a87a5e7754765301751b9cce66bf81c6e6c3945d2f61c141b2be47f8345b1049",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP193&otype=PNG",
+      "finished": "2026-10-18T21:43:07.082215+00:00"
+    },
+    {
+      "name": "font0-24-16-page-0",
+      "started": "2026-10-18T21:43:07.283604+00:00",
+      "source_sha256": "02a9494f73a36a8e1e46f8db2d6ff156a80e85c466a5e0f3bf5fa825238496f4",
+      "status": "captured",
+      "png_sha256": "7fa288584b02cce84424a097e385dd88d3051f12a81be2e6795d4af078b26bc5",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP194&otype=PNG",
+      "finished": "2026-10-18T21:43:08.722433+00:00"
+    },
+    {
+      "name": "font0-26-16-page-0",
+      "started": "2026-10-18T21:43:08.923696+00:00",
+      "source_sha256": "aedf2eb1302679e3ec20b29d0322f05f465e064f214ccbe3a0406791d529702f",
+      "status": "captured",
+      "png_sha256": "8af9b6af8dcf45283afe7c9daff3fa054fa599279409c87652cc3e887d8791ee",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP195&otype=PNG",
+      "finished": "2026-10-18T21:43:10.374328+00:00"
+    },
+    {
+      "name": "font0-28-14-page-0",
+      "started": "2026-10-18T21:43:10.575808+00:00",
+      "source_sha256": "57caf9dfb4117045b5ed1fddc726179d31f302fa69aaffaf243563ca485800ad",
+      "status": "captured",
+      "png_sha256": "21d9f2c39baa45dc6ce379937f9bafcfdb8144fe5f44e6a1670d0c99bbc42856",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP196&otype=PNG",
+      "finished": "2026-10-18T21:43:12.022207+00:00"
+    },
+    {
+      "name": "font0-28-15-page-0",
+      "started": "2026-10-18T21:43:12.224464+00:00",
+      "source_sha256": "d83d487555595799c6c3d87f430d3d9df4329ea0baf71a7cd535d937af7b29a9",
+      "status": "captured",
+      "png_sha256": "946ed6360830319eb7910a41e814d97327a0177867222d33b4d958393fea0ec2",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP197&otype=PNG",
+      "finished": "2026-10-18T21:43:13.695845+00:00"
+    },
+    {
+      "name": "font0-28-16-page-0",
+      "started": "2026-10-18T21:43:13.897173+00:00",
+      "source_sha256": "462d45136ad26f3e3cfd7d3c4167a43f6117b8297a65ebd025991e2380f0229a",
+      "status": "captured",
+      "png_sha256": "e3ce83a9173687e172064a1cf205067c1bb1c3d5791166f4f3e43e90d36701e5",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP198&otype=PNG",
+      "finished": "2026-10-18T21:43:15.337784+00:00"
+    },
+    {
+      "name": "font0-31-31-page-0",
+      "started": "2026-10-18T21:43:15.539690+00:00",
+      "source_sha256": "544e50fcea965af46b0f30045fb8c7e9615460300af402fbef871ba4d76fb870",
+      "status": "captured",
+      "png_sha256": "73c86333fee3687d1b5ac9156c2da116bf136b6aa333452406c5a6376ae0e63a",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP199&otype=PNG",
+      "finished": "2026-10-18T21:43:17.010667+00:00"
+    },
+    {
+      "name": "font0-32-10-page-0",
+      "started": "2026-10-18T21:43:17.212860+00:00",
+      "source_sha256": "35cdf98b0436d513f8785392eb11ce279413ea764063b408e1bcd2d9c17a218c",
+      "status": "captured",
+      "png_sha256": "8158dba7f8927d36b40f11e5c7a4f3bd4d535ab93cc1c90b6f76a70e5b60241c",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP200&otype=PNG",
+      "finished": "2026-10-18T21:43:18.700253+00:00"
+    },
+    {
+      "name": "font0-32-20-page-0",
+      "started": "2026-10-18T21:43:18.901608+00:00",
+      "source_sha256": "c7f5a5845e0a5b37fa44e9c336eea6ddab613995a5c0e52803c9b7cdd14d15ed",
+      "status": "captured",
+      "png_sha256": "2785a4778139f011c2a6ffd59dbe2533f763a31d2b87d3038afe5a0dda85f1ee",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP201&otype=PNG",
+      "finished": "2026-10-18T21:43:20.309768+00:00"
+    },
+    {
+      "name": "font0-32-24-page-0",
+      "started": "2026-10-18T21:43:20.511160+00:00",
+      "source_sha256": "5d1baccadac13d85de51b5237b353f4a8d4220039a69ca4f3a37a29f22809b37",
+      "status": "captured",
+      "png_sha256": "35b84c2d2062caca2d29c7ab77251aa402291d793bc3efe9dd64c4dd6bed8467",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP202&otype=PNG",
+      "finished": "2026-10-18T21:43:22.107640+00:00"
+    },
+    {
+      "name": "font0-33-33-page-0",
+      "started": "2026-10-18T21:43:22.380412+00:00",
+      "source_sha256": "4d3f5a84ce165e9a4bcebf6ee7c0c08846bdcf50d5350b6eedae69f612a00837",
+      "status": "captured",
+      "png_sha256": "5ec484e97f0d4a9254fc73abe53e5d6a33cd792f755586d6781981eba6c9ecb7",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP203&otype=PNG",
+      "finished": "2026-10-18T21:43:23.874386+00:00"
+    },
+    {
+      "name": "font0-36-22-page-0",
+      "started": "2026-10-18T21:43:24.075679+00:00",
+      "source_sha256": "cfacf053792feb48e0e1d363fdc78a869b4bd49b06917e6c5b3631115ee78033",
+      "status": "captured",
+      "png_sha256": "d33ab59099a2e48882e4117faa783fc1e5146052d6f80f3335a528cbb57cfbf0",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP204&otype=PNG",
+      "finished": "2026-10-18T21:43:25.544961+00:00"
+    },
+    {
+      "name": "font0-40-22-page-0",
+      "started": "2026-10-18T21:43:25.746121+00:00",
+      "source_sha256": "646164269c37cefa30a49b652a204e5fb576ca34edf4d8f3374ca578f731c990",
+      "status": "captured",
+      "png_sha256": "c4ba8fd964d74843817bf996341a0a59b248c901efbfc32b13f376ba9ed594d1",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP205&otype=PNG",
+      "finished": "2026-10-18T21:43:27.172396+00:00"
+    },
+    {
+      "name": "font0-40-24-page-0",
+      "started": "2026-10-18T21:43:27.374491+00:00",
+      "source_sha256": "bfc00411bad26958c1df18d9b78bbf333693704590032ac3ba6afe56c3f74948",
+      "status": "captured",
+      "png_sha256": "f7d865380ed637e8b70d240c4156ece16b6f96b04ea6fa7a0c6f3c6ee8fd98e3",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP206&otype=PNG",
+      "finished": "2026-10-18T21:43:28.808557+00:00"
+    },
+    {
+      "name": "font0-42-24-page-0",
+      "started": "2026-10-18T21:43:29.038365+00:00",
+      "source_sha256": "8766717d7e06ec9531466f3be3bd4c1668fa3ccf675808ce985139eefa954a04",
+      "status": "captured",
+      "png_sha256": "17a75af7b27c8599a9d4b10337cb4b017161cb020d5bcab38249b50be3295da5",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP207&otype=PNG",
+      "finished": "2026-10-18T21:43:30.653549+00:00"
+    },
+    {
+      "name": "font0-48-32-page-0",
+      "started": "2026-10-18T21:43:30.855048+00:00",
+      "source_sha256": "e8fd4c6ebe46fa576d2eafa1f4afd3327209f62313711279450f9d0528f86843",
+      "status": "captured",
+      "png_sha256": "48d5e1829725dfbc3e815ed7f7e1c7c978d8894beb44cd89040c2c190be80894",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP208&otype=PNG",
+      "finished": "2026-10-18T21:43:32.310439+00:00"
+    },
+    {
+      "name": "font0-52-30-page-0",
+      "started": "2026-10-18T21:43:32.512324+00:00",
+      "source_sha256": "352d2bfb630399ad6af8cd23973a2e0e19b0e291ffc6ef5f619fea64ddebd008",
+      "status": "captured",
+      "png_sha256": "746fdb4da0aab2ab37fcb82421e08b5bd15843addcafe7ac3cb8eb1c3ead19e5",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP209&otype=PNG",
+      "finished": "2026-10-18T21:43:34.039679+00:00"
+    },
+    {
+      "name": "font0-63-63-page-0",
+      "started": "2026-10-18T21:43:34.241540+00:00",
+      "source_sha256": "fc6c7c1ba49220e3199fe991671af0385424fc75b1bbf557b2da0eed399cc6c2",
+      "status": "captured",
+      "png_sha256": "4b3e6185e59ae33ab2e3d5aa81c4ce7d8c7c486e7290b317b95f5c903003c032",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP210&otype=PNG",
+      "finished": "2026-10-18T21:43:35.551571+00:00"
+    },
+    {
+      "name": "font0-63-63-page-1",
+      "started": "2026-10-18T21:43:35.753551+00:00",
+      "source_sha256": "035ec9be14c50f2a5d82f7c5c617e41858afbe0f9cc6966e0a33dc39d890e142",
+      "status": "captured",
+      "png_sha256": "1d6f553617f45959ebf4082643d8f8cf53bb04567fdb4f9ad47b41024515667f",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP211&otype=PNG",
+      "finished": "2026-10-18T21:43:36.535080+00:00"
+    },
+    {
+      "name": "font0-64-16-page-0",
+      "started": "2026-10-18T21:43:36.737212+00:00",
+      "source_sha256": "568c610566b5068abdec287cce286a52f9461aa2cc877b6198a4ce74816b0e1b",
+      "status": "captured",
+      "png_sha256": "63385362c6bb3f23f32397b68f2a4b4a863b8c6ca0b369f52501fa9d030bf5a9",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP212&otype=PNG",
+      "finished": "2026-10-18T21:43:38.177163+00:00"
+    },
+    {
+      "name": "font0-65-65-page-0",
+      "started": "2026-10-18T21:43:38.379203+00:00",
+      "source_sha256": "91d09817c36d124514a02201e72d1cd6b750e87532ff4ab02ea4a14aeadac443",
+      "status": "captured",
+      "png_sha256": "bf3aaa165916cd37ca99a582da5df74ca991d6fae51b8a91c40a87b4c93555af",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP213&otype=PNG",
+      "finished": "2026-10-18T21:43:39.705315+00:00"
+    },
+    {
+      "name": "font0-65-65-page-1",
+      "started": "2026-10-18T21:43:39.907648+00:00",
+      "source_sha256": "e0a59c5cd72621d5269a4d98980cf97fc5423030ae254d2e7e8a8946f9ac44ce",
+      "status": "captured",
+      "png_sha256": "a7b2435de4558f578910febe36ca308c9e2b73823661dec0cef0daf852c04230",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP214&otype=PNG",
+      "finished": "2026-10-18T21:43:40.681067+00:00"
+    },
+    {
+      "name": "font0-96-96-page-0",
+      "started": "2026-10-18T21:43:40.882924+00:00",
+      "source_sha256": "4c150ea7d1de2cacd819601f9f109b3f0b308f3721ea426fd1d141a41c13f41a",
+      "status": "captured",
+      "png_sha256": "306949194acc89c59183d2aef0d48b49788c76c09f08b8d24136c75b06c431c4",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP215&otype=PNG",
+      "finished": "2026-10-18T21:43:41.969661+00:00"
+    },
+    {
+      "name": "font0-96-96-page-1",
+      "started": "2026-10-18T21:43:42.171217+00:00",
+      "source_sha256": "c8a40ad027c7de8564389596ef9de944ebe221ced314a3748e891a567378b68f",
+      "status": "captured",
+      "png_sha256": "fc92721c7431b4f0f6e95e0afd4c2b9e4d94889d7c127486ebeb2552aa07e888",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP216&otype=PNG",
+      "finished": "2026-10-18T21:43:43.243584+00:00"
+    },
+    {
+      "name": "font0-96-96-page-2",
+      "started": "2026-10-18T21:43:43.446264+00:00",
+      "source_sha256": "359d06d4dcf22367a7f159f5c62c0b3edeb52705c510535988da06c99b664d47",
+      "status": "captured",
+      "png_sha256": "3178be5cebae066d10f58176547390d98e5fc53161e0e2e5b290255fd1852049",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP217&otype=PNG",
+      "finished": "2026-10-18T21:43:44.227452+00:00"
+    },
+    {
+      "name": "unicode-32-32",
+      "started": "2026-10-18T21:43:44.429477+00:00",
+      "source_sha256": "3d414a5205000cacde3df665716fdc1c6c37927579b9bcc1143f31fee99cb019",
+      "status": "captured",
+      "png_sha256": "e688a8567c667a48288eb76772950e311965e2c38fb9e89b4736bdd60f30de79",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP218&otype=PNG",
+      "finished": "2026-10-18T21:43:45.850715+00:00"
+    },
+    {
+      "name": "unicode-40-24",
+      "started": "2026-10-18T21:43:46.052663+00:00",
+      "source_sha256": "f8c0bd4a9412cf8f3c809a02d55d0b04eb52b3992e000cbde30469b4fda241d5",
+      "status": "captured",
+      "png_sha256": "c116a35bf94fdba2a118c1848ba27e738cf73c3324d6d1fb6762539ececc3364",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP219&otype=PNG",
+      "finished": "2026-10-18T21:43:47.428748+00:00"
+    },
+    {
+      "name": "control-end",
+      "started": "2026-10-18T21:43:47.630399+00:00",
+      "source_sha256": "f83921827fbbd64256e05c2b52567d26c48290abc34e150da38297bbd96658e6",
+      "status": "captured",
+      "png_sha256": "42d9aa9f52d7c76961389aa5172083fb45504c9a47dc77feb2befb6adf302fb5",
+      "dimensions": [
+        832,
+        2558
+      ],
+      "image_url": "http://192.168.6.142/png?prev=Y&dev=R&oname=__TMP220&otype=PNG",
+      "finished": "2026-10-18T21:43:48.149319+00:00"
+    }
+  ],
+  "finished": "2026-10-18T21:43:48.351376+00:00",
+  "files": {
+    "control-end.png": "42d9aa9f52d7c76961389aa5172083fb45504c9a47dc77feb2befb6adf302fb5",
+    "control-end.zpl": "f83921827fbbd64256e05c2b52567d26c48290abc34e150da38297bbd96658e6",
+    "control-start.png": "42d9aa9f52d7c76961389aa5172083fb45504c9a47dc77feb2befb6adf302fb5",
+    "control-start.zpl": "f83921827fbbd64256e05c2b52567d26c48290abc34e150da38297bbd96658e6",
+    "font0-10-32-page-0.png": "70228be609246fcc92aede7914d52ecf7c7faa7b7a7dcd8f04318d9e5eef67cd",
+    "font0-10-32-page-0.zpl": "288cc3f963d5381cfaa056535c956a337840d2c70563a263982106c3a54c49fc",
+    "font0-15-15-page-0.png": "e43caac9978edcbb5718482daa8d0d42b89d9da871dea5a707031c4654b926a9",
+    "font0-15-15-page-0.zpl": "500deb74d57213d3626d6da4bdc9031719974c2839a2beb01a68c8b80a5d39b4",
+    "font0-16-10-page-0.png": "d56867425c4805ef912ac60a6bbf82e158436e1bb1fd1a5ed3e3ee8fe0700fa5",
+    "font0-16-10-page-0.zpl": "b7e8fd2d461bc2c97ec461a7a633e104f463940f0e3724ef15c81422209e4e4c",
+    "font0-16-64-page-0.png": "e45334bb8465658350ed6ee55ae83360fa3847eeec542d41b30a83fb6083274c",
+    "font0-16-64-page-0.zpl": "c040262d241b18760ccee21ce96db886061375be4e56a3b00e8c7bb6ae7f13ae",
+    "font0-17-17-page-0.png": "5ab4545dc8f43d6093b32fb8fd0e366981da63fdc37d7c7d463b5ec07ea32c2e",
+    "font0-17-17-page-0.zpl": "50cce0dc1e2f211f9b8207ace820adf39078573f362d00840a91324a479c01f1",
+    "font0-20-10-page-0.png": "35bf8e046d4d9445ba9dbaa0482b703c40a4850f885fbd535d80fac62a71c421",
+    "font0-20-10-page-0.zpl": "7a7895b85b7a78579afd1a801a2bab0cf3995985bfce13bcdaaeb4d6a80c47dd",
+    "font0-20-12-page-0.png": "6b9da0b0cdbd23baff855860a73154c51965ede4c3ae360d9bc4b2145b78f587",
+    "font0-20-12-page-0.zpl": "d3774844fb94a49744f5e49bb201e7a80004183598c9c846f2eb78501e6b1f07",
+    "font0-24-12-page-0.png": "a87a5e7754765301751b9cce66bf81c6e6c3945d2f61c141b2be47f8345b1049",
+    "font0-24-12-page-0.zpl": "addc5e0faa495c642d2d9e755fb6884ba7b616ddb4bb4bde29d093f74de79158",
+    "font0-24-16-page-0.png": "7fa288584b02cce84424a097e385dd88d3051f12a81be2e6795d4af078b26bc5",
+    "font0-24-16-page-0.zpl": "02a9494f73a36a8e1e46f8db2d6ff156a80e85c466a5e0f3bf5fa825238496f4",
+    "font0-26-16-page-0.png": "8af9b6af8dcf45283afe7c9daff3fa054fa599279409c87652cc3e887d8791ee",
+    "font0-26-16-page-0.zpl": "aedf2eb1302679e3ec20b29d0322f05f465e064f214ccbe3a0406791d529702f",
+    "font0-28-14-page-0.png": "21d9f2c39baa45dc6ce379937f9bafcfdb8144fe5f44e6a1670d0c99bbc42856",
+    "font0-28-14-page-0.zpl": "57caf9dfb4117045b5ed1fddc726179d31f302fa69aaffaf243563ca485800ad",
+    "font0-28-15-page-0.png": "946ed6360830319eb7910a41e814d97327a0177867222d33b4d958393fea0ec2",
+    "font0-28-15-page-0.zpl": "d83d487555595799c6c3d87f430d3d9df4329ea0baf71a7cd535d937af7b29a9",
+    "font0-28-16-page-0.png": "e3ce83a9173687e172064a1cf205067c1bb1c3d5791166f4f3e43e90d36701e5",
+    "font0-28-16-page-0.zpl": "462d45136ad26f3e3cfd7d3c4167a43f6117b8297a65ebd025991e2380f0229a",
+    "font0-31-31-page-0.png": "73c86333fee3687d1b5ac9156c2da116bf136b6aa333452406c5a6376ae0e63a",
+    "font0-31-31-page-0.zpl": "544e50fcea965af46b0f30045fb8c7e9615460300af402fbef871ba4d76fb870",
+    "font0-32-10-page-0.png": "8158dba7f8927d36b40f11e5c7a4f3bd4d535ab93cc1c90b6f76a70e5b60241c",
+    "font0-32-10-page-0.zpl": "35cdf98b0436d513f8785392eb11ce279413ea764063b408e1bcd2d9c17a218c",
+    "font0-32-20-page-0.png": "2785a4778139f011c2a6ffd59dbe2533f763a31d2b87d3038afe5a0dda85f1ee",
+    "font0-32-20-page-0.zpl": "c7f5a5845e0a5b37fa44e9c336eea6ddab613995a5c0e52803c9b7cdd14d15ed",
+    "font0-32-24-page-0.png": "35b84c2d2062caca2d29c7ab77251aa402291d793bc3efe9dd64c4dd6bed8467",
+    "font0-32-24-page-0.zpl": "5d1baccadac13d85de51b5237b353f4a8d4220039a69ca4f3a37a29f22809b37",
+    "font0-33-33-page-0.png": "5ec484e97f0d4a9254fc73abe53e5d6a33cd792f755586d6781981eba6c9ecb7",
+    "font0-33-33-page-0.zpl": "4d3f5a84ce165e9a4bcebf6ee7c0c08846bdcf50d5350b6eedae69f612a00837",
+    "font0-36-22-page-0.png": "d33ab59099a2e48882e4117faa783fc1e5146052d6f80f3335a528cbb57cfbf0",
+    "font0-36-22-page-0.zpl": "cfacf053792feb48e0e1d363fdc78a869b4bd49b06917e6c5b3631115ee78033",
+    "font0-40-22-page-0.png": "c4ba8fd964d74843817bf996341a0a59b248c901efbfc32b13f376ba9ed594d1",
+    "font0-40-22-page-0.zpl": "646164269c37cefa30a49b652a204e5fb576ca34edf4d8f3374ca578f731c990",
+    "font0-40-24-page-0.png": "f7d865380ed637e8b70d240c4156ece16b6f96b04ea6fa7a0c6f3c6ee8fd98e3",
+    "font0-40-24-page-0.zpl": "bfc00411bad26958c1df18d9b78bbf333693704590032ac3ba6afe56c3f74948",
+    "font0-42-24-page-0.png": "17a75af7b27c8599a9d4b10337cb4b017161cb020d5bcab38249b50be3295da5",
+    "font0-42-24-page-0.zpl": "8766717d7e06ec9531466f3be3bd4c1668fa3ccf675808ce985139eefa954a04",
+    "font0-48-32-page-0.png": "48d5e1829725dfbc3e815ed7f7e1c7c978d8894beb44cd89040c2c190be80894",
+    "font0-48-32-page-0.zpl": "e8fd4c6ebe46fa576d2eafa1f4afd3327209f62313711279450f9d0528f86843",
+    "font0-52-30-page-0.png": "746fdb4da0aab2ab37fcb82421e08b5bd15843addcafe7ac3cb8eb1c3ead19e5",
+    "font0-52-30-page-0.zpl": "352d2bfb630399ad6af8cd23973a2e0e19b0e291ffc6ef5f619fea64ddebd008",
+    "font0-63-63-page-0.png": "4b3e6185e59ae33ab2e3d5aa81c4ce7d8c7c486e7290b317b95f5c903003c032",
+    "font0-63-63-page-0.zpl": "fc6c7c1ba49220e3199fe991671af0385424fc75b1bbf557b2da0eed399cc6c2",
+    "font0-63-63-page-1.png": "1d6f553617f45959ebf4082643d8f8cf53bb04567fdb4f9ad47b41024515667f",
+    "font0-63-63-page-1.zpl": "035ec9be14c50f2a5d82f7c5c617e41858afbe0f9cc6966e0a33dc39d890e142",
+    "font0-64-16-page-0.png": "63385362c6bb3f23f32397b68f2a4b4a863b8c6ca0b369f52501fa9d030bf5a9",
+    "font0-64-16-page-0.zpl": "568c610566b5068abdec287cce286a52f9461aa2cc877b6198a4ce74816b0e1b",
+    "font0-65-65-page-0.png": "bf3aaa165916cd37ca99a582da5df74ca991d6fae51b8a91c40a87b4c93555af",
+    "font0-65-65-page-0.zpl": "91d09817c36d124514a02201e72d1cd6b750e87532ff4ab02ea4a14aeadac443",
+    "font0-65-65-page-1.png": "a7b2435de4558f578910febe36ca308c9e2b73823661dec0cef0daf852c04230",
+    "font0-65-65-page-1.zpl": "e0a59c5cd72621d5269a4d98980cf97fc5423030ae254d2e7e8a8946f9ac44ce",
+    "font0-96-96-page-0.png": "306949194acc89c59183d2aef0d48b49788c76c09f08b8d24136c75b06c431c4",
+    "font0-96-96-page-0.zpl": "4c150ea7d1de2cacd819601f9f109b3f0b308f3721ea426fd1d141a41c13f41a",
+    "font0-96-96-page-1.png": "fc92721c7431b4f0f6e95e0afd4c2b9e4d94889d7c127486ebeb2552aa07e888",
+    "font0-96-96-page-1.zpl": "c8a40ad027c7de8564389596ef9de944ebe221ced314a3748e891a567378b68f",
+    "font0-96-96-page-2.png": "3178be5cebae066d10f58176547390d98e5fc53161e0e2e5b290255fd1852049",
+    "font0-96-96-page-2.zpl": "359d06d4dcf22367a7f159f5c62c0b3edeb52705c510535988da06c99b664d47",
+    "layout.json": "34727eceb3b989be147080b164e77fd6873ad0e08cc69ffc77541332275eec5c",
+    "reset.zpl": "ae46810376fdda94779341c37244a9651939b9fc1d0a5944b7b63bac24a60445",
+    "unicode-32-32.png": "e688a8567c667a48288eb76772950e311965e2c38fb9e89b4736bdd60f30de79",
+    "unicode-32-32.zpl": "3d414a5205000cacde3df665716fdc1c6c37927579b9bcc1143f31fee99cb019",
+    "unicode-40-24.png": "c116a35bf94fdba2a118c1848ba27e738cf73c3324d6d1fb6762539ececc3364",
+    "unicode-40-24.zpl": "f8c0bd4a9412cf8f3c809a02d55d0b04eb52b3992e000cbde30469b4fda241d5"
+  },
+  "capture_tool_sha256": "92d8b3dcdb2cb3ae9a61519237abf726d25d74dc55205beb51cec9160fc5897e",
+  "repository_commit": "1eb6725d0c5eb60754b8fa8a8e38aee8b15a35ae",
+  "working_tree": "GX430t feature in progress; pre-existing USB/SGD work present",
+  "omitted_html_sha256": {
+    "config-start.html": "3d60cad3589775f59decfd4ad85f8adef0ef7d43d02d6db617694ce83fb00368",
+    "control-end.html": "dbd96763b354feaadbda318ca490e481b36a3496e6c9bb7acb9d22445fca8c13",
+    "control-start.html": "4dc7ee4314568b62d8e254df595bf9d423ed248250c94783f870b7ea5cc09eb0",
+    "font0-10-32-page-0.html": "53df48c00da62c3ae972287ec34a6807fe1bba239f5f48f98df986e4664c24ab",
+    "font0-15-15-page-0.html": "7d69e5ce53d53779821b0f9f17eedb736452c71fd397efd5b06d53748395b8f7",
+    "font0-16-10-page-0.html": "b238191787c70dc97dccaa33ef37670e3aee74e771bdda36085796df65566dd0",
+    "font0-16-64-page-0.html": "3b73523d1590739888b60f33718fbd77d06df0fb2871e83d4b05d0da43e91d0c",
+    "font0-17-17-page-0.html": "7ebcb0c7e41f1328284124b240a3759f97422c574e608a9da894189cea6cea3f",
+    "font0-20-10-page-0.html": "461cdb870e121609f1496e2226ed97e669cf0053c26c4db76ade0859d39d8d5b",
+    "font0-20-12-page-0.html": "8cd40fabc7b62332890aaf9c269b533b99ff87d226fc3045c2349c61d415ced5",
+    "font0-24-12-page-0.html": "d309e901e0510d7a40af3aa32252e5c62b5d225913ed8bdb3340d547e6c44ab0",
+    "font0-24-16-page-0.html": "42324052cfbc55baff6a2ba20cef1a1e9075d0b863d94ab1cb0ea6b8375a8351",
+    "font0-26-16-page-0.html": "e97698243d87eedf7d5daaf598fe6b29fb47d2878acc58bf6739afff4a302718",
+    "font0-28-14-page-0.html": "39e3999c843c81f5b2a0c4fb6d43d7b2db855fecdc7917d4f0e249e6dd61506a",
+    "font0-28-15-page-0.html": "d1f275df0376e0ec76feced9237ad69c8a3d3c448b5d80180170257dfa9e41d1",
+    "font0-28-16-page-0.html": "040c12d5a417b837cddd7e3a5d0ae7aa4900f065a9d97142aa632b6f285e85e4",
+    "font0-31-31-page-0.html": "50bd14469e500186fde02c2907620901ceab88d34db72b71365f8289e9b3837b",
+    "font0-32-10-page-0.html": "0425b8358faf2a1286b2d319e7c0d4cea550b1f78491487d24f669f916e71fa5",
+    "font0-32-20-page-0.html": "6c9ec2930aec92c839f2e86a86ebc81ef9b8da108171bc4a2bcc1cd406e1a8a0",
+    "font0-32-24-page-0.html": "23849450cf1e6b01ccbd1dfdf7ec19e2122a344c9e5d9c9ca0c4efaa261d0103",
+    "font0-33-33-page-0.html": "4c93b966c9baa5a9cc001199fa8782a539a61288f516cd72c7f2f68d599a4839",
+    "font0-36-22-page-0.html": "9304e526936aa80a76134b293a0145100ae3386c007dbf2593c32224a2619aba",
+    "font0-40-22-page-0.html": "7e086f34346bfb62cd0e63f44ce3fb14ca99b5e35b2aa5498e6c3c023c55d70f",
+    "font0-40-24-page-0.html": "3a1e2e62177f6cdfc6e8ed39088c28351f69c0a7aedee98fdf4c7d3bf9984f42",
+    "font0-42-24-page-0.html": "a653e4849676d3e6979b509a7432844f65e021aa9be2a24ed89d0d9d38d354ea",
+    "font0-48-32-page-0.html": "1a306aa52429779601dae4cffd4d257f1d813fb69e1df9782bf257333d37f798",
+    "font0-52-30-page-0.html": "be21d5d591b543c0576d4eb8765eea8cf48c7afc8f3b3d39cba5fc308e8733e4",
+    "font0-63-63-page-0.html": "d38240cbee8a4ac9804c2abe9448009064b85aebef291253f60dd781512f8760",
+    "font0-63-63-page-1.html": "34ba9cc70f79b5df1952c7ad40e1f45038500964e60f5a2e8b23d1b5426054e4",
+    "font0-64-16-page-0.html": "938f1b21e433136bbde48358f76ea915171e369df899960dbdecc0d9968b8516",
+    "font0-65-65-page-0.html": "91f4b070cfe1cd85d2456da1e9c705549c15adb5a6f5bddfdf1ecaa6993e0ff3",
+    "font0-65-65-page-1.html": "3b3462a092822125ca03fa35b9a4c00315b7ee40d3cdcde8d6e76fbcea0226fb",
+    "font0-96-96-page-0.html": "afe263f6270ef9db47fc45cf78f5a25037d7ebcbf136bfbb2756554d686a1293",
+    "font0-96-96-page-1.html": "4328726cc5c122aac31cb9f993dbf1899f63fe2b35fc8e3d681d6c11843ad3f0",
+    "font0-96-96-page-2.html": "84f9999350c031d4a816ad8fa280463461f308fdda713a7c46dfe41ad6b807b2",
+    "status-start.html": "3c2201ab8d3e078abc49c5cc118ed4d64ffe5fd76309fe2b21d0a605ef4090e8",
+    "unicode-32-32.html": "dc120cd54ec1d55b74b6b42c7145e39c5cc72a1743486bf06f85427420344a69",
+    "unicode-40-24.html": "fe943a31e09f484670c222e00513e550cf379722cc0ea99bd636bd0e4bf9b4de"
+  }
+}

@@ -184,6 +184,12 @@ pub(super) fn plan(
                     .unwrap_or(0);
             }
             b"FE" => {
+                if compatibility.reject_field_concatenation {
+                    return Err(error(
+                        offset,
+                        "FE field concatenation is unsupported by the selected printer",
+                    ));
+                }
                 concat = Some(
                     super::concatenation::delimiter(
                         operands,

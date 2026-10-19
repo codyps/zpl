@@ -35,7 +35,14 @@ assert_eq!(resident('A').unwrap().name, font.name);
 ```
 
 `resident(id)` resolves resident A–H and the GS face (`@`). C/D share a matrix;
-E/H select their 203-DPI forms. The `zpl` renderer uses this same dataset.
+E/H select their 203-DPI forms. `resident_at_dpi(id, dpi)` selects the
+6/8/12/24-dot-per-mm OCR forms; the other bitmap matrices keep their native
+dot dimensions. The `zpl` renderer uses this same dataset.
+
+The optional `gx430t` feature exposes fixed scalable strikes in
+`captures::gx430t`, calibrated on GX430t V56.17.17Z at 300 DPI. These are
+independent of the ZD621 hinting observations. See
+[data and acquisition scope](data/gx430t/README.md).
 
 The [bundled dataset](https://github.com/codyps/zpl/blob/main/zpl-bitmap-fonts/data/zd621/README.md)
 contains 47 fonts, calibrated native metrics, and advancing blanks from verified

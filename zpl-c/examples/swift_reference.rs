@@ -15,6 +15,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         ("zd621", profiles::ZD621_203_DPI),
         ("specification", profiles::SPECIFICATION),
         ("zq610Plus", profiles::ZQ610_PLUS_203_DPI),
+        ("gx430t", profiles::GX430T_300_DPI),
     ] {
         let document = zpl::render(source, profile)?;
         fs::write(

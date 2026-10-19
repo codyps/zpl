@@ -59,6 +59,7 @@ pub fn render_packet(input: &[u8], format: u32, profile: u32, width: u32, height
         0 => render::profiles::SPECIFICATION,
         1 => render::profiles::ZD621_203_DPI,
         2 => render::profiles::ZQ610_PLUS_203_DPI,
+        3 => render::profiles::GX430T_300_DPI,
         _ => return error(1, u32::MAX, "unknown profile"),
     };
     options.width = width;
@@ -202,6 +203,7 @@ mod tests {
             render::profiles::SPECIFICATION,
             render::profiles::ZD621_203_DPI,
             render::profiles::ZQ610_PLUS_203_DPI,
+            render::profiles::GX430T_300_DPI,
         ]
         .into_iter()
         .enumerate()

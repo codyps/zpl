@@ -154,6 +154,8 @@ fn barcode_reference_coverage_and_error_budget() {
                 "ZQ610_PLUS_203_DPI",
                 zpl::render::profiles::ZQ610_PLUS_203_DPI,
             )
+        } else if name.starts_with("zpl/tests/fixtures/gx430t-300-v1/") {
+            ("GX430T_300_DPI", zpl::render::profiles::GX430T_300_DPI)
         } else {
             assert!(
                 name.contains("-zd621-v1/")
@@ -380,13 +382,13 @@ fn barcode_reference_coverage_and_error_budget() {
         fs::write(output, report.unwrap()).unwrap();
     }
     assert_eq!(
-        // Existing 1,719 frames plus ten controlled resident-caption captures.
-        // Provenance: fixtures/downloaded-bitmap-zd621-v1/README.md.
+        // Existing 1,729 frames plus 342 GX430t barcode captures.
+        // Provenance: fixtures/gx430t-300-v1/README.md.
         count,
-        1729,
+        2071,
         "review inventory changes; do not silently drop captures"
     );
-    for model in ["ZD621_203_DPI", "ZQ610_PLUS_203_DPI"] {
+    for model in ["ZD621_203_DPI", "ZQ610_PLUS_203_DPI", "GX430T_300_DPI"] {
         assert_eq!(
             covered.get(model),
             Some(&COMMANDS.iter().map(|s| s.to_string()).collect()),

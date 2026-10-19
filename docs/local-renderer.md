@@ -316,6 +316,20 @@ and QR mask option. This command replaces the former rendering example.
 
 ## Printer profiles
 
+`GX430T_300_DPI` selects GX430t V56.17.17Z HTTP preview behavior and fixed
+native scalable strikes. The CLI accepts `--profile gx430t`. Its initial
+height is the captured device's configured 2558 dots; set `Options.height`
+for a different device configuration. Native previews retain that height
+rather than applying each label's `^LL`. See the
+[GX430t evidence and accuracy scope](../zpl/tests/fixtures/gx430t-300-v1/README.md).
+
+Resident OCR-A/OCR-B selection, size quantization, baselines and rotated
+anchors follow `Options.dpi`; their matrices differ between density classes.
+Explicit ZPL coordinates and other fixed bitmap matrices remain printer dots.
+GX430t scalable hinting is selected independently through
+`gx430t_scalable_strikes`. MaxiCode has a measured integer 300-DPI dot matrix
+and finder mask; resampling the 203-DPI mask does not reproduce its geometry.
+
 `ZQ610_PLUS_203_DPI` targets the captured ZQ610 Plus V100.21.21Z HTTP preview:
 384 × 2030 initial dots, a 384-dot width cap, 64-dot width rounding with a
 centered origin, width fixed at the first draw, and ignored `^LL`. These four
@@ -338,6 +352,16 @@ options.height = 300;
 options.compatibility.qr_fo_uses_by_height = false;
 let document = render(b"^XA^FO20,20^BQN,2,3^FDQA,HELLO^FS^XZ", options)?;
 ```
+
+`GX430T_300_DPI` selects GX430t V56.17.17Z scalable strikes and a native
+1280 × 2558, 300-DPI preview canvas. OCR E/H matrices, bitmap baselines, caption
+font transitions and MaxiCode dot geometry use the selected density. Independent
+options select GX logical-width clipping, byte-padded OCR reading-axis layout,
+MaxiCode short-A space boundaries, and rejection of unsupported modern FE concatenation. `MCY`/`MC` clear the
+request-local scene normally; retained-image `MCN` is explicitly unsupported.
+[Native evidence](../zpl/tests/fixtures/gx430t-300-v1/README.md) records scope,
+accuracy, state recovery and unchanged ZD621 baselines. All language bindings
+accept the profile; the C compatibility layout requires ABI 4 headers/library.
 
 The profile is an ordinary `Options` value, so every setting remains independently
 overridable. It targets a 203-DPI ZD621 running V93.21.33Z, with initial dimensions

@@ -83,6 +83,21 @@ class CaptureTests(unittest.TestCase):
             thread.join()
             server.server_close()
 
+    def test_identity_uses_reported_density_and_legacy_configuration(self):
+        modern = (b"ZTC ZQ610 Plus-203dpi <TD>Firmware Version</TD><TD>V100.21.21Z</TD>"
+                  b"<TD>BT Friendly Name</TD><TD>XX123</TD>")
+        self.assertEqual(capture.identity(modern)["dpi"], 203)
+        legacy = b"<H1>ZTC GX430t</H1>"
+        configuration = (b"<PRE>\n  1280 12/MM FULL     RESOLUTION\n"
+                         b"  V56.17.17Z &lt;-       FIRMWARE\n"
+                         b"  32J193600198        SERIAL NUMBER\n</PRE>")
+        self.assertEqual(capture.identity(legacy, configuration), {
+            "model": "ZTC GX430t", "firmware": "V56.17.17Z",
+            "serial": "32J193600198", "dpi": 300,
+        })
+        with self.assertRaises(ValueError):
+            capture.identity(legacy)
+
     def test_saved_integrity(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
