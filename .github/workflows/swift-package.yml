@@ -177,6 +177,17 @@ jobs:
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: '3.13'
+      - name: Select pinned Windows Swift toolchain paths
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          # The Windows installer can add the runtime while omitting the toolchain
+          # from PATH. Set both before setup-swift validates the installation.
+          $swiftRoot = Join-Path $env:LOCALAPPDATA 'Programs\Swift'
+          @(
+            "$swiftRoot\Toolchains\6.3.3+Asserts\usr\bin"
+            "$swiftRoot\Runtimes\6.3.3\usr\bin"
+          ) | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
       - uses: compnerd/gha-setup-swift@eeda069c5bc95ac8a9ac5cea7d4f588ae5420ca5 # v0.4.0
         if: runner.os == 'Windows'
         with:
