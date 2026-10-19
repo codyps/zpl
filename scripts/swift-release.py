@@ -47,43 +47,57 @@ def files(directory):
             and '.build' not in p.relative_to(directory).parts}
 
 
-def validate(version, artifact, distribution):
+def validate(version, artifact, distribution, native_artifact=None):
     package.stable(version)
     if artifact.name != package.filename(version):
         raise ValueError('Unexpected Swift asset filename')
+    native = importlib.import_module('swift-native')
+    if native_artifact is None or native_artifact.name != native.filename(version):
+        raise ValueError('Release requires the complete native artifact bundle')
     metadata = json.loads((distribution / 'release.json').read_text())
     revision = output('git', 'rev-parse', 'HEAD', cwd=ROOT)
     if metadata != {'version': version, 'sourceCommit': revision,
-                    'sha256': package.verify(artifact), 'artifact': artifact.name}:
+                    'sha256': package.verify(artifact), 'artifact': artifact.name,
+                    'nativeArtifact': native_artifact.name, 'nativeSha256': native.verify(native_artifact, version)}:
         raise ValueError('Swift package metadata does not match tested artifact/source')
     # Compare the complete staged tree, including its manifest/checksum and source,
     # before trusting it for remote writes. No local binary targets may be published.
     with tempfile.TemporaryDirectory() as tmp:
         expected = Path(tmp) / 'zpl-swift'
-        package.stage(version, artifact, expected)
+        package.stage(version, artifact, expected, native_artifact=native_artifact)
         if files(expected) != files(distribution):
             raise ValueError('Swift distribution differs from the staged source package')
 
 
-def upload_asset(version, artifact):
+def upload_assets(version, artifacts):
     tag = f'zpl-v{version}'
     release = json.loads(output('gh', 'release', 'view', tag, '--repo', 'codyps/zpl',
                                 '--json', 'tagName,isDraft,isPrerelease,assets'))
     if release['tagName'] != tag or release['isDraft'] or release['isPrerelease']:
         raise ValueError('Expected a completed stable renderer release')
-    if artifact.name in {asset['name'] for asset in release['assets']}:
-        with tempfile.TemporaryDirectory() as tmp:
-            run('gh', 'release', 'download', tag, '--repo', 'codyps/zpl', '--pattern', artifact.name, '--dir', tmp)
-            if (Path(tmp) / artifact.name).read_bytes() != artifact.read_bytes():
-                raise ValueError('Published Swift asset differs; never overwrite an existing version')
-    else:
-        run('gh', 'release', 'upload', tag, '--repo', 'codyps/zpl', artifact)
+    existing = {asset['name'] for asset in release['assets']}
+    pending = []
+    # Check every existing file before uploading either half of the distribution.
+    with tempfile.TemporaryDirectory() as tmp:
+        for artifact in artifacts:
+            if artifact.name in existing:
+                run('gh', 'release', 'download', tag, '--repo', 'codyps/zpl', '--pattern', artifact.name, '--dir', tmp)
+                if (Path(tmp) / artifact.name).read_bytes() != artifact.read_bytes():
+                    raise ValueError('Published Swift asset differs; never overwrite an existing version')
+            else:
+                pending.append(artifact)
+    if pending:
+        run('gh', 'release', 'upload', tag, '--repo', 'codyps/zpl', *pending)
 
 
-def publish(version, artifact, distribution):
+def upload_asset(version, artifact):
+    upload_assets(version, [artifact])
+
+
+def publish(version, artifact, distribution, native_artifact=None):
     if release_version(ROOT) != version:
         raise ValueError('Publish only from the exact completed renderer release commit')
-    validate(version, artifact, distribution)
+    validate(version, artifact, distribution, native_artifact)
     desired = files(distribution)
     # Use the configured gh identity without persisting credentials in Git config
     # or embedding a token in URLs, arguments, generated files, or commit history.
@@ -98,9 +112,9 @@ def publish(version, artifact, distribution):
             actual = {name: (clone / name).read_bytes() for name in tracked if name}
             if actual != desired:
                 raise ValueError('Published Swift tag has different contents; never move a published tag')
-            upload_asset(version, artifact)
+            upload_assets(version, [artifact, native_artifact])
             return
-        upload_asset(version, artifact)
+        upload_assets(version, [artifact, native_artifact])
         # Exercise the actual HTTPS binary URL and checksum after upload, before
         # making the new package version discoverable. Build/test jobs use no token.
         run('swift', 'test', '--package-path', distribution)
@@ -138,8 +152,9 @@ if __name__ == '__main__':
     command.add_argument('version')
     command.add_argument('artifact', type=Path)
     command.add_argument('distribution', type=Path)
+    command.add_argument('--native-artifact', required=True, type=Path)
     args = parser.parse_args()
     if args.command == 'prepare':
         prepare()
     else:
-        publish(args.version, args.artifact, args.distribution)
+        publish(args.version, args.artifact, args.distribution, args.native_artifact)

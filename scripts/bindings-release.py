@@ -20,6 +20,8 @@ BINDINGS = ("zpl-c", "zpl-wasm", "zpl-node", "zpl-python", "zpl-elixir", "zpl-go
 PATHS = (*BINDINGS, "scripts/build-node.sh", "scripts/elixir-package.py",
          "scripts/dotnet-release.py", ".github/workflows/dotnet-package.yml",
          "scripts/swift-package.py", "scripts/swift-release.py",
+         "scripts/swift-native.py", "scripts/swift-localize.py",
+         "scripts/native-build.py", "scripts/prebuilt_targets.py",
          "zpl-c/examples/swift_reference.rs", ".github/workflows/swift-package.yml")
 CRATES = {"zpl": "zpl", "zpl-c": "zpl-c", "zpl-wasm": "zpl-wasm",
           "zpl-python": "zpl-python", "zpl-elixir": "zpl_elixir"}

@@ -30,7 +30,7 @@ internal func checkABI() throws {
 
 private func copyBytes(_ bytes: ZplBytes) -> Data {
     guard bytes.len > 0 else { return Data() }
-    return Data(bytes: bytes.data!, count: bytes.len)
+    return Data(bytes: bytes.data!, count: Int(bytes.len))
 }
 
 internal func check(_ status: Int32) throws {
@@ -38,7 +38,7 @@ internal func check(_ status: Int32) throws {
     // Copy thread-local error storage before any subsequent fallible C call.
     let error = zpl_last_error()
     throw ZPLError(status: Status(rawValue: status) ?? .panic,
-                   byteOffset: error.offset == -1 ? nil : error.offset,
+                   byteOffset: error.offset == ~0 ? nil : Int(error.offset),
                    message: String(decoding: copyBytes(error.message), as: UTF8.self))
 }
 
@@ -104,7 +104,7 @@ public enum ZPL {
                     // Fonts serializes mutations and rendering; native scenes never retain it.
                     let operation = {
                         try check(zpl_render_with_fonts(bytes.bindMemory(to: UInt8.self).baseAddress,
-                                                        bytes.count, options, fonts?.handle, limits, &document))
+                                                        .init(bytes.count), options, fonts?.handle, limits, &document))
                         return Document(handle: document!)
                     }
                     if let fonts = fonts { return try fonts.locked(operation) }
@@ -125,14 +125,14 @@ public enum ZPL {
         return try source.withUnsafeBytes { bytes in
             try withOptional(syntax?.raw) { syntax in
                 var parsed: OpaquePointer?
-                try check(zpl_parse(bytes.bindMemory(to: UInt8.self).baseAddress, bytes.count, syntax, &parsed))
+                try check(zpl_parse(bytes.bindMemory(to: UInt8.self).baseAddress, .init(bytes.count), syntax, &parsed))
                 defer { zpl_parsed_free(parsed) }
                 var elements: [ParsedElement] = []
-                for index in 0..<zpl_parsed_count(parsed) {
+                for index in 0..<Int(zpl_parsed_count(parsed)) {
                     var element = ZplElement()
-                    try check(zpl_parsed_element(parsed, index, &element))
+                    try check(zpl_parsed_element(parsed, .init(index), &element))
                     elements.append(ParsedElement(kind: ElementKind(rawValue: element.kind)!,
-                                                   byteOffset: element.offset, data: copyBytes(element.data)))
+                                                   byteOffset: Int(element.offset), data: copyBytes(element.data)))
                 }
                 var finalSyntax = ZplSyntax()
                 try check(zpl_parsed_syntax(parsed, &finalSyntax))
@@ -148,12 +148,12 @@ public final class Document {
     internal init(handle: OpaquePointer) { self.handle = handle }
     deinit { zpl_document_free(handle) }
 
-    public var labelCount: Int { zpl_document_label_count(handle) }
+    public var labelCount: Int { Int(zpl_document_label_count(handle)) }
     public var warnings: [String] {
         get throws {
-            try (0..<zpl_document_warning_count(handle)).map { index in
+            try (0..<Int(zpl_document_warning_count(handle))).map { index in
                 var bytes = ZplBytes()
-                try check(zpl_document_warning(handle, index, &bytes))
+                try check(zpl_document_warning(handle, .init(index), &bytes))
                 return String(decoding: copyBytes(bytes), as: UTF8.self)
             }
         }
@@ -165,7 +165,7 @@ public final class Document {
             throw ZPLError(status: .invalidArgument, byteOffset: nil, message: "Label index must be nonnegative")
         }
         var scene: OpaquePointer?
-        try check(zpl_document_label(handle, index, &scene))
+        try check(zpl_document_label(handle, .init(index), &scene))
         return Scene(handle: scene!)
     }
 
@@ -244,7 +244,7 @@ public final class Fonts {
         try locked {
             try data.withUnsafeBytes { bytes in
                 try check(zpl_fonts_insert_truetype(handle, id, bytes.bindMemory(to: UInt8.self).baseAddress,
-                                                    bytes.count, hinting.rawValue))
+                                                    .init(bytes.count), hinting.rawValue))
             }
         }
     }
@@ -254,7 +254,7 @@ public final class Fonts {
             try Data(filename.utf8).withUnsafeBytes { name in
                 try data.withUnsafeBytes { bytes in
                     try check(zpl_fonts_insert_named_truetype(handle, name.bindMemory(to: UInt8.self).baseAddress,
-                                name.count, bytes.bindMemory(to: UInt8.self).baseAddress, bytes.count, hinting.rawValue))
+                                .init(name.count), bytes.bindMemory(to: UInt8.self).baseAddress, .init(bytes.count), hinting.rawValue))
                 }
             }
         }

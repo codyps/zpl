@@ -16,6 +16,7 @@ import urllib.request
 from pathlib import Path
 
 from renderer_release import release_version
+from prebuilt_targets import PYTHON_PLATFORMS
 
 PACKAGE = "zplkit"
 CRATE = "zpl-python"
@@ -97,10 +98,25 @@ def select_uploads(source, destination, version):
         if p.name.startswith(f"zplkit-{version}-") and p.suffix == ".whl"
     ]
     sdists = [p for p in artifacts if p.name == f"zplkit-{version}.tar.gz"]
-    if len(wheels) != 5 or len(sdists) != 1 or len(artifacts) != 6:
-        raise ValueError(
-            "Expected five platform wheels and one source archive for this version"
-        )
+    platforms = []
+    for wheel in wheels:
+        # abi3-py310 is the public Python compatibility floor. Each dotted
+        # platform alias must describe the same supported platform.
+        match = re.fullmatch(r"zplkit-" + re.escape(version) + r"-cp310-abi3-(.+)\.whl", wheel.name)
+        if match is None:
+            raise ValueError(f"Unexpected wheel ABI: {wheel.name}")
+        tags = set()
+        for tag in match[1].split('.'):
+            if re.fullmatch(r'macosx_\d+_\d+_(x86_64|arm64)', tag):
+                tag = 'macosx_x86_64' if tag.endswith('x86_64') else 'macosx_arm64'
+            tags.add(tag)
+        supported = tags & PYTHON_PLATFORMS
+        if len(supported) != 1 or supported != tags:
+            raise ValueError(f"Unexpected wheel platform: {wheel.name}")
+        platforms.append(supported.pop())
+    if (set(platforms) != PYTHON_PLATFORMS or len(platforms) != len(PYTHON_PLATFORMS)
+            or len(sdists) != 1 or len(artifacts) != len(PYTHON_PLATFORMS) + 1):
+        raise ValueError("Expected exactly one stable-ABI wheel per supported platform and one source archive")
     if destination.exists() and any(destination.iterdir()):
         raise ValueError("Upload directory must be empty")
     published = registry_files(version)

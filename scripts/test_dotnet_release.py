@@ -79,7 +79,7 @@ class DotnetReleaseTests(unittest.TestCase):
                 release.payload(self.archive(missing=[path]), '1.2.3')
 
     def test_bad_metadata_empty_and_unexpected_native_fail(self):
-        for changes in ({'runtimes/win-arm64/native/zpl_c.dll': b'extra'},
+        for changes in ({'runtimes/linux-riscv64/native/libzpl_c.so': b'extra'},
                         {'ref/net8.0/Codyps.Zpl.dll': b''},
                         {'Codyps.Zpl.nuspec': b'<package><metadata><id>Other</id></metadata></package>'}):
             with self.subTest(changes=changes), self.assertRaises(ValueError):

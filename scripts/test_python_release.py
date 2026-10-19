@@ -92,11 +92,11 @@ class ReleaseTests(unittest.TestCase):
         source = self.root / "dist"
         source.mkdir()
         platforms = [
-            "manylinux_2_28_x86_64",
-            "manylinux_2_28_aarch64",
-            "macosx_10_12_x86_64",
-            "macosx_11_0_arm64",
-            "win_amd64",
+            "manylinux_2_28_x86_64", "manylinux_2_28_aarch64",
+            "manylinux_2_28_armv7l", "manylinux_2_39_riscv64",
+            "musllinux_1_2_x86_64", "musllinux_1_2_aarch64", "musllinux_1_2_armv7l",
+            "macosx_10_12_x86_64", "macosx_11_0_arm64",
+            "win_amd64", "win32", "win_arm64",
         ]
         for platform in platforms:
             (source / f"zplkit-1.2.3-cp310-abi3-{platform}.whl").write_bytes(
@@ -160,6 +160,37 @@ class ReleaseTests(unittest.TestCase):
         next(source.iterdir()).unlink()
         with self.assertRaises(ValueError):
             self.select(source, {})
+
+    def test_each_platform_is_required_even_with_the_same_wheel_count(self):
+        source = self.artifacts()
+        for wheel in list(source.glob('*.whl')):
+            # Replace each wheel with a differently named alias of an existing
+            # platform. Counts alone must not permit an incomplete release.
+            alias = 'macosx_12_0_arm64' if wheel.name.endswith('x86_64.whl') and 'macosx' in wheel.name else 'macosx_12_0_x86_64'
+            moved = source / f'zplkit-1.2.3-cp310-abi3-{alias}.whl'
+            wheel.rename(moved)
+            with self.subTest(wheel=wheel.name), self.assertRaises(ValueError):
+                self.select(source, {})
+            moved.rename(wheel)
+
+    def test_wrong_abi_libc_and_unknown_platform_alias_are_rejected(self):
+        source = self.artifacts()
+        wheel = source / 'zplkit-1.2.3-cp310-abi3-musllinux_1_2_x86_64.whl'
+        for replacement in (
+            'cp311-abi3-musllinux_1_2_x86_64',
+            'cp310-cp310-musllinux_1_2_x86_64',
+            'cp310-abi3-linux_x86_64',
+            'cp310-abi3-manylinux_2_28_x86_64',
+            'cp310-abi3-musllinux_1_2_x86_64.unknown_x86_64',
+        ):
+            other = source / f'zplkit-1.2.3-{replacement}.whl'
+            if other.exists():
+                # Keep both inputs intact while testing a duplicate GNU wheel.
+                other = source / f'zplkit-1.2.3-{replacement}.manylinux_2_28_x86_64.whl'
+            wheel.rename(other)
+            with self.subTest(replacement=replacement), self.assertRaises(ValueError):
+                self.select(source, {})
+            other.rename(wheel)
 
     def test_only_registry_404_means_missing(self):
         for status in [404, 403, 429, 500]:

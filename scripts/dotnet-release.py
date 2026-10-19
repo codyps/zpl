@@ -16,16 +16,11 @@ import xml.etree.ElementTree as ET
 import zipfile
 
 from renderer_release import release_version
+from prebuilt_targets import DOTNET_NATIVES as NATIVES
 
 PACKAGE = 'Codyps.Zpl'
 PROJECT = 'zpl-dotnet/Codyps.Zpl/Codyps.Zpl.csproj'
-NATIVES = {
-    'win-x64': 'zpl_c.dll',
-    'linux-x64': 'libzpl_c.so',
-    'linux-arm64': 'libzpl_c.so',
-    'osx-x64': 'libzpl_c.dylib',
-    'osx-arm64': 'libzpl_c.dylib',
-}
+
 MANAGED_ASSETS = {
     'ref/net8.0/Codyps.Zpl.dll', 'runtimes/any/lib/net8.0/Codyps.Zpl.dll',
     'ref/netstandard2.0/Codyps.Zpl.dll', 'runtimes/any/lib/netstandard2.0/Codyps.Zpl.dll',

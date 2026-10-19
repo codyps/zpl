@@ -27,18 +27,47 @@ jobs:
         include:
           - runner: ubuntu-22.04
             rid: linux-x64
+            target: x86_64-unknown-linux-gnu
             library: libzpl_c.so
           - runner: ubuntu-24.04-arm
             rid: linux-arm64
+            target: aarch64-unknown-linux-gnu
+            library: libzpl_c.so
+          - runner: ubuntu-22.04
+            rid: linux-arm
+            target: armv7-unknown-linux-gnueabihf
+            library: libzpl_c.so
+          - runner: ubuntu-22.04
+            rid: linux-musl-x64
+            target: x86_64-unknown-linux-musl
+            library: libzpl_c.so
+          - runner: ubuntu-24.04-arm
+            rid: linux-musl-arm64
+            target: aarch64-unknown-linux-musl
+            library: libzpl_c.so
+          - runner: ubuntu-22.04
+            rid: linux-musl-arm
+            target: armv7-unknown-linux-musleabihf
             library: libzpl_c.so
           - runner: macos-15-intel
             rid: osx-x64
+            target: x86_64-apple-darwin
             library: libzpl_c.dylib
           - runner: macos-15
             rid: osx-arm64
+            target: aarch64-apple-darwin
             library: libzpl_c.dylib
           - runner: windows-2025
             rid: win-x64
+            target: x86_64-pc-windows-msvc
+            library: zpl_c.dll
+          - runner: windows-2025
+            rid: win-x86
+            target: i686-pc-windows-msvc
+            library: zpl_c.dll
+          - runner: windows-11-arm
+            rid: win-arm64
+            target: aarch64-pc-windows-msvc
             library: zpl_c.dll
     runs-on: ${{ matrix.runner }}
     timeout-minutes: 20
@@ -51,16 +80,21 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.13'
       - uses: dtolnay/rust-toolchain@6bed0761d98439e5a578e2877258200ad565ba87 # stable
-      - name: Build native C ABI
-        run: cargo build --locked --release -p zpl-c
-      - name: Stage native library
+        with:
+          targets: ${{ matrix.target }}
+      - name: Install portable Linux build tools
+        if: runner.os == 'Linux'
+        run: python -m pip install --retries 2 --timeout 30 'cargo-zigbuild==0.23.4' 'ziglang==0.14.1'
+      - name: Build and stage native C ABI
         env:
           NATIVE_RID: ${{ matrix.rid }}
+          NATIVE_TARGET: ${{ matrix.target }}
           NATIVE_LIBRARY: ${{ matrix.library }}
-        run: |
-          mkdir -p "zpl-dotnet/native/$NATIVE_RID/native"
-          cp "target/release/$NATIVE_LIBRARY" "zpl-dotnet/native/$NATIVE_RID/native/"
+        run: python scripts/native-build.py zpl-c "$NATIVE_TARGET" "zpl-dotnet/native/$NATIVE_RID/native/$NATIVE_LIBRARY"
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: dotnet-native-${{ matrix.rid }}
@@ -130,12 +164,32 @@ jobs:
             rid: linux-x64
           - runner: ubuntu-24.04-arm
             rid: linux-arm64
+          - runner: ubuntu-22.04
+            rid: linux-arm
+            image: mcr.microsoft.com/dotnet/runtime:8.0-bookworm-slim
+            docker-platform: linux/arm/v7
+          - runner: ubuntu-22.04
+            rid: linux-musl-x64
+            image: mcr.microsoft.com/dotnet/runtime:8.0-alpine
+            docker-platform: linux/amd64
+          - runner: ubuntu-24.04-arm
+            rid: linux-musl-arm64
+            image: mcr.microsoft.com/dotnet/runtime:8.0-alpine
+            docker-platform: linux/arm64
+          - runner: ubuntu-22.04
+            rid: linux-musl-arm
+            image: mcr.microsoft.com/dotnet/runtime:8.0-alpine
+            docker-platform: linux/arm/v7
           - runner: macos-15-intel
             rid: osx-x64
           - runner: macos-15
             rid: osx-arm64
           - runner: windows-2025
             rid: win-x64
+          - runner: windows-2025
+            rid: win-x86
+          - runner: windows-11-arm
+            rid: win-arm64
     runs-on: ${{ matrix.runner }}
     timeout-minutes: 10
     defaults:
@@ -153,6 +207,18 @@ jobs:
           dotnet-version: |
             8.0.x
             6.0.x
+      - name: Install x86 .NET SDK for a real 32-bit consumer
+        if: matrix.rid == 'win-x86'
+        shell: pwsh
+        run: |
+          Invoke-WebRequest https://dot.net/v1/dotnet-install.ps1 -OutFile "$env:RUNNER_TEMP/dotnet-install.ps1" -MaximumRetryCount 2
+          & "$env:RUNNER_TEMP/dotnet-install.ps1" -Channel 8.0 -Architecture x86 -InstallDir "$env:RUNNER_TEMP/dotnet-x86"
+          & "$env:RUNNER_TEMP/dotnet-install.ps1" -Channel 6.0 -Architecture x86 -InstallDir "$env:RUNNER_TEMP/dotnet-x86"
+          "$env:RUNNER_TEMP/dotnet-x86" >> $env:GITHUB_PATH
+      - uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130 # v3.7.0
+        if: matrix.docker-platform == 'linux/arm/v7'
+        with:
+          platforms: arm
       - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           name: dotnet-package
@@ -161,9 +227,15 @@ jobs:
         env:
           PACKAGE_VERSION: ${{ needs.pack.outputs.version }}
           NATIVE_RID: ${{ matrix.rid }}
+          CONSUMER_IMAGE: ${{ matrix.image }}
+          CONSUMER_PLATFORM: ${{ matrix.docker-platform }}
         run: |
-          python zpl-dotnet/check-package.py dist "$PACKAGE_VERSION" "$NATIVE_RID"
-          python zpl-dotnet/check-package.py dist "$PACKAGE_VERSION" "$NATIVE_RID" --framework net6.0
+          if [ -n "$CONSUMER_IMAGE" ]; then
+            python zpl-dotnet/check-package.py dist "$PACKAGE_VERSION" "$NATIVE_RID" --container "$CONSUMER_IMAGE" --docker-platform "$CONSUMER_PLATFORM"
+          else
+            python zpl-dotnet/check-package.py dist "$PACKAGE_VERSION" "$NATIVE_RID"
+            python zpl-dotnet/check-package.py dist "$PACKAGE_VERSION" "$NATIVE_RID" --framework net6.0
+          fi
 
   framework:
     needs: pack

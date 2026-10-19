@@ -22,10 +22,14 @@ NIFs on the following targets:
 
 | Platform | Minimum build baseline |
 | --- | --- |
-| Linux x86_64 (GNU libc) | Ubuntu 22.04 / glibc 2.35 |
-| Linux ARM64 (GNU libc) | Ubuntu 24.04 / glibc 2.39 |
-| macOS Intel / Apple Silicon | macOS 15 |
-| Windows x86_64 | MSVC, Windows Server 2025 build runner |
+| Linux x86_64 / ARM64 / ARM hard-float / RISC-V 64 (GNU libc) | glibc 2.28+ |
+| Linux x86_64 / ARM64 (musl, including Alpine) | musl 1.2+ |
+| macOS Intel / Apple Silicon | macOS 11+ |
+| Windows x86_64 | MSVC and GNU |
+
+This covers all ten default RustlerPrecompiled targets. See the
+[complete platform matrix](https://github.com/codyps/zpl/blob/main/docs/prebuilt-platforms.md)
+for the next release's artifact scope and consumer checks.
 
 Prebuilts use NIF ABI 2.15, compatible with the supported OTP 25+ runtimes.
 Releases with prebuilts need no Rust toolchain on these targets. Downloads

@@ -14,7 +14,10 @@ python -m pip install zplkit
 ```
 
 Prebuilt wheels need no Rust toolchain. Wheels are available for Linux
-x86_64/ARM64 (glibc 2.28+), macOS Intel/Apple Silicon, and Windows x86_64.
+x86_64/ARM64/ARMv7 (glibc 2.28+ or musl 1.2+, including Alpine), Linux RISC-V
+64 (glibc 2.39+), macOS Intel/Apple Silicon, and Windows x86/x64/ARM64.
+See the [complete platform matrix](https://github.com/codyps/zpl/blob/main/docs/prebuilt-platforms.md)
+for release scope and runtime requirements.
 On other platforms, pip builds the source distribution, which requires a stable
 Rust toolchain and a native linker. To require a prebuilt wheel:
 

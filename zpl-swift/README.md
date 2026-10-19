@@ -5,13 +5,26 @@ grayscale pixels. No printer, external rendering service, or Rust installation i
 required. The package wraps the [Rust ZPL library](https://github.com/codyps/zpl)
 through its matching C ABI.
 
-Requires Swift 5.9+, macOS 11+ or iOS 13+. Binaries include Intel and Apple Silicon
-macOS, ARM64 iOS devices, and Intel/Apple Silicon iOS simulators. Other Apple
-platforms, Mac Catalyst, Linux, and Windows are not included.
+Prebuilt C libraries cover these platforms; consumers do not need Rust:
+
+| Platform | Architectures | Swift requirements |
+| --- | --- | --- |
+| macOS 11+ | Intel and Apple Silicon | Swift 5.9+ |
+| Linux glibc | x86_64 and ARM64 | Swift 6.2+ and a supported Linux distribution |
+| Linux musl / Alpine | x86_64 and ARM64 | Swift 6.3.3 static Linux SDK (tested) |
+| Windows | x86_64 and ARM64 | Swift 6.3.3+ and its Windows SDK/Visual C++ prerequisites |
+| iOS 13+ and simulator | ARM64 device; Intel/ARM64 simulator | Swift 5.9+ / Xcode |
+
+Apple platforms use an XCFramework. Linux and Windows use checksummed SwiftPM
+static-library artifact bundles ([SE-0482](https://github.com/swiftlang/swift-evolution/blob/main/proposals/0482-swiftpm-static-library-binary-target-non-apple-platforms.md)).
+The native Linux archives target glibc 2.28+ or musl 1.2+; the installed Swift
+toolchain also has its own OS baseline. Linux static SDK consumers link musl and
+the Swift runtime into their executable and run on Alpine without a Swift runtime
+installation. Mac Catalyst and other Apple platforms are not included.
 
 ## Install
 
-In Xcode, add the package URL:
+In Xcode or your SwiftPM manifest, use the package URL:
 
 ```text
 https://github.com/codyps/zpl-swift
