@@ -84,6 +84,22 @@ final class ZPLTests: XCTestCase {
         XCTAssertFalse(ZPL.libraryVersion.isEmpty)
     }
 
+    func testNativeSizeLimitsPreserveAllBits() throws {
+        var limits = try RenderLimits()
+        limits.inputBytes = UInt.max
+        XCTAssertEqual(limits.inputBytes, UInt.max)
+        var output = try OutputLimits()
+        output.pixels = UInt.max
+        XCTAssertEqual(output.pixels, UInt.max)
+        let document = try ZPL.render("^XA^PW16^LL12^XZ", limits: limits)
+        XCTAssertEqual(try document.label(at: 0).encode(.grayscale, limits: output).count, 16 * 12)
+        XCTAssertThrowsError(try ZPL.parse("^XA^GFB,2,2,1,")) { error in
+            let native = error as? ZPLError
+            XCTAssertEqual(native?.status, .parseError)
+            XCTAssertNotNil(native?.byteOffset)
+        }
+    }
+
     func testTypedCompatibilityAndFonts() throws {
         var options = try RenderOptions(profile: .specification)
         options.compatibility.previewWidthQuantum = 8

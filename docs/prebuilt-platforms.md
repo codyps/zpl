@@ -49,8 +49,11 @@ The .NET and Elixir Apple libraries target macOS 11+. Windows MSVC libraries req
   The experimental cgo/purego backends require a separately built native library;
   they do not distribute native prebuilts.
 - Swift distributes an XCFramework with macOS Intel/ARM64, iOS ARM64 device,
-  and iOS Intel/ARM64 simulator slices. It targets macOS 11 and iOS 13; Linux,
-  Catalyst, watchOS, tvOS, and visionOS are outside this Apple package's matrix.
+  and iOS Intel/ARM64 simulator slices (macOS 11 / iOS 13 minimum). A separate
+  static-library artifact bundle covers Linux glibc/musl and Windows on x86_64
+  and ARM64. Linux requires Swift 6.2+, Windows Swift 6.3.3+; musl consumers use
+  the Swift static Linux SDK and run on Alpine. Catalyst, watchOS, tvOS, and
+  visionOS remain outside the matrix.
 - The C ABI crate is built for NuGet and Swift packaging; there is no separate
   registry package of C shared-library prebuilts.
 
@@ -66,5 +69,6 @@ CI installs the exact wheels and NuGet package into independent consumers. Linux
 musl consumers run on Alpine for x86_64/ARM64 (and Python/.NET ARMv7); foreign
 ARM and RISC-V consumers use QEMU. Elixir checks downloads and Mix releases with
 Cargo/rustc blocked, including both Windows ABIs and the Alpine/foreign consumers.
-Swift continues testing both macOS architectures and the iOS simulator.
+Swift tests macOS/Linux/Windows on both desktop architectures and the iOS
+simulator, plus static SDK consumers on Alpine x86_64/ARM64.
 Cross-compilation success alone does not establish runtime compatibility.

@@ -18,7 +18,61 @@ env:
   CARGO_HTTP_TIMEOUT: 30
 
 jobs:
+  native:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-24.04
+            target: x86_64-unknown-linux-gnu
+            library: libCZpl.a
+          - runner: ubuntu-24.04-arm
+            target: aarch64-unknown-linux-gnu
+            library: libCZpl.a
+          - runner: ubuntu-24.04
+            target: x86_64-unknown-linux-musl
+            library: libCZpl.a
+          - runner: ubuntu-24.04-arm
+            target: aarch64-unknown-linux-musl
+            library: libCZpl.a
+          - runner: windows-2025
+            target: x86_64-pc-windows-msvc
+            library: CZpl.lib
+          - runner: windows-11-arm
+            target: aarch64-pc-windows-msvc
+            library: CZpl.lib
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 20
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.13'
+      - uses: dtolnay/rust-toolchain@6bed0761d98439e5a578e2877258200ad565ba87 # stable
+        with:
+          targets: ${{ matrix.target }}
+      - name: Install portable Linux build tools
+        if: runner.os == 'Linux'
+        run: python -m pip install --retries 2 --timeout 30 'cargo-zigbuild==0.23.4' 'ziglang==0.14.1'
+      - name: Build static C ABI for Swift
+        env:
+          NATIVE_TARGET: ${{ matrix.target }}
+          NATIVE_LIBRARY: ${{ matrix.library }}
+        run: python scripts/native-build.py zpl-c "$NATIVE_TARGET" "swift-native/$NATIVE_TARGET/$NATIVE_LIBRARY" --static
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: swift-native-${{ matrix.target }}
+          path: swift-native/
+          if-no-files-found: error
+          retention-days: 14
+
   build:
+    needs: native
     runs-on: macos-15
     timeout-minutes: 35
     steps:
@@ -28,6 +82,11 @@ jobs:
       - uses: dtolnay/rust-toolchain@6bed0761d98439e5a578e2877258200ad565ba87 # stable
         with:
           targets: aarch64-apple-darwin,x86_64-apple-darwin,aarch64-apple-ios,aarch64-apple-ios-sim,x86_64-apple-ios
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          pattern: swift-native-*
+          merge-multiple: true
+          path: swift-native
       - name: Generate direct Rust parity fixtures
         run: cargo run --locked -p zpl-c --example swift_reference -- zpl-swift/Tests/ZPLTests/Fixtures
       - name: Build all Apple slices and stage distribution
@@ -38,11 +97,14 @@ jobs:
           if [ -n "$RELEASE_VERSION" ]; then test "$VERSION" = "$RELEASE_VERSION"; fi
           python3 scripts/swift-package.py build "$RUNNER_TEMP/swift-build"
           ASSET="$RUNNER_TEMP/swift-build/CZpl-$VERSION.xcframework.zip"
-          python3 scripts/swift-package.py stage "$VERSION" "$ASSET" "$RUNNER_TEMP/local/zpl-swift" --local
-          python3 scripts/swift-package.py stage "$VERSION" "$ASSET" "$RUNNER_TEMP/remote/zpl-swift"
+          NATIVE_ASSET="$RUNNER_TEMP/swift-build/CZpl-$VERSION.artifactbundle.zip"
+          python3 scripts/swift-native.py pack "$VERSION" swift-native "$NATIVE_ASSET"
+          python3 scripts/swift-package.py stage "$VERSION" "$ASSET" "$RUNNER_TEMP/local/zpl-swift" --local --native-artifact "$NATIVE_ASSET"
+          python3 scripts/swift-package.py stage "$VERSION" "$ASSET" "$RUNNER_TEMP/remote/zpl-swift" --native-artifact "$NATIVE_ASSET"
+          test "$(swift package compute-checksum "$NATIVE_ASSET")" = "$(python3 scripts/swift-native.py verify "$NATIVE_ASSET")"
           test "$(swift package compute-checksum "$ASSET")" = "$(python3 scripts/swift-package.py verify "$ASSET")"
           mkdir -p dist
-          cp "$ASSET" dist/
+          cp "$ASSET" "$NATIVE_ASSET" dist/
           tar -czf dist/swift-package.tar.gz -C "$RUNNER_TEMP/remote" zpl-swift
       - name: Test Swift wrapper against native Rust outputs
         run: swift test --package-path "$RUNNER_TEMP/local/zpl-swift"
@@ -88,14 +150,95 @@ jobs:
         run: |
           mkdir -p "$RUNNER_TEMP/intel"
           tar -xzf dist/swift-package.tar.gz -C "$RUNNER_TEMP/intel"
-          python3 - <<'PYTHON'
-          import os, pathlib, re, zipfile
-          package = pathlib.Path(os.environ['RUNNER_TEMP']) / 'intel/zpl-swift'
-          manifest = package / 'Package.swift'
-          text, count = re.subn(r'\.binaryTarget\(name: "CZpl", url: "[^"]+", checksum: "[a-f0-9]+"\)', '.binaryTarget(name: "CZpl", path: "CZpl.xcframework")', manifest.read_text())
-          assert count == 1
-          manifest.write_text(text)
-          with zipfile.ZipFile(next(pathlib.Path('dist').glob('*.xcframework.zip'))) as archive:
-              archive.extractall(package)
-          PYTHON
+          python3 scripts/swift-localize.py "$RUNNER_TEMP/intel/zpl-swift" dist
           swift test --package-path "$RUNNER_TEMP/intel/zpl-swift"
+
+  desktop:
+    needs: build
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-24.04
+          - runner: ubuntu-24.04-arm
+          - runner: windows-2025
+            arch: amd64
+          - runner: windows-11-arm
+            arch: arm64
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 20
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.13'
+      - uses: compnerd/gha-setup-swift@eeda069c5bc95ac8a9ac5cea7d4f588ae5420ca5 # v0.4.0
+        if: runner.os == 'Windows'
+        with:
+          swift-version: swift-6.3.3-release
+          swift-build: 6.3.3-RELEASE
+          build_arch: ${{ matrix.arch }}
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: swift-package
+          path: dist
+      - name: Test exact packaged desktop library without Rust
+        run: |
+          mkdir -p "$RUNNER_TEMP/swift-desktop"
+          tar -xzf dist/swift-package.tar.gz -C "$RUNNER_TEMP/swift-desktop"
+          python scripts/swift-localize.py "$RUNNER_TEMP/swift-desktop/zpl-swift" dist
+          if [ "$RUNNER_OS" = Linux ]; then
+            docker run --rm -v "$RUNNER_TEMP/swift-desktop:/test" -v "$PWD:/repo:ro" -w /test swift:6.3.3-noble bash -ec '
+              swift test --package-path /test/zpl-swift
+              cp -R /repo/zpl-swift/Tests/Consumer /test/Consumer
+              export ZPL_PACKAGE_PATH=/test/zpl-swift
+              swift run --package-path /test/Consumer
+            '
+          else
+            swift test --package-path "$RUNNER_TEMP/swift-desktop/zpl-swift"
+            cp -R zpl-swift/Tests/Consumer "$RUNNER_TEMP/swift-desktop/Consumer"
+            export ZPL_PACKAGE_PATH="$RUNNER_TEMP/swift-desktop/zpl-swift"
+            swift run --package-path "$RUNNER_TEMP/swift-desktop/Consumer"
+          fi
+
+  musl:
+    needs: build
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-24.04
+            triple: x86_64-swift-linux-musl
+          - runner: ubuntu-24.04-arm
+            triple: aarch64-swift-linux-musl
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: swift-package
+          path: dist
+      - name: Build static Swift SDK consumer and run on Alpine without Rust
+        env:
+          SWIFT_TRIPLE: ${{ matrix.triple }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/swift-musl"
+          tar -xzf dist/swift-package.tar.gz -C "$RUNNER_TEMP/swift-musl"
+          python3 scripts/swift-localize.py "$RUNNER_TEMP/swift-musl/zpl-swift" dist
+          docker run --rm -e SWIFT_TRIPLE -v "$RUNNER_TEMP/swift-musl:/test" -v "$PWD:/repo:ro" -w /test swift:6.3.3-noble bash -ec '
+            swift sdk install https://download.swift.org/swift-6.3.3-release/static-sdk/swift-6.3.3-RELEASE/swift-6.3.3-RELEASE_static-linux-0.1.0.artifactbundle.tar.gz --checksum 87c3eaf908e67c0e13a84367119e12273cec1d2cd3d81f7d74bb36722d6b607b
+            cp -R /repo/zpl-swift/Tests/Consumer /test/Consumer
+            export ZPL_PACKAGE_PATH=/test/zpl-swift
+            swift build --package-path /test/Consumer --swift-sdk "$SWIFT_TRIPLE" -c release
+            BIN=$(swift build --package-path /test/Consumer --swift-sdk "$SWIFT_TRIPLE" -c release --show-bin-path)
+            cp "$BIN/Consumer" /test/Consumer-static
+          '
+          docker run --rm -v "$RUNNER_TEMP/swift-musl:/test:ro" alpine:3.22 /test/Consumer-static

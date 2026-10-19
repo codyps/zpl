@@ -82,7 +82,7 @@ PNG, SVG, PDF, or grayscale output. Build it with `cargo build --locked --releas
 ## Use the renderer in Swift
 
 The [`ZPL` Swift package](zpl-swift/README.md) provides local parsing and
-PNG/SVG/PDF/grayscale rendering for macOS and iOS. Swift Package Manager downloads
+PNG/SVG/PDF/grayscale rendering for macOS, Linux, Windows, and iOS. Swift Package Manager downloads
 a matching XCFramework; consumers do not need Rust. Releases are distributed from
 [`codyps/zpl-swift`](https://github.com/codyps/zpl-swift).
 

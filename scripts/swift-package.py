@@ -7,6 +7,7 @@ https://developer.apple.com/documentation/xcode/distributing-binary-frameworks-a
 """
 import argparse
 import hashlib
+import importlib
 import json
 import os
 from pathlib import Path
@@ -130,7 +131,7 @@ def build(output):
     print(destination)
 
 
-def stage(version, artifact, destination, local=False):
+def stage(version, artifact, destination, local=False, native_artifact=None):
     stable(version)
     for crate in ('zpl', 'zpl-c'):
         if tomllib.loads((ROOT / crate / 'Cargo.toml').read_text())['package']['version'] != version:
@@ -143,6 +144,16 @@ def stage(version, artifact, destination, local=False):
                     raise ValueError('XCFramework headers do not match the source release')
     if artifact.name != filename(version):
         raise ValueError('Incorrect XCFramework archive name')
+    native = importlib.import_module('swift-native')
+    if native_artifact is None:
+        raise ValueError('Stage requires the complete Linux/Windows artifact bundle')
+    native_checksum = native.verify(native_artifact, version)
+    if native_artifact.name != native.filename(version):
+        raise ValueError('Incorrect native artifact archive name')
+    with zipfile.ZipFile(native_artifact) as archive:
+        for name in ('zpl.h', 'zpl_config.h'):
+            if archive.read(f'{native.BUNDLE}/include/{name}') != (ROOT / 'zpl-c/include' / name).read_bytes():
+                raise ValueError('Native artifact headers do not match the source release')
     if destination.exists():
         raise ValueError('Stage into a new directory')
     destination.mkdir(parents=True)
@@ -152,17 +163,22 @@ def stage(version, artifact, destination, local=False):
         source = ROOT / 'LICENSE' if name == 'LICENSE' else ROOT / 'zpl-swift/README.md'
         shutil.copyfile(source, destination / name)
     text = (ROOT / 'zpl-swift/Package.swift').read_text()
-    if text.count(LOCAL_TARGET) != 1:
+    if text.count(LOCAL_TARGET) != 1 or text.count(native.LOCAL_TARGET) != 1:
         raise ValueError('Expected one local Swift binary target')
     if local:
         with zipfile.ZipFile(artifact) as archive:
             archive.extractall(destination)
+        with zipfile.ZipFile(native_artifact) as archive:
+            archive.extractall(destination)
     else:
         url = f'https://github.com/codyps/zpl/releases/download/zpl-v{version}/{artifact.name}'
         text = text.replace(LOCAL_TARGET, f'.binaryTarget(name: "CZpl", url: "{url}", checksum: "{checksum}")')
+        native_url = f'https://github.com/codyps/zpl/releases/download/zpl-v{version}/{native_artifact.name}'
+        text = text.replace(native.LOCAL_TARGET, f'.binaryTarget(name: "CZplNative", url: "{native_url}", checksum: "{native_checksum}")')
     (destination / 'Package.swift').write_text(text)
     revision = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
-    metadata = {'version': version, 'sourceCommit': revision, 'sha256': checksum, 'artifact': artifact.name}
+    metadata = {'version': version, 'sourceCommit': revision, 'sha256': checksum, 'artifact': artifact.name,
+                'nativeArtifact': native_artifact.name, 'nativeSha256': native_checksum}
     (destination / 'release.json').write_text(json.dumps(metadata, indent=2) + '\n')
 
 
@@ -178,10 +194,11 @@ if __name__ == '__main__':
     command.add_argument('artifact', type=Path)
     command.add_argument('destination', type=Path)
     command.add_argument('--local', action='store_true')
+    command.add_argument('--native-artifact', required=True, type=Path)
     args = parser.parse_args()
     if args.command == 'build':
         build(args.output)
     elif args.command == 'verify':
         print(verify(args.artifact))
     else:
-        stage(args.version, args.artifact, args.destination, args.local)
+        stage(args.version, args.artifact, args.destination, args.local, args.native_artifact)

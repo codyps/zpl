@@ -3,6 +3,8 @@ import re
 from pathlib import Path
 import unittest
 
+import importlib
+
 from prebuilt_targets import DOTNET_NATIVES, ELIXIR_TARGETS, PYTHON_PLATFORMS
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -26,6 +28,10 @@ class PlatformContractTests(unittest.TestCase):
     def test_nuget_builds_and_tests_every_packaged_rid(self):
         for job in ('native', 'consumer'):
             self.assertCountEqual([row['rid'] for row in matrix('dotnet', job)], DOTNET_NATIVES)
+
+    def test_swift_builds_every_static_library_variant(self):
+        native = importlib.import_module('swift-native')
+        self.assertCountEqual([row['target'] for row in matrix('swift', 'native')], native.TARGETS)
 
     def test_python_builds_each_required_platform_with_target_consumers(self):
         platforms = []

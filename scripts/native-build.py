@@ -12,7 +12,7 @@ import shutil
 import subprocess
 
 
-def build(crate, target, output):
+def build(crate, target, output, static=False):
     env = os.environ.copy()
     command = ['cargo', 'build']
     build_target = target
@@ -27,7 +27,9 @@ def build(crate, target, output):
     subprocess.run([*command, '--locked', '--release', '-p', crate, '--target', build_target],
                    env=env, check=True)
     library = crate.replace('-', '_')
-    if 'windows' in target:
+    if static:
+        library = library + '.lib' if 'windows' in target else f'lib{library}.a'
+    elif 'windows' in target:
         library += '.dll'
     elif 'apple' in target:
         library = f'lib{library}.dylib'
@@ -43,5 +45,6 @@ if __name__ == '__main__':
     parser.add_argument('crate', choices=['zpl_elixir', 'zpl-c'])
     parser.add_argument('target')
     parser.add_argument('output', type=Path)
+    parser.add_argument('--static', action='store_true', help='Stage the Rust static library')
     args = parser.parse_args()
-    build(args.crate, args.target, args.output)
+    build(args.crate, args.target, args.output, args.static)

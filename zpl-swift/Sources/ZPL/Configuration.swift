@@ -723,28 +723,28 @@ public struct RenderLimits {
     }
 
     public var inputBytes: UInt {
-        get { UInt(bitPattern: raw.input_bytes) }
-        set { raw.input_bytes = Int(bitPattern: newValue) }
+        get { UInt(truncatingIfNeeded: raw.input_bytes) }
+        set { raw.input_bytes = .init(truncatingIfNeeded: newValue) }
     }
 
     public var labels: UInt {
-        get { UInt(bitPattern: raw.labels) }
-        set { raw.labels = Int(bitPattern: newValue) }
+        get { UInt(truncatingIfNeeded: raw.labels) }
+        set { raw.labels = .init(truncatingIfNeeded: newValue) }
     }
 
     public var segments: UInt {
-        get { UInt(bitPattern: raw.segments) }
-        set { raw.segments = Int(bitPattern: newValue) }
+        get { UInt(truncatingIfNeeded: raw.segments) }
+        set { raw.segments = .init(truncatingIfNeeded: newValue) }
     }
 
     public var storedGraphicSegments: UInt {
-        get { UInt(bitPattern: raw.stored_graphic_segments) }
-        set { raw.stored_graphic_segments = Int(bitPattern: newValue) }
+        get { UInt(truncatingIfNeeded: raw.stored_graphic_segments) }
+        set { raw.stored_graphic_segments = .init(truncatingIfNeeded: newValue) }
     }
 
     public var pixels: UInt {
-        get { UInt(bitPattern: raw.pixels) }
-        set { raw.pixels = Int(bitPattern: newValue) }
+        get { UInt(truncatingIfNeeded: raw.pixels) }
+        set { raw.pixels = .init(truncatingIfNeeded: newValue) }
     }
 
     public var dimension: UInt32 {
@@ -758,33 +758,33 @@ public struct RenderLimits {
     }
 
     public var fieldBytes: UInt {
-        get { UInt(bitPattern: raw.field_bytes) }
-        set { raw.field_bytes = Int(bitPattern: newValue) }
+        get { UInt(truncatingIfNeeded: raw.field_bytes) }
+        set { raw.field_bytes = .init(truncatingIfNeeded: newValue) }
     }
 
     public var graphicBytes: UInt {
-        get { UInt(bitPattern: raw.graphic_bytes) }
-        set { raw.graphic_bytes = Int(bitPattern: newValue) }
+        get { UInt(truncatingIfNeeded: raw.graphic_bytes) }
+        set { raw.graphic_bytes = .init(truncatingIfNeeded: newValue) }
     }
 
     public var fontBytes: UInt {
-        get { UInt(bitPattern: raw.font_bytes) }
-        set { raw.font_bytes = Int(bitPattern: newValue) }
+        get { UInt(truncatingIfNeeded: raw.font_bytes) }
+        set { raw.font_bytes = .init(truncatingIfNeeded: newValue) }
     }
 
     public var storedFormats: UInt {
-        get { UInt(bitPattern: raw.stored_formats) }
-        set { raw.stored_formats = Int(bitPattern: newValue) }
+        get { UInt(truncatingIfNeeded: raw.stored_formats) }
+        set { raw.stored_formats = .init(truncatingIfNeeded: newValue) }
     }
 
     public var recallDepth: UInt {
-        get { UInt(bitPattern: raw.recall_depth) }
-        set { raw.recall_depth = Int(bitPattern: newValue) }
+        get { UInt(truncatingIfNeeded: raw.recall_depth) }
+        set { raw.recall_depth = .init(truncatingIfNeeded: newValue) }
     }
 
     public var recallCalls: UInt {
-        get { UInt(bitPattern: raw.recall_calls) }
-        set { raw.recall_calls = Int(bitPattern: newValue) }
+        get { UInt(truncatingIfNeeded: raw.recall_calls) }
+        set { raw.recall_calls = .init(truncatingIfNeeded: newValue) }
     }
 
     public var coordinateAbs: Double {
@@ -805,13 +805,13 @@ public struct OutputLimits {
     }
 
     public var pixels: UInt {
-        get { UInt(bitPattern: raw.pixels) }
-        set { raw.pixels = Int(bitPattern: newValue) }
+        get { UInt(truncatingIfNeeded: raw.pixels) }
+        set { raw.pixels = .init(truncatingIfNeeded: newValue) }
     }
 
     public var segments: UInt {
-        get { UInt(bitPattern: raw.segments) }
-        set { raw.segments = Int(bitPattern: newValue) }
+        get { UInt(truncatingIfNeeded: raw.segments) }
+        set { raw.segments = .init(truncatingIfNeeded: newValue) }
     }
 
     public var coordinateAbs: Double {
@@ -820,13 +820,13 @@ public struct OutputLimits {
     }
 
     public var pages: UInt {
-        get { UInt(bitPattern: raw.pages) }
-        set { raw.pages = Int(bitPattern: newValue) }
+        get { UInt(truncatingIfNeeded: raw.pages) }
+        set { raw.pages = .init(truncatingIfNeeded: newValue) }
     }
 
     public var flattenedSegments: UInt {
-        get { UInt(bitPattern: raw.flattened_segments) }
-        set { raw.flattened_segments = Int(bitPattern: newValue) }
+        get { UInt(truncatingIfNeeded: raw.flattened_segments) }
+        set { raw.flattened_segments = .init(truncatingIfNeeded: newValue) }
     }
 
     public var scanWork: UInt64 {

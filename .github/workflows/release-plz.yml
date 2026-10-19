@@ -559,7 +559,7 @@ jobs:
           # Existing release identity must also write codyps/zpl-swift.
           GH_TOKEN: ${{ secrets.RELEASE_PLZ_TOKEN }}
           RELEASE_VERSION: ${{ needs.swift-version.outputs.version }}
-        run: python3 scripts/swift-release.py publish "$RELEASE_VERSION" "dist/CZpl-$RELEASE_VERSION.xcframework.zip" "$RUNNER_TEMP/swift-release/zpl-swift"
+        run: python3 scripts/swift-release.py publish "$RELEASE_VERSION" "dist/CZpl-$RELEASE_VERSION.xcframework.zip" "$RUNNER_TEMP/swift-release/zpl-swift" --native-artifact "dist/CZpl-$RELEASE_VERSION.artifactbundle.zip"
 
   release-pr:
     # Use published versions only after every publisher succeeds.

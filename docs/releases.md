@@ -736,24 +736,30 @@ macOS ARM64/x86_64, iOS ARM64, and iOS simulator ARM64/x86_64. It combines only
 architectures for the same platform with `lipo`, then creates `CZpl.xcframework`
 with Xcode. Deployment targets are macOS 11 and iOS 13. Mac Catalyst and other
 Apple platforms are not currently included. C headers and the Clang module map
-are bundled in every slice. `Package.swift` links the Rust static library's
-`iconv` system dependency; consumers need Swift/Xcode, not Rust.
+are bundled in every slice. An additional `CZpl-VERSION.artifactbundle.zip`
+contains six static libraries: Linux glibc and musl on x86_64/ARM64, and Windows
+MSVC on x86_64/ARM64. Its SE-0482 metadata includes the matching headers/module
+map and destination triples. `Package.swift` selects the appropriate binary
+and system link libraries for the destination. Apple keeps Swift 5.9 support;
+Linux requires Swift 6.2+, Windows Swift 6.3.3+. Consumers need no Rust.
 
 CI compares Swift PNG/SVG/PDF/grayscale output with direct Rust output for all
-three renderer profiles, checks parsing, errors, limits, and ownership, runs an
+four renderer profiles, checks parsing, errors, limits, and ownership, runs an
 independent consumer with Cargo/rustc blocked, builds an iOS device consumer,
 runs the test suite on an iOS simulator, and tests the exact Intel macOS slice on
-an Intel runner. Ordinary PR/main CI and release builds use the same workflow
+an Intel runner. Linux/Windows consumer jobs test the exact packaged library on
+x86_64 and ARM64. Musl jobs build with the pinned Swift 6.3.3 static SDK and run
+the executable in Alpine on both architectures. Ordinary PR/main CI and release builds use the same workflow
 with read-only permissions. Artifacts are retained for 14 days.
 
 The release workflow selects only a completed stable renderer release at the
 exact checkout. Swift-only wrapper, configuration, packaging, or CI changes
 participate in binding release preparation, so their public version follows the
-renderer without a separate version stamp. The publisher uploads the tested ZIP
-as `CZpl-VERSION.xcframework.zip` on `zpl-vVERSION`, then tests its actual HTTPS
+renderer without a separate version stamp. The publisher uploads both tested
+ZIPs on `zpl-vVERSION`, then tests the actual HTTPS
 URL/checksum from the generated manifest before pushing the distribution commit
 and version tag together with an atomic Git push. The generated `release.json`
-records the source commit and SHA-256 checksum. Existing asset bytes and tagged
+records the source commit and SHA-256 checksums for both artifacts. Existing asset bytes and tagged
 package contents must match exactly on reruns; different contents fail visibly.
 No published asset or tag is overwritten.
 
@@ -771,8 +777,11 @@ On macOS with Xcode, Rust, and all five targets installed:
 ```sh
 cargo run --locked -p zpl-c --example swift_reference -- zpl-swift/Tests/ZPLTests/Fixtures
 python3 scripts/swift-package.py build /tmp/zpl-swift-build
+# Supply all six CI-built native libraries under native-libraries/TARGET/.
+# See the swift-native.py target table for the expected library filenames.
+python3 scripts/swift-native.py pack VERSION native-libraries /tmp/zpl-swift-build/CZpl-VERSION.artifactbundle.zip
 # Substitute the renderer manifest version for VERSION.
-python3 scripts/swift-package.py stage VERSION /tmp/zpl-swift-build/CZpl-VERSION.xcframework.zip /tmp/zpl-swift-local --local
+python3 scripts/swift-package.py stage VERSION /tmp/zpl-swift-build/CZpl-VERSION.xcframework.zip /tmp/zpl-swift-local --local --native-artifact /tmp/zpl-swift-build/CZpl-VERSION.artifactbundle.zip
 swift test --package-path /tmp/zpl-swift-local
 ```
 

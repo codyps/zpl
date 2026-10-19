@@ -45,7 +45,7 @@ def generate():
                 read = f'raw.{field}.present == 0 ? nil : raw.{field}.value'
                 write = f'ZplOptionalFileId(present: newValue == nil ? 0 : 1, value: newValue ?? (0, 0, 0))'
             elif ctype == 'size_t':
-                swift, read, write = 'UInt', f'UInt(bitPattern: raw.{field})', 'Int(bitPattern: newValue)'
+                swift, read, write = 'UInt', f'UInt(truncatingIfNeeded: raw.{field})', '.init(truncatingIfNeeded: newValue)'
             else:
                 swift = {'size_t': 'Int', 'uint32_t': 'UInt32', 'uint64_t': 'UInt64',
                          'uint8_t': 'UInt8', 'double': 'Double'}[ctype]
