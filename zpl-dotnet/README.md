@@ -23,13 +23,15 @@ File.WriteAllBytes("labels.pdf", document.ToPdf());
 The package targets .NET 8, .NET Standard 2.0, and .NET Framework 4.7.2.
 .NET Standard allows older .NET consumers to use the same API; it does not add
 native support for other operating systems. The package bundles native libraries
-for Windows x64, Linux x64/ARM64, and macOS x64/ARM64. Consumers need no Rust
-compiler. The managed API uses the `Codyps.Zpl` namespace. Windows ARM64/x86,
-Linux musl/Alpine, browser Wasm, and mobile targets are not included. Linux x64 binaries are built on
-Ubuntu 22.04 (glibc 2.35); Linux ARM64 on Ubuntu 24.04 (glibc 2.39). macOS
-binaries target macOS 11 or later; the installed .NET runtime also has its own
-OS requirements. Windows uses Rust's MSVC target and requires the matching
-Microsoft Visual C++ runtime.
+for Windows x86/x64/ARM64, Linux x64/ARM64/ARMv7 with either glibc or musl
+(including Alpine), and macOS x64/ARM64. Consumers need no Rust compiler. The
+managed API uses the `Codyps.Zpl` namespace. Linux GNU libraries target glibc
+2.28+; musl libraries require musl 1.2+. macOS binaries target macOS 11 or later.
+The installed .NET runtime also has its own OS requirements. Windows uses MSVC
+and requires the matching Microsoft Visual C++ runtime. Browser Wasm, mobile,
+and RISC-V native libraries are not included. See the
+[complete platform matrix](https://github.com/codyps/zpl/blob/main/docs/prebuilt-platforms.md)
+for the next release's artifact scope and consumer checks.
 
 Native binaries follow NuGet's `runtimes/<rid>/native` conventions; both ordinary
 build/run and RID-specific framework-dependent publish are tested in CI with

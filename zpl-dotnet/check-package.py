@@ -44,7 +44,7 @@ def smoke_project(work, version, framework):
     return project
 
 
-def check(feed, version, rid, framework, build_only=False):
+def check(feed, version, rid, framework, build_only=False, container=None, docker_platform=None):
     legacy = framework in ('net472', 'net48')
     if legacy and rid != 'win-x64':
         raise ValueError('.NET Framework tests require win-x64')
@@ -59,6 +59,13 @@ def check(feed, version, rid, framework, build_only=False):
                                     capture_output=expected_error is not None, check=expected_error is None)
             if expected_error is not None and (result.returncode == 0 or expected_error not in result.stdout + result.stderr):
                 raise AssertionError(f'Expected build rejection containing {expected_error!r}: {result.stdout}{result.stderr}')
+
+        def run_binary(binary):
+            args = ['dotnet', str(binary), version, str(work / 'probe.ttf')]
+            if container:
+                args = ['docker', 'run', '--rm', '--platform', docker_platform,
+                        '-v', f'{work}:{work}', '-w', str(work), container, *args]
+            subprocess.run(args, cwd=work, check=True)
 
         restore = ['restore', str(project), '--configfile', str(config),
                    '--packages', str(work / 'packages'), '-p:NuGetAudit=false']
@@ -104,13 +111,14 @@ def check(feed, version, rid, framework, build_only=False):
                 subprocess.run([str(binary), version, str(work / 'probe.ttf')], cwd=work, check=True)
             return
 
-        dotnet('run', '--project', str(project), '-c', 'Release', '--no-restore', '--', version, str(work / 'probe.ttf'))
+        dotnet('build', str(project), '-c', 'Release', '--no-restore')
+        run_binary(work / f'bin/Release/{framework}/Smoke.dll')
         dotnet(*restore, '--runtime', rid, '-p:SelfContained=false', '-p:UseAppHost=false',
                '-p:EnableRuntimePackDownload=false')
         dotnet('publish', str(project), '-c', 'Release', '--no-restore',
                '--runtime', rid, '--self-contained', 'false', '-p:UseAppHost=false',
                '-p:EnableRuntimePackDownload=false', '--output', str(work / 'published'))
-        dotnet(str(work / 'published/Smoke.dll'), version, str(work / 'probe.ttf'))
+        run_binary(work / 'published/Smoke.dll')
 
 
 if __name__ == '__main__':
@@ -120,5 +128,9 @@ if __name__ == '__main__':
     parser.add_argument('rid')
     parser.add_argument('--framework', choices=['net8.0', 'net6.0', 'net472', 'net48'], default='net8.0')
     parser.add_argument('--build-only', action='store_true', help='Cross-compile Framework consumers without running Windows executables')
+    parser.add_argument('--container', help='Run binaries in this target-runtime Docker image')
+    parser.add_argument('--docker-platform', help='Docker platform for the target runtime')
     args = parser.parse_args()
-    check(args.feed, args.version, args.rid, args.framework, args.build_only)
+    if bool(args.container) != bool(args.docker_platform):
+        parser.error('--container and --docker-platform must be supplied together')
+    check(args.feed, args.version, args.rid, args.framework, args.build_only, args.container, args.docker_platform)

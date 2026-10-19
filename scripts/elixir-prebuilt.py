@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Validate upstream NIF archives, generate checksums, and publish immutable assets.
 
-CI builds/archives NIFs with philss/rustler-precompiled-action. Checksums use
+CI uses the upstream action for native builds and Zig for Linux builds. Checksums use
 the upstream Mix task against a loopback mirror of those exact CI artifacts:
 https://hexdocs.pm/rustler_precompiled/precompilation_guide.html
 NIF 2.15 is Rustler 0.38's default and runs on our minimum OTP 25 and newer.
@@ -19,13 +19,8 @@ import tempfile
 import threading
 from pathlib import Path
 
-TARGETS = (
-    "x86_64-unknown-linux-gnu",
-    "aarch64-unknown-linux-gnu",
-    "x86_64-apple-darwin",
-    "aarch64-apple-darwin",
-    "x86_64-pc-windows-msvc",
-)
+from prebuilt_targets import ELIXIR_TARGETS as TARGETS
+
 CHECKSUM = "checksum-Elixir.Zpl.Native.exs"
 
 
@@ -36,6 +31,14 @@ def filename(version, target):
         raise ValueError(f"Unsupported prebuilt target: {target}")
     prefix, extension = ("", "dll") if "windows" in target else ("lib", "so")
     return f"{prefix}zpl_elixir-v{version}-nif-2.15-{target}.{extension}.tar.gz"
+
+
+def pack(version, target, library, directory):
+    """Archive a cross-compiled library using RustlerPrecompiled's naming contract."""
+    name = filename(version, target)
+    directory.mkdir(parents=True, exist_ok=True)
+    with tarfile.open(directory / name, 'w:gz') as archive:
+        archive.add(library, arcname=name.removesuffix('.tar.gz'))
 
 
 def artifacts(version, directory, targets=TARGETS):
@@ -167,6 +170,11 @@ def main():
         if name == "checksums":
             command.add_argument("package", type=Path)
             command.add_argument("--target", choices=TARGETS)
+    archive = commands.add_parser("pack")
+    archive.add_argument("version")
+    archive.add_argument("target", choices=TARGETS)
+    archive.add_argument("library", type=Path)
+    archive.add_argument("directory", type=Path)
     args = parser.parse_args()
     if args.command == "checksums":
         checksums(
@@ -175,6 +183,8 @@ def main():
             args.package,
             (args.target,) if args.target else TARGETS,
         )
+    elif args.command == "pack":
+        pack(args.version, args.target, args.library, args.directory)
     else:
         publish(args.version, args.directory)
 

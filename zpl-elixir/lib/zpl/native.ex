@@ -18,7 +18,7 @@ defmodule Zpl.Native do
         "https://github.com/codyps/zpl/releases/download/zpl-v#{@version}"
       ),
     targets:
-      ~w(x86_64-unknown-linux-gnu aarch64-unknown-linux-gnu x86_64-apple-darwin aarch64-apple-darwin x86_64-pc-windows-msvc),
+      ~w(aarch64-apple-darwin aarch64-unknown-linux-gnu aarch64-unknown-linux-musl arm-unknown-linux-gnueabihf riscv64gc-unknown-linux-gnu x86_64-apple-darwin x86_64-pc-windows-gnu x86_64-pc-windows-msvc x86_64-unknown-linux-gnu x86_64-unknown-linux-musl),
     nif_versions: ["2.15"],
     max_retries: 2,
     force_build:

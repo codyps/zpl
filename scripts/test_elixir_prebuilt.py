@@ -49,6 +49,23 @@ class PrebuiltTest(unittest.TestCase):
             prebuilt.filename("1.2.3", "aarch64-apple-darwin").endswith(".so.tar.gz")
         )
 
+    def test_pack_cross_compiled_library_uses_the_upstream_archive_contract(self):
+        for target in prebuilt.TARGETS:
+            prebuilt.pack('1.2.3', target, self.library, self.dist)
+        for path in prebuilt.artifacts('1.2.3', self.dist):
+            with tarfile.open(path) as archive:
+                member = archive.getmembers()[0]
+                self.assertEqual(archive.extractfile(member).read(), self.library.read_bytes())
+
+    def test_every_target_is_required(self):
+        paths = self.build_all()
+        for path in paths:
+            contents = path.read_bytes()
+            path.unlink()
+            with self.subTest(target=path.name), self.assertRaises(ValueError):
+                prebuilt.artifacts('1.2.3', self.dist)
+            path.write_bytes(contents)
+
     def test_reject_missing_extra_or_invalid_archives_before_generating_checksums(self):
         paths = self.build_all()
         checksum = "existing checksum manifest"

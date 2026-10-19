@@ -21,7 +21,7 @@ The [Release-plz workflow](../.github/workflows/release-plz.yml) runs on pushes 
 5. `go-release` verifies and tests the committed Go package, publishes its
    `zpl-go/v<version>` tag, and requests registration with the public Go proxy.
 6. `dotnet-version` selects the same completed stable renderer release.
-   `dotnet-build` assembles and tests `Codyps.Zpl` with native binaries on five
+   `dotnet-build` assembles and tests `Codyps.Zpl` with native binaries on eleven
    platforms, then `dotnet-release` publishes the tested archive to **NuGet**.
 7. After every publisher succeeds, `release-pr` runs `release-plz update` using
    published crates.io versions as the baseline, then includes binding changes
@@ -209,16 +209,17 @@ manual upload or long-lived PyPI API token is required. These settings must be
 created on PyPI; repository configuration cannot create them. See
 [PyPI's publisher setup](https://docs.pypi.org/trusted-publishers/adding-a-publisher/).
 
-The workflow builds five stable-ABI wheels for CPython 3.10+:
-
-- Linux x86_64 and aarch64, using Zig to target `manylinux_2_28` (glibc 2.28+).
-- macOS x86_64 (Intel) and arm64 (Apple Silicon).
-- Windows x86_64.
+The workflow builds twelve stable-ABI wheels for CPython 3.10+: Linux GNU
+x86_64/ARM64/ARMv7 (glibc 2.28+) and RISC-V 64 (glibc 2.39+), Linux musl
+x86_64/ARM64/ARMv7 (`musllinux_1_2`, including Alpine), macOS Intel/Apple Silicon,
+and Windows x86/x64/ARM64. See the [platform matrix](prebuilt-platforms.md).
 
 The reusable [distribution build workflow](../.github/workflows/python-package.yml)
 also runs in ordinary PR CI. A source archive contains the linked local crates
-for other systems with Rust installed. Each wheel is installed and tested on its
-native runner; Linux also rebuilds and tests the source archive. All six files pass strict metadata checks.
+for other systems with Rust installed. Wheels are installed and tested on their
+target OS, libc, and architecture, using QEMU for ARMv7/RISC-V. Linux x86_64
+also rebuilds and tests the source archive. All thirteen files pass strict metadata
+checks, and publication requires exactly one wheel for every supported platform.
 Only after every build succeeds does a separate Ubuntu job receive
 `id-token: write`, download the tested artifacts, and publish using the pinned
 [PyPA action](https://github.com/pypa/gh-action-pypi-publish). The action generates
@@ -257,10 +258,11 @@ in PR CI and on completed stable renderer releases. It tests Elixir 1.15/OTP 25
 and Elixir 1.18/OTP 28, then retains the tested source archive from the latter.
 The archive includes this checkout's Rust runtime sources and a pruned copy of
 the workspace lockfile. It also contains SHA-256 checksums for NIF ABI 2.15
-prebuilts on Linux GNU x86_64/ARM64, macOS Intel/Apple Silicon, and Windows MSVC
-x86_64. Each native matrix job tests download, NIF loading, and a consumer release
-with Cargo/rustc blocked. Linux package jobs additionally check forced source
-builds and checksum rejection on both supported Elixir/OTP pairs. See the
+prebuilts for all ten default RustlerPrecompiled targets, including Linux musl
+x86_64/ARM64, ARM hard-float, RISC-V, and Windows GNU. Native and container
+consumer jobs test downloads, NIF loading, and releases with Cargo/rustc blocked.
+Alpine runs these checks on x86_64 and ARM64; QEMU covers ARM and RISC-V.
+Linux package jobs additionally check forced source builds and checksum rejection on both supported Elixir/OTP pairs. See the
 [package README](../zpl-elixir/README.md) for platform baselines and `ZPL_BUILD=true`.
 Git/path checkouts without generated checksums always compile their own source.
 ExDoc builds the README and public API reference from the unpacked Hex archive
@@ -275,18 +277,20 @@ The installed package version must match `Zpl.library_version()` before upload.
 The separate publishing job uploads the tested `.tar.gz` NIF assets to that
 GitHub release before publishing the Hex archive. It compares existing assets
 byte-for-byte on retries and never replaces them. Checksums are generated from
-the complete five-target artifact set; missing targets block publication.
-Native jobs use the upstream
-[`philss/rustler-precompiled-action`](https://github.com/philss/rustler-precompiled-action)
-to build and name archives, running at the Cargo workspace root with
-`--locked -p zpl_elixir` and NIF ABI 2.15. The checksum helper runs
+the complete ten-target artifact set; missing targets block publication.
+macOS/Windows jobs use the upstream
+[`philss/rustler-precompiled-action`](https://github.com/philss/rustler-precompiled-action).
+Linux uses Zig with an explicit glibc baseline or dynamically linked musl, then
+archives the library using the same upstream naming contract. All builds run at
+the Cargo workspace root with `--locked -p zpl_elixir` and NIF ABI 2.15.
+The checksum helper runs
 `mix rustler_precompiled.download Zpl.Native --all --print` against a temporary
 loopback mirror of the collected CI artifacts, following the upstream
 [release flow](https://github.com/philss/rustler_precompiled/blob/v0.9.0/PRECOMPILATION_GUIDE.md#the-release-flow).
-Each native job uses `--only-local` for its own artifact. Source compilation
+Native consumer jobs use `--only-local` for their own artifact. Source compilation
 bootstraps the module metadata before the checksum manifest exists. The temporary
 mirror configuration and download cache are not included in the Hex package.
-The upstream archives carry timestamps: publication retries must reuse the original
+The archives carry timestamps: publication retries must reuse the original
 tested artifacts; rebuilding a version can produce different bytes and is rejected
 if an existing asset differs.
 Elixir-only changes automatically prepare a renderer bump. Release PRs commit the
@@ -474,10 +478,13 @@ the separate C ABI version.
 
 `Codyps.Zpl` contains .NET 8, .NET Standard 2.0, and .NET Framework 4.7.2
 assemblies and native shared libraries for
-`win-x64`, `linux-x64`, `linux-arm64`, `osx-x64`, and `osx-arm64`. The reusable
-`dotnet-package.yml` workflow builds each native library on its platform, packs
-one archive, verifies all required assets, then restores/runs and RID-publishes
-a separate .NET 8 and .NET 6 consumer of that exact archive on every platform.
+`win-x64`, `win-x86`, `win-arm64`, `linux-x64`, `linux-arm64`, `linux-arm`,
+`linux-musl-x64`, `linux-musl-arm64`, `linux-musl-arm`, `osx-x64`, and `osx-arm64`. The reusable
+`dotnet-package.yml` workflow builds each native library, packs one archive,
+verifies all required assets, then restores/runs and RID-publishes a .NET 8
+consumer of that exact archive on every platform. Linux musl and ARMv7 consumers
+run in target-runtime containers; the other platforms also test .NET 6 through
+the .NET Standard assembly.
 Windows jobs also build and run Framework 4.7.2/4.8 consumers with PackageReference
 (direct and transitive) and `packages.config`, verifying native DLL deployment
 and rejecting x86 applications. Builds have read-only
@@ -513,7 +520,7 @@ gate and requires renderer, C binding, and .NET versions to match. The binding
 release helper stamps the C# project and includes .NET-only changes in the next
 renderer release. `release-pr` waits for NuGet alongside every other publisher.
 The serialized publisher downloads the tested package, validates the complete
-five-platform payload, and checks nuget.org before pushing. An identical existing
+eleven-platform payload, and checks nuget.org before pushing. An identical existing
 payload is skipped, ignoring only package signature/generated ZIP metadata;
 different code or nuspec content under the same immutable version fails visibly.
 Push failures are not blindly retried or hidden by `--skip-duplicate`.
@@ -631,9 +638,9 @@ The source distribution includes the local Rust dependencies and workspace
 lockfile. Maturin trims unrelated workspace members in the archive; installation
 allows Cargo to prune their lockfile entries. Checkout wheel builds use `--locked`.
 CI builds and installs a wheel, tests it, and rebuilds a wheel from the source
-distribution. Release builds publish five native wheels (Linux x86_64/aarch64,
-macOS Intel/Apple Silicon, Windows x86_64) and a source archive. Linux wheels
-require glibc 2.28 or newer; other platforms can build from source. See the
+distribution. Release builds publish twelve native wheels and a source archive.
+GNU and musl Linux artifacts are separate; see the [platform matrix](prebuilt-platforms.md)
+for architecture and libc baselines. Other platforms can build from source. See the
 [release policy](#pypi-publishing-setup) for versioning and retries.
 
 ### Elixir
@@ -681,8 +688,8 @@ Rust crates would be omitted.
 The staged sources include tests and the native parity example. Checkouts without
 a checksum manifest compile from source. The current package file list requires
 `checksum-Elixir.Zpl.Native.exs` for `mix hex.build`; staging alone does not generate
-it. Release CI builds native artifacts on all five targets with the upstream action,
-then uses the upstream checksum task on those exact artifacts before `mix hex.build`.
+it. Release CI builds native artifacts on all ten targets, then uses the upstream
+checksum task on those exact artifacts before `mix hex.build`.
 CI unpacks the archive outside the repository, runs the same source tests, and
 builds independent consumer releases with both downloads and forced source
 compilation. Download tests block Cargo/rustc and check rejection of corrupt

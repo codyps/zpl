@@ -28,16 +28,34 @@ jobs:
         include:
           - runner: ubuntu-22.04
             target: x86_64-unknown-linux-gnu
+            consumer: true
           - runner: ubuntu-24.04-arm
             target: aarch64-unknown-linux-gnu
+            consumer: true
+          - runner: ubuntu-22.04
+            target: x86_64-unknown-linux-musl
+          - runner: ubuntu-24.04-arm
+            target: aarch64-unknown-linux-musl
+          - runner: ubuntu-22.04
+            target: arm-unknown-linux-gnueabihf
+          - runner: ubuntu-22.04
+            target: riscv64gc-unknown-linux-gnu
           - runner: macos-15-intel
             target: x86_64-apple-darwin
+            consumer: true
           - runner: macos-15
             target: aarch64-apple-darwin
+            consumer: true
           - runner: windows-2025
             target: x86_64-pc-windows-msvc
+            consumer: true
+          - runner: windows-2025
+            target: x86_64-pc-windows-gnu
+            consumer: true
     runs-on: ${{ matrix.runner }}
     timeout-minutes: 25
+    env:
+      MACOSX_DEPLOYMENT_TARGET: '11.0'
     defaults:
       run:
         shell: bash
@@ -69,6 +87,9 @@ jobs:
               path.unlink()
               path.write_bytes(Path("LICENSE").read_bytes())
           PYTHON
+      - name: Select MinGW linker
+        if: matrix.target == 'x86_64-pc-windows-gnu'
+        run: echo 'C:/msys64/mingw64/bin' >> "$GITHUB_PATH"
       - name: Read stamped package version
         id: version
         run: |
@@ -80,7 +101,19 @@ jobs:
           PYTHON
       # https://github.com/philss/rustler_precompiled/blob/v0.9.0/PRECOMPILATION_GUIDE.md
       # Run at the workspace root so the action finds Cargo's target directory.
+      - name: Install portable Linux build tools
+        if: runner.os == 'Linux'
+        run: python -m pip install --retries 2 --timeout 30 'cargo-zigbuild==0.23.4' 'ziglang==0.14.1'
+      - name: Build portable Linux NIF
+        if: runner.os == 'Linux'
+        env:
+          NIF_TARGET: ${{ matrix.target }}
+          NIF_VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          python scripts/native-build.py zpl_elixir "$NIF_TARGET" "$RUNNER_TEMP/libzpl_elixir.so"
+          python scripts/elixir-prebuilt.py pack "$NIF_VERSION" "$NIF_TARGET" "$RUNNER_TEMP/libzpl_elixir.so" dist
       - name: Build precompiled NIF
+        if: runner.os != 'Linux'
         id: build-crate
         uses: philss/rustler-precompiled-action@67ed0cc2d6a423e4c4cd9ad651dcc6c90f802cdb # v1.1.5
         with:
@@ -99,12 +132,24 @@ jobs:
           NIF_VERSION: ${{ steps.version.outputs.version }}
         run: |
           mkdir -p dist
-          mv "$NIF_ARCHIVE" dist/
+          if [ -n "$NIF_ARCHIVE" ]; then mv "$NIF_ARCHIVE" dist/; fi
+      - name: Stage native consumer
+        if: matrix.consumer == true
+        env:
+          NIF_TARGET: ${{ matrix.target }}
+          NIF_VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          if [[ "$NIF_TARGET" == *windows-gnu ]]; then export TARGET_ABI=gnu; fi
           cargo fetch --locked
           python scripts/elixir-package.py "$RUNNER_TEMP/elixir-native"
           python scripts/elixir-prebuilt.py checksums "$NIF_VERSION" dist "$RUNNER_TEMP/elixir-native" --target "$NIF_TARGET"
       - name: Test prebuilt download and consumer release without Rust
-        run: python scripts/elixir-consumer.py "$RUNNER_TEMP/elixir-native" --artifacts dist
+        if: matrix.consumer == true
+        env:
+          NIF_TARGET: ${{ matrix.target }}
+        run: |
+          if [[ "$NIF_TARGET" == *windows-gnu ]]; then export TARGET_ABI=gnu; fi
+          python scripts/elixir-consumer.py "$RUNNER_TEMP/elixir-native" --artifacts dist
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: elixir-nif-${{ matrix.target }}
@@ -213,3 +258,71 @@ jobs:
           path: dist/*-docs.tar.gz
           if-no-files-found: error
           retention-days: 14
+
+  alpine:
+    needs: package
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [ubuntu-24.04, ubuntu-24.04-arm]
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: elixir-source
+          path: elixir-dist
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          pattern: elixir-nif-*
+          merge-multiple: true
+          path: prebuilt
+      - name: Load musl NIF and run release on Alpine without Rust
+        run: |
+          mkdir alpine-package
+          tar -xOf elixir-dist/zpl-*.tar contents.tar.gz | tar -xz -C alpine-package
+          docker run --rm -v "$PWD:/work" -w /work elixir:1.18-alpine sh -ec '
+            apk add --no-cache python3
+            mix local.hex 2.5.1 --force
+            python3 scripts/elixir-consumer.py alpine-package --artifacts prebuilt
+          '
+
+  foreign-consumer:
+    needs: package
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [linux/arm/v7, linux/riscv64]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130 # v3.7.0
+        with:
+          platforms: arm,riscv64
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: elixir-source
+          path: elixir-dist
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          pattern: elixir-nif-*
+          merge-multiple: true
+          path: prebuilt
+      - name: Test ARM and RISC-V prebuilt download and release without Rust
+        env:
+          CONSUMER_PLATFORM: ${{ matrix.platform }}
+        run: |
+          mkdir consumer-package
+          tar -xOf elixir-dist/zpl-*.tar contents.tar.gz | tar -xz -C consumer-package
+          docker run --rm --platform "$CONSUMER_PLATFORM" -v "$PWD:/work" -w /work debian:trixie-slim sh -ec '
+            apt-get -o Acquire::Retries=2 update
+            apt-get -o Acquire::Retries=2 install -y --no-install-recommends ca-certificates elixir erlang-dev python3
+            mix local.hex 2.5.1 --force
+            python3 scripts/elixir-consumer.py consumer-package --artifacts prebuilt
+          '
