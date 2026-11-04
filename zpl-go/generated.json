@@ -15,8 +15,8 @@
     "!backend_cgo && !backend_purego && !backend_wazero"
   ],
   "sha256": {
-    "guest.wasm": "dbdca0dda8a911676f669a1b7eeea86a1b0aaed04e574b34093b3e5ad8dcc911",
+    "guest.wasm": "dc0bd2b4e8a967775aeafc6f3a2cdbdba70ef8e60ffeb093a82d95cfcbd2aa9c",
     "internal/translated/module.dat": "f76a140a739e04369fb505cc9a7b4c4dd058929492879017c032bb857ff30768",
-    "internal/translated/module.go": "149aeb3be490b473518f885af77903aaf18a7a7fd3c45578c1792e7f9748c4d6"
+    "internal/translated/module.go": "e7a4799c7821f672fdd5192235c5edbd17ec04995dc24e314442bdfa07481427"
   }
 }
