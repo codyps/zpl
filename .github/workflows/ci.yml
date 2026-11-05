@@ -252,6 +252,9 @@ jobs:
       - uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6 # v2.9.2
         with:
           key: workspace-tests-${{ matrix.platform }}
+          # PyO3 caches absolute libpython paths; runner Python patches may differ.
+          # https://github.com/Swatinem/rust-cache#inputs
+          env-vars: pythonLocation PYO3
           save-if: ${{ github.ref == 'refs/heads/main' && github.event_name != 'pull_request' }}
       # One Cargo build and one scheduler across every package, including zpl-c's
       # compiled C/C++ consumers. Do not run competing Cargo processes per crate.
