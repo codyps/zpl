@@ -1,0 +1,240 @@
+0 head text/scene 1464 200976835
+0 head text/raster 2400 200461578
+0 head text/total 896 201539398
+0 head bitmap-text/scene 320 204109168
+0 head bitmap-text/raster 1280 200829485
+0 head bitmap-text/total 248 201402161
+0 head barcodes/scene 1440 200982349
+0 head barcodes/raster 2768 200469823
+0 head barcodes/total 936 200908995
+0 head graphics/scene 4480 200051208
+0 head graphics/raster 2600 200141260
+0 head graphics/total 1624 200063224
+0 head go/text/png {"checksum": 23270264, "iterations": 376, "ns": 202367551}
+0 head go/bitmap-text/png {"checksum": 8416904, "iterations": 136, "ns": 204398726}
+0 head go/barcodes/png {"checksum": 27726272, "iterations": 448, "ns": 201796245}
+0 head go/graphics/png {"checksum": 44560080, "iterations": 720, "ns": 200144680}
+0 head go/dense/png {"checksum": 2339128, "iterations": 152, "ns": 202862254}
+0 head go/initialize {"checksum": 1, "iterations": 1, "ns": 2884929}
+0 head node/text/png {"checksum": 36638288, "iterations": 592, "ns": 202192059}
+0 head node/bitmap-text/png {"checksum": 11387576, "iterations": 184, "ns": 208034066}
+0 head node/barcodes/png {"checksum": 38618736, "iterations": 624, "ns": 200803541}
+0 head node/graphics/png {"checksum": 56442768, "iterations": 912, "ns": 201152006}
+0 head node/dense/png {"checksum": 4308920, "iterations": 280, "ns": 203371414}
+0 head node/initialize {"checksum": 1, "iterations": 1, "ns": 9381212}
+1 head node/initialize {"checksum": 1, "iterations": 1, "ns": 9301034}
+1 head node/dense/png {"checksum": 4308920, "iterations": 280, "ns": 202623428}
+1 head node/graphics/png {"checksum": 55947656, "iterations": 904, "ns": 200391751}
+1 head node/barcodes/png {"checksum": 38123624, "iterations": 616, "ns": 200863042}
+1 head node/bitmap-text/png {"checksum": 11387576, "iterations": 184, "ns": 207288412}
+1 head node/text/png {"checksum": 36638288, "iterations": 592, "ns": 201277801}
+1 head go/initialize {"checksum": 1, "iterations": 1, "ns": 3224368}
+1 head go/dense/png {"checksum": 2339128, "iterations": 152, "ns": 202092610}
+1 head go/graphics/png {"checksum": 45055192, "iterations": 728, "ns": 201326777}
+1 head go/barcodes/png {"checksum": 28221384, "iterations": 456, "ns": 200565378}
+1 head go/bitmap-text/png {"checksum": 8416904, "iterations": 136, "ns": 204948790}
+1 head go/text/png {"checksum": 23765376, "iterations": 384, "ns": 203973950}
+1 head graphics/total 1648 200228085
+1 head graphics/raster 2616 200311043
+1 head graphics/scene 4480 200136550
+1 head barcodes/total 944 201176466
+1 head barcodes/raster 2752 200042131
+1 head barcodes/scene 1336 200363908
+1 head bitmap-text/total 216 204283649
+1 head bitmap-text/raster 1280 200753252
+1 head bitmap-text/scene 320 204470452
+1 head text/total 904 200227849
+1 head text/raster 2384 200241211
+1 head text/scene 1456 200101358
+2 head text/scene 1448 200037323
+2 head text/raster 2384 200129749
+2 head text/total 904 200294758
+2 head bitmap-text/scene 320 202713455
+2 head bitmap-text/raster 1280 201005843
+2 head bitmap-text/total 248 200134542
+2 head barcodes/scene 1432 200523794
+2 head barcodes/raster 2768 200446181
+2 head barcodes/total 944 200650041
+2 head graphics/scene 4480 200332518
+2 head graphics/raster 2640 200170092
+2 head graphics/total 1640 200046116
+2 head go/text/png {"checksum": 23765376, "iterations": 384, "ns": 203469556}
+2 head go/bitmap-text/png {"checksum": 8416904, "iterations": 136, "ns": 203730726}
+2 head go/barcodes/png {"checksum": 28716496, "iterations": 464, "ns": 203434439}
+2 head go/graphics/png {"checksum": 45055192, "iterations": 728, "ns": 200835164}
+2 head go/dense/png {"checksum": 2339128, "iterations": 152, "ns": 202309932}
+2 head go/initialize {"checksum": 1, "iterations": 1, "ns": 2889917}
+2 head node/text/png {"checksum": 36143176, "iterations": 584, "ns": 200175436}
+2 head node/bitmap-text/png {"checksum": 11387576, "iterations": 184, "ns": 206785862}
+2 head node/barcodes/png {"checksum": 38618736, "iterations": 624, "ns": 201068633}
+2 head node/graphics/png {"checksum": 55947656, "iterations": 904, "ns": 200881862}
+2 head node/dense/png {"checksum": 4308920, "iterations": 280, "ns": 202635750}
+2 head node/initialize {"checksum": 1, "iterations": 1, "ns": 9218986}
+3 head node/initialize {"checksum": 1, "iterations": 1, "ns": 9279713}
+3 head node/dense/png {"checksum": 4432032, "iterations": 288, "ns": 204542202}
+3 head node/graphics/png {"checksum": 56442768, "iterations": 912, "ns": 201247731}
+3 head node/barcodes/png {"checksum": 38618736, "iterations": 624, "ns": 200873277}
+3 head node/bitmap-text/png {"checksum": 11387576, "iterations": 184, "ns": 208261426}
+3 head node/text/png {"checksum": 36638288, "iterations": 592, "ns": 200658090}
+3 head go/initialize {"checksum": 1, "iterations": 1, "ns": 3139345}
+3 head go/dense/png {"checksum": 2339128, "iterations": 152, "ns": 202640738}
+3 head go/graphics/png {"checksum": 44560080, "iterations": 720, "ns": 200426782}
+3 head go/barcodes/png {"checksum": 28221384, "iterations": 456, "ns": 202805868}
+3 head go/bitmap-text/png {"checksum": 8416904, "iterations": 136, "ns": 205142109}
+3 head go/text/png {"checksum": 23270264, "iterations": 376, "ns": 202071080}
+3 head graphics/total 1640 200229548
+3 head graphics/raster 2648 200338138
+3 head graphics/scene 4560 200254805
+3 head barcodes/total 944 201616422
+3 head barcodes/raster 2776 200161010
+3 head barcodes/scene 1424 200639222
+3 head bitmap-text/total 248 203028992
+3 head bitmap-text/raster 1288 201045989
+3 head bitmap-text/scene 320 203469384
+3 head text/total 896 201032226
+3 head text/raster 2392 200238206
+3 head text/scene 1456 200868470
+4 head text/scene 1464 200020023
+4 head text/raster 2384 200597969
+4 head text/total 888 200022916
+4 head bitmap-text/scene 320 204455315
+4 head bitmap-text/raster 1296 201212899
+4 head bitmap-text/total 256 206093159
+4 head barcodes/scene 1432 200630639
+4 head barcodes/raster 2728 200241132
+4 head barcodes/total 944 200238662
+4 head graphics/scene 4544 200272305
+4 head graphics/raster 2608 200137649
+4 head graphics/total 1640 200446885
+4 head go/text/png {"checksum": 23765376, "iterations": 384, "ns": 204226095}
+4 head go/bitmap-text/png {"checksum": 8416904, "iterations": 136, "ns": 204397899}
+4 head go/barcodes/png {"checksum": 28221384, "iterations": 456, "ns": 201825679}
+4 head go/graphics/png {"checksum": 45055192, "iterations": 728, "ns": 201371785}
+4 head go/dense/png {"checksum": 2339128, "iterations": 152, "ns": 203057579}
+4 head go/initialize {"checksum": 1, "iterations": 1, "ns": 2971574}
+4 head node/text/png {"checksum": 36143176, "iterations": 584, "ns": 200938920}
+4 head node/bitmap-text/png {"checksum": 11387576, "iterations": 184, "ns": 208664067}
+4 head node/barcodes/png {"checksum": 38618736, "iterations": 624, "ns": 200492113}
+4 head node/graphics/png {"checksum": 55452544, "iterations": 896, "ns": 200414231}
+4 head node/dense/png {"checksum": 4185808, "iterations": 272, "ns": 200240221}
+4 head node/initialize {"checksum": 1, "iterations": 1, "ns": 9415755}
+5 head node/initialize {"checksum": 1, "iterations": 1, "ns": 9431550}
+5 head node/dense/png {"checksum": 4308920, "iterations": 280, "ns": 201092568}
+5 head node/graphics/png {"checksum": 56937880, "iterations": 920, "ns": 201270973}
+5 head node/barcodes/png {"checksum": 38618736, "iterations": 624, "ns": 201286681}
+5 head node/bitmap-text/png {"checksum": 11387576, "iterations": 184, "ns": 206444195}
+5 head node/text/png {"checksum": 36638288, "iterations": 592, "ns": 200309763}
+5 head go/initialize {"checksum": 1, "iterations": 1, "ns": 2958460}
+5 head go/dense/png {"checksum": 2339128, "iterations": 152, "ns": 202267092}
+5 head go/graphics/png {"checksum": 45055192, "iterations": 728, "ns": 200829482}
+5 head go/barcodes/png {"checksum": 28221384, "iterations": 456, "ns": 201144760}
+5 head go/bitmap-text/png {"checksum": 8416904, "iterations": 136, "ns": 204159008}
+5 head go/text/png {"checksum": 23270264, "iterations": 376, "ns": 201151460}
+5 head graphics/total 1648 200496578
+5 head graphics/raster 2568 200388631
+5 head graphics/scene 4528 200287275
+5 head barcodes/total 936 201098967
+5 head barcodes/raster 2760 200442917
+5 head barcodes/scene 1424 200700709
+5 head bitmap-text/total 248 201627930
+5 head bitmap-text/raster 1264 200216244
+5 head bitmap-text/scene 320 205054070
+5 head text/total 904 200445049
+5 head text/raster 2392 200155366
+5 head text/scene 1456 200683212
+6 head text/scene 1448 200639530
+6 head text/raster 2392 200070843
+6 head text/total 904 201183271
+6 head bitmap-text/scene 320 204098615
+6 head bitmap-text/raster 1264 200188912
+6 head bitmap-text/total 248 201416315
+6 head barcodes/scene 1432 200772180
+6 head barcodes/raster 2768 200428620
+6 head barcodes/total 936 200652823
+6 head graphics/scene 4496 200243510
+6 head graphics/raster 2640 200065125
+6 head graphics/total 1648 200871555
+6 head go/text/png {"checksum": 23765376, "iterations": 384, "ns": 204077103}
+6 head go/bitmap-text/png {"checksum": 8416904, "iterations": 136, "ns": 203426846}
+6 head go/barcodes/png {"checksum": 28221384, "iterations": 456, "ns": 203140480}
+6 head go/graphics/png {"checksum": 45055192, "iterations": 728, "ns": 201292630}
+6 head go/dense/png {"checksum": 2339128, "iterations": 152, "ns": 202595649}
+6 head go/initialize {"checksum": 1, "iterations": 1, "ns": 2934853}
+6 head node/text/png {"checksum": 36638288, "iterations": 592, "ns": 201608383}
+6 head node/bitmap-text/png {"checksum": 11387576, "iterations": 184, "ns": 206942518}
+6 head node/barcodes/png {"checksum": 38618736, "iterations": 624, "ns": 200819091}
+6 head node/graphics/png {"checksum": 55947656, "iterations": 904, "ns": 200641403}
+6 head node/dense/png {"checksum": 4308920, "iterations": 280, "ns": 200552665}
+6 head node/initialize {"checksum": 1, "iterations": 1, "ns": 9167440}
+7 head node/initialize {"checksum": 1, "iterations": 1, "ns": 9320786}
+7 head node/dense/png {"checksum": 4432032, "iterations": 288, "ns": 203884530}
+7 head node/graphics/png {"checksum": 55947656, "iterations": 904, "ns": 201003617}
+7 head node/barcodes/png {"checksum": 38618736, "iterations": 624, "ns": 200692807}
+7 head node/bitmap-text/png {"checksum": 11387576, "iterations": 184, "ns": 205679565}
+7 head node/text/png {"checksum": 36638288, "iterations": 592, "ns": 202033779}
+7 head go/initialize {"checksum": 1, "iterations": 1, "ns": 2893487}
+7 head go/dense/png {"checksum": 2339128, "iterations": 152, "ns": 201100481}
+7 head go/graphics/png {"checksum": 45055192, "iterations": 728, "ns": 201441118}
+7 head go/barcodes/png {"checksum": 28221384, "iterations": 456, "ns": 200600159}
+7 head go/bitmap-text/png {"checksum": 8416904, "iterations": 136, "ns": 202477195}
+7 head go/text/png {"checksum": 23765376, "iterations": 384, "ns": 203710516}
+7 head graphics/total 1632 200866441
+7 head graphics/raster 2648 200390547
+7 head graphics/scene 4472 200109626
+7 head barcodes/total 928 201275108
+7 head barcodes/raster 2760 200212147
+7 head barcodes/scene 1432 200552717
+7 head bitmap-text/total 256 205431797
+7 head bitmap-text/raster 1280 201209763
+7 head bitmap-text/scene 320 204119362
+7 head text/total 904 200406888
+7 head text/raster 2400 200567882
+7 head text/scene 1456 200052086
+8 head text/scene 1448 200718228
+8 head text/raster 2392 200582531
+8 head text/total 904 200378503
+8 head bitmap-text/scene 320 202246658
+8 head bitmap-text/raster 1288 200955956
+8 head bitmap-text/total 248 201103449
+8 head barcodes/scene 1432 200894420
+8 head barcodes/raster 2768 200289080
+8 head barcodes/total 944 200238073
+8 head graphics/scene 4440 200027237
+8 head graphics/raster 2624 200233267
+8 head graphics/total 1632 200999823
+8 head go/text/png {"checksum": 23270264, "iterations": 376, "ns": 200605782}
+8 head go/bitmap-text/png {"checksum": 8416904, "iterations": 136, "ns": 204671178}
+8 head go/barcodes/png {"checksum": 28221384, "iterations": 456, "ns": 202563166}
+8 head go/graphics/png {"checksum": 45055192, "iterations": 728, "ns": 201087727}
+8 head go/dense/png {"checksum": 2339128, "iterations": 152, "ns": 201918057}
+8 head go/initialize {"checksum": 1, "iterations": 1, "ns": 2982637}
+8 head node/text/png {"checksum": 36638288, "iterations": 592, "ns": 201293343}
+8 head node/bitmap-text/png {"checksum": 11387576, "iterations": 184, "ns": 206138551}
+8 head node/barcodes/png {"checksum": 38618736, "iterations": 624, "ns": 202449543}
+8 head node/graphics/png {"checksum": 55947656, "iterations": 904, "ns": 200709724}
+8 head node/dense/png {"checksum": 4308920, "iterations": 280, "ns": 200315855}
+8 head node/initialize {"checksum": 1, "iterations": 1, "ns": 9266946}
+9 head node/initialize {"checksum": 1, "iterations": 1, "ns": 9518379}
+9 head node/dense/png {"checksum": 4308920, "iterations": 280, "ns": 201805950}
+9 head node/graphics/png {"checksum": 55947656, "iterations": 904, "ns": 201359451}
+9 head node/barcodes/png {"checksum": 38618736, "iterations": 624, "ns": 200879847}
+9 head node/bitmap-text/png {"checksum": 11387576, "iterations": 184, "ns": 207221523}
+9 head node/text/png {"checksum": 36638288, "iterations": 592, "ns": 200640155}
+9 head go/initialize {"checksum": 1, "iterations": 1, "ns": 2765332}
+9 head go/dense/png {"checksum": 2339128, "iterations": 152, "ns": 202418140}
+9 head go/graphics/png {"checksum": 43569856, "iterations": 704, "ns": 200632052}
+9 head go/barcodes/png {"checksum": 28221384, "iterations": 456, "ns": 201241055}
+9 head go/bitmap-text/png {"checksum": 8416904, "iterations": 136, "ns": 202426970}
+9 head go/text/png {"checksum": 23270264, "iterations": 376, "ns": 201212222}
+9 head graphics/total 1656 200756844
+9 head graphics/raster 2592 200244277
+9 head graphics/scene 4488 200247168
+9 head barcodes/total 936 200015421
+9 head barcodes/raster 2736 200360421
+9 head barcodes/scene 1424 200783877
+9 head bitmap-text/total 248 200475890
+9 head bitmap-text/raster 1280 201009190
+9 head bitmap-text/scene 320 204031444
+9 head text/total 904 201279077
+9 head text/raster 2392 200435919
+9 head text/scene 1464 200693044
