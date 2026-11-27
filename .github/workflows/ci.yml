@@ -133,6 +133,40 @@ jobs:
         run: |
           nix path-info --recursive "$RUNNER_TEMP/nix-shell" | cachix push codyps
 
+  c-api-install:
+    name: C library install (cargo-c)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: dtolnay/rust-toolchain@6bed0761d98439e5a578e2877258200ad565ba87 # stable
+      # https://github.com/lu-zero/cargo-c/releases/tag/v0.10.26
+      - name: Install cargo-c 0.10.26
+        run: |
+          curl --fail --silent --show-error --location --retry 3 \
+            https://github.com/lu-zero/cargo-c/releases/download/v0.10.26/cargo-c-x86_64-unknown-linux-musl.tar.gz \
+            --output "$RUNNER_TEMP/cargo-c.tar.gz"
+          echo "685fab5a2e1539c5075cea21c42469ee5a489d877dbdbf7adccf4bb631d77545  $RUNNER_TEMP/cargo-c.tar.gz" | sha256sum --check
+          mkdir "$RUNNER_TEMP/cargo-c"
+          tar -xzf "$RUNNER_TEMP/cargo-c.tar.gz" -C "$RUNNER_TEMP/cargo-c"
+          echo "$RUNNER_TEMP/cargo-c" >> "$GITHUB_PATH"
+      # Stage an install, then build the C example from pkg-config alone, as a
+      # distribution package consumer would. https://github.com/lu-zero/cargo-c#usage
+      - name: Install into a staging prefix and build a pkg-config consumer
+        run: |
+          stage="$RUNNER_TEMP/stage"
+          cargo cinstall --locked --release -p zpl-c --destdir "$stage" --prefix /usr --libdir /usr/lib
+          find "$stage" -type f -o -type l | sort
+          test "$(readelf -d "$stage/usr/lib/libzpl_c.so" | sed -n 's/.*SONAME.*\[\(.*\)\]/\1/p')" = libzpl_c.so.4
+          export PKG_CONFIG_SYSROOT_DIR="$stage" PKG_CONFIG_PATH="$stage/usr/lib/pkgconfig"
+          cc -std=c11 -Wall -Wextra -Werror -pedantic zpl-c/examples/render.c \
+            $(pkg-config --cflags --libs zpl_c) -o "$RUNNER_TEMP/render"
+          cd "$RUNNER_TEMP"
+          LD_LIBRARY_PATH="$stage/usr/lib" ./render
+          head -c 8 label.png | od -An -tx1 | grep -q '89 50 4e 47 0d 0a 1a 0a'
+
   toml-fmt:
     name: TOML formatting
     runs-on: ubuntu-24.04

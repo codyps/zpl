@@ -471,7 +471,8 @@ Prebuilt shared libraries are bundled in `Codyps.Zpl` NuGet packages; there is
 no standalone C library upload or implemented C binding on crates.io. The
 `zpl-c` 0.0.0 registry package is only an empty placeholder. Build and distribute
 matching headers and libraries as described in
-the [C API guide](../zpl-c/README.md). Package version alignment does not change
+the [C API guide](../zpl-c/README.md); distribution packagers can run
+`cargo cinstall` from the source archive to install them with a pkg-config file. Package version alignment does not change
 the separate C ABI version.
 
 ## NuGet publication

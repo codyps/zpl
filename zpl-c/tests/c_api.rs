@@ -200,3 +200,27 @@ fn c_readme_examples() {
         check_consumer(&path, false, false);
     }
 }
+
+#[test]
+fn cargo_c_library_version_tracks_abi() {
+    // cargo-c derives the SONAME/dylib compatibility version from this key:
+    // https://github.com/lu-zero/cargo-c/blob/v0.10.26/docs/configuration.md#library-generation
+    let manifest = include_str!("../Cargo.toml");
+    let section = manifest
+        .split("[package.metadata.capi.library]")
+        .nth(1)
+        .expect("cargo-c library metadata")
+        .split("\n[")
+        .next()
+        .unwrap();
+    let version = section
+        .lines()
+        .find_map(|line| line.trim().strip_prefix("version = "))
+        .expect("cargo-c library version")
+        .trim_matches('"');
+    assert_eq!(
+        version,
+        format!("{}.0.0", zpl_c::zpl_abi_version()),
+        "update [package.metadata.capi.library] version with ZPL_ABI_VERSION"
+    );
+}

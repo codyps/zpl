@@ -51,6 +51,29 @@ presence flags must be 0 or 1. See the [native compatibility documentation](../z
 for individual settings, and [renderer coverage](../docs/local-renderer.md) for
 supported commands and font behavior.
 
+## Install with cargo-c
+
+[cargo-c](https://github.com/lu-zero/cargo-c) 0.10.26 or newer installs the
+shared and static libraries, both headers, and a pkg-config file, as
+distribution packages expect:
+
+```sh
+cargo install cargo-c --locked
+cargo cinstall --locked --release -p zpl-c --destdir "$PWD/stage" --prefix /usr --libdir /usr/lib
+```
+
+Omit `--destdir` to install directly under the prefix. Headers go to
+`include/zpl/`, and `zpl_c.pc` supplies the matching `-I` and `-lzpl_c` flags:
+
+```sh
+cc -std=c11 zpl-c/examples/render.c $(pkg-config --cflags --libs zpl_c) -o zpl-render-c
+```
+
+The shared library version follows the C ABI version, not the crate version, so
+ABI 4 installs `libzpl_c.so.4` on Linux. Use `cargo cbuild` for an uninstalled
+build tree. CI stages an install on Linux and builds this example from
+pkg-config alone.
+
 ## Renderer profiles
 
 `zpl_options_init` fills the entire options struct, including compatibility,
@@ -183,5 +206,6 @@ doctests run separately with Cargo. Integration tests use Cargo's current
 profile/target library directory, including custom `CARGO_TARGET_DIR` locations.
 Rust tests compare every output format directly with native adapters. `generate-config.py` uses only Python's
 standard library; rerun it when native configuration fields change, and review
-whether the ABI version must change. The generator checks all native fields and
+whether the ABI version must change. An ABI change also updates the cargo-c
+`[package.metadata.capi.library]` version in `Cargo.toml`, which a test enforces. The generator checks all native fields and
 fails on unsupported types; it is not required to build the library.
