@@ -129,24 +129,33 @@ cargo build --locked --release -p zpl-c
 
 ```c
 #include "zpl.h"
+#include <stdio.h>
 
-const uint8_t source[] = "^XA^PW320^LL160^FO10,10^A0N,24,24^FDHello, C!^FS^XZ";
-ZplDocument *document = NULL;
-ZplScene *scene = NULL;
-ZplBuffer *png = NULL;
-if (zpl_render(source, sizeof(source) - 1, NULL, NULL, &document) == ZPL_OK &&
-    zpl_document_label(document, 0, &scene) == ZPL_OK &&
-    zpl_scene_encode(scene, ZPL_FORMAT_PNG, NULL, &png) == ZPL_OK) {
-    ZplBytes bytes = zpl_buffer_bytes(png);
-    /* write bytes.data[0..bytes.len] to label.png */
+int main(void) {
+    const uint8_t source[] = "^XA^PW320^LL160^FO10,10^A0N,24,24^FDHello, C!^FS^XZ";
+    ZplDocument *document = NULL;
+    ZplScene *scene = NULL;
+    ZplBuffer *png = NULL;
+    int result = 1;
+    if (zpl_render(source, sizeof(source) - 1, NULL, NULL, &document) == ZPL_OK &&
+        zpl_document_label(document, 0, &scene) == ZPL_OK &&
+        zpl_scene_encode(scene, ZPL_FORMAT_PNG, NULL, &png) == ZPL_OK) {
+        ZplBytes bytes = zpl_buffer_bytes(png);
+        FILE *file = fopen("label.png", "wb");
+        if (file != NULL) {
+            result = fwrite(bytes.data, 1, bytes.len, file) == bytes.len ? 0 : 1;
+            if (fclose(file) != 0) result = 1;
+        }
+    }
+    zpl_buffer_free(png);
+    zpl_scene_free(scene);
+    zpl_document_free(document);
+    return result;
 }
-zpl_buffer_free(png);
-zpl_scene_free(scene);
-zpl_document_free(document);
 ```
 
-See [`examples/render.c`](zpl-c/examples/render.c) for the complete program with
-error reporting.
+See [`examples/render.c`](zpl-c/examples/render.c) for a version that reports
+error messages.
 
 ### .NET
 
@@ -165,6 +174,7 @@ File.WriteAllBytes("label.png", label.ToPng());
 
 ### Elixir
 
+<!-- readme-test: skip -->
 ```elixir
 # mix.exs
 {:zpl, "~> 0.2.1"}
@@ -183,23 +193,37 @@ go get github.com/codyps/zpl/zpl-go@v<version>
 ```
 
 ```go
-import zpl "github.com/codyps/zpl/zpl-go"
+package main
 
-// Inside a function with a context.Context named ctx:
-engine, err := zpl.New(ctx)
-if err != nil {
-    return err
+import (
+	"context"
+	"log"
+	"os"
+
+	zpl "github.com/codyps/zpl/zpl-go"
+)
+
+func main() {
+	ctx := context.Background()
+	engine, err := zpl.New(ctx)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer engine.Close(context.Background())
+	result, err := engine.Render(ctx, zpl.Request{
+		Input:   []byte("^XA^FO20,20^A0N,32,0^FDHello, ZPL!^FS^XZ"),
+		Format:  zpl.PNG,
+		Profile: zpl.ZD621,
+		Width:   832,
+		Height:  1218,
+	})
+	if err != nil {
+		log.Fatal(err)
+	}
+	if err := os.WriteFile("label.png", result.Body, 0o644); err != nil {
+		log.Fatal(err)
+	}
 }
-defer engine.Close(context.Background())
-result, err := engine.Render(ctx, zpl.Request{
-    Input:  []byte("^XA^FO20,20^A0N,32,0^FDHello, ZPL!^FS^XZ"),
-    Format: zpl.PNG, Profile: zpl.ZD621,
-    Width: 832, Height: 1218,
-})
-if err != nil {
-    return err
-}
-return os.WriteFile("label.png", result.Body, 0o644)
 ```
 
 The default backend is pure Go; build tags select wazero, purego, or cgo backends
@@ -238,6 +262,7 @@ Path("label.png").write_bytes(document.labels[0].png())
 
 ### Swift
 
+<!-- readme-test: skip -->
 ```swift
 // Package.swift
 .package(url: "https://github.com/codyps/zpl-swift", exact: "VERSION")

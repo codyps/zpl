@@ -14,16 +14,18 @@ README_SKIP = '<!-- readme-test: skip -->'
 
 
 def readme_blocks():
-    """Yield (line, code) for each runnable ```csharp block of README.md.
+    """Yield (name, line, code) for each runnable ```csharp block of this
+    package's README and the workspace README.
 
     A `<!-- readme-test: skip -->` line directly before a fence excludes it.
     Fenced code blocks: https://spec.commonmark.org/0.31.2/#fenced-code-blocks
     """
-    text = (ROOT / 'README.md').read_text(encoding='utf-8')
-    for match in re.finditer(r'^```csharp[ \t]*\n(.*?)^```[ \t]*$', text, re.MULTILINE | re.DOTALL):
-        before = text[:match.start()].rstrip('\n').rsplit('\n', 1)[-1].strip()
-        if before != README_SKIP:
-            yield text.count('\n', 0, match.start()) + 1, match.group(1)
+    for name, path in [('zpl-dotnet-README', ROOT / 'README.md'), ('README', ROOT.parent / 'README.md')]:
+        text = path.read_text(encoding='utf-8')
+        for match in re.finditer(r'^```csharp[ \t]*\n(.*?)^```[ \t]*$', text, re.MULTILINE | re.DOTALL):
+            before = text[:match.start()].rstrip('\n').rsplit('\n', 1)[-1].strip()
+            if before != README_SKIP:
+                yield name, text.count('\n', 0, match.start()) + 1, match.group(1)
 
 
 def nuget_config(path, feed):
@@ -141,8 +143,8 @@ def check(feed, version, rid, framework, build_only=False, container=None, docke
         # https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/program-structure/top-level-statements
         blocks = list(readme_blocks())
         assert blocks, 'README has no C# examples'
-        for line, code in blocks:
-            readme = work / f'readme-{line}'
+        for name, line, code in blocks:
+            readme = work / f'{name}-{line}'
             readme.mkdir()
             shutil.copyfile(project, readme / 'Readme.csproj')
             (readme / 'Program.cs').write_text(code, encoding='utf-8')
