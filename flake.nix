@@ -47,7 +47,11 @@
       {
         formatter = pkgs.nixpkgs-fmt;
 
-        packages = lib.optionalAttrs stdenv.hostPlatform.isLinux {
+        packages = {
+          # CI installs Cachix from these locked inputs on Intel macOS: the
+          # installer's own Nixpkgs pin no longer evaluates for x86_64-darwin.
+          cachix = pkgs.cachix;
+        } // lib.optionalAttrs stdenv.hostPlatform.isLinux {
           zpl-proxy-api = pkgs.callPackage ./nix/package.nix { };
           default = self.packages.${system}.zpl-proxy-api;
         };
