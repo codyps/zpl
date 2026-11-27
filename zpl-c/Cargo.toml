@@ -1,6 +1,6 @@
 [package]
 name = "zpl-c"
-version = "0.3.2"
+version = "0.4.0"
 edition = "2021"
 license.workspace = true
 publish = false
@@ -17,7 +17,7 @@ crate-type = ["cdylib", "staticlib", "rlib"]
 capi = []
 
 [dependencies]
-zpl = { version = "0.3.2", path = "../zpl" }
+zpl = { version = "0.4.0", path = "../zpl" }
 
 # cargo-c (`cargo cbuild`/`cinstall`) installs the library, headers and a
 # pkg-config file. Keys: https://github.com/lu-zero/cargo-c/blob/v0.10.26/docs/configuration.md

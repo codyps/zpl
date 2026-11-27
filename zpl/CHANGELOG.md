@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.0](https://github.com/codyps/zpl/compare/zpl-v0.3.2...zpl-v0.4.0) - 2026-11-27
+
+<!-- binding-release-notes -->
+### Bindings
+
+- test: run the workspace README examples in every binding ([8e3282e](https://github.com/codyps/zpl/commit/8e3282eb3bd769b8373af7860a0587a194fab8fd))
+- feat(zpl-c): install the C library with cargo-c ([e6f6b56](https://github.com/codyps/zpl/commit/e6f6b5629f8bd440a7e55993d11930ae13deaaa4))
+- test: run README code examples in every language ([bd9898e](https://github.com/codyps/zpl/commit/bd9898ea94a87d0e17d562319457cd5ce303b640))
+- feat(zpl-go): add lazily initialized package-level Render (#95) ([a56d9c3](https://github.com/codyps/zpl/commit/a56d9c3b9235d2bc0ba7c0a238b26e79a83f49b4))
+- feat(bindings): add musl and cross-platform Swift prebuilts (#91) ([9d002fd](https://github.com/codyps/zpl/commit/9d002fdde8c7257a86d02d8e176c08e93d266e01))
+- feat(render)!: add calibrated GX430t 300-DPI previews ([de65084](https://github.com/codyps/zpl/commit/de65084f8ca279349ff23e404aa83563877e5361))
+- feat(dotnet): support .NET Standard and .NET Framework (#89) ([8cc2552](https://github.com/codyps/zpl/commit/8cc2552cd7fed80fe7ddd4af5b43b6a3b986ec45))
+- feat(swift): add SwiftPM bindings and XCFramework releases ([ed01a56](https://github.com/codyps/zpl/commit/ed01a5673cdaa661ca021177f0f1ab2477e097a0))
+<!-- /binding-release-notes -->
+
+### Added
+
+- *(render)* [**breaking**] add calibrated GX430t 300-DPI previews
+
+### Fixed
+
+- *(ci)* restore CI on Rust 1.100 and Intel macOS ([#97](https://github.com/codyps/zpl/pull/97))
+
 ## [0.3.2](https://github.com/codyps/zpl/compare/zpl-v0.3.1...zpl-v0.3.2) - 2026-10-18
 
 <!-- binding-release-notes -->
