@@ -25,8 +25,8 @@ and [barcode support](docs/barcodes.md) for the exact boundaries.
 and pixel hashes against checked-in ZD621 previews using the overridable
 [ZD621 renderer profile](docs/local-renderer.md#printer-profiles).
 
-Use the [Elixir package](zpl-elixir/README.md) for lossless parsing and local
-PNG/SVG/PDF rendering from the BEAM.
+The same parser and renderer are available as [libraries](#language-libraries)
+for Rust, C/C++, .NET, Elixir, Go, Node.js, Python, and Swift.
 
 ## Quick start
 
@@ -63,38 +63,29 @@ Inspect command boundaries in a ZPL file:
 cargo run -p zpl --example zpl-parse -- test-data/cc.zpl
 ```
 
-## Use the renderer in Node.js
+## Language libraries
 
-The [`@codyps/zpl` package](zpl-node/README.md) wraps the Rust renderer with
-WebAssembly and supports CommonJS, ESM, and TypeScript. Build and pack it from
-`zpl-node/` to render PNG, SVG, and multipage PDF locally without a native addon.
+Every library wraps the same Rust renderer, renders PNG, SVG, and multipage PDF
+locally without a printer or network service, and supports the same renderer
+profiles (`zd621`, `specification`, `zq610-plus`, and `gx430t`). All except the Go
+package also expose lossless parsing. Each package README covers its full
+API, supported platforms, and build-from-source instructions; see
+[prebuilt platforms](docs/prebuilt-platforms.md) for the release artifact matrix.
 
-## Use the renderer in C or C++
+| Language | Package | Install | Documentation |
+| --- | --- | --- | --- |
+| Rust | `zpl` crate | `cargo add zpl` | [`zpl/`](zpl/README.md) |
+| C / C++ | `zpl-c` library | Build with Cargo | [`zpl-c/`](zpl-c/README.md) |
+| .NET | `Codyps.Zpl` NuGet package | `dotnet add package Codyps.Zpl` | [`zpl-dotnet/`](zpl-dotnet/README.md) |
+| Elixir | `:zpl` Hex package | `{:zpl, "~> 0.2.1"}` in `mix.exs` | [`zpl-elixir/`](zpl-elixir/README.md) |
+| Go | `github.com/codyps/zpl/zpl-go` module | `go get github.com/codyps/zpl/zpl-go@v<version>` | [`zpl-go/`](zpl-go/README.md) |
+| Node.js | `@codyps/zpl` npm package | `npm install @codyps/zpl` | [`zpl-node/`](zpl-node/README.md) |
+| Python | `zplkit` PyPI package | `python -m pip install zplkit` | [`zpl-python/`](zpl-python/README.md) |
+| Swift | `ZPL` Swift package | `https://github.com/codyps/zpl-swift` in SwiftPM | [`zpl-swift/`](zpl-swift/README.md) |
 
-The [`Codyps.Zpl` NuGet package](zpl-dotnet/README.md) provides a C# wrapper for
-.NET 8+, with native libraries for Windows x64, Linux x64/ARM64, and macOS
-x64/ARM64. It supports parsing and local rendering to PNG, SVG, PDF, and grayscale.
+Each example below renders a label and writes `label.png`.
 
-The [`zpl-c` library](zpl-c/README.md) provides a C header and shared/static libraries
-for lossless parsing, rendering with configurable profiles and limits, and
-PNG, SVG, PDF, or grayscale output. Build it with `cargo build --locked --release -p zpl-c`.
-
-## Use the renderer in Swift
-
-The [`ZPL` Swift package](zpl-swift/README.md) provides local parsing and
-PNG/SVG/PDF/grayscale rendering for macOS, Linux, Windows, and iOS. Swift Package Manager downloads
-a matching XCFramework; consumers do not need Rust. Releases are distributed from
-[`codyps/zpl-swift`](https://github.com/codyps/zpl-swift).
-
-## Use the renderer in Go
-
-The [`zpl-go` package](zpl-go/README.md) provides one Go API for PNG, SVG,
-multipage PDF, and grayscale rendering. Its default wasm2go backend builds with
-Go alone; build tags select cgo, purego, or wazero with the same application code.
-The generated Go/Wasm artifacts and regression fixtures are included. From
-`zpl-go/`, run `CGO_ENABLED=0 go test ./...` to test the default backend.
-
-## Use the renderer in Rust
+### Rust
 
 ```rust
 use zpl::{
@@ -123,24 +114,145 @@ The renderer turns ZPL into a path-based scene shared by the PNG, SVG and PDF ad
 PDF pages retain physical label dimensions using the scene DPI.
 Text uses an embedded bitmap capture of resident font 0; other sizes and rotations
 can differ from printer output. See [local rendering](docs/local-renderer.md) for
-dimensions, resource limits, font fidelity, and custom output adapters.
+dimensions, resource limits, font fidelity, and custom output adapters. The other
+libraries share these fidelity limits.
 
-## Use the renderer in Python
+### C / C++
 
-Install the native bindings with `python -m pip install ./zpl-python` (Python
-3.10+ and Rust required to build). The `zplkit` package exposes local rendering,
-lossless parsing, profiles, resource limits, PNG/SVG/PDF output, and raw pixels:
+A C11/C++ header with shared and static libraries. Build it from this checkout;
+consumers of the built artifacts do not need Rust:
+
+```sh
+cargo build --locked --release -p zpl-c
+```
+
+```c
+#include "zpl.h"
+
+const uint8_t source[] = "^XA^PW320^LL160^FO10,10^A0N,24,24^FDHello, C!^FS^XZ";
+ZplDocument *document = NULL;
+ZplScene *scene = NULL;
+ZplBuffer *png = NULL;
+if (zpl_render(source, sizeof(source) - 1, NULL, NULL, &document) == ZPL_OK &&
+    zpl_document_label(document, 0, &scene) == ZPL_OK &&
+    zpl_scene_encode(scene, ZPL_FORMAT_PNG, NULL, &png) == ZPL_OK) {
+    ZplBytes bytes = zpl_buffer_bytes(png);
+    /* write bytes.data[0..bytes.len] to label.png */
+}
+zpl_buffer_free(png);
+zpl_scene_free(scene);
+zpl_document_free(document);
+```
+
+See [`examples/render.c`](zpl-c/examples/render.c) for the complete program with
+error reporting.
+
+### .NET
+
+```sh
+dotnet add package Codyps.Zpl
+```
+
+```csharp
+using Codyps.Zpl;
+
+using var document = Renderer.Render(
+    "^XA^FO20,20^A0N,40,40^FDHello, C#!^FS^XZ", RenderOptions.Create(Profile.Zd621));
+using var label = document.GetLabel(0);
+File.WriteAllBytes("label.png", label.ToPng());
+```
+
+### Elixir
+
+```elixir
+# mix.exs
+{:zpl, "~> 0.2.1"}
+```
+
+```elixir
+document = Zpl.render!("^XA^FO20,20^A0N,32,0^FDHello, ZPL!^FS^XZ", profile: :zd621)
+[scene | _] = document.labels
+File.write!("label.png", Zpl.Scene.encode!(scene, :png))
+```
+
+### Go
+
+```sh
+go get github.com/codyps/zpl/zpl-go@v<version>
+```
+
+```go
+import zpl "github.com/codyps/zpl/zpl-go"
+
+// Inside a function with a context.Context named ctx:
+engine, err := zpl.New(ctx)
+if err != nil {
+    return err
+}
+defer engine.Close(context.Background())
+result, err := engine.Render(ctx, zpl.Request{
+    Input:  []byte("^XA^FO20,20^A0N,32,0^FDHello, ZPL!^FS^XZ"),
+    Format: zpl.PNG, Profile: zpl.ZD621,
+    Width: 832, Height: 1218,
+})
+if err != nil {
+    return err
+}
+return os.WriteFile("label.png", result.Body, 0o644)
+```
+
+The default backend is pure Go; build tags select wazero, purego, or cgo backends
+with the same API.
+
+### Node.js
+
+```sh
+npm install @codyps/zpl
+```
+
+```js
+import { render } from '@codyps/zpl';
+import { writeFileSync } from 'node:fs';
+
+const result = render('^XA^FO20,20^A0N,32,0^FDHello, ZPL!^FS^XZ', {
+  format: 'png',
+  profile: 'zd621',
+});
+writeFileSync('label.png', result.data);
+```
+
+### Python
+
+```sh
+python -m pip install zplkit
+```
 
 ```python
 from pathlib import Path
 from zplkit import Options, render
 
-document = render(b"^XA^FO20,20^FDHello^FS^XZ", Options(width=400, height=200))
+document = render(b"^XA^FO20,20^A0N,32,0^FDHello, ZPL!^FS^XZ", Options(profile="zd621"))
 Path("label.png").write_bytes(document.labels[0].png())
 ```
 
-See the [Python package documentation](zpl-python/README.md) for the API and
-wheel/source distribution build instructions.
+### Swift
+
+```swift
+// Package.swift
+.package(url: "https://github.com/codyps/zpl-swift", exact: "VERSION")
+// target dependency: .product(name: "ZPL", package: "zpl-swift")
+```
+
+```swift
+import Foundation
+import ZPL
+
+let document = try ZPL.render("^XA^FO20,20^A0N,32,0^FDHello, ZPL!^FS^XZ")
+let png = try document.label(at: 0).encode(.png)
+try png.write(to: URL(fileURLWithPath: "label.png"))
+```
+
+Swift releases are distributed from [`codyps/zpl-swift`](https://github.com/codyps/zpl-swift).
 
 ## Browser preview
 
@@ -215,6 +327,7 @@ and [telemetry](docs/telemetry.md).
 | [`zpl`](zpl/) | Command-stream parser, local renderer, bitmap font types, PNG/SVG/PDF output |
 | [`zpl-cmd`](zpl-cmd/) | Local command-line rendering with `zpl-cmd render` |
 | [`zpl-wasm`](zpl-wasm/) | WebAssembly bindings for the browser preview |
+| [`zpl-c`](zpl-c/), [`zpl-dotnet`](zpl-dotnet/), [`zpl-elixir`](zpl-elixir/), [`zpl-go`](zpl-go/), [`zpl-node`](zpl-node/), [`zpl-python`](zpl-python/), [`zpl-swift`](zpl-swift/) | [Language libraries](#language-libraries) for C/C++, .NET, Elixir, Go, Node.js, Python, and Swift |
 | [`zpl-render-api`](zpl-render-api/) | Cloudflare Worker, Labelary/LabelZoom HTTP subsets, compressed PNG and multipage PDF output |
 | [`zebra-http-api`](zebra-http-api/) | Printer HTTP client and rendering/comparison examples |
 | [`zpl-proxy-api`](zpl-proxy-api/) | Axum proxy, browser interface, SQLite cache and request history |
