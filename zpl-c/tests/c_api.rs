@@ -189,15 +189,23 @@ fn readme_c_blocks(readme: &str) -> Vec<(usize, String)> {
 
 #[test]
 fn c_readme_examples() {
-    let readme = include_str!("../README.md");
-    let blocks = readme_c_blocks(readme);
-    assert!(!blocks.is_empty(), "README has no C examples");
-    let sources = tempfile::tempdir().unwrap();
-    for (line, code) in blocks {
-        // Each README block is a complete C11 program that exits 0 on success.
-        let path = sources.path().join(format!("readme-{line}.c"));
-        std::fs::write(&path, code).unwrap();
-        check_consumer(&path, false, false);
+    // The workspace README is outside this package; zpl-c is unpublished.
+    for (name, readme) in [
+        ("zpl-c/README.md", include_str!("../README.md")),
+        ("README.md", include_str!("../../README.md")),
+    ] {
+        let blocks = readme_c_blocks(readme);
+        assert!(!blocks.is_empty(), "{name} has no C examples");
+        let sources = tempfile::tempdir().unwrap();
+        for (line, code) in blocks {
+            // Each README block is a complete C11 program that exits 0 on success.
+            // Programs that write label.png run as examples, in a temporary
+            // directory that is checked for a PNG afterward.
+            let writes_png = code.contains("\"label.png\"");
+            let path = sources.path().join(format!("readme-{line}.c"));
+            std::fs::write(&path, code).unwrap();
+            check_consumer(&path, false, writes_png);
+        }
     }
 }
 

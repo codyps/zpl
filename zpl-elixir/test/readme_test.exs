@@ -9,6 +9,9 @@ defmodule ZplReadmeTest do
   # A `<!-- readme-test: skip -->` line directly before a fence excludes a block.
   # Fenced code blocks: https://spec.commonmark.org/0.31.2/#fenced-code-blocks
   @readme Path.expand("../README.md", __DIR__)
+  # The workspace README is absent from the Hex package, which is also tested
+  # outside the checkout, so it runs only when present.
+  @workspace_readme Path.expand("../../README.md", __DIR__)
   @external_resource @readme
   @skip "<!-- readme-test: skip -->"
 
@@ -23,8 +26,8 @@ defmodule ZplReadmeTest do
     end)
   end
 
-  test "README examples run" do
-    runnable = @readme |> File.read!() |> blocks() |> Enum.reject(&elem(&1, 2))
+  defp run_readme(readme) do
+    runnable = readme |> File.read!() |> blocks() |> Enum.reject(&elem(&1, 2))
     assert runnable != []
 
     directory =
@@ -36,7 +39,7 @@ defmodule ZplReadmeTest do
       File.cd!(directory, fn ->
         capture_io(fn ->
           Enum.reduce(runnable, [], fn {line, code, _}, binding ->
-            {_, binding} = Code.eval_string(code, binding, file: @readme, line: line + 1)
+            {_, binding} = Code.eval_string(code, binding, file: readme, line: line + 1)
             binding
           end)
         end)
@@ -44,5 +47,13 @@ defmodule ZplReadmeTest do
     after
       File.rm_rf!(directory)
     end
+  end
+
+  test "package README examples run" do
+    run_readme(@readme)
+  end
+
+  test "workspace README examples run" do
+    if File.exists?(@workspace_readme), do: run_readme(@workspace_readme)
   end
 end
