@@ -16,6 +16,14 @@ use std::{
 };
 use zpl::{output, parse, render};
 
+// The workspace README lies outside every published package, so a published
+// crate cannot include it without breaking doctests in its tarball. zpl-c is
+// unpublished and already depends on zpl, so it compiles and runs those examples.
+// Doctest-only items: https://doc.rust-lang.org/rustdoc/write-documentation/documentation-tests.html#include-items-only-when-collecting-doctests
+#[cfg(doctest)]
+#[doc = include_str!("../../README.md")]
+mod workspace_readme {}
+
 pub const ZPL_OK: i32 = 0;
 pub const ZPL_INVALID_ARGUMENT: i32 = 1;
 pub const ZPL_PARSE_ERROR: i32 = 2;

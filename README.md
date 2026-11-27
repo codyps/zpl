@@ -101,11 +101,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     for warning in &document.warnings {
         eprintln!("warning: {warning}");
     }
+    let out = std::env::temp_dir();
     for (index, scene) in document.labels.iter().enumerate() {
-        std::fs::write(format!("label-{index}.png"), Png.encode(scene)?)?;
-        std::fs::write(format!("label-{index}.svg"), Svg.encode(scene)?)?;
+        std::fs::write(out.join(format!("label-{index}.png")), Png.encode(scene)?)?;
+        std::fs::write(out.join(format!("label-{index}.svg")), Svg.encode(scene)?)?;
     }
-    std::fs::write("labels.pdf", Pdf.encode_pages(&document.labels)?)?;
+    std::fs::write(out.join("labels.pdf"), Pdf.encode_pages(&document.labels)?)?;
     Ok(())
 }
 ```

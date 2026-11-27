@@ -65,13 +65,20 @@ needed. All profiles currently defined in `zpl::render::profiles` are available:
 | `ZPL_PROFILE_GX430T` | `GX430T_300_DPI` |
 
 ```c
-ZplOptions options;
-int32_t status = zpl_options_init(ZPL_PROFILE_ZD621, &options);
-if (status == ZPL_OK) {
+#include "zpl.h"
+
+int main(void) {
+    ZplOptions options;
+    int32_t status = zpl_options_init(ZPL_PROFILE_ZD621, &options);
+    if (status != ZPL_OK) return 1;
     /* Optional overrides; all remaining settings retain the Rust profile values. */
     options.width = 812;
     options.height = 1218;
-    /* Pass &options to zpl_render or zpl_render_with_fonts. */
+    const uint8_t source[] = "^XA^FO20,20^A0N,32,0^FDHello, C!^FS^XZ";
+    ZplDocument *document = NULL;
+    status = zpl_render(source, sizeof(source) - 1, &options, NULL, &document);
+    zpl_document_free(document);
+    return status == ZPL_OK ? 0 : 1;
 }
 ```
 
@@ -107,6 +114,8 @@ are contiguous MSB-first rows with `ceil(width/8)` bytes per row. Metrics match
 pen advance, and offsets from that baseline.
 
 ```c
+#include "zpl.h"
+
 static const uint8_t rows[] = {0x40, 0xa0, 0xe0};
 static int32_t lookup(void *context, uint32_t codepoint,
                       ZplGlyph *out, ZplBytes *error) {
@@ -116,19 +125,23 @@ static int32_t lookup(void *context, uint32_t codepoint,
     *out = (ZplGlyph){8, 0, -3, 3, 3, {rows, sizeof(rows)}};
     return ZPL_GLYPH_FOUND;
 }
-/* Inside the caller; check each status before proceeding. */
-ZplFonts *fonts = NULL;
-ZplBitmapProvider provider = {{8, 12, 9.0}, NULL, lookup};
-int32_t status = zpl_fonts_new(&fonts);
-if (status == ZPL_OK)
-    status = zpl_fonts_insert_bitmap(fonts, 'Z', &provider);
-ZplDocument *document = NULL;
-const uint8_t source[] = "^XA^FO20,20^AZN,12,8^FDA^FS^XZ";
-if (status == ZPL_OK)
-    status = zpl_render_with_fonts(source, sizeof(source)-1, NULL, fonts, NULL, &document);
-zpl_fonts_free(fonts);
-/* document is independent of fonts; encode it, then free it. */
-zpl_document_free(document);
+
+int main(void) {
+    /* Check each status before proceeding. */
+    ZplFonts *fonts = NULL;
+    ZplBitmapProvider provider = {{8, 12, 9.0}, NULL, lookup};
+    int32_t status = zpl_fonts_new(&fonts);
+    if (status == ZPL_OK)
+        status = zpl_fonts_insert_bitmap(fonts, 'Z', &provider);
+    ZplDocument *document = NULL;
+    const uint8_t source[] = "^XA^FO20,20^AZN,12,8^FDA^FS^XZ";
+    if (status == ZPL_OK)
+        status = zpl_render_with_fonts(source, sizeof(source)-1, NULL, fonts, NULL, &document);
+    zpl_fonts_free(fonts);
+    /* document is independent of fonts; encode it, then free it. */
+    zpl_document_free(document);
+    return status == ZPL_OK ? 0 : 1;
+}
 ```
 
 The library copies the provider descriptor and each returned glyph. Callback
@@ -160,7 +173,8 @@ cargo test --locked -p zpl-c
 ```
 
 `cargo test` builds the shared library, then Rust integration tests compile and
-execute the C and C++ smoke/font consumers and the C rendering example. No shell
+execute the C and C++ smoke/font consumers, the C rendering example, and
+every C program in this README. No shell
 script or nested Cargo build is needed. Install a C/C++ toolchain locally; the
 `cc` crate discovers the compiler and Windows MSVC SDK environment. The shared
 Rust workspace CI jobs run these tests alongside all other crates

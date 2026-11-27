@@ -50,7 +50,8 @@ fn library_dir(link: &str) -> PathBuf {
         .unwrap_or_else(|| panic!("Cargo did not build {link} near {}", exe.display()))
 }
 
-fn check_consumer(source: &str, cpp: bool, example: bool) {
+fn check_consumer(source: impl AsRef<Path>, cpp: bool, example: bool) {
+    let source = source.as_ref();
     // Referencing the Rust library also makes the native library build dependency
     // explicit. No nested Cargo invocation or shared-target lock is needed.
     assert_eq!(zpl_c::zpl_abi_version(), 4);
@@ -158,4 +159,44 @@ fn cpp_fonts() {
 #[test]
 fn c_render_example() {
     check_consumer("examples/render.c", false, true);
+}
+
+/// Programs in fenced `c` blocks of README.md, with their 1-based fence lines.
+/// A `<!-- readme-test: skip -->` line directly before a fence excludes it.
+/// Fenced code blocks: https://spec.commonmark.org/0.31.2/#fenced-code-blocks
+fn readme_c_blocks(readme: &str) -> Vec<(usize, String)> {
+    let mut blocks = Vec::new();
+    let mut previous = "";
+    let mut lines = readme.lines().enumerate();
+    while let Some((index, line)) = lines.next() {
+        if line.trim_end() == "```c" {
+            let skip = previous == "<!-- readme-test: skip -->";
+            let code: Vec<&str> = lines
+                .by_ref()
+                .map(|(_, line)| line)
+                .take_while(|line| line.trim_end() != "```")
+                .collect();
+            if !skip {
+                blocks.push((index + 1, code.join("\n") + "\n"));
+            }
+            previous = "";
+        } else if !line.trim().is_empty() {
+            previous = line.trim();
+        }
+    }
+    blocks
+}
+
+#[test]
+fn c_readme_examples() {
+    let readme = include_str!("../README.md");
+    let blocks = readme_c_blocks(readme);
+    assert!(!blocks.is_empty(), "README has no C examples");
+    let sources = tempfile::tempdir().unwrap();
+    for (line, code) in blocks {
+        // Each README block is a complete C11 program that exits 0 on success.
+        let path = sources.path().join(format!("readme-{line}.c"));
+        std::fs::write(&path, code).unwrap();
+        check_consumer(&path, false, false);
+    }
 }

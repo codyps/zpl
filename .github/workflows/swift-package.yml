@@ -119,6 +119,8 @@ jobs:
           export PATH="$RUNNER_TEMP/no-rust:$PATH"
           export ZPL_PACKAGE_PATH="$RUNNER_TEMP/local/zpl-swift"
           swift run --package-path "$RUNNER_TEMP/Consumer"
+          python3 zpl-swift/readme-consumer.py "$RUNNER_TEMP/ReadmeConsumer"
+          swift run --package-path "$RUNNER_TEMP/ReadmeConsumer"
       - name: Build iOS device and run simulator tests
         run: |
           export ZPL_PACKAGE_PATH="$RUNNER_TEMP/local/zpl-swift"

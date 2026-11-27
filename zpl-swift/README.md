@@ -33,6 +33,7 @@ https://github.com/codyps/zpl-swift
 Or add a released version to your manifest (replace `VERSION` with a published
 version from the [renderer releases](https://github.com/codyps/zpl/releases)):
 
+<!-- readme-test: skip -->
 ```swift
 .package(url: "https://github.com/codyps/zpl-swift", exact: "VERSION")
 ```
