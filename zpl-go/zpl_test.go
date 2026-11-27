@@ -137,3 +137,52 @@ func TestGX430tNativeDensityAndStrikes(t *testing.T) {
 		})
 	}
 }
+
+// retiredBackend stands in for an instance that a trap or cancellation closed.
+type retiredBackend struct{ closed bool }
+
+func (b *retiredBackend) render(context.Context, Request) ([]byte, error) {
+	return nil, errors.New("retired instance used")
+}
+func (b *retiredBackend) close(context.Context) error { b.closed = true; return nil }
+func (b *retiredBackend) retired() bool               { return true }
+
+func TestPackageRenderMatchesEngineAndReplacesRetiredEngine(t *testing.T) {
+	ctx := context.Background()
+	r := Request{Input: []byte("^XA^FO10,10^GB30,30,2^FS^XZ"), Format: PNG, Profile: Specification, Width: 100, Height: 100}
+	e, err := New(ctx)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer e.Close(ctx)
+	want, err := e.Render(ctx, r)
+	if err != nil {
+		t.Fatal(err)
+	}
+	stale := &retiredBackend{}
+	shared.mu.Lock()
+	previous := shared.e
+	shared.e = &Engine{impl: stale}
+	shared.mu.Unlock()
+	if previous != nil {
+		defer previous.Close(ctx)
+	}
+	got, err := Render(ctx, r)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !stale.closed {
+		t.Fatal("retired shared engine was not closed")
+	}
+	if !bytes.Equal(got.Body, want.Body) || got.Width != want.Width || got.Height != want.Height || got.Labels != want.Labels {
+		t.Fatal("package Render differs from Engine.Render")
+	}
+	canceled, cancel := context.WithCancel(ctx)
+	cancel()
+	if _, err = Render(canceled, r); !errors.Is(err, context.Canceled) {
+		t.Fatal("canceled context accepted", err)
+	}
+	if _, err = Render(ctx, r); err != nil {
+		t.Fatal("shared engine unusable after rejected cancellation", err)
+	}
+}

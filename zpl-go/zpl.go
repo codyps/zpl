@@ -53,6 +53,9 @@ func (e *RenderError) Error() string { return e.Message }
 type backend interface {
 	render(context.Context, Request) ([]byte, error)
 	close(context.Context) error
+	// retired reports that the instance can no longer render (a wasm2go trap
+	// or a wazero cancellation closed it), so callers must replace the engine.
+	retired() bool
 }
 type Engine struct {
 	mu   sync.Mutex
@@ -91,6 +94,45 @@ func (e *Engine) Render(ctx context.Context, r Request) (Response, error) {
 		return Response{}, err
 	}
 	return Decode(packet)
+}
+
+// usable reports whether e is open and its backend instance has not retired.
+func (e *Engine) usable() bool {
+	e.mu.Lock()
+	defer e.mu.Unlock()
+	return e.impl != nil && !e.impl.retired()
+}
+
+// shared is the lazily created engine behind the package-level Render.
+var shared struct {
+	mu sync.Mutex
+	e  *Engine
+}
+
+// Render renders with a package-wide engine that is created on first use, so
+// importing the package does no backend setup. A setup failure is returned and
+// retried on the next call. If a render retires the instance (a translated Wasm
+// trap, or a wazero cancellation), the engine is closed and the next call
+// creates a new one. Calls are serialized; use New for parallel rendering or to
+// control engine setup and lifetime. Results are the same as Engine.Render.
+func Render(ctx context.Context, r Request) (Response, error) {
+	shared.mu.Lock()
+	defer shared.mu.Unlock()
+	if shared.e != nil && !shared.e.usable() {
+		_ = shared.e.Close(ctx)
+		shared.e = nil
+	}
+	if shared.e == nil {
+		if err := ctx.Err(); err != nil {
+			return Response{}, err
+		}
+		e, err := New(ctx)
+		if err != nil {
+			return Response{}, err
+		}
+		shared.e = e
+	}
+	return shared.e.Render(ctx, r)
 }
 
 // Close releases engine resources and is safe to call more than once.

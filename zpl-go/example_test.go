@@ -28,3 +28,19 @@ func ExampleEngine_Render() {
 	fmt.Printf("%dx%d; %d label\n", result.Width, result.Height, result.Labels)
 	// Output: 64x64; 1 label
 }
+
+// Render needs no setup: the shared engine is created on first use.
+func ExampleRender() {
+	result, err := zpl.Render(context.Background(), zpl.Request{
+		Input:   []byte("^XA^FO5,5^GB30,20,2^FS^XZ"),
+		Format:  zpl.SVG,
+		Profile: zpl.Specification,
+		Width:   64,
+		Height:  64,
+	})
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("%dx%d; %d label\n", result.Width, result.Height, result.Labels)
+	// Output: 64x64; 1 label
+}
