@@ -21,16 +21,40 @@ fn run(command: &mut Command) {
     );
 }
 
+/// Directory holding the shared library Cargo built for these tests.
+///
+/// The classic layout places it beside test executables in `deps/`. The build
+/// directory layout stabilized in Cargo 1.100 gives each unit its own
+/// `build/<package>/<hash>/out/` directory instead, and does not copy library
+/// dependencies of tests into the profile directory, so search this package's
+/// unit directories for the most recently built library. Cargo rebuilt it before
+/// running this test, so the newest copy belongs to the current build.
+/// https://doc.rust-lang.org/cargo/reference/build-cache.html
+fn library_dir(link: &str) -> PathBuf {
+    let exe = std::env::current_exe().unwrap();
+    let beside = exe.parent().unwrap();
+    if beside.join(link).is_file() {
+        return beside.to_path_buf();
+    }
+    // build/<package>/<hash>/out/<test executable>
+    let package = beside.parent().and_then(Path::parent).unwrap();
+    std::fs::read_dir(package)
+        .unwrap()
+        .filter_map(|entry| {
+            let out = entry.ok()?.path().join("out");
+            let built = out.join(link).metadata().ok()?.modified().ok()?;
+            Some((built, out))
+        })
+        .max_by_key(|(built, _)| *built)
+        .map(|(_, out)| out)
+        .unwrap_or_else(|| panic!("Cargo did not build {link} near {}", exe.display()))
+}
+
 fn check_consumer(source: &str, cpp: bool, example: bool) {
     // Referencing the Rust library also makes the native library build dependency
     // explicit. No nested Cargo invocation or shared-target lock is needed.
     assert_eq!(zpl_c::zpl_abi_version(), 4);
     let crate_dir = Path::new(env!("CARGO_MANIFEST_DIR"));
-    let deps = std::env::current_exe()
-        .unwrap()
-        .parent()
-        .unwrap()
-        .to_path_buf();
     let temp = tempfile::tempdir().unwrap();
     let msvc = env!("ZPL_C_TEST_TARGET").ends_with("-msvc");
     let (dynamic, link) = if cfg!(target_os = "windows") {
@@ -47,12 +71,8 @@ fn check_consumer(source: &str, cpp: bool, example: bool) {
     } else {
         ("libzpl_c.so", "libzpl_c.so")
     };
+    let deps = library_dir(link);
     let library = deps.join(link);
-    assert!(
-        library.is_file(),
-        "Cargo did not build {}",
-        library.display()
-    );
     let executable: PathBuf = temp.path().join(if cfg!(windows) {
         "consumer.exe"
     } else {

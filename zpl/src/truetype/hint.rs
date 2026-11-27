@@ -950,8 +950,9 @@ impl Vm {
                             return Err(invalid("invalid FLIP range"));
                         }
                         self.charge(high - low + 1)?;
-                        for p in low..=high {
-                            self.zones[z].current[p].on_curve = op == 0x81;
+                        // `point` checked `high` and `low <= high`, so the range is in bounds.
+                        for point in &mut self.zones[z].current[low..=high] {
+                            point.on_curve = op == 0x81;
                         }
                     }
                     0x85 => self.state.scan_control = self.pop()? as u16,

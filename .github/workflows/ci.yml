@@ -111,6 +111,11 @@ jobs:
           # Cache completed derivations as they build, even if a later step fails.
           # https://github.com/cachix/cachix-action#push-modes
           skipPush: ${{ steps.cachix-access.outputs.can-push != 'true' }}
+          # The default installer evaluates Cachix's pinned Nixpkgs, which dropped
+          # x86_64-darwin; use the flake's locked Intel macOS input there instead.
+          # An empty value keeps the default installer on other systems.
+          # https://github.com/cachix/cachix-action/blob/38b082610b782e7e93e209c35fd730d399dee866/action.yml
+          installCommand: ${{ matrix.system == 'x86_64-darwin' && 'nix profile install --accept-flake-config --no-update-lock-file .#cachix' || '' }}
       - name: Build development shell
         # The profile retains the environment and its dependencies for upload.
         # print-dev-env builds the same environment without launching host Bash.
