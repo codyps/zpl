@@ -55,7 +55,15 @@ result, err := engine.Render(ctx, zpl.Request{
 })
 ```
 
-The [executable example](example_test.go) is tested under every backend.
+For occasional rendering, the package-level `zpl.Render(ctx, request)` skips
+the setup. It uses a shared engine that is created on the first call, not when
+the package is imported, so programs that never render pay no setup cost.
+A setup error is returned and retried on the next call. If a render retires the
+instance (a translated Wasm trap or a wazero cancellation), the shared engine is
+closed and replaced on the next call. Shared calls are serialized; use `New`
+for parallel rendering or to control setup time and lifetime.
+
+The [executable examples](example_test.go) are tested under every backend.
 PNG, SVG, multipage PDF, grayscale pixels, all four native profiles, dimensions,
 label counts, warnings, and error byte offsets are supported. PNG/SVG/grayscale
 return the first label; PDF returns all labels. Input is binary-safe and capped

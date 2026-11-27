@@ -44,3 +44,4 @@ func (w *converted) render(_ context.Context, r Request) (out []byte, err error)
 	return append([]byte(nil), (*m.Xmemory().Slice())[ptr:uint64(ptr)+uint64(size)]...), nil
 }
 func (w *converted) close(context.Context) error { w.module = nil; return nil }
+func (w *converted) retired() bool               { return w.module == nil }

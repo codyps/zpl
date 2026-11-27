@@ -44,3 +44,6 @@ func (n *native) close(context.Context) error {
 	}
 	return nil
 }
+
+// Native calls keep no per-instance state that a failed render can corrupt.
+func (n *native) retired() bool { return false }

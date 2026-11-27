@@ -78,3 +78,6 @@ func (w *wasm) render(ctx context.Context, r Request) ([]byte, error) {
 	return append([]byte(nil), data...), nil
 }
 func (w *wasm) close(ctx context.Context) error { return w.runtime.Close(ctx) }
+
+// Cancellation closes the module (WithCloseOnContextDone), retiring the engine.
+func (w *wasm) retired() bool { return w.module.IsClosed() }

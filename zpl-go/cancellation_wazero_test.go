@@ -35,3 +35,25 @@ func TestWazeroInterruptsAndRetiresInstance(t *testing.T) {
 		t.Fatal("canceled Wasm instance was reused")
 	}
 }
+
+func TestWazeroPackageRenderRecoversAfterCancellation(t *testing.T) {
+	input, err := os.ReadFile("testdata/inputs/graphic.zpl")
+	if err != nil {
+		t.Fatal(err)
+	}
+	// Create the shared engine first so the timeout interrupts a render, not setup.
+	if _, err = Render(context.Background(), Request{[]byte("^XA^XZ"), PNG, Specification, 20, 20}); err != nil {
+		t.Fatal(err)
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), time.Millisecond)
+	defer cancel()
+	if _, err = Render(ctx, Request{input, PNG, Specification, 512, 512}); err == nil {
+		t.Fatal("render finished before cancellation; use a larger fixture")
+	}
+	if ctx.Err() == nil {
+		t.Fatalf("unexpected non-cancellation failure: %v", err)
+	}
+	if _, err = Render(context.Background(), Request{[]byte("^XA^XZ"), PNG, Specification, 20, 20}); err != nil {
+		t.Fatal("shared engine was not replaced after cancellation:", err)
+	}
+}
