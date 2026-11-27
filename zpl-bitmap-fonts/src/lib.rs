@@ -6,6 +6,11 @@
 
 extern crate self as zpl_bitmap_fonts;
 
+// The README example reads the ZD621 dataset.
+#[cfg(all(doctest, feature = "zd621"))]
+#[doc = include_str!("../README.md")]
+mod readme {}
+
 /// Versioned glyphs and encoding observations from the ZD621 at 203 dpi.
 #[cfg(feature = "zd621")]
 #[path = "zd621/fonts.rs"]

@@ -9,6 +9,7 @@ run locally on BEAM dirty CPU schedulers. No printer or external service is used
 Requires Elixir 1.15 or newer and Erlang/OTP 25 or newer. Add `zpl` to the
 `deps` list in your application's `mix.exs`:
 
+<!-- readme-test: skip -->
 ```elixir
 {:zpl, "~> 0.2.1"}
 ```
@@ -46,6 +47,7 @@ ZPL_BUILD=true mix deps.compile zpl --force
 
 Set `ZPL_BUILD=true` throughout fresh builds, or put this in `config/config.exs`:
 
+<!-- readme-test: skip -->
 ```elixir
 config :rustler_precompiled, :force_build, zpl: true
 ```
@@ -90,6 +92,7 @@ returns a complete options map, including that profile's compatibility flags.
 field is exposed independently; partial overrides merge into the selected profile:
 
 ```elixir
+source = "^XA^FO20,20^BQN,2,4^FDQA,hello^FS^XZ"
 {:ok, document} = Zpl.render(source,
   profile: :zd621,
   compatibility: [qr_printer_mask_selection: false]

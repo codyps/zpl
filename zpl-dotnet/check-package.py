@@ -3,12 +3,27 @@
 import argparse
 import json
 from pathlib import Path
+import re
 import shutil
 import subprocess
 import tempfile
 import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parent
+README_SKIP = '<!-- readme-test: skip -->'
+
+
+def readme_blocks():
+    """Yield (line, code) for each runnable ```csharp block of README.md.
+
+    A `<!-- readme-test: skip -->` line directly before a fence excludes it.
+    Fenced code blocks: https://spec.commonmark.org/0.31.2/#fenced-code-blocks
+    """
+    text = (ROOT / 'README.md').read_text(encoding='utf-8')
+    for match in re.finditer(r'^```csharp[ \t]*\n(.*?)^```[ \t]*$', text, re.MULTILINE | re.DOTALL):
+        before = text[:match.start()].rstrip('\n').rsplit('\n', 1)[-1].strip()
+        if before != README_SKIP:
+            yield text.count('\n', 0, match.start()) + 1, match.group(1)
 
 
 def nuget_config(path, feed):
@@ -119,6 +134,27 @@ def check(feed, version, rid, framework, build_only=False, container=None, docke
                '--runtime', rid, '--self-contained', 'false', '-p:UseAppHost=false',
                '-p:EnableRuntimePackDownload=false', '--output', str(work / 'published'))
         run_binary(work / 'published/Smoke.dll')
+
+        # README examples are top-level-statement programs built against the same
+        # package. They live under work/ (for container mounts) only after the
+        # smoke project's last build, whose default globs would otherwise include them.
+        # https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/program-structure/top-level-statements
+        blocks = list(readme_blocks())
+        assert blocks, 'README has no C# examples'
+        for line, code in blocks:
+            readme = work / f'readme-{line}'
+            readme.mkdir()
+            shutil.copyfile(project, readme / 'Readme.csproj')
+            (readme / 'Program.cs').write_text(code, encoding='utf-8')
+            readme_project = readme / 'Readme.csproj'
+            dotnet('restore', str(readme_project), '--configfile', str(config),
+                   '--packages', str(work / 'packages'), '-p:NuGetAudit=false')
+            dotnet('build', str(readme_project), '-c', 'Release', '--no-restore')
+            args = ['dotnet', str(readme / f'bin/Release/{framework}/Readme.dll')]
+            if container:
+                args = ['docker', 'run', '--rm', '--platform', docker_platform,
+                        '-v', f'{work}:{work}', '-w', str(readme), container, *args]
+            subprocess.run(args, cwd=readme, check=True)
 
 
 if __name__ == '__main__':

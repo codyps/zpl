@@ -40,19 +40,38 @@ occurs. The default works with either `CGO_ENABLED=0` or `CGO_ENABLED=1`.
 ## API
 
 ```go
-import zpl "github.com/codyps/zpl/zpl-go"
+package main
 
-// Inside a function with a context.Context named ctx:
-engine, err := zpl.New(ctx)
-if err != nil {
-    return err
+import (
+	"context"
+	"log"
+	"os"
+
+	zpl "github.com/codyps/zpl/zpl-go"
+)
+
+func main() {
+	ctx := context.Background()
+	engine, err := zpl.New(ctx)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer engine.Close(context.Background())
+	result, err := engine.Render(ctx, zpl.Request{
+		Input:   []byte("^XA^FO10,10^GB100,80,2^FS^XZ"),
+		Format:  zpl.PNG,
+		Profile: zpl.Specification,
+		Width:   512,
+		Height:  512,
+	})
+	if err != nil {
+		log.Fatal(err)
+	}
+	// result.Body holds the PNG; Width, Height, Labels, and Warnings describe it.
+	if err := os.WriteFile("label.png", result.Body, 0o644); err != nil {
+		log.Fatal(err)
+	}
 }
-defer engine.Close(context.Background())
-result, err := engine.Render(ctx, zpl.Request{
-    Input: []byte("^XA^FO10,10^GB100,80,2^FS^XZ"),
-    Format: zpl.PNG, Profile: zpl.Specification,
-    Width: 512, Height: 512,
-})
 ```
 
 For occasional rendering, the package-level `zpl.Render(ctx, request)` skips
@@ -63,7 +82,8 @@ instance (a translated Wasm trap or a wazero cancellation), the shared engine is
 closed and replaced on the next call. Shared calls are serialized; use `New`
 for parallel rendering or to control setup time and lifetime.
 
-The [executable examples](example_test.go) are tested under every backend.
+The [executable examples](example_test.go) are tested under every backend;
+[`readme_test.go`](readme_test.go) builds and runs the program above.
 PNG, SVG, multipage PDF, grayscale pixels, all four native profiles, dimensions,
 label counts, warnings, and error byte offsets are supported. PNG/SVG/grayscale
 return the first label; PDF returns all labels. Input is binary-safe and capped
